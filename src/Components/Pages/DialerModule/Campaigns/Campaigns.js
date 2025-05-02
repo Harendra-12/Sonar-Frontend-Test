@@ -7,6 +7,7 @@ import { generalDeleteFunction, generalGetFunction } from '../../../GlobalFuncti
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
+import { useSelector } from 'react-redux'
 function Campaigns() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,9 @@ function Campaigns() {
   const [pageNumber, setPageNumber] = useState(1);
   const [deleteId, setDeleteId] = useState('');
   const [refresh, setRefresh] = useState(0);
+  const [onlineUsers, setOnlineUsers] = useState([0]);
+  const logonUser = useSelector((state) => state.loginUser);
+  const registerUser = useSelector((state) => state.registerUser);
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +67,17 @@ function Campaigns() {
       })
     }
   }
+
+  // Get list of online users
+  useEffect(() => {
+    if (logonUser && logonUser.length > 0) {
+      setOnlineUsers(
+        registerUser?.map((item) => {
+          return item.extension;
+        })
+      );
+    }
+  }, [logonUser]);
 
   return (
     <>
@@ -142,7 +157,15 @@ function Campaigns() {
                                       </td>
                                       <td><b>{item.title}</b></td>
                                       <td style={{ textTransform: 'capitalize' }}>{item?.dialer?.type}</td>
-                                      <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
+                                      <td>
+                                        {item.did_business_numers ?
+                                          <ul className='p-0 m-0 list-unstyled'>
+                                            {item.did_business_numers.map((number, index) => (
+                                              <li>{number.did}</li>
+                                            ))}
+                                          </ul>
+                                          : 0}
+                                      </td>
                                       <td className="">
                                         <Tippy content={
                                           <div className="specialProgressWrapDetails">
@@ -173,12 +196,12 @@ function Campaigns() {
                                                     >
                                                     </div>
                                                     <div className='segment pending'
-                                                      style={{ width: `${(100 - (parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                      style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
                                                     >
                                                     </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>{((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
                                                     <span>{item?.complete_records || 0}</span>
                                                   </div>
                                                 </div>
@@ -201,11 +224,11 @@ function Campaigns() {
                                                     >
                                                     </div>
                                                     <div className='segment pending'
-                                                      style={{ width: `${(100 - (parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}>
+                                                      style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}>
                                                     </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>{((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
                                                     <span>{item?.failed_records || 0}</span>
                                                   </div>
                                                 </div>
@@ -228,12 +251,12 @@ function Campaigns() {
                                                     >
                                                     </div>
                                                     <div className='segment pending'
-                                                      style={{ width: `${(100 - (parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                      style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
                                                     >
                                                     </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>{((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
                                                     <span>{item?.untouched_leads || 0}</span>
                                                   </div>
                                                 </div>
@@ -246,12 +269,15 @@ function Campaigns() {
                                             style={{ cursor: "pointer" }}
                                           >
                                             <div className="specialProgress">
-                                              <div className='segment success' style={{ width: `${((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
-                                              <div className='segment fail' style={{ width: `${((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
-                                              <div className='segment pending' style={{ width: `${((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
+                                              <div className='segment success' style={{ width: `${parseFloat(item?.total_leads) === 0 ? "0" : ((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
+                                              <div className='segment fail' style={{ width: `${parseFloat(item?.total_leads) === 0 ? "0" : ((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
+                                              <div className='segment pending' style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : ((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
                                             </div>
                                             <div className="specialProgressText">
-                                              <p>{((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                              <p>
+                                                {parseFloat(item?.total_leads) === 0 ? "0.00" :
+                                                  ((parseFloat(item?.complete_records || 0.00) / parseFloat(item?.total_leads || 0.00)) * 100).toFixed(2)}%
+                                              </p>
                                               <span>{item?.complete_records || 0} of {item?.total_leads || 0}</span>
                                             </div>
                                           </div>
@@ -260,23 +286,58 @@ function Campaigns() {
                                       <td>
                                         {item.agents.length === 0 ? "N/A" :
                                           <div>
-                                            <div className="avatar-container">
-                                              {item.agents?.slice(0, 4).map((agent, index) => {
-                                                return (
-                                                  <Tippy key={index} content={agent.user_id}>
-                                                    {agent.profile_picture ? (
-                                                      <img
-                                                        src={agent.profile_picture}
-                                                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
-                                                      />
-                                                    ) : (
-                                                      <i className="fa-light fa-user"></i>
-                                                    )}
-                                                  </Tippy>
-                                                )
-                                              })}
-                                              {item.agents?.length > 4 && <span>+2</span>}
-                                            </div>
+                                            <Tippy content={
+                                              <ul className="dropdown-menu-hover"
+                                                style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
+                                              >
+                                                {item.agents?.map(
+                                                  (item, index) => (
+                                                    <li>
+                                                      <div className="dropdown-item d-flex align-items-center" >
+                                                        <span className="avatar-container">
+                                                          {
+                                                            item.profile_picture ?
+                                                              <img
+                                                                alt="profile"
+                                                                src={item.profile_picture}
+                                                                onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
+                                                              /> : <i className="fa-light fa-user"></i>}
+                                                        </span>
+                                                        <span className="ms-2">{item?.username}</span>
+                                                        <span
+                                                          className={
+                                                            onlineUsers.includes(item.extension)
+                                                              ? "extensionStatus online ms-2"
+                                                              : "extensionStatus ms-2"
+                                                          }
+                                                        ></span>
+                                                      </div>
+                                                    </li>
+                                                  )
+                                                )}
+                                              </ul>
+                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                              <div className="hover-dropdown">
+                                                <div className="avatar-container">
+                                                  {item.agents?.slice(0, 4).map((agent, index) => {
+                                                    return (
+                                                      <Tippy key={index} content={agent.username}>
+                                                        {agent.profile_picture ? (
+                                                          <img
+                                                            src={agent.profile_picture}
+                                                            onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
+                                                          />
+                                                        ) : (
+                                                          <i className="fa-light fa-user"></i>
+                                                        )}
+                                                      </Tippy>
+                                                    )
+                                                  })}
+                                                  {item.agents?.length > 4 && <span>+2</span>}
+                                                </div>
+                                              </div>
+                                            </Tippy>
+
                                           </div>
                                         }
                                       </td>

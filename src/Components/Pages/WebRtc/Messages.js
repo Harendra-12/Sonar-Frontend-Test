@@ -2983,8 +2983,8 @@ function Messages({
                   {manageGroupChat ?
                     (
                       <div
-                        className="col-12"
-                        style={{ borderLeft: "1px solid var(--border-color)" }}
+                        className="h-100"
+                        style={{ width: '30%', transition: 'all 0.4s ease-in-out', borderLeft: '1px solid var(--border-color)' }}
                       >
                         <div className="messageOverlay">
                           <div className="contactHeader" style={{ height: "71px" }}>
@@ -3051,7 +3051,7 @@ function Messages({
                           </div>
                           {addMember ? (
                             <div
-                              className="addNewContactPopup px-0"
+                              className="addNewContactPopup py-0"
                               style={{
                                 position: "static",
                                 transform: "none",
@@ -3061,16 +3061,6 @@ function Messages({
                               }}
                             >
                               <div className="row">
-                                <div className="col-12 heading mb-0">
-                                  <i className="fa-light fa-users" />
-                                  <h5>Add Members</h5>
-                                  {/* <p>
-                                Add people to a group chat effortlessly,
-                                keeping your connections organized and
-                                efficient
-                              </p> */}
-                                  <div className="border-bottom col-12" />
-                                </div>
                                 <div className="col-xl-12 mt-2">
                                   {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
                                   {/* <div className="formRow px-0">
@@ -3308,7 +3298,7 @@ function Messages({
                               </div>
                             )
                           }
-                          {!addMember && <div className="mb-auto px-2">
+                          {!addMember && <div className="mb-auto px-4">
                             <button
                               className="panelButton gray ms-0"
                               onClick={() => {
