@@ -187,7 +187,7 @@ function Campaigns() {
                                                   }}
                                                   className="p-0 m-0"
                                                 >
-                                                  Completed records
+                                                  Successful Records
                                                 </p>
                                                 <div className="specialProgressWrap">
                                                   <div className="specialProgress">
@@ -219,7 +219,7 @@ function Campaigns() {
                                                 </p>
                                                 <div className="specialProgressWrap">
                                                   <div className="specialProgress">
-                                                    <div className='segment success'
+                                                    <div className='segment fail'
                                                       style={{ width: `${((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
                                                     >
                                                     </div>
@@ -276,9 +276,9 @@ function Campaigns() {
                                             <div className="specialProgressText">
                                               <p>
                                                 {parseFloat(item?.total_leads) === 0 ? "0.00" :
-                                                  ((parseFloat(item?.complete_records || 0.00) / parseFloat(item?.total_leads || 0.00)) * 100).toFixed(2)}%
+                                                  ((parseFloat(item?.total_leads - item?.untouched_leads || 0.00) / parseFloat(item?.total_leads || 0.00)) * 100).toFixed(2)}%
                                               </p>
-                                              <span>{item?.complete_records || 0} of {item?.total_leads || 0}</span>
+                                              <span>{parseFloat(item?.total_leads - item?.untouched_leads) || 0} of {item?.total_leads || 0}</span>
                                             </div>
                                           </div>
                                         </Tippy>
