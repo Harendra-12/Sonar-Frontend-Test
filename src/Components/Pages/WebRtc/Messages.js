@@ -1574,7 +1574,7 @@ function Messages({
                     <div className="nav nav-tabs">
                       <button
                         className={
-                          activeTab === "`all`" ? "tabLink active" : "tabLink"
+                          activeTab === "all" ? "tabLink active" : "tabLink"
                         }
                         data-category="all"
                         onClick={() => setActiveTab("all")}
@@ -1692,7 +1692,7 @@ function Messages({
                         //   borderBottom: "1px solid var(--border-color)",
                         // }}
                         >
-                          {/* {contact.map((item) => {
+                          {contact.map((item) => {
                             return (
                               <div
                                 data-bell={
@@ -1781,7 +1781,7 @@ function Messages({
                                 </div>
                               </div>
                             );
-                          })} */}
+                          })}
                         </div>
 
                         <div className="chatHeading">
