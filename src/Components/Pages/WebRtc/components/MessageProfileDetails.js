@@ -35,12 +35,20 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   useEffect(() => {
     if (files && files.length) {
       setLoading((prev) => ({ ...prev, files: false }));
+    } else {
+      setTimeout(() => {
+        setLoading((prev) => ({ ...prev, files: false }));
+      }, 500)
     }
   }, [files]);
 
   useEffect(() => {
     if (media && media.length) {
       setLoading((prev) => ({ ...prev, media: false }));
+    } else {
+      setTimeout(() => {
+        setLoading((prev) => ({ ...prev, media: false }));
+      }, 500)
     }
   }, [media]);
 
