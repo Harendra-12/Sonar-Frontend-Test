@@ -928,7 +928,7 @@
   /* border-left: 3px solid var(--dash-listing-border); */
   border-left: 3px solid var(--ui-accent);
   border-bottom: 0 !important;
-  transition: all 0.4s ease-in-out;
+  /* transition: all 0.4s ease-in-out; */
   /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px ; */
 }
 
