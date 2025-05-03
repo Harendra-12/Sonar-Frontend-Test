@@ -217,10 +217,33 @@ const RingGroupAdd = () => {
   const deleteDestination = (id) => {
     const updatedDestination = destination.filter((item) => item.id !== id);
     setDestination(updatedDestination);
+
+    // Update selectedAgentToEdit in case the selected agent gets deleted
+    const updatedAgentSelect = () => selectedAgentToEdit.map((agent) => {
+      if (id === agent.id) {
+        const arr = selectedAgentToEdit.filter((item) => item.id != id);
+        setSelectedAgentToEdit(arr);
+      }
+    })
+    updatedAgentSelect()
+
+
     if (destinationValidation) {
       clearErrors("destinations");
     }
   };
+
+  // Function to delete selected destination
+  const deleteSelectedDestination = () => {
+    const updatedDestination = destination.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+    setDestination(updatedDestination);
+    // Update selectedAgentToEdit in case the selected agent gets deleted
+    setSelectedAgentToEdit([]);
+
+    if (destinationValidation) {
+      clearErrors("destinations");
+    }
+  }
 
   // Function to validate destination
   const destinationValidation = () => {
@@ -428,7 +451,7 @@ const RingGroupAdd = () => {
         if (
           !bulkUploadSelectedAgents.some(
             (agent) => agent.extension.extension == item.extension.extension
-          )  && item.usages === "pbx"
+          ) && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -859,12 +882,21 @@ const RingGroupAdd = () => {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="buttonGroup">
+                      {selectedAgentToEdit.length > 1 &&
+                        <button className="panelButton delete"
+                          onClick={deleteSelectedDestination}
+                        >
+                          <span className="text">Delete</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-trash"></i>
+                          </span>
+                        </button>}
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
                           selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
-                            className="panelButton"
+                            className="panelButton ms-2"
                             onClick={() => {
                               setBulkEditPopup(true);
                             }}
