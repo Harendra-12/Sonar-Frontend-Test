@@ -371,22 +371,24 @@ const RingGroupEdit = () => {
     if (selectedAgentToEdit.length > 1) {
       setLoading(true);
       try {
-        selectedAgentToEdit.forEach((item) => {
+        const deletePromises = selectedAgentToEdit.map((item) => {
           if (checkPrevDestination(item.id)) {
-            try {
-              const deleteGroup = generalDeleteFunction(
-                `/ringgroupdestination/${item.id}`
-              );
-              if (!deleteGroup.status) {
-                toast.error(deleteGroup.message);
-                return;
-              }
-            } catch (err) {
-              toast.error(err);
-            }
+            return generalDeleteFunction(`/ringgroupdestination/${item.id}`)
+              .then((deleteGroup) => {
+                if (!deleteGroup.status) {
+                  toast.error(deleteGroup.message);
+                }
+                return deleteGroup;
+              })
+              .catch((err) => {
+                toast.error(err.message || "Error deleting destination");
+                return null;
+              });
           }
-        })
-        toast.success("Selected destinations deleted successfully")
+          return Promise.resolve(null);
+        });
+        await Promise.all(deletePromises);
+        toast.success("Selected destinations deleted successfully");
       } catch (err) {
         toast.err(err);
       } finally {
