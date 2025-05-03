@@ -507,6 +507,42 @@ function CallCenterQueueEdit() {
       clearErrors("agent");
     }
   }
+
+  // Function to delete selected destination
+  async function deleteSelectedDestination() {
+    if (selectedAgentToEdit.length > 1) {
+      setLoading(true);
+      try {
+        const deletePromises = selectedAgentToEdit.map((item) => {
+          if (checkPrevDestination(item.id)) {
+            return generalDeleteFunction(`/call-center-agent/destroy/${item.id}`)
+              .then((deleteGroup) => {
+                if (!deleteGroup.status) {
+                  toast.error(deleteGroup.message);
+                }
+                return deleteGroup;
+              })
+              .catch((err) => {
+                toast.error(err.message || "Error deleting destination");
+                return null;
+              });
+          }
+          return Promise.resolve(null);
+        });
+        await Promise.all(deletePromises);
+        toast.success("Selected destinations deleted successfully")
+      } catch (err) {
+        toast.err(err);
+      } finally {
+        const updatedDestination = agent.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+        setAgent(updatedDestination);
+        setSelectedAgentToEdit([]);
+        setLoading(false);
+      }
+    }
+  }
+
+
   // Handle advance click
   function handleAdvance(id) {
     if (advance.includes(id)) {
@@ -1535,35 +1571,45 @@ function CallCenterQueueEdit() {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="buttonGroup">
-                      {selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != agent?.length ? (
-                        <button
-                          type="button"
-                          className="panelButton"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
+                      {selectedAgentToEdit.length > 1 &&
+                        <button className="panelButton delete"
+                          onClick={deleteSelectedDestination}
                         >
-                          <span className="text">Edit</span>
+                          <span className="text">Delete</span>
                           <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
+                            <i className="fa-solid fa-trash"></i>
                           </span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="panelButton edit"
-                          onClick={() => {
-                            setSelectedAgentToEdit(agent);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span className="text">Edit All</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      )}
+                        </button>}
+                      {agent.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
+                          selectedAgentToEdit.length != agent.length ? (
+                          <button
+                            type="button"
+                            className="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton edit"
+                            onClick={() => {
+                              setSelectedAgentToEdit(agent);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit All</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        ))}
 
                       <button
                         type="button"

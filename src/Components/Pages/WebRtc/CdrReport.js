@@ -78,7 +78,8 @@ function CdrReport({ page }) {
   const { confirm, ModalComponent } = PromptFunctionPopup();
   const [showDropDown, setShowDropdown] = useState(false)
   const [showAudio, setShowAudio] = useState(false)
-  const [showCdrReport, setShowCdrReport] = useState(true)
+  const [showCdrReport, setShowCdrReport] = useState(true);
+  const [selectedCdrToDelete, setSelectedCdrToDelete] = useState([]);
 
 
   const thisAudioRef = useRef(null);
@@ -319,6 +320,7 @@ function CdrReport({ page }) {
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
+    getStorageInformation();
   }
 
   useEffect(() => {
@@ -526,6 +528,44 @@ function CdrReport({ page }) {
       refreshCallData();
     })
   };
+
+  // Select CDR - Call Recording Item for delete
+  const handleSelectUserToEdit = (item) => {
+    setSelectedCdrToDelete((prevSelected) => {
+      if (prevSelected.some((cdr) => cdr.id == item.id)) {
+        return prevSelected.filter((cdr) => cdr.id !== item.id);
+      } else {
+        return [...prevSelected, item];
+      }
+    });
+  }
+
+  // Delete selected CDR - Call Recordings
+  const deleteSelectedCallRecording = async () => {
+    if (selectedCdrToDelete.length > 1) {
+      try {
+        const deletePromises = selectedCdrToDelete.map((item) => {
+          return generalDeleteFunction(`/cdr-record-remove/${item.id}`)
+            .then((apiCall) => {
+              if (!apiCall.status) {
+                toast.error(apiCall.message);
+              }
+              return apiCall;
+            })
+            .catch((err) => {
+              toast.error(err.message);
+              return null;
+            });
+        });
+        await Promise.all(deletePromises);
+      } catch (err) {
+        toast.err(err);
+      } finally {
+        setSelectedCdrToDelete([]);
+        refreshCallData();
+      }
+    }
+  }
 
   return (
     <main className="mainContent">
@@ -908,6 +948,16 @@ function CdrReport({ page }) {
                               <option value={"desc"}>{isSorting === "record" ? 'Size' : 'Duration'} - High to Low</option>
                             </select>
                           </div>}
+                          {selectedCdrToDelete.length > 1 &&
+                            <button className="panelButton delete mt-auto mb-2"
+                              onClick={deleteSelectedCallRecording}
+                            >
+                              <span className="text">Delete</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          }
                         </>
                       ) : (
                         <>
@@ -1014,7 +1064,8 @@ function CdrReport({ page }) {
                     <table>
                       <thead>
                         <tr>
-                          <th>#</th>
+                          {page === "callrecording" && <th style={{ width: '20px' }}></th>}
+                          <th style={{ width: '20px' }}>#</th>
                           <th>Direction</th>
                           {/* {page === "billing" ? "" : <th>Call Type</th>} */}
                           <th>Caller Name</th>
@@ -1059,7 +1110,7 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                  ? 11
+                                  ? 12
                                   : 17
                             }
                             row={12}
@@ -1099,7 +1150,19 @@ function CdrReport({ page }) {
                                 return (
                                   <>
                                     <tr key={index} className="cdrTableRow">
-                                      <td>
+                                      {page === "callrecording" && <td style={{ width: '20px' }}>
+                                        <input
+                                          type="checkbox"
+                                          onChange={() =>
+                                            handleSelectUserToEdit(item)
+                                          }
+                                          checked={selectedCdrToDelete.some(
+                                            (cdr) =>
+                                              cdr.id == item.id
+                                          )}
+                                        ></input>
+                                      </td>}
+                                      <td style={{ width: '20px' }}>
                                         {(pageNumber - 1) *
                                           Number(itemsPerPage) +
                                           (index + 1)}

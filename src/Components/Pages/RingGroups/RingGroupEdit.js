@@ -366,6 +366,40 @@ const RingGroupEdit = () => {
     }
   }
 
+  // Function to delete selected destination
+  async function deleteSelectedDestination() {
+    if (selectedAgentToEdit.length > 1) {
+      setLoading(true);
+      try {
+        const deletePromises = selectedAgentToEdit.map((item) => {
+          if (checkPrevDestination(item.id)) {
+            return generalDeleteFunction(`/ringgroupdestination/${item.id}`)
+              .then((deleteGroup) => {
+                if (!deleteGroup.status) {
+                  toast.error(deleteGroup.message);
+                }
+                return deleteGroup;
+              })
+              .catch((err) => {
+                toast.error(err.message || "Error deleting destination");
+                return null;
+              });
+          }
+          return Promise.resolve(null);
+        });
+        await Promise.all(deletePromises);
+        toast.success("Selected destinations deleted successfully");
+      } catch (err) {
+        toast.err(err);
+      } finally {
+        const updatedDestination = destination.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+        setDestination(updatedDestination);
+        setSelectedAgentToEdit([]);
+      }
+      setLoading(false);
+    }
+  }
+
   // Function to validate destination
   const destinationValidation = () => {
     const allFilled = destination.every(
@@ -544,8 +578,8 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           !bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item?.extension?.extension 
-          )&& item.usages === "pbx"
+            (agent) => agent.extension.extension == item?.extension?.extension
+          ) && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -996,11 +1030,20 @@ const RingGroupEdit = () => {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="d-flex">
+                      {selectedAgentToEdit.length > 1 &&
+                        <button className="panelButton delete"
+                          onClick={deleteSelectedDestination}
+                        >
+                          <span className="text">Delete</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-trash"></i>
+                          </span>
+                        </button>}
                       {selectedAgentToEdit.length > 0 &&
                         selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
-                          className="panelButton ms-auto"
+                          className="panelButton ms-2"
                           onClick={() => {
                             setBulkEditPopup(true);
                           }}
@@ -1013,7 +1056,7 @@ const RingGroupEdit = () => {
                       ) : (
                         <button
                           type="button"
-                          className="panelButton edit ms-auto"
+                          className="panelButton edit ms-2"
                           onClick={() => {
                             setSelectedAgentToEdit(destination);
                             setBulkEditPopup(true);

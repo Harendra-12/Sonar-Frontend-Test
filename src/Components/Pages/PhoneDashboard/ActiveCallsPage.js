@@ -416,7 +416,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <div className='d-flex'>
                                                         <Tippy content="Minimize this window">
                                                             <button className='clearButton2 me-2' onClick={handleResizeLeft}>
-                                                                <i className="fa-solid fa-dash" />
+                                                                <i className="fa-light fa-arrows-maximize" />
                                                             </button>
                                                         </Tippy>
                                                         <div className="content">
@@ -513,7 +513,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 </button>
                                             } allowHTML={true} placement="top" interactive={true}>
                                                 <button className='clearButton2'>
-                                                    <i class="fa-regular fa-arrows-left-right"></i>
+                                                    <i class="fa-light fa-arrows-left-right"></i>
                                                 </button>
                                             </Tippy>
                                         </PanelResizeHandle>
@@ -523,7 +523,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <div className='d-flex'>
                                                         <Tippy content="Minimize this window">
                                                             <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                                <i class="fa-solid fa-dash"></i>
+                                                                <i class="fa-light fa-arrows-maximize"></i>
                                                             </button>
                                                         </Tippy>
                                                         <div className="content">
