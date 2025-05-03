@@ -962,7 +962,7 @@ function CdrFilterReport({ page }) {
                               <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
-                                  const values = selectedOptions.map((opt) => opt.value);
+                                  const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
                                   setCallDirection(values);
                                   setPageNumber(1);
                                 }}
