@@ -100,7 +100,8 @@
   margin-left: 10px;
   position: relative;
 }
-.panelButton.addTag{
+
+.panelButton.addTag {
   height: 30px;
 }
 
@@ -701,11 +702,14 @@
   /* transition: 0.3s ease-in-out; */
   /* margin-inline: auto; */
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  text-decoration: none;
 }
-.tableButton i{
+
+.tableButton i {
   line-height: 10px;
 }
-.tableButton.popupIcon_btn{
+
+.tableButton.popupIcon_btn {
   width: 35px !important;
   height: 35px !important;
 }
@@ -743,55 +747,67 @@
   color: var(--table-edit-text);
   /* border: 1px solid #0ab39c; */
 }
+
 .tableButton.whatsapp {
-  color:#fff;
+  color: #fff;
   background-color: #058d97;
 }
+
 .tableButton.whatsapp:hover {
-  color:#fff;
+  color: #fff;
   background-color: #058d97;
 }
+
 .tableButton.whatsapp.empty {
   color: var(--table-empty-text);
   background-color: var(--table-empty-bg);
-  border: 1px solid  var(--table-empty-border);
+  border: 1px solid var(--table-empty-border);
 
 }
+
 .tableButton.fax {
   color: #fff;
   background-color: rgba(142, 0, 79, 0.82);
 }
+
 .tableButton.fax:hover {
   color: #fff;
   background-color: #a00d5f;
 }
+
 .tableButton.fax.empty {
   color: var(--text-badge-danger);
-  border: 1px solid  var(--text-badge-danger);
+  border: 1px solid var(--text-badge-danger);
   background-color: rgba(255, 97, 184, 0.161);
 }
+
 .tableButton.sms {
   color: #fff;
-    background-color: #777edd;
+  background-color: #777edd;
 }
+
 .tableButton.sms:hover {
   color: #fff;
-    background-color: #777edd;
+  background-color: #777edd;
 }
+
 .tableButton.sms.empty {
   color: var(--text-badge-secondary);
   background-color: rgba(0, 17, 255, 0.078);
-  border: 1px solid  var(--text-badge-secondary);
+  border: 1px solid var(--text-badge-secondary);
 
 }
+
 .tableButton.head {
   background-color: #03900b;
   color: #fff;
 }
+
 .tableButton.head:hover {
   background-color: #03900b;
   color: #fff;
 }
+
 .tableButton.head.empty {
   background-color: var(--table-empty-bg2);
   color: var(--table-empty-text2);
@@ -802,6 +818,7 @@
   background-color: #9dc4ff7d;
   color: #000cff;
 }
+
 .tableButton.blue:hover {
   background-color: #000796;
   color: #fff;
@@ -812,6 +829,7 @@
   color: #0075ff;
   border: 1px solid #0075ff;
 }
+
 .tableButton.option:hover {
   background-color: #0075ff;
   color: #fff;
@@ -824,6 +842,7 @@
   background-color: #0ab39c;
   color: #fff !important;
 }
+
 /* .tableButton.edit {
   background-color: #0ab39c;
 } */
@@ -980,21 +999,8 @@
 }
 
 
-.clearButton2.tagListIcon{
+.clearButton2.tagListIcon {
   width: 30px;
   height: 30px;
   font-size: 13px !important;
-}
-.css-1stt0h2-control{
-  background: var(--white) !important;
-}
-
-.css-2fr8v9-menu{
-  background: var(--white) !important;
-}
-.css-yrf5d8-option:active {
-  background-color: rgba(119, 139, 159, 0.102) !important;
-}
-.css-1fetajk-option {
-  background-color: rgba(119, 139, 159, 0.102) !important;
 }

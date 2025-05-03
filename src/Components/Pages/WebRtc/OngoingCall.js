@@ -139,28 +139,60 @@ function OngoingCall({
         // });
       } else if (type === "unhold" && !holdProcessing) {
         setHoldProcessing(true);
-        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
+
+        // Ensure per-session audio context and stream
+        session.data = session.data || {};
+        if (!session.data.remoteStream) {
+          session.data.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        console.log("Audio context created:", session);
+        
+
+        const audioContext = session.data.audioContext;
+        const remoteStream = new MediaStream();
+        session.data.remoteStream = new MediaStream();;
+
+        // Prepare unhold options
+        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite || {};
         sessionDescriptionHandlerOptions.hold = false;
         session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
 
-        let options = {
+        const options = {
           requestDelegate: {
-            onAccept: function () {
-              if (session?.sessionDescriptionHandler?.peerConnection) {
-                let pc = session.sessionDescriptionHandler.peerConnection;
+            onAccept: () => {
+              const pc = session.sessionDescriptionHandler?.peerConnection;
 
-                // Restore inbound streams
+              if (pc) {
+                // Get remote audio tracks and add to stream
+                pc.getReceivers().forEach(receiver => {
+                  if (receiver.track && receiver.track.kind === 'audio') {
+                    remoteStream.addTrack(receiver.track);
+                  }
+                });
+
+                // Connect stream to speakers
+                try {
+                  const source = audioContext.createMediaStreamSource(remoteStream);
+                  source.connect(audioContext.destination);
+                } catch (err) {
+                  console.error('Audio routing failed:', err);
+                }
+
+                // Resume context if needed
+                if (audioContext.state === 'suspended') {
+                  audioContext.resume().catch(err => console.error('AudioContext resume failed:', err));
+                }
+
+                // Re-enable tracks
                 pc.getReceivers().forEach(receiver => {
                   if (receiver.track) receiver.track.enabled = true;
                 });
 
-                // Restore outbound streams
                 pc.getSenders().forEach(sender => {
-                  if (sender.track) {
-                    sender.track.enabled = true;
-                  }
+                  if (sender.track) sender.track.enabled = true;
                 });
               }
+
               session.isOnHold = false;
 
               dispatch({
@@ -169,24 +201,28 @@ function OngoingCall({
                   item.id === session.id ? { ...item, state: "Established" } : item
                 ),
               });
+
               setHoldProcessing(false);
             },
-            onReject: function () {
+
+            onReject: () => {
               session.isOnHold = true;
               setHoldProcessing(false);
-            }
-          }
+            },
+          },
         };
 
         try {
           session.invite(options);
         } catch (error) {
           console.error(`Error unholding session ${session.id}:`, error);
+          setHoldProcessing(false);
         }
 
+
         //   console.log("Before unhold",isOnHeld);
-        //  await unhold();
-        //   console.log("Done unhold",isOnHeld);
+        // unhold();
+        // console.log("Done unhold", isOnHeld);
 
         // dispatch({
         //   type: "SET_SESSIONS",
@@ -347,7 +383,6 @@ function OngoingCall({
       let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
       sessionDescriptionHandlerOptions.hold = false;
       session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-
       let options = {
         requestDelegate: {
           onAccept: function () {

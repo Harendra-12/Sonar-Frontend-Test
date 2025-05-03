@@ -40,7 +40,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     let intervalId = null;
     const shouldRetry = 
       registerStatus === "UNREGISTERED" || connectStatus === "DISCONNECTED";
-    if (shouldRetry) {
+    if (shouldRetry && connectStatus !== "WAIT_REQUEST_CONNECT") {
       intervalId = setInterval(() => {
         console.log("Attempting to connect to FreeSWITCH...");
         sessionManager.connect();
@@ -54,11 +54,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       }
     };
   }, [connectStatus, registerStatus]);
-
-  console.log("Connect",connectStatus);
-  console.log("Register",registerStatus);
-  
-  
 
   useEffect(() => {
     if (adminLogout) {

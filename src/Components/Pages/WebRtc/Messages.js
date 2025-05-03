@@ -74,7 +74,7 @@ function Messages({
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
-  const [contactRefresh, setContactRefresh] = useState(0);
+  const [contactRefresh, setContactRefresh] = useState(1);
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
@@ -109,8 +109,11 @@ function Messages({
   // const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioUrl, setAudioURL] = useState("")
   const [sendSMSPopup, setSendSMSPopup] = useState(false);
-  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(true);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const [filteredTags, setFilteredTags] = useState();
+  const [tagFilterInput, setTagFilterInput] = useState("")
+
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -225,7 +228,10 @@ function Messages({
       const tagData = await generalGetFunction("/tags/all");
 
       if (apiData?.status && apiData.data.length > 0) {
-        setContact(apiData.data);
+        const filteredData = apiData?.data?.sort((a, b) =>
+          new Date(b?.last_message_data?.created_at) - new Date(a?.last_message_data?.created_at)
+        );
+        setContact(filteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find((data) => data?.id == apiData?.data[0]?.id)?.profile_picture
           setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email, profile_img]);
@@ -242,9 +248,9 @@ function Messages({
     getData();
   }, [contactRefresh]);
 
-  useEffect(() => {
-    setContactRefresh(contactRefresh + 1)
-  }, [])
+  // useEffect(() => {
+  //   setContactRefresh(contactRefresh + 1)
+  // }, [])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -337,7 +343,7 @@ function Messages({
         setChatHistory(newChatHistory);
       }
     }
-    if (recipient.length > 0) {
+    if (recipient.length > 0 && allAgents?.length > 0) {
       if (Object.keys(chatHistory).includes(recipient[0])) {
         if (
           chatHistory[recipient[0]]?.total &&
@@ -356,7 +362,7 @@ function Messages({
 
       }
     }
-  }, [recipient, loadMore]);
+  }, [recipient, loadMore, allAgents]);
 
   const getExtension = (input) => {
     var parts = input?.split('.');
@@ -438,7 +444,8 @@ function Messages({
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: messageType
         },
       ],
     }));
@@ -450,6 +457,8 @@ function Messages({
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
       newContact[contactIndex].last_message_data.created_at = time;
+      newContact?.splice(contactIndex, 1)
+      newContact.unshift(contact[contactIndex])
       setContact(newContact);
     }
     setActiveTab("all");
@@ -590,10 +599,10 @@ function Messages({
       }
       if (!extensionExists) {
         contact.unshift({
-          name: agentDetails.username,
-          email: agentDetails.email,
-          id: agentDetails.id,
-          extension_id: agentDetails.extension_id,
+          name: agentDetails?.username,
+          email: agentDetails?.email,
+          id: agentDetails?.id,
+          extension_id: agentDetails?.extension_id,
           extension: from,
           last_message_data: { message_text: body, created_at: time },
         });
@@ -632,8 +641,9 @@ function Messages({
             body,
             time,
             user_id: agentDetails?.id,
-            user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            user_name: agentDetails?.username,
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -652,7 +662,8 @@ function Messages({
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -672,8 +683,7 @@ function Messages({
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
-          newContact[contactIndex].last_message_data.message_text =
-            messageInput;
+          newContact[contactIndex].last_message_data.message_text = body;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
         }
@@ -823,6 +833,21 @@ function Messages({
       messageListRef.current.addEventListener("scroll", handleScroll);
     }
   }, []);
+
+  useEffect(() => {
+    // const tag = allTags?.filter((tag) =>
+    //   contact?.every((contactItem) =>
+    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
+    //   )
+    // );
+    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
+    const tag = allTags?.filter((tag) =>
+      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+    );
+
+    const filteredTag = tag?.filter((data) => data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase()))
+    setFilteredTags(filteredTag)
+  }, [allTags, contact, tagFilterInput, recipient])
 
   useEffect(() => {
     async function getData() {
@@ -1035,11 +1060,21 @@ function Messages({
 
   // Filter out the user from selcted group
   useEffect(() => {
+    // ===========
     const getGroups = async () => {
       setLoading(true);
       const apiData = await generalGetFunction(`/groups/all`);
       if (apiData?.status) {
-        setGroups(apiData.data);
+        const filteredData = apiData?.data?.sort((a, b) => {
+          const dateA = a?.last_message_data?.created_at ? new Date(a.last_message_data.created_at) : null;
+          const dateB = b?.last_message_data?.created_at ? new Date(b.last_message_data.created_at) : null;
+          if (!a.last_message_data || !dateA) return 1;
+          if (!b.last_message_data || !dateB) return -1;
+
+          return dateB - dateA;
+        });
+
+        setGroups(filteredData);
         const isGroupSelected = apiData.data.find(
           (group) => group.id == recipient[1]
         );
@@ -1170,8 +1205,9 @@ function Messages({
       toast.success("Group created successfully");
       setAddMember(false);
       setGroupChatPopUp(false);
-      // setGroupSelecedAgents([]);
+      setGroupSelecedAgents([]);
       setNewGroupLoader(false);
+      setGroupName("")
     } else {
       setNewGroupLoader(false);
     }
@@ -1236,7 +1272,7 @@ function Messages({
 
   // function to add display logic in messages
 
-  // Logic to send group messages
+  // Logic to send group messages 
   function sendGroupMessage(selectedUrl) {
     let messageContent;
     if (selectedUrl) {
@@ -1244,15 +1280,16 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
-
+    const messageType = checkMessageType(messageContent)
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
       "sharedMessage": messageContent,
-      "group_id": recipient[0],
+      "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
-      "user_extension": account.extension.extension
+      "user_extension": account.extension.extension,
+      "message_type": messageType
     })
 
     const time = formatDateTime(new Date());
@@ -1262,15 +1299,30 @@ function Messages({
       [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
         ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
         {
-          from: recipient[2] == "singleChat" ? recipient[1] : recipient[0],
+          from: recipient[2] == "singleChat" ? recipient[1] : account?.id,
           body: messageContent, // Show appropriate text in the message history
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: checkMessageType(messageContent)
         },
       ],
     }));
+
+
+    const contactIndex = groups.findIndex(
+      (contact) => contact?.group_name === recipient[0]
+    );
+    if (contactIndex !== -1) {
+      const newGroups = [...groups];
+      newGroups[contactIndex].last_message_data.message_text = messageInput;
+      newGroups[contactIndex].last_message_data.created_at = time;
+      newGroups?.splice(contactIndex, 1)
+      newGroups.unshift(groups[contactIndex])
+      setGroups(newGroups);
+    }
+    setActiveTab("all");
 
     // Clear both message input and selected file
     setMessageInput("");
@@ -1280,16 +1332,47 @@ function Messages({
 
   // Recieve group message
   useEffect(() => {
-    const time = formatDateTime(new Date());
-    setAllMessage((prevState) => ({
-      ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
-      {
-        from: groupMessage.user_name,
-        body: groupMessage.sharedMessage,
-        time
-      }],
-    }));
+    if (groupMessage) {
+      const audio = new Audio(
+        require("../../assets/music/message-notification.mp3")
+      );
+      const from = groupMessage?.user_id;
+      const body = groupMessage?.sharedMessage;
+      setIsFreeSwitchMessage(true);
+      const time = formatDateTime(new Date());
+      setAllMessage((prevState) => ({
+        ...prevState,
+        [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
+        {
+          from,
+          body,
+          time,
+          user_id: from,
+          user_name: groupMessage?.user_name,
+          profile_picture: groupMessage?.profile_picture,
+          message_type: groupMessage.message_type,
+        }],
+      }));
+      if (groupMessage?.group_name != undefined) {
+        const contactIndex = groups.findIndex(
+          (contact) => contact?.group_name === groupMessage?.group_name
+        );
+        if (contactIndex !== -1) {
+          const newGroups = [...groups];
+          newGroups[contactIndex].last_message_data.message_text = body;
+          newGroups[contactIndex].last_message_data.created_at = time;
+          newGroups?.splice(contactIndex, 1)
+          newGroups.unshift(groups[contactIndex])
+          setGroups(newGroups);
+        }
+        setActiveTab("all");
+        setUnreadMessage((prevState) => ({
+          ...prevState,
+          [groupMessage?.group_name]: (prevState[groupMessage?.group_name] || 0) + 1,
+        }));
+        audio.play();
+      }
+    }
   }, [groupMessage])
 
   // Handle logic to make any user admin or remove any user from admin
@@ -1349,6 +1432,24 @@ function Messages({
   //     console.error("Error sending SMS:", err);
   //   }
   // })
+  const handleCreateNewTag = async () => {
+    setLoading(true);
+    const parsedData = {
+      name: tagFilterInput,
+    };
+    const apiData = await generalPostFunction(`/tags/store`, parsedData);
+    if (apiData.status) {
+      setLoading(false);
+      toast.success("Tag added successfully");
+      setAddNewTag(false);
+      setNewTag("");
+      setAllTags([...allTags, apiData.data]);
+    } else {
+      setLoading(false);
+      toast.error(apiData?.errors?.name[0])
+    }
+  }
+
   return (
     <>
       {addNewTagPopUp &&
@@ -1595,12 +1696,12 @@ function Messages({
                             return (
                               <div
                                 data-bell={
-                                  unreadMessage[item?.extension]
-                                    ? unreadMessage[item?.extension]
+                                  unreadMessage[item?.id]
+                                    ? unreadMessage[item?.id]
                                     : ""
                                 }
                                 className={
-                                  recipient[0] === item?.extension
+                                  recipient[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -1654,6 +1755,7 @@ function Messages({
                                         </span>
                                       </p>
                                       <h5>
+                                        {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
                                       <div className="contactTags">
@@ -1704,13 +1806,24 @@ function Messages({
                               return (
                                 <div
                                   className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
-                                  data-bell={""}
+                                  data-bell={
+                                    unreadMessage[item.group_name]
+                                      ? unreadMessage[item.group_name]
+                                      : ""
+                                  }
                                   onClick={() => {
                                     setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, null]);
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
                                     setSelectedgroupUsers(item.groupusers);
+                                    setUnreadMessage((prevState) => {
+                                      const {
+                                        [item.group_name]: _,
+                                        ...newState
+                                      } = prevState;
+                                      return newState;
+                                    });
                                     item.groupusers.map((user) => {
                                       if (user.user_id === account.id) {
                                         setIsAdmin(user.is_admin)
@@ -1722,16 +1835,34 @@ function Messages({
                                     <div className=" d-flex align-items-center">
                                       <div
                                         className="profileHolder"
-                                        id={"profileOfflineNav"}
+                                        id={item?.groupusers?.some((user) =>
+                                          onlineUser?.some((online) => online?.id === user?.user_id)
+                                        )
+                                          ? "profileOnlineNav"
+                                          : "profileOfflineNav"
+                                        }
                                       >
                                         <i className="fa-light fa-users fs-5"></i>
                                       </div>
-                                      <div className="ms-3">
-                                        <p>{item.group_name}</p>
+                                      <div className="ms-3 flex-grow-1">
+                                        <p>{item.group_name}
+                                          <span className=" text-end mb-0">
+                                            <p className="timeAgo">
+                                              {item?.last_message_data
+                                                ? formatRelativeTime(
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
+                                                : ""}
+                                            </p>
+                                          </span>
+                                        </p>
                                         {/* <h5>Alright</h5>
                                         <div className="contactTags">
                                           <span data-id="3">Priority</span>
                                         </div> */}
+                                        {/* here we are showing recent group message */}
+                                        {item?.last_message_data?.message_text}
                                       </div>
                                     </div>{" "}
                                   </div>
@@ -2193,10 +2324,10 @@ function Messages({
                 id="callDetails"
               >
                 <div className="d-flex h-100">
-                  {/* <PanelGroup autoSaveId="example" direction="horizontal"> */}
-                  {/* <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
+                  {/* <PanelGroup autoSaveId="example" direction="horizontal">
+                    <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
-                  <div className={` h-100  `} style={{ width: isActiveAgentsOpen ? '70%' : '99%', transition: 'all 0.4s ease-in-out', transform: isActiveAgentsOpen ? 'translate(0%, 0%)' : 'translate(0%, 0%)' }}>
+                  <div className="col h-100">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
@@ -2216,7 +2347,11 @@ function Messages({
                                     className="profileHolder"
                                     id={"profileOfflineNav"}
                                   >
-                                    <i className="fa-light fa-users fs-5"></i>
+                                    {
+                                      selectedChat == "singleChat" ?
+                                        <i className="fa-light fa-user fs-5"></i> :
+                                        <i className="fa-light fa-users fs-5"></i>
+                                    }
                                   </div>
                               }
                               <h4 className="">
@@ -2235,7 +2370,7 @@ function Messages({
                             <div className="contactTags">
                               {contact
                                 .find(
-                                  (contact) => contact.extension == recipient[0]
+                                  (contact) => contact.id == recipient[1]
                                 )
                                 ?.tags?.map((item, key) => {
                                   return (
@@ -2276,31 +2411,29 @@ function Messages({
                                         name="Search"
                                         className="formItem"
                                         placeholder="Search a Tag Name"
-                                      // value={userInput}
-                                      // onChange={(e) => setuserInput(e.target.value)}
+                                        value={tagFilterInput}
+                                        onChange={(e) => setTagFilterInput(e.target.value)}
                                       />
                                     </div>
                                     <div className="contactTags my-2">
-                                      {contact
-                                        .find(
-                                          (contact) => contact.extension == recipient[0]
-                                        )
-                                        ?.tags?.map((item, key) => {
-                                          return (
-                                            <span
-                                              data-id={key}
-                                            // onClick={() =>
-                                            //   handleUnassignTask(item?.id)
-                                            // }
-                                            // className="removableTag"
-                                            >
-                                              {item.tag?.[0]?.name}
-                                            </span>
-                                          );
-                                        })}
-                                           <button className="more info">
-                                           <i class="fa-regular fa-plus me-1"></i> Create New Tag
-                                          </button>
+                                      {filteredTags?.map((item, key) => {
+                                        return (
+                                          <span
+                                            data-id={key}
+                                            onClick={() =>
+                                              handleAssignTask(item?.id, recipient[1])
+                                            }
+                                          // className="removableTag"
+                                          >
+                                            {item?.name}
+                                          </span>
+                                        );
+                                      })}
+                                      {filteredTags?.length == 0 &&
+                                        <button className="more info" onClick={() => handleCreateNewTag()}>
+                                          <i class="fa-regular fa-plus me-1"></i> Create New Tag
+                                        </button>
+                                      }
                                     </div>
                                     {/* {allTags.map((item, key) => {
                                           return (
@@ -2547,7 +2680,7 @@ function Messages({
                                         </div>
                                       )}
                                       {/* Message content */}
-                                      {item.from !== recipient[1] ? (
+                                      {(selectedChat === "groupChat" ? item.from === account?.id : item.from !== recipient[1]) ? (
                                         <div className="messageItem sender">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
@@ -2580,7 +2713,7 @@ function Messages({
                                                     className="profileHolder"
                                                     id={"profileOfflineNav"}
                                                   >
-                                                    <i className="fa-light fa-users fs-5"></i>
+                                                    <i className="fa-light fa-user fs-5"></i>
                                                   </div>
                                               }
                                             </div>
@@ -2605,7 +2738,7 @@ function Messages({
                                                     className="profileHolder"
                                                     id={"profileOfflineNav"}
                                                   >
-                                                    <i className="fa-light fa-users fs-5"></i>
+                                                    <i className="fa-light fa-user fs-5"></i>
                                                   </div>
                                               }
 
@@ -2639,7 +2772,6 @@ function Messages({
                                   );
                                 }
                               )}
-
                             </>
                           ) : (
                             <div className="startAJob">
@@ -2851,8 +2983,8 @@ function Messages({
                   {manageGroupChat ?
                     (
                       <div
-                        className="col-12"
-                        style={{ borderLeft: "1px solid var(--border-color)" }}
+                        className="h-100"
+                        style={{ width: '30%', transition: 'all 0.4s ease-in-out', borderLeft: '1px solid var(--border-color)' }}
                       >
                         <div className="messageOverlay">
                           <div className="contactHeader" style={{ height: "71px" }}>
@@ -2919,7 +3051,7 @@ function Messages({
                           </div>
                           {addMember ? (
                             <div
-                              className="addNewContactPopup px-0"
+                              className="addNewContactPopup py-0"
                               style={{
                                 position: "static",
                                 transform: "none",
@@ -2929,16 +3061,6 @@ function Messages({
                               }}
                             >
                               <div className="row">
-                                <div className="col-12 heading mb-0">
-                                  <i className="fa-light fa-users" />
-                                  <h5>Add Members</h5>
-                                  {/* <p>
-                                Add people to a group chat effortlessly,
-                                keeping your connections organized and
-                                efficient
-                              </p> */}
-                                  <div className="border-bottom col-12" />
-                                </div>
                                 <div className="col-xl-12 mt-2">
                                   {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
                                   {/* <div className="formRow px-0">
@@ -3176,7 +3298,7 @@ function Messages({
                               </div>
                             )
                           }
-                          {!addMember && <div className="mb-auto px-2">
+                          {!addMember && <div className="mb-auto px-4">
                             <button
                               className="panelButton gray ms-0"
                               onClick={() => {
@@ -3194,22 +3316,23 @@ function Messages({
                     ) : (
                       <div
                         className=" h-100" style={{ width: isActiveAgentsOpen ? '30%' : '0%', transition: 'all 0.4s ease-in-out' }}
-                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                       >
-                        <div className="callDashParkedCalls messageDower pe-0" 
-                        style={{ transform: isActiveAgentsOpen ? 'translate(3%, 0%)' : 'translate(100%, 0%)' }}
+                        <div className="callDashParkedCalls messageDower pe-0"
+                          style={{ transform: isActiveAgentsOpen ? 'translate(3%, 0%)' : 'translate(100%, 0%)' }}
                         >
-                          <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '7px', transition: 'all 0.4s ease-in-out', }}>
+                          <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '-5px', transition: 'all 0.4s ease-in-out', }}>
                             <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
                           </button>
                           <div
                             className=" h-100"
-                            // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                           >
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages={allMessage?.[recipient[1]]}
+                              messages={recipient[2] === "groupChat" ? allMessage?.[recipient[3]] : allMessage?.[recipient[1]]}
+                              selectedChat={selectedChat}
                             />
                           </div>
                         </div>

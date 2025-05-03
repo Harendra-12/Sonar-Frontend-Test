@@ -144,7 +144,8 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
-    refVideoRemote: null,
+    // refVideoRemote: null,
+    // refAudioRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
       globalUserAgent = ua; // Store the registered UserAgent
@@ -257,7 +258,7 @@ const WebrtcWrapper = () => {
           },
           keepalive: true,
         }).catch((err) => console.log("API call failed:", err));
-        localStorage.clear();
+        // localStorage.clear();
       }
     };
 
