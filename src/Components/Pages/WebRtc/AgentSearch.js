@@ -130,7 +130,7 @@ const AgentSearch = ({
       {/* <div className="formLabel">
         <label htmlFor="">Agent Search</label>
       </div> */}
-      <div className="col-12">
+      <div className="">
         <Select
           // className="formItem"
           placeholder="Select agent to start chat"

@@ -90,7 +90,9 @@ function NotificationBellApp() {
                                     {item.message_text ? (
                                         <>
                                             <div class="pe-2">
-                                                <span class="badge_icon bg-secondary-transparent"><i class="fa-duotone fa-solid fa-messages"></i></span>
+                                                <span class="badge_icon bg-secondary-transparent">
+                                                    <i class="fa-duotone fa-solid fa-messages"></i>
+                                                </span>
                                             </div>
                                             <div class="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>
@@ -108,7 +110,7 @@ function NotificationBellApp() {
                                 </div>
                             </li>
                         )) : (
-                            <EmptyPrompt generic={true} small={true} nomargin={true} />
+                            <EmptyPrompt generic={"bell"} bell={true} nomargin={true} />
                         )
                     }
 

@@ -1530,13 +1530,13 @@ function Messages({
 
             <div className="row webrtc_newMessageUi">
 
-              <div
-                className="col-12 col-xl-3 col-lg-3 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0 rounded-3 leftside_listBar"
+              <div className="col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
                 style={{
                   // height: "100%",
                   // borderRight: "1px solid var(--border-color)",
                 }}
               >
+                {/* <div className="row"> */}
                 {/* <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -1561,7 +1561,7 @@ function Messages({
                     <i className="fa-light fa-pen-to-square"></i> New Chat
                   </button>
                 </div> */}
-                <div className="col-12" style={{ padding: "0 10px" }}>
+                <div className="w-100 pb-3" style={{ padding: "0 10px" }}>
                   <AgentSearch
                     getDropdownValue={setRecipient}
                     getAllAgents={setAgents}
@@ -1569,8 +1569,8 @@ function Messages({
                     setExtensionFromCdrMessage={setExtensionFromCdrMessage}
                   />
                 </div>
-                <div className="col-12">
-                  <nav className="mt-3">
+                <div className="w-100">
+                  <nav className="">
                     <div className="nav nav-tabs">
                       <button
                         className={
@@ -1599,7 +1599,7 @@ function Messages({
                         className={
                           activeTab === "online" ? "tabLink active" : "tabLink"
                         }
-                        effect="ripple"
+                        // effect="ripple"
                         data-category="incoming"
                       >
                         <i className="fa-regular fa-user-tie"></i> Online
@@ -1619,7 +1619,7 @@ function Messages({
                         className={
                           activeTab === "group" ? "tabLink active" : "tabLink"
                         }
-                        effect="ripple"
+                        // effect="ripple"
                         data-category="incoming"
                       >
                         <i className="fa-regular fa-user-group"></i> Group
@@ -2317,13 +2317,13 @@ function Messages({
                     </div>
                   )}
                 </div>
+                {/* </div> */}
               </div>
-              <div
-                className="col-12 col-xl-9 col-lg-9 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
+              <div className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
-                <div className="d-flex h-100">
+                <div className="d-flex h-100 smBlock">
                   {/* <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
@@ -3315,10 +3315,10 @@ function Messages({
                       </div>
                     ) : (
                       <div
-                        className=" h-100" style={{ width: isActiveAgentsOpen ? '30%' : '0%', transition: 'all 0.4s ease-in-out' }}
+                        className={`h-100`} style={{ width: isActiveAgentsOpen ? '30%' : '0%', transition: 'all 0.4s ease-in-out' }}
                       // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                       >
-                        <div className="callDashParkedCalls messageDower pe-0"
+                        <div className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                           style={{ transform: isActiveAgentsOpen ? 'translate(3%, 0%)' : 'translate(100%, 0%)' }}
                         >
                           <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '-5px', transition: 'all 0.4s ease-in-out', }}>
