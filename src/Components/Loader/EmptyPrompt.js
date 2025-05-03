@@ -21,9 +21,13 @@ function EmptyPrompt(props) {
 
                 `}
             </style>
-            <div className={props.nomargin ? '' : 'mt-5'}>
-                <div className='imgWrapper loader' style={{ width: props.small ? '80px' : '150px', height: props.small ? '80px' : '150px' }}>
-                    <img src={require('../assets/images/empty-box.png')} alt="Empty" />
+            <div c lassName={props.nomargin ? '' : 'mt-5'}>
+                <div className='imgWrapper loader' style={{
+                    width: props.small
+                        ? '80px' : '150px', height: props.small ? '80px' : '150px', width: props.bell
+                            ? '50px' : '', height: props.bell ? '50px' : ''
+                }}>
+                    <img src={require(`../assets/images/${props.generic === "bell" ? 'notification.webp' : 'empty-box.png'}`)} alt="Empty" />
                 </div>
                 <div className='text-center mt-3'>
                     {!props.generic ? <h5 style={{ fontSize: props.small ? '0.75rem' : 'inherit' }}>Please add a <b>{props.name}</b> to continue <span style={{ color: 'var(--ui-accent)', cursor: "pointer" }} onClick={() => { if (props.link) { navigate(`/${props.link}`); backToTop() } }}>setting up the environment</span>.</h5> : <h5>There is <span style={{ color: 'var(--ui-accent)', fontWeight: '700' }}>no data</span> to be shown!</h5>}
