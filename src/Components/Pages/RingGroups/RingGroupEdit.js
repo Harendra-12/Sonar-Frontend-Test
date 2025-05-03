@@ -1056,7 +1056,7 @@ const RingGroupEdit = () => {
                       ) : (
                         <button
                           type="button"
-                          className="panelButton edit ms-auto"
+                          className="panelButton edit ms-2"
                           onClick={() => {
                             setSelectedAgentToEdit(destination);
                             setBulkEditPopup(true);
