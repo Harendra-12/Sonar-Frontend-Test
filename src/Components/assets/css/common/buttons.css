@@ -178,6 +178,8 @@
   display: block;
   width: 100%;
   margin: 0;
+  width: fit-content;
+  padding-inline: 15px;
 }
 
 .panelButton.static:hover .text {

@@ -226,7 +226,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 Set name for the custom module.
                                                             </label>
                                                         </div>
-                                                        <div className="col-6">
+                                                        <div className="col-12">
                                                             <input className='formItem' value={name} onChange={(e) => { setName(e.target.value) }} />
                                                         </div>
                                                     </div>
@@ -237,7 +237,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 Please select the type for which you want to enable the module.
                                                             </label>
                                                         </div>
-                                                        <div className="col-6">
+                                                        <div className="col-12">
                                                             <select className='formItem' value={customType} onChange={(e) => { setCustomType(e.target.value); setCustomId("") }}>
                                                                 <option value='CallCenterQueue'>Call Center</option>
                                                                 <option value="Ringgroup">Ring Group</option>
@@ -252,7 +252,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 Please select the module for custom filter
                                                             </label>
                                                         </div>
-                                                        <div className="col-6">
+                                                        <div className="col-12">
                                                             <select className="formItem" value={customId} onChange={(e) => { setCustomId(e.target.value) }}>
                                                                 <option value={""} disabled>Please select one</option>
                                                                 {
@@ -286,8 +286,8 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 enable the module.
                                                             </label>
                                                         </div>
-                                                        <div className='col-6'>
-                                                            <div className='row'>
+                                                        <div className='col-12'>
+                                                            <div className='row mb-2'>
                                                                 <div className={`col-${usages === "" ? 12 : 6}`}>
                                                                     <select
                                                                         className="formItem"
@@ -301,7 +301,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 </div>
                                                                 {
                                                                     usages !== "" &&
-                                                                    <div className="col-6">
+                                                                    <div className="col-12">
                                                                         <select
                                                                             className="formItem"
                                                                             value={selecetdUsages}
@@ -343,9 +343,9 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 Please select the info of the feature you want to display in the module.
                                                             </label>
                                                         </div>
-                                                        <div className="col-6">
+                                                        <div className="col-12">
                                                             <div className='row'>
-                                                                <div className='col-6'>
+                                                                <div className='col-12'>
                                                                     <div className='d-flex align-items-center justify-content-between custom-font mt-1' onClick={() => handleFeatureChange("active")} style={{ cursor: "pointer" }}>
                                                                         <div>
                                                                             <p className='m-0 p-0'> Active calls </p>
@@ -361,7 +361,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className='col-6'>
+                                                                <div className='col-12'>
                                                                     <div className='d-flex align-items-center justify-content-between custom-font mt-1' onClick={() => handleFeatureChange("missed")} style={{ cursor: "pointer" }}>
                                                                         <div>
                                                                             <p className='m-0 p-0'>Missed Calls </p>
