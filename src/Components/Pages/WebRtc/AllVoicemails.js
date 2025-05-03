@@ -216,7 +216,7 @@ function AllVoicemails({ isCustomerAdmin }) {
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
-        <div className="col-12 d-flex">
+        <div className="col-12 d-flex align-items-center">
           <div className="profileHolder">
             {/* <i className="fa-light fa-user fs-5" /> */}
             <i className="fa-solid fa-microphone-lines fs-5"></i>

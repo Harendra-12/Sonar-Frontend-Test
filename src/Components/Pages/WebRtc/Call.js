@@ -345,7 +345,7 @@ function Call({
           className={`callListItem ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
         >
           <div className="row justify-content-between">
-            <div className="col-xl-12 d-flex">
+            <div className="col-xl-12 d-flex align-items-center">
               <div
                 className="profileHolder"
               // id={"profileOfflineNav"}

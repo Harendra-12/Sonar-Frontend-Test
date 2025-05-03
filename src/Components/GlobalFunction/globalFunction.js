@@ -374,15 +374,15 @@ export function featureUnderdevelopment() {
       <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
           <div class="row content col-xxl-3 col-xl-4">
-            <div class="col-2 px-0">
-              <div class="iconWrapper">
-                <i class="fa-duotone fa-clock  text-info"></i>
+            <div class="col-12 px-0">
+              <div class="iconWrapper mb-2">
+                <i class="fa-duotone fa-clock  text-danger"></i>
               </div>
             </div>
-            <div class="col-10 ps-0">
-              <h4>Sorry!</h4>
-              <p>This feature is under development!</p>
-              <div class="d-flex justify-content-start">
+            <div class="col-12 ps-0 pe-0 text-center">
+              <h4 class="text-center text-danger">Sorry!</h4>
+              <p class="text-center">This feature is under development!</p>
+              <div class="d-flex justify-content-center mt-3">
                 <button
                   class="panelButton gray m-0"
                   onclick="document.getElementById('globalPopup').remove()"
