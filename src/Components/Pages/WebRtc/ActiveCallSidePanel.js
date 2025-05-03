@@ -78,8 +78,8 @@ function ActiveCallSidePanel({
         prevSession.mode !== "video"
       ) {
         setTimeout(() => {
-          hold(prevSession.id);
-          // holdCall("hold", prevSession.id);
+          // hold(prevSession.id);
+          holdCall("hold", prevSession.id);
         }, 2000);
 
         dispatch({
@@ -94,23 +94,11 @@ function ActiveCallSidePanel({
     setPrevCallProgressId(callProgressId);
   }, [callProgressId]);
 
-  function cleanupSessionAudio(session) {
-    if (session.data?.audioContext) {
-      session.data.audioContext.close().catch(() => {});
-      session.data.audioContext = null;
-    }
-  
-    if (session.data?.remoteStream) {
-      session.data.remoteStream.getTracks().forEach(track => track.stop());
-      session.data.remoteStream = null;
-    }
-  }
   if (session["_state"] === "Terminated") {
     // dispatch({
     //   type:"SET_VIDEOCALL",
     //   videoCall:false
     // })
-    cleanupSessionAudio(session);
     dispatch({
       type: "SET_CALLREFRESH",
       refreshCalls: refreshCalls + 1,
@@ -258,164 +246,53 @@ function ActiveCallSidePanel({
       }
       handleActiveCall(updatedSession.id, updatedSession.destination);
     }
-
     setSelectedModule("onGoingCall");
-    // setactivePage("call");
-
-    // dispatch({
-    //   type: "SET_CALLPROGRESSID",
-    //   callProgressId: sessionId,
-    // });
-    // dispatch({
-    //   type: "SET_VIDEOCALL",
-    //   videoCall: mode === "video" ? true : false,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESSDESTINATION",
-    //   callProgressDestination: callerExtension,
-    // });
-    // dispatch({
-    //   type: "SET_CALLPROGRESS",
-    //   callProgress: mode === "audio" ? true : false,
-    // });
   };
 
   const canHold = session && session._state === SessionState.Established;
-  // const holdCall = (type) => {
-  //   if (canHold) {
-  //     if (type === "hold") {
-  //       hold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "OnHold" } : item
-  //         ),
-  //       });
-  //     } else if (type === "unhold") {
-  //       unhold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "Established" } : item
-  //         ),
-  //       });
-  //     }
-  //   } else {
-  //     toast.warn("Call has not been established");
-  //   }
-  // };
 
-  // async function holdCall(type, id) {
-
-  //   // if (canHold) {
-  //   //   console.log("Inside hold setp 2");
-  //   //   if (type === "hold" && !holdProcessing) {
-  //   //     setHoldProcessing(true);
-  //   //     var sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-  //   //     sessionDescriptionHandlerOptions.hold = true;
-  //   //     session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-  //   //     var options = {
-  //   //       requestDelegate: {
-  //   //         onAccept: function () {
-  //   //           if (session && session.sessionDescriptionHandler && session.sessionDescriptionHandler.peerConnection) {
-  //   //             var pc = session.sessionDescriptionHandler.peerConnection;
-  //   //             // Stop all the inbound streams
-  //   //             pc.getReceivers().forEach(function (RTCRtpReceiver) {
-  //   //               if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
-  //   //             });
-
-  //   //           }
-  //   //           session.isOnHold = true;
-  //   //           dispatch({
-  //   //             type: "SET_SESSIONS",
-  //   //             sessions: globalSession.map((item) =>
-  //   //               item.id === session.id ? { ...item, state: "OnHold" } : item
-  //   //             ),
-  //   //           });
-  //   //           setHoldProcessing(false);
-  //   //         },
-  //   //         onReject: function () {
-  //   //           session.isOnHold = false;
-  //   //           setHoldProcessing(false);
-  //   //         }
-  //   //       }
-  //   //     };
-  //   //     session.invite(options).catch(function (error) {
-  //   //       session.isOnHold = false;
-  //   //       console.warn("Error attempting to put the call on hold:", error);
-  //   //     });
-
-  //   //     // console.log("Before hold", isOnHeld);
-  //   //     // hold();
-  //   //     // console.log("Done hold", isOnHeld);
-  //   //     // dispatch({
-  //   //     //   type: "SET_SESSIONS",
-  //   //     //   sessions: globalSession.map((item) =>
-  //   //     //     item.id === session.id ? { ...item, state: "OnHold" } : item
-  //   //     //   ),
-  //   //     // });
-  //   //   } else if (type === "unhold" && !holdProcessing) {
-  //   //     setHoldProcessing(true);
-  //   //     let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-  //   //     sessionDescriptionHandlerOptions.hold = false;
-  //   //     session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-
-  //   //     let options = {
-  //   //       requestDelegate: {
-  //   //         onAccept: function () {
-  //   //           if (session?.sessionDescriptionHandler?.peerConnection) {
-  //   //             let pc = session.sessionDescriptionHandler.peerConnection;
-
-  //   //             // Restore inbound streams
-  //   //             pc.getReceivers().forEach(receiver => {
-  //   //               if (receiver.track) receiver.track.enabled = true;
-  //   //             });
-
-  //   //             // Restore outbound streams
-  //   //             pc.getSenders().forEach(sender => {
-  //   //               if (sender.track) {
-  //   //                 sender.track.enabled = true;
-  //   //               }
-  //   //             });
-  //   //           }
-  //   //           session.isOnHold = false;
-
-  //   //           dispatch({
-  //   //             type: "SET_SESSIONS",
-  //   //             sessions: globalSession.map((item) =>
-  //   //               item.id === session.id ? { ...item, state: "Established" } : item
-  //   //             ),
-  //   //           });
-  //   //           setHoldProcessing(false);
-  //   //         },
-  //   //         onReject: function () {
-  //   //           session.isOnHold = true;
-  //   //           setHoldProcessing(false);
-  //   //         }
-  //   //       }
-  //   //     };
-
-  //   //     try {
-  //   //       session.invite(options);
-  //   //     } catch (error) {
-  //   //       console.error(`Error unholding session ${session.id}:`, error);
-  //   //     }
-
-  //   //     //   console.log("Before unhold",isOnHeld);
-  //   //     //  await unhold();
-  //   //     //   console.log("Done unhold",isOnHeld);
-
-  //   //     // dispatch({
-  //   //     //   type: "SET_SESSIONS",
-  //   //     //   sessions: globalSession.map((item) =>
-  //   //     //     item.id === session.id ? { ...item, state: "Established" } : item
-  //   //     //   ),
-  //   //     // });
-  //   //   }
-  //   // } else {
-  //   //   toast.warn("Call has not been established");
-  //   // }
-  // };
+  async function holdCall(type, id) {
+    const currentSession = sessions[id];
+    if (canHold) {
+      if (type === "hold" && !holdProcessing) {
+        setHoldProcessing(true);
+        var sessionDescriptionHandlerOptions = currentSession.sessionDescriptionHandlerOptionsReInvite;
+        sessionDescriptionHandlerOptions.hold = true;
+        currentSession.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+        var options = {
+          requestDelegate: {
+            onAccept: function () {
+              if (currentSession && currentSession.sessionDescriptionHandler && currentSession.sessionDescriptionHandler.peerConnection) {
+                var pc = currentSession.sessionDescriptionHandler.peerConnection;
+                // Stop all the inbound streams
+                pc.getReceivers().forEach(function (RTCRtpReceiver) {
+                  if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+                });
+              }
+              currentSession.isOnHold = true;
+              dispatch({
+                type: "SET_SESSIONS",
+                sessions: globalSession.map((item) =>
+                  item.id === currentSession.id ? { ...item, state: "OnHold" } : item
+                ),
+              });
+              setHoldProcessing(false);
+            },
+            onReject: function () {
+              currentSession.isOnHold = false;
+              setHoldProcessing(false);
+            }
+          }
+        };
+        currentSession.invite(options).catch(function (error) {
+          currentSession.isOnHold = false;
+          console.warn("Error attempting to put the call on hold:", error);
+        });
+      }
+    } else {
+      toast.warn("Call has not been established");
+    }
+  };
   return (
     <>
       {isHeld ? (

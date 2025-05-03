@@ -21,10 +21,12 @@ function EmptyPrompt(props) {
 
                 `}
             </style>
-            <div c    lassName={props.nomargin ? '' : 'mt-5'}>
-                <div className='imgWrapper loader' style={{ width: props.small 
-                    ? '80px' : '150px', height: props.small ? '80px' : '150px', width: props.bell 
-                    ? '50px' : '', height: props.bell ? '50px' : '' }}>
+            <div c lassName={props.nomargin ? '' : 'mt-5'}>
+                <div className='imgWrapper loader' style={{
+                    width: props.small
+                        ? '80px' : '150px', height: props.small ? '80px' : '150px', width: props.bell
+                            ? '50px' : '', height: props.bell ? '50px' : ''
+                }}>
                     <img src={require(`../assets/images/${props.generic === "bell" ? 'notification.webp' : 'empty-box.png'}`)} alt="Empty" />
                 </div>
                 <div className='text-center mt-3'>

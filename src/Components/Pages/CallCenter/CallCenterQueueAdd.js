@@ -162,9 +162,38 @@ function CallCenterQueueAdd() {
     const updatedAgent = agent.filter((item) => item.id !== id);
     setAgent(updatedAgent);
 
+    // Update selectedAgentToEdit in case the selected agent gets deleted
+    const updatedAgentSelect = () => selectedAgentToEdit.map((agent) => {
+      if (id === agent.id) {
+        const arr = selectedAgentToEdit.filter((item) => item.id != id);
+        setSelectedAgentToEdit(arr);
+      }
+    })
+    updatedAgentSelect()
+
     const allFieldsFilled = updatedAgent.every(
       (item) => item.name.trim() !== "" && item.password.trim() !== ""
     );
+    if (allFieldsFilled) {
+      clearErrors("agent");
+    }
+  }
+
+  console.log('agent', agent);
+  console.log('selectedAgentToEdit', selectedAgentToEdit);
+
+
+  // Function to delete selected destination
+  const deleteSelectedDestination = () => {
+    const updatedDestination = agent.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+    setAgent(updatedDestination);
+    // Update selectedAgentToEdit in case the selected agent gets deleted
+    setSelectedAgentToEdit([]);
+
+    const allFieldsFilled = updatedDestination.every(
+      (item) => item.name.trim() !== "" && item.password.trim() !== ""
+    );
+
     if (allFieldsFilled) {
       clearErrors("agent");
     }
@@ -458,7 +487,7 @@ function CallCenterQueueAdd() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent.name == item.name) && item.usages==="pbx"
+          !bulkUploadSelectedAgents.some((agent) => agent.name == item.name) && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -1341,6 +1370,15 @@ function CallCenterQueueAdd() {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="buttonGroup">
+                      {selectedAgentToEdit.length > 1 &&
+                        <button className="panelButton delete"
+                          onClick={deleteSelectedDestination}
+                        >
+                          <span className="text">Delete</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-trash"></i>
+                          </span>
+                        </button>}
                       {agent.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
                           selectedAgentToEdit.length != agent.length ? (

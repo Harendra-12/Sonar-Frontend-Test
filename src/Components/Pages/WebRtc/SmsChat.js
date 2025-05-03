@@ -164,11 +164,11 @@ function SmsChat({ setLoading, loading, did }) {
                                     <h4>{item?.to_did}</h4>
                                   </div>
                                   <div className="col-2 mx-auto my-auto">
-                                    <Tippy content={item?.additional_info || ''}>
+                                    {item?.additional_info && <Tippy content={item?.additional_info || ''}>
                                       <div className="contactTags">
                                         <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
                                       </div>
-                                    </Tippy>
+                                    </Tippy>}
                                     {/* {item?.additional_info &&
                                       <h5 className="mt-2" style={{ fontWeight: 400 }}>
                                         <i className="fa-light fa-info" /> {item?.additional_info}

@@ -140,96 +140,58 @@ function OngoingCall({
       } else if (type === "unhold" && !holdProcessing) {
         setHoldProcessing(true);
 
-        // Ensure per-session audio context and stream
-        session.data = session.data || {};
-        if (!session.data.remoteStream) {
-          session.data.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        console.log("Audio context created:", session);
-        
-
-        const audioContext = session.data.audioContext;
-        const remoteStream = new MediaStream();
-        session.data.remoteStream = new MediaStream();;
-
-        // Prepare unhold options
-        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite || {};
-        sessionDescriptionHandlerOptions.hold = false;
-        session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-
-        const options = {
-          requestDelegate: {
-            onAccept: () => {
-              const pc = session.sessionDescriptionHandler?.peerConnection;
-
-              if (pc) {
-                // Get remote audio tracks and add to stream
-                pc.getReceivers().forEach(receiver => {
-                  if (receiver.track && receiver.track.kind === 'audio') {
-                    remoteStream.addTrack(receiver.track);
-                  }
-                });
-
-                // Connect stream to speakers
-                try {
-                  const source = audioContext.createMediaStreamSource(remoteStream);
-                  source.connect(audioContext.destination);
-                } catch (err) {
-                  console.error('Audio routing failed:', err);
-                }
-
-                // Resume context if needed
-                if (audioContext.state === 'suspended') {
-                  audioContext.resume().catch(err => console.error('AudioContext resume failed:', err));
-                }
-
-                // Re-enable tracks
-                pc.getReceivers().forEach(receiver => {
-                  if (receiver.track) receiver.track.enabled = true;
-                });
-
-                pc.getSenders().forEach(sender => {
-                  if (sender.track) sender.track.enabled = true;
-                });
-              }
-
-              session.isOnHold = false;
-
-              dispatch({
-                type: "SET_SESSIONS",
-                sessions: globalSession.map((item) =>
-                  item.id === session.id ? { ...item, state: "Established" } : item
-                ),
-              });
-
-              setHoldProcessing(false);
-            },
-
-            onReject: () => {
-              session.isOnHold = true;
-              setHoldProcessing(false);
-            },
-          },
-        };
-
         try {
-          session.invite(options);
+          const options = session.sessionDescriptionHandlerOptionsReInvite || {};
+          options.hold = false;
+          session.sessionDescriptionHandlerOptionsReInvite = options;
+      
+          await session.invite({
+            requestDelegate: {
+              onAccept: () => {
+                const pc = session.sessionDescriptionHandler?.peerConnection;
+                if (pc) {
+                  // Re-enable remote audio tracks
+                  const remoteStream = new MediaStream();
+      
+                  pc.getReceivers().forEach(receiver => {
+                    if (receiver.track?.kind === 'audio') {
+                      receiver.track.enabled = true;
+                      remoteStream.addTrack(receiver.track);
+                    }
+                  });
+      
+                  const audioEl = document.getElementById(`remote-audio-${session.id}`);
+                  if (audioEl) {
+                    audioEl.srcObject = remoteStream;
+                    audioEl.play().catch(err => console.warn("Playback error:", err));
+                  }
+                }
+      
+                // Resume AudioContext (required in some browsers)
+                if (window.audioContext?.state === 'suspended') {
+                  window.audioContext.resume().catch(err => console.warn("AudioContext resume failed:", err));
+                }
+      
+                session.isOnHold = false;
+                dispatch({
+                  type: "SET_SESSIONS",
+                  sessions: globalSession.map((item) =>
+                    item.id === session.id ? { ...item, state: "Established" } : item
+                  ),
+                });
+      
+                setHoldProcessing(false);
+              },
+              onReject: () => {
+                session.isOnHold = true;
+                setHoldProcessing(false);
+              }
+            }
+          });
         } catch (error) {
-          console.error(`Error unholding session ${session.id}:`, error);
+          console.error("Unhold error:", error);
           setHoldProcessing(false);
         }
-
-
-        //   console.log("Before unhold",isOnHeld);
-        // unhold();
-        // console.log("Done unhold", isOnHeld);
-
-        // dispatch({
-        //   type: "SET_SESSIONS",
-        //   sessions: globalSession.map((item) =>
-        //     item.id === session.id ? { ...item, state: "Established" } : item
-        //   ),
-        // });
       }
     } else {
       toast.warn("Call has not been established");
@@ -1256,7 +1218,6 @@ function OngoingCall({
           />
         )
       }
-
     </>
   );
 }

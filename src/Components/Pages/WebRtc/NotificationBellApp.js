@@ -92,7 +92,7 @@ function NotificationBellApp() {
                                             <div class="pe-2">
                                                 <span class="badge_icon bg-secondary-transparent">
                                                     <i class="fa-duotone fa-solid fa-messages"></i>
-                                                    </span>
+                                                </span>
                                             </div>
                                             <div class="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>

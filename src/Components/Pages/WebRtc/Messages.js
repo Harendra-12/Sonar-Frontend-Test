@@ -1755,6 +1755,7 @@ function Messages({
                                         </span>
                                       </p>
                                       <h5>
+                                        {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
                                       <div className="contactTags">
@@ -2316,7 +2317,7 @@ function Messages({
                     </div>
                   )}
                 </div>
-              {/* </div> */}
+                {/* </div> */}
               </div>
               <div className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}

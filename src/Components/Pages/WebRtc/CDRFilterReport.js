@@ -28,6 +28,8 @@ import ExportPopUp from "./ExportPopUp";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
+import Select from "react-select";
+
 
 
 /**
@@ -957,34 +959,86 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Direction
                               </label>
-                              <select
+                              <Select
+                                isMulti
+                                onChange={(selectedOptions) => {
+                                  const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
+                                  setCallDirection(values);
+                                  setPageNumber(1);
+                                }}
+                                options={[
+                                  {
+                                    value: "inbound",
+                                    label: "Inbound Calls"
+                                  },
+                                  {
+                                    value: "outbound",
+                                    label: "Outbound Calls"
+                                  },
+                                  {
+                                    value: "internal",
+                                    label: "Internal Calls"
+                                  },
+                                ]}
+                                isSearchable
+                                styles={customStyles}
+                              />
+                              {/* <select
                                 className="formItem"
                                 onChange={(e) => {
                                   setCallDirection(e.target.value);
                                   setPageNumber(1);
                                 }}
                                 value={callDirection}
-                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                               >
                                 <option value={""}>All Calls</option>
                                 <option value={"inbound"}>Inbound Calls</option>
                                 <option value={"outbound"}>
                                   Outbound Calls
                                 </option>
-                                {/* <option value={"missed"}>Missed Calls</option> */}
                                 <option value={"internal"}>
                                   Internal Calls
                                 </option>
-                                {/* <option value={"transfer"}>
+                                ------------------------------ Let It Stay Commented
+                                <option value={"missed"}>Missed Calls</option>
+                                <option value={"transfer"}>
                                   Transfer Calls
-                                </option> */}
-                              </select>
+                                </option>
+                              </select> */}
                             </div>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Type
                               </label>
-                              <select
+                              <Select
+                                isMulti
+                                onChange={(selectedOptions) => {
+                                  const values = selectedOptions.map((opt) => opt.value);
+                                  setCallType(values);
+                                  setPageNumber(1);
+                                }}
+                                options={[
+                                  {
+                                    value: "extension",
+                                    label: "Extension"
+                                  },
+                                  {
+                                    value: "voicemail",
+                                    label: "Voice Mail"
+                                  },
+                                  {
+                                    value: "callcenter",
+                                    label: "Call Center"
+                                  },
+                                  {
+                                    value: "ringgroup",
+                                    label: "Ring Group"
+                                  }
+                                ]}
+                                isSearchable
+                                styles={customStyles}
+                              />
+                              {/* <select
                                 className="formItem"
                                 onChange={(e) => {
                                   setCallType(e.target.value);
@@ -999,7 +1053,7 @@ function CdrFilterReport({ page }) {
                                   Call Center
                                 </option>
                                 <option value={"ringgroup"}>Ring Group</option>
-                              </select>
+                              </select> */}
                             </div>
                           </>
                         ) : (
@@ -1014,7 +1068,43 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Hangup Status
                               </label>
-                              <select
+                              <Select
+                                isMulti
+                                onChange={(selectedOptions) => {
+                                  const values = selectedOptions.map((opt) => opt.value);
+                                  setHagupCause(values);
+                                  setPageNumber(1);
+                                }}
+                                options={[
+                                  {
+                                    value: "Answered",
+                                    label: "Answer"
+                                  },
+                                  {
+                                    value: "Missed",
+                                    label: "Missed"
+                                  },
+                                  {
+                                    value: "Voicemail",
+                                    label: "Voicemail"
+                                  },
+                                  {
+                                    value: "Cancelled",
+                                    label: "Cancelled"
+                                  },
+                                  {
+                                    value: "Failed",
+                                    label: "Failed"
+                                  },
+                                  {
+                                    value: "Transfer",
+                                    label: "Transfer"
+                                  }
+                                ]}
+                                isSearchable
+                                styles={customStyles}
+                              />
+                              {/* <select
                                 className="formItem"
                                 onChange={(e) => {
                                   setHagupCause(e.target.value);
@@ -1029,14 +1119,48 @@ function CdrFilterReport({ page }) {
                                 <option value={"Cancelled"}>Cancelled</option>
                                 <option value={"Failed"}>Failed</option>
                                 <option value={"Transfer"}>Transfer</option>
-                              </select>
+                              </select> */}
                             </div>
                             {filteredKeys.includes("Hangup-Cause") && (
                               <div className="formRow border-0 pe-xl-0">
                                 <label className="formLabel text-start mb-0 w-100">
                                   Hangup Cause
                                 </label>
-                                <select
+                                <Select
+                                  isMulti
+                                  onChange={(selectedOptions) => {
+                                    const values = selectedOptions.map((opt) => opt.value);
+                                    setHangupStatus(values);
+                                    setPageNumber(1);
+                                  }}
+                                  options={[
+                                    { value: "NORMAL_CLEARING", label: "Normal Clearing" },
+                                    { value: "ORIGINATOR_CANCEL", label: "Originator Cancel" },
+                                    { value: "MANAGER_REQUEST", label: "Manager Request" },
+                                    { value: "NO_ANSWER", label: "No Answe" },
+                                    { value: "INVALID_GATEWAY", label: "Invalid Gateway" },
+                                    { value: "SERVICE_UNAVAILABLE", label: "Service Unavailable" },
+                                    { value: "INCOMPATIBLE_DESTINATION", label: "Incompatible Destination" },
+                                    { value: "NO_USER_RESPONSE", label: "No User Response" },
+                                    { value: "MEDIA_TIMEOUT", label: "Media Timeout" },
+                                    { value: "LOSE_RACE", label: "Lose Race" },
+                                    { value: "NORMAL_UNSPECIFIED", label: "Normal Unspecified" },
+                                    { value: "USER_BUSY", label: "User Busy" },
+                                    { value: "RECOVERY_ON_TIMER_EXPIRE", label: "Recovery On Timer Expire" },
+                                    { value: "USER_NOT_REGISTERED", label: "User Not Registered" },
+                                    { value: "CALL_REJECTED", label: "Call Rejected" },
+                                    { value: "SUBSCRIBER_ABSENT", label: "Subscriber Absent" },
+                                    { value: "CHAN_NOT_IMPLEMENTED", label: "Chan Not Implemented" },
+                                    { value: "DESTINATION_OUT_OF_ORDER", label: "Destination Out Of Order" },
+                                    { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
+                                    { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
+                                    { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
+                                    { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" }
+                                  ]}
+                                  isSearchable
+                                  styles={customStyles}
+                                />
+                                {/* <select
                                   className="formItem"
                                   onChange={(e) => {
                                     setHangupStatus(e.target.value);
@@ -1105,7 +1229,7 @@ function CdrFilterReport({ page }) {
                                   <option value={"INVALID_NUMBER_FORMAT"}>
                                     Invalid Number Format
                                   </option>
-                                </select>
+                                </select> */}
                               </div>
                             )}
                           </>
@@ -1645,3 +1769,82 @@ function CdrFilterReport({ page }) {
 }
 
 export default CdrFilterReport;
+
+// Custom styles for react-select
+const customStyles = {
+  container: (provided) => ({
+    ...provided,
+    width: '100%'
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+    zIndex: 99
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};
