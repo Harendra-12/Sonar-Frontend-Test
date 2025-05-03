@@ -320,6 +320,7 @@ function CdrReport({ page }) {
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
+    getStorageInformation();
   }
 
   useEffect(() => {
@@ -561,6 +562,7 @@ function CdrReport({ page }) {
         toast.err(err);
       } finally {
         setSelectedCdrToDelete([]);
+        refreshCallData();
       }
     }
   }
@@ -947,7 +949,7 @@ function CdrReport({ page }) {
                             </select>
                           </div>}
                           {selectedCdrToDelete.length > 1 &&
-                            <button className="panelButton delete"
+                            <button className="panelButton delete mt-auto mb-2"
                               onClick={deleteSelectedCallRecording}
                             >
                               <span className="text">Delete</span>
