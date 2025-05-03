@@ -777,7 +777,7 @@ function CdrFilterReport({ page }) {
                       </div>
                     </div>
                     <div className="tableHeader">
-                      <div className="d-flex justify-content-xl-end">
+                      <div className="d-flex justify-content-start flex-wrap">
                         {filteredKeys.includes("variable_start_stamp") && (
                           <>
                             {" "}
@@ -1669,18 +1669,18 @@ function CdrFilterReport({ page }) {
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
                 <div className="row content col-xl-4">
-                  <div className="col-2 px-0">
+                  <div className="col-12 px-0">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-triangle-exclamation"></i>
                     </div>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
+                  <div className="col-12 ps-0 pe-0 text-center">
+                    <h4 className="text-orange">Warning!</h4>
                     <p>
                       Are you sure, you want to block this number (
                       {selectedNumberToBlock})?
                     </p>
-                    <div className="mt-2 d-flex justify-content-between">
+                    <div className="mt-2 d-flex justify-content-center gap-2">
                       <button
                         disabled={loading}
                         className="panelButton m-0"
