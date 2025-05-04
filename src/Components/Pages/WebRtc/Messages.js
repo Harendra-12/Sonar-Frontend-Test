@@ -1083,8 +1083,8 @@ function Messages({
           setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat", isGroupSelected?.group_name, isGroupSelected?.email, profile_img]);
           setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
-          setSelectedgroupUsers(isGroupSelected.groupusers);
-          isGroupSelected.groupusers.map((user) => {
+          setSelectedgroupUsers(isGroupSelected.message_groupusers);
+          isGroupSelected.message_groupusers.map((user) => {
             if (user.user_id === account.id) {
               setIsAdmin(user.is_admin)
             }
@@ -1237,7 +1237,7 @@ function Messages({
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
     const payLoad = {
-      group_id: recipient[1],
+      message_group_id: recipient[1],
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     setNewGroupLoader(true);
@@ -1816,7 +1816,7 @@ function Messages({
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
-                                    setSelectedgroupUsers(item.groupusers);
+                                    setSelectedgroupUsers(item.message_groupusers);
                                     setUnreadMessage((prevState) => {
                                       const {
                                         [item.group_name]: _,
@@ -1824,7 +1824,7 @@ function Messages({
                                       } = prevState;
                                       return newState;
                                     });
-                                    item.groupusers.map((user) => {
+                                    item.message_groupusers.map((user) => {
                                       if (user.user_id === account.id) {
                                         setIsAdmin(user.is_admin)
                                       }
@@ -1835,7 +1835,7 @@ function Messages({
                                     <div className=" d-flex align-items-center">
                                       <div
                                         className="profileHolder"
-                                        id={item?.groupusers?.some((user) =>
+                                        id={item?.message_groupusers?.some((user) =>
                                           onlineUser?.some((online) => online?.id === user?.user_id)
                                         )
                                           ? "profileOnlineNav"
@@ -2255,8 +2255,8 @@ function Messages({
                                   setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, profile_picture]);
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
-                                  setSelectedgroupUsers(item.groupusers);
-                                  item.groupusers.map((user) => {
+                                  setSelectedgroupUsers(item.message_groupusers);
+                                  item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin)
                                     }
