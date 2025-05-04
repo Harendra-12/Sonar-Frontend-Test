@@ -738,6 +738,9 @@ const WebrtcWrapper = () => {
             </div>
           </div>
         )}
+        {
+          callProgressId &&  <audio id={`remote-audio-${callProgressId}`} autoPlay />
+        }
     </>
   );
 };
