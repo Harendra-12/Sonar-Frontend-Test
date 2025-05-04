@@ -859,7 +859,7 @@ input[type=number] {
 }
 
 .accordion .accordion-item {
-    border-color: var(--border-color);
+    border-color: var(--me-border1);
     background-color: var(--ele-color);
     border-radius: 12px;
 }
