@@ -353,8 +353,12 @@ export function LoginComponent() {
           toast.error("Network Error")
           return
         }
+        if(checkLogin?.response?.data?.message==="user is disabled."){
+          toast.error("Your account is disabled. Please contact Admin.")
+          return
+        }
         setLoading(false)
-        setLogOutToken(checkLogin?.response?.data?.data[0].token)
+        setLogOutToken(checkLogin?.response?.data?.data?.[0].token)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
         setLogInText("You are already login on different device!")
