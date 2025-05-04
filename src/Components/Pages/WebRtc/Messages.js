@@ -1063,7 +1063,7 @@ function Messages({
     // ===========
     const getGroups = async () => {
       setLoading(true);
-      const apiData = await generalGetFunction(`/groups/all`);
+      const apiData = await generalGetFunction(`/chatgroups/all`);
       if (apiData?.status) {
         const filteredData = apiData?.data?.sort((a, b) => {
           const dateA = a?.last_message_data?.created_at ? new Date(a.last_message_data.created_at) : null;
@@ -1199,7 +1199,7 @@ function Messages({
       group_name: groupname,
       user_id: [...groupSelecedAgents.map((agent) => agent.id), account.id],
     };
-    const apiData = await generalPostFunction("/groups/store", parsedData);
+    const apiData = await generalPostFunction("/chatgroups/store", parsedData);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
       toast.success("Group created successfully");
@@ -1222,7 +1222,7 @@ function Messages({
     };
     setNewGroupLoader(true);
     const apiData = await generalPutFunction(
-      `/groups/update/${recipient[1]}`,
+      `/chatgroups/update/${recipient[1]}`,
       parsedData
     );
     if (apiData.status) {
@@ -1241,7 +1241,7 @@ function Messages({
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     setNewGroupLoader(true);
-    const apiData = await generalPostFunction("/group-users/store", payLoad);
+    const apiData = await generalPostFunction("/chat-group-users/store", payLoad);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
       setGroupChatPopUp(false);
@@ -1255,7 +1255,7 @@ function Messages({
   const handleremoveUserFromGroup = async (id) => {
     setNewGroupLoader(true);
     const apiData = await generalDeleteFunction(
-      `/group-users/destroy/${id}`
+      `/chat-group-users/destroy/${id}`
       // payload
     );
     if (apiData.status) {
@@ -1383,7 +1383,7 @@ function Messages({
       'user_id': userId,
       'is_admin': isAdmin,
     }
-    const apiData = await generalPutFunction(`/group-users/update/${id}`, parsedData)
+    const apiData = await generalPutFunction(`/chat-group-users/update/${id}`, parsedData)
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
@@ -1397,7 +1397,7 @@ function Messages({
   // Handle delete group 
   async function handleDeleteGroup(id) {
     setLoading(true);
-    const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
+    const apiData = await generalDeleteFunction(`/chatgroups/destroy/${id}`)
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
