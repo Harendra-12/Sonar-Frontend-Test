@@ -199,7 +199,7 @@ function IvrEdit() {
                   className="col-12 formScroller"
                   style={{
                     padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
+                    // borderBottom: "1px solid #ddd",
                   }}
                 >
                   <form action="#" className="row">

@@ -2261,7 +2261,8 @@ input[type=number] {
     font-weight: 600;
     border-radius: .25rem;
 }
-.fa-bell{
+
+.fa-bell {
     animation: bell 2s infinite;
     color: var(--black);
 }
@@ -2270,9 +2271,11 @@ input[type=number] {
     0% {
         box-shadow: 0 0 0 0 rgb(132 226 255 / 97%);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgb(16 189 241 / 3%);
     }
+
     100% {
         box-shadow: 0 0 0 0 #84e2ff00;
     }
@@ -2280,38 +2283,60 @@ input[type=number] {
 
 @keyframes bell {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
-  
-    25% {
-      transform: rotate(15deg);
-    }
-  
-    50% {
-      transform: rotate(-15deg) ;
-    }
-  
-    75% {
-      transform: rotate(10deg);
-    }
-  }
 
-  .dropdown-menu{
+    25% {
+        transform: rotate(15deg);
+    }
+
+    50% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+}
+
+.dropdown-menu {
     border-color: var(--default-border) !important;
     box-shadow: 0 1rem 1.125rem var(--shadow01) !important;
     font-size: .875rem;
-    
-  }
-  .tagBox{
-  margin-inline: auto;
+
+}
+
+.tagBox {
+    margin-inline: auto;
     width: 50px;
     height: 50px;
     margin-bottom: 10px;
-  }
-  .tagBox img{
+}
+
+.tagBox img {
     width: 100%;
-  }
-  .dropdown-menu p{
+}
+
+.dropdown-menu p {
     color: var(--immortalBlack);
     font-weight: 500;
-  }
+}
+
+
+.css-2fr8v9-menu {
+    background-color: var(--config-bg) !important;
+}
+
+.css-yrf5d8-option:active {
+    background-color: #0071ff !important;
+}
+
+.css-1fetajk-option {
+    background-color: #222a35 !important;
+}
+.css-1stt0h2-control {
+    background-color: hsl(0deg 0% 100% / 3%) !important;
+}
+.css-1nmdiq5-menu{
+    background-color: var(--config-bg) !important;
+}

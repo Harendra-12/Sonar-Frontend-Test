@@ -178,6 +178,8 @@
   display: block;
   width: 100%;
   margin: 0;
+  width: fit-content;
+  padding-inline: 15px;
 }
 
 .panelButton.static:hover .text {
@@ -1003,4 +1005,38 @@
   width: 30px;
   height: 30px;
   font-size: 13px !important;
+}
+
+.css-1l2s6lu-ValueContainer {
+  height: 48px;
+  overflow: auto !important;
+  max-width: 100%;
+}
+.css-tj5bde-Svg {
+  display: inline-block;
+  fill: rgb(28 17 17);
+  line-height: 1;
+  stroke: rgb(0 0 0);
+  stroke-width: 0;
+  width: 16px;
+}
+.css-330zns-control{
+  flex-wrap: nowrap !important;
+  /* max-width: 350px !important; */
+}
+.css-1b9don6-control{
+  flex-wrap: nowrap !important;
+  /* max-width: 45%; */
+}
+.css-wsp0cs-MultiValueGeneric {
+
+  font-size: 68% !important;
+  padding: 1px !important;
+  padding-left: 5px !important;
+}
+.css-16xg2p0-indicatorContainer {
+  padding: 4px !important;
+}
+.css-1l2s6lu-ValueContainer{
+  width: 120px;
 }

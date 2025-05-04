@@ -197,15 +197,15 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
       {uploadPopup ? (
         <div className="popup">
           <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
+            <div className="row h-100 justify-content-center align-items-center text-center">
               <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
+                <div className="col-12 px-0">
+                  <div className="iconWrapper mb-3">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Upload a document</h4>
+                <div className="col-12 ps-0">
+                  <h4 className="text-orange">Upload a document</h4>
                   Please select the file you want to upload
                   <br />
                   <span style={{ fontSize: 14 }}>
@@ -214,7 +214,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                   <br />
                   <input
                     name="reg"
-                    className="formItem mt-2"
+                    className="formItem mt-2 mx-auto"
                     type="file"
                     accept=".png,.jpeg,.jpg,.pdf,.docx"
                     onChange={handleUploadDoc}

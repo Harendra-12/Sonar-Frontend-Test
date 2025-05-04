@@ -855,16 +855,16 @@ function DidListing({ page }) {
       {usagesPopup ? (
         <div className="popup">
           <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
+            <div className="d-flex h-100 justify-content-center align-items-center">
               <div className="row content col-xxl-4 col-xl-5 col-md-6">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
+                <div className="col-12 px-0">
+                  <div className="iconWrapper mb-3">
                     <i className="fa-duotone fa-circle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Confirmation!</h4>
-                  <p>
+                <div className="col-12 ps-0 pe-0 text-center">
+                  <h4 className="text-center text-orange">Confirmation!</h4>
+                  <p className="mb-2">
                     Please select the options you want to assign to this DID
                   </p>
                   <select
@@ -878,7 +878,7 @@ function DidListing({ page }) {
                     <option value="pbx">PBX</option>
                     <option value="dialer">Dialer</option>
                   </select>
-                  <div className="d-flex justify-content-between mt-3">
+                  <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                     <button
                       className="panelButton m-0"
                       onClick={() => {

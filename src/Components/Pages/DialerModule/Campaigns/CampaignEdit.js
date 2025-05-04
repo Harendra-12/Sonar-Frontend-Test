@@ -1881,7 +1881,7 @@ function CampaignCreate() {
                                       <h4>List of Leads</h4>
                                       <p>You can see the list of leads assigned to this campaign.</p>
                                     </div>
-                                    <div className="buttonGroup">
+                                    <div className="buttonGroup gap-2">
                                       <button
                                         className="panelButton static m-0 px-2"
                                         onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
