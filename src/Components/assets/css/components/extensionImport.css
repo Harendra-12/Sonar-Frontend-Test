@@ -716,3 +716,7 @@ form.tangoNavs .nav-tabs {
 /* .fillerCountryNumber .formItem {
     height: 25px;
 } */
+
+.widthFit{
+    width: fit-content;
+}

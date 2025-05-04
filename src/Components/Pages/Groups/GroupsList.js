@@ -271,7 +271,7 @@ export default function GroupsList() {
                                               </li>} */}
                                             </ul>
                                           } allowHTML={true} placement="bottom">
-                                            <div className="hover-dropdown">
+                                            <div className="hover-dropdown widthFit">
                                               {/* {item.ring_group_destination.length} */}
                                               <div className="avatar-container">
                                                 {item?.groupusers?.slice(0, 4).map((user, index) => {

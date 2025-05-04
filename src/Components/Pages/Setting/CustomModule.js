@@ -90,7 +90,7 @@ function CustomModule() {
                                                 <th>Total</th>
                                                 {
                                                     checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
-                                                        < >Edit</> : ""
+                                                        <th>Edit</th> : ""
                                                 }
                                             </thead>
                                             <tbody>
