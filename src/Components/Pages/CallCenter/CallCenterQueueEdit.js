@@ -640,7 +640,7 @@ function CallCenterQueueEdit() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name) && item.usages === "pbx"
+          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name) && (item.usages === "pbx" || item.usages === "both")
         ) {
           handleCheckboxChange(item);
         }
@@ -2235,7 +2235,7 @@ function CallCenterQueueEdit() {
                           return bMatches - aMatches;
                         })
                         .filter(
-                          (user) => !agent.some((agent) => user.id == agent?.name) && user.usages === "pbx"
+                          (user) => !agent.some((agent) => user.id == agent?.name) && (user.usages === "pbx" || user.usages === "both")
                         ) // Exclude agents already in `agent`
                         .map((item, index) => (
                           <tr key={item.id || index}>

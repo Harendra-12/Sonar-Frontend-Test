@@ -289,25 +289,33 @@ function CdrFilterReport({ page }) {
     };
     getRingGroupDashboardData();
   }, [callBlockRefresh]);
+
+  console.log("calldirection",callDirection);
+  
   useEffect(() => {
     setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
-        .filter(([key, value]) => value.length > 0)
-        .map(
-          ([key, value]) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        .filter(([key, value]) => value != null && value.length > 0)
+        .flatMap(([key, value]) =>
+          Array.isArray(value)
+            ? value.map(
+                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+              )
+            : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
+    
       setUpdatedQueryparams(queryParams);
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
+    
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
-        "Call-Direction": callDirection,
-        application_state:
+        "Call-Direction[]": callDirection,
+        "application_state[]":
           page === "all"
             ? callType
             : page === "billing"
@@ -321,8 +329,8 @@ function CdrFilterReport({ page }) {
         end_date: endDate,
         start_time: timeFilter.startTime,
         end_time: timeFilter.endTime,
-        variable_DIALSTATUS: hangupCause,
-        "Hangup-Cause": hangupStatus,
+        "variable_DIALSTATUS[]": hangupCause,
+        "Hangup-Cause[]": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
         created_at: createdAt,
       }

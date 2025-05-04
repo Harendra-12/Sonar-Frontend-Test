@@ -1063,7 +1063,7 @@ function Messages({
     // ===========
     const getGroups = async () => {
       setLoading(true);
-      const apiData = await generalGetFunction(`/groups/all`);
+      const apiData = await generalGetFunction(`/chatgroups/all`);
       if (apiData?.status) {
         const filteredData = apiData?.data?.sort((a, b) => {
           const dateA = a?.last_message_data?.created_at ? new Date(a.last_message_data.created_at) : null;
@@ -1083,8 +1083,8 @@ function Messages({
           setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat", isGroupSelected?.group_name, isGroupSelected?.email, profile_img]);
           setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
-          setSelectedgroupUsers(isGroupSelected.groupusers);
-          isGroupSelected.groupusers.map((user) => {
+          setSelectedgroupUsers(isGroupSelected.message_groupusers);
+          isGroupSelected.message_groupusers.map((user) => {
             if (user.user_id === account.id) {
               setIsAdmin(user.is_admin)
             }
@@ -1199,7 +1199,7 @@ function Messages({
       group_name: groupname,
       user_id: [...groupSelecedAgents.map((agent) => agent.id), account.id],
     };
-    const apiData = await generalPostFunction("/groups/store", parsedData);
+    const apiData = await generalPostFunction("/chatgroups/store", parsedData);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
       toast.success("Group created successfully");
@@ -1222,7 +1222,7 @@ function Messages({
     };
     setNewGroupLoader(true);
     const apiData = await generalPutFunction(
-      `/groups/update/${recipient[1]}`,
+      `/chatgroups/update/${recipient[1]}`,
       parsedData
     );
     if (apiData.status) {
@@ -1237,11 +1237,11 @@ function Messages({
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
     const payLoad = {
-      group_id: recipient[1],
+      message_group_id: recipient[1],
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     setNewGroupLoader(true);
-    const apiData = await generalPostFunction("/group-users/store", payLoad);
+    const apiData = await generalPostFunction("/chat-group-users/store", payLoad);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
       setGroupChatPopUp(false);
@@ -1255,7 +1255,7 @@ function Messages({
   const handleremoveUserFromGroup = async (id) => {
     setNewGroupLoader(true);
     const apiData = await generalDeleteFunction(
-      `/group-users/destroy/${id}`
+      `/chat-group-users/destroy/${id}`
       // payload
     );
     if (apiData.status) {
@@ -1383,7 +1383,7 @@ function Messages({
       'user_id': userId,
       'is_admin': isAdmin,
     }
-    const apiData = await generalPutFunction(`/group-users/update/${id}`, parsedData)
+    const apiData = await generalPutFunction(`/chat-group-users/update/${id}`, parsedData)
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
@@ -1397,7 +1397,7 @@ function Messages({
   // Handle delete group 
   async function handleDeleteGroup(id) {
     setLoading(true);
-    const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
+    const apiData = await generalDeleteFunction(`/chatgroups/destroy/${id}`)
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
@@ -1816,7 +1816,7 @@ function Messages({
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
-                                    setSelectedgroupUsers(item.groupusers);
+                                    setSelectedgroupUsers(item.message_groupusers);
                                     setUnreadMessage((prevState) => {
                                       const {
                                         [item.group_name]: _,
@@ -1824,7 +1824,7 @@ function Messages({
                                       } = prevState;
                                       return newState;
                                     });
-                                    item.groupusers.map((user) => {
+                                    item.message_groupusers.map((user) => {
                                       if (user.user_id === account.id) {
                                         setIsAdmin(user.is_admin)
                                       }
@@ -1835,7 +1835,7 @@ function Messages({
                                     <div className=" d-flex align-items-center">
                                       <div
                                         className="profileHolder"
-                                        id={item?.groupusers?.some((user) =>
+                                        id={item?.message_groupusers?.some((user) =>
                                           onlineUser?.some((online) => online?.id === user?.user_id)
                                         )
                                           ? "profileOnlineNav"
@@ -2161,7 +2161,6 @@ function Messages({
                                         <tr>
                                           <th>S.No</th>
                                           <th>Name</th>
-                                          <th>Extension</th>
                                           <th>
                                             <input
                                               type="checkbox"
@@ -2199,7 +2198,6 @@ function Messages({
                                             <tr key={index}>
                                               <td>{index + 1}.</td>
                                               <td>{item.name}</td>
-                                              <td>{item?.extension?.extension}</td>
                                               <td>
                                                 <input
                                                   type="checkbox"
@@ -2255,8 +2253,8 @@ function Messages({
                                   setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, profile_picture]);
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
-                                  setSelectedgroupUsers(item.groupusers);
-                                  item.groupusers.map((user) => {
+                                  setSelectedgroupUsers(item.message_groupusers);
+                                  item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin)
                                     }
@@ -3117,7 +3115,6 @@ function Messages({
                                           <tr>
                                             <th>S.No</th>
                                             <th>Name</th>
-                                            <th>Extension</th>
                                             <th>
                                               <input
                                                 type="checkbox"
@@ -3160,7 +3157,6 @@ function Messages({
                                               <tr key={""}>
                                                 <td>{index + 1}.</td>
                                                 <td>{item.name}</td>
-                                                <td>{item?.extension?.extension}</td>
                                                 <td>
                                                   <input
                                                     type="checkbox"

@@ -451,7 +451,7 @@ const RingGroupAdd = () => {
         if (
           !bulkUploadSelectedAgents.some(
             (agent) => agent.extension.extension == item.extension.extension
-          ) && item.usages === "pbx"
+          ) && (item.usages === "pbx" || item.usages === "both")
         ) {
           handleCheckboxChange(item);
         }
@@ -1292,7 +1292,7 @@ const RingGroupAdd = () => {
                             !destination.some(
                               (agent) =>
                                 user.extension.extension == agent.destination
-                            ) && user.usages === "pbx"
+                            ) && (user.usages === "pbx" || user.usages === "both")
                         )
                         .map((item, index) => {
                           return (
