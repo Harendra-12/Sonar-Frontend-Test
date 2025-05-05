@@ -277,6 +277,7 @@
     margin-bottom: 2px;
     font-weight: 700;
     color: var(--color-subtext);
+    text-transform: capitalize;
 }
 
 .messageList .messageItem h6 span {
@@ -1005,6 +1006,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 0;
+    text-transform: capitalize;
 
 }
 
@@ -1125,6 +1127,7 @@
 .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second h6 {
     color: var(--color-subtext);
     margin-bottom: 8px;
+    text-transform: capitalize;
 }
 
 .webrtc_newMessageUi .leftside_listBar {
@@ -1268,6 +1271,7 @@
 .webrtc_newMessageUi .messageOverlay .contactHeader h4 {
     font-size: 1rem !important;
     margin-bottom: 0;
+    text-transform: capitalize;
 }
 
 .webrtc_newMessageUi .messageOverlay .contactHeader {

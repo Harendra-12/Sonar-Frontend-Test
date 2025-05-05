@@ -90,6 +90,7 @@ const WebrtcWrapper = () => {
   const [callloading, setCallLoading] = useState(true);
   const [isCallLoading, setIsCallLoading] = useState(false);
   const [calling, setCalling] = useState(false);
+  const [meetingPage, setMeetingPage] = useState();
   const [toUser, setToUser] = useState(null);
 
   const didAll = useSelector((state) => state.didAll);
@@ -477,6 +478,7 @@ const WebrtcWrapper = () => {
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
             setCalling={setCalling}
             setToUser={setToUser}
+            setMeetingPage={setMeetingPage}
           />
         )}
         {activePage === "conference" && (
@@ -768,6 +770,7 @@ const WebrtcWrapper = () => {
           to={toUser}
           name={account.name}
           setCalling={setCalling}
+          meetingPage={meetingPage}
         />
       ) : (
         ""

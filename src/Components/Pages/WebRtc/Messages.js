@@ -51,7 +51,8 @@ function Messages({
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
   setCalling,
-  setToUser
+  setToUser,
+  setMeetingPage
 }) {
   const dispatch = useDispatch();
   const { sendMessage } = Socket();
@@ -1951,17 +1952,11 @@ function Messages({
                                         <div className="contactTags">
                                           <span data-id="3">Priority</span>
                                         </div> */}
-                                        {/* here we are showing recent group message */}
-                                        <h5>
-                                        {/* here showing last send message below of contact name */}
-                                        {item?.last_message_data?.message_text}
-                                      </h5>
-                                       
-                                      </div>
-                                    </div>{" "}
-                                  </div>
                                       {/* here we are showing recent group message */}
+                                      <h5>
+                                        {/* here showing last send message below of contact name */}
                                       {item?.last_message_data?.message_text}
+                                      </h5>
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2717,7 +2712,7 @@ function Messages({
                             ) : (
                               <button
                                 // onClick={() => onSubmit("audio", recipient[0])}
-                                onClick={()=>{setCalling(true);setToUser(recipient[1])}}
+                                onClick={()=>{setMeetingPage("message"); setCalling(true);setToUser(recipient[1])}}
                                 className="clearButton2"
                                 effect="ripple"
                               >
@@ -2811,13 +2806,6 @@ function Messages({
                       ) : (
                         ""
                       )}
-                      <div className="messageContent position-relative d-flex justify-content-between">
-                        {/* this is chat section (showing section of all input and output messages) */}
-                        <div className="messageList" ref={messageListRef}>
-                          {recipient[0] ? (
-                            <>
-                              {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
-                                (item, index, arr) => {
                         <div className="messageContent position-relative">
                           {/* this is chat section (showing section of all input and output messages) */}
                           <div className="messageList" ref={messageListRef}>
