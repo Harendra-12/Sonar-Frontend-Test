@@ -166,10 +166,10 @@ function Dialpad({
 
   return (
     <>
-      <div id="dialPad">
+      <div id="dialPad" className="subDialPad">
         <div className="container h-100">
           <div className="row align-items-center justify-content-center h-100">
-            <div className={isTransfer?"col-xl-10 col-md-10 col-11 dialPadContainer p-2":"col-xl-3 col-md-6 col-11 dialPadContainer p-2"}>
+            <div className={isTransfer?"col-xl-12 col-md-12 col-11 dialPadContainer p-2":"col-xl-3 col-md-6 col-11 dialPadContainer p-2"}>
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
                 <div>
                   <h3>Dial Number</h3>

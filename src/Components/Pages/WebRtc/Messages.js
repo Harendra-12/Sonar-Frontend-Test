@@ -1862,7 +1862,11 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                         {/* here we are showing recent group message */}
+                                        <h5>
+                                        {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
+                                      </h5>
+                                       
                                       </div>
                                     </div>{" "}
                                   </div>
@@ -2635,7 +2639,7 @@ function Messages({
                       ) : (
                         ""
                       )}
-                      <div className="messageContent position-relative">
+                      <div className="messageContent position-relative d-flex justify-content-between">
                         {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
                           {recipient[0] ? (

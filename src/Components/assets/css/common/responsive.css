@@ -51,7 +51,7 @@
         box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
         top: 0;
         bottom: 0;
-        z-index: 10001;
+        z-index: 999;
     }
     .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
         left: -15px !important;
@@ -101,7 +101,7 @@ element.style {
     box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
     top: 0;
     bottom: 0;
-    z-index: 10001;
+    z-index: 999;
 }
 .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
     left: -15px !important;

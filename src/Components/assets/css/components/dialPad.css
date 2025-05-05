@@ -7,6 +7,13 @@
     left: 0;
     z-index: 100;
 }
+#dialPad.subDialPad {
+    background-color: #14161e;
+    top: 0;
+    left: -102%;
+    z-index: 100;
+    border-radius: 8px;
+}
 
 .dialPadContainer {
     background-color: #14161e;
