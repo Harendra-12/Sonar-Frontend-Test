@@ -182,6 +182,7 @@ import BillingDashboard from "./Components/Pages/Billing/BillingDashboard";
 import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
+import GoSocket from "./Components/GlobalFunction/GoSocket";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -211,6 +212,7 @@ function App() {
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   Socket();
+  GoSocket();
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{

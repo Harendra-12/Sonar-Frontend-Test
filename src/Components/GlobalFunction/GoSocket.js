@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
  * messages over the WebSocket connection.
  */
 
-const Socket = () => {
+const GoSocket = () => {
   const dispatch = useDispatch();
   const ip = process.env.REACT_APP_BACKEND_IP;
-  const port = process.env.REACT_APP_BACKEND_SOCKET_PORT;
+  const port = process.env.REACT_APP_GOLANG_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const RoomID = useSelector((state) => state.RoomID);
   const isLogOut = useSelector((state) => state.logout);
@@ -77,53 +77,53 @@ const Socket = () => {
           const { key, result, current_time } = message;
 
           switch (key) {
-            // case "OnlineExtensions":
-            //   dispatch({
-            //     type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
-            //   break;
-            // case "onlineUser":
-            //   dispatch({ type: "SET_LOGINUSER", loginUser: result });
-            //   break;
-            // case "Balance":
-            //   dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
-            //   break;
-            case "CallState":
-              dispatch({ type: "SET_CALLSTATE", callState: result });
-              break;
-            case "ChannelHangupComplete":
-              dispatch({ type: "SET_CHANNELHANGUP", channelHangupComplete: result });
-              if (Number(result.account_id) === Number(account.account_id)) {
-                dispatch({ type: "SET_BALANCE", balance: message.balance });
-              }
-              break;
-            case "activeCalls":
+            case "OnlineExtensions":
               dispatch({
-                type: "SET_ACTIVECALL",
-                activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
-              });
+                type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
               break;
-            case "Conference":
-              dispatch({ type: "SET_CONFERENCE", conference: result });
+            case "onlineUser":
+              dispatch({ type: "SET_LOGINUSER", loginUser: result });
               break;
-            case "logout_warning":
+            case "Balance":
+              dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
+              break;
+            // case "CallState":
+            //   dispatch({ type: "SET_CALLSTATE", callState: result });
+            //   break;
+            // case "ChannelHangupComplete":
+            //   dispatch({ type: "SET_CHANNELHANGUP", channelHangupComplete: result });
+            //   if (Number(result.account_id) === Number(account.account_id)) {
+            //     dispatch({ type: "SET_BALANCE", balance: message.balance });
+            //   }
+            //   break;
+            // case "activeCalls":
+            //   dispatch({
+            //     type: "SET_ACTIVECALL",
+            //     activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
+            //   });
+            //   break;
+            // case "Conference":
+            //   dispatch({ type: "SET_CONFERENCE", conference: result });
+            //   break;
+            // case "logout_warning":
               
-              dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
-              break;
-            case "screenShare":
-              dispatch({ type: "SET_CONFERENCESCREENSHARESTATUS", conferenceScreenShareStatus: result, });
-              break;
-            case "broadcastGroupMessage":
-              dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
-              break;
-            case "conferenceMessage":
-              if (result["room_id"] == RoomID) {dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result }); }
-              break;
-            case "clientMsg":
-              dispatch({ type:"SET_INCOMING_MESSAGE", incomingMessage: result });
-              break;
-            case "progressive":
-              dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
-              break;
+            //   dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
+            //   break;
+            // case "screenShare":
+            //   dispatch({ type: "SET_CONFERENCESCREENSHARESTATUS", conferenceScreenShareStatus: result, });
+            //   break;
+            // case "broadcastGroupMessage":
+            //   dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
+            //   break;
+            // case "conferenceMessage":
+            //   if (result["room_id"] == RoomID) {dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result }); }
+            //   break;
+            // case "clientMsg":
+            //   dispatch({ type:"SET_INCOMING_MESSAGE", incomingMessage: result });
+            //   break;
+            // case "progressive":
+            //   dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
+            //   break;
             default:
               break;
           }
@@ -161,4 +161,4 @@ const Socket = () => {
   return { sendMessage };
 };
 
-export default Socket;
+export default GoSocket;

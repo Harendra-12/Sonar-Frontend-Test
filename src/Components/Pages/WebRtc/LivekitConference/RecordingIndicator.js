@@ -1,0 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useIsRecording } from '@livekit/components-react';
+import * as React from 'react';
+
+export function RecordingIndicator({manualRecording, isCurrentUserStartRecording}) {
+  const isRecording = useIsRecording();
+  const [wasRecording, setWasRecording] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isRecording !== wasRecording) {
+      setWasRecording(isRecording);
+    }
+  }, [isRecording]);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        boxShadow:isCurrentUserStartRecording? (isRecording && manualRecording) ? 'red 0px 0px 0px 3px inset' : 'none':isRecording  ? 'red 0px 0px 0px 3px inset' : 'none',
+        pointerEvents: 'none',
+      }}
+    ></div>
+  );
+}
