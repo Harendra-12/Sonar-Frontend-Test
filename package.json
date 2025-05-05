@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@firebase/messaging": "^0.12.9",
+    "@livekit/components-react": "^2.9.3",
+    "@livekit/components-styles": "^1.1.5",
     "@mui/material": "^5.15.16",
     "@radix-ui/react-dialog": "^1.1.6",
     "@testing-library/jest-dom": "^5.17.0",
@@ -19,6 +21,7 @@
     "date-fns": "^4.1.0",
     "emoji-picker-react": "^4.12.0",
     "firebase": "^10.12.1",
+    "livekit-client": "^2.11.4",
     "modify-react-sipjs": "^0.0.11",
     "react": "^18.3.0",
     "react-audio-visualize": "^1.2.0",
