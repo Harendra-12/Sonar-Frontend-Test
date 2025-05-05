@@ -4,6 +4,24 @@ export const initialNodes = [
     position: { x: 600, y: 20 },
     type: "callBegin",
   },
+  {
+    id: "8",
+    position: { x: 600, y: 200 },
+    type: "pressDigits",
+    data: {
+      label: "Press Digits",
+      description: "Press digits for new task",
+    },
+  },
 ];
 
-export const initialEdges = [];
+export const initialEdges = [
+  {
+    id: "e1-2",
+    source: "7",
+    target: "8",
+    animated: true,
+    // type: "customEdge",
+    style: { strokeWidth: 2, stroke: "#000" },
+  },
+];

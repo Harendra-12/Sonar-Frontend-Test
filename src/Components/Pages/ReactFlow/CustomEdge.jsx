@@ -42,14 +42,16 @@ const CustomEdge = (props) => {
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: "all",
           }}
-          onClick={() =>
-            setEdges((prevEdges) => prevEdges.filter((edge) => edge.id !== id))
-          }
+          onClick={() => {
+            setEdges((prevEdges) => prevEdges.filter((edge) => edge.id !== id));
+            console.log("Edge deleted");
+          }}
         >
-          <i
+          X
+          {/* <i
             className="fa-solid fa-x"
-            style={{ height: "20px", width: "20px" }}
-          ></i>
+            style={{ height: "40px", width: "40px", fontSize: "20px" }}
+          ></i> */}
         </button>
       </EdgeLabelRenderer>
     </>
