@@ -75,6 +75,7 @@ function Messages({
   const [loading, setLoading] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
+  const [ isAssignmentClicked, setIsAssignmentClicked] = useState(false)
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
@@ -234,6 +235,7 @@ function Messages({
         setContact(filteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find((data) => data?.id == apiData?.data[0]?.id)?.profile_picture
+          if(!isAssignmentClicked)
           setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email, profile_img]);
           setSelectedChat("singleChat");
         }
@@ -1126,6 +1128,7 @@ function Messages({
       setContactRefresh(contactRefresh + 1);
       setLoading(false);
       toast.success("Tag assigned successfully");
+      setIsAssignmentClicked(true)
     } else {
       setLoading(false);
     }
@@ -1139,6 +1142,7 @@ function Messages({
       setContactRefresh(contactRefresh + 1);
       setLoading(false);
       toast.success("Tag unassigned successfully");
+      setIsAssignmentClicked(true)
     } else {
       setLoading(false);
     }
@@ -1718,6 +1722,7 @@ function Messages({
                                       } = prevState;
                                       return newState;
                                     });
+                                    setManageGroupChat(false)
                                   }}
                                   className="w-100 "
                                 >
@@ -2366,6 +2371,9 @@ function Messages({
                             </div>
                             {/* <h4>{recipient[0]}</h4> */}
                             <div className="contactTags">
+                              {loading && <div colSpan={99}>
+                                <CircularLoader />
+                              </div>}
                               {contact
                                 .find(
                                   (contact) => contact.id == recipient[1]
