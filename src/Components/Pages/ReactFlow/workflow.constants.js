@@ -21,7 +21,7 @@ export const initialEdges = [
     source: "7",
     target: "8",
     animated: true,
-    // type: "customEdge",
+    type: "customEdge",
     style: { strokeWidth: 2, stroke: "#000" },
   },
 ];
