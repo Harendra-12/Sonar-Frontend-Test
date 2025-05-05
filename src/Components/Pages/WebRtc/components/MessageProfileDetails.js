@@ -29,7 +29,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
       setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
       setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
     }
-  }, [messages, viewAllToggle, loading]);
+  }, [messages, viewAllToggle]);
 
   // Loader for initial state
   useEffect(() => {
