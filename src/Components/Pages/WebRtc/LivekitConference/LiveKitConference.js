@@ -7,7 +7,7 @@ import Members from "./Members";
 import { RecordingIndicator } from "./RecordingIndicator";
 
 
-const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin }) => {
+const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin,setCalling }) => {
     const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin }) =>
                 video={true}
                 audio={true}
                 ScreenShareIcon={false}
-                onDisconnected={() => navigate("/")}
+                onDisconnected={() => setCalling(false)}
             >
                 <VideoConference
                     chatMessageFormatter={formatChatMessageLinks}
