@@ -95,7 +95,7 @@ const Reactflow = () => {
       const edge = {
         ...connection,
         animated: true,
-        id: `${connection.source}-${connection.target}`,
+        id: `${connection.source}-${connection.sourceHandle}-${connection.target}`,
         type: "customEdge",
       };
       setEdges((eds) => addEdge(edge, eds));
@@ -360,10 +360,8 @@ const Reactflow = () => {
           }}
           fitView
           snapToGrid
-          connectionMode="loose"
-          // defaultEdgeOptions={{
-          //   type: "customEdge",
-          // }}
+          connectionMode="strict"
+          connectOnClick={false}
         >
           <Panel position="top-right" className="conversation-panel">
             <ConversationOptions />

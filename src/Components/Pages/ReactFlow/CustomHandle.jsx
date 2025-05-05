@@ -1,15 +1,16 @@
 import { Handle } from "@xyflow/react";
 import React from "react";
 
-const CustomHandle = (props) => {
+const CustomHandle = ({ style = {}, ...props }) => {
   return (
     <Handle
-      className="bg-white border-2 border-black rounded-full hover:bg-gray-200 transition-colors"
       style={{
         width: "12px",
         height: "12px",
-        position: "absolute",
-        zIndex: 10,
+        background: "#4dabf7",
+        border: "2px solid white",
+        borderRadius: "50%",
+        ...style,
       }}
       {...props}
     />

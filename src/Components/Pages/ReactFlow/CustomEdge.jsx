@@ -41,6 +41,9 @@ const CustomEdge = (props) => {
             position: "absolute",
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: "all",
+            background: "transparent",
+            border: "none",
+            fontSize: "1.4rem",
           }}
           onClick={() => {
             setEdges((prevEdges) => prevEdges.filter((edge) => edge.id !== id));
