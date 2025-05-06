@@ -130,10 +130,19 @@ const PressDigits = ({ id, data }) => {
             }}
           >
             <input
-              type="number"
+              type="text"
               ref={(el) => (textAreaRefs.current[field.id] = el)}
               value={field.value}
-              onChange={(e) => handleChange(field.id, e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                // Only allow numbers and limit to 3 digits
+                if (
+                  value === "" ||
+                  (/^\d+$/.test(value) && value.length <= 2)
+                ) {
+                  handleChange(field.id, value);
+                }
+              }}
               style={{
                 flex: 1,
                 background: "#343a40",
@@ -145,6 +154,8 @@ const PressDigits = ({ id, data }) => {
                 width: "100%",
               }}
               placeholder="Enter digit..."
+              inputMode="numeric"
+              pattern="\d*"
             />
 
             <div style={{ display: "flex", gap: "4px" }}>

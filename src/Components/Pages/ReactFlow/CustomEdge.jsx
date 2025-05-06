@@ -35,27 +35,31 @@ const CustomEdge = (props) => {
         strokeWidth={2}
       />
       <EdgeLabelRenderer>
-        <button
-          className="xIconBtn"
-          style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            pointerEvents: "all",
-            background: "transparent",
-            border: "none",
-            fontSize: "1.4rem",
-          }}
-          onClick={() => {
-            setEdges((prevEdges) => prevEdges.filter((edge) => edge.id !== id));
-            console.log("Edge deleted");
-          }}
-        >
-          X
-          {/* <i
+        {props.deletable && (
+          <button
+            className="xIconBtn"
+            style={{
+              position: "absolute",
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: "all",
+              background: "transparent",
+              border: "none",
+              fontSize: "1.4rem",
+            }}
+            onClick={() => {
+              setEdges((prevEdges) =>
+                prevEdges.filter((edge) => edge.id !== id)
+              );
+              console.log("Edge deleted");
+            }}
+          >
+            X
+            {/* <i
             className="fa-solid fa-x"
             style={{ height: "40px", width: "40px", fontSize: "20px" }}
           ></i> */}
-        </button>
+          </button>
+        )}
       </EdgeLabelRenderer>
     </>
   );

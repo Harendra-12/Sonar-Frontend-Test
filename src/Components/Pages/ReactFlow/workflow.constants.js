@@ -23,5 +23,7 @@ export const initialEdges = [
     animated: true,
     type: "customEdge",
     style: { strokeWidth: 2, stroke: "#000" },
+    isRemovable: false,
+    deletable: false,
   },
 ];

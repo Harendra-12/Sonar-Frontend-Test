@@ -352,6 +352,7 @@ const Reactflow = () => {
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
+          connectOnClick={true}
           style={{ height: "100vh" }}
           defaultEdgeOptions={{
             type: "customEdge",
@@ -361,7 +362,6 @@ const Reactflow = () => {
           // fitView
           snapToGrid
           connectionMode="strict"
-          connectOnClick={false}
         >
           <Panel position="top-right" className="conversation-panel">
             <ConversationOptions />
