@@ -358,7 +358,7 @@ const Reactflow = () => {
             animated: true,
             style: { strokeWidth: 2, stroke: "#000" },
           }}
-          fitView
+          // fitView
           snapToGrid
           connectionMode="strict"
           connectOnClick={false}

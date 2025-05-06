@@ -5,6 +5,7 @@ import { Position } from "@xyflow/react";
 const PressDigits = ({ id, data }) => {
   const [fields, setFields] = useState([]);
   const textAreaRefs = useRef({});
+  const [isReadonly, setIsreadonly] = useState(false);
 
   useEffect(() => {
     if (data.subNodes && data.subNodes.length > 0) {
@@ -66,7 +67,21 @@ const PressDigits = ({ id, data }) => {
         style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
       >
         <i className="fa-solid fa-keyboard" style={{ marginRight: "8px" }} />
-        <h3 style={{ margin: 0, fontSize: "16px" }}>{data.label}</h3>
+        {/* <h3 style={{ margin: 0, fontSize: "16px" }}>{data.label}</h3> */}
+        <input
+          type="text"
+          value={data.label}
+          readOnly={isReadonly}
+          onChange={(e) => data.onUpdate({ label: e.target.value })}
+          onBlur={() => setIsreadonly(true)}
+          className="bg-transparent border-none"
+        />
+
+        <i
+          className="fa-solid fa-pen-to-square ms-3"
+          style={{ cursor: "pointer" }}
+          onClick={() => setIsreadonly(!isReadonly)}
+        />
       </div>
 
       <p style={{ fontSize: "12px", color: "#6c757d", marginBottom: "12px" }}>

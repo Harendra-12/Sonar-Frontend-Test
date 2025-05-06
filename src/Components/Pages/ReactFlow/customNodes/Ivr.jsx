@@ -11,6 +11,7 @@ const Ivr = ({ id, data }) => {
   const [ivr, setIvr] = useState([]);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const ivrArr = useSelector((state) => state.ivr);
+  const [isReadonly, setIsreadonly] = useState(false);
 
   useEffect(() => {
     if (ivrRefresh > 0) {
@@ -36,7 +37,20 @@ const Ivr = ({ id, data }) => {
         <div className="node-header">
           <div className="node-title">
             <i className="fa-solid fa-headset"></i>
-            <h1>{data.label}</h1>
+            <input
+              type="text"
+              value={data.label}
+              readOnly={isReadonly}
+              onChange={(e) => data.onUpdate({ label: e.target.value })}
+              onBlur={() => setIsreadonly(true)}
+              className="bg-transparent border-none"
+            />
+
+            <i
+              className="fa-solid fa-pen-to-square ms-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsreadonly(!isReadonly)}
+            />
           </div>
           <button
             className="node-delete-btn"

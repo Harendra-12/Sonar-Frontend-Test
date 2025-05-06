@@ -11,6 +11,7 @@ const Extension = ({ id, data }) => {
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
+  const [isReadonly, setIsreadonly] = useState(false);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -39,7 +40,19 @@ const Extension = ({ id, data }) => {
         <div className="node-header">
           <div className="node-title">
             ī<i className="fa-solid fa-phone-volume"></i>
-            <h1>{data.label}</h1>
+            <input
+              type="text"
+              value={data.label}
+              readOnly={isReadonly}
+              onChange={(e) => data.onUpdate({ label: e.target.value })}
+              onBlur={() => setIsreadonly(true)}
+              className="bg-transparent border-none"
+            />
+            <i
+              className="fa-solid fa-pen-to-square ms-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsreadonly(!isReadonly)}
+            />
           </div>
           <button
             className="node-delete-btn"

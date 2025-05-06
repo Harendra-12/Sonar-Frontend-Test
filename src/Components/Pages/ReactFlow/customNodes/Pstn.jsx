@@ -8,9 +8,9 @@ const Pstn = ({ id, data }) => {
   const { setNodes } = useReactFlow();
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false);
   const [pstnval, setPstnval] = useState();
+  const [isReadonly, setIsreadonly] = useState(false);
 
   const handlePstn = (event) => {
-    console.log("event: ", event);
     const selectedValue = event;
     setPstnval(selectedValue);
     if (data.onUpdate) {
@@ -24,7 +24,20 @@ const Pstn = ({ id, data }) => {
         <div className="node-header">
           <div className="node-title">
             <i className="fa-solid fa-earth-americas"></i>
-            <h1>{data.label}</h1>
+            <input
+              type="text"
+              value={data.label}
+              readOnly={isReadonly}
+              onChange={(e) => data.onUpdate({ label: e.target.value })}
+              onBlur={() => setIsreadonly(true)}
+              className="bg-transparent border-none"
+            />
+
+            <i
+              className="fa-solid fa-pen-to-square ms-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsreadonly(!isReadonly)}
+            />
           </div>
           <button
             className="node-delete-btn"

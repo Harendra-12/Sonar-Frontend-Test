@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 
 const Hangup = ({ id, data }) => {
   const { setNodes } = useReactFlow();
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false);
+  const [isReadonly, setIsreadonly] = useState(false);
+
+  // added the default value for the node
+  useEffect(() => {
+    if (!data.value) {
+      data.onUpdate({ value: "hangup" });
+    }
+  }, [data]);
 
   return (
     <>
@@ -12,7 +20,20 @@ const Hangup = ({ id, data }) => {
         <div className="node-header">
           <div className="node-title">
             <i className="fa-solid fa-headset"></i>
-            <h1>{data.label}</h1>
+            <input
+              type="text"
+              value={data.label}
+              readOnly={isReadonly}
+              onChange={(e) => data.onUpdate({ label: e.target.value })}
+              onBlur={() => setIsreadonly(true)}
+              className="bg-transparent border-none"
+            />
+
+            <i
+              className="fa-solid fa-pen-to-square ms-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsreadonly(!isReadonly)}
+            />
           </div>
           <button
             className="node-delete-btn"
@@ -25,7 +46,7 @@ const Hangup = ({ id, data }) => {
         <div className="node-separator"></div>
       </div>
       <CustomHandle type="target" position={Position.Left} />
-      <CustomHandle type="source" position={Position.Right} />
+      {/* <CustomHandle type="source" position={Position.Right} /> */}
 
       {addNewTagPopUp && (
         <div className="addNewContactPopup">

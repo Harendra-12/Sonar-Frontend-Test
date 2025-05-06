@@ -11,6 +11,7 @@ const CallCenter = ({ id, data }) => {
   const [callCenter, setCallCenter] = useState([]);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
+  const [isReadonly, setIsreadonly] = useState(false);
 
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -36,7 +37,20 @@ const CallCenter = ({ id, data }) => {
         <div className="node-header">
           <div className="node-title">
             <i className="fa-solid fa-users"></i>
-            <h1>{data.label}</h1>
+            <input
+              type="text"
+              value={data.label}
+              readOnly={isReadonly}
+              onChange={(e) => data.onUpdate({ label: e.target.value })}
+              onBlur={() => setIsreadonly(true)}
+              className="bg-transparent border-none"
+            />
+
+            <i
+              className="fa-solid fa-pen-to-square ms-3"
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsreadonly(!isReadonly)}
+            />
           </div>
           <button
             className="node-delete-btn"
