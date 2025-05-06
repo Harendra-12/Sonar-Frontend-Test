@@ -1000,7 +1000,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   // className="collapse"
                                                   key={`voiceMail${index}`}
                                                 >
-                                                  <td colSpan={5}>
+                                                  <td colSpan={7}>
                                                     <div
                                                       className="audio-container"
                                                       id={`voiceMail${index}`}

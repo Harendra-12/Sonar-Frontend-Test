@@ -1437,6 +1437,48 @@
     padding-inline: 15px;
 }
 
-.staticPanel{
+.staticPanel {
     position: static;
+}
+
+.messageIncomingPopup {
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    max-width: 372px;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+    transform: translate(-1%, -5%);
+    z-index: 999;
+}
+
+.messageIncomingPopup .incomingCallPopup {
+    position: unset;
+    transform: unset;
+    min-width: unset;
+    min-height: 70px;
+    /* border-radius: 10px; */
+    border-radius: 50px;
+    width: 100%;
+    /* padding: 10px 30px; */
+    padding: 11px 14px;
+}
+
+.messageIncomingPopup .incomingCallPopup .user {
+    display: flex;
+    justify-content: start;
+    flex-wrap: nowrap;
+    gap: 15px;
+}
+
+.messageIncomingPopup .incomingCallPopup .controls {
+    justify-content: flex-end;
+    gap: 15px;
+    margin: 0;
+}
+.messageIncomingPopup .callButton {
+    margin: 0;
 }
