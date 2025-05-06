@@ -12,8 +12,16 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin,setCa
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
     const navigate = useNavigate();
 
+    const [isMinimize, setIsMinimize] = useState(true);
+
+    // const handleClickMinimize = () => setIsMinimize();
+    const handleClickMinimize = () => {
+        setIsMinimize(!isMinimize);
+      };
+
     return (
-        <main data-lk-theme="default" style={{ height: '100vh' }} className={`${meetingPage === 'message' ? 'messageMeetingWrap' : ''}`}>
+        <main data-lk-theme="default" style={{ height: '100vh' }} className={`${meetingPage === 'message' ? 'messageMeetingWrap' : ''} ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
+            <button className="minimize" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' :  'fa-regular fa-expand'}`}></i></button>
             <LiveKitRoom
                 token={token}
                 serverUrl={serverUrl}
