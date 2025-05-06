@@ -290,8 +290,6 @@ function CdrFilterReport({ page }) {
     getRingGroupDashboardData();
   }, [callBlockRefresh]);
 
-  console.log("calldirection",callDirection);
-  
   useEffect(() => {
     setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
@@ -301,16 +299,16 @@ function CdrFilterReport({ page }) {
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-              )
+              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+            )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
-    
+
       setUpdatedQueryparams(queryParams);
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
-    
+
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
@@ -974,22 +972,10 @@ function CdrFilterReport({ page }) {
                                   setCallDirection(values);
                                   setPageNumber(1);
                                 }}
-                                options={[
-                                  {
-                                    value: "inbound",
-                                    label: "Inbound Calls"
-                                  },
-                                  {
-                                    value: "outbound",
-                                    label: "Outbound Calls"
-                                  },
-                                  {
-                                    value: "internal",
-                                    label: "Internal Calls"
-                                  },
-                                ]}
+                                options={callDirectionOptions}
                                 isSearchable
                                 styles={customStyles}
+                                value={callDirectionOptions.filter((opt) => callDirection.includes(opt.value))}
                               />
                               {/* <select
                                 className="formItem"
@@ -1025,26 +1011,10 @@ function CdrFilterReport({ page }) {
                                   setCallType(values);
                                   setPageNumber(1);
                                 }}
-                                options={[
-                                  {
-                                    value: "extension",
-                                    label: "Extension"
-                                  },
-                                  {
-                                    value: "voicemail",
-                                    label: "Voice Mail"
-                                  },
-                                  {
-                                    value: "callcenter",
-                                    label: "Call Center"
-                                  },
-                                  {
-                                    value: "ringgroup",
-                                    label: "Ring Group"
-                                  }
-                                ]}
+                                options={callTypeOptions}
                                 isSearchable
                                 styles={customStyles}
+                                value={callTypeOptions.filter((opt) => callType.includes(opt.value))}
                               />
                               {/* <select
                                 className="formItem"
@@ -1083,34 +1053,10 @@ function CdrFilterReport({ page }) {
                                   setHagupCause(values);
                                   setPageNumber(1);
                                 }}
-                                options={[
-                                  {
-                                    value: "Answered",
-                                    label: "Answer"
-                                  },
-                                  {
-                                    value: "Missed",
-                                    label: "Missed"
-                                  },
-                                  {
-                                    value: "Voicemail",
-                                    label: "Voicemail"
-                                  },
-                                  {
-                                    value: "Cancelled",
-                                    label: "Cancelled"
-                                  },
-                                  {
-                                    value: "Failed",
-                                    label: "Failed"
-                                  },
-                                  {
-                                    value: "Transfer",
-                                    label: "Transfer"
-                                  }
-                                ]}
+                                options={hangupCauseOptions}
                                 isSearchable
                                 styles={customStyles}
+                                value={hangupCauseOptions.filter((opt) => hangupCause.includes(opt.value))}
                               />
                               {/* <select
                                 className="formItem"
@@ -1141,32 +1087,10 @@ function CdrFilterReport({ page }) {
                                     setHangupStatus(values);
                                     setPageNumber(1);
                                   }}
-                                  options={[
-                                    { value: "NORMAL_CLEARING", label: "Normal Clearing" },
-                                    { value: "ORIGINATOR_CANCEL", label: "Originator Cancel" },
-                                    { value: "MANAGER_REQUEST", label: "Manager Request" },
-                                    { value: "NO_ANSWER", label: "No Answe" },
-                                    { value: "INVALID_GATEWAY", label: "Invalid Gateway" },
-                                    { value: "SERVICE_UNAVAILABLE", label: "Service Unavailable" },
-                                    { value: "INCOMPATIBLE_DESTINATION", label: "Incompatible Destination" },
-                                    { value: "NO_USER_RESPONSE", label: "No User Response" },
-                                    { value: "MEDIA_TIMEOUT", label: "Media Timeout" },
-                                    { value: "LOSE_RACE", label: "Lose Race" },
-                                    { value: "NORMAL_UNSPECIFIED", label: "Normal Unspecified" },
-                                    { value: "USER_BUSY", label: "User Busy" },
-                                    { value: "RECOVERY_ON_TIMER_EXPIRE", label: "Recovery On Timer Expire" },
-                                    { value: "USER_NOT_REGISTERED", label: "User Not Registered" },
-                                    { value: "CALL_REJECTED", label: "Call Rejected" },
-                                    { value: "SUBSCRIBER_ABSENT", label: "Subscriber Absent" },
-                                    { value: "CHAN_NOT_IMPLEMENTED", label: "Chan Not Implemented" },
-                                    { value: "DESTINATION_OUT_OF_ORDER", label: "Destination Out Of Order" },
-                                    { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
-                                    { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
-                                    { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
-                                    { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" }
-                                  ]}
+                                  options={hangupStatusOptions}
                                   isSearchable
                                   styles={customStyles}
+                                  value={hangupStatusOptions.filter((opt) => hangupStatus.includes(opt.value))}
                                 />
                                 {/* <select
                                   className="formItem"
@@ -1856,3 +1780,90 @@ const customStyles = {
     color: "var(--form-input-text)",
   }),
 };
+
+const callDirectionOptions = [
+  {
+    value: "inbound",
+    label: "Inbound Calls"
+  },
+  {
+    value: "outbound",
+    label: "Outbound Calls"
+  },
+  {
+    value: "internal",
+    label: "Internal Calls"
+  },
+]
+
+const callTypeOptions = [
+  {
+    value: "extension",
+    label: "Extension"
+  },
+  {
+    value: "voicemail",
+    label: "Voice Mail"
+  },
+  {
+    value: "callcenter",
+    label: "Call Center"
+  },
+  {
+    value: "ringgroup",
+    label: "Ring Group"
+  }
+]
+
+const hangupCauseOptions =
+  [
+    {
+      value: "Answered",
+      label: "Answer"
+    },
+    {
+      value: "Missed",
+      label: "Missed"
+    },
+    {
+      value: "Voicemail",
+      label: "Voicemail"
+    },
+    {
+      value: "Cancelled",
+      label: "Cancelled"
+    },
+    {
+      value: "Failed",
+      label: "Failed"
+    },
+    {
+      value: "Transfer",
+      label: "Transfer"
+    }
+  ]
+
+const hangupStatusOptions = [
+  { value: "NORMAL_CLEARING", label: "Normal Clearing" },
+  { value: "ORIGINATOR_CANCEL", label: "Originator Cancel" },
+  { value: "MANAGER_REQUEST", label: "Manager Request" },
+  { value: "NO_ANSWER", label: "No Answe" },
+  { value: "INVALID_GATEWAY", label: "Invalid Gateway" },
+  { value: "SERVICE_UNAVAILABLE", label: "Service Unavailable" },
+  { value: "INCOMPATIBLE_DESTINATION", label: "Incompatible Destination" },
+  { value: "NO_USER_RESPONSE", label: "No User Response" },
+  { value: "MEDIA_TIMEOUT", label: "Media Timeout" },
+  { value: "LOSE_RACE", label: "Lose Race" },
+  { value: "NORMAL_UNSPECIFIED", label: "Normal Unspecified" },
+  { value: "USER_BUSY", label: "User Busy" },
+  { value: "RECOVERY_ON_TIMER_EXPIRE", label: "Recovery On Timer Expire" },
+  { value: "USER_NOT_REGISTERED", label: "User Not Registered" },
+  { value: "CALL_REJECTED", label: "Call Rejected" },
+  { value: "SUBSCRIBER_ABSENT", label: "Subscriber Absent" },
+  { value: "CHAN_NOT_IMPLEMENTED", label: "Chan Not Implemented" },
+  { value: "DESTINATION_OUT_OF_ORDER", label: "Destination Out Of Order" },
+  { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
+  { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
+  { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
+  { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" }
+]
