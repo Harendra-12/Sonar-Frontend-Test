@@ -24,6 +24,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
+import Tippy from "@tippyjs/react";
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -1565,7 +1566,7 @@ function CallCenterQueueAdd() {
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
-                                      <label htmlFor="">Tier Level</label>
+                                      <Tippy content="Tier Level"><label htmlFor="">T. Level</label></Tippy>
                                     </div>}
                                     <select
                                       className="formItem me-0"
@@ -1594,12 +1595,7 @@ function CallCenterQueueAdd() {
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
-                                      <label
-                                        htmlFor=""
-                                        style={{ whiteSpace: "nowrap" }}
-                                      >
-                                        Tier Position
-                                      </label>
+                                      <Tippy content="Tier Position"><label htmlFor="">T. Position</label></Tippy>
                                     </div>}
                                     <select
                                       className="formItem me-0"
@@ -2057,7 +2053,7 @@ function CallCenterQueueAdd() {
                           return bMatches - aMatches;
                         })
                         .filter(
-                          (user) => !agent.some((agent) => user.id == agent.name) &&( user.usages === "pbx" || user.usages === "both")
+                          (user) => !agent.some((agent) => user.id == agent.name) && (user.usages === "pbx" || user.usages === "both")
                         ) // Exclude agents already in `agent`
                         .map((item, index) => (
                           <tr key={item.id || index}>

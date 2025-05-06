@@ -24,6 +24,7 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
+import Tippy from "@tippyjs/react";
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -1769,7 +1770,7 @@ function CallCenterQueueEdit() {
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
-                                      <label htmlFor="">Tier Level</label>
+                                      <Tippy content="Tier Level"><label htmlFor="">T. Level</label></Tippy>
                                     </div>}
                                     <select
                                       className="formItem me-0"
@@ -1798,12 +1799,7 @@ function CallCenterQueueEdit() {
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
-                                      <label
-                                        htmlFor=""
-                                        style={{ whiteSpace: "nowrap" }}
-                                      >
-                                        Tier Position
-                                      </label>
+                                      <Tippy content="Tier Position"><label htmlFor="">T. Pos</label></Tippy>
                                     </div>}
                                     <select
                                       className="formItem me-0"
@@ -2011,9 +2007,11 @@ function CallCenterQueueEdit() {
                                       <div className="col-2 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
-                                            <label htmlFor="">
-                                              Truncate agents on load
-                                            </label>
+                                            <Tippy content='Truncate agents on load'>
+                                              <label htmlFor="">
+                                                Truncate agents
+                                              </label>
+                                            </Tippy>
                                           ) : (
                                             ""
                                           )}
@@ -2038,9 +2036,11 @@ function CallCenterQueueEdit() {
                                       <div className="col-2 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
-                                            <label htmlFor="">
-                                              Truncate tiers on load
-                                            </label>
+                                            <Tippy content='Truncate tiers on load'>
+                                              <label htmlFor="">
+                                                Truncate tiers
+                                              </label>
+                                            </Tippy>
                                           ) : (
                                             ""
                                           )}
