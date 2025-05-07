@@ -1697,6 +1697,16 @@ function Messages({
                       >
                         <i className="fa-regular fa-user-group"></i> Group
                       </button>
+                      <button
+                        onClick={() => setActiveTab("call")}
+                        className={
+                          activeTab === "call" ? "tabLink active" : "tabLink"
+                        }
+                        // effect="ripple"
+                        data-category="incoming"
+                      >
+                        <i class="fa-regular fa-phone"></i> Calls
+                      </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
                         className="tabLink"
@@ -2196,6 +2206,87 @@ function Messages({
                             </div>
                           </div>
                         )}
+                      </div>
+                    </div>
+
+                  ) : activeTab === "call" ? (
+                    <div className="tab-content">
+                      <div
+                        className=""
+                      // style={{
+                      //   borderBottom: "1px solid var(--border-color)",
+                      // }}
+                      >
+                        {contact.map((item) => {
+                          return (
+                            <div
+                              data-bell={
+                                unreadMessage[item?.id]
+                                  ? unreadMessage[item?.id]
+                                  : ""
+                              }
+                              className={
+                                recipient[1] === item?.id
+                                  ? "contactListItem "
+                                  : "contactListItem callsItemDetails"
+                              }
+                            >
+                              <div
+
+                                className="w-100 "
+                              >
+                                <div className=" d-flex align-items-center">
+                                  <div
+                                    className="profileHolder"
+                                    id={
+                                      onlineUser.find(
+                                        (user) => user.id === item.id
+                                      )
+                                        ? "profileOnlineNav"
+                                        : "profileOfflineNav"
+                                    }
+                                  >
+                                    {accountDetails?.users?.find(
+                                      (acc) => acc.id === item.id
+                                    )?.profile_picture ? (
+                                      <img
+                                        src={
+                                          accountDetails?.users?.find(
+                                            (acc) => acc.id === item.id
+                                          )?.profile_picture
+                                        }
+                                        alt="profile"
+                                        onError={(e) =>
+                                          (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                        }
+                                      />
+                                    ) : (
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    )}
+                                  </div>
+                                  <div className="ms-3 flex-grow-1">
+                                    <p className=" justify-content-start">
+                                      {item?.name} <span className="missedCallArrow ms-2"><i class="fa-regular fa-arrow-up-right"></i></span>
+                                    </p>
+                                    <h5>
+                                      <span className=" text-end mb-0">
+                                        <p className="timeAgo">
+                                          {item?.last_message_data
+                                            ? formatRelativeTime(
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
+                                            : ""}
+                                        </p>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <button className="btn_call"><i class="fa-regular fa-phone"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ) : (

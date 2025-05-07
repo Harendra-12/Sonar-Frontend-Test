@@ -908,6 +908,8 @@ const WebrtcWrapper = () => {
                   }}
                 >
                   <i className="fa-duotone fa-phone"></i>
+                  <div className="circle1"></div>
+                  <div className="circle2"></div>
                 </button>
                 <button className="callButton hangup me-0" onClick={()=>dispatch({ type: "SET_INCOMINGCALL", incomingCall: null })}>
                   <i className="fa-duotone fa-phone-hangup"></i>
