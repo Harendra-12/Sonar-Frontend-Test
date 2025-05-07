@@ -134,7 +134,7 @@ function Dialpad({
             state: "Established",
             mode: mode,
             isTransfer: isTransfer,
-            transferableSessionId:transferableSessionId,
+            transferableSessionId: transferableSessionId,
           },
         ],
       });
@@ -166,10 +166,10 @@ function Dialpad({
 
   return (
     <>
-      <div id="dialPad" className="subDialPad">
+      <div id="dialPad">
         <div className="container h-100">
           <div className="row align-items-center justify-content-center h-100">
-            <div className={isTransfer?"col-xl-12 col-md-12 col-11 dialPadContainer p-2":"col-xl-3 col-md-6 col-11 dialPadContainer p-2"}>
+            <div className={isTransfer ? "col-xl-12 col-md-12 col-11 dialPadContainer p-2" : "col-xl-3 col-md-6 col-11 dialPadContainer p-2"}>
               <div className="d-flex justify-content-between pt-3 pb-1 px-2">
                 <div>
                   <h3>Dial Number</h3>
@@ -232,9 +232,9 @@ function Dialpad({
                       }}
                     />
                     {destNumber.length > 0 && (
-                        <i onClick={()=>setDestNumber(destNumber.slice(0,-1))} className="fa-solid fa-xmark text-white position-absolute" style={{ top: '50%', right: 10, transform: 'translateY(-50%)',cursor: 'pointer' }}></i>
+                      <i onClick={() => setDestNumber(destNumber.slice(0, -1))} className="fa-solid fa-xmark text-white position-absolute" style={{ top: '50%', right: 10, transform: 'translateY(-50%)', cursor: 'pointer' }}></i>
                     )}
-                   
+
                   </div>
                   <div
                     className="ms-3 d-flex align-items-center"
