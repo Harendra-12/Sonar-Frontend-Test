@@ -320,7 +320,12 @@ function ActiveCalls({ isWebrtc, filter }) {
                               : extractLastNumber(item?.dest)
                           );
                         }}
-                        options={allOptions}
+                        options={
+                          item.direction === "inbound"
+                            ? allOptions.filter((opt) => opt.value !== "whisper-bleg")
+                            : item.direction === "outbound" ? allOptions.filter((opt) => opt.value !== "whisper-aleg")
+                              : allOptions
+                        }
                         isSearchable
                         styles={customStyles}
                       />
