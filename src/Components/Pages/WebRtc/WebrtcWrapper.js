@@ -47,7 +47,12 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
-  const { sessions: sipSessions, sessionManager, connectStatus, registerStatus } = useSIPProvider();
+  const {
+    sessions: sipSessions,
+    sessionManager,
+    connectStatus,
+    registerStatus,
+  } = useSIPProvider();
   const dispatch = useDispatch();
   const callCenterPopUp = useSelector((state) => state.callCenterPopUp);
   const sessions = useSelector((state) => state.sessions);
@@ -81,13 +86,16 @@ const WebrtcWrapper = () => {
   const [callendDate, setCallEndDate] = useState("");
   const [callsearchQuery, setCallSearchQuery] = useState("");
   const [callclickStatus, setCallClickStatus] = useState("all");
-  const refreshCalls = useSelector((state) => state.refreshCalls)
+  const refreshCalls = useSelector((state) => state.refreshCalls);
   const [callfilterBy, setCallFilterBy] = useState("date");
   const [callallApiData, setCallAllApiData] = useState([]);
   const [callrawData, setCallRawData] = useState([]);
   const [calldata, setCallData] = useState([]);
   const [callloading, setCallLoading] = useState(true);
   const [isCallLoading, setIsCallLoading] = useState(false);
+  const [calling, setCalling] = useState(false);
+  const [meetingPage, setMeetingPage] = useState();
+  const [toUser, setToUser] = useState(null);
 
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
@@ -229,10 +237,9 @@ const WebrtcWrapper = () => {
     checkMicrophoneStatus(); // Check mic status when component mounts
     checkVideoStatus();
     if (!account?.extension?.extension) {
-      navigate("/")
+      navigate("/");
     }
   }, []);
-
 
   useEffect(() => {
     dispatch({
@@ -271,7 +278,6 @@ const WebrtcWrapper = () => {
     });
   }, []);
 
-
   useEffect(() => {
     sessionStorage.setItem("tabSession", "active");
 
@@ -286,9 +292,14 @@ const WebrtcWrapper = () => {
       // ✅ Check if it's a refresh
       if (event.persisted) return; // Browser page restore (skip API)
 
-      const isRefresh = performance.getEntriesByType("navigation")[0]?.type === "reload";
+      const isRefresh =
+        performance.getEntriesByType("navigation")[0]?.type === "reload";
 
-      if (!isRefresh && sessionStorage.getItem("tabSession") === "active" && token) {
+      if (
+        !isRefresh &&
+        sessionStorage.getItem("tabSession") === "active" &&
+        token
+      ) {
         //API call only on tab close
         fetch(`${baseName}/logout?with_agents`, {
           method: "GET",
@@ -347,8 +358,13 @@ const WebrtcWrapper = () => {
       }
     }
     fetchData();
-  }, [callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
-
+  }, [
+    callstartDate,
+    callendDate,
+    callsearchQuery,
+    callclickStatus,
+    refreshCalls,
+  ]);
 
   useEffect(() => {
     async function fetchData() {
@@ -393,7 +409,7 @@ const WebrtcWrapper = () => {
     if (!did || !didAll) {
       getAllDid();
     } else {
-      setDid(didAll.filter((item) => item.usages === "pbx"))
+      setDid(didAll.filter((item) => item.usages === "pbx"));
     }
   }, []);
 
@@ -436,7 +452,9 @@ const WebrtcWrapper = () => {
         <div className="d-none">
           {extension && <SipRegister options={options} />}
         </div>
-        {activePage === "sms-chatbox" && <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />}
+        {activePage === "sms-chatbox" && (
+          <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />
+        )}
 
         {activePage === "nav-settings" &&
           <Settings
@@ -510,6 +528,9 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
             extensionFromCdrMessage={extensionFromCdrMessage}
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
+            setCalling={setCalling}
+            setToUser={setToUser}
+            setMeetingPage={setMeetingPage}
           />
         )}
         {activePage === "conference" && (
@@ -794,9 +815,66 @@ const WebrtcWrapper = () => {
             </div>
           </div>
         )}
-      {
-        callProgressId && <audio id={`remote-audio-${callProgressId}`} autoPlay />
-      }
+      {callProgressId && (
+        <audio id={`remote-audio-${callProgressId}`} autoPlay />
+      )}
+
+      {calling ? (
+        <InitiateCall
+          from={account.id}
+          to={toUser}
+          name={account.name}
+          setCalling={setCalling}
+          meetingPage={meetingPage}
+        />
+      ) : (
+        ""
+      )}
+      {/* <div className="messageIncomingPopup">
+        <div className="incomingCallPopup ">
+          <div className="d-flex justify-content-between w-100 align-items-center gap-2">
+            <div className="user">
+              <div className="userHolder col-12">
+                <i className="fa-solid fa-user" />
+              </div>
+              <div className="userInfo col-12 mt-0">
+                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
+              </div>
+            </div>
+            <div className="controls">
+              <button className="callButton">
+                <i className="fa-duotone fa-phone"></i>
+              </button>
+              <button className="callButton hangup me-0">
+                <i className="fa-duotone fa-phone-hangup"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="incomingCallPopup ">
+          <div className="d-flex justify-content-between w-100 align-items-center gap-2">
+            <div className="user">
+              <div className="userHolder col-12">
+                <i className="fa-solid fa-user" />
+              </div>
+              <div className="userInfo col-12 mt-0">
+                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
+              </div>
+            </div>
+            <div className="controls">
+              <button className="callButton">
+                <i className="fa-duotone fa-phone"></i>
+              </button>
+              <button className="callButton hangup me-0">
+                <i className="fa-duotone fa-phone-hangup"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div> */}
+
     </>
   );
 };

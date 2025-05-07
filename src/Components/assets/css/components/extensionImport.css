@@ -358,7 +358,7 @@ form.tangoNavs .nav-tabs {
     align-items: center;
     padding: 15px 20px;
     background-color: var(--formHeadingBloc);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--me-border1);
     border-radius: 10px 10px 0 0;
 }
 

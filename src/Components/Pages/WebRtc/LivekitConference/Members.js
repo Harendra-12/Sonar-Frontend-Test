@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useIsRecording, useRoomContext } from '@livekit/components-react';
 import React, { useEffect, useState, useRef } from 'react';
-import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
+// import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
+import { generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
 
 /**
  * Members component manages the participants and recordings of a room.

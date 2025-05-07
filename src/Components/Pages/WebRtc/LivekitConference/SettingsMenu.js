@@ -4,7 +4,8 @@ import "@livekit/components-styles"; // Importing LiveKit styles
 import { useRoomContext, TrackToggle, MediaDeviceMenu } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import { useDispatch } from "react-redux";
-import { generalGetFunction } from "./GlobalFunction/globalFunction";
+import { generalGetFunction } from "../../../GlobalFunction/globalFunction";
+// import { generalGetFunction } from "./GlobalFunction/globalFunction";
 
 const SettingsMenu = () => {
     const room = useRoomContext();
