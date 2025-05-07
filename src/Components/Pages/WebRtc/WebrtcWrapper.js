@@ -32,12 +32,17 @@ import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
 import SmsChat from "./SmsChat";
 import CampaignLogin from "./CampaignLogin";
 import { toast } from "react-toastify";
+import Settings from "./Settings";
+import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
+import { ActionType } from "../../Redux/reduxActionType";
 import InitiateCall from "./LivekitConference/InitiateCall";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
+  const state = useSelector((state) => state);
+  const volume = state?.volume;
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
@@ -104,6 +109,41 @@ const WebrtcWrapper = () => {
 
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
+
+  const audioRef = useRef(null);
+  const audioCtxRef = useRef(null);
+  const gainNodeRef = useRef(null);
+  const analyserRef = useRef(null);
+  const audio = new Audio(ringtone);
+
+  useEffect(() => {
+    if (!audioCtxRef.current) {
+      const audioCtx = new (window.AudioContext)();
+      audioCtxRef.current = audioCtx;
+
+      const track = audioCtx.createMediaElementSource(audio);
+      const gainNode = audioCtx.createGain();
+      gainNodeRef.current = gainNode;
+
+      track.connect(gainNode).connect(audioCtx.destination);
+
+      // audio.loop = true;
+      audioRef.current = audio;
+    }
+    dispatch({
+      type: ActionType?.SET_VOLUME,
+      payload: 1,
+    });
+  }, []);
+
+  // Adjust volume whenever it changes
+  useEffect(() => {
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = Number.isFinite(volume) ? volume : 1;
+      audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
+    }
+  }, [volume, activePage == "call"]);
+
 
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
@@ -433,6 +473,19 @@ const WebrtcWrapper = () => {
           <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />
         )}
 
+        {activePage === "nav-settings" &&
+          <Settings
+            audioRef={audioRef}
+            audioCtxRef={audioCtxRef}
+            gainNodeRef={gainNodeRef}
+            analyserRef={analyserRef}
+            volume={volume}
+            setVolume={{}}
+            allContactLoading={allContactLoading}
+            setAllContactLoading={setAllContactLoading}
+            audio={audio}
+          />}
+
         {activePage === "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
@@ -462,9 +515,9 @@ const WebrtcWrapper = () => {
             setSearchQuery={setCallSearchQuery}
             setFilterBy={setCallFilterBy}
             setLoading={setCallLoading}
-            setisLoading={setIsCallLoading}
+            setIsCallLoading={setIsCallLoading}
             loading={callloading}
-            isLoading={isCallLoading}
+            isCallLoading={isCallLoading}
           />
         )}
         {activePage === "all-contacts" && (
@@ -521,6 +574,9 @@ const WebrtcWrapper = () => {
           setactivePage={setactivePage}
           isMicOn={isMicOn}
           isVideoOn={isVideoOn}
+          audioRef={audioRef}
+          audio={audio}
+          gainNodeRef={gainNodeRef}
         />
 
         {/* Draggable Component */}

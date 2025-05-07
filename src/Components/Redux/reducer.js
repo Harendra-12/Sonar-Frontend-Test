@@ -1,3 +1,5 @@
+import { ActionType } from "./reduxActionType";
+
 // reducer.js
 var account = JSON.parse(localStorage.getItem("account"));
 var accountRefresh = 0;
@@ -364,6 +366,11 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, deletedNotificationId: action.deletedNotificationId }
       case "SET_INCOMINGCALL":
         return { ...state, incomingCall: action.incomingCall }
+    case ActionType?.SET_VOLUME: 
+      return {
+        ...state, 
+        volume: action?.payload
+      }
     default:
       return state;
   }

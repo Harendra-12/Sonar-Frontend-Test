@@ -358,6 +358,19 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
               </li>
 
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("nav-settings")}
+                  className={
+                    activePage === "nav-settings" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i class="fa-solid fa-gear"></i>
+                  </div>
+                  <div className="itemTitle">Settings</div>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
