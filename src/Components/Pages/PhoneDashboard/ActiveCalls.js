@@ -209,8 +209,9 @@ function ActiveCalls({ isWebrtc, filter }) {
     },
     {
       value: "whisper-aleg",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Whisper callee</div>,
-    }, {
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-ear-listen" /></button>Whisper callee</div>,
+    },
+    {
       value: "kill-call",
       label: <div className="d-flex py-2 align-items-center"><button className="tableButton delete me-2 ms-0"><i className=" fa-solid fa-phone-slash"></i></button>Hang Up</div>
     }
