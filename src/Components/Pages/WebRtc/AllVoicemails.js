@@ -1025,7 +1025,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                       <button className="audioCustomButton ms-1">
                                                         <i className="fa-sharp fa-solid fa-box-archive" />
                                                       </button> */}
-                                                      <AudioWaveformCommon audioUrl={audioURL} />
+                                                      <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item?.peak_json)} />
                                                     </div>
                                                   </td>
 
