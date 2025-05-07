@@ -43,6 +43,8 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
+  const [interCallSize, setInterCallSize] = useState({ width: '100vw', height: '100vh' });
+  const [interCallPosition, setInterCallPosition] = useState({ x: 0, y: 0 });
   const {
     sessions: sipSessions,
     sessionManager,
@@ -765,13 +767,54 @@ const WebrtcWrapper = () => {
       )}
 
       {calling ? (
-        <InitiateCall
-          from={account.id}
-          to={toUser}
-          name={account.name}
-          setCalling={setCalling}
-          meetingPage={meetingPage}
-        />
+        <Rnd
+          size={{ width: interCallSize.width, height: interCallSize.height }}
+          position={{ x: interCallPosition.x, y: interCallPosition.y }}
+          onDragStop={(e, d) => setInterCallPosition({ x: d.x, y: d.y })}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            setInterCallSize({
+              width: ref.style.width,
+              height: ref.style.height,
+            });
+            setInterCallPosition(position);
+          }}
+          minWidth={"290px"}
+          minHeight={"280px"}
+          maxWidth={"100vw"}
+          maxHeight={"100vh"}
+          dragHandleClassName="inter-call-drag-handle" // Specify draggable area
+        >
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              background: "transparent",
+              position: "relative",
+              zIndex: "999",
+            }}
+          >
+            <div
+              className="inter-call-drag-handle"
+              style={{
+                position: "absolute",
+                top: "110px",
+                width: "100%",
+                height: "50%",
+                zIndex: "9999",
+                background: "transparent",
+                cursor: "move",
+              }}
+            ></div>
+            <InitiateCall
+              from={account.id}
+              to={toUser}
+              name={account.name}
+              setCalling={setCalling}
+              meetingPage={meetingPage}
+            />
+          </div>
+        </Rnd>
+
       ) : (
         ""
       )}
