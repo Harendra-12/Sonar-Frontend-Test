@@ -5,8 +5,6 @@ import AudioTranscribe from "./AudioTranscribe";
 import { Rnd } from "react-rnd";
 
 const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
-    console.log("Peak data",peaksData);
-    
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
 
@@ -29,8 +27,9 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
     });
 
     useEffect(() => {
-        if (!waveformRef.current || !peaksData || !peaksData.peaks) return;
+        if (!waveformRef.current || !peaksData?.peaks) return;
 
+        // Initialize WaveSurfer
         wavesurfer.current = WaveSurfer.create({
             container: waveformRef.current,
             waveColor: "#656666",
@@ -40,9 +39,11 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
             height: 70,
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
+            backend: "MediaElement", // Use fast backend
             plugins: [hover],
         });
 
+        // Event listeners
         wavesurfer.current.on("decode", (dur) => setDuration(formatTime(dur)));
         wavesurfer.current.on("timeupdate", (time) => setCurrentTime(formatTime(time)));
         wavesurfer.current.on("ready", () => {
@@ -55,24 +56,13 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
             setIsPlaying(true);
         });
 
-        const loadAudio = async () => {
-            try {
-                const audioResp = await fetch(audioUrl);
-                if (!audioResp.ok) throw new Error("Failed to fetch audio");
-
-                const audioBlob = await audioResp.blob();
-                const blobUrl = URL.createObjectURL(audioBlob);
-
-                wavesurfer.current.load(blobUrl, peaksData.peaks); // Load audio with passed-in peaks
-
-                return () => URL.revokeObjectURL(blobUrl);
-            } catch (err) {
-                setError("Error loading audio: " + err.message);
-                console.error(err);
-            }
-        };
-
-        loadAudio();
+        // Load audio directly
+        try {
+            wavesurfer.current.load(audioUrl, peaksData.peaks);
+        } catch (err) {
+            setError("Error loading audio: " + err.message);
+            console.error(err);
+        }
 
         return () => {
             if (wavesurfer.current) {
