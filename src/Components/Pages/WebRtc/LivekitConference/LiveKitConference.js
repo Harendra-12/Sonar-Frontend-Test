@@ -22,7 +22,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
     return (
         <main data-lk-theme="default" style={{ height: '100vh' }} className={`${meetingPage === 'message' ? 'messageMeetingWrap' : ''} ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
             <button className="minimize" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
-            <div
+            {!isMinimize && <div
                 className="inter-call-drag-handle"
                 style={{
                     position: "absolute",
@@ -33,7 +33,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                     background: "transparent",
                     cursor: "move",
                 }}
-            ></div>
+            ></div>}
             <LiveKitRoom
                 token={token}
                 serverUrl={serverUrl}
