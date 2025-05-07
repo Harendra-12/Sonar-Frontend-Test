@@ -377,7 +377,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -961,13 +961,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -1681,6 +1681,16 @@ function Messages({
                       >
                         <i className="fa-regular fa-user-group"></i> Group
                       </button>
+                      <button
+                        onClick={() => setActiveTab("call")}
+                        className={
+                          activeTab === "call" ? "tabLink active" : "tabLink"
+                        }
+                        // effect="ripple"
+                        data-category="incoming"
+                      >
+                        <i class="fa-regular fa-phone"></i> Calls
+                      </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
                         className="tabLink"
@@ -1699,7 +1709,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                        // style={{ height: "calc(100vh - 270px)" }}
+                      // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -1745,9 +1755,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          // style={{
-                          //   borderBottom: "1px solid var(--border-color)",
-                          // }}
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1822,9 +1832,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -1873,7 +1883,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                          // style={{ borderBottom: "1px solid #ddd" }}
+                        // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {groups.map((item, index) => {
                             return (
@@ -1941,9 +1951,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -1955,7 +1965,7 @@ function Messages({
                                       {/* here we are showing recent group message */}
                                       <h5>
                                         {/* here showing last send message below of contact name */}
-                                      {item?.last_message_data?.message_text}
+                                        {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
                                   </div>{" "}
@@ -2182,6 +2192,87 @@ function Messages({
                         )}
                       </div>
                     </div>
+
+                  ) : activeTab === "call" ? (
+                    <div className="tab-content">
+                      <div
+                        className=""
+                      // style={{
+                      //   borderBottom: "1px solid var(--border-color)",
+                      // }}
+                      >
+                        {contact.map((item) => {
+                          return (
+                            <div
+                              data-bell={
+                                unreadMessage[item?.id]
+                                  ? unreadMessage[item?.id]
+                                  : ""
+                              }
+                              className={
+                                recipient[1] === item?.id
+                                  ? "contactListItem "
+                                  : "contactListItem callsItemDetails"
+                              }
+                            >
+                              <div
+
+                                className="w-100 "
+                              >
+                                <div className=" d-flex align-items-center">
+                                  <div
+                                    className="profileHolder"
+                                    id={
+                                      onlineUser.find(
+                                        (user) => user.id === item.id
+                                      )
+                                        ? "profileOnlineNav"
+                                        : "profileOfflineNav"
+                                    }
+                                  >
+                                    {accountDetails?.users?.find(
+                                      (acc) => acc.id === item.id
+                                    )?.profile_picture ? (
+                                      <img
+                                        src={
+                                          accountDetails?.users?.find(
+                                            (acc) => acc.id === item.id
+                                          )?.profile_picture
+                                        }
+                                        alt="profile"
+                                        onError={(e) =>
+                                          (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                        }
+                                      />
+                                    ) : (
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    )}
+                                  </div>
+                                  <div className="ms-3 flex-grow-1">
+                                    <p className=" justify-content-start">
+                                      {item?.name} <span className="missedCallArrow ms-2"><i class="fa-regular fa-arrow-up-right"></i></span>
+                                    </p>
+                                    <h5>
+                                      <span className=" text-end mb-0">
+                                        <p className="timeAgo">
+                                          {item?.last_message_data
+                                            ? formatRelativeTime(
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
+                                            : ""}
+                                        </p>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <button className="btn_call"><i class="fa-regular fa-phone"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   ) : (
                     <div className="tab-content">
                       <div
@@ -2277,7 +2368,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -2580,7 +2671,7 @@ function Messages({
                                                 recipient[1]
                                               )
                                             }
-                                            // className="removableTag"
+                                          // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -2712,7 +2803,7 @@ function Messages({
                             ) : (
                               <button
                                 // onClick={() => onSubmit("audio", recipient[0])}
-                                onClick={()=>{setMeetingPage("message"); setCalling(true);setToUser(recipient[1])}}
+                                onClick={() => { setMeetingPage("message"); setCalling(true); setToUser(recipient[1]) }}
                                 className="clearButton2"
                                 effect="ripple"
                               >
@@ -2806,376 +2897,376 @@ function Messages({
                       ) : (
                         ""
                       )}
-                        <div className="messageContent position-relative">
-                          {/* this is chat section (showing section of all input and output messages) */}
-                          <div className="messageList" ref={messageListRef}>
-                            {recipient[0] ? (
-                              <>
-                                {allMessage?.[
-                                  selectedChat === "groupChat"
-                                    ? recipient[0]
-                                    : recipient[1]
-                                ]?.map((item, index, arr) => {
-                                  const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                  const todayDate = new Date()
-                                    .toISOString()
-                                    ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                                  const isNewDate =
-                                    index === 0 ||
-                                    messageDate !==
-                                      arr[index - 1].time?.split(" ")[0];
+                      <div className="messageContent position-relative">
+                        {/* this is chat section (showing section of all input and output messages) */}
+                        <div className="messageList" ref={messageListRef}>
+                          {recipient[0] ? (
+                            <>
+                              {allMessage?.[
+                                selectedChat === "groupChat"
+                                  ? recipient[0]
+                                  : recipient[1]
+                              ]?.map((item, index, arr) => {
+                                const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
+                                const todayDate = new Date()
+                                  .toISOString()
+                                  ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                const isNewDate =
+                                  index === 0 ||
+                                  messageDate !==
+                                  arr[index - 1].time?.split(" ")[0];
 
-                                  return (
-                                    <React.Fragment key={index}>
-                                      {isNewDate && (
-                                        <div
-                                          className="dateHeader"
-                                          ref={(el) =>
-                                            (dateHeaderRefs.current[index] = el)
-                                          }
-                                        >
-                                          <p>
-                                            {messageDate === todayDate
-                                              ? "Today"
-                                              : messageDate}
-                                          </p>
-                                        </div>
-                                      )}
-                                      {!isAnyDateHeaderVisible && isNewDate && (
-                                        <div className="dateHeader sticky">
-                                          <p>
-                                            {messageDate === todayDate
-                                              ? "Today"
-                                              : messageDate}
-                                          </p>
-                                        </div>
-                                      )}
-                                      {/* Message content */}
-                                      {(
-                                        selectedChat === "groupChat"
-                                          ? item.from === account?.id
-                                          : item.from !== recipient[1]
-                                      ) ? (
-                                        <div className="messageItem sender">
-                                          <div className="second">
-                                            <div className="d-flex gap-3 ">
-                                              <div className=" ms-3 ">
-                                                <h6>
-                                                  <span>
-                                                    {item.time
-                                                      ?.split(" ")[1]
-                                                      ?.split(":")
-                                                      .slice(0, 2)
-                                                      .join(":")}
-                                                  </span>{" "}
-                                                  &nbsp;
-                                                  {item.user_name}
-                                                </h6>
-                                                <div className="">
-                                                  <DisplayFile
-                                                    key={index}
-                                                    item={item.body}
-                                                    index={index}
-                                                  />
-                                                </div>
+                                return (
+                                  <React.Fragment key={index}>
+                                    {isNewDate && (
+                                      <div
+                                        className="dateHeader"
+                                        ref={(el) =>
+                                          (dateHeaderRefs.current[index] = el)
+                                        }
+                                      >
+                                        <p>
+                                          {messageDate === todayDate
+                                            ? "Today"
+                                            : messageDate}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {!isAnyDateHeaderVisible && isNewDate && (
+                                      <div className="dateHeader sticky">
+                                        <p>
+                                          {messageDate === todayDate
+                                            ? "Today"
+                                            : messageDate}
+                                        </p>
+                                      </div>
+                                    )}
+                                    {/* Message content */}
+                                    {(
+                                      selectedChat === "groupChat"
+                                        ? item.from === account?.id
+                                        : item.from !== recipient[1]
+                                    ) ? (
+                                      <div className="messageItem sender">
+                                        <div className="second">
+                                          <div className="d-flex gap-3 ">
+                                            <div className=" ms-3 ">
+                                              <h6>
+                                                <span>
+                                                  {item.time
+                                                    ?.split(" ")[1]
+                                                    ?.split(":")
+                                                    .slice(0, 2)
+                                                    .join(":")}
+                                                </span>{" "}
+                                                &nbsp;
+                                                {item.user_name}
+                                              </h6>
+                                              <div className="">
+                                                <DisplayFile
+                                                  key={index}
+                                                  item={item.body}
+                                                  index={index}
+                                                />
                                               </div>
-                                              {item?.profile_picture ? (
-                                                <div className="profileHolder">
-                                                  <img
-                                                    src={item?.profile_picture}
-                                                    alt="profile"
-                                                    onError={(e) =>
-                                                      (e.target.src = require("../../assets/images/placeholder-image.webp"))
-                                                    }
-                                                  />
-                                                </div>
-                                              ) : (
-                                                <div
-                                                  className="profileHolder"
-                                                  id={"profileOfflineNav"}
-                                                >
-                                                  <i className="fa-light fa-user fs-5"></i>
-                                                </div>
-                                              )}
+                                            </div>
+                                            {item?.profile_picture ? (
+                                              <div className="profileHolder">
+                                                <img
+                                                  src={item?.profile_picture}
+                                                  alt="profile"
+                                                  onError={(e) =>
+                                                    (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                  }
+                                                />
+                                              </div>
+                                            ) : (
+                                              <div
+                                                className="profileHolder"
+                                                id={"profileOfflineNav"}
+                                              >
+                                                <i className="fa-light fa-user fs-5"></i>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="messageItem receiver">
+                                        <div className="second">
+                                          <div className="d-flex gap-3 ">
+                                            {item?.profile_picture ? (
+                                              <div className="profileHolder">
+                                                <img
+                                                  src={item?.profile_picture}
+                                                  alt="profile"
+                                                  onError={(e) =>
+                                                    (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                  }
+                                                />
+                                              </div>
+                                            ) : (
+                                              <div
+                                                className="profileHolder"
+                                                id={"profileOfflineNav"}
+                                              >
+                                                <i className="fa-light fa-user fs-5"></i>
+                                              </div>
+                                            )}
+
+                                            <div className=" ms-3 ">
+                                              <h6>
+                                                {item.user_name}
+                                                <span>
+                                                  {item.time
+                                                    ?.split(" ")[1]
+                                                    ?.split(":")
+                                                    .slice(0, 2)
+                                                    .join(":")}
+                                                </span>
+                                              </h6>
+                                              <div className="">
+                                                <DisplayFile
+                                                  item={item.body}
+                                                />
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
-                                      ) : (
-                                        <div className="messageItem receiver">
-                                          <div className="second">
-                                            <div className="d-flex gap-3 ">
-                                              {item?.profile_picture ? (
-                                                <div className="profileHolder">
-                                                  <img
-                                                    src={item?.profile_picture}
-                                                    alt="profile"
-                                                    onError={(e) =>
-                                                      (e.target.src = require("../../assets/images/placeholder-image.webp"))
-                                                    }
-                                                  />
-                                                </div>
-                                              ) : (
-                                                <div
-                                                  className="profileHolder"
-                                                  id={"profileOfflineNav"}
-                                                >
-                                                  <i className="fa-light fa-user fs-5"></i>
-                                                </div>
-                                              )}
 
-                                              <div className=" ms-3 ">
-                                                <h6>
-                                                  {item.user_name}
-                                                  <span>
-                                                    {item.time
-                                                      ?.split(" ")[1]
-                                                      ?.split(":")
-                                                      .slice(0, 2)
-                                                      .join(":")}
-                                                  </span>
-                                                </h6>
-                                                <div className="">
-                                                  <DisplayFile
-                                                    item={item.body}
-                                                  />
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                          {/* <div className="second">
+                                        {/* <div className="second">
                                            
                                            
                                           </div> */}
-                                        </div>
-                                      )}
-                                    </React.Fragment>
-                                  );
-                                })}
-                              </>
-                            ) : (
-                              <div className="startAJob">
-                                <div className="text-center mt-3">
-                                  <img
-                                    src={require("../../assets/images/empty-box.png")}
-                                    alt="Empty"
-                                  ></img>
-                                  <div>
-                                    <h5>
-                                      Please select a <b>Agent</b> to start{" "}
-                                      <span>a conversation</span>.
-                                    </h5>
-                                  </div>
+                                      </div>
+                                    )}
+                                  </React.Fragment>
+                                );
+                              })}
+                            </>
+                          ) : (
+                            <div className="startAJob">
+                              <div className="text-center mt-3">
+                                <img
+                                  src={require("../../assets/images/empty-box.png")}
+                                  alt="Empty"
+                                ></img>
+                                <div>
+                                  <h5>
+                                    Please select a <b>Agent</b> to start{" "}
+                                    <span>a conversation</span>.
+                                  </h5>
                                 </div>
                               </div>
-                            )}
-                          </div>
-                          {recipient[0] ? (
-                            <div className="messageInput textarea_inputTab">
-                              {emojiOpen && (
-                                <div
+                            </div>
+                          )}
+                        </div>
+                        {recipient[0] ? (
+                          <div className="messageInput textarea_inputTab">
+                            {emojiOpen && (
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  bottom: 180,
+                                  width: "auto",
+                                  height: "auto",
+                                }}
+                              >
+                                <EmojiPicker
+                                  onEmojiClick={handleEmojiClick}
+                                  open={emojiOpen}
+                                />
+                                <button
+                                  className="clearButton2"
                                   style={{
                                     position: "absolute",
-                                    bottom: 180,
-                                    width: "auto",
-                                    height: "auto",
+                                    bottom: 15,
+                                    right: 10,
+                                    zIndex: 9,
                                   }}
+                                  onClick={() => setEmojiOpen(!emojiOpen)}
                                 >
-                                  <EmojiPicker
-                                    onEmojiClick={handleEmojiClick}
-                                    open={emojiOpen}
-                                  />
+                                  <i className="fa-solid fa-xmark"></i>
+                                </button>
+                              </div>
+                            )}
+                            <div className="col-12">
+                              <nav>
+                                <div
+                                  className="nav nav-tabs"
+                                  id="nav-tab"
+                                  role="tablist"
+                                >
                                   <button
-                                    className="clearButton2"
-                                    style={{
-                                      position: "absolute",
-                                      bottom: 15,
-                                      right: 10,
-                                      zIndex: 9,
-                                    }}
-                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                    className="tabLink active"
+                                    id="nav-im-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-im"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-im"
+                                    aria-selected="true"
                                   >
-                                    <i className="fa-solid fa-xmark"></i>
+                                    IM
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-sms-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    SMS
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-whatsapp-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    // onClick={() => featureUnderdevelopment()}
+                                    onClick={() =>
+                                      setactivePage("whatsapp-chartbox")
+                                    }
+                                  >
+                                    WhatsApp
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-messenger-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-messenger"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-messenger"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Messenger
                                   </button>
                                 </div>
-                              )}
-                              <div className="col-12">
-                                <nav>
-                                  <div
-                                    className="nav nav-tabs"
-                                    id="nav-tab"
-                                    role="tablist"
-                                  >
-                                    <button
-                                      className="tabLink active"
-                                      id="nav-im-tab"
-                                      data-bs-toggle="tab"
-                                      data-bs-target="#nav-im"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="nav-im"
-                                      aria-selected="true"
-                                    >
-                                      IM
-                                    </button>
-                                    <button
-                                      className="tabLink"
-                                      id="nav-sms-tab"
-                                      // data-bs-toggle="tab"
-                                      // data-bs-target="#nav-whatsapp"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="nav-whatsapp"
-                                      aria-selected="false"
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      SMS
-                                    </button>
-                                    <button
-                                      className="tabLink"
-                                      id="nav-whatsapp-tab"
-                                      // data-bs-toggle="tab"
-                                      // data-bs-target="#nav-whatsapp"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="nav-whatsapp"
-                                      aria-selected="false"
-                                      // onClick={() => featureUnderdevelopment()}
-                                      onClick={() =>
-                                        setactivePage("whatsapp-chartbox")
-                                      }
-                                    >
-                                      WhatsApp
-                                    </button>
-                                    <button
-                                      className="tabLink"
-                                      id="nav-messenger-tab"
-                                      // data-bs-toggle="tab"
-                                      // data-bs-target="#nav-messenger"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="nav-messenger"
-                                      aria-selected="false"
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      Messenger
-                                    </button>
-                                  </div>
-                                </nav>
-                              </div>
-                              <div className="d-flex w-100">
+                              </nav>
+                            </div>
+                            <div className="d-flex w-100">
+                              <div
+                                className="tab-content textSms me-2"
+                                id="nav-tabContent"
+                              >
                                 <div
-                                  className="tab-content textSms me-2"
-                                  id="nav-tabContent"
+                                  className="tab-pane fade show active"
+                                  id="nav-im"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-im-tab"
                                 >
-                                  <div
-                                    className="tab-pane fade show active"
-                                    id="nav-im"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-im-tab"
-                                  >
-                                    {/* {selectedFile && (
+                                  {/* {selectedFile && (
                                   <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
                                     📎 {selectedFile.name}
                                   </div>
                                 )} */}
-                                    <div className="w-100">
-                                      <textarea
-                                        type="text"
-                                        rows={1}
-                                        name=""
-                                        className="formItem "
-                                        placeholder="Please enter your message"
-                                        value={messageInput}
-                                        onChange={(e) =>
-                                          setMessageInput(e.target.value)
-                                        }
-                                        onKeyDown={(e) => {
-                                          if (e.key === "Enter") {
-                                            if (recipient[2] === "groupChat") {
-                                              sendGroupMessage();
-                                            } else {
-                                              sendSingleMessage();
-                                            }
+                                  <div className="w-100">
+                                    <textarea
+                                      type="text"
+                                      rows={1}
+                                      name=""
+                                      className="formItem "
+                                      placeholder="Please enter your message"
+                                      value={messageInput}
+                                      onChange={(e) =>
+                                        setMessageInput(e.target.value)
+                                      }
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          if (recipient[2] === "groupChat") {
+                                            sendGroupMessage();
+                                          } else {
+                                            sendSingleMessage();
                                           }
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className="tab-pane fade"
-                                    id="nav-whatsapp"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-whatsapp-tab"
-                                  >
-                                    ...
-                                  </div>
-                                  <div
-                                    className="tab-pane fade"
-                                    id="nav-messenger"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-messenger-tab"
-                                  >
-                                    ...
+                                        }
+                                      }}
+                                    />
                                   </div>
                                 </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-whatsapp"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-whatsapp-tab"
+                                >
+                                  ...
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-messenger"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-messenger-tab"
+                                >
+                                  ...
+                                </div>
+                              </div>
 
-                                <div className=" d-flex justify-content-between align-items-start gap-2">
-                                  <div className="d-flex gap-1">
-                                    <button
-                                      className="clearButton2 eraser"
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      <i className="fa-light fa-eraser" />
-                                    </button>
-                                    <button
-                                      className="clearButton2 gallery"
-                                      onClick={() => {
-                                        setFileUpload(true);
-                                        setFileType("image");
-                                      }}
-                                    >
-                                      <i className="fa-regular fa-image"></i>
-                                    </button>
-                                    <button
-                                      className="clearButton2 link"
-                                      onClick={() => {
-                                        setFileUpload(true);
-                                        setFileType("all");
-                                      }}
-                                    >
-                                      <i className="fa-solid fa-paperclip"></i>
-                                    </button>
-                                    <button
-                                      className="clearButton2 emoji"
-                                      onClick={() => setEmojiOpen(!emojiOpen)}
-                                    >
-                                      <i className="fa-regular fa-face-smile"></i>
-                                    </button>
-                                  </div>
-                                  <div>
-                                    <button
-                                      effect="ripple"
-                                      className="clearColorButton dark"
-                                      onClick={() => {
-                                        if (recipient[2] === "groupChat") {
-                                          sendGroupMessage();
-                                        } else {
-                                          sendSingleMessage();
-                                        }
-                                      }}
-                                    >
-                                      {/* Send Now{" "} */}
-                                      <i className="fa-solid fa-paper-plane-top" />
-                                    </button>
-                                  </div>
+                              <div className=" d-flex justify-content-between align-items-start gap-2">
+                                <div className="d-flex gap-1">
+                                  <button
+                                    className="clearButton2 eraser"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    <i className="fa-light fa-eraser" />
+                                  </button>
+                                  <button
+                                    className="clearButton2 gallery"
+                                    onClick={() => {
+                                      setFileUpload(true);
+                                      setFileType("image");
+                                    }}
+                                  >
+                                    <i className="fa-regular fa-image"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 link"
+                                    onClick={() => {
+                                      setFileUpload(true);
+                                      setFileType("all");
+                                    }}
+                                  >
+                                    <i className="fa-solid fa-paperclip"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 emoji"
+                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                  >
+                                    <i className="fa-regular fa-face-smile"></i>
+                                  </button>
+                                </div>
+                                <div>
+                                  <button
+                                    effect="ripple"
+                                    className="clearColorButton dark"
+                                    onClick={() => {
+                                      if (recipient[2] === "groupChat") {
+                                        sendGroupMessage();
+                                      } else {
+                                        sendSingleMessage();
+                                      }
+                                    }}
+                                  >
+                                    {/* Send Now{" "} */}
+                                    <i className="fa-solid fa-paper-plane-top" />
+                                  </button>
                                 </div>
                               </div>
                             </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </div>
                   </div>
                   {/* </Panel> */}
@@ -3338,7 +3429,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3484,7 +3575,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                        isAdmin ? (
+                                          isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -3578,7 +3669,7 @@ function Messages({
                         width: isActiveAgentsOpen ? "30%" : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
@@ -3599,14 +3690,13 @@ function Messages({
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${
-                              isActiveAgentsOpen ? "right" : "left"
-                            }`}
+                            className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"
+                              }`}
                           />
                         </button>
                         <div
                           className=" h-100"
-                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           <MessageProfileDetails

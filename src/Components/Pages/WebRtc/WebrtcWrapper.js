@@ -775,7 +775,7 @@ const WebrtcWrapper = () => {
       ) : (
         ""
       )}
-      {/* <div className="messageIncomingPopup">
+      <div className="messageIncomingPopup">
         <div className="incomingCallPopup ">
           <div className="d-flex justify-content-between w-100 align-items-center gap-2">
             <div className="user">
@@ -783,12 +783,14 @@ const WebrtcWrapper = () => {
                 <i className="fa-solid fa-user" />
               </div>
               <div className="userInfo col-12 mt-0">
-                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
+                <h5 className="fw-medium text-white mb-0 ellipsisText">Ravoi raj</h5>
               </div>
             </div>
             <div className="controls">
-              <button className="callButton">
+              <button className="callButton ">
                 <i className="fa-duotone fa-phone"></i>
+                <div className="circle1"></div>
+                <div className="circle2"></div>
               </button>
               <button className="callButton hangup me-0">
                 <i className="fa-duotone fa-phone-hangup"></i>
@@ -804,12 +806,14 @@ const WebrtcWrapper = () => {
                 <i className="fa-solid fa-user" />
               </div>
               <div className="userInfo col-12 mt-0">
-                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
+                <h5 className="fw-medium text-white mb-0 ellipsisText">Ravoi raj</h5>
               </div>
             </div>
             <div className="controls">
               <button className="callButton">
                 <i className="fa-duotone fa-phone"></i>
+                <div className="circle1"></div>
+                <div className="circle2"></div>
               </button>
               <button className="callButton hangup me-0">
                 <i className="fa-duotone fa-phone-hangup"></i>
@@ -818,7 +822,7 @@ const WebrtcWrapper = () => {
           </div>
         </div>
 
-      </div> */}
+      </div>
 
     </>
   );

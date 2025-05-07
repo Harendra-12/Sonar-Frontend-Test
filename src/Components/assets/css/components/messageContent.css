@@ -1459,12 +1459,12 @@
     position: unset;
     transform: unset;
     min-width: unset;
-    min-height: 70px;
-    /* border-radius: 10px; */
-    border-radius: 50px;
+    min-height: 80px;
+    border-radius: 10px;
+    /* border-radius: 50px; */
     width: 100%;
     /* padding: 10px 30px; */
-    padding: 11px 14px;
+    padding: 10px 14px;
 }
 
 .messageIncomingPopup .incomingCallPopup .user {
@@ -1479,6 +1479,17 @@
     gap: 15px;
     margin: 0;
 }
+
 .messageIncomingPopup .callButton {
     margin: 0;
 }
+
+.messageIncomingPopup .incomingCallPopup .userHolder {
+    height: 40px;
+    width: 40px;
+}
+
+.messageIncomingPopup .incomingCallPopup .userHolder i {
+    font-size: 20px;
+}
+
