@@ -414,6 +414,7 @@ function CdrFilterReport({ page }) {
     createdAt,
     locationState
   ]);
+console.log("Cdr",cdr);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -1543,7 +1544,7 @@ function CdrFilterReport({ page }) {
                                             <tr>
                                               <td colSpan="17">
                                                 <div className="audio-container mx-2">
-                                                  <AudioWaveformCommon audioUrl={audioURL} />
+                                                  <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item.peak_json)} />
                                                 </div>
                                               </td>
                                             </tr>

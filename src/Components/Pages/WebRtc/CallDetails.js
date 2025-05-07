@@ -709,7 +709,7 @@ function CallDetails({
                                     >
                                       <td colSpan={8}>
                                         <div className="audio-container">
-                                          <AudioWaveformCommon audioUrl={audioURL} />
+                                          <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item.peak_json)} />
                                           {/* <audio
                                             controls={true}
                                             ref={thisAudioRef}

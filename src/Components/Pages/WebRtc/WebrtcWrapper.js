@@ -48,6 +48,9 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
+  const [interCallSize, setInterCallSize] = useState({ width: '100vw', height: '100vh' });
+  const [interCallPosition, setInterCallPosition] = useState({ x: 0, y: 0 });
+  const [interCallMinimize, setInterCallMinimize] = useState(true);
   const {
     sessions: sipSessions,
     sessionManager,
@@ -430,6 +433,13 @@ const WebrtcWrapper = () => {
       // setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (interCallMinimize) {
+      setInterCallSize({ width: '100vw', height: '100vh' });
+      setInterCallPosition({ x: 0, y: 0 });
+    }
+  }, [interCallMinimize])
 
   return (
     <>
@@ -821,16 +831,50 @@ const WebrtcWrapper = () => {
       )}
 
       {calling ? (
-        <InitiateCall
-          from={account.id}
-          to={toUser}
-          name={account.name}
-          setCalling={setCalling}
-          meetingPage={meetingPage}
-        />
+        <Rnd
+          size={{ width: interCallSize.width, height: interCallSize.height }}
+          position={{ x: interCallPosition.x, y: interCallPosition.y }}
+          onDragStop={(e, d) => setInterCallPosition({ x: d.x, y: d.y })}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            setInterCallSize({
+              width: ref.style.width,
+              height: ref.style.height,
+            });
+            setInterCallPosition(position);
+          }}
+          minWidth={"290px"}
+          minHeight={"280px"}
+          maxWidth={"100vw"}
+          maxHeight={"100vh"}
+          dragHandleClassName="inter-call-drag-handle" // Specify draggable area
+          disableDragging={interCallMinimize}
+          enableResizing={false}
+        >
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              background: "transparent",
+              position: "relative",
+              zIndex: "999",
+            }}
+          >
+            <InitiateCall
+              from={account.id}
+              to={toUser}
+              name={account.name}
+              setCalling={setCalling}
+              meetingPage={meetingPage}
+              interCallMinimize={interCallMinimize}
+              setInterCallMinimize={setInterCallMinimize}
+            />
+          </div>
+        </Rnd>
+
       ) : (
         ""
       )}
+
       {/* <div className="messageIncomingPopup">
         <div className="incomingCallPopup ">
           <div className="d-flex justify-content-between w-100 align-items-center gap-2">
