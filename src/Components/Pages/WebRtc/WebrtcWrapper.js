@@ -901,7 +901,10 @@ const WebrtcWrapper = () => {
                     setInternalCaller(incomingCall.sender_id);
                     setToUser(account.id);
                     setCalling(true);
-                    dispatch({ type: "SET_INCOMINGCALL", incomingCall: null });
+                    setTimeout(()=>{
+                      dispatch({ type: "SET_INCOMINGCALL", incomingCall: null });
+                    },2000)
+                   
                   }}
                 >
                   <i className="fa-duotone fa-phone"></i>
