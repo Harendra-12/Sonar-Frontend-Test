@@ -247,7 +247,17 @@ function Messages({
             new Date(b?.last_message_data?.created_at) -
             new Date(a?.last_message_data?.created_at)
         );
-        setContact(filteredData);
+        const updatedFilteredData = filteredData?.map((data) => ({
+          ...data,
+          last_message_data: {
+            ...data?.last_message_data,
+            message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
+              ? data?.last_message_data?.message_text
+              : checkMessageType(data?.last_message_data?.message_text)
+          }
+        }));
+        
+        setContact(updatedFilteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find(
             (data) => data?.id == apiData?.data[0]?.id
@@ -272,7 +282,7 @@ function Messages({
       setLoading(false);
     }
     getData();
-  }, [contactRefresh]);
+  }, [contactRefresh, allAgents?.length == 0]);
 
   // useEffect(() => {
   //   setContactRefresh(contactRefresh + 1)
@@ -484,7 +494,13 @@ function Messages({
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
-      newContact[contactIndex].last_message_data.message_text = messageInput;
+      let lastMessage = ""
+      if(selectedFile){
+        lastMessage = selectedFile?.type
+      }else{
+        lastMessage = messageInput
+      }
+      newContact[contactIndex].last_message_data.message_text = lastMessage;
       newContact[contactIndex].last_message_data.created_at = time;
       newContact?.splice(contactIndex, 1);
       newContact.unshift(contact[contactIndex]);

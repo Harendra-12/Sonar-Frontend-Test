@@ -83,9 +83,9 @@ function Call({
   setSearchQuery,
   setFilterBy,
   setIsLoading,
-  setLoading,
+  setIsCallLoading,
   loading,
-  isLoading
+  isCallLoading
 
 
 }) {
@@ -121,14 +121,14 @@ function Call({
   const handleScroll = () => {
     const div = callListRef.current;
     if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
-      if (!isLoading && rawData.current_page !== rawData?.last_page) {
+      if (!isCallLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
     }
   };
   // Function to handle logout
   const handleLogOut = async () => {
-    setLoading(true);
+    setIsCallLoading(true);
     try {
       const apiResponses = await logout(
         allCallCenterIds,
@@ -139,7 +139,7 @@ function Call({
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      setIsCallLoading(false);
     }
   };
   function handleHideDialpad(value) {
@@ -657,6 +657,10 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
+  const handleRefresh = () => {
+    setIsCallLoading(true)
+    dispatch({ type: "SET_CALLREFRESH", refreshCalls: refreshCalls + 1 })
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -676,7 +680,12 @@ function Call({
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"Calls"} loading={loading} setLoading={setLoading} refreshApi={() => dispatch({ type: "SET_CALLREFRESH", refreshCalls: refreshCalls + 1 })} />
+                <HeaderApp
+                  title={"Calls"}
+                  loading={isCallLoading}
+                  setLoading={setIsCallLoading}
+                  refreshApi={handleRefresh}
+                />
               </div>
 
               <div className="col-12 col-xl-6 col-xxl-5 allCallHistory">
@@ -862,11 +871,11 @@ function Call({
                           </div>
                         </div>
                       )}
-                      {isLoading ? (
+                      {isCallLoading ? (
                         <div className="text-center">
                           <i
                             className={
-                              isLoading
+                              isCallLoading
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                 : "fa-regular fa-arrows-rotate fs-5 "
                             }

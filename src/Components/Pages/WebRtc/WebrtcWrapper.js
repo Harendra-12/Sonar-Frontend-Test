@@ -499,9 +499,9 @@ const WebrtcWrapper = () => {
             setSearchQuery={setCallSearchQuery}
             setFilterBy={setCallFilterBy}
             setLoading={setCallLoading}
-            setisLoading={setIsCallLoading}
+            setIsCallLoading={setIsCallLoading}
             loading={callloading}
-            isLoading={isCallLoading}
+            isCallLoading={isCallLoading}
           />
         )}
         {activePage === "all-contacts" && (
