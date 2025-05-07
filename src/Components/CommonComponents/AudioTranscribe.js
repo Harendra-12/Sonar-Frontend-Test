@@ -61,7 +61,7 @@ function AudioTranscribe({ url }) {
                                     </span>
                                 )
                             })}</p>
-                    }
+                    } 
                 </div>
             </div>
         </div>
