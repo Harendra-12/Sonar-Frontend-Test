@@ -43,7 +43,10 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
-  const [interCallSize, setInterCallSize] = useState({ width: '100vw', height: '100vh' });
+  const [interCallSize, setInterCallSize] = useState({
+    width: "100vw",
+    height: "100vh",
+  });
   const [interCallPosition, setInterCallPosition] = useState({ x: 0, y: 0 });
   const [interCallMinimize, setInterCallMinimize] = useState(true);
   const {
@@ -95,6 +98,9 @@ const WebrtcWrapper = () => {
   const [calling, setCalling] = useState(false);
   const [meetingPage, setMeetingPage] = useState();
   const [toUser, setToUser] = useState(null);
+  const incomingCall = useSelector((state) => state.incomingCall);
+  const [internalCaller, setInternalCaller] = useState(account.id);
+  console.log("Incoming calls", incomingCall);
 
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
@@ -396,10 +402,10 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     if (interCallMinimize) {
-      setInterCallSize({ width: '100vw', height: '100vh' });
+      setInterCallSize({ width: "100vw", height: "100vh" });
       setInterCallPosition({ x: 0, y: 0 });
     }
-  }, [interCallMinimize])
+  }, [interCallMinimize]);
 
   return (
     <>
@@ -574,7 +580,7 @@ const WebrtcWrapper = () => {
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
                   allContact={allContact}
-                // globalSession={sessions}
+                  // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -695,7 +701,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
@@ -804,7 +810,7 @@ const WebrtcWrapper = () => {
             }}
           >
             <InitiateCall
-              from={account.id}
+              from={internalCaller}
               to={toUser}
               name={account.name}
               setCalling={setCalling}
@@ -814,56 +820,44 @@ const WebrtcWrapper = () => {
             />
           </div>
         </Rnd>
-
       ) : (
         ""
       )}
 
-      {/* <div className="messageIncomingPopup">
-        <div className="incomingCallPopup ">
-          <div className="d-flex justify-content-between w-100 align-items-center gap-2">
-            <div className="user">
-              <div className="userHolder col-12">
-                <i className="fa-solid fa-user" />
+      {incomingCall && (
+        <div className="messageIncomingPopup">
+          <div className="incomingCallPopup ">
+            <div className="d-flex justify-content-between w-100 align-items-center gap-2">
+              <div className="user">
+                <div className="userHolder col-12">
+                  <i className="fa-solid fa-user" />
+                </div>
+                <div className="userInfo col-12 mt-0">
+                  <h5 className="fw-medium text-white mb-0">
+                    Calling from {incomingCall.sender_id}
+                  </h5>
+                </div>
               </div>
-              <div className="userInfo col-12 mt-0">
-                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
+              <div className="controls">
+                <button
+                  className="callButton"
+                  onClick={() => {
+                    setInternalCaller(incomingCall.sender_id);
+                    setToUser(account.id);
+                    setCalling(true);
+                    dispatch({ type: "SET_INCOMINGCALL", incomingCall: null });
+                  }}
+                >
+                  <i className="fa-duotone fa-phone"></i>
+                </button>
+                <button className="callButton hangup me-0" onClick={()=>dispatch({ type: "SET_INCOMINGCALL", incomingCall: null })}>
+                  <i className="fa-duotone fa-phone-hangup"></i>
+                </button>
               </div>
-            </div>
-            <div className="controls">
-              <button className="callButton">
-                <i className="fa-duotone fa-phone"></i>
-              </button>
-              <button className="callButton hangup me-0">
-                <i className="fa-duotone fa-phone-hangup"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="incomingCallPopup ">
-          <div className="d-flex justify-content-between w-100 align-items-center gap-2">
-            <div className="user">
-              <div className="userHolder col-12">
-                <i className="fa-solid fa-user" />
-              </div>
-              <div className="userInfo col-12 mt-0">
-                <h5 className="fw-medium text-white mb-0">Ravoi raj</h5>
-              </div>
-            </div>
-            <div className="controls">
-              <button className="callButton">
-                <i className="fa-duotone fa-phone"></i>
-              </button>
-              <button className="callButton hangup me-0">
-                <i className="fa-duotone fa-phone-hangup"></i>
-              </button>
             </div>
           </div>
         </div>
-
-      </div> */}
-
+      )}
     </>
   );
 };

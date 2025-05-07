@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
 import { useSIPProvider, CONNECT_STATUS } from "modify-react-sipjs";
 import AgentSearch from "./AgentSearch";
-import InitiateCall from "./LivekitConference/InitiateCall"
+import InitiateCall from "./LivekitConference/InitiateCall";
 import {
   featureUnderdevelopment,
   generalDeleteFunction,
@@ -52,7 +52,7 @@ function Messages({
   setExtensionFromCdrMessage,
   setCalling,
   setToUser,
-  setMeetingPage
+  setMeetingPage,
 }) {
   const dispatch = useDispatch();
   const { sendMessage } = Socket();
@@ -377,7 +377,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+            chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -961,13 +961,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -1699,7 +1699,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                      // style={{ height: "calc(100vh - 270px)" }}
+                        // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -1745,9 +1745,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                        // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
-                        // }}
+                          // style={{
+                          //   borderBottom: "1px solid var(--border-color)",
+                          // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1822,9 +1822,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -1873,7 +1873,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                        // style={{ borderBottom: "1px solid #ddd" }}
+                          // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {groups.map((item, index) => {
                             return (
@@ -1941,9 +1941,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -2277,7 +2277,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -2580,7 +2580,7 @@ function Messages({
                                                 recipient[1]
                                               )
                                             }
-                                          // className="removableTag"
+                                            // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -2712,7 +2712,18 @@ function Messages({
                             ) : (
                               <button
                                 // onClick={() => onSubmit("audio", recipient[0])}
-                                onClick={() => { setMeetingPage("message"); setCalling(true); setToUser(recipient[1]) }}
+                                onClick={() => {
+                                  setMeetingPage("message");
+                                  setToUser(recipient[1]);
+                                  setCalling(true);
+                                  sendMessage({
+                                    action: "peercall",
+                                    from: account.id,
+                                    to: recipient[1],
+                                    room_id: `${account.id}-${recipient[1]}`,
+                                    call_type: "audio",
+                                  });
+                                }}
                                 className="clearButton2"
                                 effect="ripple"
                               >
@@ -2823,7 +2834,7 @@ function Messages({
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                  arr[index - 1].time?.split(" ")[0];
+                                    arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -2935,9 +2946,7 @@ function Messages({
                                                 </span>
                                               </h6>
                                               <div className="">
-                                                <DisplayFile
-                                                  item={item.body}
-                                                />
+                                                <DisplayFile item={item.body} />
                                               </div>
                                             </div>
                                           </div>
@@ -3338,7 +3347,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3484,7 +3493,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                          isAdmin ? (
+                                        isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -3578,7 +3587,7 @@ function Messages({
                         width: isActiveAgentsOpen ? "30%" : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
@@ -3599,13 +3608,14 @@ function Messages({
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"
-                              }`}
+                            className={`fa-solid fa-chevron-${
+                              isActiveAgentsOpen ? "right" : "left"
+                            }`}
                           />
                         </button>
                         <div
                           className=" h-100"
-                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           <MessageProfileDetails

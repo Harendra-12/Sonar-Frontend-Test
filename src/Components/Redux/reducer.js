@@ -87,6 +87,7 @@ var refreshCalls = 0;
 var adminLogout = false; // Flag to track admin logout
 var incomingMessage = null;
 var deletedNotificationId = null; // State to track deleted notification ID
+var incomingCall = null
 
 const initialState = {
   account,
@@ -175,7 +176,8 @@ const initialState = {
   refreshCalls,
   adminLogout,
   incomingMessage,
-  deletedNotificationId
+  deletedNotificationId,
+  incomingCall
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -360,6 +362,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, logout: action.logout };
     case "SET_DELETEDNOTIFFID":
       return { ...state, deletedNotificationId: action.deletedNotificationId }
+      case "SET_INCOMINGCALL":
+        return { ...state, incomingCall: action.incomingCall }
     default:
       return state;
   }

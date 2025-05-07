@@ -4,11 +4,8 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /**
- * Establishes a WebSocket connection to a specified server using account information
- * from Redux state and token from localStorage. Manages connection states and handles
- * incoming WebSocket messages, updating Redux store accordingly. Attempts to reconnect 
- * if the connection is lost, unless the user is logged out. Provides a method to send 
- * messages over the WebSocket connection.
+ * Manages a single WebSocket connection, ensuring no duplicate sessions,
+ * and reconnecting safely when needed unless the user is logged out.
  */
 
 const Socket = () => {
@@ -22,7 +19,9 @@ const Socket = () => {
   const socketRef = useRef(null);
   const connectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
+  const reconnectTimeoutRef = useRef(null);
   const prevTokenRef = useRef(null);
+
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data));
@@ -35,63 +34,54 @@ const Socket = () => {
     const connectWebSocket = () => {
       const currentToken = localStorage.getItem("token");
 
-      // Abort if user is logged out or token is missing
       if (isLogOut === 1 || !currentToken) {
         console.warn("WebSocket connection aborted: User is logged out or token is missing.");
         return;
       }
 
-      // Don't reconnect if the socket is already open and token hasn’t changed
       if (
         socketRef.current &&
-        socketRef.current.readyState === WebSocket.OPEN &&
+        (socketRef.current.readyState === WebSocket.OPEN ||
+          socketRef.current.readyState === WebSocket.CONNECTING) &&
         prevTokenRef.current === currentToken
       ) {
+        console.log("WebSocket already connected or connecting.");
         return;
       }
 
-      // Prevent multiple parallel connection attempts
-      if (connectingRef.current) {
-        return;
-      }
+      if (connectingRef.current) return;
 
-      // Close existing socket if token changed or socket not open
       if (socketRef.current) {
         socketRef.current.close();
       }
 
       connectingRef.current = true;
+      console.log("Connecting WebSocket...");
 
       const socket = new WebSocket(`wss://${ip}:${port}?token=${currentToken}`);
 
       socket.onopen = () => {
+        console.log("WebSocket connected.");
         reconnectAttemptsRef.current = 0;
         connectingRef.current = false;
         prevTokenRef.current = currentToken;
       };
 
       socket.onmessage = (event) => {
-        const parsedData = (event.data);
+        const parsedData = event.data;
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result, current_time } = message;
 
           switch (key) {
-            // case "OnlineExtensions":
-            //   dispatch({
-            //     type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
-            //   break;
-            // case "onlineUser":
-            //   dispatch({ type: "SET_LOGINUSER", loginUser: result });
-            //   break;
-            // case "Balance":
-            //   dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
-            //   break;
             case "CallState":
               dispatch({ type: "SET_CALLSTATE", callState: result });
               break;
             case "ChannelHangupComplete":
-              dispatch({ type: "SET_CHANNELHANGUP", channelHangupComplete: result });
+              dispatch({
+                type: "SET_CHANNELHANGUP",
+                channelHangupComplete: result,
+              });
               if (Number(result.account_id) === Number(account.account_id)) {
                 dispatch({ type: "SET_BALANCE", balance: message.balance });
               }
@@ -99,30 +89,49 @@ const Socket = () => {
             case "activeCalls":
               dispatch({
                 type: "SET_ACTIVECALL",
-                activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
+                activeCall: result
+                  .filter(
+                    (item) =>
+                      item.application_state !== "conference" &&
+                      item.account_id == account.account_id
+                  )
+                  .map((item) => ({ ...item, serverTime: current_time })),
               });
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
             case "logout_warning":
-              
               dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
               break;
             case "screenShare":
-              dispatch({ type: "SET_CONFERENCESCREENSHARESTATUS", conferenceScreenShareStatus: result, });
+              dispatch({
+                type: "SET_CONFERENCESCREENSHARESTATUS",
+                conferenceScreenShareStatus: result,
+              });
               break;
             case "broadcastGroupMessage":
               dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
               break;
             case "conferenceMessage":
-              if (result["room_id"] == RoomID) {dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result }); }
+              if (result["room_id"] == RoomID) {
+                dispatch({
+                  type: "SET_CONFERENCEMESSAGE",
+                  conferenceMessage: result,
+                });
+              }
               break;
             case "clientMsg":
-              dispatch({ type:"SET_INCOMING_MESSAGE", incomingMessage: result });
+              dispatch({
+                type: "SET_INCOMING_MESSAGE",
+                incomingMessage: result,
+              });
               break;
             case "progressive":
               dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
+              break;
+            case "clientCall":
+              dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
               break;
             default:
               break;
@@ -139,8 +148,13 @@ const Socket = () => {
         console.warn("WebSocket closed.");
         connectingRef.current = false;
         if (reconnectAttemptsRef.current < 5 && !isLogOut) {
-          reconnectAttemptsRef.current++;
-          setTimeout(connectWebSocket, 5000);
+          if (!reconnectTimeoutRef.current) {
+            reconnectAttemptsRef.current++;
+            reconnectTimeoutRef.current = setTimeout(() => {
+              reconnectTimeoutRef.current = null;
+              connectWebSocket();
+            }, 5000);
+          }
         }
       };
 
@@ -154,6 +168,9 @@ const Socket = () => {
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
+      }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
       }
     };
   }, [account, ip, port, isLogOut]);

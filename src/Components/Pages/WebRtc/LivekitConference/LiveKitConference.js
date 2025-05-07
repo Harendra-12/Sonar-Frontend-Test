@@ -7,7 +7,7 @@ import Members from "./Members";
 import { RecordingIndicator } from "./RecordingIndicator";
 
 
-const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, meetingPage, isMinimize, setIsMinimize }) => {
+const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize }) => {
     const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
     };
 
     return (
-        <main data-lk-theme="default" style={{ height: '100vh' }} className={`${meetingPage === 'message' ? 'messageMeetingWrap' : ''} ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
+        <main data-lk-theme="default" style={{ height: '100vh' }} className={`messageMeetingWrap ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
             <button className="minimize" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
             <div
                 className="inter-call-drag-handle"
