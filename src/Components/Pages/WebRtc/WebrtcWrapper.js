@@ -45,6 +45,7 @@ const WebrtcWrapper = () => {
   const [position, setPosition] = useState({ x: 700, y: 300 });
   const [interCallSize, setInterCallSize] = useState({ width: '100vw', height: '100vh' });
   const [interCallPosition, setInterCallPosition] = useState({ x: 0, y: 0 });
+  const [interCallMinimize, setInterCallMinimize] = useState(true);
   const {
     sessions: sipSessions,
     sessionManager,
@@ -392,6 +393,13 @@ const WebrtcWrapper = () => {
       // setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (interCallMinimize) {
+      setInterCallSize({ width: '100vw', height: '100vh' });
+      setInterCallPosition({ x: 0, y: 0 });
+    }
+  }, [interCallMinimize])
 
   return (
     <>
@@ -783,6 +791,8 @@ const WebrtcWrapper = () => {
           maxWidth={"100vw"}
           maxHeight={"100vh"}
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
+          disableDragging={interCallMinimize}
+          enableResizing={false}
         >
           <div
             style={{
@@ -793,24 +803,14 @@ const WebrtcWrapper = () => {
               zIndex: "999",
             }}
           >
-            <div
-              className="inter-call-drag-handle"
-              style={{
-                position: "absolute",
-                top: "110px",
-                width: "100%",
-                height: "50%",
-                zIndex: "9999",
-                background: "transparent",
-                cursor: "move",
-              }}
-            ></div>
             <InitiateCall
               from={account.id}
               to={toUser}
               name={account.name}
               setCalling={setCalling}
               meetingPage={meetingPage}
+              interCallMinimize={interCallMinimize}
+              setInterCallMinimize={setInterCallMinimize}
             />
           </div>
         </Rnd>
