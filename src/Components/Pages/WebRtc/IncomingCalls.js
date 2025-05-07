@@ -2,7 +2,7 @@ import React from "react";
 import IncomingCallPopup from "./IncomingCallPopup";
 import { useSIPProvider } from "modify-react-sipjs";
 
-const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn}) => {
+const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn, audioRef, audio, gainNodeRef}) => {
   const { sessions: sipSessions } = useSIPProvider();
 
   const incomingSessionsArray = Object.keys(sipSessions).filter(
@@ -24,6 +24,9 @@ const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn}) 
             setactivePage={setactivePage}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
+            audioRef={audioRef}
+            audio={audio}
+            gainNodeRef={gainNodeRef}
           />
         );
       })}

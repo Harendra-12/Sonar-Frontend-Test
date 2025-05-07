@@ -1,3 +1,5 @@
+import { ActionType } from "./reduxActionType";
+
 // reducer.js
 var account = JSON.parse(localStorage.getItem("account"));
 var accountRefresh = 0;
@@ -359,7 +361,12 @@ const counterReducer = (state = initialState, action) => {
     case "SET_LOGOUT":
       return { ...state, logout: action.logout };
     case "SET_DELETEDNOTIFFID":
-      return { ...state, deletedNotificationId: action.deletedNotificationId }
+      return { ...state, deletedNotificationId: action.deletedNotificationId };
+    case ActionType?.SET_VOLUME: 
+      return {
+        ...state, 
+        volume: action?.payload
+      }
     default:
       return state;
   }

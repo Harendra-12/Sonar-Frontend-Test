@@ -14,10 +14,14 @@ function IncomingCallPopup({
   setSelectedModule,
   isMicOn,
   isVideoOn,
+  audioRef,
+  audio,
+  gainNodeRef
 }) {
+  const state = useSelector((state) => state);
   const previewDialer = useSelector((state) => state.previewDialer);
-  console.log("preview ",previewDialer);
-  
+  const volume = state?.volume;
+
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -28,23 +32,31 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
-console.log("Session",session);
 
+  useState(() => {
+    gainNodeRef.current.gain.value = volume
+    audioRef.current.volume = volume
+  }, [volume])
+  
   useEffect(() => {
-    const audio = new Audio(ringtone);
+    audioRef.current = audio
     audio.loop = true;
+    gainNodeRef.current.gain.value = Number.isFinite(volume) ? volume : 1;
+    audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
+    
 
     if (!muteAudio) {
-      audio.play();
+      audioRef.current.play();
     } else {
-      audio.pause();
+      audioRef.current.pause();
     }
 
     return () => {
-      audio.pause();
-      audio.currentTime = 0; // Reset audio position to the start when component unmounts
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0; // Reset audio position to the start when component unmounts
     };
   }, [muteAudio]);
+
   useEffect(() => {
     if (!lastIncomingCall) {
       setIsMinimized(true);
@@ -235,9 +247,9 @@ console.log("Session",session);
     if (session.incomingInviteRequest) {
       if (session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"] === "auto_answered") {
         handleAnswerCall("audio")
-        
-      // In case of call transfer by any other extension then it is auto answered
-      }else if(session?.incomingInviteRequest?.message?.headers?.["Referred-By"]?.length===1){
+
+        // In case of call transfer by any other extension then it is auto answered
+      } else if (session?.incomingInviteRequest?.message?.headers?.["Referred-By"]?.length === 1) {
         handleAnswerCall("audio")
       }
     }
@@ -251,7 +263,7 @@ console.log("Session",session);
         handleAnswerCall("audio")
         window.focus();
         return;
-    }
+      }
     }
   }, [session])
 
@@ -325,7 +337,7 @@ console.log("Session",session);
         >
           {/* Preview dialer */}
           {previewDialer.map((item) => {
-            if ((item.phone_code+item.phone_number) == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
+            if ((item.phone_code + item.phone_number) == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
               return (
                 <div className="campaignInfoWrapper">
                   <div className="campaignContent">
@@ -334,14 +346,14 @@ console.log("Session",session);
                     <p>{item.description}</p>
                   </div>
                   <div className="leadContent">
-                    <label>{item.first_name+" "+item.last_name}</label>
+                    <label>{item.first_name + " " + item.last_name}</label>
                     <p>{item.address1}</p>
                     <label>{item.city}</label>
                     <p>{item.state}</p>
                   </div>
                 </div>
-              ) 
-          }
+              )
+            }
           })}
 
           <div className="user">
