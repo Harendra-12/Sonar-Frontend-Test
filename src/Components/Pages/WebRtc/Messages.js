@@ -51,7 +51,8 @@ function Messages({
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
   setCalling,
-  setToUser
+  setToUser,
+  setMeetingPage
 }) {
   const dispatch = useDispatch();
   const { sendMessage } = Socket();
@@ -1952,7 +1953,10 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                       {/* here we are showing recent group message */}
-                                      <h5>{item?.last_message_data?.message_text}</h5>
+                                      <h5>
+                                        {/* here showing last send message below of contact name */}
+                                        {item?.last_message_data?.message_text}
+                                      </h5>
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2708,7 +2712,7 @@ function Messages({
                             ) : (
                               <button
                                 // onClick={() => onSubmit("audio", recipient[0])}
-                                onClick={() => { setCalling(true); setToUser(recipient[1]) }}
+                                onClick={() => { setMeetingPage("message"); setCalling(true); setToUser(recipient[1]) }}
                                 className="clearButton2"
                                 effect="ripple"
                               >

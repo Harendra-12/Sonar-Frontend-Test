@@ -97,10 +97,10 @@ const RingGroup = () => {
                   <h4>Ring Groups</h4>
                   <p>You can see a brief analysis of all the ring group</p>
                 </div>
-                <div className="d-flex col">
+                <div className="d-flex col gap-2">
                   <div className="col-6">
                     <div className="headingExtraInfo">
-                      <div className="mx-auto">
+                      <div className="ms-auto">
                         <span className="badge badge-soft-primary rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}> */}
@@ -114,7 +114,7 @@ const RingGroup = () => {
                       </div>
                     </div>
                     <div className="headingExtraInfo mt-1">
-                      <div className="mx-auto">
+                      <div className="ms-auto">
                         <span className="badge  badge-soft-danger rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
@@ -130,7 +130,7 @@ const RingGroup = () => {
                   </div>
                   <div className="col-6">
                     <div className="headingExtraInfo">
-                      <div className="mx-auto">
+                      <div className="me-auto">
                         <span className="badge badge-soft-success rounded-pill "
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}> */}
@@ -145,7 +145,7 @@ const RingGroup = () => {
                     </div>
 
                     <div className="headingExtraInfo mt-1">
-                      <div className="mx-auto">
+                      <div className="me-auto">
                         <span className="badge badge-soft-secondary rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}

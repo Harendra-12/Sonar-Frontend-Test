@@ -16,6 +16,7 @@
     font-weight: 300;
     color: var(--immortalBlack);
     background: none;
+    right: 10px;
 }
 
 .accordion-button:focus {

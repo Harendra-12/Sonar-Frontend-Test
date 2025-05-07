@@ -480,7 +480,7 @@ function CallDetails({
                             <th>Call Type</th>
                             <th>Duration</th>
                             <th>Recordings</th>
-                            <th></th>
+                            {/* <th></th> */}
                           </tr>
                         </thead>
                         <tbody>
@@ -707,7 +707,7 @@ function CallDetails({
                                       className="show"
                                       id={`voiceMail${item?.id}`}
                                     >
-                                      <td colSpan={5}>
+                                      <td colSpan={8}>
                                         <div className="audio-container">
                                           <AudioWaveformCommon audioUrl={audioURL} />
                                           {/* <audio

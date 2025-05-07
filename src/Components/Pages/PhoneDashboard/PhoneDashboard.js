@@ -580,10 +580,10 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row gx-xxl-3 gx-lg-2">
-                <div className="col-xl-6">
+                <div className="col-xxl-6 col-xl-12">
                   <RingGroup />
                 </div>
-                <div className="col-xl-6">
+                <div className="col-xxl-6 col-xl-12">
                   <CallQueueDetails />
                 </div>
               </div>

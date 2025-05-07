@@ -160,7 +160,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                 }
               </div>
             )}
-            <p className="mb-0 fs-6 fw-semibold">
+            <p className="mb-0 fs-6 fw-semibold text-capitalize">
               {/* {
               contact?.find(
                 (contact) => contact.extension == recipient[0]

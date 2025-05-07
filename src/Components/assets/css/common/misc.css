@@ -859,7 +859,7 @@ input[type=number] {
 }
 
 .accordion .accordion-item {
-    border-color: var(--border-color);
+    border-color: var(--me-border1);
     background-color: var(--ele-color);
     border-radius: 12px;
 }
@@ -2339,4 +2339,49 @@ input[type=number] {
 }
 .css-1nmdiq5-menu{
     background-color: var(--config-bg) !important;
+}
+
+
+/* ===================================================== message call */
+
+.messageMeetingWrap{
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+}
+
+.messageMeetingWrap .lk-room-container{
+    display: flex;
+}
+
+.messageMeetingWrap .lk-video-conference{
+    flex: 1 0 0%;
+}
+.messageMeetingWrap .settings-menu .tab-content h3{
+   color: #ffff;
+   font-size: 1.25rem;
+   margin-bottom: 10px;
+}
+.messageMeetingWrap .settings-menu .tab-content h4{
+   color: #d3d3d3;
+   font-size: 1rem !important;
+   margin-bottom: 10px;
+}
+.messageMeetingWrap .settings-menu .tab-content .wrap{
+   margin-bottom: 20px;
+}
+.messageMeetingWrap .lk-chat-header{
+   justify-content: space-between;
+}
+.messageMeetingWrap .clearButton2 {
+   display: block;
+}
+.messageMeetingWrap input[type="search"] {
+    background-color: transparent;
+    color: rgb(245, 245, 245);
+    box-shadow: none;
+    border: 1px solid #2d2d2d;
+    width: 100%;
+    border-radius: 6px;
+    padding-inline: 10px;
 }
