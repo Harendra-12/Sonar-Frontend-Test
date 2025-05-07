@@ -775,7 +775,7 @@ const WebrtcWrapper = () => {
       ) : (
         ""
       )}
-      <div className="messageIncomingPopup">
+      {/* <div className="messageIncomingPopup">
         <div className="incomingCallPopup ">
           <div className="d-flex justify-content-between w-100 align-items-center gap-2">
             <div className="user">
@@ -822,7 +822,7 @@ const WebrtcWrapper = () => {
           </div>
         </div>
 
-      </div>
+      </div> */}
 
     </>
   );
