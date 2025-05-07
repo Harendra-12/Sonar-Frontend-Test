@@ -120,7 +120,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
     };
     const callIcons = {
       inbound: {
-        icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
           item.variable_DIALSTATUS !==
             "Answered"
@@ -129,7 +129,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
         label: "Inbound",
       },
       outbound: {
-        icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
           item.variable_DIALSTATUS !==
             "Answered"
@@ -138,7 +138,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
         label: "Outbound",
       },
       internal: {
-        icon:statusIcons[item.variable_DIALSTATUS] || "fa-headset",
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
           item.variable_DIALSTATUS !==
             "Answered"
@@ -394,7 +394,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                   <td className="px-4 py-3">
                                     <button
                                       className="tableButton"
-                                      onClick={() => {setSelectedId(call.id); handelOpenNotes()}}
+                                      onClick={() => { setSelectedId(call.id); handelOpenNotes() }}
                                     >
                                       <i className="fa-solid fa-comment-dots"></i>
                                     </button>
@@ -407,7 +407,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                   <tr>
                                     <td colspan="18">
                                       <div class="audio-container mx-2">
-                                        <AudioWaveformCommon audioUrl={audioURL} />
+                                        <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(call?.peak_json)} />
                                       </div>
                                     </td>
                                   </tr>}

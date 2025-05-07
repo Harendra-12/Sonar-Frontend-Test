@@ -255,7 +255,7 @@ function VoiceMailReport() {
                                       <tr>
                                         <td colSpan={99}>
                                           <div className="audio-container mx-2">
-                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item?.peak_json)} />
                                           </div>
                                         </td>
                                       </tr>
