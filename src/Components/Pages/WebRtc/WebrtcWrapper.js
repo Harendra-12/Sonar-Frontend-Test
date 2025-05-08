@@ -889,7 +889,7 @@ const WebrtcWrapper = () => {
                   <i className="fa-solid fa-user" />
                 </div>
                 <div className="userInfo col-12 mt-0">
-                  <h5 className="fw-medium text-white mb-0">
+                  <h5 className="fw-medium text-white mb-0 ellipsisText">
                     Calling from {incomingCall.sender_id}
                   </h5>
                 </div>

@@ -42,6 +42,7 @@ import {
 } from "react-resizable-panels";
 import HeaderApp from "./HeaderApp";
 import MessageProfileDetails from "./components/MessageProfileDetails";
+import ChatsCalls from "./components/ChatsCalls";
 
 function Messages({
   setSelectedModule,
@@ -53,6 +54,9 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
+
+  // formatRelativeTime, 
+  // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
   const { sendMessage } = Socket();
@@ -256,7 +260,7 @@ function Messages({
               : checkMessageType(data?.last_message_data?.message_text)
           }
         }));
-        
+
         setContact(updatedFilteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find(
@@ -387,7 +391,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -495,9 +499,9 @@ function Messages({
     if (contactIndex !== -1) {
       const newContact = [...contact];
       let lastMessage = ""
-      if(selectedFile){
+      if (selectedFile) {
         lastMessage = selectedFile?.type
-      }else{
+      } else {
         lastMessage = messageInput
       }
       newContact[contactIndex].last_message_data.message_text = lastMessage;
@@ -977,13 +981,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -1725,7 +1729,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                        // style={{ height: "calc(100vh - 270px)" }}
+                      // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -1771,9 +1775,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          // style={{
-                          //   borderBottom: "1px solid var(--border-color)",
-                          // }}
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1848,9 +1852,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -1899,7 +1903,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                          // style={{ borderBottom: "1px solid #ddd" }}
+                        // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {groups.map((item, index) => {
                             return (
@@ -1967,9 +1971,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -2211,88 +2215,12 @@ function Messages({
 
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <div
-                        className=""
-                      // style={{
-                      //   borderBottom: "1px solid var(--border-color)",
-                      // }}
-                      >
-                        {contact.map((item) => {
-                          return (
-                            <div
-                              data-bell={
-                                unreadMessage[item?.id]
-                                  ? unreadMessage[item?.id]
-                                  : ""
-                              }
-                              className={
-                                recipient[1] === item?.id
-                                  ? "contactListItem "
-                                  : "contactListItem callsItemDetails"
-                              }
-                            >
-                              <div
-
-                                className="w-100 "
-                              >
-                                <div className=" d-flex align-items-center">
-                                  <div
-                                    className="profileHolder"
-                                    id={
-                                      onlineUser.find(
-                                        (user) => user.id === item.id
-                                      )
-                                        ? "profileOnlineNav"
-                                        : "profileOfflineNav"
-                                    }
-                                  >
-                                    {accountDetails?.users?.find(
-                                      (acc) => acc.id === item.id
-                                    )?.profile_picture ? (
-                                      <img
-                                        src={
-                                          accountDetails?.users?.find(
-                                            (acc) => acc.id === item.id
-                                          )?.profile_picture
-                                        }
-                                        alt="profile"
-                                        onError={(e) =>
-                                          (e.target.src = require("../../assets/images/placeholder-image.webp"))
-                                        }
-                                      />
-                                    ) : (
-                                      <i className="fa-light fa-user fs-5"></i>
-                                    )}
-                                  </div>
-                                  <div className="ms-3 flex-grow-1">
-                                    <p className=" justify-content-start">
-                                      {item?.name} <span className="missedCallArrow ms-2"><i class="fa-regular fa-arrow-up-right"></i></span>
-                                    </p>
-                                    <h5>
-                                      <span className=" text-end mb-0">
-                                        <p className="timeAgo">
-                                          {item?.last_message_data
-                                            ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
-                                            : ""}
-                                        </p>
-                                      </span>
-                                    </h5>
-                                  </div>
-                                  <button className="btn_call"><i class="fa-regular fa-phone"></i></button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <ChatsCalls />
                     </div>
                   ) : (
                     <div className="tab-content">
                       <div
-                        className="callList"
+                        className="callList groupCall_list"
                         style={{ height: "calc(100vh - 230px)" }}
                       >
                         <div
@@ -2384,7 +2312,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -2521,10 +2449,17 @@ function Messages({
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
+                                        <p className="fs-14 text-gray"><span className="text-info fw-normal">Rams : &nbsp;</span> Happy to be part of this group</p>
                                       </div>
                                     </div>
                                     <div className=" text-end">
-                                      <div className="dropdown">
+                                    <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                <p className="timeAgo">1h ago</p>
+                                <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
+                                {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
+                              </div>
+                                      {/* <div className="dropdown">
                                         <button
                                           className="clearButton2 "
                                           type="button"
@@ -2555,7 +2490,7 @@ function Messages({
                                             </div>
                                           </li>
                                         </ul>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2563,6 +2498,33 @@ function Messages({
                             );
                           })
                         )}
+
+
+                        
+                        <div className="contactListItem align-items-center" data-bell={"1"} >
+                          <div className="row justify-content-start align-items-center">
+                            <div className="col-xl-12 d-flex">
+                              <div
+                                className="profileHolder"
+                                id={"profileOfflineNav"}
+                              >
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <p className=' justify-content-start ellipsisText'>Test 
+                                  {/* <span className="missedCallArrow text-success ms-2"><i className="fa-solid fa-arrow-down-left"></i></span> */}
+                                  </p>
+                                  <span class="text-success">Hira Typing...</span>
+                              </div>
+                              <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                <p className="timeAgo">1h ago</p>
+                                {/* <span className="chat-read-icon read "><i class="fa-solid fa-check-double"></i></span> */}
+                                <span className="chat-read-icon unreadsms "><i class="fa-solid fa-check-double"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -2687,7 +2649,7 @@ function Messages({
                                                 recipient[1]
                                               )
                                             }
-                                            // className="removableTag"
+                                          // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -2941,7 +2903,7 @@ function Messages({
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                    arr[index - 1].time?.split(" ")[0];
+                                  arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -3454,7 +3416,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3600,7 +3562,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                        isAdmin ? (
+                                          isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -3694,7 +3656,7 @@ function Messages({
                         width: isActiveAgentsOpen ? "30%" : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
@@ -3715,14 +3677,13 @@ function Messages({
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${
-                              isActiveAgentsOpen ? "right" : "left"
-                            }`}
+                            className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"
+                              }`}
                           />
                         </button>
                         <div
                           className=" h-100"
-                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           <MessageProfileDetails
