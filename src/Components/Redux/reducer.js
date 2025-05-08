@@ -420,10 +420,7 @@ const counterReducer = (state = initialState, action) => {
       };
 
     case "SET_INTERNALCALLACTION":
-      return {
-        ...state,
-        internalCallAction:action.internalCallAction,
-      };
+      return {...state, internalCallAction:action.internalCallAction};
     case "REMOVE_INTERNALCALLACTION":
       return {
         ...state,

@@ -8,7 +8,6 @@ import { RecordingIndicator } from "./RecordingIndicator";
 
 const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize }) => {
     const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
-    const [disconnectTrigger,setDisconnectTrigger]=useState(false)
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
     const handleClickMinimize = () => {
         setIsMinimize(!isMinimize);
@@ -35,7 +34,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                 video={true}
                 audio={true}
                 ScreenShareIcon={false}
-                onDisconnected={() => {setCalling(false); setDisconnectTrigger(true)}}
+                onDisconnected={() => {setCalling(false);}}
             >
                 <VideoConference
                     chatMessageFormatter={formatChatMessageLinks}
@@ -51,7 +50,6 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                     isCurrentUserStartRecording={isCurrentUserStartRecording}
                     setIsCurrentUserStartRecording={setIsCurrentUserStartRecording}
                     setCalling={setCalling}
-                    disconnectTrigger={disconnectTrigger}
                 />
                 <RecordingIndicator
                     manualRecording={manualRecording}

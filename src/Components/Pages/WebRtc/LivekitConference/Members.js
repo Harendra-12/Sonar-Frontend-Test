@@ -23,7 +23,7 @@ import Socket from "../../../GlobalFunction/Socket";
  * @param {Function} props.setIsCurrentUserStartRecording - Function to set the recording state for the current user.
  */
 
-function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording, setCalling,disconnectTrigger }) {
+function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording, setCalling }) {
     const room = useRoomContext();
     const { sendMessage } = Socket();
     const isRecording = useIsRecording();
@@ -81,9 +81,11 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         });
     }
 
-    // After disconnect this function will trigger to send socket data to other user about call state
-    useEffect(()=>{
-        if(disconnectTrigger){
+    // After disconnect this function will trigger to send socket data to other user about call state\
+    useEffect(() => {
+        const handleRoomDisconnect = () => {
+            console.log("participants",participants);
+            
             if(participants.length>1){
                 sendMessage({
                     "action": "peercall",
@@ -103,21 +105,29 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                     "status": "ended"
                   })
             }
-        }
-    },[disconnectTrigger])
+        };
+    
+        room.on('disconnected', handleRoomDisconnect);
+    
+        // Cleanup listener on unmount
+        return () => {
+            room.off('disconnected', handleRoomDisconnect);
+        };
+    }, [room]);
     
     // Function to disconnect user when found condition to be true
     const handleDisconnect = async () => {
         try {
+            dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
+            dispatch({type:"REMOVE_INCOMINGCALL", room_id:roomName})
             await room.disconnect();
             setCalling(false); // Update parent state if needed
-            dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
         } catch (error) {
             console.error("Failed to disconnect from room:", error);
         }
     };
     useEffect(()=>{
-        if(internalCallAction?.room_id===roomName && internalCallAction?.hangup_cause==="rejected" || internalCallAction?.hangup_cause==="success"){
+        if(internalCallAction?.room_id===roomName && internalCallAction?.hangup_cause==="rejected" || internalCallAction?.hangup_cause==="success" || internalCallAction?.hangup_cause==="originator_cancel"){
             handleDisconnect()
         }
     },[internalCallAction])
