@@ -89,7 +89,8 @@ var refreshCalls = 0;
 var adminLogout = false; // Flag to track admin logout
 var incomingMessage = null;
 var deletedNotificationId = null; // State to track deleted notification ID
-var incomingCall = null
+var incomingCall = [];
+var internalCallAction = null;
 
 const initialState = {
   account,
@@ -179,7 +180,8 @@ const initialState = {
   adminLogout,
   incomingMessage,
   deletedNotificationId,
-  incomingCall
+  incomingCall,
+  internalCallAction,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -249,7 +251,10 @@ const counterReducer = (state = initialState, action) => {
     case "SET_CALLPROGRESSID":
       return { ...state, callProgressId: action.callProgressId };
     case "SET_CALLPROGRESSDESTINATION":
-      return { ...state, callProgressDestination: action.callProgressDestination };
+      return {
+        ...state,
+        callProgressDestination: action.callProgressDestination,
+      };
     case "SET_VIDEOCALL":
       return { ...state, videoCall: action.videoCall };
     case "SET_ADDCONTACTREFRESH":
@@ -259,7 +264,10 @@ const counterReducer = (state = initialState, action) => {
     case "SET_PERMISSIONS":
       return { ...state, permissions: action.permissions };
     case "SET_ROLES_PERMISSIONREFRESH":
-      return { ...state, rolesAndPermissionRefresh: action.rolesAndPermissionRefresh };
+      return {
+        ...state,
+        rolesAndPermissionRefresh: action.rolesAndPermissionRefresh,
+      };
     case "SET_ROLES_REFRESH":
       return { ...state, rolesRefresh: action.rolesRefresh };
     case "SET_PERMISSION_REFRESH":
@@ -301,11 +309,17 @@ const counterReducer = (state = initialState, action) => {
     case "SET_WHATSAPPCONTACT":
       return { ...state, whatsappContact: action.whatsappContact };
     case "SET_WHATSAPPCONTACTREFRESH":
-      return { ...state, whatsappContactRefresh: action.whatsappContactRefresh };
+      return {
+        ...state,
+        whatsappContactRefresh: action.whatsappContactRefresh,
+      };
     case "SET_WHATSAPPMESSAGE":
       return { ...state, whatsappMessage: action.whatsappMessage };
     case "SET_WHATSAPPMESSAGEREFRESH":
-      return { ...state, whatsappMessageRefresh: action.whatsappMessageRefresh };
+      return {
+        ...state,
+        whatsappMessageRefresh: action.whatsappMessageRefresh,
+      };
     case "SET_AIAGENTS":
       return { ...state, aiAgents: action.aiAgents };
     case "SET_AIAGENTSREFRESH":
@@ -313,11 +327,22 @@ const counterReducer = (state = initialState, action) => {
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
     case "SET_ALL_CALL_CENTER_IDS":
-      return { ...state, allCallCenterIds: [...state.allCallCenterIds, action.CallerId] };
+      return {
+        ...state,
+        allCallCenterIds: [...state.allCallCenterIds, action.CallerId],
+      };
     case "DELETE_CALLER_ID":
-      return { ...state, allCallCenterIds: state.allCallCenterIds.filter((id) => id !== action.CallerId) };
+      return {
+        ...state,
+        allCallCenterIds: state.allCallCenterIds.filter(
+          (id) => id !== action.CallerId
+        ),
+      };
     case "SET_DEVICE_PROVISIONINGREFRESH":
-      return { ...state, deviceProvisioningRefresh: action.deviceProvisioningRefresh };
+      return {
+        ...state,
+        deviceProvisioningRefresh: action.deviceProvisioningRefresh,
+      };
     case "SET_MINIMIZE":
       return { ...state, minimize: action.minimize };
     case "SET_UPDATEBALANCE":
@@ -333,17 +358,34 @@ const counterReducer = (state = initialState, action) => {
     case "SET_NEWADDDID":
       return { ...state, newAddDid: action.newAddDid };
     case "SET_CONFERENCESCREENSHARESTATUS":
-      return { ...state, conferenceScreenShareStatus: action.conferenceScreenShareStatus };
+      return {
+        ...state,
+        conferenceScreenShareStatus: action.conferenceScreenShareStatus,
+      };
     case "SET_CONFERENCEMESSAGE":
-      return { ...state, conferenceMessage: [...state.conferenceMessage, action.conferenceMessage] };
+      return {
+        ...state,
+        conferenceMessage: [
+          ...state.conferenceMessage,
+          action.conferenceMessage,
+        ],
+      };
     case "SET_ROOMID":
       return { ...state, RoomID: action.RoomID };
     case "SET_GROUPMESSAGE":
       return { ...state, groupMessage: action.groupMessage };
     case "SET_PREVIEWDIALER":
-      return { ...state, previewDialer: [...state.previewDialer, action.previewDialer] };
+      return {
+        ...state,
+        previewDialer: [...state.previewDialer, action.previewDialer],
+      };
     case "REMOVE_PREVIEWDIALER":
-      return { ...state, previewDialer: state.previewDialer.filter((item) => item.phone_number !== action.phone_number) };
+      return {
+        ...state,
+        previewDialer: state.previewDialer.filter(
+          (item) => item.phone_number !== action.phone_number
+        ),
+      };
     case "SET_AGENT_DEPOSITION":
       return { ...state, agentDeposition: action.agentDeposition };
     case "SET_DEPOSIT_OPTIONS":
@@ -357,20 +399,43 @@ const counterReducer = (state = initialState, action) => {
     case "SET_ADMIN_LOGOUT":
       return { ...state, adminLogout: action.adminLogout };
     case "SET_INCOMING_MESSAGE":
-      return { ...state, incomingMessage: action.incomingMessage }
+      return { ...state, incomingMessage: action.incomingMessage };
     case "RESET_STATE":
       return { ...initialState, logout: 0 };
     case "SET_LOGOUT":
       return { ...state, logout: action.logout };
     case "SET_DELETEDNOTIFFID":
-      return { ...state, deletedNotificationId: action.deletedNotificationId }
-      case "SET_INCOMINGCALL":
-        return { ...state, incomingCall: action.incomingCall }
-    case ActionType?.SET_VOLUME: 
+      return { ...state, deletedNotificationId: action.deletedNotificationId };
+    case "SET_INCOMINGCALL":
       return {
-        ...state, 
-        volume: action?.payload
-      }
+        ...state,
+        incomingCall: [...state.incomingCall, action.incomingCall],
+      };
+    case "REMOVE_INCOMINGCALL":
+      return {
+        ...state,
+        incomingCall: state.incomingCall.filter(
+          (item) => item.room_id !== action.room_id
+        ),
+      };
+
+    case "SET_INTERNALCALLACTION":
+      return {
+        ...state,
+        internalCallAction:action.internalCallAction,
+      };
+    case "REMOVE_INTERNALCALLACTION":
+      return {
+        ...state,
+        internalCallAction: state.internalCallAction.filter(
+          (item) => item.room_id !== action.room_id
+        ),
+      };
+    case ActionType?.SET_VOLUME:
+      return {
+        ...state,
+        volume: action?.payload,
+      };
     default:
       return state;
   }

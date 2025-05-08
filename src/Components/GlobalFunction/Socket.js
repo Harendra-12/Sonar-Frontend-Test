@@ -35,7 +35,9 @@ const Socket = () => {
       const currentToken = localStorage.getItem("token");
 
       if (isLogOut === 1 || !currentToken) {
-        console.warn("WebSocket connection aborted: User is logged out or token is missing.");
+        console.warn(
+          "WebSocket connection aborted: User is logged out or token is missing."
+        );
         return;
       }
 
@@ -133,6 +135,8 @@ const Socket = () => {
             case "clientCall":
               dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
               break;
+            case "callUpdate":
+              dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: result,});
             default:
               break;
           }

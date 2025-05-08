@@ -483,7 +483,7 @@ function Messages({
         ] || []),
         {
           from: userDetails.id,
-          body: messageInput || selectedUrl,
+          body: selectedUrl ? selectedUrl : messageInput,
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
@@ -641,7 +641,7 @@ function Messages({
         newContact[contactIndex].last_message_data.message_text = body;
         newContact[contactIndex].last_message_data.created_at = time;
         setContact(newContact);
-      }
+      } 
       if (!extensionExists) {
         contact.unshift({
           name: agentDetails?.username,
@@ -897,7 +897,16 @@ function Messages({
     const filteredTag = tag?.filter((data) =>
       data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
     );
-    setFilteredTags(filteredTag);
+    
+    if (userTag?.length) {
+      setFilteredTags(filteredTag);
+    } else {
+      const filterTag = allTags?.filter((data) =>
+        data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
+      )
+      setFilteredTags(filterTag);
+    }
+
   }, [allTags, contact, tagFilterInput, recipient]);
 
   useEffect(() => {
@@ -1128,8 +1137,16 @@ function Messages({
 
           return dateB - dateA;
         });
-
-        setGroups(filteredData);
+        const updatedFilteredData = filteredData?.map((data) => ({
+          ...data,
+          last_message_data: {
+            ...data?.last_message_data,
+            message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
+              ? data?.last_message_data?.message_text
+              : checkMessageType(data?.last_message_data?.message_text)
+          }
+        }));
+        setGroups(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
           (group) => group.id == recipient[1]
         );
@@ -1384,7 +1401,13 @@ function Messages({
     );
     if (contactIndex !== -1) {
       const newGroups = [...groups];
-      newGroups[contactIndex].last_message_data.message_text = messageInput;
+      let last_message = ""
+      if (selectedUrl) {
+        last_message = messageType;
+      } else {
+        last_message = messageInput
+      }
+      newGroups[contactIndex].last_message_data.message_text = last_message;
       newGroups[contactIndex].last_message_data.created_at = time;
       newGroups?.splice(contactIndex, 1);
       newGroups.unshift(groups[contactIndex]);

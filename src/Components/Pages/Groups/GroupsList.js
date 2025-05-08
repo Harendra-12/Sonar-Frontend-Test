@@ -88,6 +88,18 @@ export default function GroupsList() {
       setDeleteId("");
     }
   }
+
+    const handleAgentClick = async (item) => {
+      if (item) {
+        const apiData = await generalGetFunction(`/agents?search=${item?.user?.name}`);
+        if (apiData?.status) {
+          const userData = apiData.data.data[0];
+          navigate(`/agents-edit?id=${userData.id}`, {
+            state: userData,
+          });
+        }
+      }
+    }
   return (
     <div className="mainContent">
       <section id="phonePage">
@@ -240,62 +252,62 @@ export default function GroupsList() {
                                         <td>
                                           {item.group_name}
                                         </td>
-                                        <td style={{ width: '20px' }}>
-                                          <Tippy content={
-                                            <ul className="dropdown-menu-hover" style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}>
-                                              {/* <li className="col-12">
-                                              <div className="dropdown-item fw-bold disabled">
-                                                Users
-                                              </div>
-                                            </li> */}
-                                              {item.groupusers.map(
-                                                (item, index) => (
-                                                  <div className="dropdown-item d-flex align-items-center" >
-                                                    <span className="avatar-container">
-                                                      {
-                                                        item.user?.profile_picture ?
-                                                          <img
-                                                            alt="profile"
-                                                            src={item.user?.profile_picture}
-                                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                          /> : <i className="fa-light fa-user"></i>}
-                                                    </span>
-                                                    <span className='ms-2'>{item?.user?.name}</span>
+                                        <td >
+                                              <Tippy content={
+                                                <ul className="dropdown-menu-hover"
+                                                  style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}
+                                                >
+                                                  {/* <li className="col-12">
+                                                    <div className="dropdown-item fw-bold disabled">
+                                                      Agents
+                                                    </div>
+                                                  </li> */}
+                                                  {item.groupusers.map(
+                                                    (item, index) => (
+                                                      <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                        <span className="avatar-container">
+                                                          {
+                                                            item.user?.profile_picture ?
+                                                              <img
+                                                                alt="profile"
+                                                                src={item.user?.profile_picture}
+                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                              /> : <i className="fa-light fa-user"></i>}
+                                                        </span> <span className="ms-2">{item?.user?.name}</span>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {/* {item.agents.length > 6 && <li className="col-12">
+                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                    See More
+                                                  </Link>
+                                                </li>} */}
+                                                </ul>
+                                              } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                <div className="hover-dropdown">
+                                                  {/* {item.agents.length} */}
+                                                  <div className="avatar-container">
+                                                    {item.groupusers?.slice(0, 4).map((item, index) => {
+                                                      return (
+                                                        <Tippy key={index} content={item?.user?.name}>
+                                                          {item.user?.profile_picture ? (
+                                                            <img
+                                                              alt="avatar"
+                                                              src={item.user?.profile_picture}
+                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
+                                                      )
+                                                    })}
+                                                    {item.groupusers.length > 4 && <span>+{item.groupusers.length - 4}</span>}
                                                   </div>
-                                                )
-                                              )}
-                                              {/* {item.ring_group_destination.length > 6 && <li className="col-12">
-                                                <Link to="/agents" className="dropdown-item text-center text-primary">
-                                                  Show More
-                                                </Link>
-                                              </li>} */}
-                                            </ul>
-                                          } allowHTML={true} placement="bottom">
-                                            <div className="hover-dropdown widthFit">
-                                              {/* {item.ring_group_destination.length} */}
-                                              <div className="avatar-container">
-                                                {item?.groupusers?.slice(0, 4).map((user, index) => {
-                                                  // console.log(user?.user?.name)
-                                                  return (
-                                                    <Tippy key={index} content={user?.user?.name}>
-                                                      {user?.user?.profile_picture ? (
-                                                        <img
-                                                          alt='profile'
-                                                          src={user?.user?.profile_picture}
-                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                        />
-                                                      ) : (
-                                                        <i className="fa-light fa-user"></i>
-                                                      )}
-                                                    </Tippy>
-                                                  )
-                                                })}
-                                                {item?.groupusers
-                                                  ?.length > 4 && <span>+{item?.groupusers?.length - 4}</span>}
-                                              </div>
-                                            </div>
-                                          </Tippy>
-                                        </td>
+                                                </div>
+                                              </Tippy>
+
+                                            </td>
 
                                         {/* <td>(999) 999-9999, (999) 999-9999</td> */}
 
