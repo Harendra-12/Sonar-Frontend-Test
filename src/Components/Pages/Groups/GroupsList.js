@@ -253,7 +253,8 @@ export default function GroupsList() {
                                           {item.group_name}
                                         </td>
                                         <td >
-                                              <Tippy content={
+                                          <div className='group__dropdown'>
+                                              <Tippy  content={
                                                 <ul className="dropdown-menu-hover"
                                                   style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}
                                                 >
@@ -306,6 +307,7 @@ export default function GroupsList() {
                                                   </div>
                                                 </div>
                                               </Tippy>
+                                          </div>
 
                                             </td>
 
