@@ -136,7 +136,8 @@ const AgentSearch = ({
           placeholder="Select agent to start chat"
           id="selectFormRow"
           onChange={(selectedOption) => {
-            getDropdownValue([...selectedOption.value,"singleChat", selectedOption?.name, selectedOption?.email]);
+            const userDetails = user?.find((data) => data?.id == selectedOption?.value[1])
+            getDropdownValue([...selectedOption.value,"singleChat", userDetails?.username, userDetails?.email, userDetails?.profile_picture]);
             setSelectedOption(selectedOption.value[0]);
           }}
           options={allOptions}

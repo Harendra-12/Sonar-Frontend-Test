@@ -105,7 +105,6 @@ const WebrtcWrapper = () => {
   const [toUser, setToUser] = useState(null);
   const incomingCall = useSelector((state) => state.incomingCall);
   const [internalCaller, setInternalCaller] = useState(account.id);
-  console.log("Incoming calls", incomingCall);
 
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();

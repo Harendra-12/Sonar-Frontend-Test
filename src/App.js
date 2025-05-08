@@ -212,7 +212,7 @@ function App() {
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   Socket();
-  // GoSocket();
+  GoSocket();
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{
