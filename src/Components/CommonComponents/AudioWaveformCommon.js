@@ -215,7 +215,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                             dragHandleClassName="drag-handle"
                         >
                             <div className="col-12 drag-handle">
-                                <AudioTranscribe url={transcribeLink} />
+                                <AudioTranscribe url={transcribeLink} setTranscribeLink={setTranscribeLink} />
                             </div>
                         </Rnd>
                     )}

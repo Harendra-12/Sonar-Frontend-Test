@@ -1487,6 +1487,11 @@
 .messageIncomingPopup .incomingCallPopup .userHolder {
     height: 40px;
     width: 40px;
+    flex-shrink: 0;
+}
+.messageIncomingPopup .incomingCallPopup .userHolder img {
+    width: 100%;
+   object-fit: cover;
 }
 
 .messageIncomingPopup .incomingCallPopup .userHolder i {

@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@livekit/components-styles"; // Importing LiveKit styles
-import { formatChatMessageLinks, LiveKitRoom, VideoConference } from "@livekit/components-react";
+import { formatChatMessageLinks, LiveKitRoom, useRoomContext, VideoConference } from "@livekit/components-react";
 import SettingsMenu from "./SettingsMenu";
-import { useNavigate } from "react-router-dom";
 import Members from "./Members";
 import { RecordingIndicator } from "./RecordingIndicator";
 
 
 const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize }) => {
     const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
+    const [disconnectTrigger,setDisconnectTrigger]=useState(false)
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
-    const navigate = useNavigate();
-
-    // const [isMinimize, setIsMinimize] = useState(true);
-
-    // const handleClickMinimize = () => setIsMinimize();
     const handleClickMinimize = () => {
         setIsMinimize(!isMinimize);
     };
-
     return (
         <main data-lk-theme="default" style={{ height: '100vh' }} className={`messageMeetingWrap ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
             <button className="minimize" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
@@ -41,7 +35,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                 video={true}
                 audio={true}
                 ScreenShareIcon={false}
-                onDisconnected={() => setCalling(false)}
+                onDisconnected={() => {setCalling(false); setDisconnectTrigger(true)}}
             >
                 <VideoConference
                     chatMessageFormatter={formatChatMessageLinks}
@@ -56,6 +50,8 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                     setManualRecording={setManualRecording}
                     isCurrentUserStartRecording={isCurrentUserStartRecording}
                     setIsCurrentUserStartRecording={setIsCurrentUserStartRecording}
+                    setCalling={setCalling}
+                    disconnectTrigger={disconnectTrigger}
                 />
                 <RecordingIndicator
                     manualRecording={manualRecording}

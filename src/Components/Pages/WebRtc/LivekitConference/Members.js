@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from 'react';
 // import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
 import { generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { useDispatch, useSelector } from 'react-redux';
+import Socket from "../../../GlobalFunction/Socket";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -21,14 +23,21 @@ import { generalGetFunction, generalPostFunction } from '../../../GlobalFunction
  * @param {Function} props.setIsCurrentUserStartRecording - Function to set the recording state for the current user.
  */
 
-function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording }) {
+function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording, setCalling,disconnectTrigger }) {
     const room = useRoomContext();
+    const { sendMessage } = Socket();
     const isRecording = useIsRecording();
     const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
-
-
     const avatarTracks = {}; // Store references for avatars
-
+    const internalCallAction = useSelector((state)=>state.internalCallAction)
+    const incomingCall = useSelector((state)=>state.incomingCall)
+    const dispatch = useDispatch()
+    const [participants, setParticipants] = useState([]);
+    const [showParticipants, setParticipantList] = useState(false);
+    const [processingRecRequest, setProcessingRecRequest] = useState(false);
+    // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
+    const [searchTerm, setSearchTerm] = useState(''); // State to track the search input
+    const currentCallRoom = incomingCall.filter((item)=>item.room_id===roomName)
     // Function to manage avatars for all participants
     async function handleAvatarsForParticipants(room) {
         if (!room || !room.participants) return; // ✅ Ensure room and participants exist
@@ -71,8 +80,47 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
             });
         });
     }
-    
 
+    // After disconnect this function will trigger to send socket data to other user about call state
+    useEffect(()=>{
+        if(disconnectTrigger){
+            if(participants.length>1){
+                sendMessage({
+                    "action": "peercall",
+                    "chat_call_id": currentCallRoom.id,
+                    "hangup_cause": "success",
+                    "room_id": roomName,
+                    "duration": "120", 
+                    "status": "ended"
+                  })
+            }else{
+                sendMessage( {
+                    "action": "peercall",
+                    "chat_call_id": currentCallRoom.id,
+                    "hangup_cause": "originator_cancel",
+                    "room_id": roomName,
+                    "duration": "0",
+                    "status": "ended"
+                  })
+            }
+        }
+    },[disconnectTrigger])
+    
+    // Function to disconnect user when found condition to be true
+    const handleDisconnect = async () => {
+        try {
+            await room.disconnect();
+            setCalling(false); // Update parent state if needed
+            dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
+        } catch (error) {
+            console.error("Failed to disconnect from room:", error);
+        }
+    };
+    useEffect(()=>{
+        if(internalCallAction?.room_id===roomName && internalCallAction?.hangup_cause==="rejected" || internalCallAction?.hangup_cause==="success"){
+            handleDisconnect()
+        }
+    },[internalCallAction])
     function hasVideoTrack(participant) {
         return Array.from(participant.videoTracks.values()).some((track) => track.isSubscribed);
     }
@@ -124,11 +172,6 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         setIsCurrentUserStartRecording(false)
     }, [isRecording]);
 
-    const [participants, setParticipants] = useState([]);
-    const [showParticipants, setParticipantList] = useState(false);
-    const [processingRecRequest, setProcessingRecRequest] = useState(false);
-    // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
-    const [searchTerm, setSearchTerm] = useState(''); // State to track the search input
 
     // Filter participants based on the search term
     const filteredParticipants = [...participants.values()].filter((participant) =>

@@ -36,6 +36,7 @@ import Settings from "./Settings";
 import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
 import { ActionType } from "../../Redux/reduxActionType";
 import InitiateCall from "./LivekitConference/InitiateCall";
+import InternalIncomingCall from "./LivekitConference/InternalIncomingCall";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -103,7 +104,6 @@ const WebrtcWrapper = () => {
   const [calling, setCalling] = useState(false);
   const [meetingPage, setMeetingPage] = useState();
   const [toUser, setToUser] = useState(null);
-  const incomingCall = useSelector((state) => state.incomingCall);
   const [internalCaller, setInternalCaller] = useState(account.id);
 
   const didAll = useSelector((state) => state.didAll);
@@ -117,7 +117,7 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     if (!audioCtxRef.current) {
-      const audioCtx = new (window.AudioContext)();
+      const audioCtx = new window.AudioContext();
       audioCtxRef.current = audioCtx;
 
       const track = audioCtx.createMediaElementSource(audio);
@@ -142,7 +142,6 @@ const WebrtcWrapper = () => {
       audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
     }
   }, [volume, activePage == "call"]);
-
 
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
@@ -472,7 +471,7 @@ const WebrtcWrapper = () => {
           <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />
         )}
 
-        {activePage === "nav-settings" &&
+        {activePage === "nav-settings" && (
           <Settings
             audioRef={audioRef}
             audioCtxRef={audioCtxRef}
@@ -483,7 +482,8 @@ const WebrtcWrapper = () => {
             allContactLoading={allContactLoading}
             setAllContactLoading={setAllContactLoading}
             audio={audio}
-          />}
+          />
+        )}
 
         {activePage === "call" && (
           <Call
@@ -879,45 +879,7 @@ const WebrtcWrapper = () => {
         ""
       )}
 
-      {incomingCall && (
-        <div className="messageIncomingPopup">
-          <div className="incomingCallPopup ">
-            <div className="d-flex justify-content-between w-100 align-items-center gap-2">
-              <div className="user">
-                <div className="userHolder col-12">
-                  <i className="fa-solid fa-user" />
-                </div>
-                <div className="userInfo col-12 mt-0">
-                  <h5 className="fw-medium text-white mb-0">
-                    Calling from {incomingCall.sender_id}
-                  </h5>
-                </div>
-              </div>
-              <div className="controls">
-                <button
-                  className="callButton"
-                  onClick={() => {
-                    setInternalCaller(incomingCall.sender_id);
-                    setToUser(account.id);
-                    setCalling(true);
-                    setTimeout(()=>{
-                      dispatch({ type: "SET_INCOMINGCALL", incomingCall: null });
-                    },2000)
-                   
-                  }}
-                >
-                  <i className="fa-duotone fa-phone"></i>
-                  <div className="circle1"></div>
-                  <div className="circle2"></div>
-                </button>
-                <button className="callButton hangup me-0" onClick={()=>dispatch({ type: "SET_INCOMINGCALL", incomingCall: null })}>
-                  <i className="fa-duotone fa-phone-hangup"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <InternalIncomingCall setCalling={setCalling} setToUser={setToUser} setInternalCaller={setInternalCaller} />
     </>
   );
 };

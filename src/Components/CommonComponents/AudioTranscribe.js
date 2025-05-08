@@ -3,7 +3,7 @@ import { generalPostFunction, generatePreSignedUrl } from '../GlobalFunction/glo
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-function AudioTranscribe({ url }) {
+function AudioTranscribe({ url, setTranscribeLink }) {
     const [transcript, setTranscript] = useState([])
     const [transcribeLoading, setTranscribeLoading] = useState(false)
     const [isClosedTranscribe, setIsClosedTranscribe] = useState(true)
@@ -49,7 +49,7 @@ function AudioTranscribe({ url }) {
         <div className="audio-container mb-0">
             <div className="transcriptWrap p-0 col-12">
                 <div className='transc_close'><button 
-                // onClick={() => setIsClosedTranscribe(!isClosedTranscribe)}
+                onClick={() => setTranscribeLink()}
                 ><i class="fa-solid fa-xmark"></i></button></div>
                 <div className="textContent p-3 pt-0 mt-2 col-12">
                     {
