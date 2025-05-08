@@ -73,7 +73,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
                         </div>
                       )}
                       <div className="userInfo col-12 mt-0">
-                        <h5 className="fw-medium text-white mb-0">
+                        <h5 className="fw-medium text-white mb-0 ellipsisText">
                           Calling from {item.sender_name}
                         </h5>
                       </div>

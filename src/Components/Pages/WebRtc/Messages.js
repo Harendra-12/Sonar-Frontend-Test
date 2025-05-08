@@ -42,6 +42,7 @@ import {
 } from "react-resizable-panels";
 import HeaderApp from "./HeaderApp";
 import MessageProfileDetails from "./components/MessageProfileDetails";
+import ChatsCalls from "./components/ChatsCalls";
 
 function Messages({
   setSelectedModule,
@@ -53,6 +54,9 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
+
+  // formatRelativeTime, 
+  // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
   const { sendMessage } = Socket();
@@ -256,7 +260,7 @@ function Messages({
               : checkMessageType(data?.last_message_data?.message_text)
           }
         }));
-        
+
         setContact(updatedFilteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find(
@@ -2234,88 +2238,12 @@ function Messages({
 
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <div
-                        className=""
-                      // style={{
-                      //   borderBottom: "1px solid var(--border-color)",
-                      // }}
-                      >
-                        {contact.map((item) => {
-                          return (
-                            <div
-                              data-bell={
-                                unreadMessage[item?.id]
-                                  ? unreadMessage[item?.id]
-                                  : ""
-                              }
-                              className={
-                                recipient[1] === item?.id
-                                  ? "contactListItem "
-                                  : "contactListItem callsItemDetails"
-                              }
-                            >
-                              <div
-
-                                className="w-100 "
-                              >
-                                <div className=" d-flex align-items-center">
-                                  <div
-                                    className="profileHolder"
-                                    id={
-                                      onlineUser.find(
-                                        (user) => user.id === item.id
-                                      )
-                                        ? "profileOnlineNav"
-                                        : "profileOfflineNav"
-                                    }
-                                  >
-                                    {accountDetails?.users?.find(
-                                      (acc) => acc.id === item.id
-                                    )?.profile_picture ? (
-                                      <img
-                                        src={
-                                          accountDetails?.users?.find(
-                                            (acc) => acc.id === item.id
-                                          )?.profile_picture
-                                        }
-                                        alt="profile"
-                                        onError={(e) =>
-                                          (e.target.src = require("../../assets/images/placeholder-image.webp"))
-                                        }
-                                      />
-                                    ) : (
-                                      <i className="fa-light fa-user fs-5"></i>
-                                    )}
-                                  </div>
-                                  <div className="ms-3 flex-grow-1">
-                                    <p className=" justify-content-start">
-                                      {item?.name} <span className="missedCallArrow ms-2"><i class="fa-regular fa-arrow-up-right"></i></span>
-                                    </p>
-                                    <h5>
-                                      <span className=" text-end mb-0">
-                                        <p className="timeAgo">
-                                          {item?.last_message_data
-                                            ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
-                                            : ""}
-                                        </p>
-                                      </span>
-                                    </h5>
-                                  </div>
-                                  <button className="btn_call"><i class="fa-regular fa-phone"></i></button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <ChatsCalls />
                     </div>
                   ) : (
                     <div className="tab-content">
                       <div
-                        className="callList"
+                        className="callList groupCall_list"
                         style={{ height: "calc(100vh - 230px)" }}
                       >
                         <div
@@ -2544,10 +2472,17 @@ function Messages({
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
+                                        <p className="fs-14 text-gray"><span className="text-info fw-normal">Rams : &nbsp;</span> Happy to be part of this group</p>
                                       </div>
                                     </div>
                                     <div className=" text-end">
-                                      <div className="dropdown">
+                                    <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                <p className="timeAgo">1h ago</p>
+                                <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
+                                {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
+                              </div>
+                                      {/* <div className="dropdown">
                                         <button
                                           className="clearButton2 "
                                           type="button"
@@ -2578,7 +2513,7 @@ function Messages({
                                             </div>
                                           </li>
                                         </ul>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2586,6 +2521,33 @@ function Messages({
                             );
                           })
                         )}
+
+
+                        
+                        <div className="contactListItem align-items-center" data-bell={"1"} >
+                          <div className="row justify-content-start align-items-center">
+                            <div className="col-xl-12 d-flex">
+                              <div
+                                className="profileHolder"
+                                id={"profileOfflineNav"}
+                              >
+                                <i className="fa-light fa-user fs-5"></i>
+                              </div>
+                              <div className="my-auto ms-2 ms-xl-3">
+                                <p className=' justify-content-start ellipsisText'>Test 
+                                  {/* <span className="missedCallArrow text-success ms-2"><i className="fa-solid fa-arrow-down-left"></i></span> */}
+                                  </p>
+                                  <span class="text-success">Hira Typing...</span>
+                              </div>
+                              <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                <p className="timeAgo">1h ago</p>
+                                {/* <span className="chat-read-icon read "><i class="fa-solid fa-check-double"></i></span> */}
+                                <span className="chat-read-icon unreadsms "><i class="fa-solid fa-check-double"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}

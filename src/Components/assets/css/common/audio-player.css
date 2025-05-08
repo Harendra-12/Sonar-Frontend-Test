@@ -44,7 +44,8 @@ audio {
   padding: 10px;
   /* background-color: var(--ele-color); */
   background-color: #000000c4;
-  height: 579px;
+  /* height: 579px; */
+  height: auto;
   overflow: auto;
 }
 
@@ -78,7 +79,7 @@ audio {
 }
 
 .transc_close {
-  background: var(--bg-color);
+  background: #383838;
   height: 30px;
   display: flex;
   justify-content: end;
@@ -87,25 +88,15 @@ audio {
   width: 100%;
 
 }
-.transc_close button{
+
+.transc_close button {
   background: transparent;
   border: 0;
   color: #fff;
   padding: 8px;
 }
-.btn_call{
-  background: #01b9d729;
-    border: 0;
-    border-radius: 5px;
-    color: #00a1b5;
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: .8rem;
+
+.react-draggable {
+  z-index: 999;
+  transform: unset !important;
 }
-.missedCallArrow{
-  font-size: 0.875rem !important;
-  color: #ff0000 !important;
-}
-/* .contactListItem.callsItemDetails{
-  border-bottom: 1px solid var(--me-border1);
-} */

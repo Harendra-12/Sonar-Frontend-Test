@@ -61,7 +61,7 @@ function AudioTranscribe({ url, setTranscribeLink }) {
                                     </span>
                                 )
                             })}</p>
-                    }
+                    } 
                 </div>
             </div>
         </div>
