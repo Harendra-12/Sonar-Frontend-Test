@@ -14,28 +14,25 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   const [files, setFiles] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
-  const [loading, setLoading] = useState({
-    files: true,
-    media: true
-  });
+  const [loading, setLoading] = useState(false);
 
   // Set Media and Files
-  // useEffect(() => {
-  //   if (viewAllToggle === "files") {
-  //     setFiles(allFiles);
-  //   } else if (viewAllToggle === "media") {
-  //     setMedia(allMedia);
-  //   } else {
-  //     setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
-  //     setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
-  //   }
-  // }, [messages, viewAllToggle]);
+  useEffect(() => {
+    if (!messages) return;
+    // setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
+    // setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
+    setAllFiles(messages?.map((file) => ({
+      ...file,
+      message_text: file.body,
+      created_at: file.time
+    })))
+  }, [messages]);
 
   useEffect(() => {
     if (recipient && recipient.length > 0) {
       handleViewAll();
     }
-  }, [recipient])
+  }, [selectedChat])
 
   // Download any File / Media Function
   const downloadImage = async (imageUrl, fileName) => {
@@ -64,7 +61,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   // Handle View All Files and Media
   const handleViewAll = async () => {
     // setViewAllToggle(type);
-    // setLoading(type);
+    setLoading(true);
     try {
       let apiUrl = "";
       if (recipient[2] == "groupChat") {
@@ -74,7 +71,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
       }
       const response = await generalGetFunction(`${apiUrl}${recipient[1]}`);
       if (response.status) {
-        setAllFiles(response.data.data);
+        setAllFiles(response.data.data.filter((item) => item.message_type !== "text\/plain"));
         toast.success(response.message);
         setLoading(false);
       } else {
@@ -205,24 +202,24 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
               <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
               <button class="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
               <button class="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
-              <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className="fa-solid fa-refresh" /></button>
+              <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
             </div>
           </nav>
           <div className="tab-content mt-3">
             <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
               {allFiles && allFiles?.length > 0 ? (
-                allFiles.filter((item) => item.message_type !== "text\/plain").map((item, index) => (
+                allFiles.map((item, index) => (
                   <div className="file_list" key={index}>
                     <div className="">
                       <span className="shared-file-icon">
-                        <i className={`fa-regular fa-file-${getExtension(item.message_text)}`}></i>
+                        {item.message_text && <i className={`fa-regular fa-file-${getExtension(item.message_text)}`}></i>}
                       </span>
                     </div>
                     <div className=" ">
-                      <p className="ellipsisText">{item.message_text.split('chats/')[1]}</p>
-                      <p className="text_muted">{item.created_at.split(" ")[0]} - {formatTimeWithAMPM(item.created_at.split(" ")[1])}</p>
+                      <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
+                      <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                     </div>
-                    <div className="download" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])} >
+                    <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                       <button>
                         <i className="fa-regular fa-arrow-down-to-line"></i>
                       </button>
@@ -241,10 +238,10 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                       </span>
                     </div>
                     <div className=" ">
-                      <p className="ellipsisText">{item.message_text.split('chats/')[1]}</p>
-                      <p className="text_muted">{item.created_at.split(" ")[0]} - {formatTimeWithAMPM(item.created_at.split(" ")[1])}</p>
+                      <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
+                      <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                     </div>
-                    <div className="download" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])} >
+                    <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                       <button>
                         <i className="fa-regular fa-arrow-down-to-line"></i>
                       </button>
@@ -259,15 +256,15 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                   {allFiles.filter((item) => item.message_type === "image").map((item, index) => (
                     <div className="imgBox" key={index}>
                       <img
-                        src={item.message_text}
+                        src={item?.message_text}
                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
                         alt=""
                       />
                       <div className="extraButtons">
-                        <Link className="tableButton me-2" to={item.message_text} target="_blank">
+                        <Link className="tableButton me-2" to={item?.message_text} target="_blank">
                           <i className="fa-solid fa-eye text-white" />
                         </Link>
-                        <button className="tableButton head ms-2" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])}>
+                        <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
                           <i className="fa-solid fa-download" />
                         </button>
                       </div>
@@ -282,15 +279,15 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                   {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
                     <div className="imgBox" key={index}>
                       <img
-                        src={item.message_text}
+                        src={item?.message_text}
                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
                         alt=""
                       />
                       <div className="extraButtons">
-                        <Link className="tableButton me-2" to={item.message_text} target="_blank">
+                        <Link className="tableButton me-2" to={item?.message_text} target="_blank">
                           <i className="fa-solid fa-eye text-white" />
                         </Link>
-                        <button className="tableButton head ms-2" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])}>
+                        <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
                           <i className="fa-solid fa-download" />
                         </button>
                       </div>

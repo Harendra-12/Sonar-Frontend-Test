@@ -2563,7 +2563,7 @@ function Messages({
                   {/* <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
-                  <div className="col h-100 me-1">
+                  <div className="col h-100 me-2">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">

@@ -414,7 +414,6 @@ function CdrFilterReport({ page }) {
     createdAt,
     locationState
   ]);
-  console.log("Cdr", cdr);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -598,6 +597,7 @@ function CdrFilterReport({ page }) {
   // Filter To Set when Navigating from PBX Dashboard
   useEffect(() => {
     if (locationState.state !== null) {
+      setCdr([]);
       setLoading(true);
       const { filter, direction } = locationState.state;
 
