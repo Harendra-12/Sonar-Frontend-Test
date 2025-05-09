@@ -530,6 +530,15 @@ function CdrReport({ page }) {
   };
 
   // Select CDR - Call Recording Item for delete
+  const handleSelectAll = () => {
+    if (selectedCdrToDelete.length === cdr.data.length) {
+      // Deselect all if everything is already selected
+      setSelectedCdrToDelete([]);
+    } else {
+      // Select all items
+      setSelectedCdrToDelete(cdr.data);
+    }
+  };
   const handleSelectUserToEdit = (item) => {
     setSelectedCdrToDelete((prevSelected) => {
       if (prevSelected.some((cdr) => cdr.id == item.id)) {
@@ -1064,7 +1073,20 @@ function CdrReport({ page }) {
                     <table>
                       <thead>
                         <tr>
-                          {page === "callrecording" && <th style={{ width: '20px' }}></th>}
+                          {page === "callrecording" &&
+                            <th style={{ width: '20px' }}>
+                              <input
+                                type="checkbox"
+                                ref={(el) => {
+                                  if (el) {
+                                    el.indeterminate = selectedCdrToDelete.length > 0 && selectedCdrToDelete.length < cdr.data.length;
+                                  }
+                                }}
+                                onChange={handleSelectAll}
+                                checked={selectedCdrToDelete?.length === cdr?.data?.length}
+                              />
+                            </th>
+                          }
                           <th style={{ width: '20px' }}>#</th>
                           <th>Direction</th>
                           {/* {page === "billing" ? "" : <th>Call Type</th>} */}
@@ -1146,6 +1168,7 @@ function CdrReport({ page }) {
                                   }
                                 );
                                 const storageSize = matchedStorage?.size || "N/A";
+                                console.log(selectedCdrToDelete);
 
                                 return (
                                   <>
