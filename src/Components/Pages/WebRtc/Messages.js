@@ -641,7 +641,7 @@ function Messages({
         newContact[contactIndex].last_message_data.message_text = body;
         newContact[contactIndex].last_message_data.created_at = time;
         setContact(newContact);
-      } 
+      }
       if (!extensionExists) {
         contact.unshift({
           name: agentDetails?.username,
@@ -897,7 +897,7 @@ function Messages({
     const filteredTag = tag?.filter((data) =>
       data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
     );
-    
+
     if (userTag?.length) {
       setFilteredTags(filteredTag);
     } else {
@@ -2476,12 +2476,12 @@ function Messages({
                                       </div>
                                     </div>
                                     <div className=" text-end">
-                                    <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
-                                <p className="timeAgo">1h ago</p>
-                                <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
-                                {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
-                              </div>
+                                      <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                        {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                        <p className="timeAgo">1h ago</p>
+                                        <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
+                                        {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
+                                      </div>
                                       {/* <div className="dropdown">
                                         <button
                                           className="clearButton2 "
@@ -2523,7 +2523,7 @@ function Messages({
                         )}
 
 
-                        
+
                         <div className="contactListItem align-items-center" data-bell={"1"} >
                           <div className="row justify-content-start align-items-center">
                             <div className="col-xl-12 d-flex">
@@ -2534,10 +2534,10 @@ function Messages({
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
                               <div className="my-auto ms-2 ms-xl-3">
-                                <p className=' justify-content-start ellipsisText'>Test 
+                                <p className=' justify-content-start ellipsisText'>Test
                                   {/* <span className="missedCallArrow text-success ms-2"><i className="fa-solid fa-arrow-down-left"></i></span> */}
-                                  </p>
-                                  <span class="text-success">Hira Typing...</span>
+                                </p>
+                                <span class="text-success">Hira Typing...</span>
                               </div>
                               <div className="col text-end d-flex justify-content-end align-items-end flex-column">
                                 {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
@@ -2563,7 +2563,7 @@ function Messages({
                   {/* <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
-                  <div className="col h-100">
+                  <div className="col h-100 me-1">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
