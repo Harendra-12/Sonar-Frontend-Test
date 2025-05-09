@@ -84,7 +84,7 @@ function NotificationBellApp() {
                 </div>
                 <ul>
                     {allNotification && allNotification.length > 0 ?
-                        allNotification.map((item, index) => (
+                        allNotification.slice(0,5).map((item, index) => (
                             <li class="dropdown-item">
                                 <div class="d-flex align-items-start">
                                     {item.message_text ? (
