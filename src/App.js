@@ -207,12 +207,15 @@ const DispatchSetter = () => {
 
 function App() {
   const adminLogout = useSelector((state) => state?.adminLogout);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
-  Socket();
+  const { sendMessage } = Socket();
   GoSocket();
+  useEffect(()=>{
+    dispatch({type:"SET_SOCKETSENDMESSAGE",socketSendMessage:sendMessage})
+  },[Socket])
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{

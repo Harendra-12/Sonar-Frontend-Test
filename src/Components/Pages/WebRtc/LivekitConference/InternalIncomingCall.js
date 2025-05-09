@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Socket from "../../../GlobalFunction/Socket";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
-  const { sendMessage } = Socket();
+  const socketSendMessage = useSelector((state)=>state.socketSendMessage)
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
@@ -16,12 +15,12 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     setToUser(account.id);
     setCalling(true);
     setTimeout(() => {
-      dispatch({
-        type: "REMOVE_INCOMINGCALL",
-        room_id: item.room_id,
-      });
+      dispatch({type:"REMOVE_INCOMINGCALL",room_id:item.room_id})
+      dispatch({type:"SET_INCOMINGCALL",incomingCall:{...item,recieved:true}})
+
     }, 1000);
-    sendMessage({
+
+    socketSendMessage({
       action: "peercall",
       chat_call_id: item.id,
       hangup_cause: "",
@@ -37,7 +36,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       room_id: item.room_id,
     });
     dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
-    sendMessage({
+    socketSendMessage({
       action: "peercall",
       chat_call_id: item.id,
       hangup_cause: "rejected",
@@ -47,11 +46,12 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     });
   }
 
+  console.log("IncominCall data",incomingCall)
   return (
     <>
       {incomingCall.length > 0 &&
         incomingCall.map((item) => {
-          if (item.sender_id !== account.id) {
+          if (item.sender_id !== account.id && !item.recieved) {
             return (
               <div className="messageIncomingPopup">
                 <div className="incomingCallPopup ">

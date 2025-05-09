@@ -91,6 +91,7 @@ var incomingMessage = null;
 var deletedNotificationId = null; // State to track deleted notification ID
 var incomingCall = [];
 var internalCallAction = null;
+var socketSendMessage = null;
 
 const initialState = {
   account,
@@ -182,6 +183,7 @@ const initialState = {
   deletedNotificationId,
   incomingCall,
   internalCallAction,
+  socketSendMessage,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -420,7 +422,9 @@ const counterReducer = (state = initialState, action) => {
       };
 
     case "SET_INTERNALCALLACTION":
-      return {...state, internalCallAction:action.internalCallAction};
+      return { ...state, internalCallAction: action.internalCallAction };
+    case "SET_SOCKETSENDMESSAGE":
+      return { ...state, socketSendMessage: action.socketSendMessage };
     case "REMOVE_INTERNALCALLACTION":
       return {
         ...state,

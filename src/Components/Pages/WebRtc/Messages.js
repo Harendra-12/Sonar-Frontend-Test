@@ -22,7 +22,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
-import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
@@ -59,8 +58,7 @@ function Messages({
   // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
-  const { sendMessage } = Socket();
-  const navigate = useNavigate();
+  const socketSendMessage = useSelector((state)=>state.socketSendMessage)
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -463,7 +461,7 @@ function Messages({
       messageContent = messageInput.trim();
     }
     const messageType = checkMessageType(messageContent);
-    sendMessage({
+    socketSendMessage({
       sharedMessage: messageContent,
       from: account?.id,
       to: recipient[1],
@@ -1365,7 +1363,7 @@ function Messages({
       messageContent = messageInput.trim();
     }
     const messageType = checkMessageType(messageContent);
-    sendMessage({
+    socketSendMessage({
       action: "broadcastGroupMessage",
       user_id: account.id,
       sharedMessage: messageContent,
@@ -2808,7 +2806,7 @@ function Messages({
                                   setMeetingPage("message");
                                   setToUser(recipient[1]);
                                   setCalling(true);
-                                  sendMessage({
+                                  socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
                                     to: recipient[1],

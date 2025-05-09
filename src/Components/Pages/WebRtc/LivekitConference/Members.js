@@ -5,7 +5,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createLocalVideoTrack } from "livekit-client";
 import { generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
 import { useDispatch, useSelector } from 'react-redux';
-import Socket from "../../../GlobalFunction/Socket";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -25,7 +24,7 @@ import Socket from "../../../GlobalFunction/Socket";
 
 function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording, setCalling }) {
     const room = useRoomContext();
-    const { sendMessage } = Socket();
+    const socketSendMessage = useSelector((state)=>state.socketSendMessage)
     const isRecording = useIsRecording();
     const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
     const avatarTracks = {}; // Store references for avatars
@@ -38,6 +37,18 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
     // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [searchTerm, setSearchTerm] = useState(''); // State to track the search input
     const currentCallRoom = incomingCall.filter((item)=>item.room_id===roomName)
+
+    // Function to check if any user added in room and if added then update its value in incomingCall
+    useEffect(()=>{
+        if(internalCallAction?.status==="started"){
+            const filterCall = incomingCall.filter((item)=>item.room_id===internalCallAction.room_id)
+            if(filterCall){
+                dispatch({type:"REMOVE_INCOMINGCALL",room_id:internalCallAction.room_id})
+                dispatch({type:"SET_INCOMINGCALL",incomingCall:{...filterCall,isOtherMember:true}})
+            }
+        }
+       
+    },[internalCallAction])
     // Function to manage avatars for all participants
     async function handleAvatarsForParticipants(room) {
         if (!room || !room.participants) return; // ✅ Ensure room and participants exist
@@ -86,22 +97,22 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         const handleRoomDisconnect = () => {
             console.log("participants",participants);
             
-            if(participants.length>1){
-                sendMessage({
+            if(participants.isOtherMember){
+                socketSendMessage({
                     "action": "peercall",
                     "chat_call_id": currentCallRoom.id,
                     "hangup_cause": "success",
                     "room_id": roomName,
-                    "duration": "120", 
+                    "duration": 120, 
                     "status": "ended"
                   })
             }else{
-                sendMessage( {
+                socketSendMessage( {
                     "action": "peercall",
                     "chat_call_id": currentCallRoom.id,
                     "hangup_cause": "originator_cancel",
                     "room_id": roomName,
-                    "duration": "0",
+                    "duration": 0,
                     "status": "ended"
                   })
             }
