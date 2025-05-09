@@ -414,7 +414,7 @@ function CdrFilterReport({ page }) {
     createdAt,
     locationState
   ]);
-console.log("Cdr",cdr);
+  console.log("Cdr", cdr);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -601,7 +601,7 @@ console.log("Cdr",cdr);
       setLoading(true);
       const { filter, direction } = locationState.state;
 
-      setHagupCause(filter === "missed" ? "Missed" : filter === "completed" ? "Answered" : "");
+      setHagupCause(filter === "missed" ? ["Missed", "Failed"] : filter === "completed" ? "Answered" : "");
       setCallDirection(direction === "all" ? "" : direction);
 
       setTimeout(() => {
