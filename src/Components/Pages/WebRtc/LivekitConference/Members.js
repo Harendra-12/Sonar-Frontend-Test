@@ -37,14 +37,13 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
     // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [searchTerm, setSearchTerm] = useState(''); // State to track the search input
     const currentCallRoom = incomingCall.filter((item)=>item.room_id===roomName)
-
     // Function to check if any user added in room and if added then update its value in incomingCall
     useEffect(()=>{
-        if(internalCallAction?.status==="started"){
+        if( internalCallAction && (internalCallAction?.hangup_cause!=="originator_cancel" || internalCallAction?.hangup_cause!=="success")){
             const filterCall = incomingCall.filter((item)=>item.room_id===internalCallAction.room_id)
             if(filterCall){
                 dispatch({type:"REMOVE_INCOMINGCALL",room_id:internalCallAction.room_id})
-                dispatch({type:"SET_INCOMINGCALL",incomingCall:{...filterCall,isOtherMember:true}})
+                dispatch({type:"SET_INCOMINGCALL",incomingCall:{...filterCall[0],isOtherMember:true}})
             }
         }
        
@@ -95,26 +94,28 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
     // After disconnect this function will trigger to send socket data to other user about call state\
     useEffect(() => {
         const handleRoomDisconnect = () => {
-            console.log("participants",participants);
+            console.log("Current room",currentCallRoom);
             
-            if(participants.isOtherMember){
+            if(currentCallRoom[0].isOtherMember){
                 socketSendMessage({
                     "action": "peercall",
-                    "chat_call_id": currentCallRoom.id,
+                    "chat_call_id": currentCallRoom[0].id,
                     "hangup_cause": "success",
                     "room_id": roomName,
                     "duration": 120, 
                     "status": "ended"
                   })
+                  dispatch({type:"REMOVE_INCOMINGCALL",room_id:roomName})
             }else{
                 socketSendMessage( {
                     "action": "peercall",
-                    "chat_call_id": currentCallRoom.id,
+                    "chat_call_id": currentCallRoom[0].id,
                     "hangup_cause": "originator_cancel",
                     "room_id": roomName,
                     "duration": 0,
                     "status": "ended"
                   })
+                  dispatch({type:"REMOVE_INCOMINGCALL",room_id:roomName})
             }
         };
     
