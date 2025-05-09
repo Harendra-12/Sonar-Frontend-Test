@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
+import { followCursor } from 'tippy.js';
 import { useNavigate } from 'react-router-dom'
 import { generalDeleteFunction, generalGetFunction } from '../../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
@@ -316,7 +317,7 @@ function Campaigns() {
                                                   )
                                                 )}
                                               </ul>
-                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }} followCursor={true} plugins={[followCursor]}>
                                               <div className="hover-dropdown">
                                                 <div className="avatar-container">
                                                   {item.agents?.slice(0, 4).map((agent, index) => {
@@ -390,7 +391,7 @@ function Campaigns() {
                                             </div>
                                           </ul>
                                         } allowHTML={true} interactive={true}>
-                                          <span>5 Leads</span>
+                                          {item.leads ? <span>{item.leads?.length} Records</span> : 'N/A'}
                                         </Tippy>
                                       </td>
                                       <td>
