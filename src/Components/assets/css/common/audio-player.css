@@ -53,6 +53,8 @@ audio {
   white-space: break-spaces;
   color: #fff;
   font-weight: 400;
+  max-height: 500px;
+  overflow: auto;
 }
 
 .audio-container .transcriptWrap .textContent>* {
@@ -96,7 +98,7 @@ audio {
   padding: 8px;
 }
 
-.audio-container .react-draggable {
+/* .audio-container .react-draggable {
   z-index: 999;
   transform: unset !important;
-}
+} */
