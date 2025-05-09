@@ -277,13 +277,14 @@ function DialerCdrReport() {
                             <th>Customer Name</th>
                             <th>Customer Number</th>
                             <th>Duration</th>
+                            <th>Disposition</th>
                             <th>Hangup Cause</th>
                             <th>Date</th>
                             <th>Time</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ? <SkeletonTableLoader row={15} col={10} /> :
+                          {loading ? <SkeletonTableLoader row={15} col={11} /> :
                             filteredData && filteredData?.data?.length > 0 ? (
                               filteredData?.data?.map((item, index) => (
                                 <tr key={index}>
@@ -294,6 +295,7 @@ function DialerCdrReport() {
                                   <td>{item?.customer || 'N/A'}</td>
                                   <td>{item?.phone_number || 'N/A'}</td>
                                   <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
+                                  <td style={{ textTransform: 'capitalize' }}>{item.ext_dispo?.replace(/_/g, ' ') || 'N/A'}</td>
                                   <td>{item?.hangup_cause || 'N/A'}</td>
                                   <td>{item.created_at ? item?.created_at?.split(" ")[0] : 'N/A'}</td>
                                   <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
