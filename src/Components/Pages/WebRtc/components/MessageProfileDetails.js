@@ -20,37 +20,22 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   });
 
   // Set Media and Files
-  useEffect(() => {
-    if (viewAllToggle === "files") {
-      setFiles(allFiles);
-    } else if (viewAllToggle === "media") {
-      setMedia(allMedia);
-    } else {
-      setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
-      setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
-    }
-  }, [messages, viewAllToggle]);
-
-  // Loader for initial state
-  useEffect(() => {
-    if (files && files.length) {
-      setLoading((prev) => ({ ...prev, files: false }));
-    } else {
-      setTimeout(() => {
-        setLoading((prev) => ({ ...prev, files: false }));
-      }, 500)
-    }
-  }, [files]);
+  // useEffect(() => {
+  //   if (viewAllToggle === "files") {
+  //     setFiles(allFiles);
+  //   } else if (viewAllToggle === "media") {
+  //     setMedia(allMedia);
+  //   } else {
+  //     setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
+  //     setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
+  //   }
+  // }, [messages, viewAllToggle]);
 
   useEffect(() => {
-    if (media && media.length) {
-      setLoading((prev) => ({ ...prev, media: false }));
-    } else {
-      setTimeout(() => {
-        setLoading((prev) => ({ ...prev, media: false }));
-      }, 500)
+    if (recipient && recipient.length > 0) {
+      handleViewAll();
     }
-  }, [media]);
+  }, [recipient])
 
   // Download any File / Media Function
   const downloadImage = async (imageUrl, fileName) => {
@@ -77,64 +62,94 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   };
 
   // Handle View All Files and Media
-  const handleViewAll = async (type) => {
-    setViewAllToggle(type);
-    setLoading(type);
-    if (type === "files") {
-      try {
-        let apiUrl = "";
-        if (recipient[2] == "groupChat") {
-          apiUrl = 'group-message/all?group_id='
-        } else {
-          apiUrl = 'message/all?receiver_id='
-        }
-        const response = await generalGetFunction(`${apiUrl}${recipient[1]}&message_type=file`);
-        if (response.status) {
-          setAllFiles(
-            response.data.map((file) => ({
-              ...file,
-              body: file.message_text,
-              time: file.created_at
-            }))
-          );
-          toast.success(response.message);
-          setLoading(false);
-        } else {
-          toast.error(response.message);
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error("Error fetching files:", err);
+  const handleViewAll = async () => {
+    // setViewAllToggle(type);
+    // setLoading(type);
+    try {
+      let apiUrl = "";
+      if (recipient[2] == "groupChat") {
+        apiUrl = 'group-message/all?group_id='
+      } else {
+        apiUrl = 'message/all?receiver_id='
+      }
+      const response = await generalGetFunction(`${apiUrl}${recipient[1]}`);
+      if (response.status) {
+        setAllFiles(response.data.data);
+        toast.success(response.message);
+        setLoading(false);
+      } else {
+        toast.error(response.message);
         setLoading(false);
       }
-    } else if (type === "media") {
-      try {
-        let apiUrl = "";
-        if (recipient[2] == "groupChat") {
-          apiUrl = 'group-message/all?group_id='
-        } else {
-          apiUrl = 'message/all?receiver_id='
-        }
-        const response = await generalGetFunction(`${apiUrl}${recipient[1]}&media`);
-        if (response.status) {
-          setAllMedia(
-            response.data.map((file) => ({
-              ...file,
-              body: file.message_text,
-            }))
-          );
-          toast.success(response.message);
-          setLoading(false);
-        } else {
-          toast.error(response.message);
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error("Error fetching files:", err);
-        setLoading(false);
-      }
+    } catch (err) {
+      console.error("Error fetching files:", err);
+      setLoading(false);
     }
   }
+
+  // const handleViewAll = async (type) => {
+  //   setViewAllToggle(type);
+  //   setLoading(type);
+  //   if (type === "files") {
+  //     try {
+  //       let apiUrl = "";
+  //       if (recipient[2] == "groupChat") {
+  //         apiUrl = 'group-message/all?group_id='
+  //       } else {
+  //         apiUrl = 'message/all?receiver_id='
+  //       }
+  //       const response = await generalGetFunction(`${apiUrl}${recipient[1]}&message_type=file`);
+  //       if (response.status) {
+  //         setAllFiles(
+  //           response.data.map((file) => ({
+  //             ...file,
+  //             body: file.message_text,
+  //             time: file.created_at
+  //           }))
+  //         );
+  //         toast.success(response.message);
+  //         setLoading(false);
+  //       } else {
+  //         toast.error(response.message);
+  //         setLoading(false);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching files:", err);
+  //       setLoading(false);
+  //     }
+  //   } else if (type === "media") {
+  //     try {
+  //       let apiUrl = "";
+  //       if (recipient[2] == "groupChat") {
+  //         apiUrl = 'group-message/all?group_id='
+  //       } else {
+  //         apiUrl = 'message/all?receiver_id='
+  //       }
+  //       const response = await generalGetFunction(`${apiUrl}${recipient[1]}&media`);
+  //       if (response.status) {
+  //         setAllMedia(
+  //           response.data.map((file) => ({
+  //             ...file,
+  //             body: file.message_text,
+  //           }))
+  //         );
+  //         toast.success(response.message);
+  //         setLoading(false);
+  //       } else {
+  //         toast.error(response.message);
+  //         setLoading(false);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching files:", err);
+  //       setLoading(false);
+  //     }
+  //   }
+  // }
+
+  const getExtension = (input) => {
+    var parts = input?.split(".");
+    return parts[parts?.length - 1]?.toLowerCase();
+  };
 
   return (
     <div className="messageOverlay py-3 h-100" style={{ overflow: "hidden" }}>
@@ -183,7 +198,111 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
         </div>
       </div>
       <div className="rightPanel">
-        <div className="chat_doc px-4 mb-2">
+        <div className="tangoNavs px-3">
+          <nav className="noScrollBar">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Files</button>
+              <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
+              <button class="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
+              <button class="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
+              <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className="fa-solid fa-refresh" /></button>
+            </div>
+          </nav>
+          <div className="tab-content mt-3">
+            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
+              {allFiles && allFiles?.length > 0 ? (
+                allFiles.filter((item) => item.message_type !== "text\/plain").map((item, index) => (
+                  <div className="file_list" key={index}>
+                    <div className="">
+                      <span className="shared-file-icon">
+                        <i className={`fa-regular fa-file-${getExtension(item.message_text)}`}></i>
+                      </span>
+                    </div>
+                    <div className=" ">
+                      <p className="ellipsisText">{item.message_text.split('chats/')[1]}</p>
+                      <p className="text_muted">{item.created_at.split(" ")[0]} - {formatTimeWithAMPM(item.created_at.split(" ")[1])}</p>
+                    </div>
+                    <div className="download" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])} >
+                      <button>
+                        <i className="fa-regular fa-arrow-down-to-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+            </div>
+            <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0">
+              {allFiles && allFiles?.length > 0 ? (
+                allFiles.filter((item) => item.message_type === "file").map((item, index) => (
+                  <div className="file_list" key={index}>
+                    <div className="">
+                      <span className="shared-file-icon">
+                        <i className="fa-regular fa-files"></i>
+                      </span>
+                    </div>
+                    <div className=" ">
+                      <p className="ellipsisText">{item.message_text.split('chats/')[1]}</p>
+                      <p className="text_muted">{item.created_at.split(" ")[0]} - {formatTimeWithAMPM(item.created_at.split(" ")[1])}</p>
+                    </div>
+                    <div className="download" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])} >
+                      <button>
+                        <i className="fa-regular fa-arrow-down-to-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+            </div>
+            <div class="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabindex="0">
+              {allFiles && allFiles?.length > 0 ? (
+                <div className="imageList">
+                  {allFiles.filter((item) => item.message_type === "image").map((item, index) => (
+                    <div className="imgBox" key={index}>
+                      <img
+                        src={item.message_text}
+                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
+                        alt=""
+                      />
+                      <div className="extraButtons">
+                        <Link className="tableButton me-2" to={item.message_text} target="_blank">
+                          <i className="fa-solid fa-eye text-white" />
+                        </Link>
+                        <button className="tableButton head ms-2" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])}>
+                          <i className="fa-solid fa-download" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+            </div>
+            <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabindex="0">
+              {allFiles && allFiles?.length > 0 ? (
+                <div className="imageList">
+                  {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
+                    <div className="imgBox" key={index}>
+                      <img
+                        src={item.message_text}
+                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
+                        alt=""
+                      />
+                      <div className="extraButtons">
+                        <Link className="tableButton me-2" to={item.message_text} target="_blank">
+                          <i className="fa-solid fa-eye text-white" />
+                        </Link>
+                        <button className="tableButton head ms-2" onClick={() => downloadImage(item.message_text, item.message_text.split('chats/')[1])}>
+                          <i className="fa-solid fa-download" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="chat_doc px-4 mb-2">
           <div className="d-flex justify-content-between gap-2">
             <p>
               Shared Files
@@ -191,11 +310,9 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                 {files?.length || 0}
               </span>
             </p>
-            {files && files.length > 0 ? (
-              <span>
-                <a onClick={() => viewAllToggle === "files" ? setViewAllToggle(false) : handleViewAll('files', recipient[2])}><u>{viewAllToggle === "files" ? 'View Less' : 'View All'}</u></a>
-              </span>
-            ) : ""}
+            <span>
+              <a onClick={() => viewAllToggle === "files" ? setViewAllToggle(false) : handleViewAll('files', recipient[2])}><u>{viewAllToggle === "files" ? 'View Less' : 'View All'}</u></a>
+            </span>
           </div>
           {
             viewAllToggle === "files" || !viewAllToggle ? (
@@ -243,11 +360,9 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                 {media?.length || 0}
               </span>
             </p>
-            {media && media.length > 0 ? (
-              <span>
-                <a onClick={() => viewAllToggle === "media" ? setViewAllToggle(false) : handleViewAll('media', recipient[2])}><u>{viewAllToggle === "media" ? 'View Less' : 'View All'}</u></a>
-              </span>
-            ) : ""}
+            <span>
+              <a onClick={() => viewAllToggle === "media" ? setViewAllToggle(false) : handleViewAll('media', recipient[2])}><u>{viewAllToggle === "media" ? 'View Less' : 'View All'}</u></a>
+            </span>
           </div>
 
           {viewAllToggle === "media" || !viewAllToggle ? (
@@ -287,7 +402,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                 </div>
               ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
           ) : ""}
-        </div>
+        </div> */}
       </div>
 
       {/* {!addMember && <div className="mb-auto px-4">

@@ -894,7 +894,7 @@
 
 .webrtc_newMessageUi .nav.nav-tabs {
     flex-wrap: nowrap;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 .webrtc_newMessageUi .tabLink {
@@ -1489,9 +1489,10 @@
     width: 40px;
     flex-shrink: 0;
 }
+
 .messageIncomingPopup .incomingCallPopup .userHolder img {
     width: 100%;
-   object-fit: cover;
+    object-fit: cover;
 }
 
 .messageIncomingPopup .incomingCallPopup .userHolder i {
@@ -1505,9 +1506,11 @@
 .chatCalls_wrap .contactListItem {
     border: 1px solid #c9deff69;
 }
-.chatCalls_wrap .contactListItem:hover{
+
+.chatCalls_wrap .contactListItem:hover {
     background: transparent !important;
 }
+
 .btn_call {
     background: #4eb5ff2b;
     border: 0;
@@ -1518,7 +1521,8 @@
     font-size: .8rem;
     transition: all 0.4s ease-in-out;
 }
-.btn_call:hover{
+
+.btn_call:hover {
     background: #62a7f8;
     color: #fff;
 }
@@ -1527,19 +1531,21 @@
     font-size: 0.875rem !important;
     /* color: #ff0000 !important; */
 }
-.groupCall_list{
 
-}
-.mainContentApp .webrtc_newMessageUi .groupCall_list .contactListItem span{
+.groupCall_list {}
+
+.mainContentApp .webrtc_newMessageUi .groupCall_list .contactListItem span {
     font-size: 12px !important;
 }
-.chat-read-icon.readsms{
+
+.chat-read-icon.readsms {
     color: #26bf94 !important;
 }
-.chat-read-icon.unreadsms{
+
+.chat-read-icon.unreadsms {
     color: #8c9097 !important;
 }
-.text-gray{
+
+.text-gray {
     color: #8c9097;
 }
-
