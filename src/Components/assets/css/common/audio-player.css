@@ -96,7 +96,7 @@ audio {
   padding: 8px;
 }
 
-/* .react-draggable {
+.audio-container .react-draggable {
   z-index: 999;
   transform: unset !important;
-} */
+}
