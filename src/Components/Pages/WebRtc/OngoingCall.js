@@ -522,7 +522,7 @@ function OngoingCall({
     let response;
 
     // Internal Calls wont call the API
-    if (globalSession[0].destination.length < 6) {
+    if (globalSession[0].destination.toString().length < 6) {
       return;
     }
 
@@ -829,19 +829,19 @@ function OngoingCall({
                   <div className="mt-4" />
                   <p className="text-center ">Where does it come from</p>
                   <div className="mt-4 d-flex justify-content-center align-items-center">
-                  <Tippy content="Transfer call" placement="top" visible={true}
-                    trigger="manual" >
-                    <button
-                      className="appPanelButtonCaller "
-                      effect="ripple"
-                      onClick={handleAttendedTransfer2}
-                    >
-                      <i className="fa-solid fa-phone-arrow-up-right" />
-                    </button>
-                  </Tippy>
+                    <Tippy content="Transfer call" placement="top" visible={true}
+                      trigger="manual" >
+                      <button
+                        className="appPanelButtonCaller "
+                        effect="ripple"
+                        onClick={handleAttendedTransfer2}
+                      >
+                        <i className="fa-solid fa-phone-arrow-up-right" />
+                      </button>
+                    </Tippy>
 
-                  
-                  {/* <Tippy content="Merge Call">
+
+                    {/* <Tippy content="Merge Call">
                     <button
                       onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false); setSelectedSessions([]) }}
                       className={` ${showActiveSessions
@@ -853,19 +853,19 @@ function OngoingCall({
                       <i className="fa-solid fa-merge"></i>
                     </button>
                   </Tippy> */}
-                  <Tippy content="Hang Up">
-                    <button
-                      className="appPanelButtonCaller bg-danger"
-                      effect="ripple"
-                      onClick={() => {
-                        hangup();
-                        setHangupRefresh(hangupRefresh + 1);
-                        setSelectedModule("callDetails");
-                      }}
-                    >
-                      <i className="fa-solid fa-phone-hangup text-white" />
-                    </button>
-                  </Tippy>
+                    <Tippy content="Hang Up">
+                      <button
+                        className="appPanelButtonCaller bg-danger"
+                        effect="ripple"
+                        onClick={() => {
+                          hangup();
+                          setHangupRefresh(hangupRefresh + 1);
+                          setSelectedModule("callDetails");
+                        }}
+                      >
+                        <i className="fa-solid fa-phone-hangup text-white" />
+                      </button>
+                    </Tippy>
                   </div>
                 </>
               )}
