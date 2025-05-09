@@ -601,7 +601,7 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       const { filter, direction } = locationState.state;
 
-      setHagupCause(filter === "missed" ? ["Missed", "Failed"] : filter === "completed" ? "Answered" : "");
+      setHagupCause(filter === "missed" ? ["Missed", "Failed", "Voicemail"] : filter === "completed" ? "Answered" : "");
       setCallDirection(direction === "all" ? "" : direction);
 
       setTimeout(() => {
