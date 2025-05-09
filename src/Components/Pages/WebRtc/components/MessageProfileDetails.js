@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
@@ -21,7 +21,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
     if (!messages) return;
     // setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
     // setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
-    setAllFiles(messages?.map((file) => ({
+    setAllFiles(messages?.filter((item) => item.message_type !== "text\/plain").map((file) => ({
       ...file,
       message_text: file.body,
       created_at: file.time
@@ -150,7 +150,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
 
   return (
     <div className="messageOverlay py-3 h-100" style={{ overflow: "hidden" }}>
-      <div className="p-4">
+      <div className="pt-4">
         <div className="col">
           <div className="d-flex justify-content-start align-items-center gap-2 mb-2 flex-column">
             {recipient[5] != null ? (
@@ -206,6 +206,8 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
             </div>
           </nav>
           <div className="tab-content mt-3">
+            <input type="search" name="Search" id="headerSearch" placeholder="Search" value="" className="mb-2" onChange={() => featureUnderdevelopment()} />
+
             <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
               {allFiles && allFiles?.length > 0 ? (
                 allFiles.map((item, index) => (
