@@ -48,20 +48,21 @@ function AudioTranscribe({ url, setTranscribeLink }) {
     return (
         <div className="audio-container mb-0">
             <div className="transcriptWrap p-0 col-12">
-                <div className='transc_close'><button 
-                onClick={() => setTranscribeLink()}
+                <div className='transc_close'><button
+                    onClick={() => setTranscribeLink()}
                 ><i class="fa-solid fa-xmark"></i></button></div>
                 <div className="textContent p-3 pt-0 mt-2 col-12">
                     {
                         transcribeLoading ? <div className='skeleton skeleton-text' /> :
-                            <p>{transcript.map((item, key) => {
-                                return (
-                                    <span key={key} className='textContent d-block'>
-                                        {item?.speaker}:-{item?.transcript}
-                                    </span>
-                                )
-                            })}</p>
-                    } 
+                            <p>{transcript.length > 0 ?
+                                transcript.map((item, key) => {
+                                    return (
+                                        <span key={key} className='textContent d-block'>
+                                            {item?.speaker}:-{item?.transcript}
+                                        </span>
+                                    )
+                                }) : "No Transcription Available!"}</p>
+                    }
                 </div>
             </div>
         </div>
