@@ -72,10 +72,10 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
       const response = await generalGetFunction(`${apiUrl}${recipient[1]}`);
       if (response.status) {
         setAllFiles(response.data.data.filter((item) => item.message_type !== "text\/plain"));
-        toast.success(response.message);
+        // toast.success(response.message);
         setLoading(false);
       } else {
-        toast.error(response.message);
+        // toast.error(response.message);
         setLoading(false);
       }
     } catch (err) {

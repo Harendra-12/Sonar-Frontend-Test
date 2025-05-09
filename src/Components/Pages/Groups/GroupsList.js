@@ -254,7 +254,7 @@ export default function GroupsList() {
                                           {item.group_name}
                                         </td>
                                         <td >
-                                          <div className='group__dropdown'>
+                                          <div className='group__dropdown' style={{ width: 'max-content' }}>
                                             <Tippy content={
                                               <ul className="dropdown-menu-hover"
                                                 style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}
