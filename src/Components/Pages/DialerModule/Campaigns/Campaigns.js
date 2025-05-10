@@ -81,6 +81,8 @@ function Campaigns() {
     }
   }, [logonUser]);
 
+  // console.log('campaignDetails', campaignDetails);
+
   return (
     <>
       <main className='mainContent'>
@@ -146,12 +148,11 @@ function Campaigns() {
                               <>
                                 {campaign?.data?.length > 0 ?
                                   campaign?.data.map((item, index) => {
-                                    if (campaignDetails && campaignDetails.campaign.id === item.id) {
-                                      let successRecords = 0;
-                                      let failedRecords = 0;
-                                      let untouchRecords = item.total_leads
-
-                                      switch (item.status) {
+                                    let successRecords = 0;
+                                    let failedRecords = 0;
+                                    let untouchRecords = item.total_leads
+                                    if (campaignDetails && campaignDetails.campaign_id === item.id) {
+                                      switch (campaignDetails.lead.status) {
                                         case 'COMPLETED':
                                           successRecords += 1;
                                           break;
@@ -167,6 +168,9 @@ function Campaigns() {
                                     }
                                     return (
                                       <tr key={index}>
+                                        {/* {
+                                          console.log('successRecords', successRecords, 'untouchRecords', untouchRecords, 'failedRecords', failedRecords)
+                                        } */}
                                         <td>
                                           <div className="d-flex align-items-center justify-content-start ">
                                             <div className="phone-call">
@@ -307,7 +311,7 @@ function Campaigns() {
                                         </td>
                                         <td>
                                           {item.agents.length === 0 ? "N/A" :
-                                            <div>
+                                            <div style={{ width: "max-content" }}>
                                               <Tippy content={
                                                 <ul className="dropdown-menu-hover"
                                                   style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
