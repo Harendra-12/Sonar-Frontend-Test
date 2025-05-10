@@ -92,7 +92,7 @@ var deletedNotificationId = null; // State to track deleted notification ID
 var incomingCall = [];
 var internalCallAction = null;
 var socketSendMessage = null;
-var campaignDetails = null;
+var campaignDetails = [];
 
 const initialState = {
   account,
@@ -440,7 +440,7 @@ const counterReducer = (state = initialState, action) => {
         volume: action?.payload,
       };
     case "SET_CAMPAIGN_DETAILS":
-      return { ...state, campaignDetails: action.campaignDetails }
+      return { ...state, campaignDetails: action.campaignDetails };
     default:
       return state;
   }
