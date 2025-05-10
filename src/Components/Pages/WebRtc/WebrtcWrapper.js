@@ -442,9 +442,14 @@ const WebrtcWrapper = () => {
     if (interCallMinimize) {
       setInterCallSize({ width: "100vw", height: "100vh" });
       setInterCallPosition({ x: 0, y: 0 });
+    } else if (!interCallMinimize) {
+      setInterCallSize({
+        width: 200,
+        height: 200,
+      });
+      setInterCallPosition({ x: 220, y: 281 });
     }
   }, [interCallMinimize]);
-
   return (
     <>
       <style>
@@ -635,7 +640,7 @@ const WebrtcWrapper = () => {
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
                   allContact={allContact}
-                  // globalSession={sessions}
+                // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -756,7 +761,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
@@ -834,7 +839,6 @@ const WebrtcWrapper = () => {
       {callProgressId && (
         <audio id={`remote-audio-${callProgressId}`} autoPlay />
       )}
-
       {calling ? (
         <Rnd
           size={{ width: interCallSize.width, height: interCallSize.height }}

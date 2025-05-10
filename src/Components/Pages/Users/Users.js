@@ -198,6 +198,24 @@ const Users = () => {
     }
     setDeleteId(deleteId);
   };
+
+  useEffect(() => {
+    if (onlineUser.length > 0 && filterUser) {
+      switch (onlineFilter) {
+        case "online":
+          const onlineUsers = filterUser.filter(item => onlineUser.includes(item.id));
+          setFilterUser(onlineUsers);
+          break;
+        case "offline":
+          const offlineUsers = filterUser.filter((item) => !onlineUser.includes(item.id));
+          setFilterUser(offlineUsers);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [onlineUser])
+
   return (
     <main className="mainContent">
       <section id="phonePage">

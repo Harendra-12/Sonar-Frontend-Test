@@ -239,7 +239,7 @@ function CdrReport({ page }) {
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
-          setCdr(apiData);
+          setCdr(apiData.data);
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",

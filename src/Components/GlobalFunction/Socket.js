@@ -136,7 +136,9 @@ const Socket = () => {
               dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
               break;
             case "callUpdate":
-              dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: result,});
+              dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
+            case "activeDialer":
+              dispatch({ type: "SET_CAMPAIGN_DETAILS", campaignDetails: result, });
             default:
               break;
           }
