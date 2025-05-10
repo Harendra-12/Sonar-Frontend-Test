@@ -447,7 +447,7 @@ const WebrtcWrapper = () => {
         width: 200,
         height: 200,
       });
-      setInterCallPosition({ x: 220, y: 281 });
+      setInterCallPosition({ x: 220, y: 450 });
     }
   }, [interCallMinimize]);
   return (
