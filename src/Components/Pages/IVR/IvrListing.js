@@ -191,6 +191,7 @@ const IvrListing = () => {
                             <th>Timeout</th>
                             <th>Max Failures</th>
                             <th>Options</th>
+                            <th>Call Flow</th>
                              <th>Edit</th>
                             <th>Delete</th>
                           </tr> 
@@ -262,6 +263,16 @@ const IvrListing = () => {
                                             })
                                           }
                                           className="tableButton option"
+                                        >
+                                          <i className="fa-duotone fa-gear"></i>
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          onClick={() =>
+                                            navigate(`/call-flow`)
+                                          }
+                                          className="tableButton callflow"
                                         >
                                           <i className="fa-duotone fa-gear"></i>
                                         </button>
