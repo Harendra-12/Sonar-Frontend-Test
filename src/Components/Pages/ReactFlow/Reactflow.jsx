@@ -218,126 +218,243 @@ const Reactflow = () => {
     return node;
   });
 
-  // Enhanced function to export flow data with sub-nodes
-  const exportFlowData = () => {
-    console.log("nodes:", nodes);
+  const validatePressDigitsConnections = (flowData) => {
+    const { nodes, edges } = flowData;
+    const errors = [];
 
-    // Create a mapping of all sub-node handles for reference
-    const subNodeHandleMap = {};
+    const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
+    const subNodeEdgeMap = {};
+    const subNodeToTarget = {};
 
-    nodes.forEach((node) => {
-      // // Store the sub-node handle ID for each "conversation" node
-      // if (node.type === "conversation" && node.data?.inputs) {
-      //   node.data.inputs.forEach((input) => {
-      //     // Store the sub-node handle ID
-      //     subNodeHandleMap[`source-${input.id}`] = {
-      //       parentNodeId: node.id,
-      //       subNodeId: input.id,
-      //     };
-      //   });
-      // }
-      // Store the sub-node handle ID for each "pressDigits" node
-      if (node.type === "pressDigits" && node.data?.inputs) {
-        node.data.inputs.forEach((input) => {
-          // Store the sub-node handle ID
-          subNodeHandleMap[`source-${input.id}`] = {
-            parentNodeId: node.id,
-            subNodeId: input.id,
-          };
-        });
-      }
+    console.log("🔍 Validating pressDigits nodes...");
 
-      // Also handle dynamically added field connections
-      if (node.data?.fields) {
-        node.data.fields.forEach((field) => {
-          subNodeHandleMap[`source-${field.id}`] = {
-            parentNodeId: node.id,
-            subNodeId: field.id,
-          };
-        });
+    // Map edges with sourceHandles for subnodes
+    edges.forEach((edge) => {
+      if (edge.sourceHandle) {
+        subNodeEdgeMap[edge.sourceHandle] = edge;
+        subNodeToTarget[edge.sourceHandle] = edge.target;
       }
     });
 
-    const formattedNodes = nodes.map((node) => {
-      // Collect all inputs and dynamically added fields as sub-nodes
-      const subNodes = [];
-
-      // Add inputs as sub-nodes if they exist
-      if (node.data?.inputs) {
-        node.data.inputs.forEach((input) => {
-          subNodes.push({
-            id: input.id,
-            parentId: node.id,
-            label: input.label,
-            type: input.type,
-            handleId: `source-${input.id}`,
-          });
-        });
-      }
-
-      // // Add fields as sub-nodes if they exist (for conversation node)
-      // if (node.type === "conversation" && node.data?.fields) {
-      //   node.data.fields.forEach((field) => {
-      //     subNodes.push({
-      //       id: field.id,
-      //       parentId: node.id,
-      //       value: field.value,
-      //       handleId: `source-${field.id}`,
-      //     });
-      //   });
-      // }
-      // Add fields as sub-nodes if they exist (for pressDigits node)
-      if (node.type === "pressDigits" && node.data?.fields) {
-        node.data.fields.forEach((field) => {
-          subNodes.push({
+    nodes.forEach((node) => {
+      if (node.type === "pressDigits") {
+        // Build subNodes from fields if subNodes not present
+        const subNodes =
+          node.data?.subNodes ||
+          node.data?.fields?.map((field) => ({
             id: field.id,
             parentId: node.id,
             value: field.value,
             handleId: `source-${field.id}`,
-          });
+          })) ||
+          [];
+
+        subNodes.forEach((subNode) => {
+          const handleId = `source-${subNode.id}`;
+          const targetId = subNodeToTarget[handleId];
+
+          // Check 1: value is not empty
+          if (!subNode.value || subNode.value.trim() === "") {
+            errors.push(
+              `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
+            );
+          } else {
+            console.log(
+              `✅ Subnode '${handleId}' has value '${subNode.value}'`
+            );
+          }
+
+          // Check 2: must be connected
+          if (!targetId) {
+            errors.push(
+              `❌ Subnode '${handleId}' is not connected to any target node.`
+            );
+          } else {
+            console.log(
+              `✅ Subnode '${handleId}' is connected to '${targetId}'`
+            );
+          }
+
+          // Check 3: target must exist
+          if (targetId && !nodeMap[targetId]) {
+            errors.push(
+              `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
+            );
+          }
         });
       }
-
-      return {
-        id: node.id,
-        type: node.type,
-        position: node.position,
-        data: {
-          ...node.data,
-          subNodes, // Include sub-node details
-        },
-      };
     });
 
-    const formattedEdges = edges.map((edge) => {
-      // Check if the source handle is from a sub-node
-      const sourceInfo =
-        edge.sourceHandle && subNodeHandleMap[edge.sourceHandle];
+    // Check 4: unique connections (no two subnodes to same target)
+    const connectedTargets = Object.values(subNodeToTarget);
+    const duplicates = connectedTargets.filter(
+      (t, i, arr) => arr.indexOf(t) !== i
+    );
 
-      return {
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        sourceHandle: edge.sourceHandle,
-        targetHandle: edge.targetHandle,
-        type: edge.type,
-        animated: edge.animated,
-        // Add sub-node information if this edge connects from a sub-node
-        subNodeConnection: sourceInfo
-          ? {
-              parentNodeId: sourceInfo.parentNodeId,
-              subNodeId: sourceInfo.subNodeId,
-            }
-          : null,
-      };
+    if (duplicates.length > 0) {
+      errors.push(
+        `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
+          ", "
+        )}`
+      );
+    } else {
+      console.log("✅ All subnodes connect to unique targets.");
+    }
+
+    if (errors.length > 0) {
+      console.error("🚫 Validation Errors:\n" + errors.join("\n"));
+      alert("Validation Failed. See console for details.");
+      return false;
+    }
+
+    console.log("✅ Validation Passed!");
+    return true;
+  };
+
+  const validateAllNodeConnections = (flowData) => {
+    const { nodes, edges } = flowData;
+    const errors = [];
+
+    // Collect all connected node IDs
+    const connectedNodeIds = new Set();
+    edges.forEach((edge) => {
+      if (edge.source) connectedNodeIds.add(edge.source);
+      if (edge.target) connectedNodeIds.add(edge.target);
     });
 
-    const flowData = {
-      nodes: formattedNodes,
-      edges: formattedEdges,
-    };
+    // Check each node for connection
+    nodes.forEach((node) => {
+      if (!connectedNodeIds.has(node.id)) {
+        errors.push(
+          `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`
+        );
+      }
+    });
 
-    console.log("Exported Flow Data with Sub-Nodes:", flowData);
+    if (errors.length > 0) {
+      console.error("🚫 Unconnected Node Errors:\n" + errors.join("\n"));
+      alert("Disconnected nodes found! See console for details.");
+      return false;
+    }
+
+    console.log("✅ All nodes are properly connected.");
+    return true;
+  };
+
+  // Enhanced function to export flow data with sub-nodes
+  // const exportFlowData = () => {
+  //   console.log("nodes:", nodes);
+
+  //   // Create a mapping of all sub-node handles for reference
+  //   const subNodeHandleMap = {};
+
+  //   nodes.forEach((node) => {
+  //     // Store the sub-node handle ID for each "pressDigits" node
+  //     if (node.type === "pressDigits" && node.data?.inputs) {
+  //       node.data.inputs.forEach((input) => {
+  //         // Store the sub-node handle ID
+  //         subNodeHandleMap[`source-${input.id}`] = {
+  //           parentNodeId: node.id,
+  //           subNodeId: input.id,
+  //         };
+  //       });
+  //     }
+
+  //     // Also handle dynamically added field connections
+  //     if (node.data?.fields) {
+  //       node.data.fields.forEach((field) => {
+  //         subNodeHandleMap[`source-${field.id}`] = {
+  //           parentNodeId: node.id,
+  //           subNodeId: field.id,
+  //         };
+  //       });
+  //     }
+  //   });
+
+  //   const formattedNodes = nodes.map((node) => {
+  //     // Collect all inputs and dynamically added fields as sub-nodes
+  //     const subNodes = [];
+
+  //     // Add inputs as sub-nodes if they exist
+  //     if (node.data?.inputs) {
+  //       node.data.inputs.forEach((input) => {
+  //         subNodes.push({
+  //           id: input.id,
+  //           parentId: node.id,
+  //           label: input.label,
+  //           type: input.type,
+  //           handleId: `source-${input.id}`,
+  //         });
+  //       });
+  //     }
+
+  //     // Add fields as sub-nodes if they exist (for pressDigits node)
+  //     if (node.type === "pressDigits" && node.data?.fields) {
+  //       node.data.fields.forEach((field) => {
+  //         subNodes.push({
+  //           id: field.id,
+  //           parentId: node.id,
+  //           value: field.value,
+  //           handleId: `source-${field.id}`,
+  //         });
+  //       });
+  //     }
+
+  //     return {
+  //       id: node.id,
+  //       type: node.type,
+  //       position: node.position,
+  //       data: {
+  //         ...node.data,
+  //         subNodes, // Include sub-node details
+  //       },
+  //     };
+  //   });
+
+  //   const formattedEdges = edges.map((edge) => {
+  //     // Check if the source handle is from a sub-node
+  //     const sourceInfo =
+  //       edge.sourceHandle && subNodeHandleMap[edge.sourceHandle];
+
+  //     return {
+  //       id: edge.id,
+  //       source: edge.source,
+  //       target: edge.target,
+  //       sourceHandle: edge.sourceHandle,
+  //       targetHandle: edge.targetHandle,
+  //       type: edge.type,
+  //       animated: edge.animated,
+  //       // Add sub-node information if this edge connects from a sub-node
+  //       subNodeConnection: sourceInfo
+  //         ? {
+  //             parentNodeId: sourceInfo.parentNodeId,
+  //             subNodeId: sourceInfo.subNodeId,
+  //           }
+  //         : null,
+  //     };
+  //   });
+
+  //   const flowData = {
+  //     nodes: formattedNodes,
+  //     edges: formattedEdges,
+  //   };
+
+  //   console.log("Exported Flow Data with Sub-Nodes:", flowData);
+  // };
+
+  const exportFlowData = () => {
+    const flowData = { nodes, edges };
+
+    const isPressDigitsValid = validatePressDigitsConnections(flowData);
+    const isConnectedValid = validateAllNodeConnections(flowData);
+
+    if (!isPressDigitsValid || !isConnectedValid) {
+      console.warn("❌ Export aborted due to validation failure.");
+      return;
+    }
+
+    console.log("✅ All validations passed.");
+    console.log("📦 Final Exported Flow:", flowData);
   };
 
   return (

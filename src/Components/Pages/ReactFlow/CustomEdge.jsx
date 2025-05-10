@@ -50,7 +50,6 @@ const CustomEdge = (props) => {
               setEdges((prevEdges) =>
                 prevEdges.filter((edge) => edge.id !== id)
               );
-              console.log("Edge deleted");
             }}
           >
             X

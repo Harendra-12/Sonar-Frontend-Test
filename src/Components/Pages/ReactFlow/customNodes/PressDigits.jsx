@@ -17,6 +17,16 @@ const PressDigits = ({ id, data }) => {
     }
   }, [data.subNodes]);
 
+  const handleSelectChange = (id, newValue) => {
+    const updatedFields = fields.map((field) =>
+      field.id === id ? { ...field, value: newValue } : field
+    );
+    setFields(updatedFields);
+    if (data.onUpdate) {
+      data.onUpdate({ fields: updatedFields });
+    }
+  };
+
   const addField = () => {
     if (fields.some((field) => field.value.trim() === "")) return;
     const newField = { id: new Date().getTime(), value: "" };
@@ -129,7 +139,7 @@ const PressDigits = ({ id, data }) => {
               gap: "8px",
             }}
           >
-            <input
+            {/* <input
               type="text"
               ref={(el) => (textAreaRefs.current[field.id] = el)}
               value={field.value}
@@ -156,10 +166,10 @@ const PressDigits = ({ id, data }) => {
               placeholder="Enter digit..."
               inputMode="numeric"
               pattern="\d*"
-            />
+            /> */}
 
             <div style={{ display: "flex", gap: "4px" }}>
-              <button
+              {/* <button
                 onClick={() => focusTextArea(field.id)}
                 style={{
                   background: "none",
@@ -170,7 +180,7 @@ const PressDigits = ({ id, data }) => {
                 }}
               >
                 <i className="fa-solid fa-pencil" />
-              </button>
+              </button> */}
               <button
                 onClick={() => deleteField(field.id)}
                 style={{
@@ -184,6 +194,29 @@ const PressDigits = ({ id, data }) => {
                 <i className="fa-solid fa-trash" />
               </button>
             </div>
+
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              value={field.value}
+              onChange={(e) => handleSelectChange(field.id, e.target.value)}
+            >
+              <option value="" disabled>
+                select a digit
+              </option>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                .filter((digit) => {
+                  return (
+                    field.value === String(digit) || // keep current selection
+                    !fields.some((f) => f.value === String(digit))
+                  );
+                })
+                .map((digit) => (
+                  <option key={digit} value={digit}>
+                    {digit}
+                  </option>
+                ))}
+            </select>
 
             <CustomHandle
               type="source"
