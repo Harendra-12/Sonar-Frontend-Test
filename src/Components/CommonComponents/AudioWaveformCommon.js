@@ -27,7 +27,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
     });
 
     useEffect(() => {
-        if (!waveformRef.current || !peaksData?.peaks) return;
+        if (!waveformRef.current) return;
 
         // Initialize WaveSurfer
         wavesurfer.current = WaveSurfer.create({
@@ -39,7 +39,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
             height: 70,
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
-            backend: "MediaElement", // Use fast backend
+            backend: "MediaElement",
             plugins: [hover],
         });
 
@@ -47,18 +47,32 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
         wavesurfer.current.on("decode", (dur) => setDuration(formatTime(dur)));
         wavesurfer.current.on("timeupdate", (time) => setCurrentTime(formatTime(time)));
         wavesurfer.current.on("ready", () => {
-            wavesurfer.current.play();
             setIsPlaying(true);
+            wavesurfer.current.play();
+
+            // ✅ Extract generated peaks
+            if (!peaksData?.peaks?.length) {
+                const generatedPeaks = wavesurfer.current.exportPeaks();
+                console.log("Generated Peaks:", generatedPeaks);
+
+                // Optionally send these peaks to server or use as needed
+                // uploadPeaksToServer(generatedPeaks);
+            }
         });
+
         wavesurfer.current.on("finish", () => setIsPlaying(false));
         wavesurfer.current.on("interaction", () => {
             wavesurfer.current.play();
             setIsPlaying(true);
         });
 
-        // Load audio directly
+        // Load audio with or without peaks
         try {
-            wavesurfer.current.load(audioUrl, peaksData.peaks);
+            if (peaksData?.peaks?.length) {
+                wavesurfer.current.load(audioUrl, peaksData.peaks);
+            } else {
+                wavesurfer.current.load(audioUrl); // Local peak generation
+            }
         } catch (err) {
             setError("Error loading audio: " + err.message);
             console.error(err);
@@ -208,9 +222,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                                 setPosition(position);
                             }}
                             minWidth={"300px"}
-                            // minHeight={"450px"}
                             maxWidth={"500px"}
-                            // maxHeight={"450px"}
                             style={{ position: "fixed", inset: 0, margin: 'auto' }}
                             dragHandleClassName="drag-handle"
                         >
