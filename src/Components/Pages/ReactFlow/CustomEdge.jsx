@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import {
   EdgeLabelRenderer,
   getSmoothStepPath,
@@ -16,9 +15,6 @@ const CustomEdge = (props) => {
     sourcePosition,
     targetPosition,
   } = props;
-
-  const { setEdges } = useReactFlow();
-
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -27,10 +23,10 @@ const CustomEdge = (props) => {
     sourcePosition,
     targetPosition,
   });
+  const { setEdges } = useReactFlow();
 
   return (
     <>
-      {/* <BezierEdge {...props} /> */}
       <path
         className="react-flow__edge-path"
         d={edgePath}
@@ -39,21 +35,30 @@ const CustomEdge = (props) => {
         strokeWidth={2}
       />
       <EdgeLabelRenderer>
-        <Button
-          className="text-red-600 hover:bg-none hover:text-red-600 nodrag absolute text-5xl"
-          size="icon"
-          variant="ghost"
-          style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            pointerEvents: "all",
-          }}
-          onClick={() =>
-            setEdges((prevEdges) => prevEdges.filter((edge) => edge.id !== id))
-          }
-        >
-         X
-        </Button>
+        {props.deletable && (
+          <button
+            className="xIconBtn"
+            style={{
+              position: "absolute",
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: "all",
+              background: "transparent",
+              border: "none",
+              fontSize: "1.4rem",
+            }}
+            onClick={() => {
+              setEdges((prevEdges) =>
+                prevEdges.filter((edge) => edge.id !== id)
+              );
+            }}
+          >
+            X
+            {/* <i
+            className="fa-solid fa-x"
+            style={{ height: "40px", width: "40px", fontSize: "20px" }}
+          ></i> */}
+          </button>
+        )}
       </EdgeLabelRenderer>
     </>
   );

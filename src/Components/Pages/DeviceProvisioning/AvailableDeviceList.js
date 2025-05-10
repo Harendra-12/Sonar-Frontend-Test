@@ -11,6 +11,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import { useSelector } from "react-redux";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 function AvailableDeviceList({ header = true, extensionData }) {
   const navigate = useNavigate();
@@ -33,6 +35,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
   const [id, setId] = useState();
   const [extension, setExtension] = useState();
   const [deviceType, setDeviceType] = useState("hardphone");
+  const account = useSelector((state) => state.accountDetails);
 
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
@@ -63,7 +66,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 500)
       }
     }
     getData();
@@ -97,11 +100,11 @@ function AvailableDeviceList({ header = true, extensionData }) {
       deviceType !== "hardphone"
         ? { status: status }
         : {
-            model_id: selectedModel,
-            serial_number: serialNumber,
-            brand_id: selectedBrand,
-            status: status,
-          };
+          model_id: selectedModel,
+          serial_number: serialNumber,
+          brand_id: selectedBrand,
+          status: status,
+        };
 
     setLoading(true);
     const apiData = await generalPutFunction(
@@ -111,11 +114,11 @@ function AvailableDeviceList({ header = true, extensionData }) {
     if (apiData.status) {
       toast.success(apiData.message);
       setRefresh(refresh + 1);
-      setLoading(false);
       setPopu(false);
       setSelectedDdeviceIs(null);
       //   setSelectDeviceEdit(false);
       setSelectDeviceEdit("");
+      setLoading(false);
     } else {
       setLoading(false);
       setPopu(false);
@@ -135,11 +138,11 @@ function AvailableDeviceList({ header = true, extensionData }) {
     if (apiData.status) {
       toast.success(apiData.message);
       setRefresh(refresh + 1);
-      setLoading(false);
       setPopu(false);
       setSelectedDdeviceIs(null);
       //   setSelectDeviceEdit(false);
       setSelectDeviceEdit("");
+      setLoading(false);
     } else {
       setLoading(false);
       setPopu(false);
@@ -153,16 +156,17 @@ function AvailableDeviceList({ header = true, extensionData }) {
     if (apiData.status) {
       toast.success(apiData.message);
       setRefresh(refresh + 1);
-      setLoading(false);
       setDeleteId("");
       setPopu(false);
       setSelectDeviceEdit("");
+      setLoading(false);
     } else {
       setLoading(false);
       setPopu(false);
       setSelectDeviceEdit("");
     }
   }
+
   return (
     <>
       <main
@@ -210,12 +214,13 @@ function AvailableDeviceList({ header = true, extensionData }) {
                           effect="ripple"
                           className="panelButton"
                           onClick={() => {
-                            navigate("/device-provisioning-new", {
-                              state: {
-                                id: id,
-                                extension: extension,
-                              },
-                            });
+                            parseInt(provesionDevice.length) < parseInt(account?.package?.max_num_of_device) ?
+                              navigate("/device-provisioning-new", {
+                                state: {
+                                  id: id,
+                                  extension: extension,
+                                },
+                              }) : toast.error("You have reached the maximum number of devices");
                             backToTop();
                           }}
                         >
@@ -236,87 +241,88 @@ function AvailableDeviceList({ header = true, extensionData }) {
                   }}
                 >
                   <div className="row gx-5">
-                    <div
-                      className={`col-xl-${
-                        provesionDevice.length > 0 ? "6" : "12"
-                      }`}
-                      style={{ borderRight: "1px solid var(--border-color)" }}
-                    >
-                      {provesionDevice.length > 0 ? (
-                        provesionDevice.map((item, index) => {
-                          return (
-                            <div
-                              className={`deviceProvision m-3 row align-items-center ${
-                                item.status === "active" ? "active" : ""
-                              } `}
-                              key={index}
-                              style={{
-                                border:
-                                  item.id === selectedDdeviceIs
-                                    ? "1px solid var(--ui-accent)"
-                                    : undefined,
-                              }}
-                              onClick={() => {
-                                setSelectedDdeviceIs(item.id);
-                                setSelectedBrand(item.brand_id);
-                                setSelectedModel(item.model_id);
-                                setSerialNumber(item.serial_number);
-                                setStatus(item.status);
-                                setSelectDeviceEdit(
-                                  item.type === "softphone" ? "soft" : "hard"
-                                );
-                              }}
-                            >
-                              <div className="formRow col justify-content-start">
-                                <div className="col-4">
-                                  <img
-                                    src={
-                                      item.type === "softphone"
-                                        ? require("../../assets/images/eyebeam.png")
-                                        : require("../../assets/images/cisco.jpg")
-                                    }
-                                    alt=""
-                                  ></img>
-                                </div>
-                                <div className="formLabel ">
-                                  <label htmlFor="">
-                                    {item.type === "softphone" ? (
-                                      <h5>{item?.authorisation_name}</h5>
-                                    ) : (
-                                      <h5>
-                                        {
-                                          allDevices.filter(
-                                            (device) =>
-                                              device.id === item.brand_id
-                                          )[0]?.name
-                                        }
-                                      </h5>
-                                    )}
-                                  </label>
-                                  {item.type !== "softphone" && (
-                                    <p>
-                                      Brand:{" "}
-                                      {
-                                        allDevices.filter(
-                                          (device) =>
-                                            device.id === item.brand_id
-                                        )[0]?.name
-                                      }
-                                    </p>
-                                  )}
+                    {
+                      loading ? <SkeletonFormLoader /> :
+                        <div
+                          className={`col-xl-${provesionDevice.length > 0 ? "6" : "12"
+                            }`}
+                          style={{ borderRight: "1px solid var(--border-color)" }}
+                        >
+                          {provesionDevice.length > 0 ?
+                            (
+                              provesionDevice.map((item, index) => {
+                                return (
+                                  <div
+                                    className={`deviceProvision m-3 row align-items-center ${item.status === "active" ? "active" : ""
+                                      } `}
+                                    key={index}
+                                    style={{
+                                      border:
+                                        item.id === selectedDdeviceIs
+                                          ? "1px solid var(--ui-accent)"
+                                          : undefined,
+                                    }}
+                                    onClick={() => {
+                                      setSelectedDdeviceIs(item.id);
+                                      setSelectedBrand(item.brand_id);
+                                      setSelectedModel(item.model_id);
+                                      setSerialNumber(item.serial_number);
+                                      setStatus(item.status);
+                                      setSelectDeviceEdit(
+                                        item.type === "softphone" ? "soft" : "hard"
+                                      );
+                                    }}
+                                  >
+                                    <div className="formRow col justify-content-start">
+                                      <div className="col-4">
+                                        <img
+                                          src={
+                                            item.type === "softphone"
+                                              ? require("../../assets/images/eyebeam.png")
+                                              : require("../../assets/images/cisco.jpg")
+                                          }
+                                          alt=""
+                                        ></img>
+                                      </div>
+                                      <div className="formLabel ">
+                                        <label htmlFor="">
+                                          {item.type === "softphone" ? (
+                                            <h5>{item?.authorisation_name}</h5>
+                                          ) : (
+                                            <h5>
+                                              {
+                                                allDevices.filter(
+                                                  (device) =>
+                                                    device.id === item.brand_id
+                                                )[0]?.name
+                                              }
+                                            </h5>
+                                          )}
+                                        </label>
+                                        {item.type !== "softphone" && (
+                                          <p>
+                                            Brand:{" "}
+                                            {
+                                              allDevices.filter(
+                                                (device) =>
+                                                  device.id === item.brand_id
+                                              )[0]?.name
+                                            }
+                                          </p>
+                                        )}
 
-                                  <p>
-                                    Type:{" "}
-                                    {item.type === "softphone"
-                                      ? "Softphone"
-                                      : "Hardphone"}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="col-xl-6">
-                                <div className="d-flex justify-content-end">
-                                  <div className="my-auto position-relative mx-1">
-                                    {/* <label className="switch">
+                                        <p>
+                                          Type:{" "}
+                                          {item.type === "softphone"
+                                            ? "Softphone"
+                                            : "Hardphone"}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="col-xl-6">
+                                      <div className="d-flex justify-content-end">
+                                        <div className="my-auto position-relative mx-1">
+                                          {/* <label className="switch">
                                       <input
                                         type="checkbox"
                                         id="showAllCheck"
@@ -338,67 +344,69 @@ function AvailableDeviceList({ header = true, extensionData }) {
                                       />
                                       <span className="slider round" />
                                     </label> */}
-                                    <div class="cl-toggle-switch">
-                                          <label class="cl-switch">
-                                            <input
-                                             type="checkbox"
-                                             id="showAllCheck"
-                                             checked={
-                                               item.status === "active"
-                                                 ? true
-                                                 : false
-                                             }
-                                             onChange={() => {
-                                               setStatus(
-                                                 item.status === "active"
-                                                   ? "inactive"
-                                                   : "active"
-                                               );
-                                               setDeleteId("");
-                                               setPopu(true);
-                                               setDeviceType(item.type);
-                                             }}
-                                            />
-                                            <span></span>
-                                          </label>
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input
+                                                type="checkbox"
+                                                id="showAllCheck"
+                                                checked={
+                                                  item.status === "active"
+                                                    ? true
+                                                    : false
+                                                }
+                                                onChange={() => {
+                                                  setStatus(
+                                                    item.status === "active"
+                                                      ? "inactive"
+                                                      : "active"
+                                                  );
+                                                  setDeleteId("");
+                                                  setPopu(true);
+                                                  setDeviceType(item.type);
+                                                }}
+                                              />
+                                              <span></span>
+                                            </label>
+                                          </div>
                                         </div>
+                                        <button
+                                          className="tableButton edit mx-2"
+                                        // onClick={() => setSelectDeviceEdit(true)}
+                                        // onClick={() =>
+                                        //   setSelectDeviceEdit(
+                                        //     item.type !== "softphone"
+                                        //       ? "hard"
+                                        //       : "soft"
+                                        //   )
+                                        // }
+                                        >
+                                          <i className="fa-solid fa-pencil"></i>
+                                        </button>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            setDeleteId(item.id);
+                                            setPopu(true);
+                                            setStatus("");
+                                            //   setSelectDeviceEdit(false);
+                                            setSelectDeviceEdit("");
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <button
-                                    className="tableButton edit mx-2"
-                                    // onClick={() => setSelectDeviceEdit(true)}
-                                    // onClick={() =>
-                                    //   setSelectDeviceEdit(
-                                    //     item.type !== "softphone"
-                                    //       ? "hard"
-                                    //       : "soft"
-                                    //   )
-                                    // }
-                                  >
-                                    <i className="fa-solid fa-pencil"></i>
-                                  </button>
-                                  <button
-                                    className="tableButton delete"
-                                    onClick={() => {
-                                      setDeleteId(item.id);
-                                      setPopu(true);
-                                      setStatus("");
-                                      //   setSelectDeviceEdit(false);
-                                      setSelectDeviceEdit("");
-                                    }}
-                                  >
-                                    <i className="fa-solid fa-trash"></i>
-                                  </button>
-                                </div>
+                                );
+                              })
+                            ) : (
+                              <div>
+                                <EmptyPrompt name="Device" />
                               </div>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        <div>
-                          <EmptyPrompt name="Device" />
+                            )}
                         </div>
-                      )}
-                    </div>
+                    }
+
 
                     {selectDeviceEdit === "hard" && (
                       <div className="col-xl-6">
@@ -691,13 +699,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
           " "
         )}
       </main>
-      {loading ? (
-        <div colSpan={99}>
-          <CircularLoader />
-        </div>
-      ) : (
-        ""
-      )}
+
     </>
   );
 }

@@ -58,6 +58,7 @@ function Agents({ type }) {
   const logonUser = useSelector((state) => state.loginUser);
   const registerUser = useSelector((state) => state.registerUser);
   const [agents, setAgents] = useState([]);
+  const [filterUser, setFilterUser] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([0]);
   const [loading, setLoading] = useState(false);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
@@ -69,7 +70,8 @@ function Agents({ type }) {
   const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
   const [agentLogOutToken, setAgentLogOutToken] = useState("");
   const allDID = useSelector((state) => state.didAll);
-  const debouncedSearchTerm = useDebounce(userInput, 1000); 
+  const debouncedSearchTerm = useDebounce(userInput, 1000);
+  const [onlineFilter, setonlineFilter] = useState("all")
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
@@ -84,7 +86,7 @@ function Agents({ type }) {
   const getData = async () => {
     setLoading(true);
     const apiData = await generalGetFunction(
-      `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}&search=${userInput}`
+      `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
     );
     if (apiData?.status) {
       setAgents(apiData.data);
@@ -96,7 +98,7 @@ function Agents({ type }) {
 
   useEffect(() => {
     getData();
-  }, [entriesPerPage, pageNumber, type, debouncedSearchTerm]);
+  }, [entriesPerPage, pageNumber, type, debouncedSearchTerm, onlineFilter]);
 
 
   // Handle Agent Logout Function
@@ -134,11 +136,29 @@ function Agents({ type }) {
     }
   }
 
+  // useEffect(() => {
+  //   if (onlineUsers.length > 0 && agents) {
+  //     switch (onlineFilter) {
+  //       case "online":
+  //         const onlineAgents = agents.data.filter((item) => onlineUsers.includes(String(item.extension.extension)));
+  //         setFilterUser(onlineAgents);
+  //         break;
+  //       case "offline":
+  //         const offlineAgents = agents.data.filter((item) => !onlineUsers.includes(String(item.extension.extension)));
+  //         setFilterUser(offlineAgents);
+  //         break;
+  //       default:
+  //         setFilterUser(agents.data)
+  //         break;
+  //     }
+  //   }
+  // }, [onlineUsers, agents, onlineFilter])
+
   // Getting token from online user by checking with extension
   function getToken(extension) {
     const user = logonUser.find((user) => user?.extension?.extension === extension);
 
-    return user?.usertokens?.length>0 ? user?.usertokens : null;
+    return user?.usertokens?.length > 0 ? user?.usertokens : null;
   }
   // console.log("LogonUser:", logonUser);
 
@@ -233,7 +253,14 @@ function Agents({ type }) {
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Recording</th>
-                            <th className="text-center">Online</th>
+                            <th className="text-center">
+                              <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                                <option value="all" disabled>Status</option>
+                                <option value="online">Online</option>
+                                <option value="offline">Offline</option>
+                                <option value="all">All</option>
+                              </select>
+                            </th>
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
@@ -262,7 +289,7 @@ function Agents({ type }) {
                                       />
                                     </td>
                                   </tr>
-                                  : agents?.data?.map((item, index) => {
+                                  : filterUser?.map((item, index) => {
                                     return (
                                       <tr>
                                         <td>
