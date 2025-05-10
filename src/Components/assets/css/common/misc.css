@@ -2373,29 +2373,35 @@ input[type=number] {
     width: 292px;
     height: 280px !important;
     overflow: hidden;
-    left: 220px;
-    bottom: 10px;
+    /* left: 220px; */
+    /* bottom: 10px; */
     top: unset;
 }
 
 .messageMeetingWrap.minimizeComponent .lk-video-conference {
     width: 100%;
 }
+
 .messageMeetingWrap.minimizeComponent .lk-control-bar {
     display: none;
 }
+
 .messageMeetingWrap.minimizeComponent .lk-grid-layout-wrapper {
     height: 100%;
 }
+
 .messageMeetingWrap.fullComponent .lk-video-conference {
     width: unset;
 }
+
 .messageMeetingWrap.fullComponent .lk-control-bar {
     display: flex;
 }
+
 .messageMeetingWrap.fullComponent .lk-grid-layout-wrapper {
     height: 100%;
 }
+
 .messageMeetingWrap:hover .minimize,
 .messageMeetingWrap:focus .minimize {
     opacity: 1;
