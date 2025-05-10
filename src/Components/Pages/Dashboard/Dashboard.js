@@ -84,7 +84,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (timeZoneRefresh > 0) {
-
     } else {
       dispatch({
         type: "SET_TIMEZONEREFRESH",
