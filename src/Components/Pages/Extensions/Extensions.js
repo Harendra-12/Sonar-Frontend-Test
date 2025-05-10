@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const Extensions = () => {
   const navigate = useNavigate();
   const [extension, setExtension] = useState();
+  const [filteredExtension, setFilteredExtension] = useState([]);
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const [onlineExtension, setOnlineExtension] = useState([0]);
@@ -55,6 +56,8 @@ const Extensions = () => {
       setOnlineExtension([0]);
     }
   }, [registerUser]);
+  console.log(registerUser);
+
 
   // Getting all DID from did listing
   useEffect(() => {
@@ -161,6 +164,25 @@ const Extensions = () => {
       getData()
     }
   }, [navigate, pageNumber, account, itemsPerPage, debouncedSearchTerm, onlineFilter]);
+
+  useEffect(() => {
+    if (onlineExtension.length > 0 && extension) {
+      switch (onlineFilter) {
+        case "all":
+          setFilteredExtension(extension.data);
+          break;
+        case "online":
+          setFilteredExtension(extension.data.filter((item) => onlineExtension.includes(item.extension)));
+          break;
+        case "offline":
+          setFilteredExtension(extension.data.filter((item) => !onlineExtension.includes(item.extension)));
+          break;
+        default:
+          setFilteredExtension(extension.data);
+          break;
+      }
+    }
+  }, [onlineExtension])
 
   return (
     <main className="mainContent">
@@ -327,7 +349,7 @@ const Extensions = () => {
                                             <SkeletonTableLoader col={7} row={15} />
                                           ) : (
                                             <tbody>
-                                              {extension.data.map(
+                                              {filteredExtension.map(
                                                 (item, index) => {
                                                   const foundUser =
                                                     userWithExtension.find(
@@ -335,74 +357,72 @@ const Extensions = () => {
                                                         value.extension ===
                                                         item.extension
                                                     );
-
                                                   return (
-                                                    <tr key={index}>
-                                                      {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => (
-                                                        <td key={key}>
-                                                          {key === "user"
-                                                            ? foundUser
-                                                              ?
-                                                              <div className="d-flex align-items-center">
-                                                                <div className="tableProfilePicHolder">
-                                                                  {foundUser.profile_picture ? (
-                                                                    <img
-                                                                      src={foundUser.profile_picture}
-                                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                    />
-                                                                  ) : (
-                                                                    <i className="fa-light fa-user" />
-                                                                  )}
+                                                    <>
+                                                      <tr key={index}>
+                                                        {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => (
+                                                          <td key={key}>
+                                                            {key === "user"
+                                                              ? foundUser
+                                                                ?
+                                                                <div className="d-flex align-items-center">
+                                                                  <div className="tableProfilePicHolder">
+                                                                    {foundUser.profile_picture ? (
+                                                                      <img
+                                                                        src={foundUser.profile_picture}
+                                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                      />
+                                                                    ) : (
+                                                                      <i className="fa-light fa-user" />
+                                                                    )}
+                                                                  </div>
+                                                                  <div className="ms-2">{foundUser.name}</div>
                                                                 </div>
-                                                                {console.log(foundUser)
-                                                                }
-                                                                <div className="ms-2">{foundUser.name}</div>
-                                                              </div>
-                                                              : ""
-                                                            : item[key]}
-                                                        </td>
-                                                      ))}
-                                                      <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
-                                                      <td>
-                                                        <span
-                                                          className={
-                                                            onlineExtension.includes(
-                                                              item.extension
-                                                            )
-                                                              ? "extensionStatus online mx-auto"
-                                                              : "extensionStatus mx-auto"
-                                                          }
-                                                        ></span>
-                                                      </td>
-                                                      {checkViewSidebar(
-                                                        "Extension",
-                                                        slugPermissions,
-                                                        account?.permissions,
-                                                        "edit"
-                                                      ) && (
-                                                          <td
-                                                            style={{
-                                                              cursor: "default",
-                                                            }}
-                                                          >
-                                                            <button
-                                                              className="tableButton edit mx-auto"
-                                                              onClick={() =>
-                                                                navigate(
-                                                                  `/extensions-edit?id=${item.id}`
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fa-solid fa-pencil"></i>
-                                                            </button>
+                                                                : ""
+                                                              : item[key]}
                                                           </td>
-                                                        )}
-                                                      <td
-                                                        style={{
-                                                          cursor: "default",
-                                                        }}
-                                                      >
-                                                        {/* {item.provisionings ? (
+                                                        ))}
+                                                        <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                                        <td>
+                                                          <span
+                                                            className={
+                                                              onlineExtension.includes(
+                                                                item.extension
+                                                              )
+                                                                ? "extensionStatus online mx-auto"
+                                                                : "extensionStatus mx-auto"
+                                                            }
+                                                          ></span>
+                                                        </td>
+                                                        {checkViewSidebar(
+                                                          "Extension",
+                                                          slugPermissions,
+                                                          account?.permissions,
+                                                          "edit"
+                                                        ) && (
+                                                            <td
+                                                              style={{
+                                                                cursor: "default",
+                                                              }}
+                                                            >
+                                                              <button
+                                                                className="tableButton edit mx-auto"
+                                                                onClick={() =>
+                                                                  navigate(
+                                                                    `/extensions-edit?id=${item.id}`
+                                                                  )
+                                                                }
+                                                              >
+                                                                <i className="fa-solid fa-pencil"></i>
+                                                              </button>
+                                                            </td>
+                                                          )}
+                                                        <td
+                                                          style={{
+                                                            cursor: "default",
+                                                          }}
+                                                        >
+                                                          {/* {item.provisionings ? (
                                                         <button
                                                           className="tableButton edit mx-auto"
                                                           onClick={() =>
@@ -422,26 +442,27 @@ const Extensions = () => {
                                                           <i className="fa-solid fa-phone-office"></i>
                                                         </button>
                                                       ) : ( */}
-                                                        <button
-                                                          className="tableButton mx-auto"
-                                                          onClick={() =>
-                                                            navigate(
-                                                              "/all-devices",
-                                                              {
-                                                                state: {
-                                                                  extension:
-                                                                    item.extension,
-                                                                  id: item.id,
-                                                                },
-                                                              }
-                                                            )
-                                                          }
-                                                        >
-                                                          <i className="fa-solid fa-plus"></i>
-                                                        </button>
-                                                        {/* )} */}
-                                                      </td>
-                                                    </tr>
+                                                          <button
+                                                            className="tableButton mx-auto"
+                                                            onClick={() =>
+                                                              navigate(
+                                                                "/all-devices",
+                                                                {
+                                                                  state: {
+                                                                    extension:
+                                                                      item.extension,
+                                                                    id: item.id,
+                                                                  },
+                                                                }
+                                                              )
+                                                            }
+                                                          >
+                                                            <i className="fa-solid fa-plus"></i>
+                                                          </button>
+                                                          {/* )} */}
+                                                        </td>
+                                                      </tr>
+                                                    </>
                                                   );
                                                 }
                                               )}
