@@ -289,7 +289,7 @@ function Agents({ type }) {
                                       />
                                     </td>
                                   </tr>
-                                  : filterUser?.map((item, index) => {
+                                  : agents?.data?.map((item, index) => {
                                     return (
                                       <tr>
                                         <td>
