@@ -5,8 +5,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 
-
-
 import {
   backToTop,
   featureUnderdevelopment,
@@ -30,8 +28,6 @@ import DropdownForAudio from "../../DropdownForAudio";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import Select from "react-select";
 
-
-
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
  * reports based on various filters and parameters. It fetches data from an API and allows
@@ -41,7 +37,7 @@ import Select from "react-select";
  * and duplicate records.
  *
  * @param {Object} props - The component props.
- * @param {string} props.page - The current page type to determine which keys to display 
+ * @param {string} props.page - The current page type to determine which keys to display
  * in the report table.
  */
 
@@ -94,13 +90,13 @@ function CdrFilterReport({ page }) {
   const [exportPopup, setExportPopup] = useState(false);
   const [calendarStartDate, setCalendarStartDate] = useState(new Date());
   const [filteredKeys, setFilteredKeys] = useState([]);
-  const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false)
-  const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
-  const [error, setError] = useState('');
-  const [showAudio, setShowAudio] = useState(false)
+  const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false);
+  const [duplicatePopUpData, setDuplicatePopUpData] = useState({});
+  const [error, setError] = useState("");
+  const [showAudio, setShowAudio] = useState(false);
   // const [transcribeLink, setTranscribeLink] = useState()
-  const [showDropDown, setShowDropdown] = useState(false)
-  const [showComment, setShowComment] = useState(false)
+  const [showDropDown, setShowDropdown] = useState(false);
+  const [showComment, setShowComment] = useState(false);
   const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false);
 
   const [showKeys, setShowKeys] = useState([
@@ -141,9 +137,9 @@ function CdrFilterReport({ page }) {
         "variable_sip_to_user",
         "call_cost",
         "id",
-      ])
+      ]);
     }
-  }, [page])
+  }, [page]);
 
   const locationState = useLocation();
 
@@ -175,8 +171,7 @@ function CdrFilterReport({ page }) {
       setTimeFilter((prev) => ({
         ...prev,
         startTime: timeFlag.startTime,
-      }))
-
+      }));
     } else if (filterBy === "date_range") {
       if (timeFlag.startTime !== "" && timeFlag.endTime !== "") {
         setTimeFilter((prev) => ({
@@ -186,7 +181,7 @@ function CdrFilterReport({ page }) {
         }));
       }
     }
-  }, [timeFlag])
+  }, [timeFlag]);
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -233,17 +228,17 @@ function CdrFilterReport({ page }) {
   };
 
   function formatTimeWithAMPM(timeString) {
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
 
     if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
       return "Invalid time format";
     }
 
-    let period = 'AM';
+    let period = "AM";
     let formattedHours = hours;
 
     if (hours >= 12) {
-      period = 'PM';
+      period = "PM";
       if (hours > 12) {
         formattedHours -= 12;
       }
@@ -253,12 +248,11 @@ function CdrFilterReport({ page }) {
       formattedHours = 12; // Midnight is 12 AM
     }
 
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = seconds.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
   }
-
 
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
@@ -299,8 +293,8 @@ function CdrFilterReport({ page }) {
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-            )
+                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+              )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
@@ -317,10 +311,10 @@ function CdrFilterReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-              ? "pstn"
-              : page === "callrecording"
-                ? callType
-                : page,
+            ? "pstn"
+            : page === "callrecording"
+            ? callType
+            : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -344,10 +338,11 @@ function CdrFilterReport({ page }) {
           obj.hasOwnProperty("variable_start_stamp")
         ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"] = formatTimeWithAMPM(obj["variable_start_stamp"]?.split(" ")[1])
+          filteredObj["Time"] = formatTimeWithAMPM(
+            obj["variable_start_stamp"]?.split(" ")[1]
+          );
         }
         if (obj.hasOwnProperty(key)) {
-
           filteredObj[key] = obj[key];
         }
       });
@@ -355,46 +350,43 @@ function CdrFilterReport({ page }) {
       return filteredObj;
     }
 
-    async function getData() {
-      setLoading(true);
-      if (account && account.account_id) {
-        const apiData = await generalGetFunction(finalUrl);
-        if (apiData?.response?.status == 403) {
-          toast.error("You don't have permission to access this page.");
-          setLoading(false);
-          setContentLoader(false);
-          setCircularLoader(false);
-        }
-        if (apiData?.status === true) {
-          setCircularLoader(false);
-          setLoading(false);
-          setContentLoader(false);
-          const filteredData = apiData?.data?.data?.map((item) =>
-            filterObjectKeys(item, [...apiData.filteredKeys, "id"])
-          );
-          setFilteredKeys([...apiData.filteredKeys, "id"]);
-          // setCdr(apiData.data);
-          setCdr({
-            ...apiData?.data,
-            data: filteredData,
-          });
-          if (selectedCdrFilter != "") {
-            dispatch({
-              type: "SET_SELECTEDCDRFILTER",
-              selectedCdrFilter: "",
+    const debounceTimeout = setTimeout(() => {
+      async function getData() {
+        setLoading(true);
+        if (account && account.account_id) {
+          const apiData = await generalGetFunction(finalUrl);
+          if (apiData?.response?.status == 403) {
+            toast.error("You don't have permission to access this page.");
+          } else if (apiData?.status === true) {
+            const filteredData = apiData?.data?.data?.map((item) =>
+              filterObjectKeys(item, [...apiData.filteredKeys, "id"])
+            );
+            setFilteredKeys([...apiData.filteredKeys, "id"]);
+            setCdr({
+              ...apiData?.data,
+              data: filteredData,
             });
+            if (selectedCdrFilter !== "") {
+              dispatch({
+                type: "SET_SELECTEDCDRFILTER",
+                selectedCdrFilter: "",
+              });
+            }
           }
+          setLoading(false);
+          setContentLoader(false);
+          setCircularLoader(false);
         } else {
           setLoading(false);
           setContentLoader(false);
+          navigate("/");
         }
-      } else {
-        setLoading(false);
-        setContentLoader(false);
-        navigate("/");
       }
-    }
-    getData();
+
+      getData();
+    }, 400); // wait 400ms after last change
+
+    return () => clearTimeout(debounceTimeout); // clear previous timeout if dependencies change
   }, [
     account,
     navigate,
@@ -412,7 +404,7 @@ function CdrFilterReport({ page }) {
     itemsPerPage,
     page,
     createdAt,
-    locationState
+    locationState,
   ]);
 
   const getDateRange = (period) => {
@@ -540,10 +532,9 @@ function CdrFilterReport({ page }) {
   }
 
   const duplicateColumn = async (item) => {
-    setShowDuplicatePopUp(true)
+    setShowDuplicatePopUp(true);
     setDuplicatePopUpData(item);
-
-  }
+  };
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -601,14 +592,20 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       const { filter, direction } = locationState.state;
 
-      setHagupCause(filter === "missed" ? ["Missed", "Failed", "Voicemail"] : filter === "completed" ? "Answered" : "");
+      setHagupCause(
+        filter === "missed"
+          ? ["Missed", "Failed", "Voicemail"]
+          : filter === "completed"
+          ? "Answered"
+          : ""
+      );
       setCallDirection(direction === "all" ? "" : direction);
 
       setTimeout(() => {
         refreshCallData();
-      }, 100)
+      }, 100);
     }
-  }, [locationState])
+  }, [locationState]);
 
   // Reset All Filters
   const resetAllFilters = () => {
@@ -629,7 +626,7 @@ function CdrFilterReport({ page }) {
 
     setTimeout(() => {
       refreshCallData();
-    })
+    });
   };
   return (
     <>
@@ -638,16 +635,17 @@ function CdrFilterReport({ page }) {
         <section id="phonePage">
           <div className="container-fluid px-0 position-relative">
             <Header
-              title={`${page === "billing"
-                ? "Billing Reports"
-                : page === "callcenter"
+              title={`${
+                page === "billing"
+                  ? "Billing Reports"
+                  : page === "callcenter"
                   ? "Call Center Reports"
                   : page === "ringgroup"
-                    ? "Ring Group Reports"
-                    : page === "callrecording"
-                      ? "Call Recordings"
-                      : "CDR Reports"
-                }`}
+                  ? "Ring Group Reports"
+                  : page === "callrecording"
+                  ? "Call Recordings"
+                  : "CDR Reports"
+              }`}
             />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -659,24 +657,24 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing"
                             : page === "callcenter"
-                              ? "Call Center Reports"
-                              : page === "ringgroup"
-                                ? "Ring Group Reports"
-                                : page === "callrecording"
-                                  ? "Call Recordings"
-                                  : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                            ? "Ring Group Reports"
+                            : page === "callrecording"
+                            ? "Call Recordings"
+                            : "CDR Reports"}
                         </h4>
                         <p>
                           Here are all the{" "}
                           {page === "billing"
                             ? "Billing Reports"
                             : page === "callcenter"
-                              ? "Call Center Reports"
-                              : page === "ringgroup"
-                                ? "Ring Group Reports"
-                                : page === "callrecording"
-                                  ? "Call Recordings"
-                                  : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                            ? "Ring Group Reports"
+                            : page === "callrecording"
+                            ? "Call Recordings"
+                            : "CDR Reports"}
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -726,7 +724,7 @@ function CdrFilterReport({ page }) {
                             className="panelButton"
                             disabled={loading}
                             onClick={() => setExportPopup(true)}
-                          // type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                            // type="button" data-bs-toggle="dropdown" aria-expanded="true"
                           >
                             <span className="text">Export</span>
                             <span className="icon">
@@ -774,8 +772,9 @@ function CdrFilterReport({ page }) {
                         <label>entries</label>
                       </div>
                       <div>
-                        <button className="ms-2 btn btn-success-light btn-wave new_buttonStyle"
-                          style={{ maxWidth: 'initial' }}
+                        <button
+                          className="ms-2 btn btn-success-light btn-wave new_buttonStyle"
+                          style={{ maxWidth: "initial" }}
                           onClick={() => setAdvanceSearchPopup(true)}
                         >
                           <span>Advanced Search</span>
@@ -817,7 +816,9 @@ function CdrFilterReport({ page }) {
                                   <input
                                     type="date"
                                     className="formItem"
-                                    max={new Date()?.toISOString()?.split("T")[0]}
+                                    max={
+                                      new Date()?.toISOString()?.split("T")[0]
+                                    }
                                     value={startDateFlag}
                                     onChange={(e) => {
                                       setStartDateFlag(e.target.value);
@@ -829,7 +830,10 @@ function CdrFilterReport({ page }) {
                                     className="formItem ms-2"
                                     value={timeFlag.startTime}
                                     onChange={(e) => {
-                                      setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                      setTimeFlag((prev) => ({
+                                        ...prev,
+                                        startTime: `${e.target.value}:00`,
+                                      }));
                                       setPageNumber(1);
                                     }}
                                   />
@@ -860,7 +864,10 @@ function CdrFilterReport({ page }) {
                                       className="formItem ms-2"
                                       value={timeFlag.startTime}
                                       onChange={(e) => {
-                                        setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                        setTimeFlag((prev) => ({
+                                          ...prev,
+                                          startTime: `${e.target.value}:00`,
+                                        }));
                                         setPageNumber(1);
                                       }}
                                     />
@@ -889,7 +896,10 @@ function CdrFilterReport({ page }) {
                                       className="formItem ms-2"
                                       value={timeFlag.endTime}
                                       onChange={(e) => {
-                                        setTimeFlag((prev) => ({ ...prev, endTime: `${e.target.value}:00` }));
+                                        setTimeFlag((prev) => ({
+                                          ...prev,
+                                          endTime: `${e.target.value}:00`,
+                                        }));
                                         setPageNumber(1);
                                       }}
                                     />
@@ -960,7 +970,7 @@ function CdrFilterReport({ page }) {
                         )}
 
                         {page === "all" &&
-                          filteredKeys.includes("variable_sip_to_user") ? (
+                        filteredKeys.includes("variable_sip_to_user") ? (
                           <>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
@@ -969,14 +979,18 @@ function CdrFilterReport({ page }) {
                               <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
-                                  const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
+                                  const values = selectedOptions
+                                    ? selectedOptions.map((opt) => opt.value)
+                                    : [];
                                   setCallDirection(values);
                                   setPageNumber(1);
                                 }}
                                 options={callDirectionOptions}
                                 isSearchable
                                 styles={customStyles}
-                                value={callDirectionOptions.filter((opt) => callDirection.includes(opt.value))}
+                                value={callDirectionOptions.filter((opt) =>
+                                  callDirection.includes(opt.value)
+                                )}
                               />
                               {/* <select
                                 className="formItem"
@@ -1008,14 +1022,18 @@ function CdrFilterReport({ page }) {
                               <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
-                                  const values = selectedOptions.map((opt) => opt.value);
+                                  const values = selectedOptions.map(
+                                    (opt) => opt.value
+                                  );
                                   setCallType(values);
                                   setPageNumber(1);
                                 }}
                                 options={callTypeOptions}
                                 isSearchable
                                 styles={customStyles}
-                                value={callTypeOptions.filter((opt) => callType.includes(opt.value))}
+                                value={callTypeOptions.filter((opt) =>
+                                  callType.includes(opt.value)
+                                )}
                               />
                               {/* <select
                                 className="formItem"
@@ -1039,7 +1057,7 @@ function CdrFilterReport({ page }) {
                           ""
                         )}
                         {page === "billing" ||
-                          !filteredKeys.includes("Hangup-Cause") ? (
+                        !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
                           <>
@@ -1050,14 +1068,18 @@ function CdrFilterReport({ page }) {
                               <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
-                                  const values = selectedOptions.map((opt) => opt.value);
+                                  const values = selectedOptions.map(
+                                    (opt) => opt.value
+                                  );
                                   setHagupCause(values);
                                   setPageNumber(1);
                                 }}
                                 options={hangupCauseOptions}
                                 isSearchable
                                 styles={customStyles}
-                                value={hangupCauseOptions.filter((opt) => hangupCause.includes(opt.value))}
+                                value={hangupCauseOptions.filter((opt) =>
+                                  hangupCause.includes(opt.value)
+                                )}
                               />
                               {/* <select
                                 className="formItem"
@@ -1084,14 +1106,18 @@ function CdrFilterReport({ page }) {
                                 <Select
                                   isMulti
                                   onChange={(selectedOptions) => {
-                                    const values = selectedOptions.map((opt) => opt.value);
+                                    const values = selectedOptions.map(
+                                      (opt) => opt.value
+                                    );
                                     setHangupStatus(values);
                                     setPageNumber(1);
                                   }}
                                   options={hangupStatusOptions}
                                   isSearchable
                                   styles={customStyles}
-                                  value={hangupStatusOptions.filter((opt) => hangupStatus.includes(opt.value))}
+                                  value={hangupStatusOptions.filter((opt) =>
+                                    hangupStatus.includes(opt.value)
+                                  )}
                                 />
                                 {/* <select
                                   className="formItem"
@@ -1269,20 +1295,24 @@ function CdrFilterReport({ page }) {
                                   }
                                   return null;
                                 })}
-                                {page !== "billing" &&
+                                {page !== "billing" && (
                                   <>
                                     <th>Block</th>
                                     <th>Note</th>
                                     <th>Duplicate</th>
                                   </>
-                                }
+                                )}
                               </tr>
                             </thead>
 
                             <tbody>
                               {loading ? (
                                 <SkeletonTableLoader
-                                  col={page === "billing" ? showKeys.length : showKeys.length + 1}
+                                  col={
+                                    page === "billing"
+                                      ? showKeys.length
+                                      : showKeys.length + 1
+                                  }
                                   row={12}
                                 />
                               ) : (
@@ -1325,74 +1355,91 @@ function CdrFilterReport({ page }) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
-                                                    {item["recording_path"] && item["variable_billsec"] > 0 &&
-                                                      <button
-                                                        className="tableButton px-2 mx-0"
-                                                        onClick={() => {
-                                                          if (
-                                                            item[
-                                                            "recording_path"
-                                                            ] ===
-                                                            currentPlaying
-                                                          ) {
-                                                            setCurrentPlaying(
-                                                              ""
-                                                            );
-                                                            setAudioURL("");
-                                                          } else {
-                                                            handlePlaying(
+                                                    {item["recording_path"] &&
+                                                      item["variable_billsec"] >
+                                                        0 && (
+                                                        <button
+                                                          className="tableButton px-2 mx-0"
+                                                          onClick={() => {
+                                                            if (
                                                               item[
-                                                              "recording_path"
-                                                              ]
-                                                            );
-                                                          }
-                                                        }}
-                                                      >
-                                                        {currentPlaying ===
+                                                                "recording_path"
+                                                              ] ===
+                                                              currentPlaying
+                                                            ) {
+                                                              setCurrentPlaying(
+                                                                ""
+                                                              );
+                                                              setAudioURL("");
+                                                            } else {
+                                                              handlePlaying(
+                                                                item[
+                                                                  "recording_path"
+                                                                ]
+                                                              );
+                                                            }
+                                                          }}
+                                                        >
+                                                          {currentPlaying ===
                                                           item[
-                                                          "recording_path"
+                                                            "recording_path"
                                                           ] ? (
-                                                          <i className="fa-solid fa-chevron-up"></i>
-                                                        ) : (
-                                                          <i className="fa-solid fa-chevron-down"></i>
-                                                        )}
-                                                      </button>
-                                                    }
+                                                            <i className="fa-solid fa-chevron-up"></i>
+                                                          ) : (
+                                                            <i className="fa-solid fa-chevron-down"></i>
+                                                          )}
+                                                        </button>
+                                                      )}
                                                   </td>
                                                 );
                                               } else if (
                                                 key === "Call-Direction"
                                               ) {
                                                 const statusIcons = {
-                                                  Missed: "fa-solid fa-phone-missed",
-                                                  Cancelled: "fa-solid fa-phone-xmark",
-                                                  Failed: "fa-solid fa-phone-slash",
-                                                  transfer: "fa-solid fa-arrow-right-arrow-left",
+                                                  Missed:
+                                                    "fa-solid fa-phone-missed",
+                                                  Cancelled:
+                                                    "fa-solid fa-phone-xmark",
+                                                  Failed:
+                                                    "fa-solid fa-phone-slash",
+                                                  transfer:
+                                                    "fa-solid fa-arrow-right-arrow-left",
                                                 };
                                                 const callIcons = {
                                                   inbound: {
-                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+                                                    icon:
+                                                      statusIcons[
+                                                        item.variable_DIALSTATUS
+                                                      ] ||
+                                                      "fa-phone-arrow-down-left",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
                                                     label: "Inbound",
                                                   },
                                                   outbound: {
-                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+                                                    icon:
+                                                      statusIcons[
+                                                        item.variable_DIALSTATUS
+                                                      ] ||
+                                                      "fa-phone-arrow-up-right",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
                                                     label: "Outbound",
                                                   },
                                                   internal: {
-                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
+                                                    icon:
+                                                      statusIcons[
+                                                        item.variable_DIALSTATUS
+                                                      ] || "fa-headset",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
                                                     label: "Internal",
@@ -1401,7 +1448,7 @@ function CdrFilterReport({ page }) {
 
                                                 const callType =
                                                   callIcons[
-                                                  item["Call-Direction"]
+                                                    item["Call-Direction"]
                                                   ] || callIcons.internal;
 
                                                 return (
@@ -1429,11 +1476,11 @@ function CdrFilterReport({ page }) {
                                                       item["application_state"]
                                                     )
                                                       ? item[
-                                                      "other_leg_destination_number"
-                                                      ]
+                                                          "other_leg_destination_number"
+                                                        ]
                                                       : item[
-                                                      "Caller-Callee-ID-Number"
-                                                      ]}{" "}
+                                                          "Caller-Callee-ID-Number"
+                                                        ]}{" "}
                                                     {item[
                                                       "application_state_name"
                                                     ] &&
@@ -1450,10 +1497,11 @@ function CdrFilterReport({ page }) {
                                                     )}
                                                   </td>
                                                 );
-                                              } else if (key === "call_cost" && item[key]) {
-                                                return (
-                                                  <td>${item[key]}</td>
-                                                )
+                                              } else if (
+                                                key === "call_cost" &&
+                                                item[key]
+                                              ) {
+                                                return <td>${item[key]}</td>;
                                               } else {
                                                 return (
                                                   <td key={key}>{item[key]}</td>
@@ -1462,48 +1510,57 @@ function CdrFilterReport({ page }) {
                                             }
                                             return null;
                                           })}
-                                          {page !== "billing" &&
+                                          {page !== "billing" && (
                                             <>
                                               <td>
-                                                {
-                                                  (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
-                                                    <button
-                                                      disabled={isBlocked}
-                                                      effect="ripple"
-                                                      className={`tableButton delete ${isBlocked ? "bg-danger text-white" : ""
-                                                        } ms-0`}
-                                                      style={{
-                                                        height: "34px",
-                                                        width: "34px",
-                                                      }}
-                                                      onClick={() => {
-                                                        setSelectedNumberToBlock(
-                                                          item["Call-Direction"] ===
-                                                            "inbound"
-                                                            ? item[
-                                                            "Caller-Caller-ID-Number"
+                                                {item["Call-Direction"] ===
+                                                  "inbound" ||
+                                                item["Call-Direction"] ===
+                                                  "outbound" ? (
+                                                  <button
+                                                    disabled={isBlocked}
+                                                    effect="ripple"
+                                                    className={`tableButton delete ${
+                                                      isBlocked
+                                                        ? "bg-danger text-white"
+                                                        : ""
+                                                    } ms-0`}
+                                                    style={{
+                                                      height: "34px",
+                                                      width: "34px",
+                                                    }}
+                                                    onClick={() => {
+                                                      setSelectedNumberToBlock(
+                                                        item[
+                                                          "Call-Direction"
+                                                        ] === "inbound"
+                                                          ? item[
+                                                              "Caller-Caller-ID-Number"
                                                             ]
-                                                            : item["Call-Direction"] ===
-                                                              "outbound"
-                                                              ? item[
+                                                          : item[
+                                                              "Call-Direction"
+                                                            ] === "outbound"
+                                                          ? item[
                                                               "Caller-Callee-ID-Number"
-                                                              ]
-                                                              : "N/A"
-                                                        );
-                                                        setPopUp(true);
-                                                      }}
+                                                            ]
+                                                          : "N/A"
+                                                      );
+                                                      setPopUp(true);
+                                                    }}
+                                                  >
+                                                    <Tippy
+                                                      content={
+                                                        isBlocked
+                                                          ? "Blocked"
+                                                          : "Block"
+                                                      }
                                                     >
-                                                      <Tippy
-                                                        content={
-                                                          isBlocked
-                                                            ? "Blocked"
-                                                            : "Block"
-                                                        }
-                                                      >
-                                                        <i className="fa-solid fa-ban"></i>
-                                                      </Tippy>
-                                                    </button>
-                                                    : ""}
+                                                      <i className="fa-solid fa-ban"></i>
+                                                    </Tippy>
+                                                  </button>
+                                                ) : (
+                                                  ""
+                                                )}
                                               </td>
                                               <td>
                                                 <button
@@ -1523,20 +1580,23 @@ function CdrFilterReport({ page }) {
                                                 </button>
                                               </td>
                                               <td>
-                                                {item?.duplicated == 1 && <button
-                                                  className={`tableButton edit ms-0`}
-                                                  onClick={
-                                                    () => duplicateColumn(item)
-                                                  }
-                                                >
-                                                  <Tippy content={"View Duplicate"}>
-                                                    <i className="fa-solid fa-clone"></i>
-                                                  </Tippy>
-                                                </button>}
+                                                {item?.duplicated == 1 && (
+                                                  <button
+                                                    className={`tableButton edit ms-0`}
+                                                    onClick={() =>
+                                                      duplicateColumn(item)
+                                                    }
+                                                  >
+                                                    <Tippy
+                                                      content={"View Duplicate"}
+                                                    >
+                                                      <i className="fa-solid fa-clone"></i>
+                                                    </Tippy>
+                                                  </button>
+                                                )}
                                               </td>
                                             </>
-                                          }
-
+                                          )}
                                         </tr>
                                         {currentPlaying ===
                                           item["recording_path"] &&
@@ -1544,7 +1604,12 @@ function CdrFilterReport({ page }) {
                                             <tr>
                                               <td colSpan="17">
                                                 <div className="audio-container mx-2">
-                                                  <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item.peak_json)} />
+                                                  <AudioWaveformCommon
+                                                    audioUrl={audioURL}
+                                                    peaksData={JSON.parse(
+                                                      item.peak_json
+                                                    )}
+                                                  />
                                                 </div>
                                               </td>
                                             </tr>
@@ -1570,11 +1635,11 @@ function CdrFilterReport({ page }) {
                           </>
                         ) : cdr?.data?.length === 0 && !loading ? (
                           <div>
-                            <EmptyPrompt
-                              type="generic"
-                            />
+                            <EmptyPrompt type="generic" />
                           </div>
-                        ) : ''}
+                        ) : (
+                          ""
+                        )}
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
@@ -1649,18 +1714,43 @@ function CdrFilterReport({ page }) {
         ) : (
           ""
         )}
-        {exportPopup && (<ExportPopUp filteredKeys={filteredKeys} page={page} setExportPopup={setExportPopup} setLoading={setLoading} exportToCSV={exportToCSV} itemsPerPage={itemsPerPage} account={account} setCircularLoader={setCircularLoader} />
+        {exportPopup && (
+          <ExportPopUp
+            filteredKeys={filteredKeys}
+            page={page}
+            setExportPopup={setExportPopup}
+            setLoading={setLoading}
+            exportToCSV={exportToCSV}
+            itemsPerPage={itemsPerPage}
+            account={account}
+            setCircularLoader={setCircularLoader}
+          />
         )}
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+          setShowComment={setShowComment}
+        />
       )}
-      {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
-      {advanceSearchPopup &&
+      {showDuplicatePopUp && (
+        <Duplicates
+          duplicatePopUpData={duplicatePopUpData}
+          setShowDuplicatePopUp={setShowDuplicatePopUp}
+          id={selectedCdr}
+          setId={setSelectedCdr}
+        />
+      )}
+      {advanceSearchPopup && (
         <div className="backdropContact">
           <div className="addNewContactPopup">
-            <button className="clearButton2 xl" onClick={() => setAdvanceSearchPopup(false)} style={{ position: "absolute", top: "10px", right: "10px" }}>
+            <button
+              className="clearButton2 xl"
+              onClick={() => setAdvanceSearchPopup(false)}
+              style={{ position: "absolute", top: "10px", right: "10px" }}
+            >
               <i class="fa-light fa-xmark" />
             </button>
             <div className="row">
@@ -1669,34 +1759,68 @@ function CdrFilterReport({ page }) {
                 <h5>Advance Search</h5>
               </div>
               <div>
-                <div class="searchBoxWrapper"><input class="searchBar formItem" type="text" value="" onChange={() => featureUnderdevelopment()} /></div>
+                <div class="searchBoxWrapper">
+                  <input
+                    class="searchBar formItem"
+                    type="text"
+                    value=""
+                    onChange={() => featureUnderdevelopment()}
+                  />
+                </div>
               </div>
               <div className="row mx-auto">
                 <div class="formRow border-0">
                   <label class="formLabel text-start mb-0 w-100">From</label>
                   <div class="d-flex w-100">
-                    <input type="date" class="formItem" max="2025-04-30" value="" onChange={() => featureUnderdevelopment()} />
-                    <input type="time" class="formItem ms-2" value="" onChange={() => featureUnderdevelopment()} />
+                    <input
+                      type="date"
+                      class="formItem"
+                      max="2025-04-30"
+                      value=""
+                      onChange={() => featureUnderdevelopment()}
+                    />
+                    <input
+                      type="time"
+                      class="formItem ms-2"
+                      value=""
+                      onChange={() => featureUnderdevelopment()}
+                    />
                   </div>
                 </div>
                 <div class="formRow border-0">
                   <label class="formLabel text-start mb-0 w-100">To</label>
                   <div class="d-flex w-100">
-                    <input type="date" class="formItem" max="2025-04-30" value="" onChange={() => featureUnderdevelopment()} />
-                    <input type="time" class="formItem ms-2" value="" onChange={() => featureUnderdevelopment()} />
+                    <input
+                      type="date"
+                      class="formItem"
+                      max="2025-04-30"
+                      value=""
+                      onChange={() => featureUnderdevelopment()}
+                    />
+                    <input
+                      type="time"
+                      class="formItem ms-2"
+                      value=""
+                      onChange={() => featureUnderdevelopment()}
+                    />
                   </div>
                 </div>
               </div>
               <div class="col-xl-12 mt-3">
-                <button class="panelButton mx-auto" onClick={() => featureUnderdevelopment()}>
+                <button
+                  class="panelButton mx-auto"
+                  onClick={() => featureUnderdevelopment()}
+                >
                   <span class="text">Search</span>
-                  <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <span class="icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 }
@@ -1707,7 +1831,7 @@ export default CdrFilterReport;
 const customStyles = {
   container: (provided) => ({
     ...provided,
-    width: '100%'
+    width: "100%",
   }),
   control: (provided, state) => ({
     ...provided,
@@ -1771,7 +1895,7 @@ const customStyles = {
     margin: 0,
     padding: 0,
     backgroundColor: "var(--ele-color)",
-    zIndex: 99
+    zIndex: 99,
   }),
   menuList: (provided) => ({
     ...provided,
@@ -1785,64 +1909,63 @@ const customStyles = {
 const callDirectionOptions = [
   {
     value: "inbound",
-    label: "Inbound Calls"
+    label: "Inbound Calls",
   },
   {
     value: "outbound",
-    label: "Outbound Calls"
+    label: "Outbound Calls",
   },
   {
     value: "internal",
-    label: "Internal Calls"
+    label: "Internal Calls",
   },
-]
+];
 
 const callTypeOptions = [
   {
     value: "extension",
-    label: "Extension"
+    label: "Extension",
   },
   {
     value: "voicemail",
-    label: "Voice Mail"
+    label: "Voice Mail",
   },
   {
     value: "callcenter",
-    label: "Call Center"
+    label: "Call Center",
   },
   {
     value: "ringgroup",
-    label: "Ring Group"
-  }
-]
+    label: "Ring Group",
+  },
+];
 
-const hangupCauseOptions =
-  [
-    {
-      value: "Answered",
-      label: "Answer"
-    },
-    {
-      value: "Missed",
-      label: "Missed"
-    },
-    {
-      value: "Voicemail",
-      label: "Voicemail"
-    },
-    {
-      value: "Cancelled",
-      label: "Cancelled"
-    },
-    {
-      value: "Failed",
-      label: "Failed"
-    },
-    {
-      value: "Transfer",
-      label: "Transfer"
-    }
-  ]
+const hangupCauseOptions = [
+  {
+    value: "Answered",
+    label: "Answer",
+  },
+  {
+    value: "Missed",
+    label: "Missed",
+  },
+  {
+    value: "Voicemail",
+    label: "Voicemail",
+  },
+  {
+    value: "Cancelled",
+    label: "Cancelled",
+  },
+  {
+    value: "Failed",
+    label: "Failed",
+  },
+  {
+    value: "Transfer",
+    label: "Transfer",
+  },
+];
 
 const hangupStatusOptions = [
   { value: "NORMAL_CLEARING", label: "Normal Clearing" },
@@ -1866,5 +1989,5 @@ const hangupStatusOptions = [
   { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
   { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
   { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
-  { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" }
-]
+  { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" },
+];
