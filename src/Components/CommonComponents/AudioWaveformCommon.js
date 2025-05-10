@@ -71,7 +71,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                 wavesurfer.current = null;
             }
         };
-    }, [audioUrl, peaksData]);
+    }, [audioUrl]);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);

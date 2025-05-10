@@ -64,7 +64,10 @@ function AccessControlAdd() {
         setLoading(false);
         navigate(-1)
       } else {
-        toast.error(apiData.message);
+        const values = Object.values(apiData?.errors)
+        values?.map((message) => {
+          toast.error(message[0])
+        })
         setLoading(false);
       }
     }
