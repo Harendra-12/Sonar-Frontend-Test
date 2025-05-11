@@ -753,23 +753,6 @@ function Navbar() {
                               </li>
                               <li className="tabItem ">
                                 <NavLink
-                                  to="/agent-disposition-manage"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                      ["/agent-disposition-manage"].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Desposition</div>
-                                </NavLink>
-                              </li>
-
-                              <li className="tabItem ">
-                                <NavLink
                                   to="/campaigns"
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
@@ -825,8 +808,32 @@ function Navbar() {
                                   <div className="itemTitle">Agents</div>
                                 </NavLink>
                               </li>
-
                               <li className="tabItem ">
+                                <NavLink
+                                  to="/dialer-cdr-report"
+                                  onClick={() => backToTop()}
+                                >
+                                  <div className="itemTitle">CDR Report</div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/agent-disposition-manage"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/agent-disposition-manage"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Desposition</div>
+                                </NavLink>
+                              </li>
+
+                              {/* <li className="tabItem ">
                                 <NavLink
                                   to="/call-desposition"
                                   onClick={() => backToTop()}
@@ -843,15 +850,7 @@ function Navbar() {
                                     Call Desposition
                                   </div>
                                 </NavLink>
-                              </li>
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/dialer-cdr-report"
-                                  onClick={() => backToTop()}
-                                >
-                                  <div className="itemTitle">CDR Report</div>
-                                </NavLink>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>
@@ -1476,14 +1475,14 @@ function Navbar() {
                               </NavLink>
                             </li>
                           )}
-                          <li className="tabItem ">
+                          {/* <li className="tabItem ">
                             <NavLink
                               to="/subscription-management"
                               onClick={() => backToTop()}
                             >
                               <div className="itemTitle">Subscription</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           {checkViewSidebar(
                             "CardDetail",
                             permissions,
