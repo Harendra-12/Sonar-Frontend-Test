@@ -226,8 +226,8 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {allUser?.data?.length > 0 &&
-                                                        allUser?.data?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.extension?.extension))
+                                                    {allUser?.length > 0 &&
+                                                        allUser?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.extension?.extension))
                                                             // .filter((agent) => )
                                                             .map((agent, index) => {
                                                                 return (
