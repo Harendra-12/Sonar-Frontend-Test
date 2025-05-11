@@ -109,12 +109,16 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
   document.addEventListener("mousedown", handleClickOutside);
 
   return (
+    // <div
+    //   className="col-12 col-xl-6 callDetails eFaxCompose"
+    //   style={{ height: "100%" }}
+    //   id="callDetails"
+    // >
     <div
-      className="col-12 col-xl-6 callDetails eFaxCompose"
-      style={{ height: "100%" }}
+      className=""
       id="callDetails"
     >
-      <div className="profileView mt-2">
+      <div className="profileView mb-2 shadow-none">
         <div className="profileDetailsHolder">
           <div className="header d-flex align-items-center pe-0">
             <div className="col-12">Upload eFax Document</div>

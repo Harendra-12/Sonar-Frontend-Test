@@ -211,13 +211,13 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem ${clickedVoiceMail?.id === item?.id ? "selected" : ""
+      className={`callListItem wertc_iconBox border-bottom-0 border-end-0 ${clickedVoiceMail?.id === item?.id ? "selected" : ""
         }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
         <div className="col-12 d-flex align-items-center">
-          <div className="profileHolder">
+          <div className="profileHolder ">
             {/* <i className="fa-light fa-user fs-5" /> */}
             <i className="fa-solid fa-microphone-lines fs-5"></i>
           </div>
@@ -248,7 +248,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               <span data-id="2">Duration: {item.duration}</span>
             </div>
           </div>
-          <div className="col-1 text-end ms-auto">
+          <div className="col-2 text-end ms-auto">
             <p className="timeAgo">{formatTo12HourTime(item.created_at)}</p>
           </div>
         </div>
@@ -376,13 +376,13 @@ function AllVoicemails({ isCustomerAdmin }) {
         }}
       >
         <section className="callPage">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
+              <div className=" ps-xl-0">
                 <HeaderApp title={"Voicemails"} loading={loading} setLoading={setLoading} refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)} />
               </div>
+          <div className="container-fluid">
+            <div className="row webrtc_newMessageUi">
 
-              <div className="col-xxl-4 col-xl-4 allCallHistory pb-0">
+              <div className=" allCallHistory pb-0 col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 calcsHeight ">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -413,15 +413,16 @@ function AllVoicemails({ isCustomerAdmin }) {
                     name="Search"
                     id="headerSearch"
                     placeholder="Search"
+                    className="searchStyle"
                     onChange={() => featureUnderdevelopment()}
                   />
                 </div>
                 <div className="col-12">
-                  <nav className="mt-3">
+                  {/* <nav className="mt-3">
                     <div
                       className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
+                      style={{ borderBottom: "1px solid var(--me-border1)" }}
+                    > */}
                       {/* <button
                         className="tabLink active"
                         effect="ripple"
@@ -436,8 +437,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                       >
                         New
                       </button> */}
-                    </div>
-                  </nav>
+                    {/* </div>
+                  </nav> */}
                   <div className="tab-content">
                     <div className="callList">
                       {loading && loadings ? (
@@ -474,7 +475,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                       {/* Call List Item */}
                     </div>
                   </div>
-                  <div className="tableHeader mt-2 px-2">
+                  <div className="tableHeader my-2 px-2">
                     {voiceMail && voiceMail?.data?.length > 0 ? (
                       // data here would be changed if we get data user specific
                       //currently data is for all users in this account
@@ -492,12 +493,12 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
               </div>
               {clickedVoiceMail && (
-                <div className="col-xxl-8 col-xl-8 callDetails"
+                <div className="callDetails col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
                   <div className="messageOverlay">
-                    <div className="contactHeader">
+                    <div className="contactHeader px-3 border-bottom-0">
                       <div>
                         <h4 className="mb-0">Test User</h4>
                         <p className="gray14 mb-0 mt-1">
@@ -605,7 +606,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                       </button>
                     </div>
                   </div> */}
-                  <div className="overviewTableWrapper p-2 mt-2">
+                  <div className="overviewTableWrapper p-0 mt-2">
                     <div className="overviewTableChild">
                       <div className="d-flex flex-wrap">
                         <div className="col-12">
@@ -618,16 +619,18 @@ function AllVoicemails({ isCustomerAdmin }) {
                         </div>
                         <div
                           className="col-12"
-                          style={{ padding: "0px 20px 0px" }}
+                          style={{ padding: "0px 10px 0px" }}
                         >
                           <div className="mt-2">
                             <nav className="mb-2">
                               <div
-                                className="nav nav-tabs"
+                                className="nav nav-tabs "
                                 id="nav-tab"
                                 role="tablist"
                                 style={{
-                                  borderBottom: "1px solid var(--border-color)",
+                                  borderInline: "1px solid var(--me-border1)",
+                                  borderRadius: "10px",
+                                  overflow: "hidden"
                                 }}
                               >
                                 <button
@@ -640,7 +643,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-home"
                                   aria-selected="true"
                                 >
-                                  Info
+                                <i class="fa-light fa-circle-info me-1"></i>  Info
                                 </button>
                                 <button
                                   className="tabLink"
@@ -652,7 +655,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-profile"
                                   aria-selected="false"
                                 >
-                                  Logs
+                                <i class="fa-light fa-list-ul me-1"></i>  Logs
                                 </button>
                               </div>
                             </nav>
@@ -666,7 +669,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                               >
                                 <div
                                   className="callDetailsList tableContainer mt-0"
-                                  style={{ height: "calc(100vh - 311px)" }}
+                                  style={{ height: "calc(100vh - 340px)" }}
                                 >
                                   <table>
                                     <thead>

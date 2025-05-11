@@ -170,13 +170,13 @@ function EFax({ did }) {
         }}
       >
         <section className="callPage">
+            <div className=" ps-xl-0">
+              <HeaderApp title={"E-Fax"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+            </div>
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
-                <HeaderApp title={"E-Fax"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
-              </div>
+            <div className="row webrtc_newMessageUi">
 
-              <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
+              <div className=" allCallHistory col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -207,6 +207,7 @@ function EFax({ did }) {
                     name="Search"
                     id="headerSearch"
                     placeholder="Search"
+                    className="searchStyle"
                   />
                 </div>
 
@@ -214,7 +215,7 @@ function EFax({ did }) {
                   <nav className="mt-3">
                     <div
                       className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
+                      style={{ borderBottom: "1px solid var(--me-border1)" }}
                     >
                       <button
                         onClick={() => setClickStatus("all")}
@@ -224,7 +225,7 @@ function EFax({ did }) {
                         effect="ripple"
                         data-category="all"
                       >
-                        All
+                        <i class="fa-regular fa-circle-dot me-1"></i>  All
                       </button>
                       <button
                         onClick={() => setClickStatus("file")}
@@ -235,7 +236,7 @@ function EFax({ did }) {
                         effect="ripple"
                         data-category="file"
                       >
-                        File
+                        <i class="fa-light fa-file me-1"></i> File
                       </button>
                       {/* <button
                         className={"tabLink"}
@@ -268,11 +269,11 @@ function EFax({ did }) {
                         </div>
                         <div
                           data-bell=""
-                          className="callListItem incoming"
+                          className="callListItem incoming wertc_iconBox border-bottom-0 border-end-0 " 
                           onClick={() => setShowUserHistory(true)}
                         >
-                          <div className="row justify-content-between">
-                            <div className="col-xl-12 d-flex">
+                          <div className="row justify-content-between align-items-center">
+                            <div className="col-xl-12 d-flex align-items-center">
                               <div className="profileHolder">
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
@@ -288,7 +289,7 @@ function EFax({ did }) {
                               </div>
 
                               <div className="col-3 mx-auto">
-                                <div className="contactTags">
+                                <div className="contactTags mb-1">
                                   <span data-id="1">Received</span>
                                 </div>
                                 <h5 style={{ fontWeight: "400" }}>
@@ -296,15 +297,15 @@ function EFax({ did }) {
                                   Attachment
                                 </h5>
                               </div>
-                              <div className="col-1 text-end ms-auto">
-                                <p className="timeAgo">12:46pm</p>
+                              <div className="col-2 text-end ms-auto">
+                                <p className="timeAgo mb-0">12:46pm</p>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div data-bell="" className="callListItem outgoing">
-                          <div className="row justify-content-between">
-                            <div className="col-xl-12 d-flex">
+                        <div data-bell="" className="callListItem outgoing wertc_iconBox border-bottom-0 border-end-0 ">
+                          <div className="row justify-content-between align-items-center">
+                            <div className="col-xl-12 d-flex align-items-center">
                               <div className="profileHolder">
                                 <i className="fa-light fa-user fs-5"></i>
                               </div>
@@ -320,7 +321,7 @@ function EFax({ did }) {
                               </div>
 
                               <div className="col-3 mx-auto">
-                                <div className="contactTags">
+                                <div className="contactTags mb-1">
                                   <span data-id="0">Sent</span>
                                 </div>
                                 <h5 style={{ fontWeight: "400" }}>
@@ -328,8 +329,8 @@ function EFax({ did }) {
                                   Attachment
                                 </h5>
                               </div>
-                              <div className="col-1 text-end ms-auto">
-                                <p className="timeAgo">12:46pm</p>
+                              <div className="col-2 text-end ms-auto">
+                                <p className="timeAgo mb-0">12:46pm</p>
                               </div>
                             </div>
                           </div>
@@ -409,22 +410,24 @@ function EFax({ did }) {
 
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
-                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div className="callDetails col-12 col-xl-8 col-lg-8 col-xxl-9  newVoicemailBoxUi pe-0 eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
-                  <div className="overviewTableWrapper p-2 mt-2">
+                  <div className="overviewTableWrapper p-0 ">
                     <div className="overviewTableChild">
                       <div className="d-flex flex-wrap">
                         <div className="col-12">
-                          <div className="heading">
+                          <div className="heading border-bottom-0">
                             <div className="content">
                               <h4>New Fax</h4>
                               <p>You can send a new fax from here</p>
                             </div>
                           </div>
                         </div>
-                        <div className="table_card rounded-start-0 rounded-end-0" >
+                        <div className="w-100 p-3 rounded-start-0 rounded-end-0" style={{
+                          border: "1px solid var(--me-border1)",
+                        }} >
                           <div
                             className="col-12"
 
@@ -571,279 +574,294 @@ function EFax({ did }) {
                   </div>
                 </div>
               )}
-              {clickStatus === "file" && (
-                <EFaxFile
-                  newFileUpload={newFileUpload}
-                  eFaxFileLoadingState={eFaxFileLoadingState}
-                />
-              )}
-              {clickStatus === "file" && EfaxFileLoading && (
-                <div colSpan={99}>
-                  <CircularLoader />
-                </div>
-              )}
+              <div
+                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose"
+                style={{ height: "100%" }}
+              >
+                <div className="row">
+                  <div className="col-12">
+                    {clickStatus === "file" && (
 
-              {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
-              {showUserHistory && (
-                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
-                  style={{ height: "100%" }}
-                  id="callDetails"
-                >
-                  <div className="messageOverlay">
-                    <div className="contactHeader">
-                      <div>
-                        <h4 className="mb-0">Test User</h4>
-                        <p className="gray14 mb-0 mt-1">Extension - 1002</p>
-                      </div>
-                      <div className="d-flex my-auto">
-                        <div className="d-flex align-items-center me-2">
-                          <label className="gray14 me-2">Assigned to:</label>
-                          <select className="ovalSelect">
-                            <option>Test User</option>
-                          </select>
-                        </div>
-                        <button
-                          className="clearButton2 xl"
-                          effect="ripple"
-                          onClick={() => featureUnderdevelopment()}
-                        >
-                          <i className="fa-regular fa-message-dots" />
-                        </button>
-                        <button
-                          className="clearButton2 xl"
-                          effect="ripple"
-                          onClick={() => featureUnderdevelopment()}
-                        >
-                          <i className="fa-regular fa-phone" />
-                        </button>
-                        <button
-                          className="clearButton2 xl"
-                          effect="ripple"
-                          onClick={() => featureUnderdevelopment()}
-                        >
-                          <i className="fa-regular fa-video" />
-                        </button>
-                        <div className="dropdown">
-                          <button
-                            className="clearButton2 xl"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <a
-                                className="dropdown-item"
-                                href="/"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                Add to Contact
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                className="dropdown-item"
-                                href="/"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                Video Call
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                className="dropdown-item"
-                                href="/"
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                Delete Contact
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                      <EFaxFile
+                        newFileUpload={newFileUpload}
+                        eFaxFileLoadingState={eFaxFileLoadingState}
+                      />
+                    )}
+
                   </div>
+                  <div className="col-12">
 
-                  <div className="overviewTableWrapper p-2 mt-2">
-                    <div className="overviewTableChild">
-                      <div className="d-flex flex-wrap">
-                        <div className="col-12">
-                          <div className="heading">
-                            <div className="content">
-                              <h4>E-Fax</h4>
-                              <p>You can see all of the eFax logs here</p>
+
+                    {clickStatus === "file" && EfaxFileLoading && (
+                      <div colSpan={99}>
+                        <CircularLoader />
+                      </div>
+                    )}
+
+                    {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
+                    {showUserHistory && (
+                      <div className="callDetails col-12 col-xl-12 col-lg-12 col-xxl-12   newVoicemailBoxUi pe-0 eFaxCompose"
+                        style={{ height: "100%" }}
+                        id="callDetails"
+                      >
+                        <div className="messageOverlay">
+                          <div className="contactHeader px-3 border-bottom-0">
+                            <div>
+                              <h4 className="mb-0">Test User</h4>
+                              <p className="gray14 mb-0 mt-1">Extension - 1002</p>
                             </div>
-                          </div>
-                        </div>
-                        <div
-                          className="col-12"
-                          style={{ padding: "0px 20px 0px" }}
-                        >
-                          <div className="mt-2">
-                            <nav className="mb-2">
-                              <div
-                                className="nav nav-tabs"
-                                id="nav-tab"
-                                role="tablist"
-                                style={{
-                                  borderBottom: "1px solid var(--border-color)",
-                                }}
-                              >
-                                <button
-                                  className="tabLink active"
-                                  effect="ripple"
-                                  data-bs-toggle="tab"
-                                  data-bs-target="#nav-home"
-                                  type="button"
-                                  role="tab"
-                                  aria-controls="nav-home"
-                                  aria-selected="true"
-                                >
-                                  Info
-                                </button>
-                                <button
-                                  className="tabLink"
-                                  effect="ripple"
-                                  data-bs-toggle="tab"
-                                  data-bs-target="#nav-history"
-                                  type="button"
-                                  role="tab"
-                                  aria-controls="nav-history"
-                                  aria-selected="false"
-                                >
-                                  Logs
-                                </button>
+                            <div className="d-flex my-auto">
+                              <div className="d-flex align-items-center me-2">
+                                <label className="gray14 me-2">Assigned to:</label>
+                                <select className="ovalSelect">
+                                  <option>Test User</option>
+                                </select>
                               </div>
-                            </nav>
-                            <div className="tab-content" id="nav-tabContent">
-                              <div
-                                className="tab-pane fade show active"
-                                id="nav-home"
-                                role="tabpanel"
-                                aria-labelledby="nav-home-tab"
-                                tabIndex={0}
+                              <button
+                                className="clearButton2 xl"
+                                effect="ripple"
+                                onClick={() => featureUnderdevelopment()}
                               >
-                                <div className="callDetailsList tableContainer mt-0">
-                                  <table>
-                                    <thead>
-                                      <tr>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>eFax Type</th>
-                                        <th>DID / Extension</th>
-                                        <th>Attachment</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          Jan 16, 2022
-                                        </td>
-                                        <td>12:46 PM</td>
-                                        <td
-                                          className="incoming"
-                                          style={{ paddingLeft: "30px" }}
-                                        >
-                                          <span>Received</span>
-                                        </td>
-                                        <td>1 (999) 999-9999</td>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          1 Attachment
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                              <div
-                                className="tab-pane fade"
-                                id="nav-history"
-                                role="tabpanel"
-                                aria-labelledby="nav-history-tab"
-                                tabIndex={1}
+                                <i className="fa-regular fa-message-dots" />
+                              </button>
+                              <button
+                                className="clearButton2 xl"
+                                effect="ripple"
+                                onClick={() => featureUnderdevelopment()}
                               >
-                                <div className="callDetailsList tableContainer mt-0">
-                                  <table>
-                                    <thead>
-                                      <tr>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>eFax Type</th>
-                                        <th>DID / Extension</th>
-                                        <th>Attachment</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          Jan 16, 2022
-                                        </td>
-                                        <td>12:46 PM</td>
-                                        <td
-                                          className="incoming"
-                                          style={{ paddingLeft: "30px" }}
-                                        >
-                                          <span>Received</span>
-                                        </td>
-                                        <td>1 (999) 999-9999</td>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          1 Attachment
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          Jan 16, 2022
-                                        </td>
-                                        <td>12:46 PM</td>
-                                        <td
-                                          className="outgoing"
-                                          style={{ paddingLeft: "30px" }}
-                                        >
-                                          <span>Sent</span>
-                                        </td>
-                                        <td>1 (999) 999-9999</td>
-                                        <td
-                                          style={{
-                                            color: "var(--color-subtext)",
-                                          }}
-                                        >
-                                          1 Attachment
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
+                                <i className="fa-regular fa-phone" />
+                              </button>
+                              <button
+                                className="clearButton2 xl"
+                                effect="ripple"
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <i className="fa-regular fa-video" />
+                              </button>
+                              <div className="dropdown">
+                                <button
+                                  className="clearButton2 xl"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false"
+                                >
+                                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a
+                                      className="dropdown-item"
+                                      href="/"
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
+                                      Add to Contact
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a
+                                      className="dropdown-item"
+                                      href="/"
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
+                                      Video Call
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a
+                                      className="dropdown-item"
+                                      href="/"
+                                      onClick={() => featureUnderdevelopment()}
+                                    >
+                                      Delete Contact
+                                    </a>
+                                  </li>
+                                </ul>
                               </div>
                             </div>
                           </div>
                         </div>
+
+                        <div className="overviewTableWrapper p-0 mt-2">
+                          <div className="overviewTableChild">
+                            <div className="d-flex flex-wrap">
+                              <div className="col-12">
+                                <div className="heading border-bottom-0">
+                                  <div className="content">
+                                    <h4>E-Fax</h4>
+                                    <p>You can see all of the eFax logs here</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="col-12"
+                                style={{ padding: "0px 20px 0px" }}
+                              >
+                                <div className="mt-2">
+                                  <nav className="mb-2">
+                                    <div
+                                      className="nav nav-tabs"
+                                      id="nav-tab"
+                                      role="tablist"
+                                      style={{
+                                        borderBottom: "1px solid var(--me-border1)",
+                                      }}
+                                    >
+                                      <button
+                                        className="tabLink active"
+                                        effect="ripple"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-home"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-home"
+                                        aria-selected="true"
+                                      >
+                                        <i class="fa-light fa-circle-info me-1"></i> Info
+                                      </button>
+                                      <button
+                                        className="tabLink"
+                                        effect="ripple"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-history"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-history"
+                                        aria-selected="false"
+                                      >
+                                        <i class="fa-light fa-list-ul me-1"></i> Logs
+                                      </button>
+                                    </div>
+                                  </nav>
+                                  <div className="tab-content" id="nav-tabContent">
+                                    <div
+                                      className="tab-pane fade show active"
+                                      id="nav-home"
+                                      role="tabpanel"
+                                      aria-labelledby="nav-home-tab"
+                                      tabIndex={0}
+                                    >
+                                      <div className="callDetailsList tableContainer mt-0">
+                                        <table>
+                                          <thead>
+                                            <tr>
+                                              <th>Date</th>
+                                              <th>Time</th>
+                                              <th>eFax Type</th>
+                                              <th>DID / Extension</th>
+                                              <th>Attachment</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                Jan 16, 2022
+                                              </td>
+                                              <td>12:46 PM</td>
+                                              <td
+                                                className="incoming"
+                                                style={{ paddingLeft: "30px" }}
+                                              >
+                                                <span>Received</span>
+                                              </td>
+                                              <td>1 (999) 999-9999</td>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                1 Attachment
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="tab-pane fade"
+                                      id="nav-history"
+                                      role="tabpanel"
+                                      aria-labelledby="nav-history-tab"
+                                      tabIndex={1}
+                                    >
+                                      <div className="callDetailsList tableContainer mt-0">
+                                        <table>
+                                          <thead>
+                                            <tr>
+                                              <th>Date</th>
+                                              <th>Time</th>
+                                              <th>eFax Type</th>
+                                              <th>DID / Extension</th>
+                                              <th>Attachment</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                Jan 16, 2022
+                                              </td>
+                                              <td>12:46 PM</td>
+                                              <td
+                                                className="incoming"
+                                                style={{ paddingLeft: "30px" }}
+                                              >
+                                                <span>Received</span>
+                                              </td>
+                                              <td>1 (999) 999-9999</td>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                1 Attachment
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                Jan 16, 2022
+                                              </td>
+                                              <td>12:46 PM</td>
+                                              <td
+                                                className="outgoing"
+                                                style={{ paddingLeft: "30px" }}
+                                              >
+                                                <span>Sent</span>
+                                              </td>
+                                              <td>1 (999) 999-9999</td>
+                                              <td
+                                                style={{
+                                                  color: "var(--color-subtext)",
+                                                }}
+                                              >
+                                                1 Attachment
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </section>
