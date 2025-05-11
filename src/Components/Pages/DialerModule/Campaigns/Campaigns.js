@@ -87,9 +87,6 @@ function Campaigns() {
     }
   }, [campaignDetails])
 
-  console.log(campaignDetails);
-
-
   return (
     <>
       <main className='mainContent'>
@@ -155,31 +152,36 @@ function Campaigns() {
                               <>
                                 {campaign?.data?.length > 0 ?
                                   campaign?.data.map((item, index) => {
-                                    let successRecords = 0;
-                                    let failedRecords = 0;
-                                    let untouchRecords = item.total_leads
+                                    let successRecords = item.complete_records || 0;
+                                    let failedRecords = item.failed_records || 0;
+                                    let untouchRecords = item.untouched_leads;
+
                                     if (campaignDetails && campaignDetails.campaign_id == item.id) {
                                       switch (campaignDetails.lead.status) {
                                         case "COMPLETED":
                                           successRecords += 1;
+                                          untouchRecords -= 1;
                                           break;
                                         case "ORIGINATE":
                                           untouchRecords -= 1;
                                           break;
                                         case "FAILED":
                                           failedRecords += 1;
+                                          untouchRecords -= 1;
                                           break;
                                         default:
                                           break;
                                       }
                                     }
+                                    // console.log('successRecords', successRecords, 'untouchRecords', untouchRecords, 'failedRecords', failedRecords);
+
                                     return (
                                       <>
                                         <tr key={index}>
                                           <td>
                                             <div className="d-flex align-items-center justify-content-start ">
                                               <div className="phone-call">
-                                                <i className={`fa-solid fa-${campaignDetails?.campaign_status === 'Aborted' || campaignDetails?.campaign_status === 'Completed' ? 'stop' : 'play'}`} />
+                                                <i className={`fa-solid fa-${campaignDetails?.campaign_status === 'Aborted' || campaignDetails?.campaign_status === 'Completed' || item.status === "Aborted" ? 'stop' : 'play'}`} />
                                               </div>
                                               <div>
                                                 <span className="ms-1 text-capitalize">{campaignDetails?.campaign_status?.replace(/_/g, " ") || item.status}</span>
