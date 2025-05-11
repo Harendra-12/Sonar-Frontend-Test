@@ -32,16 +32,16 @@ function MeetingAdd() {
             toast.error("Please enter conference name");
         } else if (
             conferenceType === "private" &&
-            (participantPin < 100000 || participantPin > 999999)
+            (participantPin < 1000 || participantPin > 999999)
         ) {
-            toast.error("Please enter 6 digit participant pin");
+            toast.error("Please enter 4 digit participant pin");
         } else if (members === null || members === "") {
             toast.error("Please enter number of members");
         } else if (
             conferenceType === "private" &&
-            (moderatorPin < 100000 || moderatorPin > 999999)
+            (moderatorPin < 1000 || moderatorPin > 999999)
         ) {
-            toast.error("Please enter 6 digit moderator pin");
+            toast.error("Please enter 4 digit moderator pin");
         } else if (
             conferenceType === "private" &&
             (retryCount < 1 || retryCount > 5)
