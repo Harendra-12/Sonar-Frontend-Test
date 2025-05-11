@@ -1552,3 +1552,7 @@
 .text-gray {
     color: #8c9097;
 }
+
+.messageMeetingWrap .lk-chat {
+    display: none !important;
+}

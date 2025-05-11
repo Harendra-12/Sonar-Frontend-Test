@@ -106,6 +106,9 @@ const WebrtcWrapper = () => {
   const [toUser, setToUser] = useState(null);
   const [internalCaller, setInternalCaller] = useState(account.id);
 
+  const [recipient, setRecipient] = useState([]);
+  const [selectedChat, setSelectedChat] = useState("singleChat");
+
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
 
@@ -552,6 +555,10 @@ const WebrtcWrapper = () => {
             setCalling={setCalling}
             setToUser={setToUser}
             setMeetingPage={setMeetingPage}
+            recipient={recipient}
+            setRecipient={setRecipient}
+            selectedChat={selectedChat}
+            setSelectedChat={setSelectedChat}
           />
         )}
         {activePage === "conference" && (
@@ -878,6 +885,10 @@ const WebrtcWrapper = () => {
               setInterCallMinimize={setInterCallMinimize}
               setactivePage={setactivePage}
 
+              recipient={recipient}
+              setRecipient={setRecipient}
+              selectedChat={selectedChat}
+              setSelectedChat={setSelectedChat}
             />
           </div>
         </Rnd>

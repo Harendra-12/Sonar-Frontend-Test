@@ -3,16 +3,14 @@ import React, { useEffect, useState } from 'react'
 import LiveKitConference from './LiveKitConference';
 
 
-function InitiateCall({ from, to, name, setCalling, interCallMinimize, setInterCallMinimize, type, setactivePage }) {
-    console.log(to);
-
+function InitiateCall({ from, to, name, setCalling, interCallMinimize, setInterCallMinimize, type, setactivePage, recipient, setRecipient, selectedChat, setSelectedChat }) {
     const [token, setToken] = useState(null);
     const [serverUrl, setServerUrl] = useState(null);
     const roomName = `${from}-${to}`;
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [storeRecipient, setStoreRecipient] = useState();
 
     useEffect(() => {
-
         async function getToken() {
             axios.get(`https://meet.webvio.in/backend/get-token?room=${roomName}&username=${name}&isAdmin=${true}`).then((res) => {
                 setToken(res.data.token);
@@ -22,17 +20,25 @@ function InitiateCall({ from, to, name, setCalling, interCallMinimize, setInterC
             })
         }
         if (to) {
-            getToken()
+            getToken();
+        }
+        if (recipient[1] == to) {
+            setStoreRecipient(recipient);
         }
     }, [from, to, name])
+
 
     useEffect(() => {
         const handleClick = (event) => {
             const chatButton = document.querySelector(".lk-button.lk-chat-toggle");
 
             if (event.target === chatButton || chatButton?.contains(event.target)) {
-                event.preventDefault();
-                setIsChatOpen(prev => !prev);
+                if (storeRecipient) {
+                    setRecipient(storeRecipient);
+                    setSelectedChat("singleChat");
+
+                    setIsChatOpen(prev => !prev);
+                }
             }
         };
 
@@ -41,7 +47,8 @@ function InitiateCall({ from, to, name, setCalling, interCallMinimize, setInterC
         return () => {
             document.removeEventListener('click', handleClick);
         };
-    }, []);
+    }, [storeRecipient]);
+
 
     useEffect(() => {
         const messagingBlock = document.getElementById('messagingBlock')
@@ -62,6 +69,16 @@ function InitiateCall({ from, to, name, setCalling, interCallMinimize, setInterC
                 messagingBlock.style.maxWidth = 'initial';
             }
         }
+
+        return () => {
+            // Cleanup on unmount
+            if (messagingBlock) {
+                messagingBlock.style.position = 'initial';
+                messagingBlock.style.left = 'initial';
+                messagingBlock.style.zIndex = 'initial';
+                messagingBlock.style.maxWidth = 'initial';
+            }
+        };
     }, [isChatOpen])
 
     return (

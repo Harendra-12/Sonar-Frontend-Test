@@ -53,7 +53,10 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
-
+  recipient,
+  setRecipient,
+  selectedChat,
+  setSelectedChat,
   // formatRelativeTime, 
   // formatRelativeTime, accountDetails, onlineUser
 }) {
@@ -67,7 +70,7 @@ function Messages({
   const sipProvider = useSIPProvider();
   const groupMessage = useSelector((state) => state.groupMessage);
   const sessions = useSelector((state) => state.sessions);
-  const [recipient, setRecipient] = useState([]);
+  // const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
@@ -79,7 +82,7 @@ function Messages({
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
-  const [selectedChat, setSelectedChat] = useState("singleChat");
+  // const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
   const [allTags, setAllTags] = useState([]);
