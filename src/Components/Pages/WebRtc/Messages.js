@@ -58,7 +58,7 @@ function Messages({
   // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
-  const socketSendMessage = useSelector((state)=>state.socketSendMessage)
+  const socketSendMessage = useSelector((state) => state.socketSendMessage)
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -1286,10 +1286,12 @@ function Messages({
       setAddMember(false);
       setGroupChatPopUp(false);
       setGroupSelecedAgents([]);
-      setNewGroupLoader(false);
       setGroupName("");
+      setNewGroupLoader(false);
+      setLoading(false)
     } else {
       setNewGroupLoader(false);
+      setLoading(false)
     }
   }
 
