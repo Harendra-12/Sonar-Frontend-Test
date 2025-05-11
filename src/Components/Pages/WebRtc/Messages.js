@@ -2436,7 +2436,11 @@ function Messages({
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
-                                data-bell={""}
+                                data-bell={
+                                  unreadMessage[item.group_name]
+                                    ? unreadMessage[item.group_name]
+                                    : ""
+                                }
                                 onClick={() => {
                                   const profile_picture = allAgents?.find(
                                     (data) => data?.id == item?.id
@@ -2454,6 +2458,13 @@ function Messages({
                                   setSelectedgroupUsers(
                                     item.message_groupusers
                                   );
+                                  setUnreadMessage((prevState) => {
+                                    const {
+                                      [item.group_name]: _,
+                                      ...newState
+                                    } = prevState;
+                                    return newState;
+                                  });
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -2476,15 +2487,31 @@ function Messages({
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
-                                        <p className="fs-14 text-gray"><span className="text-info fw-normal">Rams : &nbsp;</span> Happy to be part of this group</p>
+                                        {item?.last_message_data?.message_text &&
+                                          <p className="fs-14 text-gray">
+                                            <span className="text-info fw-normal">
+                                              {allAgents.find((data) => data.id == item?.last_message_data?.user_id)?.username || 'N/A'} : &nbsp;
+                                            </span> {item?.last_message_data?.message_text}
+                                          </p>}
                                       </div>
                                     </div>
                                     <div className=" text-end">
                                       <div className="col text-end d-flex justify-content-end align-items-end flex-column">
                                         {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
-                                        <p className="timeAgo">1h ago</p>
-                                        <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
-                                        {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
+                                        <p className="timeAgo">
+                                          {item?.last_message_data?.created_at
+                                            ? formatRelativeTime(
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
+                                            : ""}
+                                        </p>
+                                        {
+                                          unreadMessage[item.group_name]
+                                            ? ""
+                                            :
+                                            <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
+                                        }
                                       </div>
                                       {/* <div className="dropdown">
                                         <button
