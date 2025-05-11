@@ -1375,6 +1375,8 @@ function Navbar() {
                           "/subscription-management",
                           "/rate-card",
                           "/billing-card-and-wallet",
+                          "billing-dashboard",
+                          "/package-details"
                         ])
                           ? "true"
                           : "false"
@@ -1396,6 +1398,8 @@ function Navbar() {
                         "/subscription-management",
                         "/rate-card",
                         "/billing-card-and-wallet",
+                        "billing-dashboard",
+                        "/package-details"
                       ])
                         ? "show"
                         : ""
@@ -1539,6 +1543,13 @@ function Navbar() {
                               }
                             >
                               <div className="itemTitle">Billing Dashboard</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem">
+                            <NavLink
+                              to="/package-details"
+                            >
+                              <div className="itemTitle">Package Details</div>
                             </NavLink>
                           </li>
                         </ul>
