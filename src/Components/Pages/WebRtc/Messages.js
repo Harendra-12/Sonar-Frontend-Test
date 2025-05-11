@@ -403,10 +403,11 @@ function Messages({
     }
   }, [recipient, loadMore, allAgents]);
 
-  const getExtension = (input) => {
+  const getExtension = (input = '') => {
     var parts = input?.split(".");
     return parts[parts?.length - 1]?.toLowerCase();
   };
+
   // Logic to send message
   const checkMessageType = (message) => {
     const isHasExtension = getExtension(message);
@@ -2521,33 +2522,6 @@ function Messages({
                             );
                           })
                         )}
-
-
-
-                        <div className="contactListItem align-items-center" data-bell={"1"} >
-                          <div className="row justify-content-start align-items-center">
-                            <div className="col-xl-12 d-flex">
-                              <div
-                                className="profileHolder"
-                                id={"profileOfflineNav"}
-                              >
-                                <i className="fa-light fa-user fs-5"></i>
-                              </div>
-                              <div className="my-auto ms-2 ms-xl-3">
-                                <p className=' justify-content-start ellipsisText'>Test
-                                  {/* <span className="missedCallArrow text-success ms-2"><i className="fa-solid fa-arrow-down-left"></i></span> */}
-                                </p>
-                                <span class="text-success">Hira Typing...</span>
-                              </div>
-                              <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
-                                <p className="timeAgo">1h ago</p>
-                                {/* <span className="chat-read-icon read "><i class="fa-solid fa-check-double"></i></span> */}
-                                <span className="chat-read-icon unreadsms "><i class="fa-solid fa-check-double"></i></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   )}
