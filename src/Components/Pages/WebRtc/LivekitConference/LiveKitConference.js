@@ -13,7 +13,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
         setIsMinimize(!isMinimize);
     };
     return (
-        <main data-lk-theme="default" style={{ height: '100vh' }} className={`messageMeetingWrap ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
+        <main data-lk-theme="default" className={`messageMeetingWrap ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
             <button className="minimize" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
             {!isMinimize && <div
                 className="inter-call-drag-handle"
@@ -34,7 +34,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                 video={true}
                 audio={true}
                 ScreenShareIcon={false}
-                onDisconnected={() => {setCalling(false);}}
+                onDisconnected={() => { setCalling(false); }}
             >
                 <VideoConference
                     chatMessageFormatter={formatChatMessageLinks}

@@ -440,8 +440,8 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     if (interCallMinimize) {
-      setInterCallSize({ width: "100vw", height: "100vh" });
-      setInterCallPosition({ x: 0, y: 0 });
+      setInterCallSize({ width: "100%", height: "100%" });
+      setInterCallPosition({ x: 650, y: 61 });
     } else if (!interCallMinimize) {
       setInterCallSize({
         width: 200,
@@ -853,8 +853,8 @@ const WebrtcWrapper = () => {
           }}
           minWidth={"290px"}
           minHeight={"280px"}
-          maxWidth={"100vw"}
-          maxHeight={"100vh"}
+          maxWidth={"calc(100vw - 650px)"}
+          maxHeight={"calc(100vh - 61px)"}
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
           disableDragging={interCallMinimize}
           enableResizing={false}
@@ -876,6 +876,8 @@ const WebrtcWrapper = () => {
               meetingPage={meetingPage}
               interCallMinimize={interCallMinimize}
               setInterCallMinimize={setInterCallMinimize}
+              setactivePage={setactivePage}
+
             />
           </div>
         </Rnd>
