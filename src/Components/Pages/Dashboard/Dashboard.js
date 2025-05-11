@@ -480,7 +480,7 @@ const Dashboard = () => {
                         Calls
                       </button>
                     )} */}
-                  {checkViewSidebar(
+                  {/* {checkViewSidebar(
                     "BillingAddress",
                     slugPermissions,
                     account?.permissions, "read"
@@ -501,7 +501,7 @@ const Dashboard = () => {
                       >
                         Billing
                       </button>
-                    )}
+                    )} */}
                   {/* <div className="ms-auto pb-2">
                     <Clock
                       value={time}
@@ -638,7 +638,7 @@ const Dashboard = () => {
                               <p>Click to view details</p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-file" onClick={() => navigate("/users-profile")}></i>
+                              <i className="fa-duotone fa-file" onClick={() => navigate("/package-details")}></i>
                             </div>
                           </div>
                         </div>

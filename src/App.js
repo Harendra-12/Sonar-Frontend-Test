@@ -183,6 +183,7 @@ import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 import GoSocket from "./Components/GlobalFunction/GoSocket";
+import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -213,9 +214,9 @@ function App() {
   const slugPermissions = useSelector((state) => state?.permissions);
   const { sendMessage } = Socket();
   GoSocket();
-  useEffect(()=>{
-    dispatch({type:"SET_SOCKETSENDMESSAGE",socketSendMessage:sendMessage})
-  },[Socket])
+  useEffect(() => {
+    dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage })
+  }, [Socket])
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{
@@ -751,6 +752,10 @@ function App() {
           <Route
             path="/subscription-management"
             element={<SubscriptionManagement />}
+          />
+          <Route
+            path="/package-details"
+            element={<PackageAndSubscriptionDetails />}
           />
           {/* Billing Pages End */}
 

@@ -38,7 +38,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   // Trying to connect with freeswitch at every 3 seconds when disconnect or unregister from feeswitch for any of reason
   useEffect(() => {
     let intervalId = null;
-    const shouldRetry = 
+    const shouldRetry =
       registerStatus === "UNREGISTERED" || connectStatus === "DISCONNECTED";
     if (shouldRetry && connectStatus !== "WAIT_REQUEST_CONNECT") {
       intervalId = setInterval(() => {
@@ -46,7 +46,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
         sessionManager.connect();
       }, 3000); // retry every 3 seconds
     }
-  
+
     // Clear interval when conditions are no longer met
     return () => {
       if (intervalId) {
@@ -218,43 +218,46 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Voicemails</div>
                 </div>
               </li>
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("e-fax")}
-                  className={
-                    activePage === "e-fax" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-regular fa-paper-plane"></i>
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("e-fax")}
+                    className={
+                      activePage === "e-fax" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-regular fa-paper-plane"></i>
+                    </div>
+                    <div className="itemTitle">Fax </div>
                   </div>
-                  <div className="itemTitle">Fax </div>
-                </div>
-              </li>
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("email")}
-                  className="navItem "
-                >
-                  <div className="iconHolder">
-                    <i className="fa-regular fa-envelope"></i>
+                </li> : ""}
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("email")}
+                    className="navItem "
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-regular fa-envelope"></i>
+                    </div>
+                    <div className="itemTitle">Email</div>
                   </div>
-                  <div className="itemTitle">Email</div>
-                </div>
-              </li>
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("all-contacts")}
-                  className={
-                    activePage === "all-contacts" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-address-book" />
+                </li> : ""}
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("all-contacts")}
+                    className={
+                      activePage === "all-contacts" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-address-book" />
+                    </div>
+                    <div className="itemTitle">Contacts</div>
                   </div>
-                  <div className="itemTitle">Contacts</div>
-                </div>
-              </li>
+                </li> : ""}
               {account?.user_role?.roles?.name !== "Agent" ?
                 <li style={{ cursor: "pointer" }}>
                   <div
@@ -271,34 +274,36 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </li>
                 : ""}
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  // to="/call-center"
-                  onClick={() => setactivePage("call-center")}
-                  className={
-                    activePage === "call-center" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-circle-user" />
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    // to="/call-center"
+                    onClick={() => setactivePage("call-center")}
+                    className={
+                      activePage === "call-center" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-circle-user" />
+                    </div>
+                    <div className="itemTitle">Call Center</div>
                   </div>
-                  <div className="itemTitle">Call Center</div>
-                </div>
-              </li>
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  // to="/campaign-login"
-                  onClick={() => setactivePage("campaign-login")}
-                  className={
-                    activePage === "campaign-login" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-megaphone" />
+                </li> : ""}
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    // to="/campaign-login"
+                    onClick={() => setactivePage("campaign-login")}
+                    className={
+                      activePage === "campaign-login" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-megaphone" />
+                    </div>
+                    <div className="itemTitle">Dialer</div>
                   </div>
-                  <div className="itemTitle">Dialer</div>
-                </div>
-              </li>
+                </li> : ""}
               {isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>
                   <div
@@ -326,8 +331,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <div className="itemTitle">Switch Admin</div>
                   </div>
                 </li> : ""}
-
-              {isWhatsAppAvailable != null &&
+              {account?.user_role?.roles?.name !== "Agent" ?
+                isWhatsAppAvailable != null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("whatsapp-chartbox")}
@@ -340,37 +345,35 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">WhatsApp</div>
                   </div>
-                </li>}
-
-
-
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("sms-chatbox")}
-                  className={
-                    activePage === "sms-chatbox" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i class="fa-solid fa-comment-sms"></i>
+                </li> : ""}
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("sms-chatbox")}
+                    className={
+                      activePage === "sms-chatbox" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i class="fa-solid fa-comment-sms"></i>
+                    </div>
+                    <div className="itemTitle">SMS</div>
                   </div>
-                  <div className="itemTitle">SMS</div>
-                </div>
-              </li>
-
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("nav-settings")}
-                  className={
-                    activePage === "nav-settings" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i class="fa-solid fa-gear"></i>
+                </li> : ""}
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("nav-settings")}
+                    className={
+                      activePage === "nav-settings" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div className="itemTitle">Settings</div>
                   </div>
-                  <div className="itemTitle">Settings</div>
-                </div>
-              </li>
+                </li> : ""}
             </ul>
           </div>
         </div>
