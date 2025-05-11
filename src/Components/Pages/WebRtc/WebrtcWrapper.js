@@ -335,6 +335,7 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
+      setIsCallLoading(true)
       if (callCurrentPage === 1) {
         // setCallLoading(true);
       } else {
