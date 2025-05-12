@@ -1519,8 +1519,9 @@ function CdrFilterReport({ page }) {
                                                       ] ||
                                                       "fa-phone-arrow-down-left",
                                                     color:
-                                                      item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
                                                     label: "Inbound",
@@ -1532,8 +1533,9 @@ function CdrFilterReport({ page }) {
                                                       ] ||
                                                       "fa-phone-arrow-up-right",
                                                     color:
-                                                      item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
                                                     label: "Outbound",
@@ -1544,8 +1546,9 @@ function CdrFilterReport({ page }) {
                                                       item.variable_DIALSTATUS
                                                       ] || "fa-headset",
                                                     color:
-                                                      item.variable_DIALSTATUS !==
-                                                        "Answered"
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
                                                     label: "Internal",

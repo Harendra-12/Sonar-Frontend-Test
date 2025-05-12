@@ -705,6 +705,10 @@
     border: 1px solid var(--me-border1);
 }
 
+.contactHeader .dropdown-menu .dropdown-item {
+    cursor: pointer;
+}
+
 .contactHeader .dropdown-menu .dropdown-item,
 .dropdown-menu.light .dropdown-item,
 .dropdown-menu-hover .dropdown-item {
