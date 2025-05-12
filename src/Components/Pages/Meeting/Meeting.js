@@ -239,12 +239,12 @@ function Meeting() {
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <div className='d-flex align-items-center justify-content-start '>
+                                                                                        {item?.participate_pin && <div className='d-flex align-items-center justify-content-start '>
                                                                                             {participantPinId === item.id ? item.participate_pin : "******"}
                                                                                             <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                        </div>
+                                                                                        </div>}
                                                                                     </td>
-                                                                                    <td style={{width:"174px"}}>{item.conf_url}</td>
+                                                                                    <td style={{ width: "174px" }}>{item.conf_url}</td>
                                                                                     <td>
                                                                                         <div
                                                                                             className="tableButton"
