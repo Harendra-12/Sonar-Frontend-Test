@@ -208,22 +208,22 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-12 ps-0">
+                <div className="col-12">
                   <h4 className="text-orange">Upload a document</h4>
                   Please select the file you want to upload
                   <br />
                   <span style={{ fontSize: 14 }}>
-                    Note: File size should be less than 1 MB.
+                    Note: <strong>File size should be less than 1 MB.</strong>
                   </span>
                   <br />
                   <input
                     name="reg"
-                    className="formItem mt-2 mx-auto"
+                    className="formItem mt-2 mx-auto chooseFile"
                     type="file"
                     accept=".png,.jpeg,.jpg,.pdf,.docx"
                     onChange={handleUploadDoc}
                   />
-                  <span style={{ fontSize: 10 }}>
+                  <span style={{ fontSize: 10 }} className="text-primary">
                     Only JPEG/JPG/PNG/PDF/DOCX files are accepted.
                   </span>
                   {uploadError ? (
@@ -269,7 +269,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                         <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
-                    <button
+                    {/* <button
                       className="panelButtonWhite m-0 float-end"
                       onClick={() => {
                         setUploadPopup(false);
@@ -279,7 +279,24 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                       }}
                     >
                       Cancel
+                    </button> */}
+
+
+                    <button
+                      className="panelButton gray"
+                      onClick={() => {
+                        setUploadPopup(false);
+                        setUploadError(false);
+                        setImagePreview(null);
+                        setFile();
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
                     </button>
+
                   </div>
                 </div>
               </div>

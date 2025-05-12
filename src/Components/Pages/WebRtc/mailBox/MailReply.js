@@ -9,8 +9,8 @@ const MailReply = () => {
     return (
         <>
             <div className="read_message">
-                <div className="card shadow-none rounded-3">
-                    <div className="card-header">
+                <div className="card shadow-none rounded-3" style={{borderColor: "var(--me-border1)", }}>
+                    <div className="card-header" style={{borderColor: "var(--me-border1)", }}>
                         <div className="d-flex align-items-center gap-3">
                             <button className="back_pev"><i class="fa-solid fa-arrow-left"></i></button>
                             <div className='d-flex justify-content-between align-items-center w-100'>

@@ -170,7 +170,7 @@ function EFax({ did }) {
         }}
       >
         <section className="callPage">
-            <div className=" ps-xl-0">
+            <div className=" ps-xl-0 stickyHeader">
               <HeaderApp title={"E-Fax"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
             </div>
           <div className="container-fluid">
@@ -740,7 +740,7 @@ function EFax({ did }) {
                                       aria-labelledby="nav-home-tab"
                                       tabIndex={0}
                                     >
-                                      <div className="callDetailsList tableContainer mt-0">
+                                      <div className="callDetailsList tableContainer mt-0"  style={{ height: "calc(100vh - 326px)" }}>
                                         <table>
                                           <thead>
                                             <tr>
@@ -787,7 +787,7 @@ function EFax({ did }) {
                                       aria-labelledby="nav-history-tab"
                                       tabIndex={1}
                                     >
-                                      <div className="callDetailsList tableContainer mt-0">
+                                      <div className="callDetailsList tableContainer mt-0" style={{ height: "calc(100vh - 326px)" }}>
                                         <table>
                                           <thead>
                                             <tr>

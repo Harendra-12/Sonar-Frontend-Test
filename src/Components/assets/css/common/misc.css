@@ -1813,6 +1813,7 @@ input[type=number] {
     width: 100%;
     /* background: #f6f6f6; */
     border: 0;
+    height: 100%;
 }
 
 .mail_leftbar ul li {
@@ -1862,6 +1863,7 @@ input[type=number] {
     background: rgba(75, 78, 99, 0.102);
     padding: 20px;
     border-radius: 10px;
+   height: calc(100vh - 165px);
 }
 
 .badge-solid-primary {
@@ -1933,7 +1935,7 @@ input[type=number] {
 
 .mails-information .mail-info-footer {
     padding: .75rem;
-    border-block-start: 1px solid var(--default-border);
+    border-block-start: 1px solid var(--me-border1);
 }
 
 .mailBox_body {
@@ -1943,8 +1945,7 @@ input[type=number] {
     box-sizing: border-box !important;
     position: relative;
     display: block;
-    height: calc(100vh - 315px);
-
+    height: calc(100vh - 337px);
     scrollbar-width: none;
     -ms-overflow-style: none;
 }

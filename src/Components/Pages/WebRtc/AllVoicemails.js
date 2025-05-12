@@ -376,7 +376,7 @@ function AllVoicemails({ isCustomerAdmin }) {
         }}
       >
         <section className="callPage">
-              <div className=" ps-xl-0">
+              <div className=" ps-xl-0 stickyHeader">
                 <HeaderApp title={"Voicemails"} loading={loading} setLoading={setLoading} refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)} />
               </div>
           <div className="container-fluid">
@@ -407,7 +407,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                     <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
                 </div>
-                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
+                <div className="col-12" style={{ padding: "0 10px" }}>
                   <input
                     type="search"
                     name="Search"
@@ -858,7 +858,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                               >
                                 <div
                                   className="callDetailsList tableContainer mt-0"
-                                  style={{ height: "calc(100vh - 311px)" }}
+                                  style={{ height: "calc(100vh - 340px)" }}
                                 >
                                   <table>
                                     <thead>

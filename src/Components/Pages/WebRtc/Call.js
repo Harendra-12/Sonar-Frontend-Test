@@ -342,9 +342,9 @@ function Call({
           key={item.id}
           onClick={() => handleCallItemClick(item)}
           onDoubleClick={() => handleDoubleClickCall(item)}
-          className={`callListItem ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+          className={`callListItem wertc_iconBox border-bottom-0 ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
         >
-          <div className="row justify-content-between">
+          <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
               <div
                 className="profileHolder"
@@ -354,7 +354,7 @@ function Call({
               </div>
               {!isCustomerAdmin ? (
                 <div
-                  className="col-5 my-auto ms-3 ms-xl-3"
+                  className="col-4  ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   {/* <h4>
@@ -364,9 +364,9 @@ function Call({
                         : item["Caller-Callee-ID-Number"]
                     }
                   </h4> */}
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
-                    <h4>
+                    <h4 className="mb-0">
                       {displayName
                         ? displayName
                         : item.caller_user
@@ -677,9 +677,7 @@ function Call({
         }}
       >
         <section className="callPage">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
+              <div className=" ps-xl-0 stickyHeader">
                 <HeaderApp
                   title={"Calls"}
                   loading={isCallLoading}
@@ -687,8 +685,10 @@ function Call({
                   refreshApi={handleRefresh}
                 />
               </div>
+          <div className="container-fluid">
+            <div className="row webrtc_newMessageUi">
 
-              <div className="col-12 col-xl-6 col-xxl-5 allCallHistory">
+              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -711,24 +711,14 @@ function Call({
                 </div>
                 <div className="col-12" style={{ padding: "0 10px" }}>
                   <div className="row">
-                    <div className="col-xl-5 col-12 pe-2 mt-auto">
-                      <input
-                        type="search"
-                        name="Search"
-                        id="headerSearch"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                    <div className="col-xl-7 col-12">
+                    <div className="col-12 mb-2">
                       <div className="d-flex justify-content-between">
-                        <div className="">
+                        <div className="w-100">
                           <label className="formLabel text-start mb-0 w-100">
                             Date Filter
                           </label>
                           <select
-                            className="formItem"
+                            className="formItem "
                             value={filterBy}
                             onChange={(e) => {
                               setFilterBy(e.target.value);
@@ -737,7 +727,7 @@ function Call({
                             }}
                             style={{
                               background: "var(--searchBg)",
-                              borderColor: "var(--border-color)",
+                              borderColor: "var(--me-border1)",
                               borderRadius: "5px",
                             }}
                           >
@@ -745,9 +735,9 @@ function Call({
                             <option value={"date_range"}>Date Range</option>
                           </select>
                         </div>
-                        <div className="d-flex">
+                        <div className="d-flex w-100">
                           {filterBy === "date" && (
-                            <div className="ms-2">
+                            <div className="ms-2 w-100">
                               <label className="formLabel text-start mb-0 w-100">
                                 Choose Date
                               </label>
@@ -762,7 +752,7 @@ function Call({
                                 }}
                                 style={{
                                   background: "var(--searchBg)",
-                                  borderColor: "var(--border-color)",
+                                  borderColor: "var(--me-border1)",
                                   borderRadius: "5px",
                                 }}
                               />
@@ -770,13 +760,13 @@ function Call({
                           )}
                           {filterBy === "date_range" && (
                             <>
-                              <div className="mx-2">
+                              <div className="mx-2 w-100">
                                 <label className="formLabel text-start mb-0 w-100">
                                   From
                                 </label>
                                 <input
                                   type="date"
-                                  className="formItem"
+                                  className="formItem searchStyle"
                                   max={new Date().toISOString().split("T")[0]}
                                   value={startDateFlag}
                                   onChange={(e) => {
@@ -785,12 +775,12 @@ function Call({
                                   }}
                                   style={{
                                     background: "var(--searchBg)",
-                                    borderColor: "var(--border-color)",
+                                    // borderColor: "var(--border-color)",
                                     borderRadius: "5px",
                                   }}
                                 />
                               </div>
-                              <div className="">
+                              <div className="w-100">
                                 <label className="formLabel text-start mb-0 w-100">
                                   To
                                 </label>
@@ -816,17 +806,28 @@ function Call({
                         </div>
                       </div>
                     </div>
+                    <div className="col-12 pe-2 mt-auto">
+                      <input
+                        type="search"
+                        name="Search"
+                        id="headerSearch"
+                        className="searchStyle"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div className="col-12">
-                  <nav className="mt-3">
+                  {/* <nav className="mt-3">
                     <div
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
                     </div>
-                  </nav>
+                  </nav> */}
                   <div className="tab-content">
                     <div
                       className="callList"
@@ -890,8 +891,8 @@ function Call({
                 </div>
               </div>
               <div
-                className="col-12 col-xl-6 col-xxl-7 callDetails"
-                style={{ height: "calc(100vh - 65px)" }}
+                className="callDetails col-12 col-xl-8 col-lg-7 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
+                style={{ height: "calc(100vh - 100px)" }}
                 id="callDetails"
               >
                 <CallDetails

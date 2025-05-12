@@ -200,7 +200,7 @@ function CallDetails({
   return (
     <>
       <div className="messageOverlay">
-        <div className="contactHeader">
+        <div className="contactHeader border-bottom-0">
           <div>
             <h4 className="mb-0">
               {handleSavedContactName(callDetails?.caller_user?.username)}
@@ -459,7 +459,7 @@ function CallDetails({
             aria-labelledby="nav-profile-tab"
             tabindex="0"
           >
-            <div className="overviewTableWrapper p-2">
+            <div className="overviewTableWrapper p-0">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
                   <div className="col-12">
@@ -470,7 +470,7 @@ function CallDetails({
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: "25px 20px 0px" }}>
+                  <div className="col-12" style={{ padding: " 20px 20px 10px" }}>
                     <div className="callDetailsList tableContainer mt-0">
                       <table>
                         <thead>

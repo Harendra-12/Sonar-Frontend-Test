@@ -123,14 +123,14 @@ const CallCenter = ({ initial }) => {
           />
         )}
 
-        <div className="container-fluid">
-          <div className="row">
-            <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
+            <div className={` stickyHeader ${!initial ? " px-0" : " px-0 d-none"}`}>
               <HeaderApp title={"Call Center"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
             </div>
+        <div className="container-fluid">
+          <div className="row webrtc_newMessageUi">
             <>
-              <div className="overviewTableWrapper">
-                <div className="overviewTableChild">
+              <div className="overviewTableWrapper p-0 ">
+                <div className="overviewTableChild border-0 shadow-none">
                   <div className="d-flex flex-wrap">
                     <div className={!initial ? "col-12" : "col-12 d-none"}>
                       <div className="heading">
@@ -162,7 +162,7 @@ const CallCenter = ({ initial }) => {
                     </div>
                     <div
                       className="col-12"
-                      style={{ padding: "25px 20px 0px" }}
+                      style={{ padding: "20px 20px 10px" }}
                     >
                       <div className="tableContainer mt-0">
                         <table className="callCenter">

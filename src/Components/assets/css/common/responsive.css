@@ -30,13 +30,16 @@
 }
 
 @media (max-device-width: 1750px) {
-
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       }
-      
-
 }
+@media (max-device-width: 1700px) {
+    .tabLink span {
+        display: none;
+      }
+}
+
 @media ( max-width: 1199px){
     .mainContentApp .webrtc_newMessageUi .tabLink {
         padding: 10px 10px;

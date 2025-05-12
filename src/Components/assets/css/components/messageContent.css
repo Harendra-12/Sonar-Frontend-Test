@@ -912,8 +912,8 @@
 }
 
 .webrtc_newMessageUi .tabLink i {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -1549,4 +1549,27 @@
 
 .text-gray {
     color: #8c9097;
+}
+
+.chooseFile {
+    border: 1px dashed #d1d1d1 !important;
+    border-radius: 7px;
+    width: 100%;
+    padding: 10px;
+}
+
+.chooseFile::file-selector-button {
+  margin-left: 100px;
+}
+
+.mainContentApp .tab-content .callDetailsList
+ {
+    overflow: auto;
+    height: calc(100vh - 304px);
+}
+.stickyHeader{
+    position: sticky;
+    top: 0;
+    z-index: 1111;
+    background: var(--me-body-bg2);
 }
