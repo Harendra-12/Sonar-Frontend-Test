@@ -2912,7 +2912,7 @@ function Messages({
                                   <div
                                     className="dropdown-item text-danger"
                                     href="#"
-                                    onClick={() => featureUnderdevelopment()}
+                                    onClick={() => { setRecipient([]); setSelectedChat("") }}
                                   >
                                     Close this chat
                                   </div>
@@ -3078,7 +3078,7 @@ function Messages({
                                 ></img>
                                 <div>
                                   <h5>
-                                    Please select a <b>Agent</b> to start{" "}
+                                    Please select a <b>Chat</b> to start{" "}
                                     <span>a conversation</span>.
                                   </h5>
                                 </div>
@@ -3691,7 +3691,7 @@ function Messages({
                     <div
                       className={`h-100`}
                       style={{
-                        width: isActiveAgentsOpen ? "30%" : "0%",
+                        width: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "30%" : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
                     // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
@@ -3699,7 +3699,7 @@ function Messages({
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
-                          transform: isActiveAgentsOpen
+                          transform: isActiveAgentsOpen && (recipient && recipient.length > 0)
                             ? "translate(3%, 0%)"
                             : "translate(100%, 0%)",
                         }}
@@ -3710,12 +3710,12 @@ function Messages({
                           }
                           className="callDashParkedCallsBtn"
                           style={{
-                            left: isActiveAgentsOpen ? "-15px" : "-5px",
+                            left: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "-15px" : "-5px",
                             transition: "all 0.4s ease-in-out",
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"
+                            className={`fa-solid fa-chevron-${isActiveAgentsOpen && (recipient && recipient.length > 0) ? "right" : "left"
                               }`}
                           />
                         </button>
@@ -3724,15 +3724,17 @@ function Messages({
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
-                          <MessageProfileDetails
-                            recipient={recipient}
-                            messages={
-                              recipient[2] === "groupChat"
-                                ? allMessage?.[recipient[3]]
-                                : allMessage?.[recipient[1]]
-                            }
-                            selectedChat={selectedChat}
-                          />
+                          {recipient && recipient.length > 0 ?
+                            <MessageProfileDetails
+                              recipient={recipient}
+                              messages={
+                                recipient[2] === "groupChat"
+                                  ? allMessage?.[recipient[3]]
+                                  : allMessage?.[recipient[1]]
+                              }
+                              selectedChat={selectedChat}
+                            />
+                            : ""}
                         </div>
                       </div>
                     </div>
