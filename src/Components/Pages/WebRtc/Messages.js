@@ -1499,9 +1499,11 @@ function Messages({
     setLoading(true);
     const apiData = await generalDeleteFunction(`/chatgroups/destroy/${id}`);
     if (apiData.status) {
-      setLoading(false);
       toast.success(apiData.message);
       setGroupRefresh(groupRefresh + 1);
+      setSelectedChat("");
+      setRecipient([]);
+      setLoading(false);
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -1996,8 +1998,8 @@ function Messages({
                                         {item.group_name}
                                         <span className=" text-end mb-0">
                                           <p className="timeAgo">
-                                            {item?.last_message_data
-                                              ? formatRelativeTime(
+                                            {item?.last_message_data?.created_at ?
+                                              formatRelativeTime(
                                                 item?.last_message_data
                                                   ?.created_at
                                               )
@@ -2828,7 +2830,19 @@ function Messages({
                             )}
                             {isVideoOn ? (
                               <button
-                                onClick={() => onSubmit("video", recipient[0])}
+                                // onClick={() => onSubmit("video", recipient[0])}
+                                onClick={() => {
+                                  setMeetingPage("message");
+                                  setToUser(recipient[1]);
+                                  setCalling(true);
+                                  socketSendMessage({
+                                    action: "peercall",
+                                    from: account.id,
+                                    to: recipient[1],
+                                    room_id: `${account.id}-${recipient[1]}`,
+                                    call_type: "audio",
+                                  });
+                                }}
                                 className="clearButton2"
                                 effect="ripple"
                               >
@@ -2876,7 +2890,6 @@ function Messages({
                                     </div>
                                   </li>
                                 )}
-
                                 {selectedChat === "groupChat" && (
                                   <li>
                                     <div
@@ -2897,11 +2910,21 @@ function Messages({
                                   </li>
                                 )}
 
+                                {selectedChat === "groupChat" && groups?.find((group) => group.group_name == recipient[0])?.created_by == account?.id ? <li>
+                                  <div
+                                    className="dropdown-item text-danger"
+                                    href="#"
+                                    onClick={() => handleDeleteGroup(recipient[1])}
+                                  >
+                                    Delete this group
+                                  </div>
+                                </li> : ""}
+
                                 <li>
                                   <div
                                     className="dropdown-item text-danger"
                                     href="#"
-                                    onClick={() => featureUnderdevelopment()}
+                                    onClick={() => { setRecipient([]); setSelectedChat("") }}
                                   >
                                     Close this chat
                                   </div>
@@ -3067,7 +3090,7 @@ function Messages({
                                 ></img>
                                 <div>
                                   <h5>
-                                    Please select a <b>Agent</b> to start{" "}
+                                    Please select a <b>Chat</b> to start{" "}
                                     <span>a conversation</span>.
                                   </h5>
                                 </div>
@@ -3680,7 +3703,7 @@ function Messages({
                     <div
                       className={`h-100`}
                       style={{
-                        width: isActiveAgentsOpen ? "30%" : "0%",
+                        width: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "30%" : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
                     // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
@@ -3688,7 +3711,7 @@ function Messages({
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
-                          transform: isActiveAgentsOpen
+                          transform: isActiveAgentsOpen && (recipient && recipient.length > 0)
                             ? "translate(3%, 0%)"
                             : "translate(100%, 0%)",
                         }}
@@ -3699,12 +3722,12 @@ function Messages({
                           }
                           className="callDashParkedCallsBtn"
                           style={{
-                            left: isActiveAgentsOpen ? "-15px" : "-5px",
+                            left: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "-15px" : "-5px",
                             transition: "all 0.4s ease-in-out",
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"
+                            className={`fa-solid fa-chevron-${isActiveAgentsOpen && (recipient && recipient.length > 0) ? "right" : "left"
                               }`}
                           />
                         </button>
@@ -3713,15 +3736,17 @@ function Messages({
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
-                          <MessageProfileDetails
-                            recipient={recipient}
-                            messages={
-                              recipient[2] === "groupChat"
-                                ? allMessage?.[recipient[3]]
-                                : allMessage?.[recipient[1]]
-                            }
-                            selectedChat={selectedChat}
-                          />
+                          {recipient && recipient.length > 0 ?
+                            <MessageProfileDetails
+                              recipient={recipient}
+                              messages={
+                                recipient[2] === "groupChat"
+                                  ? allMessage?.[recipient[3]]
+                                  : allMessage?.[recipient[1]]
+                              }
+                              selectedChat={selectedChat}
+                            />
+                            : ""}
                         </div>
                       </div>
                     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
 import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
@@ -13,13 +13,15 @@ import { useSelector } from "react-redux";
  */
 function AccessControlAdd() {
   const navigate = useNavigate();
-  const [ipAddress, setIpAddress] = React.useState([""]);
-  const [roles, setRoles] = React.useState([]);
-  const [name, setName] = React.useState("");
-  const [status, setStatus] = React.useState("0");
-  const [description, setDescription] = React.useState("");
-  const [roleId, setRoleId] = React.useState();
-  const [loading, setLoading] = React.useState(true);
+  const [ipAddress, setIpAddress] = useState([""]);
+  const [roles, setRoles] = useState([]);
+  const [groups, setGroups] = useState([])
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState("0");
+  const [description, setDescription] = useState("");
+  const [roleId, setRoleId] = useState();
+  const [selectedGroupId, setSelectedGroupId] = useState();
+  const [loading, setLoading] = useState(true);
   const account = useSelector((state) => state.account);
 
   useEffect(() => {
@@ -33,7 +35,24 @@ function AccessControlAdd() {
         setLoading(false);
       }
     }
+    const fetchGroupData = async () => {
+      try {
+        const apidata = await generalGetFunction(
+          `/groups/all`
+        );
+        if (apidata?.status) {
+          setGroups(apidata.data);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching group dashboard data:", error);
+        setLoading(false);
+      }
+    }
     fetchData();
+    fetchGroupData()
   }, []);
 
   /**
@@ -43,11 +62,13 @@ function AccessControlAdd() {
    */
   async function handleSubmit() {
     if (name === "") {
-      toast.error("Please enter name")
+      toast.error("Please enter name!")
     } else if (roleId === "") {
-      toast.error("Please select group")
+      toast.error("Please select role!")
+    } else if(selectedGroupId === ""){
+      toast.error("Please select group!")
     } else if (ipAddress[0] === "") {
-      toast.error("Please enter IP Address")
+      toast.error("Please enter IP Address!")
     } else {
       setLoading(true);
       const parsedData = {
@@ -55,6 +76,7 @@ function AccessControlAdd() {
         status: status,
         description: description,
         role_id: roleId,
+        group_id: selectedGroupId,
         ip: ipAddress,
         account_id: account.account_id,
       }
@@ -64,10 +86,11 @@ function AccessControlAdd() {
         setLoading(false);
         navigate(-1)
       } else {
-        const values = Object.values(apiData?.errors)
-        values?.map((message) => {
-          toast.error(message[0])
-        })
+        // const values = Object.values(apiData?.errors)
+        // values?.map((message) => {
+        //   toast.error(message[0])
+        // })
+        // toast.error(apiData?.errors?.[0][0])
         setLoading(false);
       }
     }
@@ -180,6 +203,26 @@ function AccessControlAdd() {
                                 roles.map((item, index) => {
                                   return (
                                     <option key={index} value={item.id}>{item.name}</option>
+                                  )
+                                })
+                              }
+                            </select>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12 ">
+                          <div className="formLabel">
+                            <label htmlFor="">Group</label>
+                          </div>
+                          <div className="col-6">
+                            {" "}
+                            <select className="formItem" name="role_id" value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
+                              <option value="" disabled="" selected="">
+                                Choose Group
+                              </option>
+                              {
+                                groups?.map((item, index) => {
+                                  return (
+                                    <option key={index} value={item?.id}>{item?.group_name}</option>
                                   )
                                 })
                               }

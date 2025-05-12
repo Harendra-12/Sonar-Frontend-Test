@@ -16,7 +16,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
 
     const [transcribeLink, setTranscribeLink] = useState();
     const [size, setSize] = useState({ width: 'auto', height: 450 });
-    const [position, setPosition] = useState({ x: 600, y: 300 });
+    const [position, setPosition] = useState({ x: 30, y: 100 });
 
     const hover = Hover.create({
         lineColor: '#ff0000',

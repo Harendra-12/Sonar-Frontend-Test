@@ -28,7 +28,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
     const [customModule, setCustomModule] = useState([]);
-    const ringingState = activeCall.filter((item) => item.b_callstate === "");
+    const ringingState = activeCall.filter((item) => item.b_callstate === "" && item.callstate === "RINGING");
     const [cdrData, setCdrData] = useState([]);
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
@@ -252,7 +252,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                     };
                 });
             });
-        }, 1000);
+        }, 0);
 
         return () => clearInterval(interval);
     }, [ringingState]);
@@ -567,7 +567,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             <th>Started since</th>
                                                                         </tr>
                                                                     </thead>
-
+                                                                    {console.log(updatedData)
+                                                                    }
                                                                     <tbody>
                                                                         {
                                                                             activeCall && updatedData.map((item, key) => {
