@@ -688,7 +688,7 @@ function Call({
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
 
-              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight">
+              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight" style={{overflow: "hidden"}}>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
