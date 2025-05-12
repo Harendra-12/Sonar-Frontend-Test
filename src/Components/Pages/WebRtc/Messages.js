@@ -53,12 +53,15 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
-
+  recipient,
+  setRecipient,
+  selectedChat,
+  setSelectedChat,
   // formatRelativeTime, 
   // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
-  const socketSendMessage = useSelector((state)=>state.socketSendMessage)
+  const socketSendMessage = useSelector((state) => state.socketSendMessage)
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -67,7 +70,7 @@ function Messages({
   const sipProvider = useSIPProvider();
   const groupMessage = useSelector((state) => state.groupMessage);
   const sessions = useSelector((state) => state.sessions);
-  const [recipient, setRecipient] = useState([]);
+  // const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
@@ -79,7 +82,7 @@ function Messages({
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
-  const [selectedChat, setSelectedChat] = useState("singleChat");
+  // const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
   const [allTags, setAllTags] = useState([]);
@@ -403,10 +406,11 @@ function Messages({
     }
   }, [recipient, loadMore, allAgents]);
 
-  const getExtension = (input) => {
+  const getExtension = (input = '') => {
     var parts = input?.split(".");
     return parts[parts?.length - 1]?.toLowerCase();
   };
+
   // Logic to send message
   const checkMessageType = (message) => {
     const isHasExtension = getExtension(message);
@@ -1286,10 +1290,12 @@ function Messages({
       setAddMember(false);
       setGroupChatPopUp(false);
       setGroupSelecedAgents([]);
-      setNewGroupLoader(false);
       setGroupName("");
+      setNewGroupLoader(false);
+      setLoading(false)
     } else {
       setNewGroupLoader(false);
+      setLoading(false)
     }
   }
 
@@ -2431,7 +2437,11 @@ function Messages({
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
-                                data-bell={""}
+                                data-bell={
+                                  unreadMessage[item.group_name]
+                                    ? unreadMessage[item.group_name]
+                                    : ""
+                                }
                                 onClick={() => {
                                   const profile_picture = allAgents?.find(
                                     (data) => data?.id == item?.id
@@ -2449,6 +2459,13 @@ function Messages({
                                   setSelectedgroupUsers(
                                     item.message_groupusers
                                   );
+                                  setUnreadMessage((prevState) => {
+                                    const {
+                                      [item.group_name]: _,
+                                      ...newState
+                                    } = prevState;
+                                    return newState;
+                                  });
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -2471,15 +2488,31 @@ function Messages({
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
-                                        <p className="fs-14 text-gray"><span className="text-info fw-normal">Rams : &nbsp;</span> Happy to be part of this group</p>
+                                        {item?.last_message_data?.message_text &&
+                                          <p className="fs-14 text-gray">
+                                            <span className="text-info fw-normal">
+                                              {allAgents.find((data) => data.id == item?.last_message_data?.user_id)?.username || 'N/A'} : &nbsp;
+                                            </span> {item?.last_message_data?.message_text}
+                                          </p>}
                                       </div>
                                     </div>
                                     <div className=" text-end">
                                       <div className="col text-end d-flex justify-content-end align-items-end flex-column">
                                         {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
-                                        <p className="timeAgo">1h ago</p>
-                                        <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
-                                        {/* <span className="chat-read-icon unread "><i class="fa-solid fa-check-double"></i></span> */}
+                                        <p className="timeAgo">
+                                          {item?.last_message_data?.created_at
+                                            ? formatRelativeTime(
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
+                                            : ""}
+                                        </p>
+                                        {
+                                          unreadMessage[item.group_name]
+                                            ? ""
+                                            :
+                                            <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
+                                        }
                                       </div>
                                       {/* <div className="dropdown">
                                         <button
@@ -2520,33 +2553,6 @@ function Messages({
                             );
                           })
                         )}
-
-
-
-                        <div className="contactListItem align-items-center" data-bell={"1"} >
-                          <div className="row justify-content-start align-items-center">
-                            <div className="col-xl-12 d-flex">
-                              <div
-                                className="profileHolder"
-                                id={"profileOfflineNav"}
-                              >
-                                <i className="fa-light fa-user fs-5"></i>
-                              </div>
-                              <div className="my-auto ms-2 ms-xl-3">
-                                <p className=' justify-content-start ellipsisText'>Test
-                                  {/* <span className="missedCallArrow text-success ms-2"><i className="fa-solid fa-arrow-down-left"></i></span> */}
-                                </p>
-                                <span class="text-success">Hira Typing...</span>
-                              </div>
-                              <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
-                                <p className="timeAgo">1h ago</p>
-                                {/* <span className="chat-read-icon read "><i class="fa-solid fa-check-double"></i></span> */}
-                                <span className="chat-read-icon unreadsms "><i class="fa-solid fa-check-double"></i></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   )}
@@ -2562,7 +2568,7 @@ function Messages({
                   {/* <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
-                  <div className="col h-100 me-2">
+                  <div className="col h-100 me-2" id="messagingBlock">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
@@ -3005,7 +3011,7 @@ function Messages({
                                     ) : (
                                       <div className="messageItem receiver">
                                         <div className="second">
-                                          <div className="d-flex gap-3 ">
+                                          <div className="d-flex">
                                             {item?.profile_picture ? (
                                               <div className="profileHolder">
                                                 <img

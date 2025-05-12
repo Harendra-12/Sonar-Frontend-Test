@@ -144,7 +144,7 @@ const DisplayFile = ({ item, index }) => {
       <div className="displayFile"
         style={{
           width: "200px",
-          height: "79px",
+          height: "50px",
           backgroundColor: "var(--dash-listing-bg)",
           borderRadius: "5px",
           display: "flex",

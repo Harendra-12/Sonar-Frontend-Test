@@ -412,7 +412,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 370px;
+    width: 450px;
     /* min-height: 500px; */
     border-radius: 10px;
     background-color: var(--ele-color);
@@ -599,9 +599,10 @@
     margin-block: 10px;
 }
 
-.addNewContactPopup.popup500{
+.addNewContactPopup.popup500 {
     width: 500px;
 }
+
 .addNewContactPopup ul li i {
     color: var(--ui-accent);
 }

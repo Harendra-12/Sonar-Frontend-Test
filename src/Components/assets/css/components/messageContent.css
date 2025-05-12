@@ -266,6 +266,7 @@
     display: inline-block;
     max-width: 500px;
     min-width: 390px;
+    min-width: 345px;
     min-height: 30px;
     /* padding: 8px 12px; */
     /* border: 1px solid var(--border-color); */
@@ -934,6 +935,8 @@
 .webrtc_newMessageUi {
     background: var(--me-body-bg);
     padding: 10px 10px;
+
+    position: relative;
 }
 
 .webrtc_newMessageUi .messageOverlay {
@@ -1384,7 +1387,7 @@
     border-radius: .3rem;
     background-color: var(--me-video-bg);
     color: #333335;
-    padding: 15px;
+    /* padding: 15px; */
 }
 
 .rightPanel {
@@ -1572,4 +1575,7 @@
     top: 0;
     z-index: 1111;
     background: var(--me-body-bg2);
+}
+.messageMeetingWrap .lk-chat {
+    display: none !important;
 }
