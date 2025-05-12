@@ -2830,7 +2830,19 @@ function Messages({
                             )}
                             {isVideoOn ? (
                               <button
-                                onClick={() => onSubmit("video", recipient[0])}
+                                // onClick={() => onSubmit("video", recipient[0])}
+                                onClick={() => {
+                                  setMeetingPage("message");
+                                  setToUser(recipient[1]);
+                                  setCalling(true);
+                                  socketSendMessage({
+                                    action: "peercall",
+                                    from: account.id,
+                                    to: recipient[1],
+                                    room_id: `${account.id}-${recipient[1]}`,
+                                    call_type: "audio",
+                                  });
+                                }}
                                 className="clearButton2"
                                 effect="ripple"
                               >
