@@ -16,7 +16,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
 
     const [transcribeLink, setTranscribeLink] = useState();
     const [size, setSize] = useState({ width: 'auto', height: 450 });
-    const [position, setPosition] = useState({ x: 780, y: 400 });
+    const [position, setPosition] = useState({ x: 550, y: -200 });
 
     const hover = Hover.create({
         lineColor: '#ff0000',
@@ -223,7 +223,8 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                             }}
                             minWidth={"300px"}
                             maxWidth={"500px"}
-                            style={{ position: "fixed" }}
+                            maxHeight={"450px"}
+                            style={{ position: "fixed", zIndex: '999' }}
                             dragHandleClassName="drag-handle"
                         >
                             <div className="col-12 drag-handle">
