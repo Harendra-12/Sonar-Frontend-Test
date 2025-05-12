@@ -1179,7 +1179,7 @@ function CdrFilterReport({ page }) {
                               </select> */}
                             </div>
                             {filteredKeys.includes("Hangup-Cause") && (
-                              <div className="formRow border-0 pe-xl-0">
+                              <div className="formRow border-0">
                                 <label className="formLabel text-start mb-0 w-100">
                                   Hangup Cause
                                 </label>
@@ -1301,15 +1301,17 @@ function CdrFilterReport({ page }) {
                               className="formItem"
                               type="button"
                               data-bs-toggle="dropdown"
+                              data-bs-auto-close="outside"
+                              style={{ width: '160px' }}
                             >
-                              Column Filters...
+                              Column Filters
                             </button>
                             <ul
                               className="dropdown-menu"
                             >
                               {columnsOptions?.map((option) => (
-                                <li key={option.value}>
-                                  <div className="dropdown-item">
+                                <li key={option.value} >
+                                  <div className="dropdown-item" href="#">
                                     <input
                                       type="checkbox"
                                       checked={selectedColumn.includes(option.value)}
@@ -1339,7 +1341,7 @@ function CdrFilterReport({ page }) {
                                         setFilteredColumnForTable(filteredVallocal);
                                       }}
                                     />
-                                    <span>{option.label}</span>
+                                    <span className="text-dark ms-2">{option.label}</span>
                                   </div>
                                 </li>
                               ))}
