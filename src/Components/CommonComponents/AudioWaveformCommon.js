@@ -223,7 +223,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                             }}
                             minWidth={"300px"}
                             maxWidth={"500px"}
-                            style={{ position: "fixed", inset: 0, margin: 'auto' }}
+                            style={{ position: "fixed" }}
                             dragHandleClassName="drag-handle"
                         >
                             <div className="col-12 drag-handle">
