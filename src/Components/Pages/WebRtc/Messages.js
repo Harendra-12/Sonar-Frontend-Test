@@ -1499,9 +1499,11 @@ function Messages({
     setLoading(true);
     const apiData = await generalDeleteFunction(`/chatgroups/destroy/${id}`);
     if (apiData.status) {
-      setLoading(false);
       toast.success(apiData.message);
       setGroupRefresh(groupRefresh + 1);
+      setSelectedChat("");
+      setRecipient([]);
+      setLoading(false);
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -1996,8 +1998,8 @@ function Messages({
                                         {item.group_name}
                                         <span className=" text-end mb-0">
                                           <p className="timeAgo">
-                                            {item?.last_message_data
-                                              ? formatRelativeTime(
+                                            {item?.last_message_data?.created_at ?
+                                              formatRelativeTime(
                                                 item?.last_message_data
                                                   ?.created_at
                                               )
@@ -2876,7 +2878,6 @@ function Messages({
                                     </div>
                                   </li>
                                 )}
-
                                 {selectedChat === "groupChat" && (
                                   <li>
                                     <div
@@ -2896,6 +2897,16 @@ function Messages({
                                     </div>
                                   </li>
                                 )}
+
+                                {selectedChat === "groupChat" && groups?.find((group) => group.group_name == recipient[0])?.created_by == account?.id ? <li>
+                                  <div
+                                    className="dropdown-item text-danger"
+                                    href="#"
+                                    onClick={() => handleDeleteGroup(recipient[1])}
+                                  >
+                                    Delete this group
+                                  </div>
+                                </li> : ""}
 
                                 <li>
                                   <div
