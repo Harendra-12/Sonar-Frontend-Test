@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -7,24 +7,33 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 
 function AccessControl() {
-  const [accessControlList, setAccessControlList] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [deletePopup, setDeletePopup] = React.useState(false);
-  const [deleteId, setDeleteId] = React.useState("");
+  const [accessControlList, setAccessControlList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deletePopup, setDeletePopup] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    async function fetchData() {
+  const fetchData = async (shouldLoad) => {
+    if (shouldLoad) {
       setLoading(true);
-      const apiData = await generalGetFunction("/ip-whitelists")
-      if (apiData.status) {
-        setAccessControlList(apiData.data)
-        setLoading(false)
-      } else {
-        setLoading(false)
-      }
     }
-    fetchData()
+
+    const apiData = await generalGetFunction("/ip-whitelists")
+    if (apiData.status) {
+      setAccessControlList(apiData.data)
+      setLoading(false)
+      setRefreshState(false)
+    } else {
+      setLoading(false)
+      setRefreshState(false)
+    }
+  }
+
+  useEffect(() => {
+    const shouldLoad = true;
+    setRefreshState(true)
+    fetchData(shouldLoad)
   }, [])
 
   async function handleDelete(id) {
@@ -43,6 +52,13 @@ function AccessControl() {
       setLoading(false);
     }
   }
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    fetchData(shouldLoad)
+  }
+
   return (
     <>
       <div className="mainContent">
@@ -57,8 +73,19 @@ function AccessControl() {
                       <div className="heading">
                         <div className="content">
                           <h4>
-                            Access Control
-                            <button className="clearButton">
+                            Access Control {" "}
+                            <button
+                              className="clearButton"
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
+                            >
+                              <i
+                                className={
+                                  refreshState
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
                             </button>
                           </h4>
                           <p>You can see all list of access control</p>
@@ -118,8 +145,8 @@ function AccessControl() {
                                                 {item.description}
                                               </td>
                                               <td>{item?.role?.name}</td>
-                                              <td onClick={() =>navigate(
-                                                `/access-control-list-edit?id=${item.id}`,{state:item}
+                                              <td onClick={() => navigate(
+                                                `/access-control-list-edit?id=${item.id}`, { state: item }
                                               )}>
                                                 <button className="tableButton edit mx-auto">
                                                   <i className="fa-solid fa-pencil" />

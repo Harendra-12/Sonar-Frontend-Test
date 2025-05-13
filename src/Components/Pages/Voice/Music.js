@@ -28,6 +28,7 @@ function Music() {
   const [newMusicType, setNewMusicType] = useState("hold");
   const [deletePopup, setDeletePopup] = useState(false);
   const [refresh, setRefresh] = useState(1);
+  const [refreshState, setRefreshState] = useState(false)
   const [deleteId, setDeleteId] = useState("");
   const navigate = useNavigate();
   const musicAll = useSelector((state) => state.musicAll);
@@ -41,36 +42,57 @@ function Music() {
   const [showDropDown, setShowDropdown] = useState(false);
   const thisAudioRef = useRef(null);
 
+  async function getData(haveMusilAll) {
+    const apiData = await generalGetFunction(`/sound/all`);
+    if (apiData?.status) {
+      setLoading(false);
+      setRefreshState(false)
+      setMusic(apiData.data);
+      dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
+    } else {
+      if (haveMusilAll) {
+        navigate(-1);
+        toast.error("Couldnt load sounds!");
+      } else {
+        setLoading(false);
+        navigate(-1);
+      }
+      setRefreshState(false)
+    }
+  }
+
   // Get all previous music data
   useEffect(() => {
     if (musicAll?.length !== 0) {
       setLoading(false);
       setMusic(musicAll);
-      async function getData() {
-        const apiData = await generalGetFunction(`/sound/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          setMusic(apiData.data);
-          dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
-        } else {
-          navigate(-1);
-          toast.error("Couldnt load sounds!");
-        }
-      }
-      getData();
+      // async function getData() {
+      //   const apiData = await generalGetFunction(`/sound/all`);
+      //   if (apiData?.status) {
+      //     setLoading(false);
+      //     setMusic(apiData.data);
+      //     dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
+      //   } else {
+      //     navigate(-1);
+      //     toast.error("Couldnt load sounds!");
+      //   }
+      // }
+      const isFromMusic = true
+      getData(isFromMusic);
     } else {
-      async function getData() {
-        const apiData = await generalGetFunction(`/sound/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          setMusic(apiData.data);
-          dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
-      getData();
+      // async function getData() {
+      //   const apiData = await generalGetFunction(`/sound/all`);
+      //   if (apiData?.status) {
+      //     setLoading(false);
+      //     setMusic(apiData.data);
+      //     dispatch({ type: "SET_MUSICALL", musicAll: apiData.data });
+      //   } else {
+      //     setLoading(false);
+      //     navigate(-1);
+      //   }
+      // }
+      const isFromMusic = false
+      getData(isFromMusic);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
@@ -167,6 +189,18 @@ function Music() {
     }
   };
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    if (musicAll?.length !== 0) {
+      const isFromMusic = true
+      getData(isFromMusic);
+    }
+    else {
+      const isFromMusic = false
+      getData(isFromMusic);
+    }
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -218,7 +252,21 @@ function Music() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Music Listing</h4>
+                        <h4>Music Listing {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>Add a new sound</p>
                       </div>
                       <div className="buttonGroup">
@@ -737,70 +785,70 @@ function Music() {
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xl-4 col-md-5">
                     {/* <div className="col-2 px-0"> */}
-                      <div className="iconWrapper mb-2">
-                        <i className="fa-duotone fa-triangle-exclamation fs-1"></i>
-                      </div>
+                    <div className="iconWrapper mb-2">
+                      <i className="fa-duotone fa-triangle-exclamation fs-1"></i>
+                    </div>
                     {/* </div> */}
                     {/* <div className="col-10 ps-0"> */}
-                      <h4 className="text-center text-orange">Note</h4>
-                      <p className="text-center">This will change the name of the music file</p>
-                      <div className="row g-2">
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            className="mb-2 formItem"
-                            value={selectedMusicName}
-                            onChange={(e) =>
-                              setSelectedMusicName(e.target.value)
-                            }
-                          ></input>
-                        </div>
-                        <div className="col-12 mb-2">
-                          <select
-                            name="music"
-                            className="formItem"
-                            value={selecetdMusicType}
-                            onChange={(e) =>
-                              setSelectedMusicType(e.target.value)
-                            }
-                          >
-                            <option value="hold">Hold</option>
-                            <option value="busy">Busy</option>
-                            <option value="ringback">Ringback</option>
-                            <option value="announcement">Announcement</option>
-                            <option value="ivr"> IVR</option>
-                          </select>
-                        </div>
+                    <h4 className="text-center text-orange">Note</h4>
+                    <p className="text-center">This will change the name of the music file</p>
+                    <div className="row g-2">
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="mb-2 formItem"
+                          value={selectedMusicName}
+                          onChange={(e) =>
+                            setSelectedMusicName(e.target.value)
+                          }
+                        ></input>
                       </div>
-                      <div className="d-flex justify-content-between mt-3">
-                        <button
-                          className="panelButton m-0"
-                          onClick={() => {
-                            setMusicEditPopup(false);
-                            handleEditMusic();
-                          }}
+                      <div className="col-12 mb-2">
+                        <select
+                          name="music"
+                          className="formItem"
+                          value={selecetdMusicType}
+                          onChange={(e) =>
+                            setSelectedMusicType(e.target.value)
+                          }
                         >
-                          <span className="text">Confirm</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        </button>
-                        <button
-                          className="panelButton gray m-0 float-end"
-                          onClick={() => {
-                            setMusicEditPopup(false);
-                          }}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-xmark"></i>
-                          </span>
-                        </button>
+                          <option value="hold">Hold</option>
+                          <option value="busy">Busy</option>
+                          <option value="ringback">Ringback</option>
+                          <option value="announcement">Announcement</option>
+                          <option value="ivr"> IVR</option>
+                        </select>
                       </div>
+                    </div>
+                    <div className="d-flex justify-content-between mt-3">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          setMusicEditPopup(false);
+                          handleEditMusic();
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setMusicEditPopup(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             // </div>
           ) : (
             ""

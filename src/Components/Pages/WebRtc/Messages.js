@@ -91,6 +91,7 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [messageRefresh, setMessageRefresh] = useState(false)
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
   const [isAssignmentClicked, setIsAssignmentClicked] = useState(false);
@@ -240,54 +241,61 @@ function Messages({
       observer.disconnect();
     };
   }, [allMessage, recipient]);
-  useEffect(() => {
-    setLoading(true);
-    async function getData() {
-      const apiData = await generalGetFunction(`/message/contacts`);
-      const tagData = await generalGetFunction("/tags/all");
 
-      if (apiData?.status && apiData.data.length > 0) {
-        const filteredData = apiData?.data?.sort(
-          (a, b) =>
-            new Date(b?.last_message_data?.created_at) -
-            new Date(a?.last_message_data?.created_at)
-        );
-        const updatedFilteredData = filteredData?.map((data) => ({
-          ...data,
-          last_message_data: {
-            ...data?.last_message_data,
-            message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
-              ? data?.last_message_data?.message_text
-              : checkMessageType(data?.last_message_data?.message_text)
-          }
-        }));
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction(`/message/contacts`);
+    const tagData = await generalGetFunction("/tags/all");
 
-        setContact(updatedFilteredData);
-        if (!extensionFromCdrMessage) {
-          const profile_img = allAgents?.find(
-            (data) => data?.id == apiData?.data[0]?.id
-          )?.profile_picture;
-          if (!isAssignmentClicked)
-            setRecipient([
-              apiData.data[0].extension,
-              apiData.data[0].id,
-              "singleChat",
-              apiData?.data[0]?.name,
-              apiData?.data[0]?.email,
-              profile_img,
-            ]);
-          setSelectedChat("singleChat");
+    if (apiData?.status && apiData.data.length > 0) {
+      const filteredData = apiData?.data?.sort(
+        (a, b) =>
+          new Date(b?.last_message_data?.created_at) -
+          new Date(a?.last_message_data?.created_at)
+      );
+      const updatedFilteredData = filteredData?.map((data) => ({
+        ...data,
+        last_message_data: {
+          ...data?.last_message_data,
+          message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
+            ? data?.last_message_data?.message_text
+            : checkMessageType(data?.last_message_data?.message_text)
         }
-        setLoading(false);
-      }
-      if (tagData?.status) {
-        setAllTags(tagData.data);
-        setLoading(false);
+      }));
+
+      setContact(updatedFilteredData);
+      if (!extensionFromCdrMessage) {
+        const profile_img = allAgents?.find(
+          (data) => data?.id == apiData?.data[0]?.id
+        )?.profile_picture;
+        if (!isAssignmentClicked)
+          setRecipient([
+            apiData.data[0].extension,
+            apiData.data[0].id,
+            "singleChat",
+            apiData?.data[0]?.name,
+            apiData?.data[0]?.email,
+            profile_img,
+          ]);
+        setSelectedChat("singleChat");
       }
       setLoading(false);
+      setMessageRefresh(false)
     }
-    getData();
-  }, [contactRefresh, allAgents?.length == 0]);
+    if (tagData?.status) {
+      setAllTags(tagData.data);
+      setLoading(false);
+      setMessageRefresh(false)
+    }
+    setLoading(false);
+    setMessageRefresh(false)
+  }
+
+  useEffect(() => {
+    setMessageRefresh(true)
+    const shouldLoad = true;
+    getData(shouldLoad);
+  }, [allAgents?.length == 0]);
 
   // useEffect(() => {
   //   setContactRefresh(contactRefresh + 1)
@@ -1552,6 +1560,11 @@ function Messages({
     }
   };
 
+  const handleRefresh = () => {
+    const shouldLoad = false;
+    getData(shouldLoad);
+    setMessageRefresh(true)
+  }
   return (
     <>
       {addNewTagPopUp && (
@@ -1626,9 +1639,9 @@ function Messages({
           <div className="w-100 p-0">
             <HeaderApp
               title={"Messages"}
-              loading={loading}
-              setLoading={setLoading}
-              refreshApi={() => setContactRefresh(contactRefresh + 1)}
+              loading={messageRefresh}
+              setLoading={setMessageRefresh}
+              refreshApi={handleRefresh}
             />
           </div>
           <div className="container-fluid ">

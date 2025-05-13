@@ -25,25 +25,31 @@ const MailSettings = ({ style }) => {
   const [mailSettingAddToggle, setMailSettingAddToggle] = useState(false);
   const [mailSettingsEditToggle, setMailSettingsEditToggle] = useState(false);
   const [mailDataRefresh, setMailDataRefresh] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [selectedMailSettingToEdit, setSelectedMailSettingToEdit] =
     useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const result = await generalGetFunction("/mail-setting/all");
-      if (result?.status) {
-        setMailSettings(result.data);
-        setLoading(false);
-      } else {
-        setLoading(false);
-        if (result.response.status === 403) {
-          setNoPermission(true);
-        }
-        // navigate("/");
-      }
-    };
 
-    fetchData();
+  const fetchData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const result = await generalGetFunction("/mail-setting/all");
+    if (result?.status) {
+      setMailSettings(result.data);
+      setLoading(false);
+      setRefreshState(false)
+    } else {
+      setLoading(false);
+      setRefreshState(false)
+      if (result.response.status === 403) {
+        setNoPermission(true);
+      }
+      // navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    setRefreshState(true)
+    const shouldLoad = true;
+    fetchData(shouldLoad);
   }, [mailDataRefresh]);
 
   const handleSettingsDelete = async () => {
@@ -69,6 +75,12 @@ const MailSettings = ({ style }) => {
     setMailSettingAddToggle(false);
     setSelectedMailSettingToEdit(id);
   };
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    fetchData(shouldLoad);
+  }
 
   return (
     <>
@@ -96,7 +108,21 @@ const MailSettings = ({ style }) => {
                       <div className="col-12">
                         <div className="heading">
                           <div className="content">
-                            <h4>Mail Settings</h4>
+                            <h4>Mail Settings {" "}
+                              <button
+                                className="clearButton"
+                                onClick={handleRefreshBtnClicked}
+                                disabled={refreshState}
+                              >
+                                <i
+                                  className={
+                                    refreshState
+                                      ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                      : "fa-regular fa-arrows-rotate fs-5"
+                                  }
+                                ></i>
+                              </button>
+                            </h4>
                             <p>You can configure your SMTP settings here</p>
                           </div>
                           <div className="buttonGroup">
@@ -115,11 +141,11 @@ const MailSettings = ({ style }) => {
                             </button>
                             {mailSettings && !mailSettings.length > 0 && (
                               <>
-                                {  checkViewSidebar(
-                                                "MailSetting",
-                                                slugPermissions,
-                                                account?.permissions,"add"
-                                              ) ? (
+                                {checkViewSidebar(
+                                  "MailSetting",
+                                  slugPermissions,
+                                  account?.permissions, "add"
+                                ) ? (
                                   <button
                                     effect="ripple"
                                     className="panelButton"

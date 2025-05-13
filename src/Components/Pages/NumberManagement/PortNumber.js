@@ -24,45 +24,56 @@ function PortNumber() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
   const slugPermissions = useSelector((state) => state?.permissions);
+
+  async function getData(shouldLoad) {
+    const apiData = await generalGetFunction(`/ports/all`);
+    if (apiData?.status) {
+      setLoading(false);
+      setRefreshState(false)
+      setPortData(apiData.data);
+      dispatch({
+        type: "SET_PORTSALL",
+        portsAll: apiData.data,
+      });
+    } else {
+      setLoading(false);
+      setRefreshState(false)
+      if (shouldLoad) {
+        if (apiData.response.status === 403) {
+          setNoPermissionToRead(true);
+        }
+      } else {
+        navigate(-1);
+      }
+    }
+  }
+
   useEffect(() => {
+    setRefreshState(true)
     if (portsAll) {
       // setLoading(false);
       setPortData(portsAll);
-      async function getData() {
-        const apiData = await generalGetFunction(`/ports/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          setPortData(apiData.data);
-          dispatch({
-            type: "SET_PORTSALL",
-            portsAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          // navigate(-1);
-          if (apiData.response.status === 403) {
-            setNoPermissionToRead(true);
-          }
-        }
-      }
-      getData();
+      const shouldLoad = true;
+      getData(shouldLoad);
     } else {
-      async function getData() {
-        const apiData = await generalGetFunction(`/ports/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          setPortData(apiData.data);
-          dispatch({
-            type: "SET_PORTSALL",
-            portsAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
-      getData();
+      // async function getData() {
+      //   const apiData = await generalGetFunction(`/ports/all`);
+      //   if (apiData?.status) {
+      //     setLoading(false);
+      //     setPortData(apiData.data);
+      //     dispatch({
+      //       type: "SET_PORTSALL",
+      //       portsAll: apiData.data,
+      //     });
+      //   } else {
+      //     setLoading(false);
+      //     navigate(-1);
+      //   }
+      // }
+      const shouldLoad = false
+      getData(shouldLoad);
     }
   }, []);
 
@@ -85,6 +96,10 @@ function PortNumber() {
       // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   };
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+  }
 
   return (
     <>
@@ -130,7 +145,21 @@ function PortNumber() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Port Number</h4>
+                          <h4>Port Number {" "}
+                            <button
+                              className="clearButton"
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
+                            >
+                              <i
+                                className={
+                                  refreshState
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
+                            </button>
+                          </h4>
                           <p>Port a number</p>
                         </div>
                         <div className="buttonGroup">
@@ -147,10 +176,10 @@ function PortNumber() {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {  checkViewSidebar(
+                          {checkViewSidebar(
                             "Port",
                             slugPermissions,
-                            account?.permissions,"add"
+                            account?.permissions, "add"
                           ) ? (
                             <Link
                               to="/port-number-add"
@@ -383,18 +412,18 @@ function PortNumber() {
                             <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
-                      
+
                         <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopup(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </button>
+                          className="panelButton gray m-0 float-end"
+                          onClick={() => {
+                            setPopup(false);
+                          }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>

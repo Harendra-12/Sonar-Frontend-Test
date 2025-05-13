@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Ticket() {
   const [isOpen, setIsOpen] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate();
   const handleSubmit = () => {
     navigate('/view-massage')
@@ -17,6 +18,9 @@ function Ticket() {
     setIsOpen(false);
   };
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(false)
+  }
 
   return (
     <>
@@ -31,7 +35,21 @@ function Ticket() {
                     <div className="col-12">
                       <div className="heading mb-0">
                         <div className="content">
-                          <h4>Ticket</h4>
+                          <h4>Ticket {" "}
+                            <button
+                              className="clearButton"
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
+                            >
+                              <i
+                                className={
+                                  refreshState
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
+                            </button>
+                          </h4>
                           <p>You can Create ticket of users </p>
                         </div>
                         <div className="buttonGroup">

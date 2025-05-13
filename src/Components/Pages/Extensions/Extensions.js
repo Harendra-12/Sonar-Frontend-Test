@@ -32,6 +32,7 @@ const Extensions = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [onlineFilter, setonlineFilter] = useState("all")
   const [searchValue, setSearchValue] = useState("");
+  const [refreshState, setRefreshState] = useState(false)
   const showKeys = [
     "extension",
     "user",
@@ -94,31 +95,63 @@ const Extensions = () => {
     }));
 
   // Getting list of all users by various filters like page number, items per page and search keys
+  async function getData(shouldLoad) {
+    if (shouldLoad) {
+      setLoading(true);
+    }
+    if (account && account.account_id) {
+      const apiData = await generalGetFunction(
+        `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+      );
+      if (apiData?.status) {
+        setLoading(false);
+        setRefreshState(false)
+        setExtension(apiData.data);
+        dispatch({
+          type: "SET_EXTENSIONBYACCOUNT",
+          extensionByAccount: apiData.data,
+        });
+        setLoading(false);
+        setRefreshState(false)
+      } else {
+        if (apiData.response.status === 403) {
+          setNoPermissionToRead(true);
+        }
+        setLoading(false);
+        setRefreshState(false)
+      }
+    } else {
+      setLoading(false);
+      setRefreshState(false)
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
+    setRefreshState(true)
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
       if (pageNumber === 1 && itemsPerPage === 10) {
         // setLoading(false);
       }
       // setLoading(false);
-      async function getData() {
-        if (account && account.account_id) {
-          const apiData = await generalGetFunction(
-            `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
-          );
-          if (apiData?.status) {
-            setExtension(apiData.data);
-            dispatch({
-              type: "SET_EXTENSIONBYACCOUNT",
-              extensionByAccount: apiData.data,
-            });
-            setLoading(false);
-          }
-        } else {
-          setLoading(false);
-        }
-      }
+      // async function getData() {
+      //   if (account && account.account_id) {
+      //     const apiData = await generalGetFunction(
+      //       `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+      //     );
+      //     if (apiData?.status) {
+      //       setExtension(apiData.data);
+      //       dispatch({
+      //         type: "SET_EXTENSIONBYACCOUNT",
+      //         extensionByAccount: apiData.data,
+      //       });
+      //       setLoading(false);
+      //     }
+      //   } else {
+      //     setLoading(false);
+      //   }
+      // }
       // if (searchValue.trim().length === 0) {
       //   getData();
       // } else {
@@ -127,32 +160,33 @@ const Extensions = () => {
       //   }, 1000);
       //   return () => clearTimeout(timer);
       // }
-      getData()
+      const shouldLoad = false
+      getData(shouldLoad)
     } else {
-      async function getData() {
-        setLoading(true);
-        if (account && account.account_id) {
-          const apiData = await generalGetFunction(
-            `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
-          );
-          if (apiData?.status) {
-            setLoading(false);
-            setExtension(apiData.data);
-            dispatch({
-              type: "SET_EXTENSIONBYACCOUNT",
-              extensionByAccount: apiData.data,
-            });
-            setLoading(false);
-          } else {
-            if (apiData.response.status === 403) {
-              setNoPermissionToRead(true);
-            }
-            setLoading(false);
-          }
-        } else {
-          setLoading(false);
-        }
-      }
+      // async function getData() {
+      //   setLoading(true);
+      //   if (account && account.account_id) {
+      //     const apiData = await generalGetFunction(
+      //       `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+      //     );
+      //     if (apiData?.status) {
+      //       setLoading(false);
+      //       setExtension(apiData.data);
+      //       dispatch({
+      //         type: "SET_EXTENSIONBYACCOUNT",
+      //         extensionByAccount: apiData.data,
+      //       });
+      //       setLoading(false);
+      //     } else {
+      //       if (apiData.response.status === 403) {
+      //         setNoPermissionToRead(true);
+      //       }
+      //       setLoading(false);
+      //     }
+      //   } else {
+      //     setLoading(false);
+      //   }
+      // }
       // if (searchValue.trim().length === 0) {
       //   getData();
       // } else {
@@ -161,7 +195,8 @@ const Extensions = () => {
       //   }, 1000);
       //   return () => clearTimeout(timer);
       // }
-      getData()
+      const shouldLoad = true;
+      getData(shouldLoad)
     }
   }, [navigate, pageNumber, account, itemsPerPage, debouncedSearchTerm, onlineFilter]);
 
@@ -184,6 +219,12 @@ const Extensions = () => {
     }
   }, [onlineExtension])
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getData(shouldLoad)
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -196,7 +237,23 @@ const Extensions = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Extension List</h4>
+                        <h4>
+                          Extension List {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            >
+                            </i>
+                          </button>
+                        </h4>
                         <p>You can see the list of extensions</p>
                       </div>
                       <div className="buttonGroup">

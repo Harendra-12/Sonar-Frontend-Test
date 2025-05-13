@@ -10,6 +10,7 @@ import CircularLoader from '../../Loader/CircularLoader';
 
 function Meeting() {
     const [refreshState, setRefreshState] = useState(0);
+    const [refreshBooleanState, setRefreshBooleanState] = useState(false)
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [conference, setConference] = useState([]);
@@ -28,18 +29,23 @@ function Meeting() {
     const [pageLoading, setPageLoading] = useState(false);
     const [preSignedUrl, setPreSignedUrl] = useState('');
 
-    useEffect(() => {
-        async function getData() {
-            setLoading(true);
-            const apiData = await generalGetFunction("/conference/all");
-            if (apiData?.status) {
-                setLoading(false);
-                setConference(apiData.data);
-            } else {
-                setLoading(false);
-            }
+    const getData = async (shouldLoad) => {
+        if (shouldLoad) setLoading(true);
+        const apiData = await generalGetFunction("/conference/all");
+        if (apiData?.status) {
+            setLoading(false);
+            setRefreshBooleanState(false)
+            setConference(apiData.data);
+        } else {
+            setLoading(false);
+            setRefreshBooleanState(false)
         }
-        getData()
+    }
+
+    useEffect(() => {
+        setRefreshBooleanState(true)
+        const shouldLoad = true;
+        getData(shouldLoad)
     }, [refreshState])
 
     async function handleDelete() {
@@ -120,6 +126,12 @@ function Meeting() {
             console.log(err);
         }
     }
+
+    const handleRefreshBtnClicked = () => {
+        setRefreshBooleanState(true)
+        const shouldLoad = false;
+        getData(shouldLoad)
+    }
     return (
         <>
             {pageLoading && <CircularLoader />}
@@ -136,9 +148,12 @@ function Meeting() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>Meeting Rooms
-                                                        <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
+                                                        <button className="clearButton"
+                                                            onClick={handleRefreshBtnClicked}
+                                                            disabled={refreshBooleanState}
+                                                        >
                                                             <i className={
-                                                                loading
+                                                                refreshBooleanState
                                                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                                                     : "fa-regular fa-arrows-rotate fs-5"
                                                             }></i>

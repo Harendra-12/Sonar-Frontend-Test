@@ -68,7 +68,8 @@ const NewGetDid = () => {
     } = useForm();
 
     useEffect(() => {
-        fetchAllCountry();
+        const shouldLoad = true;
+        fetchAllCountry(shouldLoad);
     }, [])
 
     // Fetch all countries

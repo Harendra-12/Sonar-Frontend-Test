@@ -28,6 +28,7 @@ function DidListing({ page }) {
   const [usages, setUsages] = useState("");
   const [id, setId] = useState("");
   const [refreshDid, setRefreshDid] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [addNew, setAddNew] = useState(false);
@@ -39,6 +40,7 @@ function DidListing({ page }) {
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
   useEffect(() => {
+    setRefreshState(true)
     if (didAll) {
       setLoading(true);
       if (page === "number") {
@@ -48,19 +50,23 @@ function DidListing({ page }) {
       } else if (page === "dialer") {
         setDid(didAll.filter((item) => item.usage === "dialer"));
       }
-        getData();
+      const shouldLoad = true;
+      getData(shouldLoad);
     } else {
-        getData();
+      const shouldLoad = true;
+      getData(shouldLoad);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshDid, page, debouncedSearchTerm]);
 
   // Fetch ALL DID
-  async function getData() {
-    setLoading(true);
+  async function getData(shouldLoad) {
+    if (shouldLoad)
+      setLoading(true);
     const apiData = await generalGetFunction(`/did/all?search=${searchQuery}`);
     if (apiData?.status) {
       setLoading(false);
+      setRefreshState(false)
       if (page === "number") {
         setDid(apiData.data);
       } else if (page === "pbx") {
@@ -74,6 +80,7 @@ function DidListing({ page }) {
       });
     } else {
       setLoading(false);
+      setRefreshState(false)
       navigate(-1);
     }
   }
@@ -176,6 +183,12 @@ function DidListing({ page }) {
   //   return () => clearTimeout(delay);
   // }, [searchQuery]);
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getData(shouldLoad)
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -193,11 +206,15 @@ function DidListing({ page }) {
                           All DID
                           <button
                             className="clearButton"
-                            onClick={() => setRefreshDid(refreshDid + 1)}
-                            disabled={loading}
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
                           >
                             <i
-                              class={`fa-regular fa-arrows-rotate fs-5 ${loading ? "fa-spin" : ""
+                              class={
+                                `fa-regular fa-arrows-rotate fs-5 
+                                ${refreshState ?
+                                  "fa-spin" :
+                                  ""
                                 }`}
                             ></i>
                           </button>
@@ -762,9 +779,9 @@ function DidListing({ page }) {
                                                     >
                                                       <i
                                                         className={`fa-regular fa-${item.configuration !==
-                                                            null
-                                                            ? "gear"
-                                                            : "triangle-exclamation"
+                                                          null
+                                                          ? "gear"
+                                                          : "triangle-exclamation"
                                                           } me-2`}
                                                       ></i>{" "}
                                                       {item.configuration !==
