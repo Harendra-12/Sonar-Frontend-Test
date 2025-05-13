@@ -669,7 +669,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                               >
                                 <div
                                   className="callDetailsList tableContainer mt-0"
-                                  style={{ height: "calc(100vh - 340px)" }}
+                                  style={{ height: "calc(100vh - 320px)" }}
                                 >
                                   <table>
                                     <thead>

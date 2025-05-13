@@ -1951,7 +1951,7 @@ input[type=number] {
 }
 
 .mail-info-footer {
-    box-shadow: rgba(0, 0, 0, 0.1) -1px -8px 16px 0px;
+    box-shadow: rgba(0, 0, 0, 0.04) 2px -5px 13px 0px;
 }
 
 .text_gray {
@@ -2363,7 +2363,8 @@ input[type=number] {
     position: absolute;
     top: 11px;
     right: 42px;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(239, 239, 239, 0.57);
+    color: #000;
     border-radius: calc(var(--lk-border-radius) / 2);
     opacity: 0;
     transition: opacity .2s ease-in-out;

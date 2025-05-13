@@ -360,7 +360,7 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                     <div>
                         <div
                             style={{
-                                color: 'rgb(194, 194, 194)',
+                                color: '#000',
                                 fontSize: '14px',
                                 fontWeight: '600',
                                 marginBottom: '16px',

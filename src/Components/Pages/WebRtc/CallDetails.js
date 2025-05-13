@@ -199,7 +199,7 @@ function CallDetails({
   };
   return (
     <>
-      <div className="messageOverlay">
+      <div className="messageOverlay ">
         <div className="contactHeader border-bottom-0">
           <div>
             <h4 className="mb-0">
@@ -329,7 +329,7 @@ function CallDetails({
           )}
         </div>
       </div> */}
-      <div className="mt-2">
+      <div className="mt-2 contentHeight">
         {/* <nav>
           <div className="nav nav-tabs" id="nav-tab" role="tablist" style={{ borderBottom: '1px solid #ddd' }}>
             <button
@@ -470,7 +470,7 @@ function CallDetails({
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: " 20px 20px 10px" }}>
+                  <div className="col-12" style={{ padding: " 10px 10px 0px" }}>
                     <div className="callDetailsList tableContainer mt-0">
                       <table>
                         <thead>

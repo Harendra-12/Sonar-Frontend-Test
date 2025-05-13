@@ -425,8 +425,9 @@ function EFax({ did }) {
                             </div>
                           </div>
                         </div>
-                        <div className="w-100 p-3 rounded-start-0 rounded-end-0" style={{
-                          border: "1px solid var(--me-border1)",
+                        <div className="w-100 p-3 rounded-start-0 rounded-end-0"
+                         style={{
+                          // border: "1px solid var(--me-border1)",
                         }} >
                           <div
                             className="col-12"

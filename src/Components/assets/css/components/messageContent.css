@@ -1135,7 +1135,7 @@
 }
 
 .webrtc_newMessageUi .leftside_listBar {
-    height: calc(100vh - 95px);
+    height: calc(100vh - 82px);
     background: var(--me-body-bg2);
 }
 
@@ -1187,7 +1187,7 @@
 }
 
 .newMessageBoxUi {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 82px);
 }
 
 .newMessageBoxUi .messageOverlay .messageContent {
