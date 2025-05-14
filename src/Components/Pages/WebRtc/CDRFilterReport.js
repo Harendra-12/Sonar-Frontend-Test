@@ -704,15 +704,32 @@ function CdrFilterReport({ page }) {
       originKeys.push({ key: "Duplicate", formattedKey: "Duplicate" })
       setSelectedColumn(prev => [...prev, "Block", "note", "Duplicate"])
     }
-
-
+    const indexOfOriginKey = originKeys?.findIndex((data) => data?.key == "recording_path")
+    if (indexOfOriginKey !== -1) {
+      let removedItem = originKeys?.splice(indexOfOriginKey, 1)[0];
+      let insertIndex = originKeys?.length - 3;
+      originKeys.splice(insertIndex, 0, removedItem);
+    }
     setFilteredColumnForTable(originKeys)
     setOriginalColumnSequenceForTable(originKeys)
+    let columnIndex = columns?.findIndex(val => val === "Recording");
+    if (columnIndex !== -1) {
+      let removedItem = columns?.splice(columnIndex, 1)[0];
+      let insertIndex = columns?.length - 3;
+      columns?.splice(insertIndex, 0, removedItem);
+    }
     setFilteredColumns(columns)
     const optionsCol = columns?.map((data, index) => ({
       value: data,
       label: data
     }))
+    optionsCol.shift()
+    const index = optionsCol?.findIndex((data) => data?.value == "Recording")
+    if (index !== -1) {
+      let removedItem = optionsCol?.splice(index, 1)[0];
+      let insertIndex = optionsCol?.length - 3;
+      optionsCol?.splice(insertIndex, 0, removedItem);
+    }
     setColumnsOptions(optionsCol)
     setColumnOriginalSequence(columns)
   }, [showKeys, cdr?.data?.length])
@@ -1358,14 +1375,12 @@ function CdrFilterReport({ page }) {
                                         const filteredArrayLocal = columnOriginalSequence?.filter((value) =>
                                           updatedValues.includes(value)
                                         );
-
                                         setSelectedColumn(updatedValues);
                                         setFilteredColumns(filteredArrayLocal);
 
                                         const filteredVallocal = originalColumnSequenceForTable?.filter(
                                           (data) => updatedValues.includes(data?.formattedKey)
                                         );
-
                                         setFilteredColumnForTable(filteredVallocal);
                                       }}
                                     />
@@ -1651,88 +1666,96 @@ function CdrFilterReport({ page }) {
                                           })}
                                           {page !== "billing" && (
                                             <>
-                                              <td>
-                                                {item["Call-Direction"] ===
-                                                  "inbound" ||
-                                                  item["Call-Direction"] ===
-                                                  "outbound" ? (
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Block") &&
+                                                <td>
+                                                  {item["Call-Direction"] ===
+                                                    "inbound" ||
+                                                    item["Call-Direction"] ===
+                                                    "outbound" ? (
+                                                    <button
+                                                      disabled={isBlocked}
+                                                      effect="ripple"
+                                                      className={`tableButton delete ${isBlocked
+                                                        ? "bg-danger text-white"
+                                                        : ""
+                                                        } ms-0`}
+                                                      style={{
+                                                        height: "34px",
+                                                        width: "34px",
+                                                      }}
+                                                      onClick={() => {
+                                                        setSelectedNumberToBlock(
+                                                          item[
+                                                            "Call-Direction"
+                                                          ] === "inbound"
+                                                            ? item[
+                                                            "Caller-Caller-ID-Number"
+                                                            ]
+                                                            : item[
+                                                              "Call-Direction"
+                                                            ] === "outbound"
+                                                              ? item[
+                                                              "Caller-Callee-ID-Number"
+                                                              ]
+                                                              : "N/A"
+                                                        );
+                                                        setPopUp(true);
+                                                      }}
+                                                    >
+                                                      <Tippy
+                                                        content={
+                                                          isBlocked
+                                                            ? "Blocked"
+                                                            : "Block"
+                                                        }
+                                                      >
+                                                        <i className="fa-solid fa-ban"></i>
+                                                      </Tippy>
+                                                    </button>
+                                                  ) : (
+                                                    ""
+                                                  )}
+                                                </td>
+                                              }
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Note") &&
+                                                <td>
                                                   <button
-                                                    disabled={isBlocked}
                                                     effect="ripple"
-                                                    className={`tableButton delete ${isBlocked
-                                                      ? "bg-danger text-white"
-                                                      : ""
-                                                      } ms-0`}
+                                                    className={`tableButton ms-0`}
                                                     style={{
                                                       height: "34px",
                                                       width: "34px",
                                                     }}
                                                     onClick={() => {
-                                                      setSelectedNumberToBlock(
-                                                        item[
-                                                          "Call-Direction"
-                                                        ] === "inbound"
-                                                          ? item[
-                                                          "Caller-Caller-ID-Number"
-                                                          ]
-                                                          : item[
-                                                            "Call-Direction"
-                                                          ] === "outbound"
-                                                            ? item[
-                                                            "Caller-Callee-ID-Number"
-                                                            ]
-                                                            : "N/A"
-                                                      );
-                                                      setPopUp(true);
+                                                      setSelectedCdr(item.id);
                                                     }}
                                                   >
-                                                    <Tippy
-                                                      content={
-                                                        isBlocked
-                                                          ? "Blocked"
-                                                          : "Block"
+                                                    <Tippy content={"View Note"}>
+                                                      <i className="fa-solid fa-comment-dots"></i>
+                                                    </Tippy>
+                                                  </button>
+                                                </td>
+                                              }
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Duplicate") &&
+                                                <td>
+                                                  {item?.duplicated == 1 && (
+                                                    <button
+                                                      className={`tableButton edit ms-0`}
+                                                      onClick={() =>
+                                                        duplicateColumn(item)
                                                       }
                                                     >
-                                                      <i className="fa-solid fa-ban"></i>
-                                                    </Tippy>
-                                                  </button>
-                                                ) : (
-                                                  ""
-                                                )}
-                                              </td>
-                                              <td>
-                                                <button
-                                                  effect="ripple"
-                                                  className={`tableButton ms-0`}
-                                                  style={{
-                                                    height: "34px",
-                                                    width: "34px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setSelectedCdr(item.id);
-                                                  }}
-                                                >
-                                                  <Tippy content={"View Note"}>
-                                                    <i className="fa-solid fa-comment-dots"></i>
-                                                  </Tippy>
-                                                </button>
-                                              </td>
-                                              <td>
-                                                {item?.duplicated == 1 && (
-                                                  <button
-                                                    className={`tableButton edit ms-0`}
-                                                    onClick={() =>
-                                                      duplicateColumn(item)
-                                                    }
-                                                  >
-                                                    <Tippy
-                                                      content={"View Duplicate"}
-                                                    >
-                                                      <i className="fa-solid fa-clone"></i>
-                                                    </Tippy>
-                                                  </button>
-                                                )}
-                                              </td>
+                                                      <Tippy
+                                                        content={"View Duplicate"}
+                                                      >
+                                                        <i className="fa-solid fa-clone"></i>
+                                                      </Tippy>
+                                                    </button>
+                                                  )}
+                                                </td>}
                                             </>
                                           )}
                                         </tr>
