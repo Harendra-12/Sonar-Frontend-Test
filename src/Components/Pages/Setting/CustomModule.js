@@ -14,24 +14,36 @@ function CustomModule() {
     const [loading, setLoading] = useState(false);
     const [customModule, setCustomModule] = useState([])
     const [refresh, setRefresh] = useState(0)
+    const [refreshState, setRefreshState] = useState(false)
     const [selectedModule, setSelectedModule] = useState();
     const [addNewMod, setAddNewMod] = useState(false);
     const [popup, setPopup] = useState(false);
 
+    const getData = async (shouldLoad) => {
+        if (shouldLoad) setLoading(true)
+        const apiData = await generalGetFunction("/usage/all")
+        if (apiData.status) {
+            setLoading(false)
+            setRefreshState(false)
+            setCustomModule(apiData.data)
+        } else {
+            setLoading(false)
+            setRefreshState(false)
+        }
+    }
+
     // Update the latest custom module data
     useEffect(() => {
-        setLoading(true)
-        async function getData() {
-            const apiData = await generalGetFunction("/usage/all")
-            if (apiData.status) {
-                setLoading(false)
-                setCustomModule(apiData.data)
-            } else {
-                setLoading(false)
-            }
-        }
-        getData()
+        setRefreshState(true)
+        const shouldLoad = true;
+        getData(shouldLoad)
     }, [refresh])
+
+    const handleRefreshBtnClicked = () => {
+        setRefreshState(true);
+        const shouldLoad = false;
+        getData(shouldLoad)
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -45,7 +57,21 @@ function CustomModule() {
                                 <div className="col-12">
                                     <div className="heading">
                                         <div className="content">
-                                            <h4>Select Modules</h4>
+                                            <h4>Select Modules {" "}
+                                                <button
+                                                    className="clearButton"
+                                                    onClick={handleRefreshBtnClicked}
+                                                    disabled={refreshState}
+                                                >
+                                                    <i
+                                                        className={
+                                                            refreshState
+                                                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                : "fa-regular fa-arrows-rotate fs-5"
+                                                        }
+                                                    ></i>
+                                                </button>
+                                            </h4>
                                             <p>Select the modules you want to include in your dashboard</p>
                                         </div>
                                         <div className="buttonGroup">

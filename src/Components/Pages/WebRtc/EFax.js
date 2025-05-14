@@ -16,6 +16,7 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
 import HeaderApp from "./HeaderApp";
+import ContentLoader from "../../Loader/ContentLoader";
 
 function EFax({ did }) {
   const dispatch = useDispatch();
@@ -24,7 +25,6 @@ function EFax({ did }) {
   const [allFiles, setAllFiles] = useState([]);
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteFile, setDeleteFile] = useState(null);
-  const [contentLoading, setContentLoading] = useState(true);
   const [dropdownOption, setDropdownOption] = useState([]);
   const [EfaxFileLoading, setEfaxFileLoading] = useState(true);
   const [faxFileId, setFaxDileId] = useState("");
@@ -38,26 +38,31 @@ function EFax({ did }) {
   const [showUserHistory, setShowUserHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [eFaxRefreshState, setEFaxRefreshState] = useState(false)
+
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const response = await generalGetFunction("/fax/all");
+    if (response?.status) {
+      setAllFiles(response.data);
+      const newOptions = response.data.map((file) => ({
+        value: file.id,
+        label: file.file_name,
+      }));
+
+      setDropdownOption([...dropdownOption, ...newOptions]);
+      setLoading(false);
+      setEFaxRefreshState(false);
+    } else {
+      setLoading(false);
+      setEFaxRefreshState(false);
+    }
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      setContentLoading(true);
-      const response = await generalGetFunction("/fax/all");
-      if (response?.status) {
-        setAllFiles(response.data);
-        const newOptions = response.data.map((file) => ({
-          value: file.id,
-          label: file.file_name,
-        }));
-
-        setDropdownOption([...dropdownOption, ...newOptions]);
-        setContentLoading(false);
-      } else {
-        setContentLoading(false);
-      }
-    };
-
-    getData();
+    setEFaxRefreshState(true)
+    const shouldLoad = true
+    getData(shouldLoad);
   }, []);
 
   const eFaxFileLoadingState = (state) => {
@@ -133,7 +138,7 @@ function EFax({ did }) {
     } else if (faxHeader === "") {
       toast.error("Please enter fax header");
     } else {
-      setContentLoading(true);
+      setLoading(true);
       const parsedData = {
         destination_caller_id_number: destinationId,
         fax_files_id: faxFileId,
@@ -147,11 +152,17 @@ function EFax({ did }) {
         setFaxDileId("");
         setFaxIdent("");
         setFaxHeader("");
-        setContentLoading(false);
+        setLoading(false);
       } else {
-        setContentLoading(false);
+        setLoading(false);
       }
     }
+  }
+
+  const handleRefreshBtnClicked = () => {
+    setEFaxRefreshState(true)
+    const shouldLoad = false
+    getData(shouldLoad);
   }
 
   return (
@@ -173,7 +184,11 @@ function EFax({ did }) {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"E-Fax"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+                <HeaderApp
+                  title={"E-Fax"}
+                  loading={eFaxRefreshState}
+                  setLoading={setEFaxRefreshState}
+                  refreshApi={handleRefreshBtnClicked} />
               </div>
 
               <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
@@ -262,79 +277,85 @@ function EFax({ did }) {
                   </nav>
                   <div className="tab-content">
                     {clickStatus === "all" && (
-                      <div className="callList">
-                        <div className="dateHeader">
-                          <p className="fw-semibold">Today</p>
-                        </div>
-                        <div
-                          data-bell=""
-                          className="callListItem incoming"
-                          onClick={() => setShowUserHistory(true)}
-                        >
-                          <div className="row justify-content-between">
-                            <div className="col-xl-12 d-flex">
-                              <div className="profileHolder">
-                                <i className="fa-light fa-user fs-5"></i>
+                      <>
+                        {
+                          loading ?
+                            <ContentLoader />
+                            :
+                            <div className="callList">
+                              <div className="dateHeader">
+                                <p className="fw-semibold">Today</p>
                               </div>
-
                               <div
-                                className="col-4 my-auto ms-2 ms-xl-3"
-                                style={{ cursor: "pointer" }}
+                                data-bell=""
+                                className="callListItem incoming"
+                                onClick={() => setShowUserHistory(true)}
                               >
-                                <h4>AUSER XYZ</h4>
-                                <h5 style={{ paddingLeft: "20px" }}>
-                                  1 (999) 999-9999
-                                </h5>
-                              </div>
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex">
+                                    <div className="profileHolder">
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    </div>
 
-                              <div className="col-3 mx-auto">
-                                <div className="contactTags">
-                                  <span data-id="1">Received</span>
+                                    <div
+                                      className="col-4 my-auto ms-2 ms-xl-3"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <h4>AUSER XYZ</h4>
+                                      <h5 style={{ paddingLeft: "20px" }}>
+                                        1 (999) 999-9999
+                                      </h5>
+                                    </div>
+
+                                    <div className="col-3 mx-auto">
+                                      <div className="contactTags">
+                                        <span data-id="1">Received</span>
+                                      </div>
+                                      <h5 style={{ fontWeight: "400" }}>
+                                        <i className="fa-light fa-paperclip"></i> 1
+                                        Attachment
+                                      </h5>
+                                    </div>
+                                    <div className="col-1 text-end ms-auto">
+                                      <p className="timeAgo">12:46pm</p>
+                                    </div>
+                                  </div>
                                 </div>
-                                <h5 style={{ fontWeight: "400" }}>
-                                  <i className="fa-light fa-paperclip"></i> 1
-                                  Attachment
-                                </h5>
                               </div>
-                              <div className="col-1 text-end ms-auto">
-                                <p className="timeAgo">12:46pm</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div data-bell="" className="callListItem outgoing">
-                          <div className="row justify-content-between">
-                            <div className="col-xl-12 d-flex">
-                              <div className="profileHolder">
-                                <i className="fa-light fa-user fs-5"></i>
-                              </div>
+                              <div data-bell="" className="callListItem outgoing">
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex">
+                                    <div className="profileHolder">
+                                      <i className="fa-light fa-user fs-5"></i>
+                                    </div>
 
-                              <div
-                                className="col-4 my-auto ms-2 ms-xl-3"
-                                style={{ cursor: "pointer" }}
-                              >
-                                <h4>AUSER XYZ</h4>
-                                <h5 style={{ paddingLeft: "20px" }}>
-                                  1 (999) 999-9999
-                                </h5>
-                              </div>
+                                    <div
+                                      className="col-4 my-auto ms-2 ms-xl-3"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <h4>AUSER XYZ</h4>
+                                      <h5 style={{ paddingLeft: "20px" }}>
+                                        1 (999) 999-9999
+                                      </h5>
+                                    </div>
 
-                              <div className="col-3 mx-auto">
-                                <div className="contactTags">
-                                  <span data-id="0">Sent</span>
+                                    <div className="col-3 mx-auto">
+                                      <div className="contactTags">
+                                        <span data-id="0">Sent</span>
+                                      </div>
+                                      <h5 style={{ fontWeight: "400" }}>
+                                        <i className="fa-light fa-paperclip"></i> 1
+                                        Attachment
+                                      </h5>
+                                    </div>
+                                    <div className="col-1 text-end ms-auto">
+                                      <p className="timeAgo">12:46pm</p>
+                                    </div>
+                                  </div>
                                 </div>
-                                <h5 style={{ fontWeight: "400" }}>
-                                  <i className="fa-light fa-paperclip"></i> 1
-                                  Attachment
-                                </h5>
                               </div>
-                              <div className="col-1 text-end ms-auto">
-                                <p className="timeAgo">12:46pm</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                            </div>}
+                      </>
                     )}
                     {clickStatus === "file" &&
                       allFiles.length > 0 &&

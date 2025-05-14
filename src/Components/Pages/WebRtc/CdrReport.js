@@ -64,6 +64,7 @@ function CdrReport({ page }) {
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
+  const [refreshState, setRefreshState] = useState(false)
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
@@ -240,6 +241,7 @@ function CdrReport({ page }) {
           setLoading(false);
           setContentLoader(false);
           setCdr(apiData.data);
+          setRefreshState(false)
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -248,10 +250,12 @@ function CdrReport({ page }) {
           }
         } else {
           setLoading(false);
+          setRefreshState(false)
           setContentLoader(false);
         }
       } else {
         setLoading(false);
+        setRefreshState(false)
         setContentLoader(false);
         navigate("/");
       }
@@ -320,7 +324,8 @@ function CdrReport({ page }) {
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
-    getStorageInformation();
+    const shouldLoad = true
+    getStorageInformation(shouldLoad);
   }
 
   useEffect(() => {
@@ -470,22 +475,26 @@ function CdrReport({ page }) {
   }
 
   // Fetch Storage Information
-  const getStorageInformation = async () => {
-    setLoading(true);
+  const getStorageInformation = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
     try {
       const apiCall = await generalGetFunction(`/get-stoarge-details`);
       if (apiCall) {
         setStorageInformation(apiCall);
         setLoading(false);
+        setRefreshState(false)
       }
     } catch (err) {
       setLoading(false);
+      setRefreshState(false)
       console.log(err);
     }
   }
 
   useEffect(() => {
-    getStorageInformation();
+    setRefreshState(true)
+    const shouldLoad = true
+    getStorageInformation(shouldLoad);
   }, [])
 
   function convertToGB(param) {
@@ -576,6 +585,14 @@ function CdrReport({ page }) {
     }
   }
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    setCurrentPlaying("");
+    setContentLoader(true);
+    // setRefrehsh(refresh + 1);
+    const shouldLoad = false
+    getStorageInformation(shouldLoad);
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -608,6 +625,19 @@ function CdrReport({ page }) {
                               : page === "callrecording"
                                 ? "Call Recordings"
                                 : "CDR Reports"}
+                        <button
+                          className="clearButton"
+                          onClick={handleRefreshBtnClicked}
+                          disabled={refreshState}
+                        >
+                          <i
+                            className={
+                              refreshState
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5"
+                            }
+                          ></i>
+                        </button>
                       </h4>
                       <p>
                         Here are all the{" "}
@@ -646,7 +676,7 @@ function CdrReport({ page }) {
                           <i className="fa-solid fa-trash" />
                         </span>
                       </button>
-                      <button
+                      {/* <button
                         effect="ripple"
                         className="panelButton"
                         onClick={refreshCallData}
@@ -662,7 +692,7 @@ function CdrReport({ page }) {
                             }
                           ></i>
                         </span>
-                      </button>
+                      </button> */}
                       <button
                         effect="ripple"
                         className="panelButton"

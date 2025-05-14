@@ -35,29 +35,33 @@ function CallCenterQueue() {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
   const [pageNumber, setPageNumber] = useState(1);
-  const [refreshState, setRefreshState] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
   const [pageLoading, setPageLoading] = useState(false);
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
-  useEffect(() => {
-    const getCallCenterDashboardData = async () => {
-      setLoading(true);
-      const apidata = await generalGetFunction(
-        `/call-center-queues/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
-      );
-      if (apidata?.status) {
-        setLoading(false);
-        setCallCenter(apidata.data);
-      } else {
-        setLoading(false);
-        if (apidata.response.status === 403) {
-          setNoPermissionToRead(true);
-        }
+  const getCallCenterDashboardData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const apidata = await generalGetFunction(
+      `/call-center-queues/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+    );
+    if (apidata?.status) {
+      setLoading(false);
+      setRefreshState(false)
+      setCallCenter(apidata.data);
+    } else {
+      setLoading(false);
+      setRefreshState(false)
+      if (apidata.response.status === 403) {
+        setNoPermissionToRead(true);
       }
-    };
+    }
+  };
+
+  useEffect(() => {
+
     // if (searchValue.trim().length === 0) {
     //   getCallCenterDashboardData();
     // } else {
@@ -66,14 +70,16 @@ function CallCenterQueue() {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
-    getCallCenterDashboardData();
-    if (refreshState === 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
-  }, [pageNumber, refreshState, itemsPerPage, debouncedSearchTerm]);
+    setRefreshState(true)
+    const shouldLoad = true
+    getCallCenterDashboardData(shouldLoad);
+    // if (refreshState === 0) {
+    //   dispatch({
+    //     type: "SET_ALLUSERREFRESH",
+    //     allUserRefresh: allUserRefresh + 1,
+    //   });
+    // }
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();
@@ -224,6 +230,12 @@ function CallCenterQueue() {
       }
     }
   }
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getCallCenterDashboardData(shouldLoad);
+  }
   return (
     <>
       {pageLoading && <CircularLoader />}
@@ -240,15 +252,15 @@ function CallCenterQueue() {
                       <div className="heading">
                         <div className="content">
                           <h4>
-                            Call Center Queue List
+                            Call Center Queue List {" "}
                             <button
                               className="clearButton"
-                              onClick={() => setRefreshState(refreshState + 1)}
-                              disabled={loading}
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
                             >
                               <i
                                 className={
-                                  loading
+                                  refreshState
                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     : "fa-regular fa-arrows-rotate fs-5"
                                 }

@@ -30,23 +30,25 @@ const IvrListing = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [userInput, setuserInput] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
-   const debouncedSearchTerm = useDebounce(userInput, 1000);
+  const debouncedSearchTerm = useDebounce(userInput, 1000);
+
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction(
+      `/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
+    );
+    if (apiData.status) {
+      setIvr(apiData.data);
+      setLoading(false);
+      setRefreshState(false);
+    } else {
+      setRefreshState(false);
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function getData() {
-      setLoading(true);
-      const apiData = await generalGetFunction(
-        `/ivr-master/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
-      );
-      if (apiData.status) {
-        setIvr(apiData.data);
-        setLoading(false);
-        setRefreshState(false);
-      } else {
-        setRefreshState(false);
-        setLoading(false);
-      }
-    }
+
     // if (userInput.trim().length === 0) {
     //   getData();
     // } else {
@@ -55,8 +57,10 @@ const IvrListing = () => {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
-    getData();
-  }, [ivrArr, refreshState, itemsPerPage, pageNumber, debouncedSearchTerm]);
+    setRefreshState(true)
+    const shouldLoad = true;
+    getData(shouldLoad);
+  }, [ivrArr, itemsPerPage, pageNumber, debouncedSearchTerm]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -79,6 +83,11 @@ const IvrListing = () => {
       setDeleteId("");
     }
   }
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getData(shouldLoad);
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -96,11 +105,12 @@ const IvrListing = () => {
                           IVR Master
                           <button
                             className="clearButton"
-                            onClick={() => setRefreshState(true)}
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
                           >
                             <i
                               className={
-                                loading
+                                refreshState
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }
@@ -192,9 +202,9 @@ const IvrListing = () => {
                             <th>Max Failures</th>
                             <th>Options</th>
                             <th>Call Flow</th>
-                             <th>Edit</th>
+                            <th>Edit</th>
                             <th>Delete</th>
-                          </tr> 
+                          </tr>
                         </thead>
                         <tbody>
                           {loading ? (

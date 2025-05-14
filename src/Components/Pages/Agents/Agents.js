@@ -72,6 +72,7 @@ function Agents({ type }) {
   const allDID = useSelector((state) => state.didAll);
   const debouncedSearchTerm = useDebounce(userInput, 1000);
   const [onlineFilter, setonlineFilter] = useState("all")
+  const [refreshState, setRefreshState] = useState(false)
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
@@ -83,21 +84,25 @@ function Agents({ type }) {
 
   }, [logonUser]);
 
-  const getData = async () => {
-    setLoading(true);
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
     const apiData = await generalGetFunction(
       `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
     );
     if (apiData?.status) {
       setAgents(apiData.data);
       setLoading(false);
+      setRefreshState(false)
     } else {
       setLoading(false);
+      setRefreshState(false)
     }
   };
 
   useEffect(() => {
-    getData();
+    setRefreshState(true)
+    const shouldLoad = true
+    getData(shouldLoad);
   }, [entriesPerPage, pageNumber, type, debouncedSearchTerm, onlineFilter]);
 
 
@@ -164,6 +169,11 @@ function Agents({ type }) {
 
 
   // console.log("Tokennnnn:", getToken("1006"));
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getData(shouldLoad);
+  }
 
   return (
     <main className="mainContent">
@@ -177,7 +187,21 @@ function Agents({ type }) {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Agent List</h4>
+                        <h4>Agent List {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>List of all agents</p>
                       </div>
                       <div className="buttonGroup">

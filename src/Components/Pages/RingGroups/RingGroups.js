@@ -36,41 +36,47 @@ const RingGroups = () => {
   const [deleteId, setDeleteId] = useState("");
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const { data: usersData = [] } = allUser;
-  const [refreshState, setRefreshState] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
-  const debouncedSearchTerm = useDebounce(searchValue, 1000); 
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
+
+  const getRingGroupDashboardData = async (shouldLoad) => {
+    if (account && account.id) {
+      if (shouldLoad) setLoading(true);
+      const apidata = await generalGetFunction(
+        `/ringgroup-dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+      );
+      if (apidata?.status) {
+        setRingGroup(apidata.data);
+        setLoading(false);
+        setRefreshState(false)
+      } else {
+        if (apidata.response.status === 403) {
+          setNoPermissionToRead(true);
+        }
+        setRefreshState(false)
+      }
+    } else {
+      navigate("/");
+      setRefreshState(false)
+    }
+  };
 
   // Getting ringgroup data and also update user refresh to trigger user listing api call
   useEffect(() => {
-    const getRingGroupDashboardData = async () => {
-      if (account && account.id) {
-        setLoading(true);
-        const apidata = await generalGetFunction(
-          `/ringgroup-dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
-        );
-        if (apidata?.status) {
-          setRingGroup(apidata.data);
-          setLoading(false);
-        } else {
-          if (apidata.response.status === 403) {
-            setNoPermissionToRead(true);
-          }
-        }
-      } else {
-        navigate("/");
-      }
-    };
-    getRingGroupDashboardData()
-    if (refreshState === 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
-  }, [pageNumber, refreshState, itemsPerPage, debouncedSearchTerm]);
+    setRefreshState(true)
+    const shouldLoad = true
+    getRingGroupDashboardData(shouldLoad)
+    // if (refreshState === 0) {
+    //   dispatch({
+    //     type: "SET_ALLUSERREFRESH",
+    //     allUserRefresh: allUserRefresh + 1,
+    //   });
+    // }
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   // Handle validation for naviagte to ring group add page if no user is create then redirect to user page to create user
   const handleRingGroupAddValidation = (e) => {
@@ -192,6 +198,12 @@ const RingGroups = () => {
     }
   }
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getRingGroupDashboardData(shouldLoad)
+  }
+
   return (
     <>
       {pageLoading && <CircularLoader />}
@@ -211,12 +223,12 @@ const RingGroups = () => {
                             Ring Group List
                             <button
                               className="clearButton"
-                              onClick={() => setRefreshState(refreshState + 1)}
-                              disabled={loading}
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
                             >
                               <i
                                 className={
-                                  loading
+                                  refreshState
                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     : "fa-regular fa-arrows-rotate fs-5"
                                 }

@@ -78,6 +78,7 @@ function CdrFilterReport({ page }) {
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
+  const [refreshState, setRefreshState] = useState(false)
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
@@ -290,8 +291,8 @@ function CdrFilterReport({ page }) {
     getRingGroupDashboardData();
   }, [callBlockRefresh]);
 
-  useEffect(() => {
-    setLoading(true);
+
+  async function getData(shouldLoad) {
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
@@ -355,43 +356,48 @@ function CdrFilterReport({ page }) {
 
       return filteredObj;
     }
-
-    const debounceTimeout = setTimeout(() => {
-      async function getData() {
-        setLoading(true);
-        if (account && account.account_id) {
-          const apiData = await generalGetFunction(finalUrl);
-          if (apiData?.response?.status == 403) {
-            toast.error("You don't have permission to access this page.");
-          } else if (apiData?.status === true) {
-            const filteredData = apiData?.data?.data?.map((item) =>
-              filterObjectKeys(item, [...apiData.filteredKeys, "id"])
-            );
-            setFilteredKeys([...apiData.filteredKeys, "id"]);
-            setCdr({
-              ...apiData?.data,
-              data: filteredData,
-            });
-            if (selectedCdrFilter !== "") {
-              dispatch({
-                type: "SET_SELECTEDCDRFILTER",
-                selectedCdrFilter: "",
-              });
-            }
-          }
-          setLoading(false);
-          setContentLoader(false);
-          setCircularLoader(false);
-        } else {
-          setLoading(false);
-          setContentLoader(false);
-          navigate("/");
+    if (shouldLoad) {
+      setLoading(true);
+    }
+    if (account && account.account_id) {
+      const apiData = await generalGetFunction(finalUrl);
+      if (apiData?.response?.status == 403) {
+        toast.error("You don't have permission to access this page.");
+      } else if (apiData?.status === true) {
+        const filteredData = apiData?.data?.data?.map((item) =>
+          filterObjectKeys(item, [...apiData.filteredKeys, "id"])
+        );
+        setFilteredKeys([...apiData.filteredKeys, "id"]);
+        setCdr({
+          ...apiData?.data,
+          data: filteredData,
+        });
+        if (selectedCdrFilter !== "") {
+          dispatch({
+            type: "SET_SELECTEDCDRFILTER",
+            selectedCdrFilter: "",
+          });
         }
       }
+      setLoading(false);
+      setRefreshState(false);
+      setContentLoader(false);
+      setCircularLoader(false);
+    } else {
+      setLoading(false);
+      setContentLoader(false);
+      navigate("/");
+      setRefreshState(false);
+    }
+  }
 
-      getData();
+  useEffect(() => {
+    setLoading(true);
+    const debounceTimeout = setTimeout(() => {
+      setRefreshState(true)
+      const shouldLoad = true;
+      getData(shouldLoad);
     }, 400); // wait 400ms after last change
-
     return () => clearTimeout(debounceTimeout); // clear previous timeout if dependencies change
   }, [
     account,
@@ -406,7 +412,7 @@ function CdrFilterReport({ page }) {
     timeFlag,
     hangupCause,
     hangupStatus,
-    refresh,
+    // refresh,
     itemsPerPage,
     page,
     createdAt,
@@ -454,6 +460,8 @@ function CdrFilterReport({ page }) {
   };
 
   function refreshCallData() {
+    const shouldLoad = false;
+    getData(shouldLoad)
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
@@ -709,6 +717,11 @@ function CdrFilterReport({ page }) {
     setColumnOriginalSequence(columns)
   }, [showKeys, cdr?.data?.length])
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true);
+    const shouldLoad = false;
+    getData(shouldLoad);
+  }
   return (
     <>
       {circularLoader && <CircularLoader />}
@@ -743,6 +756,21 @@ function CdrFilterReport({ page }) {
                                 : page === "callrecording"
                                   ? "Call Recordings"
                                   : "CDR Reports"}
+
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+
                         </h4>
                         <p>
                           Here are all the{" "}
@@ -781,7 +809,7 @@ function CdrFilterReport({ page }) {
                             <i className="fa-solid fa-trash" />
                           </span>
                         </button>
-                        <button
+                        {/* <button
                           effect="ripple"
                           className="panelButton"
                           onClick={refreshCallData}
@@ -797,7 +825,7 @@ function CdrFilterReport({ page }) {
                               }
                             ></i>
                           </span>
-                        </button>
+                        </button> */}
                         <div className="dropdown">
                           <button
                             effect="ripple"

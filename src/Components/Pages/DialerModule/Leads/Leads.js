@@ -5,8 +5,11 @@ import { backToTop } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 
 function Leads() {
+    const [refreshState, setRefreshState] = useState()
     const navigate = useNavigate();
+    const handleRefreshBtnClicked = () => {
 
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -19,10 +22,24 @@ function Leads() {
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Leads</h4>
+                                                <h4>Leads {" "}
+                                                    <button
+                                                        className="clearButton"
+                                                        onClick={handleRefreshBtnClicked}
+                                                        disabled={refreshState}
+                                                    >
+                                                        <i
+                                                            className={
+                                                                refreshState
+                                                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                    : "fa-regular fa-arrows-rotate fs-5"
+                                                            }
+                                                        ></i>
+                                                    </button>
+                                                </h4>
                                             </div>
                                             <div className="buttonGroup">
-                                                <button
+                                                {/* <button
                                                     effect="ripple"
                                                     className="panelButton ms-0"
                                                 // onClick={() => setRefreshState(refreshState + 1)}
@@ -31,7 +48,7 @@ function Leads() {
                                                     <span className="icon">
                                                         <i className="fa-regular fa-arrows-rotate fs-5"></i>
                                                     </span>
-                                                </button>
+                                                </button> */}
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray"

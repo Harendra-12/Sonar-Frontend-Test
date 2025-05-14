@@ -27,6 +27,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [filteredVoiceMail, setFilteredVoiceMail] = useState([]);
   const loadings = useSelector((state) => state.loading);
   const [loading, setLoading] = useState(false);
+  const [allVoiceMailRefresh, setAllVoiceMailRefresh] = useState(false)
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
   const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
   const { sessionManager, connectStatus } = useSIPProvider();
@@ -83,21 +84,26 @@ function AllVoicemails({ isCustomerAdmin }) {
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
 
-  useEffect(() => {
-    setLoading(true);
-    async function getData() {
-      const apiData = await generalGetFunction(
-        `/voicemails?page=${pageNumber}`
-      );
-      if (apiData?.status) {
-        setVoiceMail(apiData.data);
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction(
+      `/voicemails?page=${pageNumber}`
+    );
+    if (apiData?.status) {
+      setVoiceMail(apiData.data);
+      setLoading(false);
+      setAllVoiceMailRefresh(false)
+    } else {
+      setLoading(false);
+      setAllVoiceMailRefresh(false)
     }
-    getData();
-  }, [pageNumber, voiceMailRefresh]);
+  }
+
+  useEffect(() => {
+    setAllVoiceMailRefresh(true)
+    const shouldLoad = true;
+    getData(shouldLoad);
+  }, [pageNumber]);
 
   useEffect(() => {
     if (voiceMail?.data) {
@@ -361,6 +367,12 @@ function AllVoicemails({ isCustomerAdmin }) {
     }
   });
 
+  const handleRefreshBtnClicked = () => {
+    setAllVoiceMailRefresh(true)
+    const shouldLoad = false;
+    getData(shouldLoad);
+  }
+
   return (
     <>
       {allLogOut && (
@@ -379,7 +391,11 @@ function AllVoicemails({ isCustomerAdmin }) {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"Voicemails"} loading={loading} setLoading={setLoading} refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)} />
+                <HeaderApp
+                  title={"Voicemails"}
+                  loading={allVoiceMailRefresh}
+                  setLoading={setAllVoiceMailRefresh}
+                  refreshApi={handleRefreshBtnClicked} />
               </div>
 
               <div className="col-xxl-4 col-xl-4 allCallHistory pb-0">

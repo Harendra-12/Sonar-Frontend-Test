@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
 import { useSelector } from 'react-redux'
+
 function Campaigns() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -16,23 +17,28 @@ function Campaigns() {
   const [pageNumber, setPageNumber] = useState(1);
   const [deleteId, setDeleteId] = useState('');
   const [refresh, setRefresh] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([0]);
   const logonUser = useSelector((state) => state.loginUser);
   const registerUser = useSelector((state) => state.registerUser);
   const campaignDetails = useSelector((state) => state.campaignDetails);
 
-  useEffect(() => {
-    setLoading(true);
-    async function getCampaignData() {
-      const getCampaign = await generalGetFunction("/campaign/all")
-      if (getCampaign?.status) {
-        setCampaign(getCampaign.data)
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
+  const getCampaignData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const getCampaign = await generalGetFunction("/campaign/all")
+    if (getCampaign?.status) {
+      setCampaign(getCampaign.data)
+      setLoading(false);
+      setRefreshState(false)
+    } else {
+      setLoading(false);
+      setRefreshState(false)
     }
-    getCampaignData();
+  }
+
+  useEffect(() => {
+    const shouldLoad = true;
+    getCampaignData(shouldLoad);
   }, [refresh]);
 
   async function startCampaign(id) {
@@ -87,6 +93,11 @@ function Campaigns() {
     }
   }, [campaignDetails])
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getCampaignData(shouldLoad);
+  }
   return (
     <>
       <main className='mainContent'>
@@ -100,7 +111,21 @@ function Campaigns() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Campaigns</h4>
+                          <h4>Campaigns {" "}
+                            <button
+                              className="clearButton"
+                              onClick={handleRefreshBtnClicked}
+                              disabled={refreshState}
+                            >
+                              <i
+                                className={
+                                  refreshState
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
+                            </button>
+                          </h4>
                           <p>You can see the list of campaigns</p>
                         </div>
                         <div className="buttonGroup">

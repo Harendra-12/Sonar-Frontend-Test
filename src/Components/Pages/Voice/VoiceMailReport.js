@@ -20,7 +20,7 @@ function VoiceMailReport() {
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [voiceMail, setVoiceMail] = useState();
-  const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const thisAudioRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
@@ -58,19 +58,22 @@ function VoiceMailReport() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    async function getData() {
-      const apiData = await generalGetFunction(
-        `/voicemails?page=${pageNumber}&row_per_page=${rowPerPage}&search=${searchValue}`
-      );
-      if (apiData?.status) {
-        setVoiceMail(apiData.data);
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
+  const getData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction(
+      `/voicemails?page=${pageNumber}&row_per_page=${rowPerPage}&search=${searchValue}`
+    );
+    if (apiData?.status) {
+      setVoiceMail(apiData.data);
+      setLoading(false);
+      setRefreshState(false)
+    } else {
+      setLoading(false);
+      setRefreshState(false)
     }
+  }
+
+  useEffect(() => {
     // if (searchValue.trim().length === 0) {
     //   getData();
     // } else {
@@ -79,13 +82,21 @@ function VoiceMailReport() {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
-    getData();
-  }, [pageNumber, voiceMailRefresh, rowPerPage, debouncedSearchTerm]);
+    const shouldLoad = true;
+    getData(shouldLoad);
+  }, [pageNumber, rowPerPage, debouncedSearchTerm]);
 
   function extractDate(dateTimeString) {
     // Split the string by space and return the first part
     return dateTimeString.split(" ")[0];
   }
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = true;
+    getData(shouldLoad);
+  }
+
   return (
     <>
       <main className="mainContent">
@@ -98,7 +109,21 @@ function VoiceMailReport() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Voicemail Reports</h4>
+                        <h4>Voicemail Reports {""}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>Here are all the Voicemail Reportsss</p>
                       </div>
                       <div className="buttonGroup">
@@ -116,7 +141,7 @@ function VoiceMailReport() {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
+                        {/* <button
                           effect="ripple"
                           className="panelButton"
                           onClick={() =>
@@ -129,7 +154,7 @@ function VoiceMailReport() {
                               className={"fa-regular fa-arrows-rotate fs-5"}
                             ></i>
                           </span>
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
