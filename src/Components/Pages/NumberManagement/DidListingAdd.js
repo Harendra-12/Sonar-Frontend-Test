@@ -15,15 +15,18 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const DidListingAdd = () => {
+  const state = useSelector((state) => state);
+  const didAll = state?.didAll
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //   const [loading, setLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [vendorData, setVendorData] = useState([]);
+  const [allDid, setAllDid] = useState();
 
   const {
     register,
@@ -45,26 +48,37 @@ const DidListingAdd = () => {
     }
     getData();
   }, []);
+
+  useEffect(() => {
+    setAllDid(didAll)
+  }, [didAll])
+  
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data, did_vendor_id: Number(data.did_vendor_id) };
-
-    const apiData = await generalPostFunction("/did/store", payload);
-    if (apiData?.status) {
-      setLoading(false);
-      toast.success(apiData.message);
-      if (data.usages === "pbx") {
-        dispatch({
-          type: "SET_NEWADDDID",
-          newAddDid: apiData.data,
-        });                        
-        navigate("/did-listing");
+    const isExist = allDid?.find((did) => did?.did == data?.did)
+    if (!isExist) {
+      const apiData = await generalPostFunction("/did/store", payload);
+      if (apiData?.status) {
+        setLoading(false);
+        toast.success(apiData.message);
+        if (data.usages === "pbx") {
+          dispatch({
+            type: "SET_NEWADDDID",
+            newAddDid: apiData.data,
+          });
+          navigate("/did-listing");
+        } else {
+          navigate(-1);
+        }
       } else {
-        navigate(-1);
+        setLoading(false);
       }
     } else {
-      setLoading(false);
+      toast.warning("Please insert unique DID!")
+      setLoading(false)
     }
+
   });
 
   return (

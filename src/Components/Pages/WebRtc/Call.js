@@ -367,15 +367,16 @@ function Call({
                         : item["Caller-Callee-ID-Number"]
                     }
                   </h4> */}
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
-                    <h4>{item.tag ? `${item.tag} - ` : ""}
+                    <h4>
                       {displayName
                         ? displayName
                         : item.caller_user
                           ? item.caller_user.username
                           : "USER XYZ"}
                     </h4>
+                    {item.tag && <h5>({item.tag})</h5>}
                   </div>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
@@ -383,19 +384,18 @@ function Call({
                 </div>
               ) : (
                 <div
-                  className="col-5 my-auto ms-2 ms-xl-3"
+                  className="col-6 my-auto ms-2 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <div className="source">
                       <h4>
-                        {item.tag ? `${item.tag} - ` : ""}
                         {matchingCallerContactForAdmin
                           ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
                           : item["Caller-Caller-ID-Number"]}
 
                       </h4>
-                      {/* <h5>Source</h5> */}
+                      {item.tag && <h5>({item.tag})</h5>}
                     </div>
                     <div className="callIconAdmin">
                       {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon(1)}</Tippy>}
