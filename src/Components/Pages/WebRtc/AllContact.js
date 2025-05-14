@@ -138,7 +138,11 @@ function AllContact({
           <div className="container-fluid">
             <div className="row" style={{ height: "100%" }}>
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"Contact"} loading={allContactLoading} setLoading={setAllContactLoading} refreshApi={() => handleContactRefresh()} />
+                <HeaderApp
+                  title={"Contact"}
+                  loading={allContactLoading}
+                  setLoading={setAllContactLoading}
+                  refreshApi={() => handleContactRefresh()} />
               </div>
 
               <div className="col-xl-6 allCallHistory">

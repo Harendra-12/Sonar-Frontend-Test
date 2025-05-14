@@ -13,26 +13,31 @@ function RateCardView() {
     const [pageNumber, setPageNumber] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [userInput, setuserInput] = useState("");
-
+    const [refreshState, setRefreshState] = useState(false);
     const [rateCardList, setRateCardList] = useState([]);
     const [loading, setLoading] = useState(false);
     const debouncedSearchTerm = useDebounce(userInput, 1000);
-    const getRateCard = async () => {
-        setLoading(true);
+
+    const getRateCard = async (shouldLoad) => {
+        if (shouldLoad) setLoading(true);
         try {
             const response = await generalGetFunction(`call-tariff/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`);
             if (response.status) {
                 setRateCardList(response.data);
                 setLoading(false);
+                setRefreshState(false)
             }
         } catch (error) {
             console.error(error);
             setLoading(false);
+            setRefreshState(false)
         }
     }
 
     useEffect(() => {
-        getRateCard();
+        setRefreshState(true);
+        const shouldLoad = true;
+        getRateCard(shouldLoad);
     }, [pageNumber, itemsPerPage])
 
     // Debounce Search Function
@@ -43,9 +48,15 @@ function RateCardView() {
         //     }, 500);
         //     return () => clearTimeout(delay);
         // }
-        getRateCard();
+        const shouldLoad = true;
+        getRateCard(shouldLoad)
     }, [debouncedSearchTerm]);
 
+    const handleRefreshBtnClicked = () => {
+        setRefreshState(true)
+        const shouldLoad = false;
+        getRateCard(shouldLoad)
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -58,10 +69,24 @@ function RateCardView() {
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Rate Card</h4>
+                                                <h4>Rate Card {" "}
+                                                    <button
+                                                        className="clearButton"
+                                                        onClick={handleRefreshBtnClicked}
+                                                        disabled={refreshState}
+                                                    >
+                                                        <i
+                                                            className={
+                                                                refreshState
+                                                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                    : "fa-regular fa-arrows-rotate fs-5"
+                                                            }
+                                                        ></i>
+                                                    </button>
+                                                </h4>
                                             </div>
                                             <div className="buttonGroup">
-                                                <button
+                                                {/* <button
                                                     effect="ripple"
                                                     className="panelButton ms-0"
                                                     onClick={() => getRateCard()}
@@ -70,7 +95,7 @@ function RateCardView() {
                                                     <span className="icon">
                                                         <i className="fa-regular fa-arrows-rotate fs-5"></i>
                                                     </span>
-                                                </button>
+                                                </button> */}
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray"

@@ -59,7 +59,11 @@ function CampaignLogin({ initial }) {
                 <div className="container-fluid">
                     <div className="row">
                         <div className={"col-12 px-0"}>
-                            <HeaderApp title={"Campaign"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+                            <HeaderApp
+                                title={"Campaign"}
+                                loading={loading}
+                                setLoading={setLoading}
+                                refreshApi={() => featureUnderdevelopment()} />
                         </div>
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">

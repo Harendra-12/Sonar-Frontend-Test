@@ -57,6 +57,7 @@ const IvrListing = () => {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
+    setRefreshState(true)
     const shouldLoad = true;
     getData(shouldLoad);
   }, [ivrArr, itemsPerPage, pageNumber, debouncedSearchTerm]);
@@ -105,6 +106,7 @@ const IvrListing = () => {
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
                           >
                             <i
                               className={

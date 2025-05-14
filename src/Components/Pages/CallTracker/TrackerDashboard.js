@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GraphChart from '../../CommonComponents/GraphChart'
 import Header from '../../CommonComponents/Header'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 
 function TrackerDashboard() {
+    const [refreshState, setRefreshState] = useState(false)
+    const handleRefreshBtnClicked = () => {
+
+    }
     return (
         <>
             <main className='mainContent'>
@@ -260,7 +264,21 @@ function TrackerDashboard() {
                                             <div className='col-12'>
                                                 <div className='heading'>
                                                     <div className="content">
-                                                        <h4>Vendor Call Analytics</h4>
+                                                        <h4>Vendor Call Analytics {" "}
+                                                            <button
+                                                                className="clearButton"
+                                                                onClick={handleRefreshBtnClicked}
+                                                                disabled={refreshState}
+                                                            >
+                                                                <i
+                                                                    className={
+                                                                        refreshState
+                                                                            ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                            : "fa-regular fa-arrows-rotate fs-5"
+                                                                    }
+                                                                ></i>
+                                                            </button>
+                                                        </h4>
                                                         <p>You can see a brief analysis of all the vendors</p>
                                                     </div>
                                                     <div className='buttonGroup'>
@@ -268,10 +286,10 @@ function TrackerDashboard() {
                                                             <span className="text">Back</span>
                                                             <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                                         </button>
-                                                        <button effect="ripple" className="panelButton">
+                                                        {/* <button effect="ripple" className="panelButton">
                                                             <span className="text">Refresh</span>
                                                             <span className="icon"><i className="fa-solid fa-arrows-rotate"></i></span>
-                                                        </button>
+                                                        </button> */}
                                                         <button effect="ripple" className="panelButton">
                                                             <span className="text">Export</span>
                                                             <span className="icon"><i className="fa-solid fa-file-csv"></i></span>

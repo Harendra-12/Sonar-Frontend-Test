@@ -126,7 +126,14 @@ const CallCenter = ({ initial }) => {
         <div className="container-fluid">
           <div className="row">
             <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
-              <HeaderApp title={"Call Center"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+              <HeaderApp
+                title={"Call Center"}
+                loading={loading}
+                setLoading={setLoading}
+                refreshApi={() => {
+                  setRefreshCenter(refreshCenter + 1);
+                  setLoading(true)
+                }} />
             </div>
             <>
               <div className="overviewTableWrapper">

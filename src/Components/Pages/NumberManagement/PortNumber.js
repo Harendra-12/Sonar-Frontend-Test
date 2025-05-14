@@ -99,6 +99,8 @@ function PortNumber() {
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true)
+    const shouldLoad = false
+    getData(shouldLoad);
   }
 
   return (

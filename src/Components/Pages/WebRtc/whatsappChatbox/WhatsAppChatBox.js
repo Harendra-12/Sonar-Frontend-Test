@@ -94,7 +94,7 @@ const WhatsAppChatBox = ({ initial }) => {
 
   // Start polling when chat becomes active
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     if (activeChat) {
       setIsPolling(true);
     } else {
@@ -414,7 +414,11 @@ const WhatsAppChatBox = ({ initial }) => {
 
 
         <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
-          <HeaderApp title={"WhatsApp"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+          <HeaderApp
+            title={"WhatsApp"}
+            loading={loading}
+            setLoading={setLoading}
+            refreshApi={() => featureUnderdevelopment()} />
         </div>
 
         {
