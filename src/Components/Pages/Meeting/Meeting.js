@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, generalDeleteFunction, generalGetFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -405,7 +405,7 @@ function Meeting() {
                                                                         </button>
                                                                     </td>
                                                                     <td>
-                                                                        <button className='tableButton delete'>
+                                                                        <button className='tableButton delete' onClick={() => featureUnderdevelopment()}>
                                                                             <i className='fa-solid fa-trash' />
                                                                         </button>
                                                                     </td>

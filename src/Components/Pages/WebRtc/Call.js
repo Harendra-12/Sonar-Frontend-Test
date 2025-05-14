@@ -369,7 +369,7 @@ function Call({
                   </h4> */}
                   <div className="d-flex">
                     {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
-                    <h4>
+                    <h4>{item.tag ? `${item.tag} - ` : ""}
                       {displayName
                         ? displayName
                         : item.caller_user
@@ -389,6 +389,7 @@ function Call({
                   <div className="d-flex">
                     <div className="source">
                       <h4>
+                        {item.tag ? `${item.tag} - ` : ""}
                         {matchingCallerContactForAdmin
                           ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
                           : item["Caller-Caller-ID-Number"]}

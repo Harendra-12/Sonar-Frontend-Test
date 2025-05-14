@@ -50,6 +50,7 @@ function Messages({
   setactivePage,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
+  calling,
   setCalling,
   setToUser,
   setMeetingPage,
@@ -134,6 +135,7 @@ function Messages({
   const accountDetails = useSelector((state) => state.accountDetails);
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
+  const [internalCallHistory, setInternalCallHistory] = useState([]);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -264,21 +266,22 @@ function Messages({
       }));
 
       setContact(updatedFilteredData);
-      if (!extensionFromCdrMessage) {
-        const profile_img = allAgents?.find(
-          (data) => data?.id == apiData?.data[0]?.id
-        )?.profile_picture;
-        if (!isAssignmentClicked)
-          setRecipient([
-            apiData.data[0].extension,
-            apiData.data[0].id,
-            "singleChat",
-            apiData?.data[0]?.name,
-            apiData?.data[0]?.email,
-            profile_img,
-          ]);
-        setSelectedChat("singleChat");
-      }
+      // ENABLE THIS TO SELECT CHAT ON PAGE LOAD
+      // if (!extensionFromCdrMessage) {
+      //   const profile_img = allAgents?.find(
+      //     (data) => data?.id == apiData?.data[0]?.id
+      //   )?.profile_picture;
+      //   if (!isAssignmentClicked)
+      //     setRecipient([
+      //       apiData.data[0].extension,
+      //       apiData.data[0].id,
+      //       "singleChat",
+      //       apiData?.data[0]?.name,
+      //       apiData?.data[0]?.email,
+      //       profile_img,
+      //     ]);
+      //   setSelectedChat("singleChat");
+      // }
       setLoading(false);
       setMessageRefresh(false)
     }
@@ -1560,6 +1563,25 @@ function Messages({
     }
   };
 
+  const getAllInternalCallsHistory = async () => {
+    setLoading(true);
+    try {
+      const response = await generalGetFunction('/chatcall/calls');
+      if (response.status) {
+        const sortedArr = response.data.sort((a, b) => new Date(b.last_call_data.created_at) - new Date(a.last_call_data.created_at));
+        setInternalCallHistory(sortedArr);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getAllInternalCallsHistory();
+  }, [messageRefresh, calling])
+
   const handleRefresh = () => {
     const shouldLoad = false;
     getData(shouldLoad);
@@ -1917,9 +1939,21 @@ function Messages({
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <span className="more">
-                                            +{item.tags?.length - 2}
-                                          </span>
+                                          <Tippy content={
+                                            <ul className='contactTags' style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', maxWidth: '200px', gap: '5px' }}>
+                                              {item.tags?.map((tag, key) =>
+                                                <li>
+                                                  <span data-id={key}>
+                                                    {tag.tag?.[0]?.name}
+                                                  </span>
+                                                </li>
+                                              )}
+                                            </ul>
+                                          } allowHTML={true}>
+                                            <span className="more">
+                                              +{item.tags?.length - 2}
+                                            </span>
+                                          </Tippy>
                                         )}
                                       </div>
                                     </div>
@@ -2058,9 +2092,6 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse4"
-                          style={{
-                            borderBottom: "1px solid var(--border-color)",
-                          }}
                         >
                           {onlineUser.map((item) => {
                             return (
@@ -2112,7 +2143,7 @@ function Messages({
                                         <i className="fa-light fa-user fs-5"></i>
                                       )}
                                     </div>
-                                    <div className=" ms-3 ">
+                                    <div className="ms-3">
                                       <p>{item?.username}</p>
                                       <h5>{item?.extension.extension}</h5>
                                     </div>
@@ -2257,7 +2288,7 @@ function Messages({
 
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <ChatsCalls />
+                      <ChatsCalls loading={loading} setLoading={setLoading} setMeetingPage={setMeetingPage} setToUser={setToUser} setCalling={setCalling} socketSendMessage={socketSendMessage} account={account} formatRelativeTime={formatRelativeTime} allAgents={allAgents} onlineUser={onlineUser} callHistory={internalCallHistory} />
                     </div>
                   ) : (
                     <div className="tab-content">
@@ -2661,6 +2692,7 @@ function Messages({
                                   </span>
                                   <ul
                                     className="dropdown-menu p-3"
+                                    style={{ maxWidth: '500px' }}
                                     ref={tagDropdownRef}
                                   >
                                     {/* <div className="tagBox">
@@ -2680,7 +2712,7 @@ function Messages({
                                         }
                                       />
                                     </div>
-                                    <div className="contactTags my-2">
+                                    <div className="contactTags my-2" style={{ width: '100%', flexWrap: 'wrap', gap: '5px' }}>
                                       {filteredTags?.map((item, key) => {
                                         return (
                                           <span
@@ -2853,7 +2885,7 @@ function Messages({
                                     from: account.id,
                                     to: recipient[1],
                                     room_id: `${account.id}-${recipient[1]}`,
-                                    call_type: "audio",
+                                    call_type: "video",
                                   });
                                 }}
                                 className="clearButton2"
