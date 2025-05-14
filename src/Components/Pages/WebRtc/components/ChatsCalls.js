@@ -44,9 +44,9 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                         </div>
                                         <div className="my-auto ms-2 ms-xl-3">
                                             <p className=' justify-content-start ellipsisText'>{item?.name}
-                                                {item?.last_call_data?.hangup_cause === "originator_cancel" ?
-                                                    <span className="missedCallArrow text-danger ms-2"><i class="fa-regular fa-arrow-up-right"></i></span>
-                                                    : <span className="missedCallArrow text-success ms-2"><i class="fa-solid fa-arrow-down-left"></i></span>}
+                                                <span className={`missedCallArrow text-${item?.last_call_data?.hangup_cause === "originator_cancel" ? 'danger' : 'success'} ms-2`}>
+                                                    <i class={`fa-regular fa-arrow-${item?.last_call_data?.room_id?.split("-")[0] == item.id ? "down-left" : "up-right"}`}></i>
+                                                </span>
                                             </p>
                                             <h5>{item?.last_call_data?.created_at?.split(" ")[0]}, {formatTimeWithAMPM(item?.last_call_data?.created_at?.split(" ")[1])}</h5>
                                             <div className="contactTags">
