@@ -1,5 +1,3 @@
-
-
 @media (max-device-width: 1500px) {
 
     /* .formRow.col-xl-3 {
@@ -14,18 +12,20 @@
     }
 
 }
-@media (max-width: 1575px){
-    .mainContentApp .contactListItem h5{
+
+@media (max-width: 1575px) {
+    .mainContentApp .contactListItem h5 {
         max-width: 200px;
     }
 }
+
 @media (max-device-width: 2250px) {
-   
+
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         /* grid-template-columns: repeat(2, 177px); */
-      }
-      
+    }
+
 
 }
 
@@ -33,19 +33,22 @@
 
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      }
-      
+    }
+
 
 }
-@media ( max-width: 1199px){
+
+@media (max-width: 1199px) {
     .mainContentApp .webrtc_newMessageUi .tabLink {
         padding: 10px 10px;
     }
-    .webrtc_newMessageUi{
+
+    .webrtc_newMessageUi {
         overflow: hidden;
         position: relative;
     }
-    .callDashParkedCalls.messageDower.absolutePanel{
+
+    .callDashParkedCalls.messageDower.absolutePanel {
         position: absolute;
         right: 0;
         box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
@@ -53,10 +56,12 @@
         bottom: 0;
         z-index: 999;
     }
-    .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
+
+    .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn {
         left: -15px !important;
     }
-    .smBlock{
+
+    .smBlock {
         display: block !important;
     }
 }
@@ -70,45 +75,50 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
-  
+
     /* table th {
         text-wrap: nowrap;
     } */
 
-    
-element.style {
-    --progress: 0;
-}
-.circular-progress {
-    --size: 208px !important;
-    --stroke-width: 25px;
-   
-}
 
-.mainContent .circularProgressWrapper {
-   
-    height: 209px !important;
-    width: 209px !important;
-   
-}
-.webrtc_newMessageUi{
-    overflow: hidden;
-    position: relative;
-}
-.callDashParkedCalls.messageDower.absolutePanel{
-    position: absolute;
-    right: 0;
-    box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
-    top: 0;
-    bottom: 0;
-    z-index: 999;
-}
-.callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
-    left: -15px !important;
-}
-.smBlock{
-    display: block !important;
-}
+    element.style {
+        --progress: 0;
+    }
+
+    .circular-progress {
+        --size: 208px !important;
+        --stroke-width: 25px;
+
+    }
+
+    .mainContent .circularProgressWrapper {
+
+        height: 209px !important;
+        width: 209px !important;
+
+    }
+
+    .webrtc_newMessageUi {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .callDashParkedCalls.messageDower.absolutePanel {
+        position: absolute;
+        right: 0;
+        box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
+        top: 0;
+        bottom: 0;
+        z-index: 999;
+    }
+
+    .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn {
+        left: -15px !important;
+    }
+
+    .smBlock {
+        display: block !important;
+    }
 }
 
 
@@ -272,6 +282,12 @@ element.style {
     .call_dCard {
         min-height: 110px;
     }
+
+
+    .messageInterCall {
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+    }
 }
 
 @media (max-width: 1099px) {
@@ -280,6 +296,7 @@ element.style {
     }
 
 }
+
 /* 
 @media (max-width: 1024px) {
     .customRow {
@@ -444,6 +461,7 @@ element.style {
     .mainContent .itemWrapper.accordion-item {
         max-height: max-content;
     }
+
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }

@@ -443,15 +443,21 @@ const WebrtcWrapper = () => {
   }
 
   useEffect(() => {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
     if (interCallMinimize) {
       setInterCallSize({ width: "100%", height: "100%" });
-      setInterCallPosition({ x: 650, y: 61 });
+      setInterCallPosition({ x: screenWidth <= 1366 ? 0 : 650, y: screenWidth <= 1366 ? 0 : 61 });
     } else if (!interCallMinimize) {
       setInterCallSize({
         width: 200,
         height: 200,
       });
-      setInterCallPosition({ x: 220, y: 450 });
+      setInterCallPosition({
+        x: screenWidth - 300,
+        y: screenHeight - (screenWidth <= 1366 ? 300 : 420),
+      });
     }
   }, [interCallMinimize]);
   return (
@@ -867,6 +873,7 @@ const WebrtcWrapper = () => {
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
           disableDragging={interCallMinimize}
           enableResizing={false}
+          className="messageInterCall"
         >
           <div
             style={{
