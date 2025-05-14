@@ -2079,9 +2079,6 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse4"
-                          style={{
-                            borderBottom: "1px solid var(--border-color)",
-                          }}
                         >
                           {onlineUser.map((item) => {
                             return (
