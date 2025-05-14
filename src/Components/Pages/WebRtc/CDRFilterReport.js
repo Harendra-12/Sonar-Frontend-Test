@@ -713,6 +713,7 @@ function CdrFilterReport({ page }) {
       value: data,
       label: data
     }))
+    optionsCol.shift()
     setColumnsOptions(optionsCol)
     setColumnOriginalSequence(columns)
   }, [showKeys, cdr?.data?.length])
@@ -1651,7 +1652,9 @@ function CdrFilterReport({ page }) {
                                           })}
                                           {page !== "billing" && (
                                             <>
-                                              <td>
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Block") &&
+                                                <td>
                                                 {item["Call-Direction"] ===
                                                   "inbound" ||
                                                   item["Call-Direction"] ===
@@ -1700,7 +1703,10 @@ function CdrFilterReport({ page }) {
                                                   ""
                                                 )}
                                               </td>
-                                              <td>
+                                              }
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Note") && 
+                                                <td>
                                                 <button
                                                   effect="ripple"
                                                   className={`tableButton ms-0`}
@@ -1717,7 +1723,10 @@ function CdrFilterReport({ page }) {
                                                   </Tippy>
                                                 </button>
                                               </td>
-                                              <td>
+                                              }
+                                              {
+                                                filteredColumnForTable?.find((data) => data?.key == "Duplicate") && 
+                                                <td>
                                                 {item?.duplicated == 1 && (
                                                   <button
                                                     className={`tableButton edit ms-0`}
@@ -1732,7 +1741,7 @@ function CdrFilterReport({ page }) {
                                                     </Tippy>
                                                   </button>
                                                 )}
-                                              </td>
+                                              </td>}
                                             </>
                                           )}
                                         </tr>
