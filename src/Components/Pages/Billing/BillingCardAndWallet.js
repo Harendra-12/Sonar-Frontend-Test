@@ -10,6 +10,7 @@ import EmptyPrompt from '../../Loader/EmptyPrompt';
 const BillingCardAndWallet = () => {
     const [loading, setLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
+    const [refreshState, setRefreshState] = useState(false)
     const navigate = useNavigate();
     const allCardTransactions = useSelector((state) => state.allCardTransactions);
     const allWaletTransactions = useSelector((state) => state.allWaletTransactions);
@@ -17,41 +18,47 @@ const BillingCardAndWallet = () => {
 
     useEffect(() => {
         if (!allCardTransactions && !allWaletTransactions) {
-            getAllPaymentsData();
-            getWalletTransacData();
+            setRefreshState(true);
+            const shouldLoad = true
+            getAllPaymentsData(shouldLoad);
+            getWalletTransacData(shouldLoad);
         }
     }, [pageNumber]);
 
     // Get All Payment Logs
-    async function getAllPaymentsData() {
-        setLoading(true);
+    async function getAllPaymentsData(shouldLoad) {
+        if (shouldLoad) setLoading(true);
         const apiData = await generalGetFunction(`/payments/all?page=${pageNumber}`);
         if (apiData?.status) {
             setLoading(false);
+            setRefreshState(false);
             dispatch({
                 type: "SET_ALLCARDTRANSACTIONS",
                 allCardTransactions: apiData.data,
             });
         } else {
             setLoading(false);
+            setRefreshState(false);
             navigate(-1);
         }
     }
 
     // Get All Wallet Transactions
-    async function getWalletTransacData() {
-        setLoading(true);
+    async function getWalletTransacData(shouldLoad) {
+        if (shouldLoad) setLoading(true);
         const apiData = await generalGetFunction(
             `/transaction/wallet?page=${pageNumber}`
         );
         if (apiData?.status) {
             setLoading(false);
+            setRefreshState(false)
             dispatch({
                 type: "SET_ALLWALLETTRANSACTIONS",
                 allWaletTransactions: apiData.data,
             });
         } else {
             setLoading(false);
+            setRefreshState(false)
             navigate(-1);
         }
     }
@@ -85,6 +92,13 @@ const BillingCardAndWallet = () => {
         getWalletTransacData();
     }
 
+    const handleRefreshBtnClicked = () => {
+        setRefreshState(true)
+        const shouldLoad = false
+        getAllPaymentsData(shouldLoad);
+        getWalletTransacData(shouldLoad);
+    }
+
     return (
         <>
             <main className="mainContent">
@@ -99,7 +113,21 @@ const BillingCardAndWallet = () => {
                                         <div className="col-12">
                                             <div className="heading">
                                                 <div className="content">
-                                                    <h4>All Transactions</h4>
+                                                    <h4>All Transactions {" "}
+                                                        <button
+                                                            className="clearButton"
+                                                            onClick={handleRefreshBtnClicked}
+                                                            disabled={refreshState}
+                                                        >
+                                                            <i
+                                                                className={
+                                                                    refreshState
+                                                                        ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                        : "fa-regular fa-arrows-rotate fs-5"
+                                                                }
+                                                            ></i>
+                                                        </button>
+                                                    </h4>
                                                     <p>
                                                         You can see list of all transactions made using your
                                                         card & wallet
@@ -119,7 +147,7 @@ const BillingCardAndWallet = () => {
                                                             <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
-                                                    <button
+                                                    {/* <button
                                                         effect="ripple"
                                                         className="panelButton"
                                                         onClick={handleRefresh}
@@ -133,7 +161,7 @@ const BillingCardAndWallet = () => {
                                                                     } `}
                                                             ></i>
                                                         </span>
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>

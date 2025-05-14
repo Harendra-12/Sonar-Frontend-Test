@@ -46,6 +46,7 @@ function Roles() {
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
   const [newAddedRoleId, setNewAddedRoleId] = useState(null);
+  const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
@@ -338,6 +339,11 @@ function Roles() {
       [item]: newParentChecked,
     });
   };
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+  }
+
   return (
     <>
       <style>
@@ -364,7 +370,22 @@ function Roles() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>List of Roles</h4>
+                        <h4>
+                          List of Roles{" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+
+                        </h4>
                         <p>Edit existing user roles or add new ones.</p>
                       </div>
                       <div className="buttonGroup">

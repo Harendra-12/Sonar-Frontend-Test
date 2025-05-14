@@ -29,25 +29,32 @@ const CallBlocking = () => {
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
+  const [refreshState, setRefreshState] = useState(false)
 
-  useEffect(() => {
-    setLoading(true);
-    const getRingGroupDashboardData = async () => {
-      if (account && account.id) {
-        const apidata = await generalGetFunction(
-          `/spam/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
-        );
-        if (apidata?.status) {
-          setCallBlock(apidata.data);
-          setLoading(false);
-        } else {
-          navigate("/");
-        }
+  const getRingGroupDashboardData = async (shouldLoad) => {
+    if (account && account.id) {
+      if (shouldLoad) setLoading(true);
+      const apidata = await generalGetFunction(
+        `/spam/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+      );
+      if (apidata?.status) {
+        setCallBlock(apidata.data);
+        setLoading(false);
+        setRefreshState(false)
       } else {
         navigate("/");
+        setRefreshState(false)
       }
-    };
-    getRingGroupDashboardData();
+    } else {
+      navigate("/");
+      setRefreshState(false)
+    }
+  };
+
+  useEffect(() => {
+    setRefreshState(true)
+    const shouldLoad = true;
+    getRingGroupDashboardData(shouldLoad);
   }, [pageNumber, itemsPerPage, debouncedSearchTerm])
 
   // Add number to block list
@@ -93,6 +100,12 @@ const CallBlocking = () => {
     }
   }
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getRingGroupDashboardData(shouldLoad);
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -105,7 +118,21 @@ const CallBlocking = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Block List</h4>
+                        <h4>Block List {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>You can see all list of blocked numbers</p>
                       </div>
                       <div className="buttonGroup">

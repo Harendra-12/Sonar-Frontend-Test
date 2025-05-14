@@ -104,7 +104,12 @@ function SmsChat({ setLoading, loading, did }) {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"SMS"} loading={iconLoading} setLoading={setIconLoading} refreshApi={getAllSMSData} />
+                <HeaderApp
+                  title={"SMS"}
+                  loading={iconLoading}
+                  setLoading={setIconLoading}
+                  refreshApi={getAllSMSData}
+                />
               </div>
               <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0px 10px" }}>

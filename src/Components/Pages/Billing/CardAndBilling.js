@@ -48,6 +48,7 @@ function CardAndBilling() {
   const [autoPayAmount, setAutoPayAmount] = useState("");
   const [autoPayStatus, setAutoPayStatus] = useState("enable");
   const [autoPaymentFetchData, setAutoPaymentFetchData] = useState(null)
+  const [refreshState, setRefreshState] = useState(false)
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -57,6 +58,23 @@ function CardAndBilling() {
   const handleRechargePopup = (value) => {
     setRechargePopUp(value);
   };
+
+  // Getting auto pay details
+  async function getAutopayData(shouldLoad) {
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction("/auto-balance")
+    if (apiData.status && apiData.data) {
+      setAutoPayThreshold(apiData.data?.threshold);
+      setAutoPayAmount(apiData.data?.amount);
+      setAutoPayStatus(apiData.data?.status)
+      setLoading(false);
+      setRefreshState(false)
+      setAutoPaymentFetchData(apiData.data)
+    } else {
+      setLoading(false);
+      setRefreshState(false)
+    }
+  }
 
   useEffect(() => {
     if (billingListRefresh === 0 && cardListRefresh === 0) {
@@ -69,21 +87,9 @@ function CardAndBilling() {
         cardListRefresh: cardListRefresh + 1,
       });
     }
-    // Getting auto pay details
-    async function getAutopayData() {
-      setLoading(true);
-      const apiData = await generalGetFunction("/auto-balance")
-      if (apiData.status && apiData.data) {
-        setAutoPayThreshold(apiData.data?.threshold);
-        setAutoPayAmount(apiData.data?.amount);
-        setAutoPayStatus(apiData.data?.status)
-        setLoading(false);
-        setAutoPaymentFetchData(apiData.data)
-      } else {
-        setLoading(false);
-      }
-    }
-    getAutopayData()
+    setRefreshState(true)
+    const shouldLoad = true;
+    getAutopayData(shouldLoad)
   }, [])
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -401,6 +407,13 @@ function CardAndBilling() {
       toast.error(apiData.message);
     }
   }
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getAutopayData(shouldLoad)
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -414,7 +427,21 @@ function CardAndBilling() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Billing & Payment Details</h4>
+                        <h4>Billing & Payment Details {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>Here you can see all the details related to your card and wallet</p>
                       </div>
                       <div className="buttonGroup">
@@ -565,7 +592,7 @@ function CardAndBilling() {
                                 </div>
                                 <div className="col ">
                                   <Tippy content="Click to add balance!">
-                                    <button className="tableButton edit ms-auto" style={{ width: 30, height: 30,  }} onClick={() => setRechargePopUp(true)}>
+                                    <button className="tableButton edit ms-auto" style={{ width: 30, height: 30, }} onClick={() => setRechargePopUp(true)}>
                                       <i className="fa-solid fa-dollar" />
                                     </button>
                                   </Tippy>
@@ -643,18 +670,18 @@ function CardAndBilling() {
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
                                                   <input type="checkbox"
-                                                   checked={item.default}
-                                                   onChange={(e) => {
-                                                     if (e.target.checked) {
-                                                       setSelectedCardId(item.id);
-                                                       setCardConfirmationPopUp(true);
-                                                       setDisableCard(false);
-                                                     } else {
-                                                       setSelectedCardId(item.id);
-                                                       setCardConfirmationPopUp(true);
-                                                       setDisableCard(true);
-                                                     }
-                                                   }}
+                                                    checked={item.default}
+                                                    onChange={(e) => {
+                                                      if (e.target.checked) {
+                                                        setSelectedCardId(item.id);
+                                                        setCardConfirmationPopUp(true);
+                                                        setDisableCard(false);
+                                                      } else {
+                                                        setSelectedCardId(item.id);
+                                                        setCardConfirmationPopUp(true);
+                                                        setDisableCard(true);
+                                                      }
+                                                    }}
                                                     id="showAllCheck"
                                                   />
                                                   <span></span>
@@ -770,35 +797,35 @@ function CardAndBilling() {
                                                 </label> */}
 
                                                 <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
-                                                  <input type="checkbox"
-                                                   checked={item.default}
-                                                   onChange={(e) => {
-                                                     if (e.target.checked) {
-                                                       setSelecetedBillingId(
-                                                         item.id
-                                                       );
-                                                       setSelectedCardId();
-                                                       setBillingConfirmationPopUp(
-                                                         true
-                                                       );
-                                                       setDisableBilling(false);
-                                                     } else {
-                                                       setSelecetedBillingId(
-                                                         item.id
-                                                       );
-                                                       setSelectedCardId();
-                                                       setBillingConfirmationPopUp(
-                                                         true
-                                                       );
-                                                       setDisableBilling(true);
-                                                     }
-                                                   }}
-                                                    id="showAllCheck"
-                                                  />
-                                                  <span></span>
-                                                </label>
-                                              </div>
+                                                  <label class="cl-switch">
+                                                    <input type="checkbox"
+                                                      checked={item.default}
+                                                      onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                          setSelecetedBillingId(
+                                                            item.id
+                                                          );
+                                                          setSelectedCardId();
+                                                          setBillingConfirmationPopUp(
+                                                            true
+                                                          );
+                                                          setDisableBilling(false);
+                                                        } else {
+                                                          setSelecetedBillingId(
+                                                            item.id
+                                                          );
+                                                          setSelectedCardId();
+                                                          setBillingConfirmationPopUp(
+                                                            true
+                                                          );
+                                                          setDisableBilling(true);
+                                                        }
+                                                      }}
+                                                      id="showAllCheck"
+                                                    />
+                                                    <span></span>
+                                                  </label>
+                                                </div>
                                               </div>
                                             </div>
                                           </h2>
@@ -1174,129 +1201,129 @@ function CardAndBilling() {
                         </div>
                       </div>
                       <div className="col-12">
-                          <div className="row">
-                      <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
-                        <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                          <div className="heading d-flex justify-content-between align-items-center gap-1">
-                            <div className="">
-                              <h5>Last Transaction</h5>
-                              <p>On:{" "}
-                                {
-                                  accountDetails?.payments[0].transaction_date?.split(
-                                    " "
-                                  )[0]
-                                }
-                              </p>
-                            </div>
-                            <div className=""
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                downloadImage(
-                                  accountDetails?.payments[0].invoice_url,
-                                  `invoice${accountDetails?.payments[0].transaction_date?.split(
-                                    " "
-                                  )[0]
-                                  }`
-                                )
-                              }
-                            >
-                              <i
-                                className="fa-duotone fa-ballot-check"
-                                style={{
-                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
-                                }}
-                              ></i>
-                            </div>
-                          </div>
-                          <div className="data-number2">
-                            <div className="d-flex flex-wrap justify-content-between align-items-center">
-                              <div className="col-10">
-                                <h5>
-                                  ${" "}
-                                  {
-                                    accountDetails?.payments[0].amount_subtotal?.split(
-                                      "."
-                                    )[0]
-                                  }
-                                  .
-                                  <sub style={{ fontSize: 14 }}>
+                        <div className="row">
+                          <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
+                            <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                              <div className="heading d-flex justify-content-between align-items-center gap-1">
+                                <div className="">
+                                  <h5>Last Transaction</h5>
+                                  <p>On:{" "}
                                     {
-                                      accountDetails?.payments[0].amount_subtotal?.split(
-                                        "."
-                                      )[1]
+                                      accountDetails?.payments[0].transaction_date?.split(
+                                        " "
+                                      )[0]
                                     }
-                                  </sub>
-                                </h5>
-                                <p>
-                                  <b>Transaction ID</b>: #
-                                  {accountDetails?.payments[0].transaction_id}
-                                </p>
+                                  </p>
+                                </div>
+                                <div className=""
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    downloadImage(
+                                      accountDetails?.payments[0].invoice_url,
+                                      `invoice${accountDetails?.payments[0].transaction_date?.split(
+                                        " "
+                                      )[0]
+                                      }`
+                                    )
+                                  }
+                                >
+                                  <i
+                                    className="fa-duotone fa-ballot-check"
+                                    style={{
+                                      boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
+                                    }}
+                                  ></i>
+                                </div>
                               </div>
-                              <div className="col-2"></div>
+                              <div className="data-number2">
+                                <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                  <div className="col-10">
+                                    <h5>
+                                      ${" "}
+                                      {
+                                        accountDetails?.payments[0].amount_subtotal?.split(
+                                          "."
+                                        )[0]
+                                      }
+                                      .
+                                      <sub style={{ fontSize: 14 }}>
+                                        {
+                                          accountDetails?.payments[0].amount_subtotal?.split(
+                                            "."
+                                          )[1]
+                                        }
+                                      </sub>
+                                    </h5>
+                                    <p>
+                                      <b>Transaction ID</b>: #
+                                      {accountDetails?.payments[0].transaction_id}
+                                    </p>
+                                  </div>
+                                  <div className="col-2"></div>
+                                </div>
+                              </div>
                             </div>
                           </div>
+                          <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
+                            <div
+                              className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
+                              style={{ backgroundColor: "var(--ele-color2)" }}
+                            >
+                              <div className="heading d-flex justify-content-between align-items-center gap-1">
+
+                                <div className="">
+                                  <h5>Auto Pay Feature</h5>
+                                  {
+                                    !autoPaymentFetchData ? "" :
+                                      <p style={{ fontSize: '0.875rem', fontWeight: '600' }}>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
+                                  }
+                                </div>
+
+                                <div className="" style={{ cursor: "pointer" }}>
+                                  <i
+                                    className="fa-duotone fa-circle-dollar"
+                                    style={{
+                                      boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                      cursor: "default"
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              <div className="data-number2">
+                                <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                  {
+                                    !autoPaymentFetchData ?
+                                      <div className="col-2" >
+                                        <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
+                                          <span className="text">Add</span>
+                                          <span className="icon"><i className="fa-solid fa-edit" /></span>
+                                        </button>
+                                      </div> :
+                                      <>
+                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                          <h5>
+                                            $ {autoPaymentFetchData.amount}
+                                          </h5>
+                                          <p>
+                                            <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
+                                          </p>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                                          <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
+                                            <span className="text">Edit</span>
+                                            <span className="icon"><i className="fa-solid fa-pen" /></span>
+                                          </button>
+                                        </div>
+                                      </>
+                                  }
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
-                      </div>
-                      <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
-                        <div
-                          className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
-                          style={{ backgroundColor: "var(--ele-color2)" }}
-                        >
-                          <div className="heading d-flex justify-content-between align-items-center gap-1">
-
-                            <div className="">
-                              <h5>Auto Pay Feature</h5>
-                              {
-                                !autoPaymentFetchData ? "" :
-                                  <p style={{ fontSize: '0.875rem', fontWeight: '600' }}>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
-                              }
-                            </div>
-
-                            <div className="" style={{ cursor: "pointer" }}>
-                              <i
-                                className="fa-duotone fa-circle-dollar"
-                                style={{
-                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
-                                  cursor: "default"
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div className="data-number2">
-                            <div className="d-flex flex-wrap justify-content-between align-items-center">
-                              {
-                                !autoPaymentFetchData ?
-                                  <div className="col-2" >
-                                    <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
-                                      <span className="text">Add</span>
-                                      <span className="icon"><i className="fa-solid fa-edit" /></span>
-                                    </button>
-                                  </div> :
-                                  <>
-                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                                      <h5>
-                                        $ {autoPaymentFetchData.amount}
-                                      </h5>
-                                      <p>
-                                        <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
-                                      </p>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
-                                      <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
-                                        <span className="text">Edit</span>
-                                        <span className="icon"><i className="fa-solid fa-pen" /></span>
-                                      </button>
-                                    </div>
-                                  </>
-                              }
-
-
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                          </div>
                       </div>
                     </div>
                   </div>
@@ -1356,11 +1383,11 @@ function CardAndBilling() {
                 </div>
                 <div className="col-12 ps-0">
                   <h4 className="text-center text-orange mb-1">{disableCard ? "Warning" : "Confirmation"}!</h4>
-                 <p className="text-center">
-                 {disableCard
-                    ? "Are you sure you want to disable the selected card ?"
-                    : "Are you sure you want to activate the selected card ?"}
-                 </p>
+                  <p className="text-center">
+                    {disableCard
+                      ? "Are you sure you want to disable the selected card ?"
+                      : "Are you sure you want to activate the selected card ?"}
+                  </p>
                   <div className="mt-4 d-flex justify-content-center gap-2">
                     <button
                       className="panelButton m-0"

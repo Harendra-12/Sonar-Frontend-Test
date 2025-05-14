@@ -14,10 +14,11 @@ function DialerCdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false);
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
-  async function getAllData() {
-    setLoading(true);
+  async function getAllData(shouldLoad) {
+    if (shouldLoad) setLoading(true);
     try {
       const response = await generalGetFunction(`/campaign/cdr?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
       if (response.status) {
@@ -26,9 +27,11 @@ function DialerCdrReport() {
         toast.error(response.message);
       }
       setLoading(false);
+      setRefreshState(false)
     } catch (err) {
       console.log(err);
       setLoading(false);
+      setRefreshState(false)
     }
   }
 
@@ -43,8 +46,16 @@ function DialerCdrReport() {
 
     //   return () => clearTimeout(delay);
     // }
-    getAllData();
+    setRefreshState(true)
+    const shouldLoad = true
+    getAllData(shouldLoad);
   }, [pageNumber, itemsPerPage, debouncedSearchTerm])
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getAllData(shouldLoad);
+  }
 
   return (
     <main className="mainContent">
@@ -58,7 +69,21 @@ function DialerCdrReport() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Dialer CDR Reports</h4>
+                        <h4>Dialer CDR Reports {" "}
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>Here are all the Dialer CDR Reports</p>
                       </div>
                       <div className="buttonGroup">
@@ -73,12 +98,12 @@ function DialerCdrReport() {
                             <i className="fa-solid fa-caret-left" />
                           </span>
                         </button>
-                        <button className="panelButton" onClick={getAllData}>
+                        {/* <button className="panelButton" onClick={getAllData}>
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i className="fa-regular fa-arrows-rotate fs-5" />
                           </span>
-                        </button>
+                        </button> */}
                         <div className="dropdown">
                           <button className="panelButton" onClick={() => featureUnderdevelopment()}>
                             <span className="text">Export</span>

@@ -24,26 +24,32 @@ const ClickToCallListing = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const debouncedSearchTerm = useDebounce(searchValue, 1000);  
-  
-  useEffect(() => {
-    setLoading(true);
-    const getRingGroupDashboardData = async () => {
-      if (account && account.id) {
-        const apidata = await generalGetFunction(
-          `/click-to-call/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
-        );
-        if (apidata?.status) {
-          setCallBlock(apidata.data);
-          setLoading(false);
-        } else {
-          navigate("/");
-        }
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
+  const [refreshState, setRefreshState] = useState(false)
+
+  const getRingGroupDashboardData = async (shouldLoad) => {
+    if (account && account.id) {
+      if (shouldLoad) setLoading(true);
+      const apidata = await generalGetFunction(
+        `/click-to-call/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+      );
+      if (apidata?.status) {
+        setCallBlock(apidata.data);
+        setLoading(false);
+        setRefreshState(false)
       } else {
         navigate("/");
+        setRefreshState(false)
       }
-    };
-    getRingGroupDashboardData();
+    } else {
+      navigate("/");
+      setRefreshState(false)
+    }
+  };
+
+  useEffect(() => {
+    const shouldLoad = true;
+    getRingGroupDashboardData(shouldLoad);
   }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   async function handleDelete(id) {
@@ -61,6 +67,12 @@ const ClickToCallListing = () => {
     }
   }
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getRingGroupDashboardData(shouldLoad);
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -73,7 +85,21 @@ const ClickToCallListing = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Click to call widget List</h4>
+                        <h4>Click to call widget List
+                          <button
+                            className="clearButton"
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={
+                                refreshState
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>You can see all list of created widget</p>
                       </div>
                       <div className="buttonGroup">

@@ -14,6 +14,7 @@ import HeaderApp from "./HeaderApp";
 
 function Email() {
   const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -27,22 +28,32 @@ function Email() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    // setLoading(true);
+  const fetchData = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
     const result = await generalGetFunction("/mail-setting/all");
     if (result?.status) {
       setMailSettings(result.data);
-      // setLoading(false);
+      setLoading(false);
+      setRefreshState(false)
     } else {
-      // setLoading(false);
+      setLoading(false);
+      setRefreshState(false)
       // navigate("/");
     }
   };
+
+  useEffect(() => {
+    setRefreshState(true)
+    const shouldLoad = true;
+    fetchData(shouldLoad);
+  }, []);
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    fetchData(shouldLoad);
+  }
+
   return (
     <>
       <main
@@ -58,7 +69,11 @@ function Email() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <HeaderApp title={"E-Mail"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+                <HeaderApp
+                  title={"E-Mail"}
+                  loading={refreshState}
+                  setLoading={setRefreshState}
+                  refreshApi={handleRefreshBtnClicked} />
               </div>
               {/* <div className="col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>

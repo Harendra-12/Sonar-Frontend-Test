@@ -9,9 +9,14 @@ import SocialMediaStore from './SocialMediaStore';
 function AddOns() {
     const navigate = useNavigate();
     const [refreshData, setRefreshData] = useState(0);
+    const [refreshState, setRefreshState] = useState(false);
 
     const fetchAllData = () => {
         setRefreshData(refreshData + 1);
+    }
+
+    const handleRefreshBtnClicked = () => {
+        // setRefreshState(true)
     }
 
     return (
@@ -27,7 +32,21 @@ function AddOns() {
                                 <div className="col-12">
                                     <div className="heading">
                                         <div className="content">
-                                            <h4>Store</h4>
+                                            <h4>Store {" "}
+                                                <button
+                                                    className="clearButton"
+                                                    onClick={handleRefreshBtnClicked}
+                                                    disabled={refreshState}
+                                                >
+                                                    <i
+                                                        className={
+                                                            refreshState
+                                                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                                                : "fa-regular fa-arrows-rotate fs-5"
+                                                        }
+                                                    ></i>
+                                                </button>
+                                            </h4>
                                             <p>Select addons, plugins or upgrade your package here!</p>
                                         </div>
                                         <div className="buttonGroup">

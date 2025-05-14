@@ -80,32 +80,34 @@ const Users = () => {
   //   };
   // }, [userInput]);
 
+  async function getApi() {
+    const apiData =
+      await generalGetFunction(
+        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+      );
+    if (apiData?.status) {
+      setUser(apiData.data);
+      setFilterUser(apiData.data.data);
+      dispatch({
+        type: "SET_USERSBYACCOUNT",
+        usersByAccount: apiData.data,
+      });
+      setLoading(false);
+      setRefreshState(false);
+    } else {
+      // toast.error(apiData.message);
+      setLoading(false);
+      setRefreshState(false);
+      if (apiData?.response?.status === 403) {
+        setNoPermissionToRead(true);
+      }
+    }
+  }
+
   // Getting users data with pagination row per page and search filter
   useEffect(() => {
     setLoading(true);
-    async function getApi() {
-      const apiData =
-        await generalGetFunction(
-          `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
-        );
-      if (apiData?.status) {
-        setUser(apiData.data);
-        setFilterUser(apiData.data.data);
-        dispatch({
-          type: "SET_USERSBYACCOUNT",
-          usersByAccount: apiData.data,
-        });
-        setLoading(false);
-        setRefreshState(false);
-      } else {
-        // toast.error(apiData.message);
-        setLoading(false);
-        setRefreshState(false);
-        if (apiData?.response?.status === 403) {
-          setNoPermissionToRead(true);
-        }
-      }
-    }
+    setRefreshState(true);
     getApi();
   }, [
     account,
@@ -113,7 +115,6 @@ const Users = () => {
     pageNumber,
     itemsPerPage,
     debouncedSearchTerm,
-    refreshData,
     onlineFilter,
   ]);
 
@@ -216,6 +217,12 @@ const Users = () => {
     }
   }, [onlineUser])
 
+  const handleRefreshBtnClicked = () => {
+    setRefreshData(refreshData + 1);
+    setRefreshState(true);
+    getApi();
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -232,11 +239,12 @@ const Users = () => {
                           User List{" "}
                           <button
                             className="clearButton"
-                            onClick={() => { setRefreshState(true); setRefreshData(refreshData + 1); }}
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
                           >
                             <i
                               className={
-                                loading
+                                refreshState
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }

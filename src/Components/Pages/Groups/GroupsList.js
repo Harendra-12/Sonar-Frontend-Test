@@ -16,7 +16,7 @@ import { followCursor } from 'tippy.js';
 import { toast } from 'react-toastify';
 
 export default function GroupsList() {
-  const [refreshState, setRefreshState] = useState(0);
+  const [refreshState, setRefreshState] = useState(false);
   const [loading, setLoading] = useState(true);
   // const [pageLoading, setPageLoading] = useState(false);
   const navigate = useNavigate();
@@ -32,9 +32,10 @@ export default function GroupsList() {
   const [popUp, setPopUp] = useState(false);
   const [error, setError] = useState("");
 
-  const getGroupDashboardData = async () => {
+  const getGroupDashboardData = async (shouldLoad) => {
     if (account && account.id) {
-      setLoading(true);
+      if (shouldLoad)
+        setLoading(true);
       try {
         const apidata = await generalGetFunction(
           `/groups/all`
@@ -43,15 +44,18 @@ export default function GroupsList() {
           console.log(apidata.data)
           setGroups(apidata.data);
           setLoading(false);
+          setRefreshState(false)
         } else {
           if (apidata?.response?.status === 403) {
             // setNoPermissionToRead(true);
           }
           setLoading(false); // Ensure loading is set to false even on API error
+          setRefreshState(false)
         }
       } catch (error) {
         console.error("An error occurred while fetching group dashboard data:", error);
         setLoading(false);
+        setRefreshState(false)
       }
     } else {
       navigate("/");
@@ -60,8 +64,10 @@ export default function GroupsList() {
 
   // Getting groups data and also update user refresh to trigger user listing api call
   useEffect(() => {
-    getGroupDashboardData();
-  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
+    const shouldLoad = true
+    setRefreshState(true)
+    getGroupDashboardData(shouldLoad);
+  }, [pageNumber, itemsPerPage, searchValue]);
 
   async function handleDelete(id) {
     setPopUp(false);
@@ -101,6 +107,13 @@ export default function GroupsList() {
       }
     }
   }
+
+  const handleRefreshBtnClicked = () => {
+    setRefreshState(true)
+    const shouldLoad = false
+    getGroupDashboardData(shouldLoad);
+  }
+
   return (
     <div className="mainContent">
       <section id="phonePage">
@@ -117,12 +130,12 @@ export default function GroupsList() {
                           Group List
                           <button
                             className="clearButton"
-                            onClick={() => setRefreshState(refreshState + 1)}
-                            disabled={loading}
+                            onClick={handleRefreshBtnClicked}
+                            disabled={refreshState}
                           >
                             <i
                               className={
-                                loading
+                                refreshState
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }

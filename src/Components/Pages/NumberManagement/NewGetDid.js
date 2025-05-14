@@ -68,7 +68,8 @@ const NewGetDid = () => {
     } = useForm();
 
     useEffect(() => {
-        fetchAllCountry();
+        const shouldLoad = true;
+        fetchAllCountry(shouldLoad);
     }, [])
 
     // Fetch all countries
@@ -276,6 +277,40 @@ const NewGetDid = () => {
                                                     <>
                                                         <div style={{ padding: '0px 23px 20px' }}>
                                                             <form onSubmit={handleSubmit(onSubmit)} className={`mb-0 row`}>
+                                                                <div className={`formRow col-2`}>
+                                                                    <div
+                                                                        className="formLabel d-flex justify-content-between"
+                                                                        style={{ width: "100%" }}
+                                                                    >
+                                                                        <label htmlFor="quantity">Country</label>
+                                                                        {errors.country && (
+                                                                            <ErrorMessage text={errors.country.message} />
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="col-12">
+                                                                        <select className="formItem"
+                                                                            value={watch().country}
+                                                                            {...register("country")}
+                                                                        // disabled
+                                                                        >
+                                                                            {countryCode.length > 0 ? countryCode.map((item, key) => {
+                                                                                return (
+                                                                                    <option key={key} value={item?.country_code}>
+                                                                                        <div>
+                                                                                            <label>{item?.country} - {item?.country_code}</label>
+                                                                                        </div>
+                                                                                    </option>
+                                                                                )
+                                                                            }) : (
+                                                                                <option>No Country Found!</option>
+                                                                            )}
+                                                                        </select>
+                                                                        <label htmlFor="data" className="formItemDesc text-start">
+                                                                            Input your preferred country
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div />
                                                                 <div className="formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
                                                                     <div className="formLabel">
                                                                         <label htmlFor="searchType">Search Type</label>
