@@ -50,6 +50,7 @@ function Messages({
   setactivePage,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
+  calling,
   setCalling,
   setToUser,
   setMeetingPage,
@@ -133,6 +134,7 @@ function Messages({
   const accountDetails = useSelector((state) => state.accountDetails);
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
+  const [internalCallHistory, setInternalCallHistory] = useState([]);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -1551,6 +1553,26 @@ function Messages({
       toast.error(apiData?.errors?.name[0]);
     }
   };
+
+  const getAllInternalCallsHistory = async () => {
+    setLoading(true);
+    try {
+      const response = await generalGetFunction('/chatcall/calls');
+      if (response.status) {
+        const sortedArr = response.data.sort((a, b) => new Date(b.last_call_data.created_at) - new Date(a.last_call_data.created_at));
+        setInternalCallHistory(sortedArr);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getAllInternalCallsHistory();
+  }, [contactRefresh, calling])
+
   return (
     <>
       {addNewTagPopUp && (
@@ -2255,7 +2277,7 @@ function Messages({
 
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <ChatsCalls loading={loading} setLoading={setLoading} setMeetingPage={setMeetingPage} setToUser={setToUser} setCalling={setCalling} socketSendMessage={socketSendMessage} account={account} formatRelativeTime={formatRelativeTime} allAgents={allAgents} onlineUser={onlineUser} />
+                      <ChatsCalls loading={loading} setLoading={setLoading} setMeetingPage={setMeetingPage} setToUser={setToUser} setCalling={setCalling} socketSendMessage={socketSendMessage} account={account} formatRelativeTime={formatRelativeTime} allAgents={allAgents} onlineUser={onlineUser} callHistory={internalCallHistory} />
                     </div>
                   ) : (
                     <div className="tab-content">

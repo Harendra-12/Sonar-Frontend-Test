@@ -553,6 +553,7 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
             extensionFromCdrMessage={extensionFromCdrMessage}
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
+            calling={calling}
             setCalling={setCalling}
             setToUser={setToUser}
             setMeetingPage={setMeetingPage}

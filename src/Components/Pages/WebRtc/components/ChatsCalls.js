@@ -3,33 +3,13 @@ import { formatTimeWithAMPM, generalGetFunction } from '../../../GlobalFunction/
 import EmptyPrompt from '../../../Loader/EmptyPrompt';
 import Tippy from '@tippyjs/react';
 
-const ChatsCalls = ({ loading, setLoading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, allAgents, onlineUser }) => {
-    const [callHistory, setCallHistory] = useState([]);
-
-    useEffect(() => {
-        getAllInternalCallsHistory();
-    }, [])
-
-    const getAllInternalCallsHistory = async () => {
-        setLoading(true);
-        try {
-            const response = await generalGetFunction('/chatcall/calls');
-            if (response.status) {
-                setCallHistory(response.data);
-            }
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false)
-        }
-    }
+const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, allAgents, onlineUser, callHistory }) => {
 
     return (
         <>
             <div className="chatCalls_wrap">
                 {callHistory && callHistory.length > 0 ?
                     callHistory.map((item, index) => {
-
                         return (
                             <div className="contactListItem align-items-center" key={index}>
                                 <div className="row justify-content-start align-items-center">
