@@ -1551,7 +1551,6 @@ function Messages({
       toast.error(apiData?.errors?.name[0]);
     }
   };
-
   return (
     <>
       {addNewTagPopUp && (
@@ -1904,9 +1903,21 @@ function Messages({
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <span className="more">
-                                            +{item.tags?.length - 2}
-                                          </span>
+                                          <Tippy content={
+                                            <ul className='contactTags' style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', maxWidth: '200px', gap: '5px' }}>
+                                              {item.tags?.map((tag, key) =>
+                                                <li>
+                                                  <span data-id={key}>
+                                                    {tag.tag?.[0]?.name}
+                                                  </span>
+                                                </li>
+                                              )}
+                                            </ul>
+                                          } allowHTML={true}>
+                                            <span className="more">
+                                              +{item.tags?.length - 2}
+                                            </span>
+                                          </Tippy>
                                         )}
                                       </div>
                                     </div>
@@ -2099,7 +2110,7 @@ function Messages({
                                         <i className="fa-light fa-user fs-5"></i>
                                       )}
                                     </div>
-                                    <div className=" ms-3 ">
+                                    <div className="ms-3">
                                       <p>{item?.username}</p>
                                       <h5>{item?.extension.extension}</h5>
                                     </div>
@@ -2244,7 +2255,7 @@ function Messages({
 
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <ChatsCalls />
+                      <ChatsCalls loading={loading} setLoading={setLoading} setMeetingPage={setMeetingPage} setToUser={setToUser} setCalling={setCalling} socketSendMessage={socketSendMessage} account={account} formatRelativeTime={formatRelativeTime} allAgents={allAgents} onlineUser={onlineUser} />
                     </div>
                   ) : (
                     <div className="tab-content">
@@ -2840,7 +2851,7 @@ function Messages({
                                     from: account.id,
                                     to: recipient[1],
                                     room_id: `${account.id}-${recipient[1]}`,
-                                    call_type: "audio",
+                                    call_type: "video",
                                   });
                                 }}
                                 className="clearButton2"

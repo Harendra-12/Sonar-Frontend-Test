@@ -21,7 +21,7 @@ function EmptyPrompt(props) {
 
                 `}
             </style>
-            <div c lassName={props.nomargin ? '' : 'mt-5'}>
+            <div className={props.nomargin ? '' : 'mt-5'}>
                 <div className='imgWrapper loader' style={{
                     width: props.small
                         ? '80px' : '150px', height: props.small ? '80px' : '150px', width: props.bell
