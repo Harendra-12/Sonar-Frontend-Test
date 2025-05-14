@@ -24,65 +24,65 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function Members({ roomName, isAdmin, username, token, manualRecording, setManualRecording, isCurrentUserStartRecording, setIsCurrentUserStartRecording, setCalling }) {
     const room = useRoomContext();
-    const socketSendMessage = useSelector((state)=>state.socketSendMessage)
+    const socketSendMessage = useSelector((state) => state.socketSendMessage)
     const isRecording = useIsRecording();
     const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
     const avatarTracks = {}; // Store references for avatars
-    const internalCallAction = useSelector((state)=>state.internalCallAction)
-    const incomingCall = useSelector((state)=>state.incomingCall)
+    const internalCallAction = useSelector((state) => state.internalCallAction)
+    const incomingCall = useSelector((state) => state.incomingCall)
     const dispatch = useDispatch()
     const [participants, setParticipants] = useState([]);
     const [showParticipants, setParticipantList] = useState(false);
     const [processingRecRequest, setProcessingRecRequest] = useState(false);
     // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [searchTerm, setSearchTerm] = useState(''); // State to track the search input
-    const currentCallRoom = incomingCall.filter((item)=>item.room_id===roomName)
+    const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
     // Function to check if any user added in room and if added then update its value in incomingCall
-    useEffect(()=>{
-        if( internalCallAction && (internalCallAction?.hangup_cause!=="originator_cancel" || internalCallAction?.hangup_cause!=="success")){
-            const filterCall = incomingCall.filter((item)=>item.room_id===internalCallAction.room_id)
-            if(filterCall){
-                dispatch({type:"REMOVE_INCOMINGCALL",room_id:internalCallAction.room_id})
-                dispatch({type:"SET_INCOMINGCALL",incomingCall:{...filterCall[0],isOtherMember:true}})
+    useEffect(() => {
+        if (internalCallAction && (internalCallAction?.hangup_cause !== "originator_cancel" || internalCallAction?.hangup_cause !== "success")) {
+            const filterCall = incomingCall.filter((item) => item.room_id === internalCallAction.room_id)
+            if (filterCall) {
+                dispatch({ type: "REMOVE_INCOMINGCALL", room_id: internalCallAction.room_id })
+                dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...filterCall[0], isOtherMember: true } })
             }
         }
-       
-    },[internalCallAction])
+
+    }, [internalCallAction])
     // Function to manage avatars for all participants
     async function handleAvatarsForParticipants(room) {
         if (!room || !room.participants) return; // ✅ Ensure room and participants exist
-    
-        for (const participant of room.participants.values()) { 
+
+        for (const participant of room.participants.values()) {
             if (!hasVideoTrack(participant)) {
                 if (!avatarTracks[participant.identity]) {
                     avatarTracks[participant.identity] = await addAvatarVideoTrack(participant);
                 }
             }
         }
-    
+
         room.on("participantConnected", async (participant) => {
             if (!hasVideoTrack(participant)) {
                 avatarTracks[participant.identity] = await addAvatarVideoTrack(participant);
             }
         });
-    
+
         room.on("trackUnsubscribed", async (track, publication, participant) => {
             if (track.kind === "video" && !avatarTracks[participant.identity]) {
                 avatarTracks[participant.identity] = await addAvatarVideoTrack(participant);
             }
         });
-    
+
         room.on("trackSubscribed", async (track, publication, participant) => {
             if (track.kind === "video" && avatarTracks[participant.identity]) {
                 removeAvatar(participant);
             }
         });
-    
+
         room.on("activeSpeakersChanged", (speakers) => {
             Object.keys(avatarTracks).forEach((id) => {
                 avatarTracks[id].drawAvatar(false);
             });
-    
+
             speakers.forEach((speaker) => {
                 if (avatarTracks[speaker.identity]) {
                     avatarTracks[speaker.identity].drawAvatar(true);
@@ -94,55 +94,55 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
     // After disconnect this function will trigger to send socket data to other user about call state\
     useEffect(() => {
         const handleRoomDisconnect = () => {
-            console.log("Current room",currentCallRoom);
-            
-            if(currentCallRoom[0].isOtherMember){
+            console.log("Current room", currentCallRoom);
+
+            if (currentCallRoom[0].isOtherMember) {
                 socketSendMessage({
                     "action": "peercall",
                     "chat_call_id": currentCallRoom[0].id,
                     "hangup_cause": "success",
                     "room_id": roomName,
-                    "duration": 120, 
+                    "duration": 120,
                     "status": "ended"
-                  })
-                  dispatch({type:"REMOVE_INCOMINGCALL",room_id:roomName})
-            }else{
-                socketSendMessage( {
+                })
+                dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName })
+            } else {
+                socketSendMessage({
                     "action": "peercall",
                     "chat_call_id": currentCallRoom[0].id,
                     "hangup_cause": "originator_cancel",
                     "room_id": roomName,
                     "duration": 0,
                     "status": "ended"
-                  })
-                  dispatch({type:"REMOVE_INCOMINGCALL",room_id:roomName})
+                })
+                dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName })
             }
         };
-    
+
         room.on('disconnected', handleRoomDisconnect);
-    
+
         // Cleanup listener on unmount
         return () => {
             room.off('disconnected', handleRoomDisconnect);
         };
     }, [room]);
-    
+
     // Function to disconnect user when found condition to be true
     const handleDisconnect = async () => {
         try {
-            dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
-            dispatch({type:"REMOVE_INCOMINGCALL", room_id:roomName})
+            dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+            dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName })
             await room.disconnect();
             setCalling(false); // Update parent state if needed
         } catch (error) {
             console.error("Failed to disconnect from room:", error);
         }
     };
-    useEffect(()=>{
-        if(internalCallAction?.room_id===roomName && internalCallAction?.hangup_cause==="rejected" || internalCallAction?.hangup_cause==="success" || internalCallAction?.hangup_cause==="originator_cancel"){
+    useEffect(() => {
+        if (internalCallAction?.room_id === roomName && internalCallAction?.hangup_cause === "rejected" || internalCallAction?.hangup_cause === "success" || internalCallAction?.hangup_cause === "originator_cancel") {
             handleDisconnect()
         }
-    },[internalCallAction])
+    }, [internalCallAction])
     function hasVideoTrack(participant) {
         return Array.from(participant.videoTracks.values()).some((track) => track.isSubscribed);
     }
@@ -153,7 +153,7 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         canvas.width = 640;
         canvas.height = 480;
         const ctx = canvas.getContext("2d");
-    
+
         function drawAvatar(isActive = false) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = isActive ? "#ffcc00" : "#007bff"; // Yellow for active speaker
@@ -163,17 +163,17 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
             ctx.textAlign = "center";
             ctx.fillText(participant.name || "Guest", 320, 260); // Draw name
         }
-    
+
         drawAvatar(); // Initial avatar drawing
-    
+
         // Convert canvas to video stream
         const stream = canvas.captureStream(30);
         const track = stream.getVideoTracks()[0];
-    
+
         // Publish the avatar as a video track
         const localVideoTrack = await createLocalVideoTrack({ track });
         await participant.publishTrack(localVideoTrack);
-    
+
         return { canvas, drawAvatar };
     }
 
@@ -270,7 +270,7 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                 customDiv.className = 'custom-controls-container';
                 customDiv.style.display = 'flex';
                 customDiv.style.alignItems = 'center';
-                customDiv.style.marginRight = '10px';
+                // customDiv.style.marginRight = '10px';
                 customDiv.style.gap = '10px'; // Add spacing between buttons
 
                 // Create the "All Members" button
@@ -306,13 +306,13 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         }
     }, [isRecording, processingRecRequest]);
 
-     // Use a separate useEffect to dynamically update the "Record" button text based on isRecording
-     useEffect(() => {
+    // Use a separate useEffect to dynamically update the "Record" button text based on isRecording
+    useEffect(() => {
         const allMembersButton = document.querySelector('.all-members-button');
-        
-        if (allMembersButton ) {
+
+        if (allMembersButton) {
             console.log("Insideee");
-            
+
             allMembersButton.style.backgroundColor = showParticipants ? '#373737' : '#1e1e1e';
         }
     }, [showParticipants]);
@@ -349,25 +349,25 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         <>
             {showParticipants && (
                 <div className="participantMemberList">
-                    <div className="mb-3">
-                        <button
-                            className="clearButton2 xl ms-auto"
-                            onClick={() => setParticipantList(false)}
-                        >
-                            <i className={`fa-regular fa-xmark`}></i>
-                        </button>
-                    </div>
-                    <div>
-                        <div
+                    <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
+                         <div
                             style={{
                                 color: '#000',
                                 fontSize: '14px',
                                 fontWeight: '600',
-                                marginBottom: '16px',
                             }}
                         >
                             Meeting Participants
                         </div>
+                            <button
+                                className="clearButton2 xl ms-auto"
+                                onClick={() => setParticipantList(false)}
+                            >
+                                <i className={`fa-regular fa-xmark`}></i>
+                            </button>
+                    </div>
+                    <div>
+                       
                     </div>
                     <div className="col-12 mt-3">
                         <input
@@ -378,8 +378,10 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                             value={searchTerm} // Bind the input value to the state
                             onChange={(e) => setSearchTerm(e.target.value)} // Update the state on input change
                             style={{
-                                backgroundColor: 'transparent',
-                                color: '#f5f5f5',
+                                backgroundColor: '#f1f1f1',
+                                color: '#000',
+                                border: 'none',
+                                minHeight: '35px',
                             }}
                         />
                     </div>

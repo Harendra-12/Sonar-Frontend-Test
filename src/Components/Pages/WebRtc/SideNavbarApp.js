@@ -98,6 +98,13 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     }
   };
 
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleToggle = () => {
+    setIsVisible(!isVisible);
+  };
+
   return (
     <>
       {allLogOut && (
@@ -112,6 +119,71 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
         </style>
         <div id="sidenNavApp">
           <div className="sidenavItems">
+            <div class=" setting_wrap">
+              <div class=" setting_dropdown">
+                <button onClick={handleToggle}
+                  className=" text-white bg-transparent border-0 e position-relative"
+                  type='button'
+
+                >
+                  <i className="fa-regular fa-gears" />
+
+                </button>
+
+                {isVisible && (
+                  <div className="dropdown_menu" >
+                    <div class="p-2 header">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <p class="mb-1 fs-17 fw-medium">Media Settings</p>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <div className="mb-2">
+                        <label>Speaker:</label>
+                        <div class="progress-stacked">
+                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style={{ width: '45%' }}>
+                            <div class="progress-bar"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-2">
+                        <label>Ring Device:</label>
+                        <div class="progress-stacked">
+                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style={{ width: '35%' }}>
+                            <div class="progress-bar"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-2">
+                        <label>Microphone:</label>
+                        <div class="progress-stacked">
+                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style={{ width: '85%' }}>
+                            <div class="progress-bar"></div>
+                          </div>
+                        </div>
+
+                        {/* <h2 className="titleName">Basic Checkboxes</h2> */}
+                        <div class="basic-container mt-3">
+                          <div>
+                            <input type="checkbox" id="basic1" checked />
+                            <label for="basic1">Auto Gain Control</label>
+                          </div>
+                          <div>
+                            <input type="checkbox" id="basic2" />
+                            <label for="basic2">Echo Cancellation</label>
+                          </div>
+                          <div>
+                            <input type="checkbox" id="basic3" />
+                            <label for="basic3">Noise Suppression</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <ul>
               <li className="mb-2">
                 <div type="button" className="newHeader">
@@ -135,6 +207,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       <p>Ext- {extension}</p>
                     </div>
                   </button>
+
+
+
+
                   {/* <ul className="dropdown-menu">
                     <li
                       onClick={() => {
@@ -377,7 +453,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </ul>
           </div>
         </div>
-      </section>
+      </section >
     </>
   );
 }

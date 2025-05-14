@@ -834,16 +834,19 @@
     background-color: var(--lk-danger) !important;
     color: #fff !important;
     font-size: 14px !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
 }
 
 .lk-participant-tile .lk-participant-placeholder {
     background: linear-gradient(90deg, rgb(233 237 255) 0%, rgb(237 255 243) 50%, rgb(255 253 239) 100%) !important;
 }
-.lk-participant-tile .lk-participant-placeholder svg path{
+
+.lk-participant-tile .lk-participant-placeholder svg path {
     fill: #000;
 }
 
-.membersName{
+.membersName {
     width: 100px;
     height: 100px;
     border-radius: 50%;
@@ -851,30 +854,146 @@
     justify-content: center;
     align-items: center;
 }
-.lk-participant-name{
+
+.lk-participant-name {
     text-transform: capitalize;
 }
 
-.lk-button[aria-pressed=true], [aria-pressed=true].lk-start-audio-button, [aria-pressed=true].lk-chat-toggle, [aria-pressed=true] {
-    background-color: #f9f9f9 !important;
+.lk-button[aria-pressed=true],
+[aria-pressed=true].lk-start-audio-button,
+[aria-pressed=true].lk-chat-toggle,
+[aria-pressed=true] {
+    background-color: #f5f7ff !important;
     color: #242424 !important;
-  font-size: 14px !important;
-    padding-inline: 10px;
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+    border-radius: 5px !important;
 }
 
-.lk-button, .lk-start-audio-button, .lk-chat-toggle {
-    background-color: #f9f9f9 !important;
+.lk-button,
+.lk-start-audio-button,
+.lk-chat-toggle {
+    background-color: #f5f7ff !important;
     color: #242424 !important;
-   font-size: 14px !important;
-    padding-inline: 10px;
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+    border-radius: 5px !important;
 }
 
-.lk-room-container .participantMemberList .noScrollbar{
-    height: calc(100% - 246px);
+.lk-room-container .participantMemberList .noScrollbar {
+    height: calc(100% - 190px);
 
 }
+
 .lk-room-container .participantMemberList {
     padding: 15px;
     background: #e5e5e5;
     color: #000;
+}
+
+.lk-button.lk-button-menu {
+    padding-inline: 10px;
+    border-radius: 0px 0.5rem 0.5rem 0px !important;
+}
+
+.lk-device-menu {
+    background-color: rgb(255 255 255);
+}
+
+.lk-list li .lk-button {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.lk-media-device-select [data-lk-active=true]>.lk-button {
+    color: var(--lk-accent-fg) !important;
+    background-color: var(--lk-accent-bg) !important;
+}
+
+.lk-button-group>.lk-button:first-child,
+.lk-button-group>.lk-start-audio-button:first-child,
+.lk-button-group>.lk-chat-toggle:first-child,
+.lk-button-group>.lk-disconnect-button:first-child {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+/* .setting_menu{
+    min-width: 200px;
+    padding: 10px;
+} */
+.setting_wrap{
+     position: absolute;
+    right: 0;
+    top: 30px;
+}
+.setting_dropdown {
+    position: relative;
+  
+}
+.dropdown_menu{
+    max-width: 400PX;
+    background-color: #FFF;
+    border-radius: 8px;
+    padding: 10px;
+    transform: translate(50px, 50px);
+}
+
+.progress-stacked {
+    height: 8px;
+}
+
+/* Basic Checkboxes */
+h2.titleName {
+    margin-top: 0;
+    padding-bottom: 0.75rem;
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.basic-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.basic-container input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #9CA3AF;
+    border-radius: 6px;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.basic-container input[type="checkbox"]:checked {
+    border-color: #6366f1;
+    background-color: #6366f1;
+}
+
+.basic-container input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
+.basic-container label {
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.basic-container input[type="checkbox"]:checked+label {
+    color: #6366f1;
 }
