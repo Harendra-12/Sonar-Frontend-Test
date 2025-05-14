@@ -265,21 +265,22 @@ function Messages({
         }));
 
         setContact(updatedFilteredData);
-        if (!extensionFromCdrMessage) {
-          const profile_img = allAgents?.find(
-            (data) => data?.id == apiData?.data[0]?.id
-          )?.profile_picture;
-          if (!isAssignmentClicked)
-            setRecipient([
-              apiData.data[0].extension,
-              apiData.data[0].id,
-              "singleChat",
-              apiData?.data[0]?.name,
-              apiData?.data[0]?.email,
-              profile_img,
-            ]);
-          setSelectedChat("singleChat");
-        }
+        // ENABLE THIS FOR CHAT SELECTED ON PAGE LOAD
+        // if (!extensionFromCdrMessage) {
+        //   const profile_img = allAgents?.find(
+        //     (data) => data?.id == apiData?.data[0]?.id
+        //   )?.profile_picture;
+        //   if (!isAssignmentClicked)
+        //     setRecipient([
+        //       apiData.data[0].extension,
+        //       apiData.data[0].id,
+        //       "singleChat",
+        //       apiData?.data[0]?.name,
+        //       apiData?.data[0]?.email,
+        //       profile_img,
+        //     ]);
+        //   setSelectedChat("singleChat");
+        // }
         setLoading(false);
       }
       if (tagData?.status) {
@@ -2681,6 +2682,7 @@ function Messages({
                                   </span>
                                   <ul
                                     className="dropdown-menu p-3"
+                                    style={{ maxWidth: '500px' }}
                                     ref={tagDropdownRef}
                                   >
                                     {/* <div className="tagBox">
@@ -2700,7 +2702,7 @@ function Messages({
                                         }
                                       />
                                     </div>
-                                    <div className="contactTags my-2">
+                                    <div className="contactTags my-2" style={{ width: '100%', flexWrap: 'wrap', gap: '5px' }}>
                                       {filteredTags?.map((item, key) => {
                                         return (
                                           <span
