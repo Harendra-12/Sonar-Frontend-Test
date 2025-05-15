@@ -357,7 +357,7 @@ function Call({
               </div>
               {!isCustomerAdmin ? (
                 <div
-                  className="col-4  ms-xl-3"
+                  className="col-5 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   {/* <h4>
@@ -369,14 +369,16 @@ function Call({
                   </h4> */}
                   <div className="d-flex align-items-center">
                     {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
-                    <h4 className="mb-0">
-                      {displayName
-                        ? displayName
-                        : item.caller_user
-                          ? item.caller_user.username
-                          : "USER XYZ"}
-                    </h4>
-                    {item.tag && <h5>({item.tag})</h5>}
+                    <div>
+                      <h4 className="mb-0">
+                        {displayName
+                          ? displayName
+                          : item.caller_user
+                            ? item.caller_user.username
+                            : "USER XYZ"}
+                      </h4>
+                      {item.tag && <h5>({item.tag})</h5>}
+                    </div>
                   </div>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
@@ -681,18 +683,18 @@ function Call({
         }}
       >
         <section className="callPage">
-              <div className=" ps-xl-0 stickyHeader">
-                <HeaderApp
-                  title={"Calls"}
-                  loading={isCallLoading}
-                  setLoading={setIsCallLoading}
-                  refreshApi={handleRefresh}
-                />
-              </div>
+          <div className=" ps-xl-0 stickyHeader">
+            <HeaderApp
+              title={"Calls"}
+              loading={isCallLoading}
+              setLoading={setIsCallLoading}
+              refreshApi={handleRefresh}
+            />
+          </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
 
-              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight" style={{overflow: "hidden"}}>
+              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight" style={{ overflow: "hidden" }}>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
