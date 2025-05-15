@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
@@ -16,7 +16,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     setCalling(true);
     setTimeout(() => {
       dispatch({type:"REMOVE_INCOMINGCALL",room_id:item.room_id})
-      dispatch({type:"SET_INCOMINGCALL",incomingCall:{...item,recieved:true}})
+      dispatch({type:"SET_INCOMINGCALL",incomingCall:{...item,recieved:true,isOtherMember:true}})
 
     }, 1000);
 
@@ -45,6 +45,15 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       status: "ended",
     });
   }
+
+  useEffect(()=>{
+    incomingCall.map((item)=>{
+      if(internalCallAction?.room_id === item.room_id && internalCallAction?.hangup_cause==="originator_cancel" ){
+        dispatch({type:"SET_INTERNALCALLACTION",internalCallAction:null})
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item.room_id });
+      }
+    })
+  },[internalCallAction])
 
   console.log("IncominCall data",incomingCall)
   return (

@@ -144,6 +144,7 @@ function OngoingCall({
         try {
           const options = session.sessionDescriptionHandlerOptionsReInvite || {};
           options.hold = false;
+          
           session.sessionDescriptionHandlerOptionsReInvite = options;
 
           await session.invite({
@@ -201,16 +202,20 @@ function OngoingCall({
 
   // Logic to toggle mute and unmute
   const muteCall = (type) => {
+    console.log("GlobalSession", globalSession);
+    const currentSession = globalSession.find((item) => item.id === session.id);
+    
     if (canMute) {
-      if (type === "mute") {
+      if (type === "mute" && currentSession.state !== "OnHold") {
         mute();
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
+            
             item.id === session.id ? { ...item, state: "Mute" } : item
           ),
         });
-      } else if (type === "unmute") {
+      } else if (type === "unmute" && currentSession.state !== "OnHold") {
         unmute();
         dispatch({
           type: "SET_SESSIONS",
@@ -829,7 +834,7 @@ function OngoingCall({
                   <div className="mt-4" />
                   <p className="text-center ">Where does it come from</p>
                   <div className="mt-4 d-flex justify-content-center align-items-center">
-                    <Tippy content="Transfer call" placement="top" visible={true}
+                    <Tippy content="Complete Transfer" placement="bottom" visible={true}
                       trigger="manual" >
                       <button
                         className="appPanelButtonCaller "
