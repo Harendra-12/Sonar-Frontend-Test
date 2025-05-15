@@ -22,6 +22,7 @@ export default function AddGroupsList() {
   const [selectAll, setSelectAll] = useState(false);
   // const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const account = useSelector((state) => state.account);
+
   const navigate = useNavigate();
   const {
     register,
@@ -58,8 +59,8 @@ export default function AddGroupsList() {
   useEffect(() => {
     async function getUsers() {
       try {
-        const users = await generalGetFunction("/user/all");
-        setUsers([...users?.data?.data]);
+        const users = await generalGetFunction(`/user/search?account=${account.account_id}`);
+        setUsers(users?.data);
         setLoading(false);
       } catch (error) { }
     }

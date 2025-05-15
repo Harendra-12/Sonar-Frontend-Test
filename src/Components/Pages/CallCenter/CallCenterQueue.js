@@ -58,6 +58,14 @@ function CallCenterQueue() {
         setNoPermissionToRead(true);
       }
     }
+
+    // Refresh User API if user list is empty
+    if (usersData.length === 0) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
   };
 
   useEffect(() => {
