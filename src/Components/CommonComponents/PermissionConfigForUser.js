@@ -366,10 +366,8 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
   };
 
   const toggleAllColumnPermissions = (model, checked, rowKey) => {
-    console.log(`toggleAllColumnPermissions: checked=${checked}`);
     setRolePermissions(prev => {
       const newPermissions = { ...prev };
-      // Hardcode for 'View' or 'Edit' based on context
       const filteredRecords = model.table_records.filter(record =>
         rowKey.includes('view') ? record.action === 'view' : record.action === 'edit'
       );
@@ -540,14 +538,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                               type="checkbox"
                                               checked={checkedState}
                                               onChange={(e) => {
-                                                console.log(`Master Toggle Clicked: rowKey=${rowKey}, type=${row.type}, checked=${e.target.checked}`);
-                                                console.log(`toggleAllColumnPermissions defined: ${typeof toggleAllColumnPermissions}`);
-                                                console.log(`Calling toggleAllColumnPermissions with model, checked=${e.target.checked}, type=${row.type}`);
-                                                try {
-                                                  toggleAllColumnPermissions(model, e.target.checked, row.type);
-                                                } catch (error) {
-                                                  console.error(`Error in toggleAllColumnPermissions: rowKey=${rowKey}, type=${row.type}`, error);
-                                                }
+                                                toggleAllColumnPermissions(model, e.target.checked, row.type)
                                               }}
                                             />
                                           </div>
