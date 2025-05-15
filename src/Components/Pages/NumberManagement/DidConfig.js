@@ -169,7 +169,7 @@ const DidConfig = () => {
 
   const forwardStatus = watch("forward", "disabled");
 
-  const handleFormSubmit = handleSubmit(async (data) => {                
+  const handleFormSubmit = handleSubmit(async (data) => {
     if (data.usages === "" || data.usages === null) {
       data.action = null;
       data.usages = null;
@@ -230,7 +230,7 @@ const DidConfig = () => {
         delete payload.action;
         delete payload.usages;
       }
-      
+
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
         payload
@@ -246,9 +246,9 @@ const DidConfig = () => {
     }
   });
 
-/**
- * Function to open the add music popup and reset the value of hold_music in the form
- */
+  /**
+   * Function to open the add music popup and reset the value of hold_music in the form
+   */
   const handleAddMusic = () => {
     setValue("hold_music", "");
     setShowMusic(true);
@@ -893,6 +893,27 @@ const DidConfig = () => {
                                 </>
                               )}
                             </div>
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Tag Priority</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the type of tag you want to display
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              defaultValue="1"
+                              id="selectFormRow"
+                              {...register("tag_priority")}
+                            >
+                              <option value="prefix">Prefix</option>
+                              <option value="feature">Feature</option>
+                            </select>
                           </div>
                         </div>
                       </form>
