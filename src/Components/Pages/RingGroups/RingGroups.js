@@ -63,6 +63,14 @@ const RingGroups = () => {
       navigate("/");
       setRefreshState(false)
     }
+
+    // Refresh User API if user list is empty
+    if (usersData.length === 0) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
   };
 
   // Getting ringgroup data and also update user refresh to trigger user listing api call
