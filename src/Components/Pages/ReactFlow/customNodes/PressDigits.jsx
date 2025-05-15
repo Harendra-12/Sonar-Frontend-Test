@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import CustomHandle from "../CustomHandle";
-import { Position } from "@xyflow/react";
+import { Position, useReactFlow } from "@xyflow/react";
 
 const PressDigits = ({ id, data }) => {
   const [fields, setFields] = useState([]);
   const textAreaRefs = useRef({});
   const [isReadonly, setIsreadonly] = useState(false);
+  const { setEdges, getEdges } = useReactFlow();
 
   useEffect(() => {
     if (data.subNodes && data.subNodes.length > 0) {
@@ -38,13 +39,42 @@ const PressDigits = ({ id, data }) => {
   };
 
   const deleteField = (id) => {
+    console.log("Deleteing field:", id);
     const updatedFields = fields.filter((field) => field.id !== id);
     setFields(updatedFields);
     delete textAreaRefs.current[id];
     if (data.onUpdate) {
       data.onUpdate({ fields: updatedFields });
     }
+
+    // Remove any connected edges
+    const sourceHandleId = `source-${id}`;
+    setEdges((edges) =>
+      edges.filter(
+        (edge) => !(edge.sourceHandle === sourceHandleId && edge.source === id)
+      )
+    );
   };
+
+  // const deleteField = (id) => {
+  //   // Remove the field
+  //   const updatedFields = fields.filter((field) => field.id !== id);
+  //   setFields(updatedFields);
+  //   delete textAreaRefs.current[id];
+
+  //   // Remove any connected edges
+  //   const sourceHandleId = `source-${id}`;
+  //   setEdges((edges) =>
+  //     edges.filter(
+  //       (edge) => !(edge.sourceHandle === sourceHandleId && edge.source === id)
+  //     )
+  //   );
+
+  //   // Update parent data
+  //   if (data.onUpdate) {
+  //     data.onUpdate({ fields: updatedFields });
+  //   }
+  // };
 
   const handleChange = (id, newValue) => {
     const updatedFields = fields.map((field) =>
