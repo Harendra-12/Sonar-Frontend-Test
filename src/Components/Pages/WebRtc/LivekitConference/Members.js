@@ -270,7 +270,7 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                 customDiv.className = 'custom-controls-container';
                 customDiv.style.display = 'flex';
                 customDiv.style.alignItems = 'center';
-                customDiv.style.marginRight = '10px';
+                // customDiv.style.marginRight = '10px';
                 customDiv.style.gap = '10px'; // Add spacing between buttons
 
                 // Create the "All Members" button
@@ -349,7 +349,16 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
         <>
             {showParticipants && (
                 <div className="participantMemberList">
-                    <div className="mb-3">
+                    <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
+                        <div
+                            style={{
+                                color: '#000',
+                                fontSize: '14px',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Meeting Participants
+                        </div>
                         <button
                             className="clearButton2 xl ms-auto"
                             onClick={() => setParticipantList(false)}
@@ -358,16 +367,7 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                         </button>
                     </div>
                     <div>
-                        <div
-                            style={{
-                                color: 'rgb(194, 194, 194)',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                marginBottom: '16px',
-                            }}
-                        >
-                            Meeting Participants
-                        </div>
+
                     </div>
                     <div className="col-12 mt-3">
                         <input
@@ -378,8 +378,10 @@ function Members({ roomName, isAdmin, username, token, manualRecording, setManua
                             value={searchTerm} // Bind the input value to the state
                             onChange={(e) => setSearchTerm(e.target.value)} // Update the state on input change
                             style={{
-                                backgroundColor: 'transparent',
-                                color: '#f5f5f5',
+                                backgroundColor: '#f1f1f1',
+                                color: '#000',
+                                border: 'none',
+                                minHeight: '35px',
                             }}
                         />
                     </div>

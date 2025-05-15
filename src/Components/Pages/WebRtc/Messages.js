@@ -1712,7 +1712,7 @@ function Messages({
                 </div>
                 <div className="w-100">
                   <nav className="">
-                    <div className="nav nav-tabs">
+                    <div className="nav nav-tabs align-items-center">
                       <button
                         className={
                           activeTab === "all" ? "tabLink active" : "tabLink"
@@ -1720,7 +1720,7 @@ function Messages({
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        <i className="fa-regular fa-circle-dot "></i> All
+                        <i className="fa-regular fa-circle-dot "></i><span> All</span>
                         {Object.values(unreadMessage).reduce(
                           (acc, count) => acc + count,
                           0
@@ -1743,7 +1743,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-regular fa-user-tie"></i> Online
+                        <i className="fa-regular fa-user-tie"></i> <span>Online</span>
                       </button>
                       {/* <button
                         onClick={() => setActiveTab("tags")}
@@ -1763,7 +1763,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-regular fa-user-group"></i> Group
+                        <i className="fa-regular fa-user-group"></i> <span>Group</span>
                       </button>
                       <button
                         onClick={() => setActiveTab("call")}
@@ -1773,7 +1773,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-phone"></i> Calls
+                        <i class="fa-regular fa-phone"></i> <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -2360,7 +2360,8 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
-                                    className="formItem"
+                                    className="formItem "
+                                    
                                     placeholder="Search"
                                     name="name"
                                     value={searchQuery}
@@ -3480,7 +3481,7 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
-                                    className="formItem"
+                                    className="formItem searchStyle"
                                     placeholder="Search"
                                     name="name"
                                     value={searchQuery}

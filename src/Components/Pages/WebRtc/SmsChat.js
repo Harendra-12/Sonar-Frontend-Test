@@ -100,18 +100,13 @@ function SmsChat({ setLoading, loading, did }) {
       //       : "0",
       // }}
       >
-        <section className="callPage">
+        <section className="callPage sms__page">
+          <div className="ps-xl-0">
+            <HeaderApp title={"SMS"} loading={iconLoading} setLoading={setIconLoading} refreshApi={getAllSMSData} />
+          </div>
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
-                <HeaderApp
-                  title={"SMS"}
-                  loading={iconLoading}
-                  setLoading={setIconLoading}
-                  refreshApi={getAllSMSData}
-                />
-              </div>
-              <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
+            <div className="row webrtc_newMessageUi">
+              <div className="pb-0 col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0px 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -135,6 +130,7 @@ function SmsChat({ setLoading, loading, did }) {
                     name="Search"
                     id="headerSearch"
                     placeholder="Search"
+                    className="searchStyle"
                     onChange={() => featureUnderdevelopment()}
                   />
                 </div>
@@ -147,14 +143,14 @@ function SmsChat({ setLoading, loading, did }) {
                       {allSmsLogs?.map((item, index) => {
                         return (
                           <>
-                            <div data-bell="" className="callListItem incomingm" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
+                            <div data-bell="" className="callListItem incomingm wertc_iconBox border-0" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
                               <div className="row justify-content-between">
                                 <div className="col-xl-12 d-flex align-items-center">
                                   <div className="profileHolder">
                                     <i className="fa-light fa-user fs-5" />
                                   </div>
                                   <div
-                                    className="col-2 my-auto ms-2 ms-xl-3"
+                                    className="col-3 my-auto ms-2 ms-xl-3"
                                     style={{ cursor: "pointer" }}
                                   >
                                     <h4>{item?.from_did}</h4>
@@ -163,22 +159,23 @@ function SmsChat({ setLoading, loading, did }) {
                                     <i class={`fa-solid fa-circle-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: item?.delivery_status === 'rejected' ? 'var(--funky-boy4)' : "var(--ui-accent)" }}></i>
                                   </div>
                                   <div
-                                    className="col-2 my-auto ms-2 ms-xl-3"
+                                    className="col-3 my-auto ms-2 ms-xl-3"
                                     style={{ cursor: "pointer" }}
                                   >
                                     <h4>{item?.to_did}</h4>
-                                  </div>
-                                  <div className="col-2 mx-auto my-auto">
-                                    {item?.additional_info && <Tippy content={item?.additional_info || ''}>
-                                      <div className="contactTags">
-                                        <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
-                                      </div>
-                                    </Tippy>}
-                                    {/* {item?.additional_info &&
+
+                                    <div className=" mx-auto my-auto">
+                                      {item?.additional_info && <Tippy content={item?.additional_info || ''}>
+                                        <div className="contactTags">
+                                          <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
+                                        </div>
+                                      </Tippy>}
+                                      {/* {item?.additional_info &&
                                       <h5 className="mt-2" style={{ fontWeight: 400 }}>
                                         <i className="fa-light fa-info" /> {item?.additional_info}
                                       </h5>
                                     } */}
+                                    </div>
                                   </div>
                                   <div className="col-auto text-end ms-auto">
                                     <p className="timeAgo">{new Date(item?.created_at).toLocaleTimeString()}</p>
@@ -214,11 +211,11 @@ function SmsChat({ setLoading, loading, did }) {
                 </div>
               </div>
               <div
-                className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                className="callDetails eFaxCompose col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails newVoicemailBoxUi"
                 id="callDetails"
                 style={{ height: "100%" }}
               >
-                <div className="overviewTableWrapper p-2 mt-2">
+                <div className="overviewTableWrapper p-0">
                   <div className="overviewTableChild">
                     <div className="d-flex flex-wrap">
                       <div className="col-12">
@@ -229,7 +226,7 @@ function SmsChat({ setLoading, loading, did }) {
                           </div>
                         </div>
                       </div>
-                      <div className="table_card rounded-start-0 rounded-end-0" >
+                      <div className="w-100 p-3 rounded-start-0 rounded-end-0" >
                         <div className="col-12">
                           <div className="newMessageWrapper mt-0 ">
                             <div>

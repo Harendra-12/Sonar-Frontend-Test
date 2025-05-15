@@ -56,17 +56,13 @@ function CampaignLogin({ initial }) {
                         handleLogOut={handleLogOut}
                     />
                 )}
+                <div className={" px-0"}>
+                    <HeaderApp title={"Campaign"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+                </div>
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className={"col-12 px-0"}>
-                            <HeaderApp
-                                title={"Campaign"}
-                                loading={loading}
-                                setLoading={setLoading}
-                                refreshApi={() => featureUnderdevelopment()} />
-                        </div>
-                        <div className="overviewTableWrapper">
-                            <div className="overviewTableChild">
+                    <div className="row webrtc_newMessageUi">
+                        <div className="overviewTableWrapper p-0 ">
+                            <div className="overviewTableChild shadow-none">
                                 <div className="d-flex flex-wrap">
                                     <div className={!initial ? "col-12" : "col-12 d-none"}>
                                         <div className="heading">
@@ -82,10 +78,10 @@ function CampaignLogin({ initial }) {
                                         </div>
                                     </div>
                                     <div
-                                        className="col-12"
-                                        style={{ padding: "25px 20px 0px" }}
+                                        className="col-12 p-3"
+                                    // style={{ padding: "25px 20px 0px" }}
                                     >
-                                        <div className="tableContainer mt-0">
+                                        <div className="tableContainer mt-0 mb-0">
                                             <table className="callCenter">
                                                 <thead>
                                                     <tr>

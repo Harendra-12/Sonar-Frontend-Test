@@ -169,7 +169,7 @@
     content: '';
     width: 90%;
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--me-border1);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -917,8 +917,8 @@
 }
 
 .webrtc_newMessageUi .tabLink i {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -1052,6 +1052,7 @@
     box-shadow: none;
 }
 
+
 .mainContentApp .webrtc_newMessageUi .contactListItem span {
     font-size: .0625rem;
     color: #0027ff;
@@ -1138,7 +1139,7 @@
 }
 
 .webrtc_newMessageUi .leftside_listBar {
-    height: calc(100vh - 95px);
+    height: calc(100vh - 82px);
     background: var(--me-body-bg2);
 }
 
@@ -1190,7 +1191,7 @@
 }
 
 .newMessageBoxUi {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 82px);
 }
 
 .newMessageBoxUi .messageOverlay .messageContent {
@@ -1557,6 +1558,28 @@
     color: #8c9097;
 }
 
+.chooseFile {
+    border: 1px dashed #d1d1d1 !important;
+    border-radius: 7px;
+    width: 100%;
+    padding: 10px;
+}
+
+.chooseFile::file-selector-button {
+  margin-left: 100px;
+}
+
+.mainContentApp .tab-content .callDetailsList
+ {
+    overflow: auto;
+    height: calc(100vh - 304px);
+}
+.stickyHeader{
+    position: sticky;
+    top: 0;
+    z-index: 1111;
+    background: var(--me-body-bg2);
+}
 .messageMeetingWrap .lk-chat {
     display: none !important;
 }

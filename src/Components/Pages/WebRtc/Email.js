@@ -66,15 +66,11 @@ function Email() {
         }}
       >
         <section className="callPage">
+          <div className="col-12 ps-xl-0 stickyHeader">
+            <HeaderApp title={"E-Mail"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+          </div>
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
-                <HeaderApp
-                  title={"E-Mail"}
-                  loading={refreshState}
-                  setLoading={setRefreshState}
-                  refreshApi={handleRefreshBtnClicked} />
-              </div>
+            <div className="row webrtc_newMessageUi">
               {/* <div className="col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
@@ -266,35 +262,36 @@ function Email() {
 
 
 
-            </div>
-            <div className="pt-3">
-              <div className="card mb-0 ">
-                <div className="card-header d-flex justify-content-between align-items-center">
-                  <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                  {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    <i class="fa-regular fa-envelope me-2"></i>  New Email</button>
-                </div>
-                <div className="card-body">
-                  <div className="d-flex ">
-                    <div className="card mail_leftbar rounded-end-3 mb-0">
-                      <div className="card-body">
-                        <ul>
-                          <li className="mail_list active">
-                            <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2"></i> Inbox</p>
-                            <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
-                          </li>
-                          <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></li>
-                          <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></li>
-                          <li className="mail_list">
-                            <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p>
-                          </li>
-                        </ul>
+
+              <div className="p-0">
+                <div className="card mb-0 border-0">
+                  <div className="card-header d-flex justify-content-between align-items-center" style={{ borderColor: "var(--me-border1)", }}>
+                    <h5 className="card-title mb-0 text_dark">Mailbox</h5>
+                    {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                      <i class="fa-regular fa-envelope me-2"></i>  New Email</button>
+                  </div>
+                  <div className="card-body" style={{ height: "calc(100vh - 135px)", }}>
+                    <div className="d-flex ">
+                      <div className="card mail_leftbar rounded-end-3 mb-0">
+                        <div className="card-body">
+                          <ul>
+                            <li className="mail_list active">
+                              <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2"></i> Inbox</p>
+                              <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
+                            </li>
+                            <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></li>
+                            <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></li>
+                            <li className="mail_list">
+                              <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                    <div className="table_card">
-                      {/* <EmailList /> */}
-                      <MailReply />
+                      <div className="table_card">
+                        {/* <EmailList /> */}
+                        <MailReply />
+                      </div>
                     </div>
                   </div>
                 </div>
