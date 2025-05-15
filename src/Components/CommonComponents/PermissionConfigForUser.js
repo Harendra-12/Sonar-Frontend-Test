@@ -196,13 +196,14 @@ export default PermissionConfigForUser
 export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissions, loading }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
-  const [expandedRows, setExpandedRows] = useState({});
+  const [expandedRows, setExpandedRows] = useState([]);
   const [rolePermissions, setRolePermissions] = useState({
     role_id: selectedRole,
     permissions: [],
     tablePermissions: [],
     sectionPermissions: []
   });
+  const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
     // Fetch all Permission Data
@@ -215,11 +216,25 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
     }));
   }, [selectedRole]);
 
-  const toggleRowExpand = (section, model, isExpanded) => {
-    setExpandedRows(prev => ({
-      ...prev,
-      [`${section}-${model}`]: isExpanded
-    }));
+
+  const toggleRowExpand = (section, model, type) => {
+    setExpandedRows(prev => {
+      if (!section || !model || !type) {
+        return prev;
+      }
+
+      const exists = prev.some(
+        item => item.section === section && item.model === model && item.type === type
+      );
+
+      if (exists) {
+        return prev.filter(
+          item => !(item.section === section && item.model === model && item.type === type)
+        );
+      }
+
+      return [...prev, { section, model, type }];
+    });
   };
 
   const togglePermission = (type, id, checked) => {
@@ -343,97 +358,119 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
   console.log(rolePermissions);
 
+  const toggleSection = (sectionName) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionName]: !prev[sectionName]
+    }));
+  };
+
+  const toggleAllColumnPermissions = (model, checked) => {
+    setRolePermissions(prev => {
+      const newPermissions = { ...prev };
+
+      // Filter records based on current view filter
+      const filteredRecords = model.table_records.filter(record =>
+        !showOnlyViewPermissions ||
+        (showOnlyViewPermissions === 'View' ? record.action === 'view' : record.action === 'edit')
+      );
+
+      if (checked) {
+        // Add all filtered column permissions
+        newPermissions.tablePermissions = [
+          ...new Set([...newPermissions.tablePermissions, ...filteredRecords.map(r => r.id)])
+        ];
+      } else {
+        // Remove all filtered column permissions
+        newPermissions.tablePermissions = newPermissions.tablePermissions.filter(
+          id => !filteredRecords.map(r => r.id).includes(id)
+        );
+      }
+
+      return newPermissions;
+    });
+  };
+
 
   return (
     <div className='col-xl-12 col-xxl-8'>
       {Object.entries(permissionData).map(([sectionName, models]) => (
         <div key={sectionName} className='itemWrapper a shadow-none border-0 px-0 permissionsConfigWrapper'>
-          <div className="heading h-auto justify-content-start">
-            <h5 className='me-3'>{sectionName}</h5>
-            <div className="my-auto position-relative mx-1">
-              {/* <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={models.every(model =>
-                    model.permissions.every(p =>
-                      rolePermissions.permissions.includes(p.id)
-                    ) &&
-                    model.table_records.every(r =>
-                      rolePermissions.tablePermissions.includes(r.id)
-                    )
-                  )}
-                  onChange={(e) => {
-                    models.forEach(model => {
-                      handleMasterToggle(
-                        model.id,
-                        model.module_section,
-                        model.permissions,
-                        model.table_records,
-                        e.target.checked
-                      );
-                    });
-                  }}
-                />
-                <span className="slider round"></span>
-              </label> */}
-
+          <div className="heading h-auto justify-content-between">
+            <div className='d-flex'>
+              <h5 className='me-3'>{sectionName}</h5>
               <div class="cl-toggle-switch">
                 <label class="cl-switch">
                   <input
                     type="checkbox"
-                    checked={models.every(model =>
-                      model.permissions.every(p =>
-                        rolePermissions.permissions.includes(p.id)
-                      ) &&
-                      model.table_records.every(r =>
-                        rolePermissions.tablePermissions.includes(r.id)
-                      )
-                    )}
-                    onChange={(e) => {
-                      models.forEach(model => {
-                        handleMasterToggle(
-                          model.id,
-                          model.module_section,
-                          model.permissions,
-                          model.table_records,
-                          e.target.checked
-                        );
-                      });
-                    }}
+                    checked={!!expandedSections[sectionName]}
+                    onChange={() => toggleSection(sectionName)}
                   />
                   <span></span>
                 </label>
               </div>
             </div>
+            {expandedSections[sectionName] && (
+              <div className="my-auto position-relative mx-1 d-flex">
+                <span className='me-2'>Master: </span>
+                <div class="cl-toggle-switch">
+                  <label class="cl-switch">
+                    <input
+                      type="checkbox"
+                      checked={models.every(model =>
+                        model.permissions.every(p =>
+                          rolePermissions.permissions.includes(p.id)
+                        ) &&
+                        model.table_records.every(r =>
+                          rolePermissions.tablePermissions.includes(r.id)
+                        )
+                      )}
+                      onChange={(e) => {
+                        models.forEach(model => {
+                          handleMasterToggle(
+                            model.id,
+                            model.module_section,
+                            model.permissions,
+                            model.table_records,
+                            e.target.checked
+                          );
+                        });
+                      }}
+                    />
+                    <span></span>
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
+          {expandedSections[sectionName] && (
+            <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
+              <table className="w-100">
+                <thead>
+                  <tr>
+                    <th>Page Name</th>
+                    <th>Browse</th>
+                    <th>Read</th>
+                    <th>Edit</th>
+                    <th>Add</th>
+                    <th>Delete</th>
+                    <th>Search</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ?
+                    <SkeletonTableLoader col={7} row={10} /> :
+                    models.map(model => {
+                      const allModelPermissionsChecked = model.permissions.every(
+                        p => rolePermissions.permissions.includes(p.id)
+                      );
 
-          <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
-            <table className="w-100">
-              <thead>
-                <tr>
-                  <th>Page Name</th>
-                  <th>Browse</th>
-                  <th>Read</th>
-                  <th>Edit</th>
-                  <th>Add</th>
-                  <th>Delete</th>
-                  <th>Search</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ?
-                  <SkeletonTableLoader col={9} row={10} /> :
-                  models.map(model => {
-                    const allModelPermissionsChecked = model.permissions.every(
-                      p => rolePermissions.permissions.includes(p.id)
-                    );
-
-                    return (
-                      <React.Fragment key={model.id}>
-                        <tr>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              {/* {model.table_records.length > 0 && (
+                      return (
+                        <React.Fragment key={model.id}>
+                          <tr>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                {/* {model.table_records.length > 0 && (
                               <button
                                 className="btn btn-sm btn-link me-2"
                                 onClick={() => toggleRowExpand(sectionName, model.model, true)}
@@ -441,129 +478,129 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                 {expandedRows[`${sectionName}-${model.model}`] ? '−' : '+'}
                               </button>
                             )} */}
-                              {model.slug}
-                            </div>
-                          </td>
-                          {model.permissions.map(permission => (
-                            <td key={permission.id}>
-                              <div className="my-auto position-relative mx-1">
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
-                                    <input type="checkbox"
-                                      checked={rolePermissions.permissions.includes(permission.id)}
-                                      onChange={(e) => {
-                                        handlePermissionToggle(
-                                          permission.id,
-                                          model.id,
-                                          model.module_section,
-                                          e.target.checked
-                                        );
-                                        if (permission.action === "read" || permission.action === "edit") {
-                                          if (permission.action === "read" && e.target.checked) {
-                                            setShowOnlyViewPermissions('View');
-                                            toggleRowExpand(sectionName, model.model, true);
-                                          } else if (permission.action === "edit" && e.target.checked) {
-                                            setShowOnlyViewPermissions('Edit');
-                                            toggleRowExpand(sectionName, model.model, true);
-                                          } else {
-                                            toggleRowExpand(sectionName, model.model, false);
+                                {model.slug}
+                              </div>
+                            </td>
+                            {model.permissions.map(permission => (
+                              <td key={permission.id}>
+                                <div className="my-auto position-relative mx-1">
+                                  <div class="cl-toggle-switch">
+                                    <label class="cl-switch">
+                                      <input type="checkbox"
+                                        checked={rolePermissions.permissions.includes(permission.id)}
+                                        onChange={(e) => {
+                                          handlePermissionToggle(
+                                            permission.id,
+                                            model.id,
+                                            model.module_section,
+                                            e.target.checked
+                                          );
+                                          if (permission.action === "read" || permission.action === "edit") {
+                                            const type = permission.action === "read" ? "view" : "edit";
+                                            if (e.target.checked) {
+                                              setShowOnlyViewPermissions(permission.action === "read" ? "View" : "Edit");
+                                              toggleRowExpand(sectionName, model.model, type);
+                                            } else {
+                                              toggleRowExpand(sectionName, model.model, type);
+                                            }
                                           }
                                         }
-                                      }
-                                      }
-                                    />
-                                    <span></span>
-                                  </label>
+                                        }
+                                      />
+                                      <span></span>
+                                    </label>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                          ))}
-                        </tr>
+                              </td>
+                            ))}
+                          </tr>
+                          {model.table_records.length > 0 &&
+                            expandedRows
+                              .filter(row => row.section === sectionName && row.model === model.model)
+                              .map((row, index) => {
+                                const rowKey = `${sectionName}-${model.model}-${row.type}-${index}`;
+                                const checkedState = model.table_records
+                                  .filter(record => record.action === row.type)
+                                  .every(r => rolePermissions.tablePermissions.includes(r.id));
 
-                        {model.table_records.length > 0 && expandedRows[`${sectionName}-${model.model}`] && (
-                          <tr>
-                            <td colSpan={7}>
-                              <div className="p-3 bg-light0">
-                                <h6>Column Permissions - <b>{showOnlyViewPermissions}</b></h6>
-                                <div className="row">
-                                  {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
-                                    const columnRecords = model.table_records.filter(r => r.column_name === column);
-
-                                    // Filter records based on condition - here we'll use a prop or state to determine which to show
-                                    const filteredColumnRecords = columnRecords.filter(record =>
-                                      showOnlyViewPermissions === 'View' ? record.action === 'view' : record.action === 'edit'
-                                    );
-
-                                    // If there are no records after filtering (in case a column has only view or only edit), skip rendering
-                                    // if (filteredColumnRecords.length === 0) return null;
-
-                                    const allColumnPermissionsChecked = filteredColumnRecords.every(
-                                      r => rolePermissions.tablePermissions.includes(r.id)
-                                    )
-
-                                    return (
-                                      <div key={column} className="col-md-3 mb-3">
-                                        <div className="card">
-                                          {/* <div className="card-header d-flex justify-content-between align-items-center">
-                                          <strong className='text-capitalize'>{column.replace(/_/g, " ")}</strong>
-                                          <div className="cl-toggle-switch">
-                                            <label className="cl-switch">
-                                              <input
-                                                type="checkbox"
-                                                checked={allColumnPermissionsChecked}
-                                                onChange={(e) => {
-                                                  filteredColumnRecords.forEach(record => {
-                                                    handleColumnToggle(
-                                                      record.id,
-                                                      model.id,
-                                                      model.module_section,
-                                                      e.target.checked
-                                                    );
-                                                  });
-                                                }}
-                                              />
-                                              <span></span>
-                                            </label>
-                                          </div>
-                                        </div> */}
-                                          <div className="card-body">
-                                            {filteredColumnRecords.map(record => (
-                                              <div key={record.id} className="d-flex justify-content-between">
-                                                {/* <span className='text-capitalize'>{record.action}</span> */}
-                                                <label className='text-capitalize'>{column.replace(/_/g, " ")}</label>
-                                                <div className="cl-toggle-switch">
-                                                  <label className="cl-switch">
-                                                    <input
-                                                      type="checkbox"
-                                                      checked={rolePermissions.tablePermissions.includes(record.id)}
-                                                      onChange={(e) => handleColumnToggle(
-                                                        record.id,
-                                                        model.id,
-                                                        model.module_section,
-                                                        e.target.checked
-                                                      )}
-                                                    />
-                                                    <span></span>
-                                                  </label>
-                                                </div>
-                                              </div>
-                                            ))}
+                                return (
+                                  <tr key={rowKey}>
+                                    <td colSpan={7}>
+                                      <div className="p-3 bg-light0">
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <h6>
+                                            Column Permissions - <b>{row.type.charAt(0).toUpperCase() + row.type.slice(1)}</b>
+                                          </h6>
+                                          <div className="my-auto position-relative mx-1 d-flex">
+                                            <span className="me-2">Master: </span>
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
+                                                <input
+                                                  type="checkbox"
+                                                  checked={checkedState}
+                                                  onChange={(e) => {
+                                                    const actionType = row.type; // Explicitly capture row.type
+                                                    toggleAllColumnPermissions(model, e.target.checked, actionType, rowKey);
+                                                  }}
+                                                />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                         </div>
+                                        <div className="row">
+                                          {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
+                                            const columnRecords = model.table_records.filter(r => r.column_name === column);
+                                            const filteredColumnRecords = columnRecords.filter(record => record.action === row.type);
+
+                                            if (filteredColumnRecords.length === 0) return null;
+
+                                            return (
+                                              <div key={column} className="col-md-3 mb-3">
+                                                <div className="card">
+                                                  <div className="card-body">
+                                                    {filteredColumnRecords.map(record => (
+                                                      <div key={record.id} className="d-flex justify-content-between">
+                                                        <label className="text-capitalize">
+                                                          {column.replace(/_/g, ' ')}
+                                                        </label>
+                                                        <div className="cl-toggle-switch">
+                                                          <label className="cl-switch">
+                                                            <input
+                                                              type="checkbox"
+                                                              checked={rolePermissions.tablePermissions.includes(record.id)}
+                                                              onChange={(e) =>
+                                                                handleColumnToggle(
+                                                                  record.id,
+                                                                  model.id,
+                                                                  model.module_section,
+                                                                  e.target.checked
+                                                                )
+                                                              }
+                                                            />
+                                                            <span></span>
+                                                          </label>
+                                                        </div>
+                                                      </div>
+                                                    ))}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
                                       </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                        </React.Fragment>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       ))}
 
