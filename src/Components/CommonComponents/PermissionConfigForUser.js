@@ -365,25 +365,28 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
     }));
   };
 
-  const toggleAllColumnPermissions = (model, checked) => {
+  const toggleAllColumnPermissions = (model, checked, rowKey) => {
+    console.log(`toggleAllColumnPermissions: checked=${checked}`);
     setRolePermissions(prev => {
       const newPermissions = { ...prev };
-
-      // Filter records based on current view filter
+      // Hardcode for 'View' or 'Edit' based on context
       const filteredRecords = model.table_records.filter(record =>
-        !showOnlyViewPermissions ||
-        (showOnlyViewPermissions === 'View' ? record.action === 'view' : record.action === 'edit')
+        rowKey.includes('view') ? record.action === 'view' : record.action === 'edit'
       );
 
+      if (filteredRecords.length === 0) {
+        console.warn(`No records found`);
+      }
+
+      const recordIds = filteredRecords.map(r => r.id);
+
       if (checked) {
-        // Add all filtered column permissions
         newPermissions.tablePermissions = [
-          ...new Set([...newPermissions.tablePermissions, ...filteredRecords.map(r => r.id)])
+          ...new Set([...newPermissions.tablePermissions, ...recordIds])
         ];
       } else {
-        // Remove all filtered column permissions
         newPermissions.tablePermissions = newPermissions.tablePermissions.filter(
-          id => !filteredRecords.map(r => r.id).includes(id)
+          id => !recordIds.includes(id)
         );
       }
 
@@ -533,19 +536,20 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                           </h6>
                                           <div className="my-auto position-relative mx-1 d-flex">
                                             <span className="me-2">Master: </span>
-                                            <div className="cl-toggle-switch">
-                                              <label className="cl-switch">
-                                                <input
-                                                  type="checkbox"
-                                                  checked={checkedState}
-                                                  onChange={(e) => {
-                                                    const actionType = row.type; // Explicitly capture row.type
-                                                    toggleAllColumnPermissions(model, e.target.checked, actionType, rowKey);
-                                                  }}
-                                                />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                            <input
+                                              type="checkbox"
+                                              checked={checkedState}
+                                              onChange={(e) => {
+                                                console.log(`Master Toggle Clicked: rowKey=${rowKey}, type=${row.type}, checked=${e.target.checked}`);
+                                                console.log(`toggleAllColumnPermissions defined: ${typeof toggleAllColumnPermissions}`);
+                                                console.log(`Calling toggleAllColumnPermissions with model, checked=${e.target.checked}, type=${row.type}`);
+                                                try {
+                                                  toggleAllColumnPermissions(model, e.target.checked, row.type);
+                                                } catch (error) {
+                                                  console.error(`Error in toggleAllColumnPermissions: rowKey=${rowKey}, type=${row.type}`, error);
+                                                }
+                                              }}
+                                            />
                                           </div>
                                         </div>
                                         <div className="row">
