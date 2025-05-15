@@ -487,7 +487,8 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                 <div className="my-auto position-relative mx-1">
                                   <div class="cl-toggle-switch">
                                     <label class="cl-switch">
-                                      <input type="checkbox"
+                                      <input
+                                        type="checkbox"
                                         checked={rolePermissions.permissions.includes(permission.id)}
                                         onChange={(e) => {
                                           handlePermissionToggle(
@@ -499,14 +500,14 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                           if (permission.action === "read" || permission.action === "edit") {
                                             const type = permission.action === "read" ? "view" : "edit";
                                             if (e.target.checked) {
-                                              setShowOnlyViewPermissions(permission.action === "read" ? "View" : "Edit");
                                               toggleRowExpand(sectionName, model.model, type);
                                             } else {
                                               toggleRowExpand(sectionName, model.model, type);
+                                              // Untoggle all column permissions for this type
+                                              toggleAllColumnPermissions(model, false, type);
                                             }
                                           }
-                                        }
-                                        }
+                                        }}
                                       />
                                       <span></span>
                                     </label>
