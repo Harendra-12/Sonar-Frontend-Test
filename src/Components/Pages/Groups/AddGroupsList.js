@@ -601,7 +601,7 @@ export default function AddGroupsList() {
                     placeholder="Search"
                     name="name"
                     value={searchQuery}
-                  //   onChange={handleSearchChange}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <button
                     className="tableButton ms-2"

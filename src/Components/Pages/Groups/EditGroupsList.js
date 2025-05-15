@@ -657,7 +657,7 @@ export default function EditGroupsList() {
                     placeholder="Search"
                     name="name"
                     value={searchQuery}
-                  //   onChange={handleSearchChange}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <button
                     className="tableButton popupIcon_btn ms-2"
