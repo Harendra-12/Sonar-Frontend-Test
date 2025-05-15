@@ -58,11 +58,11 @@ function Messages({
   setRecipient,
   selectedChat,
   setSelectedChat,
-  // formatRelativeTime, 
+  // formatRelativeTime,
   // formatRelativeTime, accountDetails, onlineUser
 }) {
   const dispatch = useDispatch();
-  const socketSendMessage = useSelector((state) => state.socketSendMessage)
+  const socketSendMessage = useSelector((state) => state.socketSendMessage);
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -92,7 +92,7 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
-  const [messageRefresh, setMessageRefresh] = useState(false)
+  const [messageRefresh, setMessageRefresh] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
   const [isAssignmentClicked, setIsAssignmentClicked] = useState(false);
@@ -259,10 +259,12 @@ function Messages({
         ...data,
         last_message_data: {
           ...data?.last_message_data,
-          message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
-            ? data?.last_message_data?.message_text
-            : checkMessageType(data?.last_message_data?.message_text)
-        }
+          message_text:
+            checkMessageType(data?.last_message_data?.message_text) ===
+            "text/plain"
+              ? data?.last_message_data?.message_text
+              : checkMessageType(data?.last_message_data?.message_text),
+        },
       }));
 
       setContact(updatedFilteredData);
@@ -283,19 +285,19 @@ function Messages({
       //   setSelectedChat("singleChat");
       // }
       setLoading(false);
-      setMessageRefresh(false)
+      setMessageRefresh(false);
     }
     if (tagData?.status) {
       setAllTags(tagData.data);
       setLoading(false);
-      setMessageRefresh(false)
+      setMessageRefresh(false);
     }
     setLoading(false);
-    setMessageRefresh(false)
-  }
+    setMessageRefresh(false);
+  };
 
   useEffect(() => {
-    setMessageRefresh(true)
+    setMessageRefresh(true);
     const shouldLoad = true;
     getData(shouldLoad);
   }, [allAgents?.length == 0]);
@@ -403,7 +405,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+            chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -417,7 +419,7 @@ function Messages({
     }
   }, [recipient, loadMore, allAgents]);
 
-  const getExtension = (input = '') => {
+  const getExtension = (input = "") => {
     var parts = input?.split(".");
     return parts[parts?.length - 1]?.toLowerCase();
   };
@@ -511,11 +513,11 @@ function Messages({
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
-      let lastMessage = ""
+      let lastMessage = "";
       if (selectedFile) {
-        lastMessage = selectedFile?.type
+        lastMessage = selectedFile?.type;
       } else {
-        lastMessage = messageInput
+        lastMessage = messageInput;
       }
       newContact[contactIndex].last_message_data.message_text = lastMessage;
       newContact[contactIndex].last_message_data.created_at = time;
@@ -916,10 +918,9 @@ function Messages({
     } else {
       const filterTag = allTags?.filter((data) =>
         data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
-      )
+      );
       setFilteredTags(filterTag);
     }
-
   }, [allTags, contact, tagFilterInput, recipient]);
 
   useEffect(() => {
@@ -1003,13 +1004,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -1154,10 +1155,12 @@ function Messages({
           ...data,
           last_message_data: {
             ...data?.last_message_data,
-            message_text: checkMessageType(data?.last_message_data?.message_text) === "text/plain"
-              ? data?.last_message_data?.message_text
-              : checkMessageType(data?.last_message_data?.message_text)
-          }
+            message_text:
+              checkMessageType(data?.last_message_data?.message_text) ===
+              "text/plain"
+                ? data?.last_message_data?.message_text
+                : checkMessageType(data?.last_message_data?.message_text),
+          },
         }));
         setGroups(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
@@ -1303,10 +1306,10 @@ function Messages({
       setGroupSelecedAgents([]);
       setGroupName("");
       setNewGroupLoader(false);
-      setLoading(false)
+      setLoading(false);
     } else {
       setNewGroupLoader(false);
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -1416,11 +1419,11 @@ function Messages({
     );
     if (contactIndex !== -1) {
       const newGroups = [...groups];
-      let last_message = ""
+      let last_message = "";
       if (selectedUrl) {
         last_message = messageType;
       } else {
-        last_message = messageInput
+        last_message = messageInput;
       }
       newGroups[contactIndex].last_message_data.message_text = last_message;
       newGroups[contactIndex].last_message_data.created_at = time;
@@ -1566,27 +1569,27 @@ function Messages({
   const getAllInternalCallsHistory = async () => {
     setLoading(true);
     try {
-      const response = await generalGetFunction('/chatcall/calls');
+      const response = await generalGetFunction("/chatcall/calls");
       if (response.status) {
-        const sortedArr = response.data.sort((a, b) => new Date(b.last_call_data.created_at) - new Date(a.last_call_data.created_at));
+        const sortedArr = response.data.data
         setInternalCallHistory(sortedArr);
       }
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     getAllInternalCallsHistory();
-  }, [messageRefresh, calling])
+  }, [messageRefresh, calling]);
 
   const handleRefresh = () => {
     const shouldLoad = false;
     getData(shouldLoad);
-    setMessageRefresh(true)
-  }
+    setMessageRefresh(true);
+  };
   return (
     <>
       {addNewTagPopUp && (
@@ -1712,7 +1715,7 @@ function Messages({
                 </div>
                 <div className="w-100">
                   <nav className="">
-                    <div className="nav nav-tabs">
+                    <div className="nav nav-tabs align-items-center">
                       <button
                         className={
                           activeTab === "all" ? "tabLink active" : "tabLink"
@@ -1720,7 +1723,8 @@ function Messages({
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        <i className="fa-regular fa-circle-dot "></i> All
+                        <i className="fa-regular fa-circle-dot "></i>
+                        <span> All</span>
                         {Object.values(unreadMessage).reduce(
                           (acc, count) => acc + count,
                           0
@@ -1743,7 +1747,8 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-regular fa-user-tie"></i> Online
+                        <i className="fa-regular fa-user-tie"></i>{" "}
+                        <span>Online</span>
                       </button>
                       {/* <button
                         onClick={() => setActiveTab("tags")}
@@ -1763,7 +1768,8 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-regular fa-user-group"></i> Group
+                        <i className="fa-regular fa-user-group"></i>{" "}
+                        <span>Group</span>
                       </button>
                       <button
                         onClick={() => setActiveTab("call")}
@@ -1773,7 +1779,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-phone"></i> Calls
+                        <i class="fa-regular fa-phone"></i> <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -1793,7 +1799,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                      // style={{ height: "calc(100vh - 270px)" }}
+                        // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -1839,9 +1845,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                        // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
-                        // }}
+                          // style={{
+                          //   borderBottom: "1px solid var(--border-color)",
+                          // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1916,9 +1922,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -1939,17 +1945,29 @@ function Messages({
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <Tippy content={
-                                            <ul className='contactTags' style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', maxWidth: '200px', gap: '5px' }}>
-                                              {item.tags?.map((tag, key) =>
-                                                <li>
-                                                  <span data-id={key}>
-                                                    {tag.tag?.[0]?.name}
-                                                  </span>
-                                                </li>
-                                              )}
-                                            </ul>
-                                          } allowHTML={true}>
+                                          <Tippy
+                                            content={
+                                              <ul
+                                                className="contactTags"
+                                                style={{
+                                                  listStyle: "none",
+                                                  display: "flex",
+                                                  flexWrap: "wrap",
+                                                  maxWidth: "200px",
+                                                  gap: "5px",
+                                                }}
+                                              >
+                                                {item.tags?.map((tag, key) => (
+                                                  <li>
+                                                    <span data-id={key}>
+                                                      {tag.tag?.[0]?.name}
+                                                    </span>
+                                                  </li>
+                                                ))}
+                                              </ul>
+                                            }
+                                            allowHTML={true}
+                                          >
                                             <span className="more">
                                               +{item.tags?.length - 2}
                                             </span>
@@ -1979,7 +1997,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                        // style={{ borderBottom: "1px solid #ddd" }}
+                          // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {groups.map((item, index) => {
                             return (
@@ -2045,11 +2063,11 @@ function Messages({
                                         {item.group_name}
                                         <span className=" text-end mb-0">
                                           <p className="timeAgo">
-                                            {item?.last_message_data?.created_at ?
-                                              formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                            {item?.last_message_data?.created_at
+                                              ? formatRelativeTime(
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -2089,10 +2107,7 @@ function Messages({
                             Online<i className="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
-                        <div
-                          className="collapse show"
-                          id="collapse4"
-                        >
+                        <div className="collapse show" id="collapse4">
                           {onlineUser.map((item) => {
                             return (
                               <div
@@ -2285,10 +2300,21 @@ function Messages({
                         )}
                       </div>
                     </div>
-
                   ) : activeTab === "call" ? (
                     <div className="tab-content">
-                      <ChatsCalls loading={loading} setLoading={setLoading} setMeetingPage={setMeetingPage} setToUser={setToUser} setCalling={setCalling} socketSendMessage={socketSendMessage} account={account} formatRelativeTime={formatRelativeTime} allAgents={allAgents} onlineUser={onlineUser} callHistory={internalCallHistory} />
+                      <ChatsCalls
+                        loading={loading}
+                        setLoading={setLoading}
+                        setMeetingPage={setMeetingPage}
+                        setToUser={setToUser}
+                        setCalling={setCalling}
+                        socketSendMessage={socketSendMessage}
+                        account={account}
+                        formatRelativeTime={formatRelativeTime}
+                        allAgents={allAgents}
+                        onlineUser={onlineUser}
+                        callHistory={internalCallHistory}
+                      />
                     </div>
                   ) : (
                     <div className="tab-content">
@@ -2360,7 +2386,7 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
-                                    className="formItem"
+                                    className="formItem "
                                     placeholder="Search"
                                     name="name"
                                     value={searchQuery}
@@ -2385,7 +2411,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -2533,12 +2559,24 @@ function Messages({
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
-                                        {item?.last_message_data?.message_text &&
+                                        {item?.last_message_data
+                                          ?.message_text && (
                                           <p className="fs-14 text-gray">
                                             <span className="text-info fw-normal">
-                                              {allAgents.find((data) => data.id == item?.last_message_data?.user_id)?.username || 'N/A'} : &nbsp;
-                                            </span> {item?.last_message_data?.message_text}
-                                          </p>}
+                                              {allAgents.find(
+                                                (data) =>
+                                                  data.id ==
+                                                  item?.last_message_data
+                                                    ?.user_id
+                                              )?.username || "N/A"}{" "}
+                                              : &nbsp;
+                                            </span>{" "}
+                                            {
+                                              item?.last_message_data
+                                                ?.message_text
+                                            }
+                                          </p>
+                                        )}
                                       </div>
                                     </div>
                                     <div className=" text-end">
@@ -2547,17 +2585,18 @@ function Messages({
                                         <p className="timeAgo">
                                           {item?.last_message_data?.created_at
                                             ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                             : ""}
                                         </p>
-                                        {
-                                          unreadMessage[item.group_name]
-                                            ? ""
-                                            :
-                                            <span className="chat-read-icon readsms "><i class="fa-solid fa-check-double"></i></span>
-                                        }
+                                        {unreadMessage[item.group_name] ? (
+                                          ""
+                                        ) : (
+                                          <span className="chat-read-icon readsms ">
+                                            <i class="fa-solid fa-check-double"></i>
+                                          </span>
+                                        )}
                                       </div>
                                       {/* <div className="dropdown">
                                         <button
@@ -2692,7 +2731,7 @@ function Messages({
                                   </span>
                                   <ul
                                     className="dropdown-menu p-3"
-                                    style={{ maxWidth: '500px' }}
+                                    style={{ maxWidth: "500px" }}
                                     ref={tagDropdownRef}
                                   >
                                     {/* <div className="tagBox">
@@ -2712,7 +2751,14 @@ function Messages({
                                         }
                                       />
                                     </div>
-                                    <div className="contactTags my-2" style={{ width: '100%', flexWrap: 'wrap', gap: '5px' }}>
+                                    <div
+                                      className="contactTags my-2"
+                                      style={{
+                                        width: "100%",
+                                        flexWrap: "wrap",
+                                        gap: "5px",
+                                      }}
+                                    >
                                       {filteredTags?.map((item, key) => {
                                         return (
                                           <span
@@ -2723,7 +2769,7 @@ function Messages({
                                                 recipient[1]
                                               )
                                             }
-                                          // className="removableTag"
+                                            // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -2859,6 +2905,10 @@ function Messages({
                                   setMeetingPage("message");
                                   setToUser(recipient[1]);
                                   setCalling(true);
+                                  dispatch({
+                                    type: "SET_INTERNALCALLACTION",
+                                    internalCallAction: null,
+                                  });
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
@@ -2880,6 +2930,10 @@ function Messages({
                                   setMeetingPage("message");
                                   setToUser(recipient[1]);
                                   setCalling(true);
+                                  dispatch({
+                                    type: "SET_INTERNALCALLACTION",
+                                    internalCallAction: null,
+                                  });
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
@@ -2955,21 +3009,33 @@ function Messages({
                                   </li>
                                 )}
 
-                                {selectedChat === "groupChat" && groups?.find((group) => group.group_name == recipient[0])?.created_by == account?.id ? <li>
-                                  <div
-                                    className="dropdown-item text-danger"
-                                    href="#"
-                                    onClick={() => handleDeleteGroup(recipient[1])}
-                                  >
-                                    Delete this group
-                                  </div>
-                                </li> : ""}
+                                {selectedChat === "groupChat" &&
+                                groups?.find(
+                                  (group) => group.group_name == recipient[0]
+                                )?.created_by == account?.id ? (
+                                  <li>
+                                    <div
+                                      className="dropdown-item text-danger"
+                                      href="#"
+                                      onClick={() =>
+                                        handleDeleteGroup(recipient[1])
+                                      }
+                                    >
+                                      Delete this group
+                                    </div>
+                                  </li>
+                                ) : (
+                                  ""
+                                )}
 
                                 <li>
                                   <div
                                     className="dropdown-item text-danger"
                                     href="#"
-                                    onClick={() => { setRecipient([]); setSelectedChat("") }}
+                                    onClick={() => {
+                                      setRecipient([]);
+                                      setSelectedChat("");
+                                    }}
                                   >
                                     Close this chat
                                   </div>
@@ -2998,7 +3064,7 @@ function Messages({
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                  arr[index - 1].time?.split(" ")[0];
+                                    arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -3480,7 +3546,7 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
-                                    className="formItem"
+                                    className="formItem searchStyle"
                                     placeholder="Search"
                                     name="name"
                                     value={searchQuery}
@@ -3511,7 +3577,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3657,7 +3723,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                          isAdmin ? (
+                                        isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -3748,17 +3814,25 @@ function Messages({
                     <div
                       className={`h-100`}
                       style={{
-                        width: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "30%" : "0%",
+                        width:
+                          isActiveAgentsOpen &&
+                          recipient &&
+                          recipient.length > 0
+                            ? "30%"
+                            : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
-                          transform: isActiveAgentsOpen && (recipient && recipient.length > 0)
-                            ? "translate(3%, 0%)"
-                            : "translate(100%, 0%)",
+                          transform:
+                            isActiveAgentsOpen &&
+                            recipient &&
+                            recipient.length > 0
+                              ? "translate(3%, 0%)"
+                              : "translate(100%, 0%)",
                         }}
                       >
                         <button
@@ -3767,21 +3841,31 @@ function Messages({
                           }
                           className="callDashParkedCallsBtn"
                           style={{
-                            left: isActiveAgentsOpen && (recipient && recipient.length > 0) ? "-15px" : "-5px",
+                            left:
+                              isActiveAgentsOpen &&
+                              recipient &&
+                              recipient.length > 0
+                                ? "-15px"
+                                : "-5px",
                             transition: "all 0.4s ease-in-out",
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen && (recipient && recipient.length > 0) ? "right" : "left"
-                              }`}
+                            className={`fa-solid fa-chevron-${
+                              isActiveAgentsOpen &&
+                              recipient &&
+                              recipient.length > 0
+                                ? "right"
+                                : "left"
+                            }`}
                           />
                         </button>
                         <div
                           className=" h-100"
-                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
-                          {recipient && recipient.length > 0 ?
+                          {recipient && recipient.length > 0 ? (
                             <MessageProfileDetails
                               recipient={recipient}
                               messages={
@@ -3791,7 +3875,9 @@ function Messages({
                               }
                               selectedChat={selectedChat}
                             />
-                            : ""}
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>

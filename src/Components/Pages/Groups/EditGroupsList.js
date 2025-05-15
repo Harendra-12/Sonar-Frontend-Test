@@ -36,8 +36,8 @@ export default function EditGroupsList() {
   async function getUsers() {
     // debugger   
     try {
-      const res = await generalGetFunction("/user/all");
-      const users = [...res?.data?.data]
+      const res = await generalGetFunction(`/user/search?account=${account.account_id}`);
+      const users = [...res?.data]
       // console.log(selectedGroup.groupusers,{users})
       const updatedusers = users.filter((user) => {
         return selectedGroup.groupusers.every((groupuser) => {
@@ -657,7 +657,7 @@ export default function EditGroupsList() {
                     placeholder="Search"
                     name="name"
                     value={searchQuery}
-                  //   onChange={handleSearchChange}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                   <button
                     className="tableButton popupIcon_btn ms-2"

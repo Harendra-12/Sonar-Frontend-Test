@@ -97,9 +97,9 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             if (selectedModule) {
                 setFeature([]);
                 setCustomType(selectedModule?.model_type); setCustomId(selectedModule?.model?.id); setAddNewMod(false);
-                 setName(selectedModule?.name);
-                 setUsages(selectedModule?.usage_type); setSelecetdUsages(selectedModule?.usage_type==="group"?selectedModule?.group_id :selectedModule?.role_id);
-                 if (selectedModule.missed) {
+                setName(selectedModule?.name);
+                setUsages(selectedModule?.usage_type); setSelecetdUsages(selectedModule?.usage_type === "group" ? selectedModule?.group_id : selectedModule?.role_id);
+                if (selectedModule.missed) {
                     setFeature((prev) => {
                         return [...prev, "missed"]
                     })
@@ -176,7 +176,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed"), usage_type: usages, group_id: usages === "group" ? selecetdUsages : "", role_id: usages === "role" ? selecetdUsages : ""  })
+        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed"), usage_type: usages, group_id: usages === "group" ? selecetdUsages : "", role_id: usages === "role" ? selecetdUsages : "" })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
@@ -220,7 +220,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                             {(selectedModule != null || addNewMod) && < div className='col-xl-12'>
                                                 <form>
                                                     <div className="formRow">
-                                                        <div className="formLabel">
+                                                        <div className="formLabel" style={{ maxWidth: 'unset' }}>
                                                             <label className="text-dark">Module Name</label>
                                                             <label htmlFor="data" className="formItemDesc">
                                                                 Set name for the custom module.
@@ -231,7 +231,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        <div className="formLabel">
+                                                        <div className="formLabel" style={{ maxWidth: 'unset' }}>
                                                             <label className="text-dark">Select Type</label>
                                                             <label htmlFor="data" className="formItemDesc">
                                                                 Please select the type for which you want to enable the module.
@@ -246,7 +246,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        <div className="formLabel">
+                                                        <div className="formLabel" style={{ maxWidth: 'unset' }}>
                                                             <label className="text-dark">Select Module</label>
                                                             <label htmlFor="data" className="formItemDesc">
                                                                 Please select the module for custom filter
@@ -279,7 +279,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        <div className="formLabel">
+                                                        <div className="formLabel" style={{ maxWidth: 'unset' }}>
                                                             <label className="text-dark">Select Usages</label>
                                                             <label htmlFor="data" className="formItemDesc">
                                                                 Please select the usages for which you want to
@@ -301,7 +301,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 </div>
                                                                 {
                                                                     usages !== "" &&
-                                                                    <div className="col-12">
+                                                                    <div className="col-6">
                                                                         <select
                                                                             className="formItem"
                                                                             value={selecetdUsages}
@@ -337,7 +337,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        <div className="formLabel">
+                                                        <div className="formLabel" style={{ maxWidth: 'unset' }}>
                                                             <label className="text-dark">Select Info</label>
                                                             <label className="formItemDesc">
                                                                 Please select the info of the feature you want to display in the module.

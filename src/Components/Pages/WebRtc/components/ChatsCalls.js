@@ -18,19 +18,19 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                             className="profileHolder"
                                             id={
                                                 onlineUser.find(
-                                                    (user) => user.id === item.id
+                                                    (user) => user.id === item.user_id
                                                 )
                                                     ? "profileOnlineNav"
                                                     : "profileOfflineNav"
                                             }
                                         >
                                             {allAgents?.find(
-                                                (acc) => acc.id === item.id
+                                                (acc) => acc.id === item.user_id
                                             )?.profile_picture ? (
                                                 <img
                                                     src={
                                                         allAgents?.find(
-                                                            (acc) => acc.id === item.id
+                                                            (acc) => acc.id === item.user_id
                                                         )?.profile_picture
                                                     }
                                                     alt="profile"
@@ -44,11 +44,11 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                         </div>
                                         <div className="my-auto ms-2 ms-xl-3">
                                             <p className=' justify-content-start ellipsisText'>{item?.name}
-                                                <span className={`missedCallArrow text-${item?.last_call_data?.hangup_cause === "originator_cancel" ? 'danger' : 'success'} ms-2`}>
-                                                    <i class={`fa-regular fa-arrow-${item?.last_call_data?.room_id?.split("-")[0] == item.id ? "down-left" : "up-right"}`}></i>
+                                                <span className={`missedCallArrow text-${item?.hangup_cause === "originator_cancel" ? 'danger' : 'success'} ms-2`}>
+                                                    <i class={`fa-regular fa-arrow-${item?.room_id?.split("-")[0] == account?.id ? "down-left" : "up-right"}`}></i>
                                                 </span>
                                             </p>
-                                            <h5>{item?.last_call_data?.created_at?.split(" ")[0]}, {formatTimeWithAMPM(item?.last_call_data?.created_at?.split(" ")[1])}</h5>
+                                            <h5>{item?.created_at?.split("T")[0]}, {formatTimeWithAMPM(item?.created_at?.split("T")[1].slice(0, 8))}</h5>
                                             <div className="contactTags">
                                                 {item.tags
                                                     ?.slice(0, 2)
@@ -88,11 +88,11 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                                 from: account.id,
                                                 to: item.id,
                                                 room_id: `${account.id}-${item.id}`,
-                                                call_type: `${item.last_call_data.call_type}`,
+                                                call_type: `${item.call_type}`,
                                             });
 
                                         }}>
-                                            <button className="btn_call"><i class={`fa-regular fa-${item.last_call_data.call_type === "audio" ? 'phone' : 'video'}`}></i></button>
+                                            <button className="btn_call"><i class={`fa-regular fa-${item.call_type === "audio" ? 'phone' : 'video'}`}></i></button>
                                         </div>
                                     </div>
                                 </div>

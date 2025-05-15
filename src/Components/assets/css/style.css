@@ -245,6 +245,7 @@
   --pink-rgb-text: #e791bc;
   --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
   --secondary-rgb-text: rgb(35, 183, 229);
+  --track-range-color: #93939324;
 }
 
 :root.dark {
@@ -384,7 +385,7 @@
   --default-border: #ffffff45;
 
   --shadow01: rgba(40, 40, 40, .15);
-
+  --track-range-color: rgba(255, 255, 255, 0.1);
 }
 
 :root.green {

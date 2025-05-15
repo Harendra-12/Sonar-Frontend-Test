@@ -194,10 +194,10 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
           </button>
         </div>
       </div>
-      <div className="rightPanel">
+      <div className="rightPanel pt-3">
         <div className="tangoNavs px-3">
           <nav className="noScrollBar">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <div class="nav nav-tabs align-items-center" id="nav-tab" role="tablist">
               <button class="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Files</button>
               <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
               <button class="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>

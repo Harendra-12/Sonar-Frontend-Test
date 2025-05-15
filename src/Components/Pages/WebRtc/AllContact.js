@@ -135,17 +135,13 @@ function AllContact({
         }}
       >
         <section className="callPage">
+          <div className="ps-xl-0 stickyHeader">
+            <HeaderApp title={"Contact"} loading={allContactLoading} setLoading={setAllContactLoading} refreshApi={() => handleContactRefresh()} />
+          </div>
           <div className="container-fluid">
-            <div className="row" style={{ height: "100%" }}>
-              <div className="col-12 ps-xl-0">
-                <HeaderApp
-                  title={"Contact"}
-                  loading={allContactLoading}
-                  setLoading={setAllContactLoading}
-                  refreshApi={() => handleContactRefresh()} />
-              </div>
+            <div className="row webrtc_newMessageUi" style={{ height: "100%" }}>
 
-              <div className="col-xl-6 allCallHistory">
+              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 calcsHeight">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -180,12 +176,12 @@ function AllContact({
                 </div>
 
                 <div className="col-12">
-                  <nav className="mt-3">
-                    <div
+                  {/*<nav className="mt-3">
+                  <div
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
-                      {/* <button
+                    > */}
+                  {/* <button
                         className="tabLink active"
                         effect="ripple"
                         data-category="all"
@@ -206,8 +202,8 @@ function AllContact({
                       >
                         My Contacts
                       </button> */}
-                    </div>
-                  </nav>
+                  {/* </div>
+                  </nav> */}
                   <div className="tab-content">
                     <div
                       className="callList"
@@ -226,9 +222,9 @@ function AllContact({
                                 <p>{initial}</p>
                               </div>
                               {groupedContacts[initial].map((contact) => (
-                                <div className="callListItem" key={contact.id}>
+                                <div className="callListItem wertc_iconBox border-bottom-0 border-end-0" key={contact.id}>
                                   <div className="row justify-content-between">
-                                    <div className="col-xl-7 col-xxl-6 d-flex">
+                                    <div className="col-xl-7 col-xxl-5 d-flex">
                                       <div className="profileHolder">
                                         <i className="fa-light fa-user fs-5" />
                                       </div>
@@ -242,7 +238,7 @@ function AllContact({
                                         <span data-id="2">Office</span>
                                       </div>
                                     </div>
-                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                                    <div className="col-2 text-end d-flex justify-content-center align-items-center">
                                       <i
                                         className="fa-sharp fa-thin fa-star"
                                         style={{ fontSize: 18 }}
@@ -771,15 +767,15 @@ function AllContact({
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-4">
-                <div className="col-2 px-0">
+                <div className="col-2 px-0 mb-2">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>Are you sure you want to delete this Contact?</p>
-                  <div className="mt-2 d-flex justify-content-between">
+                <div className="col-12">
+                  <h4 className="text-orange text-center">Warning!</h4>
+                  <p className="text-center">Are you sure you want to delete this Contact?</p>
+                  <div className="mt-4 d-flex justify-content-center align-items-center gap-2">
                     <button
                       className="panelButton m-0"
                       onClick={() => deleteContactByIt(selectedDeleteId)}
