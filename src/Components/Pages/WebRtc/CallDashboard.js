@@ -307,8 +307,6 @@ function CallDashboard() {
                                           <th>Dest</th>
                                         </tr>
                                       </thead>
-                                      {console.log(allUser)
-                                      }
                                       <tbody>
                                         {allUser?.length > 0 &&
                                           allUser?.filter((agent) => agent?.extension_id !== null)
