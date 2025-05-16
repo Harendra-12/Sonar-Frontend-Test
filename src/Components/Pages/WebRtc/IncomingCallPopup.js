@@ -37,13 +37,13 @@ function IncomingCallPopup({
     gainNodeRef.current.gain.value = volume
     audioRef.current.volume = volume
   }, [volume])
-  
+
   useEffect(() => {
     audioRef.current = audio
     audio.loop = true;
     gainNodeRef.current.gain.value = Number.isFinite(volume) ? volume : 1;
     audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
-    
+
 
     if (!muteAudio) {
       audioRef.current.play();
@@ -82,6 +82,11 @@ function IncomingCallPopup({
           },
         ],
       });
+    }
+
+    // If a call is already established, then set incoming call to mute
+    if (globalSession?.length > 1 && globalSession[0]?.state == "Established") {
+      setMuteAudio(true);
     }
   }, [sessionId, globalSession]);
 
