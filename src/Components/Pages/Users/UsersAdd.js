@@ -830,8 +830,8 @@ const UsersAdd = () => {
                                 option: (provided, state) => ({
                                   ...provided,
                                   paddingLeft: "15px",
-                                  paddingTop: 0,
-                                  paddingBottom: 0,
+                                  paddingTop: '2px',
+                                  paddingBottom: '2px',
                                   // backgroundColor: state.isSelected
                                   //   ? "#5a9fff"
                                   //   : "transparent",
@@ -840,6 +840,7 @@ const UsersAdd = () => {
                                   //   color: "#fff",
                                   // },
                                   fontSize: "14px",
+                                  borderBottom: '1px solid var(--border-color)'
                                 }),
                                 menu: (provided) => ({
                                   ...provided,

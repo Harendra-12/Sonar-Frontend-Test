@@ -481,14 +481,15 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     paddingLeft: "15px",
-    paddingTop: 0,
-    paddingBottom: 0,
+    paddingTop: '2px',
+    paddingBottom: '2px',
     backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
     },
     fontSize: "14px",
+    borderBottom: '1px solid var(--border-color)'
   }),
   menu: (provided) => ({
     ...provided,
