@@ -48,7 +48,10 @@ const WebrtcWrapper = () => {
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
-  const [position, setPosition] = useState({ x: 700, y: 300 });
+  const [position, setPosition] = useState({
+    x: (window.innerWidth - 300) / 2,
+    y: (window.innerHeight - 450) / 2,
+  });
   const [interCallSize, setInterCallSize] = useState({
     width: "100vw",
     height: "100vh",
