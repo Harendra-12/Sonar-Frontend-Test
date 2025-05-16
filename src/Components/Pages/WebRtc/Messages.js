@@ -261,7 +261,7 @@ function Messages({
           ...data?.last_message_data,
           message_text:
             checkMessageType(data?.last_message_data?.message_text) ===
-            "text/plain"
+              "text/plain"
               ? data?.last_message_data?.message_text
               : checkMessageType(data?.last_message_data?.message_text),
         },
@@ -405,7 +405,7 @@ function Messages({
         if (
           chatHistory[recipient[0]]?.total &&
           chatHistory[recipient[0]].pageNumber * 40 <
-            chatHistory[recipient[0]].total
+          chatHistory[recipient[0]].total
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -1004,13 +1004,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -1157,7 +1157,7 @@ function Messages({
             ...data?.last_message_data,
             message_text:
               checkMessageType(data?.last_message_data?.message_text) ===
-              "text/plain"
+                "text/plain"
                 ? data?.last_message_data?.message_text
                 : checkMessageType(data?.last_message_data?.message_text),
           },
@@ -1799,7 +1799,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                        // style={{ height: "calc(100vh - 270px)" }}
+                      // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -1845,9 +1845,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          // style={{
-                          //   borderBottom: "1px solid var(--border-color)",
-                          // }}
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1922,9 +1922,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -1997,7 +1997,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                          // style={{ borderBottom: "1px solid #ddd" }}
+                        // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           {groups.map((item, index) => {
                             return (
@@ -2065,9 +2065,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data?.created_at
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -2311,7 +2311,6 @@ function Messages({
                         socketSendMessage={socketSendMessage}
                         account={account}
                         formatRelativeTime={formatRelativeTime}
-                        allAgents={allAgents}
                         onlineUser={onlineUser}
                         callHistory={internalCallHistory}
                       />
@@ -2411,7 +2410,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -2561,22 +2560,22 @@ function Messages({
                                       </div> */}
                                         {item?.last_message_data
                                           ?.message_text && (
-                                          <p className="fs-14 text-gray">
-                                            <span className="text-info fw-normal">
-                                              {allAgents.find(
-                                                (data) =>
-                                                  data.id ==
-                                                  item?.last_message_data
-                                                    ?.user_id
-                                              )?.username || "N/A"}{" "}
-                                              : &nbsp;
-                                            </span>{" "}
-                                            {
-                                              item?.last_message_data
-                                                ?.message_text
-                                            }
-                                          </p>
-                                        )}
+                                            <p className="fs-14 text-gray">
+                                              <span className="text-info fw-normal">
+                                                {allAgents.find(
+                                                  (data) =>
+                                                    data.id ==
+                                                    item?.last_message_data
+                                                      ?.user_id
+                                                )?.username || "N/A"}{" "}
+                                                : &nbsp;
+                                              </span>{" "}
+                                              {
+                                                item?.last_message_data
+                                                  ?.message_text
+                                              }
+                                            </p>
+                                          )}
                                       </div>
                                     </div>
                                     <div className=" text-end">
@@ -2585,9 +2584,9 @@ function Messages({
                                         <p className="timeAgo">
                                           {item?.last_message_data?.created_at
                                             ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                              item?.last_message_data
+                                                ?.created_at
+                                            )
                                             : ""}
                                         </p>
                                         {unreadMessage[item.group_name] ? (
@@ -2769,7 +2768,7 @@ function Messages({
                                                 recipient[1]
                                               )
                                             }
-                                            // className="removableTag"
+                                          // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -3010,9 +3009,9 @@ function Messages({
                                 )}
 
                                 {selectedChat === "groupChat" &&
-                                groups?.find(
-                                  (group) => group.group_name == recipient[0]
-                                )?.created_by == account?.id ? (
+                                  groups?.find(
+                                    (group) => group.group_name == recipient[0]
+                                  )?.created_by == account?.id ? (
                                   <li>
                                     <div
                                       className="dropdown-item text-danger"
@@ -3064,7 +3063,7 @@ function Messages({
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                    arr[index - 1].time?.split(" ")[0];
+                                  arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -3577,7 +3576,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3723,7 +3722,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                        isAdmin ? (
+                                          isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -3816,21 +3815,21 @@ function Messages({
                       style={{
                         width:
                           isActiveAgentsOpen &&
-                          recipient &&
-                          recipient.length > 0
+                            recipient &&
+                            recipient.length > 0
                             ? "30%"
                             : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
                           transform:
                             isActiveAgentsOpen &&
-                            recipient &&
-                            recipient.length > 0
+                              recipient &&
+                              recipient.length > 0
                               ? "translate(3%, 0%)"
                               : "translate(100%, 0%)",
                         }}
@@ -3843,26 +3842,25 @@ function Messages({
                           style={{
                             left:
                               isActiveAgentsOpen &&
-                              recipient &&
-                              recipient.length > 0
+                                recipient &&
+                                recipient.length > 0
                                 ? "-15px"
                                 : "-5px",
                             transition: "all 0.4s ease-in-out",
                           }}
                         >
                           <i
-                            className={`fa-solid fa-chevron-${
-                              isActiveAgentsOpen &&
-                              recipient &&
-                              recipient.length > 0
+                            className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
+                                recipient &&
+                                recipient.length > 0
                                 ? "right"
                                 : "left"
-                            }`}
+                              }`}
                           />
                         </button>
                         <div
                           className=" h-100"
-                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           {recipient && recipient.length > 0 ? (

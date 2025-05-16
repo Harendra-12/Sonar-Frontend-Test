@@ -879,16 +879,18 @@ function Call({
                         </div>
                       )}
                       {isCallLoading ? (
-                        <div className="text-center">
-                          <i
-                            className={
-                              isCallLoading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5 "
-                            }
-                            style={{ color: "var(--webUtilGray)" }}
-                          ></i>
-                        </div>
+                        <>
+                          {/* <div className="text-center">
+                            <i
+                              className={
+                                isCallLoading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5 "
+                              }
+                              style={{ color: "var(--webUtilGray)" }}
+                            ></i>
+                          </div> */}
+                        </>
                       ) : (
                         <div ref={targetRef}></div>
                       )}
