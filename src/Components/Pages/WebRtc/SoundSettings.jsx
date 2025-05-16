@@ -14,7 +14,6 @@ const SoundSettings = ({ audioRef, gainNodeRef }) => {
             payload: value,
         });
     };
-    console.log('audioRefaudioRef 999999999999', volume)
     return (
         <>
             <input
