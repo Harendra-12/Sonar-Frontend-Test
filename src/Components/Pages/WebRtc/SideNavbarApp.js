@@ -255,6 +255,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </ul> */}
                 </div>
               </li>{" "}
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("call")}
@@ -266,6 +267,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Calls</div>
                 </div>
               </li>
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("messages")}
@@ -279,6 +281,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Messages</div>
                 </div>
               </li>
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("all-voice-mails")}
@@ -294,7 +297,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Voicemails</div>
                 </div>
               </li>
-              {account?.user_role?.roles?.name !== "Agent" ?
+
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("e-fax")}
@@ -307,8 +312,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Fax </div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("email")}
@@ -319,22 +326,24 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Email</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
-                <li style={{ cursor: "pointer" }}>
-                  <div
-                    onClick={() => setactivePage("all-contacts")}
-                    className={
-                      activePage === "all-contacts" ? "navItem active" : "navItem"
-                    }
-                  >
-                    <div className="iconHolder">
-                      <i className="fa-light fa-address-book" />
-                    </div>
-                    <div className="itemTitle">Contacts</div>
+                </li>
+              }
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("all-contacts")}
+                  className={
+                    activePage === "all-contacts" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-address-book" />
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                  <div className="itemTitle">Contacts</div>
+                </div>
+              </li>
+
+              {account?.user_role == null || account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
@@ -349,23 +358,25 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <div className="itemTitle">Call Dashboard</div>
                   </div>
                 </li>
-                : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
-                <li style={{ cursor: "pointer" }}>
-                  <div
-                    // to="/call-center"
-                    onClick={() => setactivePage("call-center")}
-                    className={
-                      activePage === "call-center" ? "navItem active" : "navItem"
-                    }
-                  >
-                    <div className="iconHolder">
-                      <i className="fa-light fa-circle-user" />
-                    </div>
-                    <div className="itemTitle">Call Center</div>
+              }
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  // to="/call-center"
+                  onClick={() => setactivePage("call-center")}
+                  className={
+                    activePage === "call-center" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-circle-user" />
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                  <div className="itemTitle">Call Center</div>
+                </div>
+              </li>
+
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/campaign-login"
@@ -379,8 +390,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Dialer</div>
                   </div>
-                </li> : ""}
-              {isCustomerAdmin &&
+                </li>
+              }
+              {
+                isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("conference")}
@@ -395,7 +408,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </li>
               }
-              {account?.user_role?.roles?.name !== "Agent" || isCustomerAdmin ?
+              {
+                account?.user_role == null || account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => navigate('/dashboard')}
@@ -406,8 +420,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Switch Admin</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 isWhatsAppAvailable != null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
@@ -421,8 +437,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">WhatsApp</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("sms-chatbox")}
@@ -435,8 +453,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">SMS</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("nav-settings")}
@@ -449,7 +469,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Settings</div>
                   </div>
-                </li> : ""}
+                </li>
+              }
             </ul>
           </div>
         </div>

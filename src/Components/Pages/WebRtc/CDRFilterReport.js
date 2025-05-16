@@ -105,7 +105,6 @@ function CdrFilterReport({ page }) {
   const [columnsOptions, setColumnsOptions] = useState([])
   const [columnOriginalSequence, setColumnOriginalSequence] = useState([])
   const [selectedColumn, setSelectedColumn] = useState("");
-
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -460,8 +459,6 @@ function CdrFilterReport({ page }) {
   };
 
   function refreshCallData() {
-    const shouldLoad = false;
-    getData(shouldLoad)
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
@@ -1885,6 +1882,7 @@ function CdrFilterReport({ page }) {
             itemsPerPage={itemsPerPage}
             account={account}
             setCircularLoader={setCircularLoader}
+            filteredColumnForTable={filteredColumnForTable}
           />
         )}
       </main>

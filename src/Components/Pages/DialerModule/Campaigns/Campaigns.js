@@ -98,6 +98,46 @@ function Campaigns() {
     const shouldLoad = false;
     getCampaignData(shouldLoad);
   }
+
+  const handleSampleCsvDownload = () => {
+    const data = [{
+      phone_code: "91",
+      phone_number: 8878982762,
+      title: "Mr",
+      first_name: "john",
+      middle_initial: "D",
+      last_name: "Doe",
+      address1: "123 Elm Street",
+      address2: "Suite 4",
+      address3: "Building B",
+      city: "New York",
+      state: "NY",
+      province: null,
+      postal_code: "10001",
+      country_code: 91,
+      gender: "M",
+      date_of_birth: null,
+      alt_phone: "+919899999999",
+      email: "john.doe@example.com"
+    }]
+    const headers = Object.keys(data[0]);
+    const rows = data.map((obj) =>
+      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+    );
+    const csvContent = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.download = "sample.csv";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <>
       <main className='mainContent'>
@@ -129,6 +169,12 @@ function Campaigns() {
                           <p>You can see the list of campaigns</p>
                         </div>
                         <div className="buttonGroup">
+                          <button
+                            className="panelButton static m-0 px-2"
+                            onClick={handleSampleCsvDownload}
+                          >
+                            <span className="text">Sample CSV</span>
+                          </button>
                           <button className="panelButton gray">
                             <span className="text">Back</span>
                             <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
