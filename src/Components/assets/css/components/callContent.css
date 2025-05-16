@@ -922,11 +922,19 @@
     min-width: 200px;
     padding: 10px;
 } */
-.dropdown-menu .setting_dropdown {
-    width: 200px;
+.dropdown-menu.settingDropDown .setting_dropdown {
+    width: 300px;
     border-radius: 8px;
     padding: 10px !important;
 }
+.dropdown-menu.settingDropDown{
+    position: absolute;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate(119px, 37px);
+    z-index: 1111;
+}
+
 
 .progress-stacked {
     height: 8px;
