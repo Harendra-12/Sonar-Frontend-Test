@@ -386,7 +386,7 @@ function Call({
                 </div>
               ) : (
                 <div
-                  className="col-6 my-auto ms-2 ms-xl-3"
+                  className="col my-auto ms-2 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex align-items-center">
@@ -411,13 +411,24 @@ function Call({
                       {/* <h5>Destination</h5> */}
                     </div>
                   </div>
+                  {item["variable_billsec"] > 0 && (
+                    <div
+                      className={`col-12 mx-auto mt-2`}
+                    >
+                      <div className="contactTags">
+                        <span data-id="2" className="duration">
+                          Duration: {formatTime(item["variable_billsec"])}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
                 </div>
               )}
 
-              {item["variable_billsec"] > 0 && (
+              {/* {item["variable_billsec"] > 0 && (
                 <div
                   className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
                 >
@@ -427,7 +438,7 @@ function Call({
                     </span>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="col-auto text-end ms-auto">
                 <p className="timeAgo mb-0">
