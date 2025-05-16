@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
-  const socketSendMessage = useSelector((state)=>state.socketSendMessage)
+  const socketSendMessage = useSelector((state) => state.socketSendMessage)
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
-  console.log("Internal call action", internalCallAction);
-  console.log("Incoming call", incomingCall);
 
   const dispatch = useDispatch();
   function answerCall(item) {
@@ -15,8 +13,8 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     setToUser(account.id);
     setCalling(true);
     setTimeout(() => {
-      dispatch({type:"REMOVE_INCOMINGCALL",room_id:item.room_id})
-      dispatch({type:"SET_INCOMINGCALL",incomingCall:{...item,recieved:true,isOtherMember:true}})
+      dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item.room_id })
+      dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
 
     }, 1000);
 
@@ -35,7 +33,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       type: "REMOVE_INCOMINGCALL",
       room_id: item.room_id,
     });
-    dispatch({type: "SET_INTERNALCALLACTION",internalCallAction: null});
+    dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
     socketSendMessage({
       action: "peercall",
       chat_call_id: item.id,
@@ -46,16 +44,15 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     });
   }
 
-  useEffect(()=>{
-    incomingCall.map((item)=>{
-      if(internalCallAction?.room_id === item.room_id && internalCallAction?.hangup_cause==="originator_cancel" ){
-        dispatch({type:"SET_INTERNALCALLACTION",internalCallAction:null})
+  useEffect(() => {
+    incomingCall.map((item) => {
+      if (internalCallAction?.room_id === item.room_id && internalCallAction?.hangup_cause === "originator_cancel") {
+        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null })
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item.room_id });
       }
     })
-  },[internalCallAction])
+  }, [internalCallAction])
 
-  console.log("IncominCall data",incomingCall)
   return (
     <>
       {incomingCall.length > 0 &&

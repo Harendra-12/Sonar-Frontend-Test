@@ -126,14 +126,19 @@ export const restrictToAllowedChars = (e) => {
 // Allow only number keys (0-9) and some special keys
 export const restrictToNumbers = (e) => {
   const allowedKey = /[0-9]/;
-  if (
-    !allowedKey.test(e.key) &&
-    e.key !== "Backspace" &&
-    e.key !== "Tab" &&
-    e.key !== "ArrowLeft" &&
-    e.key !== "ArrowRight" &&
-    e.key !== "Delete"
-  ) {
+
+  // Allow: Ctrl+C and Ctrl+V
+  if ((e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "v" || e.key === "a" || e.key === "x" || e.key === "C" || e.key === "V" || e.key === "A" || e.key === "X")) {
+    return;
+  }
+
+  // Allow: Backspace, Tab, Delete
+  if (["Backspace", "Tab", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+    return;
+  }
+
+  // Allow numbers only
+  if (!allowedKey.test(e.key)) {
     e.preventDefault();
   }
 };

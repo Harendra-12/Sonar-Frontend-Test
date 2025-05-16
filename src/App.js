@@ -290,16 +290,66 @@ function App() {
             <Navigate to="/dashboard" replace />
           )} />
           {/* Groups path start */}
-          <Route path="/groups" element={<GroupsList />} />
-          <Route path="/groups-add" element={<AddGroupsList />} />
-          <Route path="/groups-edit" element={<EditGroupsList />} />
+          <Route path="/groups" element={
+            checkViewSidebar(
+              "Group",
+              slugPermissions,
+              account?.permissions
+            ) ?
+              <GroupsList />
+              : <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/groups-add" element={
+            checkViewSidebar(
+              "Group",
+              slugPermissions,
+              account?.permissions
+            ) ?
+              <AddGroupsList />
+              : <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/groups-edit" element={
+            checkViewSidebar(
+              "Group",
+              slugPermissions,
+              account?.permissions
+            ) ?
+              <EditGroupsList />
+              : <Navigate to="/dashboard" replace />
+          } />
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
 
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
-          <Route path="/access-control-list" element={<AccessControl />} />
-          <Route path="/access-control-list-add" element={<AccessControlAdd />} />
-          <Route path="/access-control-list-edit" element={<AccessControlEdit />} />
+          <Route path="/access-control-list"
+            element={
+              checkViewSidebar(
+                "AccessControl",
+                slugPermissions,
+                account?.permissions
+              ) ?
+                <AccessControl />
+                : <Navigate to="/dashboard" replace />
+            } />
+          <Route path="/access-control-list-add"
+            element={
+              checkViewSidebar(
+                "AccessControl",
+                slugPermissions,
+                account?.permissions
+              ) ?
+                <AccessControlAdd />
+                : <Navigate to="/dashboard" replace />
+            } />
+          <Route path="/access-control-list-edit" element={
+            checkViewSidebar(
+              "AccessControl",
+              slugPermissions,
+              account?.permissions
+            ) ?
+              <AccessControlEdit />
+              : <Navigate to="/dashboard" replace />
+          } />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 

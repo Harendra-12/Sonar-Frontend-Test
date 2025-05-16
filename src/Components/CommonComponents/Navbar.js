@@ -258,8 +258,10 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          {accountDetails?.add_on_subscription.find(
-                            (item) => item?.addon?.id == 7
+                          {checkViewSidebar(
+                            "AccessControl",
+                            permissions,
+                            account?.permissions
                           ) ? (
                             <li className="tabItem">
                               <NavLink
@@ -283,7 +285,11 @@ function Navbar() {
                           ) : (
                             <></>
                           )}
-                          <li className="tabItem ">
+                          {checkViewSidebar(
+                            "Group",
+                            permissions,
+                            account?.permissions
+                          ) ? (<li className="tabItem ">
                             <NavLink
                               to="/groups"
                               onClick={backToTop}
@@ -299,7 +305,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">Groups</div>
                             </NavLink>
-                          </li>
+                          </li>) : ""}
 
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem">
@@ -373,21 +379,21 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {/* {checkViewSidebar(
+                          {checkViewSidebar(
                             "DidDetail",
                             permissions,
                             account?.permissions
                           ) && (
                               <li className="tabItem">
                                 <NavLink
-                                  to="/get-did"
+                                  to="/management-get-did"
                                   onClick={backToTop}
                                   className="nav-link"
                                 >
                                   <div className="itemTitle">Get DID</div>
                                 </NavLink>
                               </li>
-                            )} */}
+                            )}
                           {checkViewSidebar(
                             "Port",
                             permissions,
@@ -431,16 +437,6 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-
-                          <li className="tabItem">
-                            <NavLink
-                              to="/management-get-did"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="itemTitle">Get DID</div>
-                            </NavLink>
-                          </li>
                         </ul>
                       </div>
                     </div>

@@ -20,7 +20,9 @@ function OngoingCall({
   setHangupRefresh,
   hangupRefresh,
   setSelectedModule,
-  allContact
+  allContact,
+  accountDetails,
+  didAll
 }) {
   const {
     sessions,
@@ -39,9 +41,7 @@ function OngoingCall({
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [parkingNumber, setParkingNumber] = useState("");
   const [holdProcessing, setHoldProcessing] = useState(false);
-  const callProgressDestination = useSelector(
-    (state) => state.callProgressDestination
-  );
+  const callProgressDestination = useSelector((state) => state.callProgressDestination);
   const [showTranferableList, setShowTranferableList] = useState(false);
   const [showActiveSessions, setShowActiveSessions] = useState(false);
   const {
@@ -56,12 +56,14 @@ function OngoingCall({
   } = useSessionCall(callProgressId);
   const canHold = session && session._state === SessionState.Established;
   const canMute = session && session._state === SessionState.Established;
-  const currentSession = globalSession.find(
-    (session) => session.id === callProgressId
-  );
+  const currentSession = globalSession.find((session) => session.id === callProgressId);
   const isOnHeld = currentSession?.state === "OnHold";
   const attendedDialpadRef = useRef(null);
   const primDialpadRef = useRef(null);
+  const [callExtraInfo, setCallExtraInfo] = useState({
+    info: "",
+    type: ""
+  });
 
   // Listen for parking a call
   useEffect(() => {
@@ -144,7 +146,7 @@ function OngoingCall({
         try {
           const options = session.sessionDescriptionHandlerOptionsReInvite || {};
           options.hold = false;
-          
+
           session.sessionDescriptionHandlerOptionsReInvite = options;
 
           await session.invite({
@@ -204,14 +206,14 @@ function OngoingCall({
   const muteCall = (type) => {
     console.log("GlobalSession", globalSession);
     const currentSession = globalSession.find((item) => item.id === session.id);
-    
+
     if (canMute) {
       if (type === "mute" && currentSession.state !== "OnHold") {
         mute();
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
-            
+
             item.id === session.id ? { ...item, state: "Mute" } : item
           ),
         });
@@ -560,6 +562,23 @@ function OngoingCall({
     }
   }, [attendShow, hideDialpad])
 
+  useEffect(() => {
+    if (callProgressDestination.length < 11) {
+      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc.extension == callProgressDestination);
+      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      setCallExtraInfo({
+        info: username[0]?.username || callProgressDestination,
+        type: "user",
+      });
+    } else {
+      const didTag = didAll.filter((item) => item.did == callProgressDestination);
+      setCallExtraInfo({
+        info: didTag.did || callProgressDestination,
+        type: "did",
+      });
+    }
+  }, [accountDetails, didAll])
+
   return (
     <>
       <div className="audioCall position-relative">
@@ -591,7 +610,8 @@ function OngoingCall({
                     <i className="fa-solid fa-user" />
                   </div>
                   <div className="col-12 text-center">
-                    <h3 className="number">{callProgressDestination}</h3>
+                    <h3 className="number">{callExtraInfo.type == "user" ? callExtraInfo.info : callProgressDestination}</h3>
+                    {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
                   </div>
                 </div>
               </div>
@@ -600,7 +620,6 @@ function OngoingCall({
           <div className="row footer">
             {showTranferableList && (
               <>
-
                 <div className="parkList">
                   <select
                     defaultValue={""}

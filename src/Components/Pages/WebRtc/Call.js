@@ -274,9 +274,9 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
-        : item["Caller-Callee-ID-Number"] === extension
-          ? item["Caller-Caller-ID-Number"]
-          : item["Caller-Callee-ID-Number"];
+        : item["variable_sip_from_user"] === extension
+          ? item["variable_sip_to_user"]
+          : item["variable_sip_from_user"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -386,7 +386,7 @@ function Call({
                 </div>
               ) : (
                 <div
-                  className="col-6 my-auto ms-2 ms-xl-3"
+                  className="col my-auto ms-2 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex align-items-center">
@@ -411,13 +411,24 @@ function Call({
                       {/* <h5>Destination</h5> */}
                     </div>
                   </div>
+                  {item["variable_billsec"] > 0 && (
+                    <div
+                      className={`col-12 mx-auto mt-2`}
+                    >
+                      <div className="contactTags">
+                        <span data-id="2" className="duration">
+                          Duration: {formatTime(item["variable_billsec"])}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
                 </div>
               )}
 
-              {item["variable_billsec"] > 0 && (
+              {/* {item["variable_billsec"] > 0 && (
                 <div
                   className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
                 >
@@ -427,7 +438,7 @@ function Call({
                     </span>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="col-auto text-end ms-auto">
                 <p className="timeAgo mb-0">
@@ -879,7 +890,8 @@ function Call({
                         </div>
                       )}
                       {isCallLoading ? (
-                        <div className="text-center">
+                        <>
+                        {/* <div className="text-center">
                           <i
                             className={
                               isCallLoading
@@ -888,7 +900,8 @@ function Call({
                             }
                             style={{ color: "var(--webUtilGray)" }}
                           ></i>
-                        </div>
+                        </div> */}
+                         </>
                       ) : (
                         <div ref={targetRef}></div>
                       )}

@@ -105,7 +105,6 @@ function CdrFilterReport({ page }) {
   const [columnsOptions, setColumnsOptions] = useState([])
   const [columnOriginalSequence, setColumnOriginalSequence] = useState([])
   const [selectedColumn, setSelectedColumn] = useState("");
-
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -460,8 +459,6 @@ function CdrFilterReport({ page }) {
   };
 
   function refreshCallData() {
-    const shouldLoad = false;
-    getData(shouldLoad)
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
@@ -1885,6 +1882,7 @@ function CdrFilterReport({ page }) {
             itemsPerPage={itemsPerPage}
             account={account}
             setCircularLoader={setCircularLoader}
+            filteredColumnForTable={filteredColumnForTable}
           />
         )}
       </main>
@@ -2040,8 +2038,8 @@ const customStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 2,
+    paddingBottom: 2,
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
@@ -2050,6 +2048,7 @@ const customStyles = {
       color: "#fff",
     },
     fontSize: "14px",
+    borderBottom: "1px solid var(--border-color)",
   }),
   menu: (provided) => ({
     ...provided,
