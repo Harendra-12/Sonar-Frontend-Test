@@ -1184,25 +1184,27 @@ function Navbar() {
                       )}
                     </>
                   )}
+              
                   <li className="">
-                    <button
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseai"
-                      aria-expanded={
-                        isChildActive([
+                      <button
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse21"
+                        aria-expanded={
+                          isChildActive([
                          "/ai-dashboard",
                         ])
                           ? "true"
                           : "false"
                       }
-                      aria-controls="collapseai"
-                    >
-                      <div className="iconHolder">
-                        <i className="fa-regular fa-chart-line-up"></i>
-                      </div>
-                      <div className="itemTitle">AI Dashboard</div>
+                        aria-controls="collapse21"
+                      >
+                        <div className="iconHolder">
+                          <i className="fa-regular fa-chart-line-up"></i>
+                        </div>
+                        <div className="itemTitle">AI Dashboard</div>
+                      </button>
                       <div
-                        id="collapseai"
+                        id="collapse21"
                         className={`accordion-collapse collapse ${
                           isChildActive([
                             "/ai-dashboard",
@@ -1214,8 +1216,10 @@ function Navbar() {
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
-                            <li className="tabItem">
-                              <NavLink
+                           
+                              
+                            <li className="tabItem ">
+                             <NavLink
                                 to="/ai-dashboard"
                                 onClick={backToTop}
                                 className="nav-link"
@@ -1223,11 +1227,12 @@ function Navbar() {
                                 <div className="itemTitle">Dashboard</div>
                               </NavLink>
                             </li>
+                         
                           </ul>
                         </div>
                       </div>
-                    </button>
-                  </li>
+                    </li>
+
                   {checkViewSidebar(
                     "ChannelHangupComplete",
                     permissions,

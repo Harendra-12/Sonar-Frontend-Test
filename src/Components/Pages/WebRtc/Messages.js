@@ -3360,12 +3360,15 @@ function Messages({
 
                               <div className=" d-flex justify-content-between align-items-start gap-2">
                                 <div className="d-flex gap-1">
+                                  <Tippy  content="Auto Reply with AI">
                                   <button
                                     className="clearButton2 eraser"
                                     onClick={() => featureUnderdevelopment()}
                                   >
-                                    <i className="fa-light fa-eraser" />
+                                    <i class="fa-solid fa-message-bot"></i>
                                   </button>
+                                    
+                                  </Tippy>
                                   <button
                                     className="clearButton2 gallery"
                                     onClick={() => {
@@ -3851,10 +3854,10 @@ function Messages({
                         >
                           <i
                             className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
-                                recipient &&
-                                recipient.length > 0
-                                ? "right"
-                                : "left"
+                              recipient &&
+                              recipient.length > 0
+                              ? "right"
+                              : "left"
                               }`}
                           />
                         </button>
