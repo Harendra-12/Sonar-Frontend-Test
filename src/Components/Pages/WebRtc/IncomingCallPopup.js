@@ -85,7 +85,7 @@ function IncomingCallPopup({
     }
 
     // If a call is already established, then set incoming call to mute
-    if (globalSession?.length > 1) {
+    if (globalSession?.length > 1 && globalSession[0]?.state === "Established") {
       setMuteAudio(true);
     }
   }, [sessionId, globalSession]);
