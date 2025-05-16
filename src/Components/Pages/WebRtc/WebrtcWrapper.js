@@ -735,6 +735,7 @@ const WebrtcWrapper = () => {
                                 globalSession={sessions}
                                 accountDetails={accountDetails}
                                 didAll={didAll}
+                                audioRef={audioRef}
                               />
                             </div>
                           );
