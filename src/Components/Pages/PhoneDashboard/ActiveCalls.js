@@ -41,7 +41,12 @@ function ActiveCalls({ isWebrtc, filter }) {
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
-  const [dest, setDest] = useState("")
+  const [dest, setDest] = useState("");
+
+  const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
+  const isCustomerAdmin = account?.email == accountDetails?.email;
+
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -325,11 +330,13 @@ function ActiveCalls({ isWebrtc, filter }) {
                           item.direction === "inbound"
                             ? allOptions.filter((opt) => opt.value !== "whisper-bleg")
                             : item.direction === "outbound" ? allOptions.filter((opt) => opt.value !== "whisper-aleg")
-                              : allOptions
+                              : !isCustomerAdmin ? allOptions.filter((opt) => opt.value !== "kill-call")
+                                : allOptions
                         }
                         isSearchable
                         styles={customStyles}
                       />
+                      {console.log(account)}
                       {/* Separate Buttons instead of Select Box */}
                       {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
