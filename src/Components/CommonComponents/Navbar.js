@@ -373,21 +373,21 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {/* {checkViewSidebar(
+                          {checkViewSidebar(
                             "DidDetail",
                             permissions,
                             account?.permissions
                           ) && (
                               <li className="tabItem">
                                 <NavLink
-                                  to="/get-did"
+                                  to="/management-get-did"
                                   onClick={backToTop}
                                   className="nav-link"
                                 >
                                   <div className="itemTitle">Get DID</div>
                                 </NavLink>
                               </li>
-                            )} */}
+                            )}
                           {checkViewSidebar(
                             "Port",
                             permissions,
@@ -431,16 +431,6 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-
-                          <li className="tabItem">
-                            <NavLink
-                              to="/management-get-did"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="itemTitle">Get DID</div>
-                            </NavLink>
-                          </li>
                         </ul>
                       </div>
                     </div>
