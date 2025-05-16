@@ -49,11 +49,14 @@ const PressDigits = ({ id, data }) => {
 
     // Remove any connected edges
     const sourceHandleId = `source-${id}`;
-    setEdges((edges) =>
-      edges.filter(
-        (edge) => !(edge.sourceHandle === sourceHandleId && edge.source === id)
-      )
-    );
+    // setEdges((edges) =>
+    //   edges.filter(
+    //     (edge) => !(edge.sourceHandle === sourceHandleId && edge.source === id)
+    //   )
+    // );
+    setEdges((edges) => {
+      return edges.filter((edge) => edge.sourceHandle !== sourceHandleId);
+    });
   };
 
   // const deleteField = (id) => {

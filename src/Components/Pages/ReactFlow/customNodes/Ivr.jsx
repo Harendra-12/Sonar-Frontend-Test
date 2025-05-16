@@ -23,11 +23,13 @@ const Ivr = ({ id, data }) => {
       });
     }
   }, [ivrRefresh, ivrArr]);
-
   const handleIvr = (event) => {
     const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    if (selectedValue && data.onUpdate) {
+      data.onUpdate({
+        value: `ivr_${selectedValue}`,
+        ivr_option_id: String(selectedValue),
+      });
     }
   };
 
@@ -65,10 +67,17 @@ const Ivr = ({ id, data }) => {
           {ivr.length < 1 && <p>No ivr found</p>}
           {ivr.length > 0 && (
             <div className="d-flex flex-column">
-              <label for="ivr">Choose a ivr:</label>
+              <label for="ivr">Choose a ivr:</label>{" "}
               <select name="ivr" id="ivr" onChange={(e) => handleIvr(e)}>
+                <option value="" disabled selected>
+                  Select IVR
+                </option>
                 {ivr.map((value, index) => (
-                  <option value={`ivr_${String(value.id)}`} key={index}>
+                  <option
+                    value={value.id}
+                    key={index}
+                    data-name={value.ivr_name}
+                  >
                     {value.ivr_name}
                   </option>
                 ))}

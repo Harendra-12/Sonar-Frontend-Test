@@ -23,11 +23,16 @@ const CallCenter = ({ id, data }) => {
       });
     }
   }, [callCenterArr, callCenterRefresh]);
-
   const handleCallCenter = (event) => {
     const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    const selectedOption = callCenter.find(
+      (item) => item.id === parseInt(selectedValue)
+    );
+    if (selectedOption && data.onUpdate) {
+      data.onUpdate({
+        value: selectedOption.extension,
+        ivr_option_id: String(selectedOption.id),
+      });
     }
   };
 
@@ -65,14 +70,22 @@ const CallCenter = ({ id, data }) => {
           {callCenter.length < 1 && <p>No callCenter found</p>}
           {callCenter.length > 1 && (
             <div className="d-flex flex-column">
-              <label for="callCenter">Choose a callCenter:</label>
+              <label for="callCenter">Choose a callCenter:</label>{" "}
               <select
                 name="callCenter"
                 id="callCenter"
                 onChange={(e) => handleCallCenter(e)}
               >
+                <option value="" disabled selected>
+                  Select Call Center
+                </option>
                 {callCenter.map((value, index) => (
-                  <option value={value.extension} key={index}>
+                  <option
+                    value={value.id}
+                    key={index}
+                    data-extension={value.extension}
+                    data-name={value.queue_name}
+                  >
                     {value?.queue_name} - {value?.extension}
                   </option>
                 ))}

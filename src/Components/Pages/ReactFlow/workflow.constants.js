@@ -3,6 +3,8 @@ export const initialNodes = [
     id: "7",
     position: { x: 255, y: 210 },
     type: "callBegin",
+    selected: false,
+    dragging: false,
   },
   {
     id: "8",

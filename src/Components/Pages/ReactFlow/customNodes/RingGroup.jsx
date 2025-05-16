@@ -23,11 +23,16 @@ const RingGroup = ({ id, data }) => {
       });
     }
   }, [ringGroupArr, ringGroupRefresh]);
-
   const handleRingGroup = (event) => {
     const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    const selectedOption = ringGroup.find(
+      (item) => item.id === parseInt(selectedValue)
+    );
+    if (selectedOption && data.onUpdate) {
+      data.onUpdate({
+        value: selectedOption.extension,
+        ivr_option_id: String(selectedOption.id),
+      });
     }
   };
 
@@ -65,14 +70,22 @@ const RingGroup = ({ id, data }) => {
           {ringGroup.length < 1 && <p>No ringGroup found</p>}
           {ringGroup.length > 0 && (
             <div className="d-flex flex-column">
-              <label for="ringGroup">Choose a ringGroup:</label>
+              <label for="ringGroup">Choose a ringGroup:</label>{" "}
               <select
                 name="ringGroup"
                 id="ringGroup"
                 onChange={(e) => handleRingGroup(e)}
               >
+                <option value="" disabled selected>
+                  Select Ring Group
+                </option>
                 {ringGroup.map((value, index) => (
-                  <option value={value.extension} key={index}>
+                  <option
+                    value={value.id}
+                    key={index}
+                    data-extension={value.extension}
+                    data-name={value.name}
+                  >
                     {value?.name} - {value?.extension}
                   </option>
                 ))}

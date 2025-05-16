@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import dagre from "dagre";
 import {
   addEdge,
@@ -24,6 +24,9 @@ import Ivr from "./customNodes/Ivr";
 import Hangup from "./customNodes/Hangup";
 import BackToIvr from "./customNodes/BackToIvr";
 import Pstn from "./customNodes/Pstn";
+import { useLocation } from "react-router-dom";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import CircularLoader from "../../Loader/CircularLoader";
 
 // Utility function for auto layout
 const getLayoutedElements = (nodes, edges, direction = "TB") => {
@@ -87,9 +90,12 @@ const edgeTypes = {
 };
 
 const Reactflow = () => {
+  const location = useLocation();
+  const id = location.state?.id;
+  const [loading, setLoading] = useState(false);
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
   const onConnect = useCallback(
     (connection) => {
       const edge = {
@@ -97,6 +103,8 @@ const Reactflow = () => {
         animated: true,
         id: `${connection.source}-${connection.sourceHandle}-${connection.target}`,
         type: "customEdge",
+        isRemovable: true,
+        deletable: true,
       };
       setEdges((eds) => addEdge(edge, eds));
     },
@@ -135,91 +143,30 @@ const Reactflow = () => {
 
   // Map all nodes to include the onUpdate handler
   const nodesWithHandlers = nodes.map((node) => {
-    // Add the onUpdate handler to pressDigits nodes
-    if (node.type === "pressDigits") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
+    switch (node.type) {
+      case "pressDigits":
+      case "extension":
+      case "ringGroup":
+      case "callCenter":
+      case "ivr":
+      case "hangup":
+      case "backToIvr":
+      case "pstn":
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
+          },
+        };
+      default:
+        return node;
     }
-    // Add the onUpdate handler to extension nodes
-    if (node.type === "extension") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to ringGroup nodes
-    if (node.type === "ringGroup") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to callCenter nodes
-    if (node.type === "callCenter") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to Ivr nodes
-    if (node.type === "ivr") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to Hangup nodes
-    if (node.type === "hangup") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to Back to IVR nodes
-    if (node.type === "backToIvr") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    // Add the onUpdate handler to PSTN nodes
-    if (node.type === "pstn") {
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
-        },
-      };
-    }
-    return node;
   });
 
   const validatePressDigitsConnections = (flowData) => {
     const { nodes, edges } = flowData;
+    console.log("flowDataaaaaaaaaaa:", flowData);
     const errors = [];
 
     const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
@@ -442,64 +389,101 @@ const Reactflow = () => {
   //   console.log("Exported Flow Data with Sub-Nodes:", flowData);
   // };
 
-  const exportFlowData = () => {
+  const exportFlowData = async () => {
     const flowData = { nodes, edges };
 
     const isPressDigitsValid = validatePressDigitsConnections(flowData);
     const isConnectedValid = validateAllNodeConnections(flowData);
+    console.log("flowData: ", flowData);
 
     if (!isPressDigitsValid || !isConnectedValid) {
       console.warn("❌ Export aborted due to validation failure.");
       return;
     }
 
+    function replaceIdWithKeyId(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map(replaceIdWithKeyId);
+      } else if (obj !== null && typeof obj === "object") {
+        return Object.entries(obj).reduce((acc, [key, value]) => {
+          const newKey = key === "id" ? "key_id" : key;
+          acc[newKey] = replaceIdWithKeyId(value);
+          return acc;
+        }, {});
+      }
+      return obj;
+    }
+
+    const updated = replaceIdWithKeyId(flowData);
+    const payload = {
+      ivr_master_id: id,
+      ...updated,
+    };
+
+    const apiData = await generalPostFunction("/ivrnode/store", payload);
+    if (apiData.status) {
+      setLoading(false);
+    } else {
+      setLoading(false);
+      // alert("Something went wrong");
+    }
+
     console.log("✅ All validations passed.");
-    console.log("📦 Final Exported Flow:", flowData);
+    console.log("📦 Final Exported Flow:", payload);
   };
 
   return (
-    <main className="mainContent">
-      <div className="flowMain">
-        <ReactFlow
-          className="reactFlowCanvas"
-          nodes={nodesWithHandlers}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          connectOnClick={true}
-          style={{ height: "100vh" }}
-          defaultEdgeOptions={{
-            type: "customEdge",
-            animated: true,
-            style: { strokeWidth: 2, stroke: "#000" },
-          }}
-          // fitView
-          snapToGrid
-          connectionMode="strict"
-        >
-          <Panel position="top-right" className="conversation-panel">
-            <ConversationOptions />
-            <div className="d-flex flex-col gap-2 pt-2">
-              <button onClick={exportFlowData} className="btn btn-primary ">
-                Export Flow Data
-              </button>
-              <button
-                onClick={() => onLayout("LR")}
-                className="btn btn-success"
-              >
-                Auto Layout
-              </button>
-            </div>
-          </Panel>
-          <Controls />
-          <Background variant={BackgroundVariant.Dots} />
-          {/* <MiniMap /> */}
-        </ReactFlow>
-      </div>
-    </main>
+    <>
+      {loading ? (
+        <div colSpan={99}>
+          <CircularLoader />
+        </div>
+      ) : (
+        ""
+      )}
+      <main className="mainContent">
+        <div className="flowMain">
+          <ReactFlow
+            className="reactFlowCanvas"
+            nodes={nodesWithHandlers}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            connectOnClick={true}
+            style={{ height: "100vh" }}
+            defaultEdgeOptions={{
+              type: "customEdge",
+              animated: true,
+              style: { strokeWidth: 2, stroke: "#000" },
+            }}
+            // fitView
+            snapToGrid
+            connectionMode="strict"
+          >
+            <Panel position="top-right" className="conversation-panel">
+              <ConversationOptions />
+              <div className="d-flex flex-col gap-2 pt-2">
+                <button onClick={exportFlowData} className="btn btn-primary ">
+                  Save
+                </button>
+                <button
+                  onClick={() => onLayout("LR")}
+                  className="btn btn-success"
+                >
+                  Auto Layout
+                </button>
+              </div>
+            </Panel>
+            <Controls />
+            <Background variant={BackgroundVariant.Dots} />
+            {/* <MiniMap /> */}
+          </ReactFlow>
+        </div>
+      </main>
+    </>
   );
 };
 

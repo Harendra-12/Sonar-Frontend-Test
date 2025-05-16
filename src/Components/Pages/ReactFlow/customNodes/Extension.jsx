@@ -23,11 +23,13 @@ const Extension = ({ id, data }) => {
       });
     }
   }, [extensionArr, extensionRefresh]);
-
   const handleExtension = (event) => {
-    const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    const selectedOption = event.target.selectedOptions[0];
+    if (selectedOption.value && data.onUpdate) {
+      data.onUpdate({
+        value: selectedOption.dataset.extension,
+        ivr_option_id: selectedOption.value,
+      });
     }
   };
 
@@ -39,7 +41,7 @@ const Extension = ({ id, data }) => {
       >
         <div className="node-header">
           <div className="node-title">
-            ī<i className="fa-solid fa-phone-volume"></i>
+            <i className="fa-solid fa-phone-volume"></i>
             <input
               type="text"
               value={data.label}
@@ -67,14 +69,21 @@ const Extension = ({ id, data }) => {
           {extension.length < 1 && <p>No extension found</p>}
           {extension.length > 0 && (
             <div className="d-flex flex-column">
-              <label htmlFor="extension">Choose a extension:</label>
+              <label htmlFor="extension">Choose a extension:</label>{" "}
               <select
                 name="extension"
                 id="extension"
                 onChange={(e) => handleExtension(e)}
               >
+                <option value="" disabled selected>
+                  Select Extension
+                </option>
                 {extension.map((value, index) => (
-                  <option value={value.extension} key={index}>
+                  <option
+                    value={value.id}
+                    key={index}
+                    data-extension={value.extension}
+                  >
                     {value.extension}
                   </option>
                 ))}
