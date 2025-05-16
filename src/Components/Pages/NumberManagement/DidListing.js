@@ -259,14 +259,14 @@ function DidListing({ page }) {
         (item) => item?.extension == extension
       );
       const userData = allUserArr.find(
-        (item) => item.extension == findData.extension
+        (item) => item.extension.extension == findData.extension
       );
+
       return `${userData?.name}- `;
     }
 
     if (usages === "ring group") {
       const findData = ringGroup.find((item) => item?.extension == extension);
-
       return `${findData?.name}- `;
     }
 
@@ -280,6 +280,11 @@ function DidListing({ page }) {
       const findData = ivrArr.find((item) => item?.id == ivrId);
       return `${findData?.ivr_name}- `;
     }
+
+    // if (usages === "pstn") {
+    //   const findData = ringGroup.find((item) => item?.extension == extension);
+    //   return `${findData?.name}- `;
+    // }
   }
 
   return (
