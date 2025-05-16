@@ -136,7 +136,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                         <th>Name</th>
                                                         <th>Direction</th>
                                                         <th>Origin</th>
-                                                        <th>Dest</th>
+                                                        <th>Route</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
