@@ -478,6 +478,17 @@ const WebrtcWrapper = () => {
           isMicOn={isMicOn}
           isVideoOn={isVideoOn}
           reconnecting={reconnecting}
+          SettingsProp={
+            <Settings
+              audioRef={audioRef}
+              audioCtxRef={audioCtxRef}
+              gainNodeRef={gainNodeRef}
+              analyserRef={analyserRef}
+              volume={volume}
+              setVolume={{}}
+              audio={audio}
+            />
+          }
         />
         <div className="d-none">
           {extension && <SipRegister options={options} />}
@@ -486,7 +497,7 @@ const WebrtcWrapper = () => {
           <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />
         )}
 
-        {activePage === "nav-settings" && (
+        {/* {activePage === "nav-settings" && (
           <Settings
             audioRef={audioRef}
             audioCtxRef={audioCtxRef}
@@ -494,11 +505,9 @@ const WebrtcWrapper = () => {
             analyserRef={analyserRef}
             volume={volume}
             setVolume={{}}
-            allContactLoading={allContactLoading}
-            setAllContactLoading={setAllContactLoading}
             audio={audio}
           />
-        )}
+        )} */}
 
         {activePage === "call" && (
           <Call

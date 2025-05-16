@@ -16,7 +16,7 @@ const SoundSettings = ({ audioRef, gainNodeRef }) => {
     };
     console.log('audioRefaudioRef 999999999999', volume)
     return (
-        <div>
+        <>
             <input
                 type="range"
                 min="0"
@@ -24,9 +24,10 @@ const SoundSettings = ({ audioRef, gainNodeRef }) => {
                 step="0.01"
                 value={volume}
                 onChange={handleVolumeChange}
+                style={{ width: '100%' }}
             />
-            <canvas id="visualizer"></canvas>
-        </div>
+            {/* <canvas id="visualizer"></canvas> */}
+        </>
     );
 };
 

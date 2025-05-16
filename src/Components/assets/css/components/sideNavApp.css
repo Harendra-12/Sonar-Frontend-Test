@@ -4,15 +4,17 @@
     height: 100vh;
     position: fixed;
     left: 0;
-   
+
     z-index: 99;
     background: var(--nav-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-#sidenNavApp ul{
- overflow-y: auto;
- height: calc(100vh - 100px);
+
+#sidenNavApp ul {
+    overflow-y: auto;
+    height: calc(100vh - 100px);
 }
+
 /* #sidenNavApp .sidenavItems .active{
     background-color: var(--ui-accent);
 } */
@@ -44,7 +46,7 @@
     background: none;
     width: 100%;
     display: flex;
-    padding: 7px 8px 7px 0;
+    padding: 7px 0;
 
     border-radius: 5px;
 }
