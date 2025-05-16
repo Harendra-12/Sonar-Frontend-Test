@@ -107,7 +107,7 @@ function ActiveCallSidePanel({
     //   videoCall:false
     // })
 
-    audioRef.current.pause();
+    audioRef?.current?.pause();
 
     dispatch({
       type: "SET_CALLREFRESH",
