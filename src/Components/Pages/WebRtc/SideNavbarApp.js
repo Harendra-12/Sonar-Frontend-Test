@@ -282,7 +282,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              {account?.user_role == null || account?.user_role?.roles?.name != "Agent" &&
+              { account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
