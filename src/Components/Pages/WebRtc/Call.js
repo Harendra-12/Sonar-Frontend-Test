@@ -274,9 +274,9 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
-        : item["Caller-Callee-ID-Number"] === extension
-          ? item["Caller-Caller-ID-Number"]
-          : item["Caller-Callee-ID-Number"];
+        : item["variable_sip_from_user"] === extension
+          ? item["variable_sip_to_user"]
+          : item["variable_sip_from_user"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -891,17 +891,17 @@ function Call({
                       )}
                       {isCallLoading ? (
                         <>
-                          {/* <div className="text-center">
-                            <i
-                              className={
-                                isCallLoading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5 "
-                              }
-                              style={{ color: "var(--webUtilGray)" }}
-                            ></i>
-                          </div> */}
-                        </>
+                        {/* <div className="text-center">
+                          <i
+                            className={
+                              isCallLoading
+                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                : "fa-regular fa-arrows-rotate fs-5 "
+                            }
+                            style={{ color: "var(--webUtilGray)" }}
+                          ></i>
+                        </div> */}
+                         </>
                       ) : (
                         <div ref={targetRef}></div>
                       )}
