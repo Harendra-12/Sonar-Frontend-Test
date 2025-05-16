@@ -35,6 +35,8 @@ function ActiveCallSidePanel({
   setSelectedModule,
   isMicOn,
   globalSession,
+  accountDetails,
+  didAll
 }) {
   const {
     sessions,
@@ -49,7 +51,11 @@ function ActiveCallSidePanel({
   const [holdProcessing, setHoldProcessing] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
-  const refreshCalls = useSelector((state) => state.refreshCalls)
+  const refreshCalls = useSelector((state) => state.refreshCalls);
+  const [callExtraInfo, setCallExtraInfo] = useState({
+    info: "",
+    type: ""
+  });
 
   useEffect(() => {
     if (session?._state === "Establishing") {
@@ -293,6 +299,24 @@ function ActiveCallSidePanel({
       toast.warn("Call has not been established");
     }
   };
+
+  useEffect(() => {
+    if (destination.length < 11) {
+      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc?.extension == destination);
+      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      setCallExtraInfo({
+        info: username[0]?.username || destination,
+        type: "user",
+      });
+    } else {
+      const didTag = didAll?.filter((item) => item?.did == destination);
+      setCallExtraInfo({
+        info: didTag?.did || destination,
+        type: "did",
+      });
+    }
+  }, [accountDetails, didAll])
+
   return (
     <>
       {isHeld ? (
@@ -302,7 +326,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{destination}</h4>
+            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             {/* <h5>01:20</h5> */}
             {timer?.answeredAt && (
               <CallTimer
@@ -334,7 +359,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{destination}</h4>
+            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             <h5>Incoming...</h5>
           </div>
           <div className="callBtnGrp my-auto ms-auto">
@@ -360,8 +386,8 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{destination}</h4>
-            {/* <h5>01:20</h5> */}
+            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             {timer?.answeredAt && (
               <CallTimer
                 startAt={timer.answeredAt}

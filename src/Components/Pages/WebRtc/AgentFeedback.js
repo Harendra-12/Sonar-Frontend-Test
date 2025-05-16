@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 function AgentFeedback() {
     const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
     console.log("desposiTionOptions", desposiTionOptions);
-    const [currentDisposition, setCurrentDisposiTion] = useState([])
+    const [currentDisposition, setCurrentDisposiTion] = useState([]);
+    const [agentNote, setAgentNote] = useState("");
 
     // Function to check wetaher this dispo is already presnt if yes then remove otherwise add
     const checkDispo = (item) => {
@@ -35,31 +36,32 @@ function AgentFeedback() {
      * If the response is not successful, displays an error message to the agent.
      */
     async function handleFeedback() {
-        if(currentDisposition.length === 0) {
+        if (currentDisposition.length === 0) {
             toast.error("Please select at least one feedback option")
             return
         }
         const parseddata = {
-            'agent_id' :desposiTionOptions.agent_id,
-            'lead_id' :desposiTionOptions.lead_id,
-            'campaign_id' :desposiTionOptions.campaign_id,
-            'disposition_id':currentDisposition[0]?.id,
-            'feedback' :currentDisposition[0]?.campaign_disposition_name,
+            'agent_id': desposiTionOptions.agent_id,
+            'lead_id': desposiTionOptions.lead_id,
+            'campaign_id': desposiTionOptions.campaign_id,
+            'disposition_id': currentDisposition[0]?.id,
+            'feedback': currentDisposition[0]?.campaign_disposition_name,
+            'agent_note': agentNote
         }
-        const response  = await generalPostFunction("/campaign-feedback",parseddata)
-        if(response.status){
+        const response = await generalPostFunction("/campaign-feedback", parseddata)
+        if (response.status) {
             toast.success(response.message)
             dispatch({
                 type: "SET_AGENT_DEPOSITION",
                 agentDeposition: false,
             })
-        }else{
+        } else {
             toast.error(response.message)
         }
     }
 
     console.log("currentDisposition", currentDisposition);
-    
+
     return (
         <>
             <div className="addNewContactPopup">
@@ -89,7 +91,7 @@ function AgentFeedback() {
                                     return (
                                         <div key={key} className="formRow col-xl-3 justify-content-start">
                                             <div className='col-auto me-2'>
-                                                <input onChange={()=>checkDispo(item)} checked={currentDisposition?.some((dispo) => dispo.id === item.id)} type="checkbox" />
+                                                <input onChange={() => checkDispo(item)} checked={currentDisposition?.some((dispo) => dispo.id === item.id)} type="checkbox" />
                                             </div>
                                             <div className="formLabel">
                                                 <label htmlFor="">{item.campaign_disposition_name}</label>
@@ -98,11 +100,30 @@ function AgentFeedback() {
                                     )
                                 })
                             }
+                            <div className="border-bottom col-12" />
+                            <div className="formRow">
+                                <div className="d-flex justify-content-between w-100">
+                                    <div className="formLabel">
+                                        <label>Notes</label>
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <textarea
+                                        type="text"
+                                        className="formItem h-auto"
+                                        rows={3}
+                                        placeholder="Please enter notes specific to this call here!"
+                                        defaultValue={""}
+                                        value={agentNote}
+                                        onChange={(e) => setAgentNote(e.target.value)}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-xl-12 mt-2">
                         <div className="d-flex justify-content-between">
-                            <button className="panelButton gray ms-0" onClick={() => {
+                            {/* <button className="panelButton gray ms-0" onClick={() => {
                                 dispatch({
                                     type: "SET_AGENT_DEPOSITION",
                                     agentDeposition: false,
@@ -112,8 +133,8 @@ function AgentFeedback() {
                                 <span className="icon">
                                     <i className="fa-light fa-xmark"></i>
                                 </span>
-                            </button>
-                            <button className="panelButton" onClick={handleFeedback} >
+                            </button> */}
+                            <button className="panelButton ms-0" onClick={handleFeedback} >
                                 <span className="text">Done</span>
                                 <span className="icon">
                                     <i className="fa-solid fa-check" />

@@ -116,10 +116,10 @@ const ActionList = ({
         labelValue = aiAgentsArr.find(
           (item) => `aiagent_${item.ainumber}` == value
         )?.name;
-      } else if(category === "ring group"){
+      } else if (category === "ring group") {
         const ringObj = ringGroupArr?.find((item) => item?.extension == value)
         labelValue = `${ringObj?.name}-${ringObj?.extension}`
-      } else if(category === "call center"){
+      } else if (category === "call center") {
         const callObj = callCenterArr?.find((item) => item?.extension == value)
         labelValue = `${callObj?.queue_name}-${callObj?.extension}`
       } else if (value.includes("ivr_")) {
@@ -179,7 +179,7 @@ const ActionList = ({
     (option) =>
       category === undefined ||
       option.label.toLowerCase().replace(/\s+/g, "") ===
-        category?.toLowerCase().replace(/\s+/g, "")
+      category?.toLowerCase().replace(/\s+/g, "")
   );
 
   const allOptionsRef = useRef(allOptions);
@@ -257,14 +257,15 @@ const ActionList = ({
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
+      paddingTop: '2px',
+      paddingBottom: '2px',
       backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
       },
       fontSize: "14px",
+      borderBottom: '1px solid var(--border-color)'
     }),
     menu: (provided) => ({
       ...provided,

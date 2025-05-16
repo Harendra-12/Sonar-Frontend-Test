@@ -49,7 +49,7 @@ const AgentSearch = ({
       });
 
       if (selectedUser.length > 0) {
-        getDropdownValue([...selectedUser[0].value,"singleChat", selectedUser[0]?.name, selectedUser?.email]);
+        getDropdownValue([...selectedUser[0].value, "singleChat", selectedUser[0]?.name, selectedUser?.email]);
         setSelectedOption(selectedUser[0].value[0]);
         setExtensionFromCdrMessage();
       }
@@ -97,8 +97,8 @@ const AgentSearch = ({
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "13px",
-      paddingTop: 5,
-      paddingBottom: 5,
+      paddingTop: 2,
+      paddingBottom: 2,
       borderBottom: "1px solid var(--border-color)",
       backgroundColor: state.isSelected
         ? "var(--ele-color)"
@@ -137,7 +137,7 @@ const AgentSearch = ({
           id="selectFormRow"
           onChange={(selectedOption) => {
             const userDetails = user?.find((data) => data?.id == selectedOption?.value[1])
-            getDropdownValue([...selectedOption.value,"singleChat", userDetails?.username, userDetails?.email, userDetails?.profile_picture]);
+            getDropdownValue([...selectedOption.value, "singleChat", userDetails?.username, userDetails?.email, userDetails?.profile_picture]);
             setSelectedOption(selectedOption.value[0]);
           }}
           options={allOptions}

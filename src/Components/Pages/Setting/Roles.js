@@ -471,7 +471,7 @@ function Roles() {
                                     selectedRoleId === item.id ? "active" : ""
                                   }
                                 >
-                                  <div className="col-xl-8 col-7" >
+                                  <div className="col" >
                                     <input
                                       type="text"
                                       placeholder={item.name}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SoundSettings from './SoundSettings'
-import { logout } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, logout } from '../../GlobalFunction/globalFunction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSIPProvider } from 'modify-react-sipjs';
 import LogOutPopUp from './LogOutPopUp';
@@ -19,54 +19,28 @@ const Settings = (
         audio,
         handleVolumeChange
     }) => {
-    const dispatch = useDispatch();
-    const [allLogOut, setAllLogOut] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const state = useSelector((state) => state);
-
-    const allCallCenterIds = state.allCallCenterIds;
-    const addContactRefresh = state.addContactRefresh;
-
-    const { sessionManager } = useSIPProvider()
-    // Function to handle logout
-    const handleLogOut = async () => {
-        setLoading(true);
-        try {
-            const apiResponses = await logout(
-                allCallCenterIds,
-                dispatch,
-                sessionManager
-            );
-        } catch (error) {
-            console.error("Unexpected error in handleLogOut:", error);
-            alert("Something went wrong. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleContactRefresh = () => {
-        setAllContactLoading(true);
-        dispatch({
-            type: "SET_ADDCONTACTREFRESH",
-            addContactRefresh: addContactRefresh + 1,
-        });
-    };
     return (
         <>
-            {allLogOut && (
-                <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
-            )}
-            <main
-                className="mainContentApp" style={{ marginRight: 0 }}>
-                <section className="callPage">
-                    <div className="container-fluid">
-                        <div className="row" style={{ height: "100%" }}>
-                            <div className="col-12 ps-xl-0">
-                                <HeaderApp title={"Settings"} loading={allContactLoading} setLoading={setAllContactLoading} refreshApi={() => handleContactRefresh()} />
-                            </div>
-                        </div>
-
+            <div className="setting_dropdown">
+                <div class="p-2 header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <p class="mb-1 fs-17 fw-medium">Media Settings</p>
+                    </div>
+                </div>
+                <div className="mt-3">
+                    <div className="mb-2">
+                        <label>Speaker:</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            style={{ width: '100%' }}
+                            onChange={() => featureUnderdevelopment()}
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <label>Ring Device:</label>
                         <SoundSettings
                             audio={audio}
                             setVolume={setVolume}
@@ -77,10 +51,36 @@ const Settings = (
                             volume={volume}
                             handleVolumeChange={handleVolumeChange}
                         />
-
                     </div>
-                </section>
-            </main>
+                    <div className="mb-2">
+                        <label>Microphone:</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            style={{ width: '100%' }}
+                            onChange={() => featureUnderdevelopment()}
+                        />
+
+                        {/* <h2 className="titleName">Basic Checkboxes</h2> */}
+                        <div class="basic-container mt-3">
+                            <div>
+                                <input type="checkbox" id="basic1" onChange={() => featureUnderdevelopment()} />
+                                <label for="basic1">Auto Gain Control</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="basic2" onChange={() => featureUnderdevelopment()} />
+                                <label for="basic2">Echo Cancellation</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="basic3" onChange={() => featureUnderdevelopment()} />
+                                <label for="basic3">Noise Suppression</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
 
     )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { featureUnderdevelopment, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -34,20 +34,26 @@ function CallDashboard() {
   const { sessionManager } = useSIPProvider();
 
   // Need These for Agent Activity Status
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const allUser = useSelector((state) => state.allUser);
+  // const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  // const allUser = useSelector((state) => state.allUser);
+
+  const [allUser, setAllUser] = useState();
   const logonUser = useSelector((state) => state.loginUser);
   const [onlineUser, setOnlineUSer] = useState([0]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    dispatch({
-      type: "SET_ALLUSERREFRESH",
-      allUserRefresh: allUserRefresh + 1,
-    });
-  }, [])
+  // Search All Users
+  async function getData() {
+    const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`);
+    if (userApi?.status) {
+      setAllUser(userApi.data);
+    }
+  }
 
   useEffect(() => {
+    if (!allUser || allUser.length === 0) {
+      getData();
+    }
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
         logonUser.map((item) => {
@@ -302,22 +308,21 @@ function CallDashboard() {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {allUser?.data?.length > 0 &&
-                                          allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                        {allUser?.length > 0 &&
+                                          allUser?.filter((agent) => agent?.extension_id !== null)
                                             .filter((agent) => onlineUser.includes(agent?.id))
                                             .map((agent, index) => {
                                               const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
-
                                               const getCallStatus = () => {
                                                 if (activeCallsForAgent.length === 0) return null;
 
-                                                const activeCall = activeCallsForAgent.filter((call) => !(call?.b_callstate !== "ACTIVE" && call?.callstate === "ACTIVE"));
+                                                const activeCall = activeCallsForAgent.filter((call) => call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate !== "ACTIVE");
 
                                                 if (!activeCall) return null;
 
-                                                if (activeCall[0]?.b_callstate === "ACTIVE") {
+                                                if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.b_callstate === "HELD" || activeCall[0]?.callstate === "HELD") {
                                                   return {
-                                                    status: "In Call",
+                                                    status: activeCall[0]?.callstate === "HELD" || activeCall[0]?.b_callstate === "HELD" ? "On Hold" : "In Call",
                                                     direction: activeCall[0]?.direction,
                                                     duration: activeCall[0]?.duration,
                                                     from: activeCall[0]?.cid_name ?
@@ -335,8 +340,8 @@ function CallDashboard() {
                                                 <tr>
                                                   <td>
                                                     <div className="d-flex align-items-center">
-                                                      <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
-                                                      <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
+                                                      <span className={`extensionStatus ${callStatus?.status === 'In Call' || callStatus?.status === 'On Hold' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
+                                                      <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : callStatus?.status === 'On Hold' ? 'On Hold' : onlineUser.includes(agent?.extension?.extension) ? 'Online' : 'Offline'}</span>
                                                     </div>
                                                   </td>
                                                   <td>
@@ -389,8 +394,8 @@ function CallDashboard() {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {allUser?.data?.length > 0 &&
-                                          allUser?.data?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.id))
+                                        {allUser?.length > 0 &&
+                                          allUser?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.id))
                                             // .filter((agent) => )
                                             .map((agent, index) => {
                                               return (
