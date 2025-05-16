@@ -36,7 +36,8 @@ function ActiveCallSidePanel({
   isMicOn,
   globalSession,
   accountDetails,
-  didAll
+  didAll,
+  audioRef
 }) {
   const {
     sessions,
@@ -46,7 +47,7 @@ function ActiveCallSidePanel({
   const previewDialer = useSelector((state) => state.previewDialer);
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
-  const audioRef = useRef(null);
+  // const audioRef = useRef(null);
   const [playMusic, setPlayMusic] = useState(false);
   const [holdProcessing, setHoldProcessing] = useState(false);
   //Keep track for previous call progress Id
@@ -105,6 +106,9 @@ function ActiveCallSidePanel({
     //   type:"SET_VIDEOCALL",
     //   videoCall:false
     // })
+
+    audioRef.current.pause();
+
     dispatch({
       type: "SET_CALLREFRESH",
       refreshCalls: refreshCalls + 1,
@@ -405,7 +409,7 @@ function ActiveCallSidePanel({
       )}
       {/* </div> */}
 
-      <audio ref={audioRef}></audio>
+      {/* <audio ref={audioRef}></audio> */}
     </>
   );
 }
