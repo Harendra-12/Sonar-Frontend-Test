@@ -39,8 +39,31 @@ function DidListing({ page }) {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
   const allUser = useSelector((state) => state.allUser);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const extensionArr = useSelector((state) => state.extension);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const ringGroup = useSelector((state) => state.ringGroup);
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenter = useSelector((state) => state.callCenter);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  const ivrArr = useSelector((state) => state.ivr);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
+
+  const [allUserArr, setAllUserArr] = useState([]);
+
+  useEffect(() => {
+    if (account && account?.account_id) {
+      getUserData();
+    }
+  }, []);
+  const getUserData = async () => {
+    const apidataUser = await generalGetFunction(
+      `/user/search?account=${account.account_id}`
+    );
+    if (apidataUser?.status) {
+      setAllUserArr(apidataUser.data);
+    }
+  };
 
   useEffect(() => {
     setRefreshState(true);
@@ -61,6 +84,43 @@ function DidListing({ page }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshDid, page, debouncedSearchTerm]);
+
+  // Fetch all the data
+  useEffect(() => {
+    if (allUserRefresh < 1) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+    if (extensionRefresh < 1) {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+
+    if (ringGroupRefresh < 1) {
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
+    }
+
+    if (callCenterRefresh < 1) {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
+    }
+
+    if (ivrRefresh < 1) {
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
+    }
+  }, [allUser, extensionArr, ringGroup, callCenter, ivrArr]);
 
   // Fetch ALL DID
   async function getData(shouldLoad) {
@@ -191,8 +251,37 @@ function DidListing({ page }) {
     getData(shouldLoad);
   };
 
-  function checkUserName(extension,usages){
+  function checkUserName(extension, usages) {
+    if (extension === null || extension === undefined) return "";
+
+    if (usages === "extension") {
+      const findData = extensionArr.find(
+        (item) => item?.extension == extension
+      );
+      const userData = allUserArr.find(
+        (item) => item.extension == findData.extension
+      );
+      return `${userData?.name}- `;
+    }
+
+    if (usages === "ring group") {
+      const findData = ringGroup.find((item) => item?.extension == extension);
+
+      return `${findData?.name}- `;
+    }
+
+    if (usages === "call center") {
+      const findData = callCenter.find((item) => item?.extension == extension);
+      return `${findData?.queue_name}- `;
+    }
+
+    if (usages === "ivr") {
+      const ivrId = extension.split("_")[1];
+      const findData = ivrArr.find((item) => item?.id == ivrId);
+      return `${findData?.ivr_name}- `;
+    }
   }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -469,7 +558,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 10 : 9}
+                              col={page === "pbx" ? 11 : 9}
                               row={15}
                             />
                           ) : (
@@ -491,10 +580,20 @@ function DidListing({ page }) {
                                         {item?.sms}
                                       </td>
                                       {page === "pbx" ? (
-                                        <>  
-                                        <td>{item?.configuration?.tag}</td>
+                                        <>
+                                          <td>{item?.configuration?.tag}</td>
                                           <td style={{ cursor: "default" }}>
-                                            {item?.configuration?.forward!=="disabled"?checkUserName(item?.configuration?.forward_to,item?.configuration?.forward):checkUserName(item?.configuration?.action,item?.configuration?.usages)}
+                                            {item?.configuration?.forward !==
+                                            "disabled"
+                                              ? checkUserName(
+                                                  item?.configuration
+                                                    ?.forward_to,
+                                                  item?.configuration?.forward
+                                                )
+                                              : checkUserName(
+                                                  item?.configuration?.action,
+                                                  item?.configuration?.usages
+                                                )}
                                             {item?.configuration?.forward_to
                                               ? item?.configuration?.forward_to
                                               : item?.configuration?.action}
