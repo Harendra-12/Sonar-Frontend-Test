@@ -605,6 +605,9 @@ const WebrtcWrapper = () => {
           audioRef={audioRef}
           audio={audio}
           gainNodeRef={gainNodeRef}
+          accountDetails={accountDetails}
+          didAll={didAll}
+
         />
 
         {/* Draggable Component */}
@@ -664,6 +667,8 @@ const WebrtcWrapper = () => {
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
                   allContact={allContact}
+                  accountDetails={accountDetails}
+                  didAll={didAll}
                 // globalSession={sessions}
                 />
               </div>
@@ -725,6 +730,8 @@ const WebrtcWrapper = () => {
                                 isMicOn={isMicOn}
                                 setactivePage={setactivePage}
                                 globalSession={sessions}
+                                accountDetails={accountDetails}
+                                didAll={didAll}
                               />
                             </div>
                           );
@@ -776,6 +783,8 @@ const WebrtcWrapper = () => {
                                 isMicOn={isMicOn}
                                 setactivePage={setactivePage}
                                 globalSession={sessions}
+                                accountDetails={accountDetails}
+                                didAll={didAll}
                               />
                             </div>
                           );

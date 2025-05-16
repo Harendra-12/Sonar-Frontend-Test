@@ -16,7 +16,9 @@ function IncomingCallPopup({
   isVideoOn,
   audioRef,
   audio,
-  gainNodeRef
+  gainNodeRef,
+  accountDetails,
+  didAll
 }) {
   const state = useSelector((state) => state);
   const previewDialer = useSelector((state) => state.previewDialer);
@@ -32,6 +34,10 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
+  const [callExtraInfo, setCallExtraInfo] = useState({
+    info: "",
+    type: ""
+  });
 
   useState(() => {
     gainNodeRef.current.gain.value = volume
@@ -272,6 +278,23 @@ function IncomingCallPopup({
     }
   }, [session])
 
+  useEffect(() => {
+    if (callerExtension.length < 11) {
+      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc?.extension == callerExtension);
+      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      setCallExtraInfo({
+        info: username[0]?.username || callerExtension,
+        type: "user",
+      });
+    } else {
+      const didTag = didAll?.filter((item) => item?.did == callerExtension);
+      setCallExtraInfo({
+        info: didTag?.did || callerExtension,
+        type: "did",
+      });
+    }
+  }, [accountDetails, didAll])
+
 
   return (
     <>
@@ -283,8 +306,8 @@ function IncomingCallPopup({
                 <i className="fa-solid fa-user" />
               </div>
               <div className="userInfo col-12 text-center">
-                <h4>{callerExtension}</h4>
-                <h5>{callerExtension}</h5>
+                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
             </div>
             <div className="controls">
@@ -365,7 +388,8 @@ function IncomingCallPopup({
             <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
               <div>
                 <h5>Incoming Call...</h5>
-                <h4>{callerExtension}</h4>
+                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
               <div>
                 <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i className={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>
