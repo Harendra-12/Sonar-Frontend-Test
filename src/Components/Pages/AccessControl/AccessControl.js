@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
-import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, checkViewSidebar, featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function AccessControl() {
   const [accessControlList, setAccessControlList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+  const account = useSelector((state) => state.account);
   const navigate = useNavigate()
 
   const fetchData = async (shouldLoad) => {
@@ -99,7 +102,7 @@ function AccessControl() {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          <button
+                          {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "add") ? (<button
                             onClick={() => { navigate("/access-control-list-add"); backToTop() }}
                             className="panelButton"
                           >
@@ -107,7 +110,18 @@ function AccessControl() {
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
                             </span>
-                          </button>
+                          </button>) : (
+                            <button
+                              disabled
+                              className="panelButton"
+                              style={{ cursor: "not-allowed" }}
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -124,53 +138,61 @@ function AccessControl() {
                               <th>Name</th>
                               <th>List</th>
                               <th>Group</th>
-                              <th className="text-center">Edit</th>
-                              <th className="text-center" >Delete</th>
+                              {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                              {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "delete") && <th className="text-center" >Delete</th>}
                             </tr>
                           </thead>
                           <tbody>
                             {loading ? (
                               <SkeletonTableLoader col={5} row={15} />
-                            ) : (
-                              <>
-                                {
-                                  accessControlList.length > 0 ?
-                                    <>
-                                      {
-                                        accessControlList.map((item, key) => {
-                                          return (
-                                            <tr key={key}>
-                                              <td>{item.name}</td>
-                                              <td>
-                                                {item.description}
-                                              </td>
-                                              <td>{item?.role?.name}</td>
-                                              <td onClick={() => navigate(
-                                                `/access-control-list-edit?id=${item.id}`, { state: item }
-                                              )}>
-                                                <button className="tableButton edit mx-auto">
-                                                  <i className="fa-solid fa-pencil" />
-                                                </button>
-                                              </td>
-                                              <td onClick={() => { setDeletePopup(true); setDeleteId(item.id) }}>
-                                                <button className="tableButton delete mx-auto">
-                                                  <i className="fa-solid fa-trash" />
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          )
-                                        })
-                                      }
-                                    </>
-                                    : <td colSpan={99}>
-                                      <EmptyPrompt
-                                        name="Access Control List"
-                                        link="access-control-list-add"
-                                      />
-                                    </td>
-                                }
-                              </>
-                            )}
+                            ) :
+                              checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "read") ?
+                                (
+                                  <>
+                                    {
+                                      accessControlList.length > 0 ?
+                                        <>
+                                          {
+                                            accessControlList.map((item, key) => {
+                                              return (
+                                                <tr key={key}>
+                                                  <td>{item.name}</td>
+                                                  <td>
+                                                    {item.description}
+                                                  </td>
+                                                  <td>{item?.role?.name}</td>
+                                                  {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "edit") &&
+                                                    <td onClick={() => navigate(
+                                                      `/access-control-list-edit?id=${item.id}`, { state: item }
+                                                    )}>
+                                                      <button className="tableButton edit mx-auto">
+                                                        <i className="fa-solid fa-pencil" />
+                                                      </button>
+                                                    </td>}
+                                                  {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "delete") &&
+                                                    <td onClick={() => { setDeletePopup(true); setDeleteId(item.id) }}>
+                                                      <button className="tableButton delete mx-auto">
+                                                        <i className="fa-solid fa-trash" />
+                                                      </button>
+                                                    </td>}
+                                                </tr>
+                                              )
+                                            })
+                                          }
+                                        </>
+                                        : <td colSpan={99}>
+                                          <EmptyPrompt
+                                            name="Access Control List"
+                                            link="access-control-list-add"
+                                          />
+                                        </td>
+                                    }
+                                  </>
+                                ) :
+                                <tr>
+                                  <td colSpan={3} className="text-center">You dont have any permission</td>
+                                </tr>
+                            }
                           </tbody>
                         </table>
                       </div>

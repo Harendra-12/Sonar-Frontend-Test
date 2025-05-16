@@ -258,8 +258,10 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          {accountDetails?.add_on_subscription.find(
-                            (item) => item?.addon?.id == 7
+                          {checkViewSidebar(
+                            "AccessControl",
+                            permissions,
+                            account?.permissions
                           ) ? (
                             <li className="tabItem">
                               <NavLink
@@ -283,7 +285,11 @@ function Navbar() {
                           ) : (
                             <></>
                           )}
-                          <li className="tabItem ">
+                          {checkViewSidebar(
+                            "Group",
+                            permissions,
+                            account?.permissions
+                          ) ? (<li className="tabItem ">
                             <NavLink
                               to="/groups"
                               onClick={backToTop}
@@ -299,7 +305,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">Groups</div>
                             </NavLink>
-                          </li>
+                          </li>) : ""}
 
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem">
