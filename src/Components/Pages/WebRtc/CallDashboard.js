@@ -302,22 +302,21 @@ function CallDashboard() {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {allUser?.data?.length > 0 &&
-                                          allUser?.data?.filter((agent) => agent?.extension_id !== null)
-                                            .filter((agent) => onlineUser.includes(agent?.id))
+                                        {allUser?.length > 0 &&
+                                          allUser?.filter((agent) => agent?.extension_id !== null)
+                                            .filter((agent) => onlineUser.includes(agent?.extension?.extension))
                                             .map((agent, index) => {
                                               const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
-
                                               const getCallStatus = () => {
                                                 if (activeCallsForAgent.length === 0) return null;
 
-                                                const activeCall = activeCallsForAgent.filter((call) => !(call?.b_callstate !== "ACTIVE" && call?.callstate === "ACTIVE"));
+                                                const activeCall = activeCallsForAgent.filter((call) => call?.b_callstate === "ACTIVE" || call?.callstate !== "ACTIVE");
 
                                                 if (!activeCall) return null;
 
-                                                if (activeCall[0]?.b_callstate === "ACTIVE") {
+                                                if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.callstate === "HELD") {
                                                   return {
-                                                    status: "In Call",
+                                                    status: activeCall[0]?.callstate === "HELD" ? "On Hold" : "In Call",
                                                     direction: activeCall[0]?.direction,
                                                     duration: activeCall[0]?.duration,
                                                     from: activeCall[0]?.cid_name ?
@@ -335,8 +334,8 @@ function CallDashboard() {
                                                 <tr>
                                                   <td>
                                                     <div className="d-flex align-items-center">
-                                                      <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
-                                                      <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
+                                                      <span className={`extensionStatus ${callStatus?.status === 'In Call' || callStatus?.status === 'On Hold' ? 'onCall' : onlineUser.includes(agent?.extension?.extension) ? 'online' : 'offline'}`}></span>
+                                                      <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : callStatus?.status === 'On Hold' ? 'On Hold' : onlineUser.includes(agent?.extension?.extension) ? 'Online' : 'Offline'}</span>
                                                     </div>
                                                   </td>
                                                   <td>
