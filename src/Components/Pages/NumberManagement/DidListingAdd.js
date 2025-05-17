@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 
 const DidListingAdd = () => {
   const state = useSelector((state) => state);
-  const didAll = state?.didAll
+  const didAll = state?.didAll?.data
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //   const [loading, setLoading] = useState(true);
