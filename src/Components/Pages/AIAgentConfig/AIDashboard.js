@@ -252,6 +252,98 @@ function AIDashboard() {
                             </td>
 
                           </tr>
+                          <tr>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <div className="tableProfilePicHolder">
+                                  {/* {item.profile_picture ? ( */}
+                                  <img
+                                    src={require('../../assets/images/placeholder-image.webp')}
+                                  // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                  />
+                                  {/* ) : ( */}
+                                  {/* <i className="fa-light fa-user" /> */}
+                                  {/* )} */}
+                                </div>
+                                <div className="ms-2">Rajendro.sau</div>
+                              </div>
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >30</span>
+
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >30</span>
+                            </td>
+                            <td>   <span className="badge badge-soft-primary  rounded-pill"
+                            // style={{ backgroundColor: 'var(--ui-accent)' }}
+                            >30</span></td>
+                            <td>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                            </td>
+
+                          </tr>
+                          <tr>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <div className="tableProfilePicHolder">
+                                  {/* {item.profile_picture ? ( */}
+                                  <img
+                                    src={require('../../assets/images/placeholder-image.webp')}
+                                  // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                  />
+                                  {/* ) : ( */}
+                                  {/* <i className="fa-light fa-user" /> */}
+                                  {/* )} */}
+                                </div>
+                                <div className="ms-2">Rajendro.sau</div>
+                              </div>
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >30</span>
+
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >30</span>
+                            </td>
+                            <td>   <span className="badge badge-soft-primary  rounded-pill"
+                            // style={{ backgroundColor: 'var(--ui-accent)' }}
+                            >30</span></td>
+                            <td>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+                              >Product Demo</span>
+                            </td>
+
+                          </tr>
 
                         </tbody>
                       </table>
