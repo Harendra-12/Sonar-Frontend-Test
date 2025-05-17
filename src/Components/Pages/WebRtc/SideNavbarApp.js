@@ -331,6 +331,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                   </div>
                 </li>
               }
+
+
+              
               {
                 isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>
