@@ -43,6 +43,7 @@ import HeaderApp from "./HeaderApp";
 import MessageProfileDetails from "./components/MessageProfileDetails";
 import ChatsCalls from "./components/ChatsCalls";
 import axios from "axios";
+import { set } from "date-fns";
 
 function Messages({
   setSelectedModule,
@@ -651,13 +652,13 @@ function Messages({
         setAiProcessing(true);
         setMessageInput("Generating Ai response...");
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply",{message:body,user_id:account.id}).then((res)=>{
-          if(res.statusCode === 200){
-            setMessageInput(res.body);
-            sendSingleMessage()
+          if(res.data.statusCode === 200){
+            setMessageInput(res.data.reply);
             setAiProcessing(false);
           }
         }).catch((err)=>{
           console.log(err);
+          setMessageInput("");
         })
       }
       

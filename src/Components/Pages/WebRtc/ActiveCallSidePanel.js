@@ -313,9 +313,9 @@ function ActiveCallSidePanel({
         type: "user",
       });
     } else {
-      const didTag = didAll?.filter((item) => item?.did == destination);
+      const didTag = didAll?.filter((item) => item?.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
       setCallExtraInfo({
-        info: didTag?.did || destination,
+        info: didTag?.[0]?.configuration?.tag || destination,
         type: "did",
       });
     }
