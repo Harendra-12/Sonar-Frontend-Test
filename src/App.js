@@ -184,6 +184,7 @@ import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/Campaig
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 import GoSocket from "./Components/GlobalFunction/GoSocket";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
+import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -259,6 +260,7 @@ function App() {
           <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
+          <Route path="/ai-dashboard" element={<AIDashboard />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
