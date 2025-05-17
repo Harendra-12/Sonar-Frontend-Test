@@ -63,6 +63,7 @@ const Settings = (
                             onChange={() => featureUnderdevelopment()}
                         />
 
+
                         {/* <h2 className="titleName">Basic Checkboxes</h2> */}
                         <div class="basic-container mt-3">
                             <div>
@@ -74,8 +75,8 @@ const Settings = (
                                 <label for="basic2">Echo Cancellation</label>
                             </div>
                             <div>
-                                <input type="checkbox" id="basic3" onChange={() => featureUnderdevelopment()} />
-                                <label for="basic3">Noise Suppression</label>
+                                <input type="checkbox" id="basic3" onChange={() => audioRef.current?.pause()} />
+                                <label for="basic3">Stop Ringtone</label>
                             </div>
                         </div>
                     </div>

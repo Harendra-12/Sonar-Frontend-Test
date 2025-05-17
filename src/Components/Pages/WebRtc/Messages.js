@@ -42,6 +42,7 @@ import {
 import HeaderApp from "./HeaderApp";
 import MessageProfileDetails from "./components/MessageProfileDetails";
 import ChatsCalls from "./components/ChatsCalls";
+import axios from "axios";
 
 function Messages({
   setSelectedModule,
@@ -136,6 +137,8 @@ function Messages({
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
+  const [autoReply,setAutoReply] = useState(false);
+  const [aiProcessing,setAiProcessing]=useState(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -643,6 +646,21 @@ function Messages({
     if (incomingMessage) {
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
+      console.log("from", from, "body", recipient);
+      if(from === recipient[1] && autoReply){
+        setAiProcessing(true);
+        setMessageInput("Generating Ai response...");
+        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply",{message:body,user_id:account.id}).then((res)=>{
+          if(res.statusCode === 200){
+            setMessageInput(res.body);
+            sendSingleMessage()
+            setAiProcessing(false);
+          }
+        }).catch((err)=>{
+          console.log(err);
+        })
+      }
+      
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
@@ -3360,12 +3378,15 @@ function Messages({
 
                               <div className=" d-flex justify-content-between align-items-start gap-2">
                                 <div className="d-flex gap-1">
+                                  <Tippy  content="Auto Reply with AI">
                                   <button
-                                    className="clearButton2 eraser"
-                                    onClick={() => featureUnderdevelopment()}
+                                    className={`clearButton2 eraser ${autoReply?"active":""}`}
+                                    onClick={() => setAutoReply(!autoReply)}
                                   >
-                                    <i className="fa-light fa-eraser" />
+                                    <i class="fa-solid fa-message-bot"></i>
                                   </button>
+                                    
+                                  </Tippy>
                                   <button
                                     className="clearButton2 gallery"
                                     onClick={() => {
@@ -3851,10 +3872,10 @@ function Messages({
                         >
                           <i
                             className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
-                                recipient &&
-                                recipient.length > 0
-                                ? "right"
-                                : "left"
+                              recipient &&
+                              recipient.length > 0
+                              ? "right"
+                              : "left"
                               }`}
                           />
                         </button>

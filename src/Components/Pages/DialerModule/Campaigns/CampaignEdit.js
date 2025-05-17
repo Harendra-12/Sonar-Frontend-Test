@@ -240,7 +240,7 @@ function CampaignCreate() {
     async function getDidData() {
       setLoading(true);
       try {
-        const getDid = await generalGetFunction("did/all");
+        const getDid = await generalGetFunction("did/all?all-dids");
 
         if (getDid?.status) {
           setDid(getDid.data.filter((item) => item.usages === "dialer"));
