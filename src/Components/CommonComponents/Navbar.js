@@ -259,11 +259,15 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          {checkViewSidebar(
+                          {(checkViewSidebar(
                             "AccessControl",
                             permissions,
                             account?.permissions
-                          ) ? (
+                          ) || checkViewSidebar(
+                            "AccessControlNode",
+                            permissions,
+                            account?.permissions
+                          ) ) ? (
                             <li className="tabItem">
                               <NavLink
                                 to="/access-control-list"

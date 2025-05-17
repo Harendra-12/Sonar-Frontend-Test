@@ -27,6 +27,7 @@ import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import Select from "react-select";
+import axios from "axios";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -105,6 +106,7 @@ function CdrFilterReport({ page }) {
   const [columnsOptions, setColumnsOptions] = useState([])
   const [columnOriginalSequence, setColumnOriginalSequence] = useState([])
   const [selectedColumn, setSelectedColumn] = useState("");
+  const [advanceSearch,setAdvanceSearch]=useState()
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -735,6 +737,16 @@ function CdrFilterReport({ page }) {
     setRefreshState(true);
     const shouldLoad = false;
     getData(shouldLoad);
+  }
+
+  function getAdvanceSearch() {
+    if(advanceSearch){
+      axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { querry: advanceSearch }).then((res) => {
+        console.log("Response",res);
+       })
+    }else{
+      toast.error("Please enter some data to search")
+    }
   }
   return (
     <>
@@ -1922,8 +1934,8 @@ function CdrFilterReport({ page }) {
                   <input
                     class="searchBar formItem"
                     type="text"
-                    value=""
-                    onChange={() => featureUnderdevelopment()}
+                    value={advanceSearch}
+                    onChange={(e) => setAdvanceSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -1968,7 +1980,7 @@ function CdrFilterReport({ page }) {
               <div class="col-xl-12 mt-3">
                 <button
                   class="panelButton mx-auto"
-                  onClick={() => featureUnderdevelopment()}
+                  onClick={() => getAdvanceSearch()}
                 >
                   <span class="text">Search</span>
                   <span class="icon">

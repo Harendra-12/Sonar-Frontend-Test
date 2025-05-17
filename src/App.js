@@ -216,8 +216,8 @@ function App() {
   const { sendMessage } = Socket();
   GoSocket();
   useEffect(() => {
-    dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage })
-  }, [Socket])
+    dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
+  }, [Socket]);
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{
@@ -240,11 +240,8 @@ function App() {
 
   return (
     <>
-
       <Router>
-        {
-          adminLogout && <AdminLogoutPopUp />
-        }
+        {adminLogout && <AdminLogoutPopUp />}
         <GoogleTranslate />
         <NavigationSetter />
         <DispatchSetter />
@@ -288,70 +285,123 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
-            <Navigate to="/dashboard" replace />
-          )} />
+          <Route
+            path="/custom-module"
+            element={
+              checkViewSidebar(
+                "Usage",
+                slugPermissions,
+                account?.permissions
+              ) ? (
+                <CustomModule />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           {/* Groups path start */}
-          <Route path="/groups" element={
-            checkViewSidebar(
-              "Group",
-              slugPermissions,
-              account?.permissions
-            ) ?
-              <GroupsList />
-              : <Navigate to="/dashboard" replace />
-          } />
-          <Route path="/groups-add" element={
-            checkViewSidebar(
-              "Group",
-              slugPermissions,
-              account?.permissions
-            ) ?
-              <AddGroupsList />
-              : <Navigate to="/dashboard" replace />
-          } />
-          <Route path="/groups-edit" element={
-            checkViewSidebar(
-              "Group",
-              slugPermissions,
-              account?.permissions
-            ) ?
-              <EditGroupsList />
-              : <Navigate to="/dashboard" replace />
-          } />
+          <Route
+            path="/groups"
+            element={
+              checkViewSidebar(
+                "Group",
+                slugPermissions,
+                account?.permissions
+              ) ? (
+                <GroupsList />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/groups-add"
+            element={
+              checkViewSidebar(
+                "Group",
+                slugPermissions,
+                account?.permissions
+              ) ? (
+                <AddGroupsList />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/groups-edit"
+            element={
+              checkViewSidebar(
+                "Group",
+                slugPermissions,
+                account?.permissions
+              ) ? (
+                <EditGroupsList />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
-
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
-          <Route path="/access-control-list"
+          <Route
+            path="/access-control-list"
             element={
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
                 account?.permissions
-              ) ?
+              ) ||
+              checkViewSidebar(
+                "AccessControlNode",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <AccessControl />
-                : <Navigate to="/dashboard" replace />
-            } />
-          <Route path="/access-control-list-add"
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/access-control-list-add"
             element={
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
                 account?.permissions
-              ) ?
+              ) ||
+              checkViewSidebar(
+                "AccessControlNode",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <AccessControlAdd />
-                : <Navigate to="/dashboard" replace />
-            } />
-          <Route path="/access-control-list-edit" element={
-            checkViewSidebar(
-              "AccessControl",
-              slugPermissions,
-              account?.permissions
-            ) ?
-              <AccessControlEdit />
-              : <Navigate to="/dashboard" replace />
-          } />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/access-control-list-edit"
+            element={
+              checkViewSidebar(
+                "AccessControl",
+                slugPermissions,
+                account?.permissions
+              ) ||
+              checkViewSidebar(
+                "AccessControlNode",
+                slugPermissions,
+                account?.permissions
+              ) ? (
+                <AccessControlEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -362,7 +412,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
-                account?.permissions,
+                account?.permissions
               ) ? (
                 <RingGroups />
               ) : (
@@ -406,7 +456,11 @@ function App() {
           <Route
             path="/users"
             element={
-              checkViewSidebar("User", slugPermissions, account?.permissions) ? (
+              checkViewSidebar(
+                "User",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <Users />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -523,7 +577,10 @@ function App() {
 
           {/* Rate Card Path */}
           <Route path="/rate-card" element={<RateCardView />} />
-          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
+          <Route
+            path="/global-permission-config"
+            element={<PermissionConfigForUser />}
+          />
           {/* Rate Card Path */}
 
           {/*Store path */}
@@ -578,7 +635,11 @@ function App() {
           <Route
             path="/cdr-report"
             element={
-              checkViewSidebar("ChannelHangupComplete", slugPermissions, account?.permissions) ? (
+              checkViewSidebar(
+                "ChannelHangupComplete",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <CdrFilterReport page="all" />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -636,7 +697,11 @@ function App() {
           <Route
             path="/port-number"
             element={
-              checkViewSidebar("Port", slugPermissions, account?.permissions) ? (
+              checkViewSidebar(
+                "Port",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <PortNumber />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -649,7 +714,8 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions, "add"
+                account?.permissions,
+                "add"
               ) ? (
                 <PortNumberAdd />
               ) : (
@@ -663,7 +729,8 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions, "edit"
+                account?.permissions,
+                "edit"
               ) ? (
                 <PortNumberEdit />
               ) : (
@@ -704,7 +771,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions, "edit"
+                account?.permissions,
+                "edit"
               ) ? (
                 <CallCenterQueueEdit />
               ) : (
@@ -718,7 +786,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions, "add"
+                account?.permissions,
+                "add"
               ) ? (
                 <CallCenterQueueAdd />
               ) : (
@@ -740,7 +809,11 @@ function App() {
           <Route
             path="/roles"
             element={
-              checkViewSidebar("Role", slugPermissions, account?.permissions) ? (
+              checkViewSidebar(
+                "Role",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <Roles />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -759,11 +832,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-                checkViewSidebar(
-                  "BillingAddress",
-                  slugPermissions,
-                  account?.permissions
-                ) ? (
+              checkViewSidebar(
+                "BillingAddress",
+                slugPermissions,
+                account?.permissions
+              ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -772,7 +845,10 @@ function App() {
           />
           <Route path="/invoice-list" element={<InvoiceList />} />
           <Route path="/expense-list" element={<ExpenseList />} />
-          <Route path="/billing-card-and-wallet" element={<BillingCardAndWallet />} />
+          <Route
+            path="/billing-card-and-wallet"
+            element={<BillingCardAndWallet />}
+          />
           <Route
             path="/card-transaction-list"
             element={
@@ -819,7 +895,8 @@ function App() {
               checkViewSidebar(
                 "MailSetting",
                 slugPermissions,
-                account?.permissions, "edit"
+                account?.permissions,
+                "edit"
               ) ? (
                 <MailSettingsEdit />
               ) : (
@@ -850,7 +927,8 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions, "add"
+                account?.permissions,
+                "add"
               ) ? (
                 <IvrAdd />
               ) : (
@@ -878,7 +956,8 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions, "edit"
+                account?.permissions,
+                "edit"
               ) ? (
                 <IvrEdit />
               ) : (
@@ -958,16 +1037,24 @@ function App() {
           <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
 
-
           {/* ----------- Third Party Addons */}
-          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route
+            path="/all-third-party-apps"
+            element={<AllThirdPartyConfig />}
+          />
           <Route path="/all-addons" element={<AllAddons />} />
-          <Route path="/all-available-addons" element={<AllAvailableAddons />} />
+          <Route
+            path="/all-available-addons"
+            element={<AllAvailableAddons />}
+          />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 
           <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
-          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
+          <Route
+            path="/whatsapp-config-edit"
+            element={<WhatsAppConfigEdit />}
+          />
 
           <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
 
@@ -979,17 +1066,20 @@ function App() {
           <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
           {/* AI Routes */}
 
-
-
-
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />
           <Route path="source-edit" element={<SourceEdit />} />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
           {/* ---------------- source */}
-          <Route path="call-forwarding-campaign" element={<FportalCampaign />} />
-          <Route path="call-forwarding-campaign-create" element={<FportalCampaignCreate />} />
+          <Route
+            path="call-forwarding-campaign"
+            element={<FportalCampaign />}
+          />
+          <Route
+            path="call-forwarding-campaign-create"
+            element={<FportalCampaignCreate />}
+          />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
 
@@ -1018,7 +1108,6 @@ function App() {
           theme="dark"
         />
       </Router>
-
     </>
   );
 }

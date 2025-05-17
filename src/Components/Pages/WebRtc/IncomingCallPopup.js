@@ -39,6 +39,9 @@ function IncomingCallPopup({
     type: ""
   });
 
+  console.log("Call Extra Info", callExtraInfo);
+  
+
   useState(() => {
     gainNodeRef.current.gain.value = volume
     audioRef.current.volume = volume
@@ -110,6 +113,8 @@ function IncomingCallPopup({
     };
   }, [lastIncomingCall]);
 
+  console.log(session);
+  
   const callerExtension = session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
   const displayName = session.incomingInviteRequest?.message?.from?._displayName;
 
@@ -287,9 +292,13 @@ function IncomingCallPopup({
         type: "user",
       });
     } else {
-      const didTag = didAll?.filter((item) => item?.did == callerExtension);
+      console.log("Callerextension", callerExtension);
+      
+      const didTag = didAll?.filter((item) => item?.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+      console.log(didAll);
+      
       setCallExtraInfo({
-        info: didTag?.did || callerExtension,
+        info: didTag?.[0]?.configuration?.tag || callerExtension,
         type: "did",
       });
     }

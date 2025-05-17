@@ -63,7 +63,7 @@ const Extensions = () => {
   // Getting all DID from did listing
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/did/all`);
+      const apiData = await generalGetFunction(`/did/all?all-dids`);
       if (apiData?.status) {
         setAllDID(apiData.data);
 

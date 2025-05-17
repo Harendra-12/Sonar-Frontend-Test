@@ -67,7 +67,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                 const [ringGroupData, callcenterData, didData] = await Promise.all([
                     generalGetFunction(`/ringgroup?account=${account?.account_id}`),
                     generalGetFunction(`/call-center-queues/all`),
-                    generalGetFunction("/did/all"),
+                    generalGetFunction("/did/all?all-dids"),
                 ])
 
                 if (ringGroupData.status) {
