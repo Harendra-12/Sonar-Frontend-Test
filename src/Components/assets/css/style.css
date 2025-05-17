@@ -246,6 +246,11 @@
   --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
   --secondary-rgb-text: rgb(35, 183, 229);
   --track-range-color: #93939324;
+
+  /* ---- new added */
+   --success-bg-rgb:rgba(38, 191, 148, 0.102);
+   --success-text-rgb:#26bf94;
+
 }
 
 :root.dark {
