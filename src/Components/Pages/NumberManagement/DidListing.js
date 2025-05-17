@@ -37,6 +37,7 @@ function DidListing({ page }) {
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [previousUsages, setPreviousUsages] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   const [searchQuery, setSearchQuery] = useState("");
@@ -87,7 +88,7 @@ function DidListing({ page }) {
       getData(shouldLoad);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page, debouncedSearchTerm]);
+  }, [refreshDid, page, debouncedSearchTerm, entriesPerPage, pageNumber]);
 
   // Fetch all the data
   useEffect(() => {
@@ -129,7 +130,7 @@ function DidListing({ page }) {
   // Fetch ALL DID
   async function getData(shouldLoad) {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}`);
+    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`);
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
@@ -507,7 +508,7 @@ function DidListing({ page }) {
                         <label>Show</label>
                         <select
                           className="formItem"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setEntriesPerPage(e?.target?.value)}
                         >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
