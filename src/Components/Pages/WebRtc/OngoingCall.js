@@ -571,9 +571,9 @@ function OngoingCall({
         type: "user",
       });
     } else {
-      const didTag = didAll.filter((item) => item.did == callProgressDestination);
+      const didTag = didAll.filter((item) => item.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
       setCallExtraInfo({
-        info: didTag.did || callProgressDestination,
+        info: didTag?.[0]?.configuration?.tag || callProgressDestination,
         type: "did",
       });
     }
