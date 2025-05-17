@@ -52,7 +52,7 @@ const DidConfig = () => {
     if (locationData.configuration !== null) {
       // setDataAvailable(false);
 
-      setValue("usages", locationData.configuration.usages || []);
+      setValue("usages", locationData.configuration.usages || "none");
       setValue("did_id_view", locationData.did || "");
       setValue("forward", locationData.configuration.forward || "");
       setValue("forward_action", locationData.configuration.forward_to || "");
@@ -379,7 +379,7 @@ const DidConfig = () => {
                                 // }
                               }}
                             >
-                              <option value={null}>None</option>
+                              <option value="none">None</option>
                               <option value="extension">Extension</option>
                               <option value="call center">Call Center</option>
                               <option value="ring group">Ring Group</option>

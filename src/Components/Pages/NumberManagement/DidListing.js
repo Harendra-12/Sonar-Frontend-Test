@@ -16,9 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function DidListing({ page }) {
   const [did, setDid] = useState();
+  const [didWithPagination, setDidWithPagination] = useState()
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const didAll = useSelector((state) => state.didAll);
@@ -34,6 +36,7 @@ function DidListing({ page }) {
   const [addNew, setAddNew] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [previousUsages, setPreviousUsages] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,11 +54,6 @@ function DidListing({ page }) {
 
   const [allUserArr, setAllUserArr] = useState([]);
 
-  useEffect(() => {
-    if (account && account?.account_id) {
-      getUserData();
-    }
-  }, []);
   const getUserData = async () => {
     const apidataUser = await generalGetFunction(
       `/user/search?account=${account.account_id}`
@@ -66,15 +64,21 @@ function DidListing({ page }) {
   };
 
   useEffect(() => {
+    if (account && account?.account_id) {
+      getUserData();
+    }
+  }, []);
+
+  useEffect(() => {
     setRefreshState(true);
-    if (didAll) {
+    if (didAll?.data) {
       setLoading(true);
       if (page === "number") {
-        setDid(didAll);
+        setDid(didAll?.data);
       } else if (page === "pbx") {
-        setDid(didAll.filter((item) => item.usage === "pbx"));
+        setDid(didAll?.data?.filter((item) => item.usage === "pbx"));
       } else if (page === "dialer") {
-        setDid(didAll.filter((item) => item.usage === "dialer"));
+        setDid(didAll?.data?.filter((item) => item.usage === "dialer"));
       }
       const shouldLoad = true;
       getData(shouldLoad);
@@ -130,11 +134,14 @@ function DidListing({ page }) {
       setLoading(false);
       setRefreshState(false);
       if (page === "number") {
-        setDid(apiData.data);
+        setDid(apiData.data?.data);
+        setDidWithPagination(apiData?.data);
       } else if (page === "pbx") {
-        setDid(apiData.data.filter((item) => item.usages === "pbx"));
+        setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
+        setDidWithPagination(apiData?.data);
       } else if (page === "dialer") {
-        setDid(apiData.data.filter((item) => item.usages === "dialer"));
+        setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
+        setDidWithPagination(apiData?.data);
       }
       dispatch({
         type: "SET_DIDALL",
@@ -258,7 +265,7 @@ function DidListing({ page }) {
       const findData = extensionArr.find(
         (item) => item?.extension == extension
       );
-      const userData = allUserArr.find(
+      const userData = findData && allUserArr?.length > 0 && allUserArr?.find(
         (item) => item.extension.extension == findData.extension
       );
 
@@ -335,29 +342,29 @@ function DidListing({ page }) {
                           account?.permissions,
                           "add"
                         ) && (
-                          <button
-                            type="button"
-                            className="panelButton"
-                            onClick={() => {
-                              if (page === "number") {
-                                navigate("/did-add");
-                              } else {
-                                setAddNew(true);
-                              }
-                            }}
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                            <button
+                              type="button"
+                              className="panelButton"
+                              onClick={() => {
+                                if (page === "number") {
+                                  navigate("/did-add");
+                                } else {
+                                  setAddNew(true);
+                                }
+                              }}
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
 
                   {addNew ? (
-                    didAll.filter((item) => item.usages === "" || !item.usages)
+                    didAll?.data?.filter((item) => item.usages === "" || !item.usages)
                       .length === 0 ? (
                       <div
                         className="popup loggedPopupSm"
@@ -420,8 +427,7 @@ function DidListing({ page }) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {didAll
-                                      .filter(
+                                    {didAll?.data?.filter(
                                         (item) =>
                                           item.usages === "" || !item.usages
                                       )
@@ -589,16 +595,16 @@ function DidListing({ page }) {
                                           <td>{item?.configuration?.tag}</td>
                                           <td style={{ cursor: "default" }}>
                                             {item?.configuration?.forward !==
-                                            "disabled"
+                                              "disabled"
                                               ? checkUserName(
-                                                  item?.configuration
-                                                    ?.forward_to,
-                                                  item?.configuration?.forward
-                                                )
+                                                item?.configuration
+                                                  ?.forward_to,
+                                                item?.configuration?.forward
+                                              )
                                               : checkUserName(
-                                                  item?.configuration?.action,
-                                                  item?.configuration?.usages
-                                                )}
+                                                item?.configuration?.action,
+                                                item?.configuration?.usages
+                                              )}
                                             {item?.configuration?.forward_to
                                               ? item?.configuration?.forward_to
                                               : item?.configuration?.action}
@@ -633,8 +639,8 @@ function DidListing({ page }) {
                                             item.default_whatsapp === 1
                                               ? "This DID is set as default for WhatsApp"
                                               : item.is_secondary_whatsapp === 1
-                                              ? "This DID is set as secondary for WhatsApp"
-                                              : "Set this DID default for WhatsApp"
+                                                ? "This DID is set as secondary for WhatsApp"
+                                                : "Set this DID default for WhatsApp"
                                           }
                                         >
                                           <div className="dropdown w-100">
@@ -645,8 +651,8 @@ function DidListing({ page }) {
                                                   ? "tableButton whatsapp mx-auto"
                                                   : item.is_secondary_whatsapp ===
                                                     1
-                                                  ? "tableButton warning mx-auto"
-                                                  : "tableButton whatsapp empty mx-auto"
+                                                    ? "tableButton warning mx-auto"
+                                                    : "tableButton whatsapp empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
                                             >
@@ -706,8 +712,8 @@ function DidListing({ page }) {
                                             item.default_eFax === 1
                                               ? "This DID is set as default for E-fax"
                                               : item.is_secondary_eFax === 1
-                                              ? "This DID is set as secondary for E-fax"
-                                              : "Set this DID default for E-fax"
+                                                ? "This DID is set as secondary for E-fax"
+                                                : "Set this DID default for E-fax"
                                           }
                                         >
                                           <div className="dropdown w-100">
@@ -717,8 +723,8 @@ function DidListing({ page }) {
                                                 item.default_eFax === 1
                                                   ? "tableButton fax mx-auto"
                                                   : item.is_secondary_eFax === 1
-                                                  ? "tableButton warning mx-auto"
-                                                  : "tableButton fax empty mx-auto"
+                                                    ? "tableButton warning mx-auto"
+                                                    : "tableButton fax empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
                                             >
@@ -772,8 +778,8 @@ function DidListing({ page }) {
                                             item.default_sms === 1
                                               ? "This DID is set as default for SMS"
                                               : item.is_secondary_sms === 1
-                                              ? "This DID is set as secondary for SMS"
-                                              : "Set this DID default for SMS"
+                                                ? "This DID is set as secondary for SMS"
+                                                : "Set this DID default for SMS"
                                           }
                                         >
                                           <div className="dropdown w-100">
@@ -783,8 +789,8 @@ function DidListing({ page }) {
                                                 item.default_sms === 1
                                                   ? "tableButton sms mx-auto"
                                                   : item.is_secondary_sms === 1
-                                                  ? "tableButton warning  mx-auto"
-                                                  : "tableButton sms empty mx-auto"
+                                                    ? "tableButton warning  mx-auto"
+                                                    : "tableButton sms empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
                                             >
@@ -883,7 +889,7 @@ function DidListing({ page }) {
                                                   <Tippy
                                                     content={
                                                       item.configuration !==
-                                                      null
+                                                        null
                                                         ? "Update the configuration"
                                                         : "Not Configured! Click to configure"
                                                     }
@@ -900,15 +906,14 @@ function DidListing({ page }) {
                                                       }
                                                     >
                                                       <i
-                                                        className={`fa-regular fa-${
-                                                          item.configuration !==
+                                                        className={`fa-regular fa-${item.configuration !==
                                                           null
-                                                            ? "gear"
-                                                            : "triangle-exclamation"
-                                                        } me-2`}
+                                                          ? "gear"
+                                                          : "triangle-exclamation"
+                                                          } me-2`}
                                                       ></i>{" "}
                                                       {item.configuration !==
-                                                      null
+                                                        null
                                                         ? "Update"
                                                         : "Configure"}
                                                     </div>
@@ -916,23 +921,23 @@ function DidListing({ page }) {
                                                 </li>
                                                 {item.configuration !==
                                                   null && (
-                                                  <li className="dropdown-item">
-                                                    <Tippy content="Reset configuration of this DID">
-                                                      <div
-                                                        className="clearButton text-align-start"
-                                                        onClick={() =>
-                                                          handleClick(
-                                                            item.configuration
-                                                              .id
-                                                          )
-                                                        }
-                                                      >
-                                                        <i className="fa-regular fa-arrows-rotate me-2"></i>{" "}
-                                                        Reset
-                                                      </div>
-                                                    </Tippy>
-                                                  </li>
-                                                )}
+                                                    <li className="dropdown-item">
+                                                      <Tippy content="Reset configuration of this DID">
+                                                        <div
+                                                          className="clearButton text-align-start"
+                                                          onClick={() =>
+                                                            handleClick(
+                                                              item.configuration
+                                                                .id
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa-regular fa-arrows-rotate me-2"></i>{" "}
+                                                          Reset
+                                                        </div>
+                                                      </Tippy>
+                                                    </li>
+                                                  )}
                                               </>
                                             ) : page === "number" ? (
                                               <>
@@ -984,6 +989,16 @@ function DidListing({ page }) {
                           )}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {console.log('didWithPagination', didWithPagination)}
+                      <PaginationComponent
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={didWithPagination?.last_page}
+                        from={(pageNumber - 1) * didWithPagination?.per_page + 1}
+                        to={didWithPagination?.to}
+                        total={didWithPagination?.total}
+                      />
                     </div>
                   </div>
                 </div>
@@ -1121,9 +1136,8 @@ function DidListing({ page }) {
                   <h4>Confirmation!</h4>
                   <p>
                     {`Are you sure!
-                    You want to change usages from "${previousUsages}" to "${
-                      usages === "" ? "None" : usages
-                    }"`}
+                    You want to change usages from "${previousUsages}" to "${usages === "" ? "None" : usages
+                      }"`}
                   </p>
 
                   <div className="d-flex justify-content-between mt-3">
