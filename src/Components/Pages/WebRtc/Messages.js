@@ -652,11 +652,14 @@ function Messages({
         setAiProcessing(true);
         setMessageInput("Generating Ai response...");
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply",{message:body,user_id:account.id}).then((res)=>{
-          if(res.data.statusCode === 200){
+          console.log("Response",res);
+          
+          if(res.data){
             setMessageInput(res.data.reply);
             setAiProcessing(false);
           }
         }).catch((err)=>{
+
           console.log(err);
           setMessageInput("");
         })
