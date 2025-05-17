@@ -43,7 +43,7 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                                     <i class={`fa-regular fa-arrow-${item?.receiver_id == account?.id ? "down-left" : "up-right"}`}></i>
                                                 </span>
                                             </p>
-                                            <h5>{item?.created_at?.split("T")[0]}, {formatTimeWithAMPM(item?.created_at?.split("T")[1].slice(0, 8))}</h5>
+                                            <h5>{item?.created?.split(" ")[0]}, {formatTimeWithAMPM(item?.created?.split(" ")[1])}</h5>
                                         </div>
                                         <div className="col text-end d-flex justify-content-end align-items-center" onClick={() => {
                                             setMeetingPage("message");
