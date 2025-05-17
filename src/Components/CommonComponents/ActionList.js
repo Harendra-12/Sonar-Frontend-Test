@@ -33,7 +33,6 @@ const ActionList = ({
   isDisabled = false,
   // label = "Set the action to perform when the max wait time is reached.",
 }) => {
-  console.log("category:", category);
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
@@ -41,8 +40,11 @@ const ActionList = ({
   const [callCenter, setCallCenter] = useState([]);
   const [aiAgents, setAiAgents] = useState([]);
 
-  const [ivr, setIvr] = useState([]);
+  const [ivr, setIvr] = useState([]); 
   const [selectedOption, setSelectedOption] = useState(null);
+  const state = useSelector((data) => data);
+  const allUserRefresh = state.allUserRefresh;
+  const allUser = state?.allUser?.data;
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
@@ -142,10 +144,13 @@ const ActionList = ({
   const allOptions = [
     {
       label: "Extension",
-      options: extension.map((item) => ({
+      options: extension.map((item) =>{
+        const userName = allUser?.find((data) => data?.id == item?.user)?.username || "N/A"
+        return({
         value: [item.extension, "extension"],
-        label: item.extension,
-      })),
+        label: `${item.extension} - ${userName}`,
+      })
+      } ),
     },
     {
       label: "Ring Group",
@@ -197,6 +202,13 @@ const ActionList = ({
   useEffect(() => {
     allOptionsRef.current = allOptions;
   }, [allOptions]);
+
+  useEffect(() => {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }, [])
 
   // useEffect(() => {
   //   // Set default value if provided
