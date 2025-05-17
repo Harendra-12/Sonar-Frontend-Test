@@ -431,7 +431,7 @@ const WebrtcWrapper = () => {
   // Fetch ALL DID
   async function getAllDid() {
     // setLoading(true);
-    const apiData = await generalGetFunction(`/did/all`);
+    const apiData = await generalGetFunction(`/did/all?all-dids`);
     if (apiData?.status) {
       setDid(apiData.data.filter((item) => item.usages === "pbx"));
       dispatch({

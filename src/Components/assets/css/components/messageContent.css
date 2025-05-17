@@ -1267,13 +1267,15 @@
 }
 
 .clearButton2.eraser {
-    background-color: #fdeacd61;
+    background-color: #fdeacdd7;
     color: #f7a659 !important;
+    opacity: 0.5;
 }
 
-.clearButton2.eraser:hover {
+.clearButton2.eraser.active {
     color: #f8f8f8 !important;
     background: #f7a659;
+    opacity: 1;
 }
 
 .webrtc_newMessageUi .messageOverlay .contactHeader h4 {

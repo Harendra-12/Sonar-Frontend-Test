@@ -102,7 +102,7 @@ function AccessControl() {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "add") ? (<button
+                          {checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "add") ? (<button
                             onClick={() => { navigate("/access-control-list-add"); backToTop() }}
                             className="panelButton"
                           >
@@ -138,15 +138,15 @@ function AccessControl() {
                               <th>Name</th>
                               <th>List</th>
                               <th>Group</th>
-                              {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                              {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "delete") && <th className="text-center" >Delete</th>}
+                              {checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                              {checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "delete") && <th className="text-center" >Delete</th>}
                             </tr>
                           </thead>
                           <tbody>
                             {loading ? (
                               <SkeletonTableLoader col={5} row={15} />
                             ) :
-                              checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "read") ?
+                              checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "read") ?
                                 (
                                   <>
                                     {
@@ -161,7 +161,7 @@ function AccessControl() {
                                                     {item.description}
                                                   </td>
                                                   <td>{item?.role?.name}</td>
-                                                  {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "edit") &&
+                                                  {checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "edit") &&
                                                     <td onClick={() => navigate(
                                                       `/access-control-list-edit?id=${item.id}`, { state: item }
                                                     )}>
@@ -169,7 +169,7 @@ function AccessControl() {
                                                         <i className="fa-solid fa-pencil" />
                                                       </button>
                                                     </td>}
-                                                  {checkViewSidebar("AccessControl", slugPermissions, account?.permissions, "delete") &&
+                                                  {checkViewSidebar("AccessControlNode", slugPermissions, account?.permissions, "delete") &&
                                                     <td onClick={() => { setDeletePopup(true); setDeleteId(item.id) }}>
                                                       <button className="tableButton delete mx-auto">
                                                         <i className="fa-solid fa-trash" />

@@ -49,7 +49,7 @@ function CampaignCreate() {
   // Getting did and agents for dialer and set its value
   useEffect(() => {
     async function getDidData() {
-      const getDid = await generalGetFunction("did/all")
+      const getDid = await generalGetFunction("did/all?all-dids")
       if (getDid?.status) {
         setDid(getDid.data.filter((item) => item.usages === "dialer"))
       }

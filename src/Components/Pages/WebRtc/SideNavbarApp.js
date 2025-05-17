@@ -141,11 +141,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                       {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}
                       <p>Ext- {extension}</p>
                     </div>
-                    <div className="dropdown">
+                    <div className="">
                       <button onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         <i className="fa-regular fa-gears" />
                       </button>
-                      <div className="dropdown-menu">
+                      <div className="dropdown-menu settingDropDown">
                         {SettingsProp}
                       </div>
                     </div>
@@ -331,6 +331,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                   </div>
                 </li>
               }
+
+
+              
               {
                 isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>

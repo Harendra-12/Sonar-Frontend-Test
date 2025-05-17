@@ -42,7 +42,7 @@ const Dashboard = () => {
       setAllDID(didAll)
     } else {
       async function getData() {
-        const apiData = await generalGetFunction(`/did/all`);
+        const apiData = await generalGetFunction(`/did/all?all-dids`);
         if (apiData?.status) {
           setAllDID(apiData.data);
           dispatch({
