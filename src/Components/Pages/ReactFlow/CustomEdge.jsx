@@ -25,11 +25,6 @@ const CustomEdge = (props) => {
   });
   const { setEdges, getEdges } = useReactFlow();
 
-  console.log("CustomEdge props", props);
-  getEdges((prevEdges) => {
-    console.log("prevEdges", prevEdges);
-  });
-
   return (
     <>
       <path

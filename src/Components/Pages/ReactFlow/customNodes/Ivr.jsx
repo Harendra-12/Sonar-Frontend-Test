@@ -28,7 +28,7 @@ const Ivr = ({ id, data }) => {
     if (selectedValue && data.onUpdate) {
       data.onUpdate({
         value: `ivr_${selectedValue}`,
-        ivr_option_id: String(selectedValue),
+        // ivr_option_id: String(selectedValue),
       });
     }
   };

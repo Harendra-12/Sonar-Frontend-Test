@@ -9,18 +9,17 @@ const PressDigits = ({ id, data }) => {
   const { setEdges, getEdges } = useReactFlow();
 
   useEffect(() => {
-    if (data.subNodes && data.subNodes.length > 0) {
-      const initialFields = data.subNodes.map((item) => ({
+    if (data.fields && data.fields.length > 0) {
+      const initialFields = data.fields.map((item) => ({
         id: item.id,
-        value: item.value || "",
+        value: String(item.value) || "",
       }));
       setFields(initialFields);
     }
-  }, [data.subNodes]);
-
+  }, [data.fields]);
   const handleSelectChange = (id, newValue) => {
     const updatedFields = fields.map((field) =>
-      field.id === id ? { ...field, value: newValue } : field
+      field.id === id ? { ...field, value: String(newValue) } : field
     );
     setFields(updatedFields);
     if (data.onUpdate) {

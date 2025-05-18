@@ -31,7 +31,7 @@ const CallCenter = ({ id, data }) => {
     if (selectedOption && data.onUpdate) {
       data.onUpdate({
         value: selectedOption.extension,
-        ivr_option_id: String(selectedOption.id),
+        // ivr_option_id: String(selectedOption.id),
       });
     }
   };
@@ -74,6 +74,7 @@ const CallCenter = ({ id, data }) => {
               <select
                 name="callCenter"
                 id="callCenter"
+                value={data.value}
                 onChange={(e) => handleCallCenter(e)}
               >
                 <option value="" disabled selected>

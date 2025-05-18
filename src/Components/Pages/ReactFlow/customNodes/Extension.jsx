@@ -14,6 +14,12 @@ const Extension = ({ id, data }) => {
   const [isReadonly, setIsreadonly] = useState(false);
 
   useEffect(() => {
+    if (data.value) {
+      console.log("data.value: ", data.value);
+    }
+  }, [data.value]);
+
+  useEffect(() => {
     if (extensionRefresh > 0) {
       setExtension(extensionArr);
     } else {
@@ -23,12 +29,13 @@ const Extension = ({ id, data }) => {
       });
     }
   }, [extensionArr, extensionRefresh]);
+
   const handleExtension = (event) => {
     const selectedOption = event.target.selectedOptions[0];
     if (selectedOption.value && data.onUpdate) {
       data.onUpdate({
         value: selectedOption.dataset.extension,
-        ivr_option_id: selectedOption.value,
+        // ivr_option_id: selectedOption.value,
       });
     }
   };
@@ -73,6 +80,7 @@ const Extension = ({ id, data }) => {
               <select
                 name="extension"
                 id="extension"
+                value={data.value || ""}
                 onChange={(e) => handleExtension(e)}
               >
                 <option value="" disabled selected>

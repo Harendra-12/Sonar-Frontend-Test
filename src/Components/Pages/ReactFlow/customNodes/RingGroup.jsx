@@ -31,7 +31,7 @@ const RingGroup = ({ id, data }) => {
     if (selectedOption && data.onUpdate) {
       data.onUpdate({
         value: selectedOption.extension,
-        ivr_option_id: String(selectedOption.id),
+        // ivr_option_id: String(selectedOption.id),
       });
     }
   };
