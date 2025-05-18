@@ -273,7 +273,7 @@ function Agents({ type }) {
                         <thead>
                           <tr>
                             <th>Name</th>
-                            <th>Caller ID</th>
+                            {/* <th>Caller ID</th> */}
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Recording</th>
@@ -332,7 +332,7 @@ function Agents({ type }) {
                                             <div className="ms-2">{item.name}</div>
                                           </div>
                                         </td>
-                                        <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                        {/* <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td> */}
                                         <td>{item.extension.extension}</td>
                                         <td>{item?.user_role?.roles?.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
