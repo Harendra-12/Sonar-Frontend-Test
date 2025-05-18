@@ -549,37 +549,85 @@ function CdrFilterReport({ page }) {
     setDuplicatePopUpData(item);
   };
   function exportToCSV(data, filename = "data.csv") {
-    if (!data || !data.length) {
-      console.error("No data to export.");
-      return;
-    }
-
-    // Extract headers from the keys of the first object
-    const headers = Object.keys(data[0]);
-
-    // Map data rows into CSV format
-    const rows = data.map((obj) =>
-      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
-    );
-
-    // Combine headers and rows into a single string
-    const csvContent = [headers.join(","), ...rows].join("\n");
-
-    // Create a blob and trigger download
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-
-    link.href = url;
-    link.download = filename;
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-
-    // Cleanup
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  if (!data || !data.length) {
+    console.error("No data to export.");
+    return;
   }
+  // const headers = Object.keys(data[0])
+
+ // 1. Define keys you want to prioritize/change order
+  const priorityKeys = ["id", "application_state_to_ext","variable_start_stamp","variable_billsec","variable_sip_from_user","tag","variable_sip_to_user","e_name"]; // move these to the front in this order
+
+  // 2. Get the remaining keys
+  const allKeys = Object.keys(data[0]);
+  const remainingKeys = allKeys.filter((key) => !priorityKeys.includes(key));
+
+  // 3. Combine into final column order
+  const columnOrder = [...priorityKeys, ...remainingKeys];
+  const columnMap = {
+    variable_billsec: "billsec",
+  };
+
+  // 2. Build headers from columnMap using columnOrder
+  const headers = columnOrder.map((key) => columnMap[key] || key);
+
+  // 3. Build rows using the defined columnOrder
+  const rows = data.map((obj) =>
+    columnOrder.map((key) => JSON.stringify(obj[key] ?? "")).join(",")
+  );
+
+  // 4. Combine and export
+  const csvContent = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.href = url;
+  link.download = filename;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+  // function exportToCSV(data, filename = "data.csv") {
+  //   if (!data || !data.length) {
+  //     console.error("No data to export.");
+  //     return;
+  //   }
+
+  //   // Extract headers from the keys of the first object
+  //   const headers = Object.keys(data[0]);
+  //   console.log("headers", headers);
+    
+
+  //   // Map data rows into CSV format
+  //   const rows = data.map((obj) =>
+  //     headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+  //   );
+  //   console.log("rows", rows);
+    
+
+  //   // Combine headers and rows into a single string
+  //   const csvContent = [headers.join(","), ...rows].join("\n");
+
+  //   // Create a blob and trigger download
+  //   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  //   const link = document.createElement("a");
+  //   const url = URL.createObjectURL(blob);
+
+  //   link.href = url;
+  //   link.download = filename;
+  //   link.style.display = "none";
+  //   document.body.appendChild(link);
+  //   link.click();
+
+  //   // Cleanup
+  //   document.body.removeChild(link);
+  //   URL.revokeObjectURL(url);
+  // }
 
   // function to handle export
   const handleExport = async () => {

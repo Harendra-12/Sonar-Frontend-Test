@@ -1,22 +1,22 @@
-import React from 'react'
-import { useState } from 'react';
-import { differenceInDays } from 'date-fns';
-import { toast } from 'react-toastify';
-import { generalGetFunction } from '../../GlobalFunction/globalFunction';
-import { useEffect } from 'react';
+import React from "react";
+import { useState } from "react";
+import { differenceInDays } from "date-fns";
+import { toast } from "react-toastify";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { useEffect } from "react";
+import Select from "react-select";
 
-export default function ExportPopUp(
-  {
-    filteredKeys,
-    page,
-    setExportPopup,
-    setLoading,
-    exportToCSV,
-    itemsPerPage,
-    account,
-    setCircularLoader,
-    filteredColumnForTable
-  }) {
+export default function ExportPopUp({
+  filteredKeys,
+  page,
+  setExportPopup,
+  setLoading,
+  exportToCSV,
+  itemsPerPage,
+  account,
+  setCircularLoader,
+  filteredColumnForTable,
+}) {
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
@@ -30,12 +30,12 @@ export default function ExportPopUp(
   const [hangupCause, setHagupCause] = useState("");
   const [callType, setCallType] = useState("");
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
-  const [callDirection, setCallDirection] = useState("");
+  const [callDirection, setCallDirection] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [exportChecked, setExportChecked] = useState("CSV")
-  const [isExcelLoading, setIsExcelLoading] = useState(false)
+  const [exportChecked, setExportChecked] = useState("CSV");
+  const [isExcelLoading, setIsExcelLoading] = useState(false);
 
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
@@ -53,12 +53,8 @@ export default function ExportPopUp(
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
-
   useEffect(() => {
-    if (
-      filterBy === "7_days" ||
-      filterBy === "1_month"
-    ) {
+    if (filterBy === "7_days" || filterBy === "1_month") {
       // featureUnderdevelopment();
       getDateRange(filterBy);
     }
@@ -103,45 +99,42 @@ export default function ExportPopUp(
     // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
   };
 
-
-
-
-
   const filterExportedData = () => {
-
-    const buildUrl = (params) => {
+     const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
-        .filter(([key, value]) => value.length > 0)
-        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .filter(([key, value]) => value != null && value.length > 0)
+        .flatMap(([key, value]) =>
+          Array.isArray(value)
+            ? value.map(
+              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+            )
+            : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+        )
         .join("&");
-      console.log({ queryParams })
-      //  setUpdatedQueryparams(()=>queryParams);
-      return queryParams;
+
+      setUpdatedQueryparams(queryParams);
+      return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
-
-    return buildUrl(
-      {
-        "Call-Direction": callDirection,
-        application_state:
-          page === "all"
-            ? callType
-            : page === "billing"
-              ? "pstn"
-              : page === "callrecording"
-                ? callType
-                : page,
-        variable_sip_from_user: debounceCallOriginFlag,
-        variable_sip_to_user: debounceCallDestinationFlag,
-        start_date: startDate,
-        end_date: endDate,
-        variable_DIALSTATUS: hangupCause,
-        "Hangup-Cause": hangupStatus,
-        call_cost: page === "billing" ? "give" : "",
-        created_at: createdAt,
-      }
-    );
+    return buildUrl("", {
+      "Call-Direction[]": callDirection,
+       "application_state[]":
+        page === "all"
+          ? callType
+          : page === "billing"
+          ? "pstn"
+          : page === "callrecording"
+          ? callType
+          : page,
+      variable_sip_from_user: debounceCallOriginFlag,
+      variable_sip_to_user: debounceCallDestinationFlag,
+      start_date: startDate,
+      end_date: endDate,
+      "variable_DIALSTATUS[]": hangupCause,
+      "Hangup-Cause[]": hangupStatus,
+      call_cost: page === "billing" ? "give" : "",
+      created_at: createdAt,
+    });
   };
-
 
   const handleCallOriginChange = (e) => {
     const newValue = e.target.value;
@@ -162,12 +155,14 @@ export default function ExportPopUp(
     setStartDateFlag(newStartDate);
     setPageNumber(1);
 
-
     if (endDateFlag) {
-      const daysDifference = differenceInDays(new Date(endDateFlag), new Date(newStartDate));
+      const daysDifference = differenceInDays(
+        new Date(endDateFlag),
+        new Date(newStartDate)
+      );
       if (daysDifference > 31) {
-        setEndDateFlag(''); // Reset end date if range exceeds 31 days
-        toast.error('Date range cannot exceed 31 days.');
+        setEndDateFlag(""); // Reset end date if range exceeds 31 days
+        toast.error("Date range cannot exceed 31 days.");
       }
     }
   };
@@ -177,12 +172,14 @@ export default function ExportPopUp(
     setEndDateFlag(newEndDate);
     setPageNumber(1);
 
-
     if (startDateFlag) {
-      const daysDifference = differenceInDays(new Date(newEndDate), new Date(startDateFlag));
+      const daysDifference = differenceInDays(
+        new Date(newEndDate),
+        new Date(startDateFlag)
+      );
       if (daysDifference > 31) {
-        toast.error('Date range cannot exceed 31 days.');
-        setEndDateFlag(''); // Reset end date
+        toast.error("Date range cannot exceed 31 days.");
+        setEndDateFlag(""); // Reset end date
         return;
       }
     }
@@ -201,7 +198,7 @@ export default function ExportPopUp(
     }
   };
   const handleExport = async () => {
-    const queryParams = filterExportedData()
+    const queryParams = filterExportedData();
     // if (filterBy)
     // setLoading(true);
 
@@ -210,30 +207,27 @@ export default function ExportPopUp(
     //   return acc;
     // }, {});
 
-    setIsExcelLoading(true)
+    setIsExcelLoading(true);
     if (exportChecked === "mail") {
       try {
         const res = await generalGetFunction(
-          `cdr?${queryParams}&export_sent=true`
+          `${queryParams}&export_sent=true`
         );
         if (res.status) {
           const updatedData = res?.data?.map(({ peak_json, ...rest }) => rest);
           exportToCSV(updatedData);
           setLoading(false);
         }
-        setExportPopup(false)
+        setExportPopup(false);
         toast.success("Data Successfully Exported.");
       } catch (error) {
-        setExportPopup(false)
+        setExportPopup(false);
         toast.error("Error during export:", error?.message);
       }
     } else {
       try {
-        const res = await generalGetFunction(
-          `cdr?${queryParams}&export=true`
-        );
+        const res = await generalGetFunction(`cdr?${queryParams}&export=true`);
         if (res.status) {
-
           // const updatedData = res?.data?.map(obj => {
           //   return Object.fromEntries(
           //     Object.entries(obj).filter(([key]) => selectedKeysObject[key])
@@ -244,14 +238,13 @@ export default function ExportPopUp(
           exportToCSV(updatedData);
           setLoading(false);
         }
-        setExportPopup(false)
+        setExportPopup(false);
         toast.success("Data Successfully Exported.");
       } catch (error) {
-        setExportPopup(false)
+        setExportPopup(false);
         toast.error("Error during export:", error?.message);
       }
     }
-
   };
 
   return (
@@ -262,10 +255,15 @@ export default function ExportPopUp(
           <h5>Export Options</h5>
           <p>Choose what and how you want to export the call detail reports</p>
         </div>
-        <div style={{ borderBottom: '1px solid var(--border-color)' }} />
+        <div style={{ borderBottom: "1px solid var(--border-color)" }} />
         <div className="col-12 my-2">
           <div className="row">
-            <h5 className="mb-0 d-flex justify-content-between align-items-center">CDR Filters <button className="tableButton delete"><i className="fa-solid fa-trash" /></button></h5>
+            <h5 className="mb-0 d-flex justify-content-between align-items-center">
+              CDR Filters{" "}
+              <button className="tableButton delete">
+                <i className="fa-solid fa-trash" />
+              </button>
+            </h5>
             {filteredKeys.includes("variable_start_stamp") && (
               <>
                 {" "}
@@ -316,7 +314,7 @@ export default function ExportPopUp(
                       <input
                         type="date"
                         className="formItem"
-                        max={new Date().toISOString().split('T')[0]}
+                        max={new Date().toISOString().split("T")[0]}
                         value={startDateFlag}
                         onChange={handleStartDateChange}
                       />
@@ -328,7 +326,7 @@ export default function ExportPopUp(
                       <input
                         type="date"
                         className="formItem"
-                        max={new Date().toISOString().split('T')[0]}
+                        max={new Date().toISOString().split("T")[0]}
                         value={endDateFlag}
                         onChange={handleEndDateChange}
                         min={startDateFlag}
@@ -377,35 +375,28 @@ export default function ExportPopUp(
               </div>
             )}
 
-            {page === "all" &&
-              filteredKeys.includes("variable_sip_to_user") ? (
+            {page === "all" && filteredKeys.includes("variable_sip_to_user") ? (
               <>
                 <div className="formRow border-0 col-4">
                   <label className="formLabel text-start mb-0 w-100">
                     Call Direction
                   </label>
-                  <select
-                    className="formItem"
-                    onChange={(e) => {
-                      setCallDirection(e.target.value);
+                  <Select
+                    isMulti
+                    onChange={(selectedOptions) => {
+                      const values = selectedOptions
+                        ? selectedOptions.map((opt) => opt.value)
+                        : [];
+                      setCallDirection(values);
                       setPageNumber(1);
                     }}
-                    value={callDirection}
-                  // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                  >
-                    <option value={""}>All Calls</option>
-                    <option value={"inbound"}>Inbound Calls</option>
-                    <option value={"outbound"}>
-                      Outbound Calls
-                    </option>
-                    {/* <option value={"missed"}>Missed Calls</option> */}
-                    <option value={"internal"}>
-                      Internal Calls
-                    </option>
-                    {/* <option value={"transfer"}>
-                          Transfer Calls
-                        </option> */}
-                  </select>
+                    options={callDirectionOptions}
+                    isSearchable
+                    styles={customStyles}
+                    value={callDirectionOptions.filter((opt) =>
+                      callDirection.includes(opt.value)
+                    )}
+                  />
                 </div>
                 <div className="formRow border-0 col-4">
                   <label className="formLabel text-start mb-0 w-100">
@@ -421,9 +412,7 @@ export default function ExportPopUp(
                     <option value={""}>All Calls</option>
                     <option value={"extension"}>Extension</option>
                     <option value={"voicemail"}>Voice Mail</option>
-                    <option value={"callcenter"}>
-                      Call Center
-                    </option>
+                    <option value={"callcenter"}>Call Center</option>
                     <option value={"ringgroup"}>Ring Group</option>
                   </select>
                 </div>
@@ -432,7 +421,7 @@ export default function ExportPopUp(
               ""
             )}
             {page === "callrecording" &&
-              !filteredKeys.includes("Hangup-Cause") ? (
+            !filteredKeys.includes("Hangup-Cause") ? (
               ""
             ) : (
               <>
@@ -468,19 +457,13 @@ export default function ExportPopUp(
                       }}
                     >
                       <option value={""}>All</option>
-                      <option value={"NORMAL_CLEARING"}>
-                        Normal Clearing
-                      </option>
+                      <option value={"NORMAL_CLEARING"}>Normal Clearing</option>
                       <option value={"ORIGINATOR_CANCEL"}>
                         Originator Cancel
                       </option>
-                      <option value={"MANAGER_REQUEST"}>
-                        Manager Request
-                      </option>
+                      <option value={"MANAGER_REQUEST"}>Manager Request</option>
                       <option value={"NO_ANSWER"}>No Answer</option>
-                      <option value={"INVALID_GATEWAY"}>
-                        Invalid Gateway
-                      </option>
+                      <option value={"INVALID_GATEWAY"}>Invalid Gateway</option>
                       <option value={"SERVICE_UNAVAILABLE"}>
                         Service Unavailable
                       </option>
@@ -490,9 +473,7 @@ export default function ExportPopUp(
                       <option value={"NO_USER_RESPONSE"}>
                         No User Response
                       </option>
-                      <option value={"MEDIA_TIMEOUT"}>
-                        Media Timeout
-                      </option>
+                      <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
                       <option value={"LOSE_RACE"}>Lose Race</option>
                       <option value={"NORMAL_UNSPECIFIED"}>
                         Normal Unspecified
@@ -504,9 +485,7 @@ export default function ExportPopUp(
                       <option value={"USER_NOT_REGISTERED"}>
                         User Not Registered
                       </option>
-                      <option value={"CALL_REJECTED"}>
-                        Call Rejected
-                      </option>
+                      <option value={"CALL_REJECTED"}>Call Rejected</option>
                       <option value={"SUBSCRIBER_ABSENT"}>
                         Subscriber Absent
                       </option>
@@ -535,17 +514,36 @@ export default function ExportPopUp(
             )}
           </div>
         </div>
-        <div style={{ borderBottom: '1px solid var(--border-color)' }} />
+        <div style={{ borderBottom: "1px solid var(--border-color)" }} />
         <div className="col-12 mt-2">
-          <h5 className="mb-0 d-flex justify-content-between align-items-center">Format Options</h5>
+          <h5 className="mb-0 d-flex justify-content-between align-items-center">
+            Format Options
+          </h5>
           <div class="form-check mt-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked={exportChecked === "CSV"} />
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault1"
+              checked={exportChecked === "CSV"}
+            />
             <label class="formLabel" for="flexRadioDefault1">
               Export To CSV
             </label>
           </div>
           <div class="form-check mt-2">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked={exportChecked === "mail"} onChange={(e) => e.target.checked ? setExportChecked("mail") : setExportChecked("CSV")} />
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault2"
+              checked={exportChecked === "mail"}
+              onChange={(e) =>
+                e.target.checked
+                  ? setExportChecked("mail")
+                  : setExportChecked("CSV")
+              }
+            />
             <label class="formLabel" for="flexRadioDefault2">
               Send To Mail
             </label>
@@ -553,7 +551,10 @@ export default function ExportPopUp(
         </div>
         <div className="col-xl-12 mt-2">
           <div className="d-flex justify-content-between">
-            <button className="panelButton gray ms-0" onClick={() => setExportPopup(false)}>
+            <button
+              className="panelButton gray ms-0"
+              onClick={() => setExportPopup(false)}
+            >
               <span className="text">Close</span>
               <span className="icon">
                 <i className="fa-solid fa-caret-left" />
@@ -561,7 +562,9 @@ export default function ExportPopUp(
             </button>
             <button
               className="panelButton me-0"
-              onClick={() => { handleExport(); }}
+              onClick={() => {
+                handleExport();
+              }}
               disabled={isExcelLoading}
             >
               <span className="text">Export</span>
@@ -573,5 +576,172 @@ export default function ExportPopUp(
         </div>
       </div>
     </div>
-  )
+  );
 }
+
+
+// Custom styles for react-select
+const customStyles = {
+  container: (provided) => ({
+    ...provided,
+    width: "100%",
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+    borderBottom: "1px solid var(--border-color)",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+    zIndex: 99,
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};
+
+const callDirectionOptions = [
+  {
+    value: "inbound",
+    label: "Inbound Calls",
+  },
+  {
+    value: "outbound",
+    label: "Outbound Calls",
+  },
+  {
+    value: "internal",
+    label: "Internal Calls",
+  },
+];
+
+const callTypeOptions = [
+  {
+    value: "extension",
+    label: "Extension",
+  },
+  {
+    value: "voicemail",
+    label: "Voice Mail",
+  },
+  {
+    value: "callcenter",
+    label: "Call Center",
+  },
+  {
+    value: "ringgroup",
+    label: "Ring Group",
+  },
+];
+
+const hangupCauseOptions = [
+  {
+    value: "Answered",
+    label: "Answer",
+  },
+  {
+    value: "Missed",
+    label: "Missed",
+  },
+  {
+    value: "Voicemail",
+    label: "Voicemail",
+  },
+  {
+    value: "Cancelled",
+    label: "Cancelled",
+  },
+  {
+    value: "Failed",
+    label: "Failed",
+  },
+  {
+    value: "Transfer",
+    label: "Transfer",
+  },
+];
+
+const hangupStatusOptions = [
+  { value: "NORMAL_CLEARING", label: "Normal Clearing" },
+  { value: "ORIGINATOR_CANCEL", label: "Originator Cancel" },
+  { value: "MANAGER_REQUEST", label: "Manager Request" },
+  { value: "NO_ANSWER", label: "No Answe" },
+  { value: "INVALID_GATEWAY", label: "Invalid Gateway" },
+  { value: "SERVICE_UNAVAILABLE", label: "Service Unavailable" },
+  { value: "INCOMPATIBLE_DESTINATION", label: "Incompatible Destination" },
+  { value: "NO_USER_RESPONSE", label: "No User Response" },
+  { value: "MEDIA_TIMEOUT", label: "Media Timeout" },
+  { value: "LOSE_RACE", label: "Lose Race" },
+  { value: "NORMAL_UNSPECIFIED", label: "Normal Unspecified" },
+  { value: "USER_BUSY", label: "User Busy" },
+  { value: "RECOVERY_ON_TIMER_EXPIRE", label: "Recovery On Timer Expire" },
+  { value: "USER_NOT_REGISTERED", label: "User Not Registered" },
+  { value: "CALL_REJECTED", label: "Call Rejected" },
+  { value: "SUBSCRIBER_ABSENT", label: "Subscriber Absent" },
+  { value: "CHAN_NOT_IMPLEMENTED", label: "Chan Not Implemented" },
+  { value: "DESTINATION_OUT_OF_ORDER", label: "Destination Out Of Order" },
+  { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
+  { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
+  { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
+  { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" },
+];

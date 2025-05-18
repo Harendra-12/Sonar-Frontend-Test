@@ -316,7 +316,8 @@ function IncomingCallPopup({
       });
     } else {
       console.log("Callerextension", callerExtension);
-
+      console.log("sessionnnnnn", session);
+      
       const didTag = didAll?.filter(
         (item) =>
           item?.did ==

@@ -180,6 +180,14 @@
     font-weight: 400;
     color: #ababab;
 }
+.callhistory-date{
+     font-size: 0.75rem !important;
+    margin: 0px 0 5px;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #ababab !important;
+    margin-right: 10px !important;
+}
 
 .mainContentApp .contactListItem span {
     font-size: 1.0625rem;

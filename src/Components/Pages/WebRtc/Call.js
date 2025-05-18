@@ -453,6 +453,7 @@ function Call({
 
               <div className="col-auto text-end ms-auto">
                 <p className="timeAgo mb-0">
+                  <span className="callhistory-date">{item.variable_start_stamp.split(" ")[0]}</span>
                   {new Date(item.variable_start_stamp)
                     .toLocaleTimeString([], {
                       hour: "2-digit",
@@ -542,6 +543,8 @@ function Call({
 
   const groupedCalls = groupCallsByDate(data);
 
+  console.log("groupedCalls", groupedCalls);
+
   const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
     (acc, date) => {
       acc[date] = groupedCalls[date].sort(
@@ -572,8 +575,9 @@ function Call({
       return;
     }
     const otherPartyExtension =
-    callDetails["Call-Direction"] === "outbound"?callDetails["variable_sip_to_user"]:
-      callDetails["variable_sip_from_user"] === extension
+      callDetails["Call-Direction"] === "outbound"
+        ? callDetails["variable_sip_to_user"]
+        : callDetails["variable_sip_from_user"] === extension
         ? callDetails["variable_sip_to_user"]
         : callDetails["variable_sip_from_user"];
     // callDetails?.["Caller-Callee-ID-Number"] == extension
@@ -877,15 +881,22 @@ function Call({
                     >
                       {loading ? (
                         <ContentLoader />
-                      ) : Object.keys(groupedCalls).length > 0 ? (
-                        sortKeys(Object.keys(groupedCalls)).map((date, key) => (
-                          <div key={key}>
-                            <div key={date} className="dateHeader">
-                              <p>{date}</p>
-                            </div>
-                            {sortedGroupedCalls[date].map(renderCallItem)}
-                          </div>
-                        ))
+                      ) : // Object.keys(groupedCalls).length < 0 ? (
+                      //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
+                      //     <div key={key}>
+                      //       <div key={date} className="dateHeader">
+                      //         <p>{date}</p>
+                      //       </div>
+                      //       {sortedGroupedCalls[date].map(renderCallItem)}
+                      //     </div>
+                      //   ))
+                      // )
+                      data.length > 0 ? (
+                        <>
+                          {data.map((item) => {
+                            return renderCallItem(item);
+                          })}
+                        </>
                       ) : (
                         <div className="startAJob">
                           <div className="text-center mt-3">
