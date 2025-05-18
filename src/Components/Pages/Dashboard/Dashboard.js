@@ -1046,7 +1046,7 @@ const Dashboard = () => {
                                     <li className="d_extension_listing">
                                       Default WhatsApp{" "}
                                       <span className="float-end">
-                                        {didAll?.filter((item) => item.default_whatsapp == 1)[0]?.did}
+                                        {allDID?.filter((item) => item.default_whatsapp == 1)[0]?.did}
                                       </span>
                                     </li>
                                   </ul>

@@ -572,6 +572,7 @@ function Call({
       return;
     }
     const otherPartyExtension =
+    callDetails["Call-Direction"] === "outbound"?callDetails["variable_sip_to_user"]:
       callDetails["variable_sip_from_user"] === extension
         ? callDetails["variable_sip_to_user"]
         : callDetails["variable_sip_from_user"];
