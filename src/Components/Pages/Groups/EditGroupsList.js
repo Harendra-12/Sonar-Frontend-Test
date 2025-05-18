@@ -36,8 +36,8 @@ export default function EditGroupsList() {
   async function getUsers() {
     // debugger   
     try {
-      const res = await generalGetFunction("/user/all");
-      const users = [...res?.data?.data]
+      const res = await generalGetFunction(`/user/search?account=${account.account_id}`);
+      const users = [...res?.data]
       // console.log(selectedGroup.groupusers,{users})
       const updatedusers = users.filter((user) => {
         return selectedGroup.groupusers.every((groupuser) => {

@@ -805,6 +805,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         option: (provided) => ({
                                           ...provided,
                                           fontSize: "14px",
+                                          paddingTop: '2px',
+                                          paddingBottom: '2px',
+                                          borderBottom: '1px solid var(--border-color)'
                                         }),
                                         placeholder: (provided) => ({
                                           ...provided,

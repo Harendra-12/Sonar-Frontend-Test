@@ -16,9 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function DidListing({ page }) {
   const [did, setDid] = useState();
+  const [didWithPagination, setDidWithPagination] = useState()
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const didAll = useSelector((state) => state.didAll);
@@ -34,21 +36,50 @@ function DidListing({ page }) {
   const [addNew, setAddNew] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [previousUsages, setPreviousUsages] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
+  const allUser = useSelector((state) => state.allUser);
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const extensionArr = useSelector((state) => state.extension);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const ringGroup = useSelector((state) => state.ringGroup);
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
+  const callCenter = useSelector((state) => state.callCenter);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
+  const ivrArr = useSelector((state) => state.ivr);
+  const ivrRefresh = useSelector((state) => state.ivrRefresh);
+
+  const [allUserArr, setAllUserArr] = useState([]);
+
+  const getUserData = async () => {
+    const apidataUser = await generalGetFunction(
+      `/user/search?account=${account.account_id}`
+    );
+    if (apidataUser?.status) {
+      setAllUserArr(apidataUser.data);
+    }
+  };
 
   useEffect(() => {
-    setRefreshState(true)
-    if (didAll) {
+    if (account && account?.account_id) {
+      getUserData();
+    }
+  }, []);
+
+  useEffect(() => {
+    setRefreshState(true);
+    if (didAll?.data) {
       setLoading(true);
       if (page === "number") {
-        setDid(didAll);
+        setDid(didAll?.data);
       } else if (page === "pbx") {
-        setDid(didAll.filter((item) => item.usage === "pbx"));
+        setDid(didAll?.data?.filter((item) => item.usage === "pbx"));
       } else if (page === "dialer") {
-        setDid(didAll.filter((item) => item.usage === "dialer"));
+        setDid(didAll?.data?.filter((item) => item.usage === "dialer"));
       }
       const shouldLoad = true;
       getData(shouldLoad);
@@ -57,30 +88,69 @@ function DidListing({ page }) {
       getData(shouldLoad);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page, debouncedSearchTerm]);
+  }, [refreshDid, page, debouncedSearchTerm, entriesPerPage, pageNumber]);
+
+  // Fetch all the data
+  useEffect(() => {
+    if (allUserRefresh < 1) {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }
+    if (extensionRefresh < 1) {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
+
+    if (ringGroupRefresh < 1) {
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
+    }
+
+    if (callCenterRefresh < 1) {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
+    }
+
+    if (ivrRefresh < 1) {
+      dispatch({
+        type: "SET_IVRREFRESH",
+        ivrRefresh: ivrRefresh + 1,
+      });
+    }
+  }, [allUser, extensionArr, ringGroup, callCenter, ivrArr]);
 
   // Fetch ALL DID
   async function getData(shouldLoad) {
-    if (shouldLoad)
-      setLoading(true);
-    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}`);
+    if (shouldLoad) setLoading(true);
+    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`);
     if (apiData?.status) {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       if (page === "number") {
-        setDid(apiData.data);
+        setDid(apiData.data?.data);
+        setDidWithPagination(apiData?.data);
       } else if (page === "pbx") {
-        setDid(apiData.data.filter((item) => item.usages === "pbx"));
+        setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
+        setDidWithPagination(apiData?.data);
       } else if (page === "dialer") {
-        setDid(apiData.data.filter((item) => item.usages === "dialer"));
+        setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
+        setDidWithPagination(apiData?.data);
       }
       dispatch({
         type: "SET_DIDALL",
-        didAll: apiData.data || []
+        didAll: apiData.data || [],
       });
     } else {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       navigate(-1);
     }
   }
@@ -184,9 +254,45 @@ function DidListing({ page }) {
   // }, [searchQuery]);
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
-    const shouldLoad = false
-    getData(shouldLoad)
+    setRefreshState(true);
+    const shouldLoad = false;
+    getData(shouldLoad);
+  };
+
+  function checkUserName(extension, usages) {
+    if (extension === null || extension === undefined) return "";
+
+    if (usages === "extension") {
+      const findData = extensionArr.find(
+        (item) => item?.extension == extension
+      );
+      const userData = findData && allUserArr?.length > 0 && allUserArr?.find(
+        (item) => item.extension.extension == findData.extension
+      );
+
+      return `${userData?.name}- `;
+    }
+
+    if (usages === "ring group") {
+      const findData = ringGroup.find((item) => item?.extension == extension);
+      return `${findData?.name}- `;
+    }
+
+    if (usages === "call center") {
+      const findData = callCenter.find((item) => item?.extension == extension);
+      return `${findData?.queue_name}- `;
+    }
+
+    if (usages === "ivr") {
+      const ivrId = extension.split("_")[1];
+      const findData = ivrArr.find((item) => item?.id == ivrId);
+      return `${findData?.ivr_name}- `;
+    }
+
+    // if (usages === "pstn") {
+    //   const findData = ringGroup.find((item) => item?.extension == extension);
+    //   return `${findData?.name}- `;
+    // }
   }
 
   return (
@@ -210,12 +316,8 @@ function DidListing({ page }) {
                             disabled={refreshState}
                           >
                             <i
-                              class={
-                                `fa-regular fa-arrows-rotate fs-5 
-                                ${refreshState ?
-                                  "fa-spin" :
-                                  ""
-                                }`}
+                              class={`fa-regular fa-arrows-rotate fs-5 
+                                ${refreshState ? "fa-spin" : ""}`}
                             ></i>
                           </button>
                         </h4>
@@ -263,57 +365,74 @@ function DidListing({ page }) {
                   </div>
 
                   {addNew ? (
-                    didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ?
-                      (
-                        <div className="popup loggedPopupSm" style={{ backgroundColor: "#000000e0" }}>
-                          <div className="container h-100">
-                            <div className="row h-100 justify-content-center align-items-center">
-                              <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
-                                <div className="col-2 px-0">
-                                  <div className="iconWrapper log__warning mb-3">
-                                    <img className=" " src={require('../../assets/images/crisis.png')} alt='logout' />
-                                  </div>
+                    didAll?.data?.filter((item) => item.usages === "" || !item.usages)
+                      .length === 0 ? (
+                      <div
+                        className="popup loggedPopupSm"
+                        style={{ backgroundColor: "#000000e0" }}
+                      >
+                        <div className="container h-100">
+                          <div className="row h-100 justify-content-center align-items-center">
+                            <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
+                              <div className="col-2 px-0">
+                                <div className="iconWrapper log__warning mb-3">
+                                  <img
+                                    className=" "
+                                    src={require("../../assets/images/crisis.png")}
+                                    alt="logout"
+                                  />
                                 </div>
-                                <div className="col-10 ps-0 px-0">
-                                  <h4 className="mb-2 text-center text-orange">Warning!</h4>
-                                  <p className='text-center'>All number is assign with other module please add <Link to="/did-add">new number</Link>!</p>
-                                  <div className="mt-3 logoutPopup d-flex justify-content-center">
-                                    <button type="button" class="btn btn_info" onClick={() => setAddNew(false)}>
-                                      <span>Ok</span>
-                                      <i class="fa-solid fa-power-off "></i>
-                                    </button>
-                                  </div>
+                              </div>
+                              <div className="col-10 ps-0 px-0">
+                                <h4 className="mb-2 text-center text-orange">
+                                  Warning!
+                                </h4>
+                                <p className="text-center">
+                                  All number is assign with other module please
+                                  add <Link to="/did-add">new number</Link>!
+                                </p>
+                                <div className="mt-3 logoutPopup d-flex justify-content-center">
+                                  <button
+                                    type="button"
+                                    class="btn btn_info"
+                                    onClick={() => setAddNew(false)}
+                                  >
+                                    <span>Ok</span>
+                                    <i class="fa-solid fa-power-off "></i>
+                                  </button>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      )
-                      : (
-                        <div className="backdropContact">
-                          <div className="addNewContactPopup">
-                            <div className="row">
-                              <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
-                                <i className="fa-light fa-user-plus shadow-none" />
-                                <h5 className=" text-primary">Add new DID </h5>
-                              </div>
-                              <div className="col-xl-12 ">
-                                <div
-                                  className="tableContainer mt-0"
-                                  style={{ maxHeight: "calc(100vh - 400px)" }}
-                                >
-                                  <table>
-                                    <thead>
-                                      <tr>
-                                        <th>S.No</th>
-                                        <th>Number</th>
-                                        <th className="text-center">
-                                          Add DID
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
+                      </div>
+                    ) : (
+                      <div className="backdropContact">
+                        <div className="addNewContactPopup">
+                          <div className="row">
+                            <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
+                              <i className="fa-light fa-user-plus shadow-none" />
+                              <h5 className=" text-primary">Add new DID </h5>
+                            </div>
+                            <div className="col-xl-12 ">
+                              <div
+                                className="tableContainer mt-0"
+                                style={{ maxHeight: "calc(100vh - 400px)" }}
+                              >
+                                <table>
+                                  <thead>
+                                    <tr>
+                                      <th>S.No</th>
+                                      <th>Number</th>
+                                      <th className="text-center">Add DID</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {didAll?.data?.filter(
+                                        (item) =>
+                                          item.usages === "" || !item.usages
+                                      )
+                                      .map((item, index) => {
                                         return (
                                           <tr>
                                             <td> {index + 1}</td>
@@ -338,34 +457,31 @@ function DidListing({ page }) {
                                               <button
                                                 className="tableButton align-items-center justify-content-center mx-auto"
                                                 onClick={() => {
-                                                  handleUsagesEdit(item.id)
+                                                  handleUsagesEdit(item.id);
                                                 }}
                                               >
-
                                                 <i className="fa-solid fa-plus"></i>
                                               </button>
                                             </div>
                                           </tr>
-                                        )
+                                        );
                                       })}
-
-
-                                    </tbody>
-                                  </table>
-                                </div>
+                                  </tbody>
+                                </table>
                               </div>
-                              <div className="col-xl-12 mt-3">
-                                <div className="d-flex justify-content-center">
-                                  <button
-                                    className="panelButton gray ms-0"
-                                    onClick={() => setAddNew(false)}
-                                  >
-                                    <span className="text">Close</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-caret-left" />
-                                    </span>
-                                  </button>
-                                  {/* <button
+                            </div>
+                            <div className="col-xl-12 mt-3">
+                              <div className="d-flex justify-content-center">
+                                <button
+                                  className="panelButton gray ms-0"
+                                  onClick={() => setAddNew(false)}
+                                >
+                                  <span className="text">Close</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-caret-left" />
+                                  </span>
+                                </button>
+                                {/* <button
                               className="panelButton me-0"
 
                             >
@@ -374,12 +490,12 @@ function DidListing({ page }) {
                                 <i className="fa-solid fa-check" />
                               </span>
                             </button> */}
-                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      )
+                      </div>
+                    )
                   ) : (
                     ""
                   )}
@@ -392,7 +508,7 @@ function DidListing({ page }) {
                         <label>Show</label>
                         <select
                           className="formItem"
-                          onChange={() => featureUnderdevelopment()}
+                          onChange={(e) => setEntriesPerPage(e?.target?.value)}
                         >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
@@ -420,6 +536,7 @@ function DidListing({ page }) {
                             <th>SMS</th>
                             {page === "pbx" ? (
                               <>
+                                <th>Tag</th>
                                 <th>Route</th>
                               </>
                             ) : (
@@ -453,7 +570,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 10 : 9}
+                              col={page === "pbx" ? 11 : 9}
                               row={15}
                             />
                           ) : (
@@ -476,7 +593,19 @@ function DidListing({ page }) {
                                       </td>
                                       {page === "pbx" ? (
                                         <>
+                                          <td>{item?.configuration?.tag}</td>
                                           <td style={{ cursor: "default" }}>
+                                            {item?.configuration?.forward !==
+                                              "disabled"
+                                              ? checkUserName(
+                                                item?.configuration
+                                                  ?.forward_to,
+                                                item?.configuration?.forward
+                                              )
+                                              : checkUserName(
+                                                item?.configuration?.action,
+                                                item?.configuration?.usages
+                                              )}
                                             {item?.configuration?.forward_to
                                               ? item?.configuration?.forward_to
                                               : item?.configuration?.action}
@@ -861,6 +990,16 @@ function DidListing({ page }) {
                           )}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      {console.log('didWithPagination', didWithPagination)}
+                      <PaginationComponent
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={didWithPagination?.last_page}
+                        from={(pageNumber - 1) * didWithPagination?.per_page + 1}
+                        to={didWithPagination?.to}
+                        total={didWithPagination?.total}
+                      />
                     </div>
                   </div>
                 </div>

@@ -63,7 +63,7 @@ const Extensions = () => {
   // Getting all DID from did listing
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/did/all`);
+      const apiData = await generalGetFunction(`/did/all?all-dids`);
       if (apiData?.status) {
         setAllDID(apiData.data);
 
@@ -104,14 +104,14 @@ const Extensions = () => {
         `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
       );
       if (apiData?.status) {
-        setLoading(false);
+        // setLoading(false);
         setRefreshState(false)
         setExtension(apiData.data);
         dispatch({
           type: "SET_EXTENSIONBYACCOUNT",
           extensionByAccount: apiData.data,
         });
-        setLoading(false);
+        // setLoading(false);
         setRefreshState(false)
       } else {
         if (apiData.response.status === 403) {
@@ -216,6 +216,7 @@ const Extensions = () => {
           setFilteredExtension(extension.data);
           break;
       }
+      setLoading(false)
     }
   }, [onlineExtension])
 

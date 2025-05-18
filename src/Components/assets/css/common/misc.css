@@ -1863,7 +1863,7 @@ input[type=number] {
     background: rgba(75, 78, 99, 0.102);
     padding: 20px;
     border-radius: 10px;
-   height: calc(100vh - 165px);
+    height: calc(100vh - 165px);
 }
 
 .badge-solid-primary {
@@ -2334,6 +2334,7 @@ input[type=number] {
 
 .css-1fetajk-option {
     background-color: #222a35 !important;
+    color: #fff !important;
 }
 
 .css-1stt0h2-control {
@@ -2452,4 +2453,9 @@ input[type=number] {
     width: 100%;
     border-radius: 6px;
     padding-inline: 10px;
+}
+
+.tippy-content>div {
+    max-height: 300px;
+    overflow-y: auto;
 }

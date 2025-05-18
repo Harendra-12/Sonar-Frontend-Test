@@ -24,9 +24,9 @@ import Tippy from "@tippyjs/react";
 import HeaderApp from "./HeaderApp";
 
 /**
- * Component to handle and display call functionalities, including call history, 
- * filtering, searching, and initiating calls. Manages states for call sessions, 
- * dialpad visibility, and various UI elements. Integrates with Redux store for 
+ * Component to handle and display call functionalities, including call history,
+ * filtering, searching, and initiating calls. Manages states for call sessions,
+ * dialpad visibility, and various UI elements. Integrates with Redux store for
  * session and account data.
  *
  * @param {string} selectedModule - The currently selected module.
@@ -85,9 +85,7 @@ function Call({
   setIsLoading,
   setIsCallLoading,
   loading,
-  isCallLoading
-
-
+  isCallLoading,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -222,17 +220,17 @@ function Call({
 
     setCallHistory(
       filteredCalls?.[0] &&
-      allApiData?.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData?.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [data, clickStatus]);
   const formatTime = (duration) => {
@@ -240,7 +238,8 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -273,10 +272,11 @@ function Call({
     // Use the matching contact's name if found, otherwise default to the extension
     const displayName = matchingContact
       ? matchingContact.name
-      : item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
-        : item["Caller-Callee-ID-Number"] === extension
-          ? item["Caller-Caller-ID-Number"]
-          : item["Caller-Callee-ID-Number"];
+      : item["Call-Direction"] === "outbound"
+      ? item["variable_sip_to_user"]
+      : item["variable_sip_from_user"] === extension
+      ? item["variable_sip_to_user"]
+      : item["variable_sip_from_user"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -285,7 +285,6 @@ function Call({
     const matchingCallerContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Caller-ID-Number"]
     )?.name;
-
 
     // Call Type Icon Selector
     const statusIcons = {
@@ -296,21 +295,21 @@ function Call({
     };
     const callIcons = {
       inbound: {
-        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+        icon:
+          statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
-          item.variable_DIALSTATUS ==
-            "Missed" || item.variable_DIALSTATUS ==
-            "Failed"
+          item.variable_DIALSTATUS == "Missed" ||
+          item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
       },
       outbound: {
-        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+        icon:
+          statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
-          item.variable_DIALSTATUS ==
-            "Missed" || item.variable_DIALSTATUS ==
-            "Failed"
+          item.variable_DIALSTATUS == "Missed" ||
+          item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -318,26 +317,24 @@ function Call({
       internal: {
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
-          item.variable_DIALSTATUS ==
-            "Missed" || item.variable_DIALSTATUS ==
-            "Failed"
+          item.variable_DIALSTATUS == "Missed" ||
+          item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",
       },
     };
 
-    const callType =
-      callIcons[
-      item["Call-Direction"]
-      ] || callIcons.internal;
+    const callType = callIcons[item["Call-Direction"]] || callIcons.internal;
 
     const getCallTypeIcon = (admin) => {
       return (
-        <i className={`fa-solid ${callType.icon} me-2 ${admin && 'bg-white'}`} style={{ color: callType.color, }}></i>
+        <i
+          className={`fa-solid ${callType.icon} me-2 ${admin && "bg-white"}`}
+          style={{ color: callType.color }}
+        ></i>
       );
-    }
-
+    };
 
     return (
       <>
@@ -345,21 +342,20 @@ function Call({
           key={item.id}
           onClick={() => handleCallItemClick(item)}
           onDoubleClick={() => handleDoubleClickCall(item)}
-          className={`callListItem wertc_iconBox border-bottom-0 ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+          className={`callListItem wertc_iconBox border-bottom-0 ${
+            clickedCall && clickedCall.id === item.id ? "selected" : ""
+          }`}
         >
           <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
               <div
                 className="profileHolder"
-              // id={"profileOfflineNav"}
+                // id={"profileOfflineNav"}
               >
                 <i className="fa-light fa-user fs-5"></i>
               </div>
               {!isCustomerAdmin ? (
-                <div
-                  className="col-4  ms-xl-3"
-                  style={{ cursor: "pointer" }}
-                >
+                <div className="col-5 ms-xl-3" style={{ cursor: "pointer" }}>
                   {/* <h4>
                     {item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
                       : item["Caller-Callee-ID-Number"] === extension
@@ -368,15 +364,26 @@ function Call({
                     }
                   </h4> */}
                   <div className="d-flex align-items-center">
-                    {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
-                    <h4 className="mb-0">
-                      {displayName
-                        ? displayName
-                        : item.caller_user
+                    {
+                      <Tippy
+                        content={
+                          `${callType.label} - ${item.variable_DIALSTATUS}` ||
+                          "N/A"
+                        }
+                      >
+                        {getCallTypeIcon()}
+                      </Tippy>
+                    }
+                    <div>
+                      <h4 className="mb-0">
+                        {displayName
+                          ? displayName
+                          : item.caller_user
                           ? item.caller_user.username
                           : "USER XYZ"}
-                    </h4>
-                    {item.tag && <h5>({item.tag})</h5>}
+                      </h4>
+                      {item.tag && <h5>({item.tag})</h5>}
+                    </div>
                   </div>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
@@ -384,7 +391,7 @@ function Call({
                 </div>
               ) : (
                 <div
-                  className="col-6 my-auto ms-2 ms-xl-3"
+                  className="col my-auto ms-2 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex align-items-center">
@@ -393,12 +400,20 @@ function Call({
                         {matchingCallerContactForAdmin
                           ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
                           : item["Caller-Caller-ID-Number"]}
-
                       </h4>
                       {item.tag && <h5>({item.tag})</h5>}
                     </div>
                     <div className="callIconAdmin">
-                      {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon(1)}</Tippy>}
+                      {
+                        <Tippy
+                          content={
+                            `${callType.label} - ${item.variable_DIALSTATUS}` ||
+                            "N/A"
+                          }
+                        >
+                          {getCallTypeIcon(1)}
+                        </Tippy>
+                      }
                     </div>
                     <div className="destination">
                       <h4>
@@ -409,13 +424,22 @@ function Call({
                       {/* <h5>Destination</h5> */}
                     </div>
                   </div>
+                  {item["variable_billsec"] > 0 && (
+                    <div className={`col-12 mx-auto mt-2`}>
+                      <div className="contactTags">
+                        <span data-id="2" className="duration">
+                          Duration: {formatTime(item["variable_billsec"])}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
                 </div>
               )}
 
-              {item["variable_billsec"] > 0 && (
+              {/* {item["variable_billsec"] > 0 && (
                 <div
                   className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
                 >
@@ -425,7 +449,7 @@ function Call({
                     </span>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="col-auto text-end ms-auto">
                 <p className="timeAgo mb-0">
@@ -438,7 +462,13 @@ function Call({
                     .replace(" AM", "am")
                     .replace(" PM", "pm")}
                 </p>
-                <button className="clearButton2 xl" type="button" onClick={() => { setSelectedCdr(item?.id); }}>
+                <button
+                  className="clearButton2 xl"
+                  type="button"
+                  onClick={() => {
+                    setSelectedCdr(item?.id);
+                  }}
+                >
                   <i className="fa-light fa-comment-dots" />
                 </button>
               </div>
@@ -542,9 +572,12 @@ function Call({
       return;
     }
     const otherPartyExtension =
-      callDetails?.["Caller-Callee-ID-Number"] == extension
-        ? callDetails?.["Caller-Caller-ID-Number"]
-        : callDetails?.["Caller-Callee-ID-Number"];
+      callDetails["variable_sip_from_user"] === extension
+        ? callDetails["variable_sip_to_user"]
+        : callDetails["variable_sip_from_user"];
+    // callDetails?.["Caller-Callee-ID-Number"] == extension
+    //   ? callDetails?.["Caller-Caller-ID-Number"]
+    //   : callDetails?.["Caller-Callee-ID-Number"];
 
     if (otherPartyExtension === extension) {
       toast.error("You can't call yourself");
@@ -570,13 +603,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                mandatory: {
-                  minWidth: 1280,
-                  minHeight: 720,
-                  minFrameRate: 30,
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
                 },
-                optional: [{ facingMode: "user" }],
-              },
         },
       }
     );
@@ -662,9 +695,9 @@ function Call({
   }, [selectedModule, videoCall]);
 
   const handleRefresh = () => {
-    setIsCallLoading(true)
-    dispatch({ type: "SET_CALLREFRESH", refreshCalls: refreshCalls + 1 })
-  }
+    setIsCallLoading(true);
+    dispatch({ type: "SET_CALLREFRESH", refreshCalls: refreshCalls + 1 });
+  };
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -681,18 +714,20 @@ function Call({
         }}
       >
         <section className="callPage">
-              <div className=" ps-xl-0 stickyHeader">
-                <HeaderApp
-                  title={"Calls"}
-                  loading={isCallLoading}
-                  setLoading={setIsCallLoading}
-                  refreshApi={handleRefresh}
-                />
-              </div>
+          <div className=" ps-xl-0 stickyHeader">
+            <HeaderApp
+              title={"Calls"}
+              loading={isCallLoading}
+              setLoading={setIsCallLoading}
+              refreshApi={handleRefresh}
+            />
+          </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
-
-              <div className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight" style={{overflow: "hidden"}}>
+              <div
+                className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight"
+                style={{ overflow: "hidden" }}
+              >
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -844,7 +879,7 @@ function Call({
                       ) : Object.keys(groupedCalls).length > 0 ? (
                         sortKeys(Object.keys(groupedCalls)).map((date, key) => (
                           <div key={key}>
-                            <div key={date} className="dateHeader" >
+                            <div key={date} className="dateHeader">
                               <p>{date}</p>
                             </div>
                             {sortedGroupedCalls[date].map(renderCallItem)}
@@ -877,7 +912,8 @@ function Call({
                         </div>
                       )}
                       {isCallLoading ? (
-                        <div className="text-center">
+                        <>
+                          {/* <div className="text-center">
                           <i
                             className={
                               isCallLoading
@@ -886,7 +922,8 @@ function Call({
                             }
                             style={{ color: "var(--webUtilGray)" }}
                           ></i>
-                        </div>
+                        </div> */}
+                        </>
                       ) : (
                         <div ref={targetRef}></div>
                       )}
@@ -918,13 +955,13 @@ function Call({
       </main>
 
       {/* Comment section start */}
-      {selectedCdr !== "" &&
+      {selectedCdr !== "" && (
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
           setShowComment={setShowComment}
         />
-      }
+      )}
       {/* Comment section end */}
       {dialpadShow ? (
         <Dialpad

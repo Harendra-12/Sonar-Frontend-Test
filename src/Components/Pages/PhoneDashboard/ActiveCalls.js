@@ -41,7 +41,12 @@ function ActiveCalls({ isWebrtc, filter }) {
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
-  const [dest, setDest] = useState("")
+  const [dest, setDest] = useState("");
+
+  const account = useSelector((state) => state.account);
+  const accountDetails = useSelector((state) => state.accountDetails);
+  const isCustomerAdmin = account?.email == accountDetails?.email;
+
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -244,16 +249,16 @@ function ActiveCalls({ isWebrtc, filter }) {
               ((item, key) => {
                 return (
                   <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#d1e7dd" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.created.split(" ")[1]}</td>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{key + 1}</td>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.created.split(" ")[1]}</td>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>
                       {item.did_tag}
                     </td>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_num}</td>
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
-                    {filter === "all" && <td style={{ textTransform: "capitalize", color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.direction}</td>}
-                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.feature_tag}</td>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.cid_num}</td>
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
+                    {filter === "all" && <td style={{ textTransform: "capitalize", color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.direction}</td>}
+                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td style={{ minWidth: '170px' }}>
                       {/* <select
                         className="formItem"
@@ -325,11 +330,13 @@ function ActiveCalls({ isWebrtc, filter }) {
                           item.direction === "inbound"
                             ? allOptions.filter((opt) => opt.value !== "whisper-bleg")
                             : item.direction === "outbound" ? allOptions.filter((opt) => opt.value !== "whisper-aleg")
-                              : allOptions
+                              : !isCustomerAdmin ? allOptions.filter((opt) => opt.value !== "kill-call")
+                                : allOptions
                         }
                         isSearchable
                         styles={customStyles}
                       />
+                      {console.log(account)}
                       {/* Separate Buttons instead of Select Box */}
                       {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
@@ -481,14 +488,15 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     paddingLeft: "15px",
-    paddingTop: 0,
-    paddingBottom: 0,
+    paddingTop: '2px',
+    paddingBottom: '2px',
     backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
     },
     fontSize: "14px",
+    borderBottom: '1px solid var(--border-color)'
   }),
   menu: (provided) => ({
     ...provided,

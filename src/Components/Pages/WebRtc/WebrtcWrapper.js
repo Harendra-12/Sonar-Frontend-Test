@@ -48,7 +48,10 @@ const WebrtcWrapper = () => {
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
-  const [position, setPosition] = useState({ x: 700, y: 300 });
+  const [position, setPosition] = useState({
+    x: (window.innerWidth - 300) / 2,
+    y: (window.innerHeight - 450) / 2,
+  });
   const [interCallSize, setInterCallSize] = useState({
     width: "100vw",
     height: "100vh",
@@ -203,8 +206,8 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
-    // refVideoRemote: null,
-    // refAudioRemote: null,
+    refVideoRemote: null,
+    refAudioRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
       globalUserAgent = ua; // Store the registered UserAgent
@@ -428,7 +431,7 @@ const WebrtcWrapper = () => {
   // Fetch ALL DID
   async function getAllDid() {
     // setLoading(true);
-    const apiData = await generalGetFunction(`/did/all`);
+    const apiData = await generalGetFunction(`/did/all?all-dids`);
     if (apiData?.status) {
       setDid(apiData.data.filter((item) => item.usages === "pbx"));
       dispatch({
@@ -478,6 +481,17 @@ const WebrtcWrapper = () => {
           isMicOn={isMicOn}
           isVideoOn={isVideoOn}
           reconnecting={reconnecting}
+          SettingsProp={
+            <Settings
+              audioRef={audioRef}
+              audioCtxRef={audioCtxRef}
+              gainNodeRef={gainNodeRef}
+              analyserRef={analyserRef}
+              volume={volume}
+              setVolume={{}}
+              audio={audio}
+            />
+          }
         />
         <div className="d-none">
           {extension && <SipRegister options={options} />}
@@ -486,7 +500,7 @@ const WebrtcWrapper = () => {
           <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />
         )}
 
-        {activePage === "nav-settings" && (
+        {/* {activePage === "nav-settings" && (
           <Settings
             audioRef={audioRef}
             audioCtxRef={audioCtxRef}
@@ -494,11 +508,9 @@ const WebrtcWrapper = () => {
             analyserRef={analyserRef}
             volume={volume}
             setVolume={{}}
-            allContactLoading={allContactLoading}
-            setAllContactLoading={setAllContactLoading}
             audio={audio}
           />
-        )}
+        )} */}
 
         {activePage === "call" && (
           <Call
@@ -596,6 +608,9 @@ const WebrtcWrapper = () => {
           audioRef={audioRef}
           audio={audio}
           gainNodeRef={gainNodeRef}
+          accountDetails={accountDetails}
+          didAll={didAll}
+
         />
 
         {/* Draggable Component */}
@@ -655,6 +670,8 @@ const WebrtcWrapper = () => {
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
                   allContact={allContact}
+                  accountDetails={accountDetails}
+                  didAll={didAll}
                 // globalSession={sessions}
                 />
               </div>
@@ -716,6 +733,9 @@ const WebrtcWrapper = () => {
                                 isMicOn={isMicOn}
                                 setactivePage={setactivePage}
                                 globalSession={sessions}
+                                accountDetails={accountDetails}
+                                didAll={didAll}
+                                audioRef={audioRef}
                               />
                             </div>
                           );
@@ -767,6 +787,8 @@ const WebrtcWrapper = () => {
                                 isMicOn={isMicOn}
                                 setactivePage={setactivePage}
                                 globalSession={sessions}
+                                accountDetails={accountDetails}
+                                didAll={didAll}
                               />
                             </div>
                           );
@@ -893,7 +915,6 @@ const WebrtcWrapper = () => {
               interCallMinimize={interCallMinimize}
               setInterCallMinimize={setInterCallMinimize}
               setactivePage={setactivePage}
-
               recipient={recipient}
               setRecipient={setRecipient}
               selectedChat={selectedChat}

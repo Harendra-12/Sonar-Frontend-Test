@@ -136,7 +136,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                         <th>Name</th>
                                                         <th>Direction</th>
                                                         <th>Origin</th>
-                                                        <th>Dest</th>
+                                                        <th>Route</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -145,16 +145,17 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                             .filter((agent) => onlineUser.includes(agent?.extension?.extension))
                                                             .map((agent, index) => {
                                                                 const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
+
                                                                 const getCallStatus = () => {
                                                                     if (activeCallsForAgent.length === 0) return null;
 
-                                                                    const activeCall = activeCallsForAgent.filter((call) => call?.b_callstate === "ACTIVE" || call?.callstate !== "ACTIVE");
+                                                                    const activeCall = activeCallsForAgent.filter((call) => call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate !== "ACTIVE");
 
                                                                     if (!activeCall) return null;
 
-                                                                    if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.callstate === "HELD") {
+                                                                    if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.b_callstate === "HELD" || activeCall[0]?.callstate === "HELD") {
                                                                         return {
-                                                                            status: activeCall[0]?.callstate === "HELD" ? "On Hold" : "In Call",
+                                                                            status: activeCall[0]?.callstate === "HELD" || activeCall[0]?.b_callstate === "HELD" ? "On Hold" : "In Call",
                                                                             direction: activeCall[0]?.direction,
                                                                             duration: activeCall[0]?.duration,
                                                                             from: activeCall[0]?.cid_name ?

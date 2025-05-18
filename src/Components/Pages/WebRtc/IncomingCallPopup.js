@@ -16,7 +16,9 @@ function IncomingCallPopup({
   isVideoOn,
   audioRef,
   audio,
-  gainNodeRef
+  gainNodeRef,
+  accountDetails,
+  didAll
 }) {
   const state = useSelector((state) => state);
   const previewDialer = useSelector((state) => state.previewDialer);
@@ -32,18 +34,25 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
+  const [callExtraInfo, setCallExtraInfo] = useState({
+    info: "",
+    type: ""
+  });
+
+  console.log("Call Extra Info", callExtraInfo);
+  
 
   useState(() => {
     gainNodeRef.current.gain.value = volume
     audioRef.current.volume = volume
   }, [volume])
-  
+
   useEffect(() => {
     audioRef.current = audio
     audio.loop = true;
     gainNodeRef.current.gain.value = Number.isFinite(volume) ? volume : 1;
     audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
-    
+
 
     if (!muteAudio) {
       audioRef.current.play();
@@ -83,6 +92,11 @@ function IncomingCallPopup({
         ],
       });
     }
+
+    // If a call is already established, then set incoming call to mute
+    if (globalSession?.length > 1 && globalSession[0]?.state === "Established") {
+      setMuteAudio(true);
+    }
   }, [sessionId, globalSession]);
 
   useEffect(() => {
@@ -99,6 +113,8 @@ function IncomingCallPopup({
     };
   }, [lastIncomingCall]);
 
+  console.log(session);
+  
   const callerExtension = session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
   const displayName = session.incomingInviteRequest?.message?.from?._displayName;
 
@@ -267,6 +283,27 @@ function IncomingCallPopup({
     }
   }, [session])
 
+  useEffect(() => {
+    if (callerExtension.length < 11) {
+      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc?.extension == callerExtension);
+      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      setCallExtraInfo({
+        info: username[0]?.username || callerExtension,
+        type: "user",
+      });
+    } else {
+      console.log("Callerextension", callerExtension);
+      
+      const didTag = didAll?.filter((item) => item?.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+      console.log(didAll);
+      
+      setCallExtraInfo({
+        info: didTag?.[0]?.configuration?.tag || callerExtension,
+        type: "did",
+      });
+    }
+  }, [accountDetails, didAll])
+
 
   return (
     <>
@@ -278,8 +315,8 @@ function IncomingCallPopup({
                 <i className="fa-solid fa-user" />
               </div>
               <div className="userInfo col-12 text-center">
-                <h4>{callerExtension}</h4>
-                <h5>{callerExtension}</h5>
+                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
             </div>
             <div className="controls">
@@ -360,7 +397,8 @@ function IncomingCallPopup({
             <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
               <div>
                 <h5>Incoming Call...</h5>
-                <h4>{callerExtension}</h4>
+                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
               <div>
                 <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i className={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>

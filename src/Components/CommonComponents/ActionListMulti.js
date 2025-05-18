@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
 const ActionListMulti = ({
-  
+
   category,
   getDropdownValues,
   getSelectedTypes, // Callback to return the types to the parent
@@ -187,14 +187,15 @@ const ActionListMulti = ({
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
+      paddingTop: '2px',
+      paddingBottom: '2px',
       backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
       },
       fontSize: "14px",
+      borderBottom: '1px solid var(--border-color)'
     }),
     menu: (provided) => ({
       ...provided,

@@ -49,7 +49,7 @@ function CampaignCreate() {
   // Getting did and agents for dialer and set its value
   useEffect(() => {
     async function getDidData() {
-      const getDid = await generalGetFunction("did/all")
+      const getDid = await generalGetFunction("did/all?all-dids")
       if (getDid?.status) {
         setDid(getDid.data.filter((item) => item.usages === "dialer"))
       }
@@ -397,6 +397,28 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
+                            <div className="formRow">
+                              <div className="formLabel">
+                                <label>Rechain</label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  {...register("rechain", { ...requiredValidator })}
+                                  defaultValue={"1"}
+                                >
+                                  <option value="1">Enabled</option>
+                                  <option value="0">Disabled</option>
+                                </select>
+                                {errors.rechain && (
+                                  <ErrorMessage
+                                    text={
+                                      errors.rechain.message
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
                           </form>
                         </div>
                         <div className="col-xl-3 col-3" style={{ borderLeft: '1px solid var(--border-color)' }}>
@@ -557,27 +579,6 @@ function CampaignCreate() {
                                 })} />
                                 {errors.max_attempts_per_record && (
                                   <ErrorMessage text={errors.max_attempts_per_record.message} />
-                                )}
-                              </div>
-                            </div>
-                            <div className="formRow col-xl-6">
-                              <div className="formLabel">
-                                <label>Rechain</label>
-                              </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem"
-                                  {...register("rechain", { ...requiredValidator })}
-                                >
-                                  <option value="1">Enabled</option>
-                                  <option value="0">Disabled</option>
-                                </select>
-                                {errors.rechain && (
-                                  <ErrorMessage
-                                    text={
-                                      errors.rechain.message
-                                    }
-                                  />
                                 )}
                               </div>
                             </div>

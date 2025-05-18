@@ -567,8 +567,6 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             <th>Started since</th>
                                                                         </tr>
                                                                     </thead>
-                                                                    {console.log(updatedData)
-                                                                    }
                                                                     <tbody>
                                                                         {
                                                                             activeCall && updatedData.map((item, key) => {

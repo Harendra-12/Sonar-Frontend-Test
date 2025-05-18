@@ -19,7 +19,7 @@ import Tippy from "@tippyjs/react";
  * @prop {boolean} isMicOn - The flag to check if the microphone is on.
  * @prop {boolean} reconnecting - The flag to check if the application is reconnecting.
  */
-function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
+function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, SettingsProp }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const state = useSelector((state) => state)
@@ -119,71 +119,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
         </style>
         <div id="sidenNavApp">
           <div className="sidenavItems">
-            <div class=" setting_wrap">
-              <div class=" setting_dropdown">
-                <button onClick={handleToggle}
-                  className=" text-white bg-transparent border-0 e position-relative"
-                  type='button'
-
-                >
-                  <i className="fa-regular fa-gears" />
-
-                </button>
-
-                {isVisible && (
-                  <div className="dropdown_menu" >
-                    <div class="p-2 header">
-                      <div class="d-flex align-items-center justify-content-between">
-                        <p class="mb-1 fs-17 fw-medium">Media Settings</p>
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <div className="mb-2">
-                        <label>Speaker:</label>
-                        <div class="progress-stacked">
-                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style={{ width: '45%' }}>
-                            <div class="progress-bar"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <label>Ring Device:</label>
-                        <div class="progress-stacked">
-                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style={{ width: '35%' }}>
-                            <div class="progress-bar"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <label>Microphone:</label>
-                        <div class="progress-stacked">
-                          <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style={{ width: '85%' }}>
-                            <div class="progress-bar"></div>
-                          </div>
-                        </div>
-
-                        {/* <h2 className="titleName">Basic Checkboxes</h2> */}
-                        <div class="basic-container mt-3">
-                          <div>
-                            <input type="checkbox" id="basic1" checked />
-                            <label for="basic1">Auto Gain Control</label>
-                          </div>
-                          <div>
-                            <input type="checkbox" id="basic2" />
-                            <label for="basic2">Echo Cancellation</label>
-                          </div>
-                          <div>
-                            <input type="checkbox" id="basic3" />
-                            <label for="basic3">Noise Suppression</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
             <ul>
               <li className="mb-2">
                 <div type="button" className="newHeader">
@@ -206,11 +141,15 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}
                       <p>Ext- {extension}</p>
                     </div>
+                    <div className="">
+                      <button onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <i className="fa-regular fa-gears" />
+                      </button>
+                      <div className="dropdown-menu settingDropDown">
+                        {SettingsProp}
+                      </div>
+                    </div>
                   </button>
-
-
-
-
                   {/* <ul className="dropdown-menu">
                     <li
                       onClick={() => {
@@ -255,6 +194,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </ul> */}
                 </div>
               </li>{" "}
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("call")}
@@ -266,6 +206,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Calls</div>
                 </div>
               </li>
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("messages")}
@@ -279,6 +220,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Messages</div>
                 </div>
               </li>
+
               <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("all-voice-mails")}
@@ -294,7 +236,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Voicemails</div>
                 </div>
               </li>
-              {account?.user_role?.roles?.name !== "Agent" ?
+
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("e-fax")}
@@ -307,8 +251,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Fax </div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("email")}
@@ -319,22 +265,24 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Email</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
-                <li style={{ cursor: "pointer" }}>
-                  <div
-                    onClick={() => setactivePage("all-contacts")}
-                    className={
-                      activePage === "all-contacts" ? "navItem active" : "navItem"
-                    }
-                  >
-                    <div className="iconHolder">
-                      <i className="fa-light fa-address-book" />
-                    </div>
-                    <div className="itemTitle">Contacts</div>
+                </li>
+              }
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("all-contacts")}
+                  className={
+                    activePage === "all-contacts" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-address-book" />
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                  <div className="itemTitle">Contacts</div>
+                </div>
+              </li>
+
+              { account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
@@ -349,23 +297,25 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <div className="itemTitle">Call Dashboard</div>
                   </div>
                 </li>
-                : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
-                <li style={{ cursor: "pointer" }}>
-                  <div
-                    // to="/call-center"
-                    onClick={() => setactivePage("call-center")}
-                    className={
-                      activePage === "call-center" ? "navItem active" : "navItem"
-                    }
-                  >
-                    <div className="iconHolder">
-                      <i className="fa-light fa-circle-user" />
-                    </div>
-                    <div className="itemTitle">Call Center</div>
+              }
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  // to="/call-center"
+                  onClick={() => setactivePage("call-center")}
+                  className={
+                    activePage === "call-center" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-circle-user" />
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                  <div className="itemTitle">Call Center</div>
+                </div>
+              </li>
+
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/campaign-login"
@@ -379,8 +329,13 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Dialer</div>
                   </div>
-                </li> : ""}
-              {isCustomerAdmin &&
+                </li>
+              }
+
+
+              
+              {
+                isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("conference")}
@@ -395,7 +350,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </li>
               }
-              {account?.user_role?.roles?.name !== "Agent" || isCustomerAdmin ?
+              {
+                account?.user_role == null || account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => navigate('/dashboard')}
@@ -406,8 +362,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Switch Admin</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 isWhatsAppAvailable != null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
@@ -421,8 +379,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">WhatsApp</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li>
+              }
+              {
+                account?.user_role == null &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("sms-chatbox")}
@@ -435,8 +395,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">SMS</div>
                   </div>
-                </li> : ""}
-              {account?.user_role?.roles?.name !== "Agent" ?
+                </li> }
+              {/* {account?.user_role?.roles?.name !== "Agent" ?
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("nav-settings")}
@@ -449,7 +409,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     </div>
                     <div className="itemTitle">Settings</div>
                   </div>
-                </li> : ""}
+                </li> : ""} */}
             </ul>
           </div>
         </div>

@@ -922,22 +922,19 @@
     min-width: 200px;
     padding: 10px;
 } */
-.setting_wrap{
-     position: absolute;
-    right: 0;
-    top: 30px;
-}
-.setting_dropdown {
-    position: relative;
-  
-}
-.dropdown_menu{
-    max-width: 400PX;
-    background-color: #FFF;
+.dropdown-menu.settingDropDown .setting_dropdown {
+    width: 300px;
     border-radius: 8px;
-    padding: 10px;
-    transform: translate(50px, 50px);
+    padding: 10px !important;
 }
+.dropdown-menu.settingDropDown{
+    position: absolute;
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate(119px, 37px);
+    z-index: 1111;
+}
+
 
 .progress-stacked {
     height: 8px;

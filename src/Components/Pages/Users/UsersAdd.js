@@ -416,7 +416,7 @@ const UsersAdd = () => {
                       style={{ borderRight: "1px solid var(--border-color)" }}
                     >
                       <form className="row mb-0">
-                        
+
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="" className="me-2">
@@ -807,8 +807,11 @@ const UsersAdd = () => {
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
-                                  height: "25px",
-                                  fontSize: "12px",
+                                  height: "35px",
+                                  fontSize: "0.8125rem",
+                                  backgroundColor: 'var(--ele-color)',
+                                  border: '1px solid var(--color4)',
+                                  color: 'var(--form-input-text)'
                                 }),
                                 valueContainer: (provided) => ({
                                   ...provided,
@@ -820,13 +823,15 @@ const UsersAdd = () => {
                                 }),
                                 singleValue: (provided) => ({
                                   ...provided,
-                                  fontSize: "14px",
-                                }), 
+                                  color: 'var(--form-input-text)',
+                                  fontSize: "0.8125rem",
+                                  fontWeight: '500',
+                                }),
                                 option: (provided, state) => ({
                                   ...provided,
                                   paddingLeft: "15px",
-                                  paddingTop: 0,
-                                  paddingBottom: 0,
+                                  paddingTop: '2px',
+                                  paddingBottom: '2px',
                                   // backgroundColor: state.isSelected
                                   //   ? "#5a9fff"
                                   //   : "transparent",
@@ -835,6 +840,7 @@ const UsersAdd = () => {
                                   //   color: "#fff",
                                   // },
                                   fontSize: "14px",
+                                  borderBottom: '1px solid var(--border-color)'
                                 }),
                                 menu: (provided) => ({
                                   ...provided,

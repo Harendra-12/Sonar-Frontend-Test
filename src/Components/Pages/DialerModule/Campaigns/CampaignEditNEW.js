@@ -243,7 +243,7 @@ function CampaignEditNEW() {
     async function getDidData() {
       setLoading(true);
       try {
-        const getDid = await generalGetFunction("did/all");
+        const getDid = await generalGetFunction("did/all?all-dids");
 
         if (getDid?.status) {
           setDid(getDid.data.filter((item) => item.usages === "dialer"));
@@ -2657,14 +2657,15 @@ export const customStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: '2px',
+    paddingBottom: '2px',
     backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
     },
     fontSize: "14px",
+    borderBottom: '1px solid var(--border-color)'
   }),
   menu: (provided) => ({
     ...provided,

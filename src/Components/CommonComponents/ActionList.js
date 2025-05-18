@@ -33,7 +33,6 @@ const ActionList = ({
   isDisabled = false,
   // label = "Set the action to perform when the max wait time is reached.",
 }) => {
-  console.log("category:", category);
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
@@ -41,8 +40,11 @@ const ActionList = ({
   const [callCenter, setCallCenter] = useState([]);
   const [aiAgents, setAiAgents] = useState([]);
 
-  const [ivr, setIvr] = useState([]);
+  const [ivr, setIvr] = useState([]); 
   const [selectedOption, setSelectedOption] = useState(null);
+  const state = useSelector((data) => data);
+  const allUserRefresh = state.allUserRefresh;
+  const allUser = state?.allUser?.data;
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
@@ -116,10 +118,10 @@ const ActionList = ({
         labelValue = aiAgentsArr.find(
           (item) => `aiagent_${item.ainumber}` == value
         )?.name;
-      } else if(category === "ring group"){
+      } else if (category === "ring group") {
         const ringObj = ringGroupArr?.find((item) => item?.extension == value)
         labelValue = `${ringObj?.name}-${ringObj?.extension}`
-      } else if(category === "call center"){
+      } else if (category === "call center") {
         const callObj = callCenterArr?.find((item) => item?.extension == value)
         labelValue = `${callObj?.queue_name}-${callObj?.extension}`
       } else if (value.includes("ivr_")) {
@@ -142,10 +144,13 @@ const ActionList = ({
   const allOptions = [
     {
       label: "Extension",
-      options: extension.map((item) => ({
+      options: extension.map((item) =>{
+        const userName = allUser?.find((data) => data?.id == item?.user)?.username || "N/A"
+        return({
         value: [item.extension, "extension"],
-        label: item.extension,
-      })),
+        label: `${item.extension} - ${userName}`,
+      })
+      } ),
     },
     {
       label: "Ring Group",
@@ -179,7 +184,7 @@ const ActionList = ({
     (option) =>
       category === undefined ||
       option.label.toLowerCase().replace(/\s+/g, "") ===
-        category?.toLowerCase().replace(/\s+/g, "")
+      category?.toLowerCase().replace(/\s+/g, "")
   );
 
   const allOptionsRef = useRef(allOptions);
@@ -197,6 +202,13 @@ const ActionList = ({
   useEffect(() => {
     allOptionsRef.current = allOptions;
   }, [allOptions]);
+
+  useEffect(() => {
+      dispatch({
+        type: "SET_ALLUSERREFRESH",
+        allUserRefresh: allUserRefresh + 1,
+      });
+    }, [])
 
   // useEffect(() => {
   //   // Set default value if provided
@@ -257,14 +269,15 @@ const ActionList = ({
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "15px",
-      paddingTop: 0,
-      paddingBottom: 0,
+      paddingTop: '2px',
+      paddingBottom: '2px',
       backgroundColor: state.isSelected ? "transparent" : "transparent",
       "&:hover": {
         backgroundColor: "#0055cc",
         color: "#fff",
       },
       fontSize: "14px",
+      borderBottom: '1px solid var(--border-color)'
     }),
     menu: (provided) => ({
       ...provided,
