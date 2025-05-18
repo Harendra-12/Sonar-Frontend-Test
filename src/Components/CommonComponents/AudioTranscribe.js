@@ -31,7 +31,8 @@ function AudioTranscribe({ url, setTranscribeLink }) {
             // }
         } else {
             setTranscribeLoading(false)
-            setTranscript()
+            setTranscript([])
+            setTranscribeLink()
         }
     }
 

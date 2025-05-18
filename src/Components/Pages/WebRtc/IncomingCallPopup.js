@@ -1,12 +1,13 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
 import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
+import backgroundTone from "../../assets/music/background-call.mp3";
 
 function IncomingCallPopup({
   sessionId,
@@ -14,16 +15,18 @@ function IncomingCallPopup({
   setSelectedModule,
   isMicOn,
   isVideoOn,
-  audioRef,
-  audio,
+  // audioRef,
+  // audio,
   gainNodeRef,
   accountDetails,
-  didAll
+  didAll,
 }) {
+  const audioRef = useRef(null);
+  const audio = new Audio(ringtone);
+  const backgrounAudio = new Audio(backgroundTone);
   const state = useSelector((state) => state);
   const previewDialer = useSelector((state) => state.previewDialer);
   const volume = state?.volume;
-
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -33,38 +36,44 @@ function IncomingCallPopup({
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
-  const [muteAudio, setMuteAudio] = useState(false);
+  const [muteAudio, setMuteAudio] = useState(true);
   const [callExtraInfo, setCallExtraInfo] = useState({
     info: "",
-    type: ""
+    type: "",
   });
 
   console.log("Call Extra Info", callExtraInfo);
-  
-
-  useState(() => {
-    gainNodeRef.current.gain.value = volume
-    audioRef.current.volume = volume
-  }, [volume])
 
   useEffect(() => {
-    audioRef.current = audio
-    audio.loop = true;
-    gainNodeRef.current.gain.value = Number.isFinite(volume) ? volume : 1;
-    audioRef.current.volume = Number.isFinite(volume) ? volume : 1;
-
-
-    if (!muteAudio) {
-      audioRef.current.play();
+    if (globalSession.length > 1) {
+      audioRef.current = backgrounAudio;
+      backgrounAudio.loop = true;
+      audioRef.current.play()
     } else {
-      audioRef.current.pause();
+      audioRef.current = audio;
+      audio.loop = true;
+      audioRef.current.play()
     }
-
+    // if (!muteAudio) {
+    //   audioRef.current.play();
+    // } else {
+    //   audioRef.current.pause();
+    // }
     return () => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // Reset audio position to the start when component unmounts
     };
-  }, [muteAudio]);
+  }, [globalSession]);
+
+  function handleMute(muteAudioRequest){
+    if (muteAudioRequest) {
+      setMuteAudio(false)
+      audioRef.current.pause();
+    } else {
+      setMuteAudio(true)
+      audioRef.current.play();
+    }
+  }
 
   useEffect(() => {
     if (!lastIncomingCall) {
@@ -94,9 +103,12 @@ function IncomingCallPopup({
     }
 
     // If a call is already established, then set incoming call to mute
-    if (globalSession?.length > 1 && globalSession[0]?.state === "Established") {
-      setMuteAudio(true);
-    }
+    // if (
+    //   globalSession?.length > 1 &&
+    //   globalSession[0]?.state === "Established"
+    // ) {
+    //   handleMute(true);
+    // }
   }, [sessionId, globalSession]);
 
   useEffect(() => {
@@ -114,9 +126,11 @@ function IncomingCallPopup({
   }, [lastIncomingCall]);
 
   console.log(session);
-  
-  const callerExtension = session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
-  const displayName = session.incomingInviteRequest?.message?.from?._displayName;
+
+  const callerExtension =
+    session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
+  const displayName =
+    session.incomingInviteRequest?.message?.from?._displayName;
 
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
@@ -238,10 +252,8 @@ function IncomingCallPopup({
 
               // Add event listeners for accepted and rejected states
               referRequest.delegate = {
-                onAccept: () => {
-                },
-                onReject: () => {
-                },
+                onAccept: () => {},
+                onReject: () => {},
               };
             } else {
               console.error("Invalid transfer address.");
@@ -261,49 +273,64 @@ function IncomingCallPopup({
   // Handle auto answer for intercept, barge and merge calls
   useEffect(() => {
     if (session.incomingInviteRequest) {
-      if (session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"] === "auto_answered") {
-        handleAnswerCall("audio")
+      if (
+        session?.incomingInviteRequest?.message?.headers?.[
+          "X-Call-Type"
+        ]?.[0]?.["raw"] === "auto_answered"
+      ) {
+        handleAnswerCall("audio");
 
         // In case of call transfer by any other extension then it is auto answered
-      } else if (session?.incomingInviteRequest?.message?.headers?.["Referred-By"]?.length === 1) {
-        handleAnswerCall("audio")
+      } else if (
+        session?.incomingInviteRequest?.message?.headers?.["Referred-By"]
+          ?.length === 1
+      ) {
+        handleAnswerCall("audio");
       }
     }
     // Handle incoming call notification and answer the call
-    if (document.hidden && Notification.permission === 'granted') {
-      const notification = new Notification('Incoming Call', {
+    if (document.hidden && Notification.permission === "granted") {
+      const notification = new Notification("Incoming Call", {
         body: `Incoming Call from: ${displayName} ${callerExtension}`,
-        icon: '/compLogo.png', // Optional: Add an icon
+        icon: "/compLogo.png", // Optional: Add an icon
       });
       notification.onclick = function (event) {
-        handleAnswerCall("audio")
+        handleAnswerCall("audio");
         window.focus();
         return;
-      }
+      };
     }
-  }, [session])
+  }, [session]);
 
   useEffect(() => {
     if (callerExtension.length < 11) {
-      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc?.extension == callerExtension);
-      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      const filteredExtension = accountDetails?.extensions?.filter(
+        (acc) => acc?.extension == callerExtension
+      );
+      const username = accountDetails?.users?.filter(
+        (acc) => acc?.extension_id == filteredExtension[0]?.id
+      );
       setCallExtraInfo({
         info: username[0]?.username || callerExtension,
         type: "user",
       });
     } else {
       console.log("Callerextension", callerExtension);
-      
-      const didTag = didAll?.filter((item) => item?.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+
+      const didTag = didAll?.filter(
+        (item) =>
+          item?.did ==
+          session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]
+            ?.raw
+      );
       console.log(didAll);
-      
+
       setCallExtraInfo({
         info: didTag?.[0]?.configuration?.tag || callerExtension,
         type: "did",
       });
     }
-  }, [accountDetails, didAll])
-
+  }, [accountDetails, didAll]);
 
   return (
     <>
@@ -315,7 +342,11 @@ function IncomingCallPopup({
                 <i className="fa-solid fa-user" />
               </div>
               <div className="userInfo col-12 text-center">
-                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                <h4>
+                  {callExtraInfo.type == "user"
+                    ? callExtraInfo.info
+                    : callerExtension}
+                </h4>
                 {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
             </div>
@@ -360,7 +391,10 @@ function IncomingCallPopup({
             </div> */}
           </div>
           <div className="minimizeBtn">
-            <button className="whiteCircleBtn" onClick={() => setIsMinimized(true)}>
+            <button
+              className="whiteCircleBtn"
+              onClick={() => setIsMinimized(true)}
+            >
               <i className="fa-solid fa-dash"></i>
             </button>
           </div>
@@ -368,13 +402,16 @@ function IncomingCallPopup({
       ) : (
         <div
           className="incomingCallPopup minimized"
-        // style={{
-        //   marginBottom: topPosition,
-        // }}
+          // style={{
+          //   marginBottom: topPosition,
+          // }}
         >
           {/* Preview dialer */}
           {previewDialer.map((item) => {
-            if ((item.phone_code + item.phone_number) == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
+            if (
+              item.phone_code + item.phone_number ==
+              session.incomingInviteRequest?.message?.from?.uri?.normal?.user
+            ) {
               return (
                 <div className="campaignInfoWrapper">
                   <div className="campaignContent">
@@ -389,7 +426,7 @@ function IncomingCallPopup({
                     <p>{item.state}</p>
                   </div>
                 </div>
-              )
+              );
             }
           })}
 
@@ -397,11 +434,26 @@ function IncomingCallPopup({
             <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
               <div>
                 <h5>Incoming Call...</h5>
-                <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : callerExtension}</h4>
+                <h4>
+                  {callExtraInfo.type == "user"
+                    ? callExtraInfo.info
+                    : callerExtension}
+                </h4>
                 {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
               </div>
               <div>
-                <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i className={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>
+                <button
+                  className="clearButton2"
+                  onClick={() => handleMute(muteAudio)}
+                >
+                  <i
+                    className={
+                      !muteAudio
+                        ? "fa-regular fa-volume-xmark"
+                        : "fa-regular fa-volume"
+                    }
+                  ></i>
+                </button>
               </div>
             </div>
             <div className="controls px-2">
@@ -430,7 +482,10 @@ function IncomingCallPopup({
                   className="callButton"
                   onClick={() => handleAnswerCall("video")}
                 >
-                  <i className="fa-solid fa-video" style={{ color: '#ff9b00' }}></i>
+                  <i
+                    className="fa-solid fa-video"
+                    style={{ color: "#ff9b00" }}
+                  ></i>
                 </button>
               )}
             </div>
