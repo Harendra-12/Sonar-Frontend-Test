@@ -311,7 +311,7 @@ function IncomingCallPopup({
         type: "user",
       });
     } else {
-      const isNumberPresent = activeCall.find((item)=>(item.cid_num == callExtraInfo?.info || item.did_tag == callExtraInfo?.info));
+      const isNumberPresent = activeCall.find((item)=>(item.cid_num == callerExtension || item.did_tag == callerExtension));
       setCallExtraInfo({
         info: isNumberPresent?.did_tag || callerExtension,
         type: "did",

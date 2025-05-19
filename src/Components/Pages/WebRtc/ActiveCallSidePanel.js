@@ -53,6 +53,7 @@ function ActiveCallSidePanel({
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
   const refreshCalls = useSelector((state) => state.refreshCalls);
+  const activeCall = useSelector((state) => state.activeCall);
   const [callExtraInfo, setCallExtraInfo] = useState({
     info: "",
     type: ""
@@ -313,13 +314,13 @@ function ActiveCallSidePanel({
         type: "user",
       });
     } else {
-      const didTag = didAll?.filter((item) => item?.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+      const isNumberPresent = activeCall.find((item)=>(item.cid_num == destination || item.did_tag == destination));
       setCallExtraInfo({
-        info: didTag?.[0]?.configuration?.tag || destination,
+        info: isNumberPresent?.did_tag || destination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll])
+  }, [accountDetails, didAll,activeCall])
 
   return (
     <>
