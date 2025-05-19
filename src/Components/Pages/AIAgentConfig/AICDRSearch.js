@@ -124,24 +124,6 @@ function AICDRSearch({ page }) {
         return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
     }
 
-    useEffect(() => {
-        const getRingGroupDashboardData = async () => {
-            if (account && account.id) {
-                const apidata = await generalGetFunction(`/spam/all?all`);
-                if (apidata?.status) {
-                    setCallBlock(apidata?.data);
-                    setLoading(false);
-                } else {
-                    navigate("/");
-                }
-            } else {
-                navigate("/");
-            }
-        };
-        getRingGroupDashboardData();
-    }, [callBlockRefresh]);
-
-
     async function getData() {
         // build a dynamic url which include only the available params to make API call easy
         const queryParams = cdrSearchAI.map(id => `ids[]=${encodeURIComponent(id)}`).join('&');
@@ -190,10 +172,12 @@ function AICDRSearch({ page }) {
                 }
             }
             setLoading(false);
+            setCircularLoader(false);
             setRefreshState(false);
             setCircularLoader(false);
         } else {
             setLoading(false);
+            setCircularLoader(false);
             navigate("/");
             setRefreshState(false);
         }
@@ -227,34 +211,52 @@ function AICDRSearch({ page }) {
         }
     };
 
-    const handleBlockNumber = async (blockNumber) => {
-        if (!blockNumber) {
-            toast.error("Please enter number");
-        } else if (
-            blockNumber < 99999999 ||
-            blockNumber > 99999999999999 ||
-            isNaN(blockNumber)
-        ) {
-            toast.error("Please enter valid number");
-        } else {
-            setPopUp(false);
-            setLoading(true);
-            const parsedData = {
-                type: "DID",
-                number: blockNumber,
-            };
-            const apidata = await generalPostFunction(`/spam/store`, parsedData);
-            if (apidata.status) {
-                setLoading(false);
+    // const handleBlockNumber = async (blockNumber) => {
+    //     if (!blockNumber) {
+    //         toast.error("Please enter number");
+    //     } else if (
+    //         blockNumber < 99999999 ||
+    //         blockNumber > 99999999999999 ||
+    //         isNaN(blockNumber)
+    //     ) {
+    //         toast.error("Please enter valid number");
+    //     } else {
+    //         setPopUp(false);
+    //         setLoading(true);
+    //         const parsedData = {
+    //             type: "DID",
+    //             number: blockNumber,
+    //         };
+    //         const apidata = await generalPostFunction(`/spam/store`, parsedData);
+    //         if (apidata.status) {
+    //             setLoading(false);
 
-                setSelectedNumberToBlock(null);
-                setCallBlock([...callBlock, apidata?.data]);
-                toast.success("Number added to block list");
-            } else {
-                setLoading(false);
-            }
-        }
-    };
+    //             setSelectedNumberToBlock(null);
+    //             setCallBlock([...callBlock, apidata?.data]);
+    //             toast.success("Number added to block list");
+    //         } else {
+    //             setLoading(false);
+    //         }
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     const getRingGroupDashboardData = async () => {
+    //         if (account && account.id) {
+    //             const apidata = await generalGetFunction(`/spam/all?all`);
+    //             if (apidata?.status) {
+    //                 setCallBlock(apidata?.data);
+    //                 setLoading(false);
+    //             } else {
+    //                 navigate("/");
+    //             }
+    //         } else {
+    //             navigate("/");
+    //         }
+    //     };
+    //     getRingGroupDashboardData();
+    // }, [callBlockRefresh]);
+
     function formatTime(seconds) {
         const hours = Math.floor(seconds / 3600)
             .toString()
@@ -266,10 +268,10 @@ function AICDRSearch({ page }) {
         return `${hours}:${minutes}:${secs}`;
     }
 
-    const duplicateColumn = async (item) => {
-        setShowDuplicatePopUp(true);
-        setDuplicatePopUpData(item);
-    };
+    // const duplicateColumn = async (item) => {
+    //     setShowDuplicatePopUp(true);
+    //     setDuplicatePopUpData(item);
+    // };
 
     useEffect(() => {
         const columns = []
@@ -364,6 +366,7 @@ function AICDRSearch({ page }) {
     function getAdvanceSearch() {
         if (advanceSearch) {
             setLoading(true);
+            setCircularLoader(true);
             axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { query: advanceSearch }).then((res) => {
                 const matches = res.data.matches;
                 setCdrAIRes(matches);
@@ -375,10 +378,12 @@ function AICDRSearch({ page }) {
                 .catch((err) => {
                     toast.error(err);
                     setLoading(false);
+                    setCircularLoader(false);
                 });
         } else {
             toast.error("Please enter some data to search");
-            setLoading(true);
+            setLoading(false);
+            setCircularLoader(false);
         }
     }
     return (
@@ -395,9 +400,6 @@ function AICDRSearch({ page }) {
                                         <div className="heading">
                                             <div className="content">
                                                 <h4>AI CDR Search
-                                                    <button className="clearButton" onClick={() => setCdr()}>
-                                                        <i className={"fa-regular fa-arrows-rotate fs-5"}></i>
-                                                    </button>
                                                 </h4>
                                                 <p>Search for a specific call detail record with the power of AI</p>
                                             </div>
@@ -422,6 +424,24 @@ function AICDRSearch({ page }) {
                                         className="col-12"
                                         style={{ overflow: "auto", padding: "10px 20px 0" }}
                                     >
+                                        <div className="tableHeader justify-content-start">
+                                            <div className="searchBox position-relative">
+                                                <label>Search:</label>
+                                                <input
+                                                    type="search"
+                                                    name="Search"
+                                                    className="formItem"
+                                                    value={advanceSearch}
+                                                    onChange={(e) => setAdvanceSearch(e.target.value)}
+                                                />
+                                            </div>
+                                            <button className="panelButton" onClick={getAdvanceSearch}>
+                                                <span className="text">Search</span>
+                                                <span className="icon">
+                                                    <i className="fa-solid fa-magnifying-glass" />
+                                                </span>
+                                            </button>
+                                        </div>
                                         <div className="tableContainer">
                                             <table>
                                                 {cdr?.data?.length > 0 ? (
@@ -438,11 +458,7 @@ function AICDRSearch({ page }) {
                                                         <tbody>
                                                             {loading ? (
                                                                 <SkeletonTableLoader
-                                                                    col={
-                                                                        page === "billing"
-                                                                            ? showKeys.length
-                                                                            : showKeys.length + 1
-                                                                    }
+                                                                    col={showKeys.length}
                                                                     row={12}
                                                                 />
                                                             ) : (
@@ -701,31 +717,13 @@ function AICDRSearch({ page }) {
                                                         <EmptyPrompt type="generic" />
                                                     </div>
                                                 ) : (
-                                                    <div className="addNewContactPopup position-static shadow-none mx-auto" style={{ transform: 'none' }}>
-                                                        <button
-                                                            className="clearButton2 xl"
-                                                            style={{ position: "absolute", top: 10, right: 10 }}
-                                                        >
-                                                            <i className="fa-light fa-xmark" />
-                                                        </button>
-                                                        <div className="row">
-                                                            <div className="col-12 heading mb-0">
-                                                                <i className="fa-light fa-robot" />
-                                                                <h5>AI Search</h5>
-                                                                <p>Search for a specific call detail record with the power of AI</p>
+                                                    <div>
+                                                        <div className='mt-5'>
+                                                            <div className='imgWrapper loader' style={{ width: '150px', height: '150px' }}>
+                                                                <img src={require(`../../assets/images/ai.png`)} alt="Empty" className="w-100" />
                                                             </div>
-                                                            <div>
-                                                                <div className="searchBoxWrapper">
-                                                                    <input className="searchBar formItem" type="text" defaultValue="" value={advanceSearch} onChange={(e) => setAdvanceSearch(e.target.value)} />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-xl-12 mt-3">
-                                                                <button className="panelButton mx-auto" onClick={getAdvanceSearch}>
-                                                                    <span className="text">Search</span>
-                                                                    <span className="icon">
-                                                                        <i className="fa-solid fa-magnifying-glass" />
-                                                                    </span>
-                                                                </button>
+                                                            <div className='text-center mt-3'>
+                                                                <h5 style={{ color: 'var(--color-subtext)', fontWeight: 400 }}>Please search for a <b>call detail record</b> to display <span style={{ color: 'var(--ui-accent)' }}><b>results</b></span>.</h5>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -752,7 +750,7 @@ function AICDRSearch({ page }) {
                         </div>
                     </div>
                 </section>
-                {popUp ? (
+                {/* {popUp ? (
                     <div className="popup">
                         <div className="container h-100">
                             <div className="row h-100 justify-content-center align-items-center">
@@ -779,10 +777,6 @@ function AICDRSearch({ page }) {
                                                     <i className="fa-solid fa-check"></i>
                                                 </span>
                                             </button>
-                                            {/* ) : ( */}
-
-                                            {/* )} */}
-
                                             <button
                                                 className="panelButton gray m-0 float-end"
                                                 onClick={() => {
@@ -803,7 +797,7 @@ function AICDRSearch({ page }) {
                     </div>
                 ) : (
                     ""
-                )}
+                )} */}
             </main>
             {
                 showCustomerFeedback &&
