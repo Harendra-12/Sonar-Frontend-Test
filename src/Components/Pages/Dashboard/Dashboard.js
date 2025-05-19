@@ -21,9 +21,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  // const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionList = useSelector((state) => state.extension).length;
-  const userList = useSelector((state) => state.allUser?.data?.length) || 0;
+  // const userList = useSelector((state) => state.allUser?.data?.length) || 0;
   const ringGroup = useSelector((state) => state.ringGroup || []);
   const allCall = useSelector((state) => state.allCall || {});
   const callCenter = useSelector((state) => state.callCenter || []);
@@ -35,6 +35,16 @@ const Dashboard = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const didAll = useSelector((state) => state.didAll);
   const [allDID, setAllDID] = useState([]);
+  const [ allUserList, setAllUserList ] = useState([])
+
+  const getAllUser = async () => {
+      const userApi = await generalGetFunction(
+        `/user/search?account=${account.account_id}`
+      );
+      if (userApi?.status) {
+        setAllUserList(userApi.data);
+      }
+    }
 
   // Getting all DID from did listing
   useEffect(() => {
@@ -59,6 +69,9 @@ const Dashboard = () => {
         permissionRefresh: permissionRefresh + 1,
       });
     }
+
+    getAllUser();
+
   }, [])
 
   // Setting clock for the selected timnezone
@@ -282,12 +295,12 @@ const Dashboard = () => {
         extensionRefresh: extensionRefresh + 1,
       });
     }
-    if (userList == 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
+    // if (userList == 0) {
+    //   dispatch({
+    //     type: "SET_ALLUSERREFRESH",
+    //     allUserRefresh: allUserRefresh + 1,
+    //   });
+    // }
     dispatch({
       type: "SET_CALLDETAILSREFRESH",
       callDetailsRefresh: callDetailsRefresh + 1,
@@ -933,7 +946,7 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            {onlineExtension && userList ?
+                            {onlineExtension && allUserList?.length ?
                               <div className='circularProgressWrapper'>
                                 <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                   <circle className="bg"
@@ -946,7 +959,7 @@ const Dashboard = () => {
                                 </svg>
                                 <div className='circularProgressContent'>
                                   <div className="data-number">
-                                    <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {userList}</span>
+                                    <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList?.length}</span>
                                   </div>
                                   <p>Total Online Agents</p>
                                 </div>

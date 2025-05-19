@@ -130,7 +130,10 @@ function DidListing({ page }) {
   // Fetch ALL DID
   async function getData(shouldLoad) {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`);
+    let allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    if (page === "pbx")
+      allDidUrl = `/did/all?search=${searchQuery}&usages=pbx&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    const apiData = await generalGetFunction(allDidUrl);
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
@@ -429,9 +432,9 @@ function DidListing({ page }) {
                                   </thead>
                                   <tbody>
                                     {didAll?.data?.filter(
-                                        (item) =>
-                                          item.usages === "" || !item.usages
-                                      )
+                                      (item) =>
+                                        item.usages === "" || !item.usages
+                                    )
                                       .map((item, index) => {
                                         return (
                                           <tr>
@@ -992,7 +995,6 @@ function DidListing({ page }) {
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
-                      {console.log('didWithPagination', didWithPagination)}
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={didWithPagination?.last_page}
