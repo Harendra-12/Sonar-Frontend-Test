@@ -34,7 +34,7 @@ import { generalGetFunction } from '../../GlobalFunction/globalFunction';
  * - Indicates call status with icons and styles based on call direction.
  */
 
-function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
+function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isActiveCallsPage }) {
     // const allUser = useSelector((state) => state.allUser);
     // const allUserRefresh = useSelector((state) => state.allUserRefresh);
 
@@ -69,10 +69,10 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
 
     return (
         <>
-            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(98%, -50%)' }}>
-                <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
+            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : isActiveCallsPage ? 'none' : 'translate(98%, -50%)' }}>
+               {!isActiveCallsPage && <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
                     <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
-                </button>
+                </button>}
                 <div className="overviewTableWrapper p-0">
                     <div className="overviewTableChild">
                         <div className="d-flex flex-wrap">
