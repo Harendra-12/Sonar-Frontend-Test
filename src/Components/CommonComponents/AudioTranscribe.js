@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { generalPostFunction, generatePreSignedUrl } from '../GlobalFunction/globalFunction';
+import { generalPostFunction, generatePreSignedUrl, useDebounce } from '../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -8,6 +8,7 @@ function AudioTranscribe({ url, setTranscribeLink }) {
     const [transcribeLoading, setTranscribeLoading] = useState(false)
     const [isClosedTranscribe, setIsClosedTranscribe] = useState(true)
     const [searchQuery, setSearchQuery] = useState('');
+    const debouncedSearchTerm = useDebounce(searchQuery, 1000);
     const transcriptRef = useRef(null);
     async function handleTranscript(url) {
         // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: url })
@@ -46,9 +47,6 @@ function AudioTranscribe({ url, setTranscribeLink }) {
         }
     }, [url])
 
-    console.log("transcript", transcript);
-
-
     // Handle search and scroll to the first match
     const handleSearch = () => {
         if (!searchQuery.trim()) return;
@@ -67,14 +65,16 @@ function AudioTranscribe({ url, setTranscribeLink }) {
 
         if (firstMatch) {
             firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            firstMatch.style.backgroundColor = '#ffff99';
+            firstMatch.style.backgroundColor = '#ffff9930';
             setTimeout(() => {
                 firstMatch.style.backgroundColor = '';
             }, 2000);
-        } else {
-            alert('No matches found!');
         }
     };
+
+    useEffect(() => {
+        handleSearch();
+    }, [debouncedSearchTerm])
 
     return (
         <div className="audio-container mb-0">
@@ -91,9 +91,9 @@ function AudioTranscribe({ url, setTranscribeLink }) {
                         className='col bg-transparent'
                         style={{ border: 'none', borderBottom: '1px solid var(--border-color)', color: '#ddd', outline: 'none' }}
                     />
-                    <button onClick={handleSearch} className='clearButton2' >
+                    {/* <button onClick={handleSearch} className='clearButton2' >
                         <i className='fa-solid fa-magnifying-glass' />
-                    </button>
+                    </button> */}
                 </div>
                 <div className="textContent p-3 pt-0 mt-2 col-12" ref={transcriptRef}>
                     {
