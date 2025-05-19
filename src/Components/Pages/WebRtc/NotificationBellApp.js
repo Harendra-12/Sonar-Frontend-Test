@@ -5,6 +5,8 @@ import { formatTimeWithAMPM } from '../../GlobalFunction/globalFunction';
 import { set } from 'react-hook-form';
 
 function NotificationBellApp() {
+    const state = useSelector((state) => state)
+    const recipient_to_remove_notification = state?.recipient_to_remove_notification;
     const incomingMessage = useSelector((state) => state.incomingMessage);
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const [incomingMessageList, setIncomingMessageList] = useState([]);
@@ -40,6 +42,16 @@ function NotificationBellApp() {
             }
         }
     }, [incomingMessage]);
+
+    useEffect(() => {
+        if (recipient_to_remove_notification !== null) {
+            setAllNotification(prevNotifications =>
+                prevNotifications?.filter(msg =>
+                    msg?.sender_id !== recipient_to_remove_notification[1]
+                )
+            );
+        }
+    }, [recipient_to_remove_notification])
 
     const removeNotification = (item) => {
         if (item.message_text) {
@@ -84,7 +96,7 @@ function NotificationBellApp() {
                 </div>
                 <ul>
                     {allNotification && allNotification.length > 0 ?
-                        allNotification.slice(0,5).map((item, index) => (
+                        allNotification.slice(0, 5).map((item, index) => (
                             <li class="dropdown-item">
                                 <div class="d-flex align-items-start">
                                     {item.message_text ? (
