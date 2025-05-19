@@ -7,7 +7,6 @@ import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
 import Select from "react-select";
 
-
 /**
  * ActiveCalls
  * Displays and manages active calls based on the provided filter and WebRTC settings.
@@ -25,19 +24,27 @@ function ActiveCalls({ isWebrtc, filter }) {
   const [filterCalls, setFilterCalls] = useState([]);
   useEffect(() => {
     if (filter === "all") {
-      setFilterCalls(activeCall)
+      setFilterCalls(activeCall);
     } else if (filter === "ringgroup") {
-      setFilterCalls(activeCall.filter((call) => call.application_state === "ringgroup"))
+      setFilterCalls(
+        activeCall.filter((call) => call.application_state === "ringgroup")
+      );
     } else if (filter === "callcenter") {
-      setFilterCalls(activeCall.filter((call) => call.application_state === "callcenter"))
+      setFilterCalls(
+        activeCall.filter((call) => call.application_state === "callcenter")
+      );
     } else if (filter === "internal") {
-      setFilterCalls(activeCall.filter((call) => call.direction === "internal"))
+      setFilterCalls(
+        activeCall.filter((call) => call.direction === "internal")
+      );
     } else if (filter === "inbound") {
-      setFilterCalls(activeCall.filter((call) => call.direction === "inbound"))
+      setFilterCalls(activeCall.filter((call) => call.direction === "inbound"));
     } else if (filter === "outbound") {
-      setFilterCalls(activeCall.filter((call) => call.direction === "outbound"))
+      setFilterCalls(
+        activeCall.filter((call) => call.direction === "outbound")
+      );
     }
-  }, [filter, activeCall])
+  }, [filter, activeCall]);
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
@@ -125,9 +132,9 @@ function ActiveCalls({ isWebrtc, filter }) {
     } else if (bargeStatus === "eavesdrop") {
       eavesdropCall(id, dest);
     } else if (bargeStatus === "whisper-aleg") {
-      whisper(id, dest, "eavesdrop_whisper_aleg=true")
+      whisper(id, dest, "eavesdrop_whisper_aleg=true");
     } else if (bargeStatus === "whisper-bleg") {
-      whisper(id, dest, "eavesdrop_whisper_bleg=true")
+      whisper(id, dest, "eavesdrop_whisper_bleg=true");
     }
   }, [bargeStatus, id]);
 
@@ -149,8 +156,12 @@ function ActiveCalls({ isWebrtc, filter }) {
   };
 
   const formatTime = (seconds) => {
-    const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
-    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+    const h = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const m = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${h}:${m}:${s}`;
   };
@@ -163,7 +174,10 @@ function ActiveCalls({ isWebrtc, filter }) {
     filterCalls.forEach((item) => {
       if (!startTimestampsRef.current.has(item.uuid)) {
         startTimestampsRef.current.set(item.uuid, Date.now());
-        initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+        initialDurationsRef.current.set(
+          item.uuid,
+          convertDurationToSeconds(item.duration)
+        ); // Store initial duration
       }
     });
 
@@ -172,7 +186,8 @@ function ActiveCalls({ isWebrtc, filter }) {
         return filterCalls.map((item) => {
           const startTimestamp = startTimestampsRef.current.get(item.uuid);
           const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
-          const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+          const initialDuration =
+            initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
 
           // Calculate the correct updated duration without double adding
           const newDuration = initialDuration + elapsedTime;
@@ -189,38 +204,96 @@ function ActiveCalls({ isWebrtc, filter }) {
     return () => clearInterval(interval);
   }, [filterCalls]);
 
-
   // Custom Select FOR Active Call ACTIONS LIKE BARGE / INTERCEPT / ETC
   const allOptions = [
     {
       value: "disbale",
-      label: <option value="disbale">Choose action</option>
+      label: <option value="disbale">Choose action</option>,
     },
     {
       value: "barge",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Barge</div>,
+      label: (
+        <div className="d-flex py-2 align-items-center">
+          <button
+            className="tableButton me-2 ms-0"
+            style={{ backgroundColor: "var(--funky-boy4)" }}
+          >
+            <i className="fa-regular fa-phone-plus" />
+          </button>
+          Barge
+        </div>
+      ),
     },
     {
       value: "intercept",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 warning"><i className="fa-regular fa-object-intersect" /></button>Intercept</div>,
+      label: (
+        <div className="d-flex py-2 align-items-center">
+          <button className="tableButton me-2 ms-0 warning">
+            <i className="fa-regular fa-object-intersect" />
+          </button>
+          Intercept
+        </div>
+      ),
     },
-    {
-      value: "eavesdrop",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 edit"><i className="fa-regular fa-head-side-headphones" /></button>Eavesdrop</div>,
-    },
+    ...(isCustomerAdmin
+      ? [
+          {
+            value: "eavesdrop",
+            label: (
+              <div className="d-flex py-2 align-items-center">
+                <button className="tableButton me-2 ms-0 edit">
+                  <i className="fa-regular fa-head-side-headphones" />
+                </button>
+                Eavesdrop
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       value: "whisper-bleg",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy3)' }}><i className="fa-regular fa-ear-deaf" /></button>Whisper caller</div>,
+      label: (
+        <div className="d-flex py-2 align-items-center">
+          <button
+            className="tableButton me-2 ms-0"
+            style={{ backgroundColor: "var(--funky-boy3)" }}
+          >
+            <i className="fa-regular fa-ear-deaf" />
+          </button>
+          Whisper caller
+        </div>
+      ),
     },
     {
       value: "whisper-aleg",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-ear-listen" /></button>Whisper callee</div>,
+      label: (
+        <div className="d-flex py-2 align-items-center">
+          <button
+            className="tableButton me-2 ms-0"
+            style={{ backgroundColor: "var(--funky-boy4)" }}
+          >
+            <i className="fa-regular fa-ear-listen" />
+          </button>
+          Whisper callee
+        </div>
+      ),
     },
-    {
-      value: "kill-call",
-      label: <div className="d-flex py-2 align-items-center"><button className="tableButton delete me-2 ms-0"><i className=" fa-solid fa-phone-slash"></i></button>Hang Up</div>
-    }
-  ]
+    ...(isCustomerAdmin || account.user_role?.roles?.name === "Manager" || account.user_role?.roles?.name === "Admin"
+      ? [
+          {
+            value: "kill-call",
+            label: (
+              <div className="d-flex py-2 align-items-center">
+                <button className="tableButton delete me-2 ms-0">
+                  <i className="fa-solid fa-phone-slash" />
+                </button>
+                Hang Up
+              </div>
+            ),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
@@ -245,22 +318,134 @@ function ActiveCalls({ isWebrtc, filter }) {
               .filter(
                 (call) =>
                   call.b_callstate === "ACTIVE" || call.b_callstate === "HELD"
-              ).map
-              ((item, key) => {
+              )
+              .map((item, key) => {
                 return (
-                  <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#d1e7dd" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{key + 1}</td>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.created.split(" ")[1]}</td>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>
+                  <tr
+                    style={{
+                      backgroundColor:
+                        !isWebrtc && item?.application_state === "ringgroup"
+                          ? "#f8d7da"
+                          : !isWebrtc &&
+                            item?.application_state === "callcenter"
+                          ? "#d1e7dd"
+                          : !isWebrtc && item?.direction === "inbound"
+                          ? "#fff3cd"
+                          : "",
+                    }}
+                  >
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {key + 1}
+                    </td>
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {item.created.split(" ")[1]}
+                    </td>
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
                       {item.did_tag}
                     </td>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.feature_tag}</td>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.cid_num}</td>
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
-                    {filter === "all" && <td style={{ textTransform: "capitalize", color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.direction}</td>}
-                    <td style={{ color: !isWebrtc && (item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound") ? '#000' : "" }}>{item.realTimeDuration}</td>
-                    {isWebrtc !== false && <td style={{ minWidth: '170px' }}>
-                      {/* <select
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {item.feature_tag}
+                    </td>
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {item.cid_num}
+                    </td>
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {item.application_type === "inbound"
+                        ? item.b_presence_id?.split("@")[0]
+                        : item.dest}
+                    </td>
+                    {filter === "all" && (
+                      <td
+                        style={{
+                          textTransform: "capitalize",
+                          color:
+                            !isWebrtc &&
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
+                              ? "#000"
+                              : "",
+                        }}
+                      >
+                        {item.direction}
+                      </td>
+                    )}
+                    <td
+                      style={{
+                        color:
+                          !isWebrtc &&
+                          (item?.application_state === "ringgroup" ||
+                            item?.application_state === "callcenter" ||
+                            item?.direction === "inbound")
+                            ? "#000"
+                            : "",
+                      }}
+                    >
+                      {item.realTimeDuration}
+                    </td>
+                    {isWebrtc !== false && (
+                      <td style={{ minWidth: "170px" }}>
+                        {/* <select
                         className="formItem"
                         onChange={(e) => {
                           setBargeStatus(e.target.value);
@@ -310,35 +495,39 @@ function ActiveCalls({ isWebrtc, filter }) {
                           Whisper callee
                         </option>
                       </select> */}
-                      <Select
-                        onChange={(option) => {
-                          if (!option) return;
+                        <Select
+                          onChange={(option) => {
+                            if (!option) return;
 
-                          if (option.value === "kill-call") {
-                            killCall(item.uuid);
+                            if (option.value === "kill-call") {
+                              killCall(item.uuid);
+                            }
+
+                            setBargeStatus(option.value);
+                            setId(item.uuid);
+                            setDest(
+                              item?.dest?.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest)
+                            );
+                          }}
+                          options={
+                            item.direction === "inbound"
+                              ? allOptions.filter(
+                                  (opt) => opt.value !== "whisper-bleg"
+                                )
+                              : item.direction === "outbound"
+                              ? allOptions.filter(
+                                  (opt) => opt.value !== "whisper-aleg"
+                                )
+                              : allOptions
                           }
-
-                          setBargeStatus(option.value);
-                          setId(item.uuid);
-                          setDest(
-                            item?.dest?.includes("set:valet_ticket")
-                              ? extractLastNumber(item?.accountcode)
-                              : extractLastNumber(item?.dest)
-                          );
-                        }}
-                        options={
-                          item.direction === "inbound"
-                            ? allOptions.filter((opt) => opt.value !== "whisper-bleg")
-                            : item.direction === "outbound" ? allOptions.filter((opt) => opt.value !== "whisper-aleg")
-                              : !isCustomerAdmin ? allOptions.filter((opt) => opt.value !== "kill-call")
-                                : allOptions
-                        }
-                        isSearchable
-                        styles={customStyles}
-                      />
-                      {console.log(account)}
-                      {/* Separate Buttons instead of Select Box */}
-                      {/* <div className="d-flex justify-content-between">
+                          isSearchable
+                          styles={customStyles}
+                        />
+                        {console.log(account)}
+                        {/* Separate Buttons instead of Select Box */}
+                        {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
                           <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy4)' }}
                             onClick={() => {
@@ -412,7 +601,8 @@ function ActiveCalls({ isWebrtc, filter }) {
                           </button>
                         </Tippy>
                       </div> */}
-                    </td>}
+                      </td>
+                    )}
                     {/* {isWebrtc !== false &&
                       <td ref={hangUpButton} onClick={() => killCall(item.uuid)} className="d-none">
                         <label
@@ -435,9 +625,6 @@ function ActiveCalls({ isWebrtc, filter }) {
 }
 
 export default ActiveCalls;
-
-
-
 
 // Custom styles for react-select
 const customStyles = {
@@ -488,15 +675,15 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     paddingLeft: "15px",
-    paddingTop: '2px',
-    paddingBottom: '2px',
+    paddingTop: "2px",
+    paddingBottom: "2px",
     backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
     },
     fontSize: "14px",
-    borderBottom: '1px solid var(--border-color)'
+    borderBottom: "1px solid var(--border-color)",
   }),
   menu: (provided) => ({
     ...provided,
