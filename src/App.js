@@ -185,6 +185,7 @@ import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignE
 import GoSocket from "./Components/GlobalFunction/GoSocket";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
+import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -258,6 +259,7 @@ function App() {
 
           <Route element={<ProtectedRoute />} />
           <Route path="/ai-dashboard" element={<AIDashboard />} />
+          <Route path="/ai-search-cdr" element={<AICDRSearch />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -353,11 +355,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControl />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -372,11 +374,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControlAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -391,11 +393,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControlEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -832,11 +834,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-              checkViewSidebar(
-                "BillingAddress",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
