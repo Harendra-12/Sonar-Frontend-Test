@@ -141,23 +141,23 @@ function Agents({ type }) {
     }
   }
 
-  // useEffect(() => {
-  //   if (onlineUsers.length > 0 && agents) {
-  //     switch (onlineFilter) {
-  //       case "online":
-  //         const onlineAgents = agents.data.filter((item) => onlineUsers.includes(String(item.extension.extension)));
-  //         setFilterUser(onlineAgents);
-  //         break;
-  //       case "offline":
-  //         const offlineAgents = agents.data.filter((item) => !onlineUsers.includes(String(item.extension.extension)));
-  //         setFilterUser(offlineAgents);
-  //         break;
-  //       default:
-  //         setFilterUser(agents.data)
-  //         break;
-  //     }
-  //   }
-  // }, [onlineUsers, agents, onlineFilter])
+  useEffect(() => {
+    if (onlineUsers.length > 0 && agents) {
+      switch (onlineFilter) {
+        case "online":
+          const onlineAgents = agents.data.filter((item) => onlineUsers.includes(String(item.extension.extension)));
+          setFilterUser(onlineAgents);
+          break;
+        case "offline":
+          const offlineAgents = agents.data.filter((item) => !onlineUsers.includes(String(item.extension.extension)));
+          setFilterUser(offlineAgents);
+          break;
+        default:
+          setFilterUser(agents.data)
+          break;
+      }
+    }
+  }, [onlineUsers, agents, onlineFilter])
 
   // Getting token from online user by checking with extension
   function getToken(extension) {
@@ -313,7 +313,7 @@ function Agents({ type }) {
                                       />
                                     </td>
                                   </tr>
-                                  : agents?.data?.map((item, index) => {
+                                  : filterUser?.map((item, index) => {
                                     return (
                                       <tr>
                                         <td>
