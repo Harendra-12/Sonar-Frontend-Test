@@ -299,7 +299,7 @@ function IncomingCallPopup({
   }, [session]);
 
   useEffect(() => {
-    if (callerExtension.length < 11) {
+    if (callerExtension.length < 5) {
       const filteredExtension = accountDetails?.extensions?.filter(
         (acc) => acc?.extension == callerExtension
       );

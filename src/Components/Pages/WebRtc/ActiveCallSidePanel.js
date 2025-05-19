@@ -37,11 +37,9 @@ function ActiveCallSidePanel({
   globalSession,
   accountDetails,
   didAll,
-  audioRef
+  audioRef,
 }) {
-  const {
-    sessions,
-  } = useSIPProvider();
+  const { sessions } = useSIPProvider();
   const dispatch = useDispatch();
   const callProgressId = useSelector((state) => state.callProgressId);
   const previewDialer = useSelector((state) => state.previewDialer);
@@ -56,7 +54,7 @@ function ActiveCallSidePanel({
   const activeCall = useSelector((state) => state.activeCall);
   const [callExtraInfo, setCallExtraInfo] = useState({
     info: "",
-    type: ""
+    type: "",
   });
 
   useEffect(() => {
@@ -110,10 +108,13 @@ function ActiveCallSidePanel({
 
     audioRef?.current?.pause();
 
-    dispatch({
-      type: "SET_CALLREFRESH",
-      refreshCalls: refreshCalls + 1,
-    });
+    setTimeout(() => {
+      dispatch({
+        type: "SET_CALLREFRESH",
+        refreshCalls: refreshCalls + 1,
+      });
+    }, 1500);
+
     const updatedVideoCallMode = globalSession.find(
       (item) => item.id === callProgressId
     );
@@ -151,26 +152,29 @@ function ActiveCallSidePanel({
     globalSession.filter((item) => {
       if (item.id === session._id) {
         previewDialer.map((item2) => {
-          if (((item2.phone_code + item2.phone_number) === item.destination) && (item.state === "Established")) {
+          if (
+            item2.phone_code + item2.phone_number === item.destination &&
+            item.state === "Established"
+          ) {
             dispatch({
               type: "SET_AGENT_DEPOSITION",
-              agentDeposition: true
-            })
+              agentDeposition: true,
+            });
             dispatch({
               type: "SET_DEPOSIT_OPTIONS",
-              desposiTionOptions: item2
-            })
+              desposiTionOptions: item2,
+            });
             dispatch({
               type: "REMOVE_PREVIEWDIALER",
-              phone_number: item2.phone_number
-            })
+              phone_number: item2.phone_number,
+            });
           }
-        })
+        });
         // if(item.destination){
 
         // }
       }
-    })
+    });
   }
 
   function handleActiveCall(id, dest) {
@@ -267,24 +271,34 @@ function ActiveCallSidePanel({
     if (canHold) {
       if (type === "hold" && !holdProcessing) {
         setHoldProcessing(true);
-        var sessionDescriptionHandlerOptions = currentSession.sessionDescriptionHandlerOptionsReInvite;
+        var sessionDescriptionHandlerOptions =
+          currentSession.sessionDescriptionHandlerOptionsReInvite;
         sessionDescriptionHandlerOptions.hold = true;
-        currentSession.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+        currentSession.sessionDescriptionHandlerOptionsReInvite =
+          sessionDescriptionHandlerOptions;
         var options = {
           requestDelegate: {
             onAccept: function () {
-              if (currentSession && currentSession.sessionDescriptionHandler && currentSession.sessionDescriptionHandler.peerConnection) {
-                var pc = currentSession.sessionDescriptionHandler.peerConnection;
+              if (
+                currentSession &&
+                currentSession.sessionDescriptionHandler &&
+                currentSession.sessionDescriptionHandler.peerConnection
+              ) {
+                var pc =
+                  currentSession.sessionDescriptionHandler.peerConnection;
                 // Stop all the inbound streams
                 pc.getReceivers().forEach(function (RTCRtpReceiver) {
-                  if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+                  if (RTCRtpReceiver.track)
+                    RTCRtpReceiver.track.enabled = false;
                 });
               }
               currentSession.isOnHold = true;
               dispatch({
                 type: "SET_SESSIONS",
                 sessions: globalSession.map((item) =>
-                  item.id === currentSession.id ? { ...item, state: "OnHold" } : item
+                  item.id === currentSession.id
+                    ? { ...item, state: "OnHold" }
+                    : item
                 ),
               });
               setHoldProcessing(false);
@@ -292,8 +306,8 @@ function ActiveCallSidePanel({
             onReject: function () {
               currentSession.isOnHold = false;
               setHoldProcessing(false);
-            }
-          }
+            },
+          },
         };
         currentSession.invite(options).catch(function (error) {
           currentSession.isOnHold = false;
@@ -303,24 +317,30 @@ function ActiveCallSidePanel({
     } else {
       toast.warn("Call has not been established");
     }
-  };
+  }
 
   useEffect(() => {
-    if (destination.length < 11) {
-      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc?.extension == destination);
-      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+    if (destination.length < 5) {
+      const filteredExtension = accountDetails?.extensions?.filter(
+        (acc) => acc?.extension == destination
+      );
+      const username = accountDetails?.users?.filter(
+        (acc) => acc?.extension_id == filteredExtension[0]?.id
+      );
       setCallExtraInfo({
         info: username[0]?.username || destination,
         type: "user",
       });
     } else {
-      const isNumberPresent = activeCall.find((item)=>(item.cid_num == destination || item.did_tag == destination));
+      const isNumberPresent = activeCall.find(
+        (item) => item.cid_num == destination || item.did_tag == destination
+      );
       setCallExtraInfo({
         info: isNumberPresent?.did_tag || destination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll,activeCall])
+  }, [accountDetails, didAll, activeCall]);
 
   return (
     <>
@@ -331,7 +351,9 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            <h4>
+              {callExtraInfo.type == "user" ? callExtraInfo.info : destination}
+            </h4>
             {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             {/* <h5>01:20</h5> */}
             {timer?.answeredAt && (
@@ -345,7 +367,7 @@ function ActiveCallSidePanel({
           <div className="callBtnGrp my-auto ms-auto">
             <button
               className="appPanelButtonCaller bg-warning"
-            // onClick={() => holdCall("unhold")}
+              // onClick={() => holdCall("unhold")}
             >
               <i className="fa-solid fa-pause"></i>
             </button>
@@ -364,7 +386,9 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            <h4>
+              {callExtraInfo.type == "user" ? callExtraInfo.info : destination}
+            </h4>
             {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             <h5>Incoming...</h5>
           </div>
@@ -391,7 +415,9 @@ function ActiveCallSidePanel({
         >
           <div className="profilepicHolder">{chennel + 1}</div>
           <div className="callContent">
-            <h4>{callExtraInfo.type == "user" ? callExtraInfo.info : destination}</h4>
+            <h4>
+              {callExtraInfo.type == "user" ? callExtraInfo.info : destination}
+            </h4>
             {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
             {timer?.answeredAt && (
               <CallTimer

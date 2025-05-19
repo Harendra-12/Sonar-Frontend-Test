@@ -197,22 +197,34 @@ function CallDetails({
       }
     }
   };
+
+  const displayName =
+      callDetails?.["Call-Direction"] === "outbound"
+      ? callDetails?.["variable_sip_to_user"]
+      : callDetails?.["variable_sip_from_user"] === extension
+      ? callDetails?.["variable_sip_to_user"]
+      : callDetails?.["variable_sip_from_user"];
   return (
     <>
       <div className="messageOverlay ">
         <div className="contactHeader border-bottom-0">
           <div>
             <h4 className="mb-0">
-              {handleSavedContactName(callDetails?.caller_user?.username)}
+              {/* {handleSavedContactName(callDetails?.caller_user?.username)} */}
             </h4>
             <p className="gray14 mb-0 mt-1">
               Extension -{" "}
-              {!isCustomerAdmin
+              {/* {!isCustomerAdmin
                 ? callDetails &&
                   callDetails?.["Caller-Callee-ID-Number"] === extension
                   ? callDetails?.["Caller-Caller-ID-Number"]
                   : callDetails?.["Caller-Callee-ID-Number"]
-                : callDetails?.["Caller-Callee-ID-Number"]}
+                : callDetails?.["Caller-Callee-ID-Number"]} */}
+                 {displayName
+                          ? displayName
+                          : callDetails?.caller_user
+                          ? callDetails?.caller_user?.username
+                          : "USER XYZ"}
             </p>
           </div>
           <div className="d-flex my-auto">

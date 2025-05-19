@@ -566,7 +566,7 @@ function OngoingCall({
   }, [attendShow, hideDialpad])
 
   useEffect(() => {
-    if (callProgressDestination.length < 11) {
+    if (callProgressDestination.length < 5) {
       const filteredExtension = accountDetails?.extensions?.filter((acc) => acc.extension == callProgressDestination);
       const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
       setCallExtraInfo({
