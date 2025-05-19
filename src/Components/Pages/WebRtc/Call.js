@@ -542,9 +542,6 @@ function Call({
   };
 
   const groupedCalls = groupCallsByDate(data);
-
-  console.log("groupedCalls", groupedCalls);
-
   const sortedGroupedCalls = sortKeys(Object.keys(groupedCalls)).reduce(
     (acc, date) => {
       acc[date] = groupedCalls[date].sort(

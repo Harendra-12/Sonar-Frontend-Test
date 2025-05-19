@@ -37,13 +37,11 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(true);
+  const activeCall = useSelector((state) => state.activeCall);
   const [callExtraInfo, setCallExtraInfo] = useState({
     info: "",
     type: "",
   });
-
-  console.log("Call Extra Info", callExtraInfo);
-
   useEffect(() => {
     if (globalSession.length > 1) {
       audioRef.current = backgrounAudio;
@@ -124,8 +122,6 @@ function IncomingCallPopup({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [lastIncomingCall]);
-
-  console.log(session);
 
   const callerExtension =
     session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
@@ -315,23 +311,13 @@ function IncomingCallPopup({
         type: "user",
       });
     } else {
-      console.log("Callerextension", callerExtension);
-      console.log("sessionnnnnn", session);
-      
-      const didTag = didAll?.filter(
-        (item) =>
-          item?.did ==
-          session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]
-            ?.raw
-      );
-      console.log(didAll);
-
+      const isNumberPresent = activeCall.find((item)=>(item.cid_num == callExtraInfo?.info || item.did_tag == callExtraInfo?.info));
       setCallExtraInfo({
-        info: didTag?.[0]?.configuration?.tag || callerExtension,
+        info: isNumberPresent?.did_tag || callerExtension,
         type: "did",
       });
     }
-  }, [accountDetails, didAll]);
+  }, [accountDetails, didAll,activeCall]);
 
   return (
     <>
