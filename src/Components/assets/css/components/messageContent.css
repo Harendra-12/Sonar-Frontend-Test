@@ -1144,7 +1144,7 @@
 }
 
 .webrtc_newMessageUi .messageOverlay .messageList {
-    height: calc(100vh - 330px);
+    height: calc(100vh - 374px);
     width: 100%;
     overflow-y: auto;
 }
@@ -1229,11 +1229,13 @@
 }
 
 .textSms .formItem {
-    height: auto !important;
+    height: unset !important;
     font-weight: 400;
     border-color: var(--me-border1);
     border-radius: 7px;
-    min-height: 36px;
+    min-height: unset;
+    padding-block-start: 20px;
+    padding-inline-start: 15px;
 }
 
 .clearButton2.emoji {

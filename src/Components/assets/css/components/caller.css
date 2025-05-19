@@ -340,3 +340,10 @@
 .duplicateWrapper .tableContainer {
     height: 405px;
 }
+.tippy-box.margeCall{
+    transform: translate(83px, 8px);
+}
+.tippy-box.margeCall[data-placement^=bottom]>.tippy-arrow:before {
+    left: -38px;
+   
+}

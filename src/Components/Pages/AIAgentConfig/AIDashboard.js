@@ -13,7 +13,7 @@ function AIDashboard() {
               <div className='col-xxl-8'>
                 <div class="row gx-xxl-3 gx-lg-2">
                   <div class="col-xl-4 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                    <div class="itemWrapper a d_card1">
+                    {/* <div class="itemWrapper a d_card1">
                       <div class="heading h-auto">
                         <div class="d-flex flex-wrap justify-content-between align-items-center">
                           <div class="col-10">
@@ -31,10 +31,34 @@ function AIDashboard() {
                         </div>
                       </div>
                       <div class="d_chartImg"><img src="/static/media/d-chart1.9f0f46bd99b5a1d15636.png" alt="diagram" /></div>
+                    </div> */}
+                    <div class="card trending-card height-equal bg-1">
+                      <div class="card-body activity-card">
+                        <div class="appointment-table ">
+                          <div class=" card-no-border bg-transparent">
+                            <div class="header-top">
+                              <div>
+                                <span class="c-o-light mb-1">Total Users</span>
+                                <div class="common-align">
+                                  <h5 class="mb-1">863</h5>
+                                 
+                                </div>
+                                   <p class="mb-0 f-light fs-12">If you are an artist then showcase your artwork and convert your art into NFT art.</p>
+                              </div>
+                              <div>
+                                <div class="analytics-tread bg-light-primary">
+                                 <i class="fa-solid fa-headset fs-4"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                    <div class="itemWrapper b d_card2 position-relative">
+                    {/* <div class="itemWrapper b d_card2 position-relative">
                       <div class="heading h-auto">
                         <div class="d-flex flex-wrap justify-content-between align-items-center">
                           <div class="col-10">
@@ -52,10 +76,35 @@ function AIDashboard() {
                         </div>
                       </div>
                       <div class="d_chartImg"><img src="/static/media/d-chart2.5cc2870bfcb2b417b2e2.png" alt="diagram" /></div>
+                    </div> */}
+
+                        <div class="card trending-card height-equal bg-2">
+                      <div class="card-body activity-card">
+                        <div class="appointment-table ">
+                          <div class=" card-no-border bg-transparent">
+                            <div class="header-top">
+                              <div>
+                                <span class="c-o-light mb-1">Total Users</span>
+                                <div class="common-align">
+                                  <h5 class="mb-1">863</h5>
+                                 
+                                </div>
+                                   <p class="mb-0 f-light fs-12">If you are an artist then showcase your artwork and convert your art into NFT art.</p>
+                              </div>
+                              <div>
+                                <div class="analytics-tread bg-light-primary">
+                                 <i class="fa-solid fa-headset fs-4"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                    <div class="itemWrapper c d_card3">
+                    {/* <div class="itemWrapper c d_card3">
                       <div class="heading h-auto">
                         <div class="d-flex flex-wrap justify-content-between align-items-center">
                           <div class="col-10">
@@ -73,6 +122,31 @@ function AIDashboard() {
                         </div>
                       </div>
                       <div class="d_chartImg"><img src="/static/media/d-chart3.4814237d1439be144d9b.png" alt="diagram" /></div>
+                    </div> */}
+
+                        <div class="card trending-card height-equal bg-3">
+                      <div class="card-body activity-card">
+                        <div class="appointment-table ">
+                          <div class=" card-no-border bg-transparent">
+                            <div class="header-top">
+                              <div>
+                                <span class="c-o-light mb-1">Total Users</span>
+                                <div class="common-align">
+                                  <h5 class="mb-1">863</h5>
+                                 
+                                </div>
+                                   <p class="mb-0 f-light fs-12">If you are an artist then showcase your artwork and convert your art into NFT art.</p>
+                              </div>
+                              <div>
+                                <div class="analytics-tread bg-light-primary">
+                                 <i class="fa-solid fa-headset fs-4"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -153,34 +227,26 @@ function AIDashboard() {
                 <div className="card border-0 shadow-none mb-3">
                   <div className='card-body'>
                     <h5>Top 5 Moments</h5>
-                    <span className="badge badge-soft-secondary rounded-pill"
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-p
                     >Product Demo</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
                   </div>
                 </div>
                 <div className="card border-0 shadow-none">
                   <div className='card-body'>
                     <h5>Top 5 Customs Moments</h5>
-                    <span className="badge badge-soft-secondary rounded-pill"
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-p
                     >Product Demo</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
-                    <span className="badge badge-soft-secondary rounded-pill "
-                    // style={{ backgroundColor: 'var(--ui-accent)' }}
+                    <span className="badge badge-soft-secondary rounded-pi
                     >Email marketing</span>
                   </div>
                 </div>
@@ -189,7 +255,7 @@ function AIDashboard() {
             <div className='row'>
               <div className='col-12'>
                 <div className='card customAicard p-0 border-0 shadow-none'>
-                   <div class="card-header justify-content-between bg-transparent" style={{ borderColor: 'var(--me-border1)' }}>
+                  <div class="card-header justify-content-between bg-transparent" style={{ borderColor: 'var(--me-border1)' }}>
                     <div class="card-title">Agent Analytics</div>
                   </div>
                   <div className='card-body'>
@@ -224,30 +290,117 @@ function AIDashboard() {
                             </td>
                             <td>
                               <span className="badge badge-soft-primary  rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
                               >30</span>
 
                             </td>
                             <td>
                               <span className="badge badge-soft-primary  rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
                               >30</span>
                             </td>
                             <td>   <span className="badge badge-soft-primary  rounded-pill"
-                            // style={{ backgroundColor: 'var(--ui-accent)' }}
                             >30</span></td>
                             <td>
                               <span className="badge badge-soft-secondary rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
                               >Product Demo</span>
                               <span className="badge badge-soft-secondary rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
                               >Product Demo</span>
                               <span className="badge badge-soft-secondary rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
                               >Product Demo</span>
                               <span className="badge badge-soft-secondary rounded-pill"
-                              // style={{ backgroundColor: 'var(--ui-accent)' }}
+
+                              >Product Demo</span>
+                            </td>
+
+                          </tr>
+                          <tr>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <div className="tableProfilePicHolder">
+                                  {/* {item.profile_picture ? ( */}
+                                  <img
+                                    src={require('../../assets/images/placeholder-image.webp')}
+                                  // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                  />
+                                  {/* ) : ( */}
+                                  {/* <i className="fa-light fa-user" /> */}
+                                  {/* )} */}
+                                </div>
+                                <div className="ms-2">Rajendro.sau</div>
+                              </div>
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+
+                              >30</span>
+
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+                              >30</span>
+                            </td>
+                            <td>   <span className="badge badge-soft-primary  rounded-pill"
+                            >30</span></td>
+                            <td>
+                              <span className="badge badge-soft-secondary rounded-pill"
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                            </td>
+
+                          </tr>
+                          <tr>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <div className="tableProfilePicHolder">
+                                  {/* {item.profile_picture ? ( */}
+                                  <img
+                                    src={require('../../assets/images/placeholder-image.webp')}
+                                  // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                  />
+                                  {/* ) : ( */}
+                                  {/* <i className="fa-light fa-user" /> */}
+                                  {/* )} */}
+                                </div>
+                                <div className="ms-2">Rajendro.sau</div>
+                              </div>
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+
+                              >30</span>
+
+                            </td>
+                            <td>
+                              <span className="badge badge-soft-primary  rounded-pill"
+
+                              >30</span>
+                            </td>
+                            <td>   <span className="badge badge-soft-primary  rounded-pill"
+                            >30</span></td>
+                            <td>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
+                              >Product Demo</span>
+                              <span className="badge badge-soft-secondary rounded-pill"
+
                               >Product Demo</span>
                             </td>
 

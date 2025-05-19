@@ -3342,7 +3342,7 @@ function Messages({
                                   <div className="w-100">
                                     <textarea
                                       type="text"
-                                      rows={1}
+                                      rows={2}
                                       name=""
                                       className="formItem "
                                       placeholder="Please enter your message"
@@ -3380,8 +3380,8 @@ function Messages({
                                 </div>
                               </div>
 
-                              <div className=" d-flex justify-content-between align-items-start gap-2">
-                                <div className="d-flex gap-1">
+                              <div className=" d-flex justify-content-between align-items-center gap-2">
+                                <div className="d-flex gap-1 align-items-center">
                                   <Tippy  content="Auto Reply with AI">
                                   <button
                                     className={`clearButton2 eraser ${autoReply?"active":""}`}
