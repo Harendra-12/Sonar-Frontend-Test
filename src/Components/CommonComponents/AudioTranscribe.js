@@ -99,7 +99,7 @@ function AudioTranscribe({ url, setTranscribeLink }) {
                     {
                         transcribeLoading ?
                             <div className='skeleton skeleton-text' /> :
-                            <p>{transcript?.length > 0 ?
+                            <p>{transcript && transcript.length > 0 ?
                                 transcript?.map((item, key) => {
                                     return (
                                         <span key={key} className='textContent d-block'>
