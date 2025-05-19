@@ -185,7 +185,7 @@ const initialState = {
   incomingCall,
   internalCallAction,
   socketSendMessage,
-  campaignDetails
+  campaignDetails,
 };
 
 const counterReducer = (state = initialState, action) => {

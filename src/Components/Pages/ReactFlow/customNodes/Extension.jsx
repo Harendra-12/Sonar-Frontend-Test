@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import { useDispatch, useSelector } from "react-redux";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const Extension = ({ id, data }) => {
   const dispatch = useDispatch();
-
   const { setNodes } = useReactFlow();
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false);
   const [extension, setExtension] = useState([]);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
   const [isReadonly, setIsreadonly] = useState(false);
-
-  useEffect(() => {
-    if (data.value) {
-      console.log("data.value: ", data.value);
-    }
-  }, [data.value]);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -28,15 +23,41 @@ const Extension = ({ id, data }) => {
         extensionRefresh: extensionRefresh + 1,
       });
     }
-  }, [extensionArr, extensionRefresh]);
+  }, [extensionArr, extensionRefresh, dispatch]);
 
   const handleExtension = (event) => {
     const selectedOption = event.target.selectedOptions[0];
+    console.log("Selected option: ", selectedOption.dataset.extension);
     if (selectedOption.value && data.onUpdate) {
       data.onUpdate({
         value: selectedOption.dataset.extension,
-        // ivr_option_id: selectedOption.value,
       });
+    }
+  };
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
     }
   };
 
@@ -80,7 +101,7 @@ const Extension = ({ id, data }) => {
               <select
                 name="extension"
                 id="extension"
-                value={data.value || ""}
+                defaultValue={data.value || ""}
                 onChange={(e) => handleExtension(e)}
               >
                 <option value="" disabled selected>
@@ -88,7 +109,7 @@ const Extension = ({ id, data }) => {
                 </option>
                 {extension.map((value, index) => (
                   <option
-                    value={value.id}
+                    value={value.extension}
                     key={index}
                     data-extension={value.extension}
                   >
@@ -126,15 +147,7 @@ const Extension = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>

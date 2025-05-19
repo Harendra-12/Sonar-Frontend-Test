@@ -23,8 +23,9 @@ import Ivr from "./customNodes/Ivr";
 import Hangup from "./customNodes/Hangup";
 import BackToIvr from "./customNodes/BackToIvr";
 import Pstn from "./customNodes/Pstn";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
+  backToTop,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -34,17 +35,18 @@ import {
   validateAllNodeConnections,
   validatePressDigitsConnections,
 } from "./utils/validateFlow";
+import { toast } from "react-toastify";
 
 // Custom node types
 const nodeTypes = {
-  callBegin: CallBegin,
-  pressDigits: PressDigits,
+  callbegin: CallBegin,
+  pressdigits: PressDigits,
   extension: Extension,
-  ringGroup: RingGroup,
-  callCenter: CallCenter,
+  ringgroup: RingGroup,
+  queue: CallCenter,
   ivr: Ivr,
   hangup: Hangup,
-  backToIvr: BackToIvr,
+  backtoivr: BackToIvr,
   pstn: Pstn,
 };
 
@@ -55,9 +57,12 @@ const edgeTypes = {
 
 const Reactflow = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const id = location.state?.id;
   const [loading, setLoading] = useState(false);
   const [initialFlowData, setInitialFlowData] = useState(null);
+  const [buttonType, setButtonType] = useState("Save");
+  const [initialFlowDataRefresher, setInitialFlowDataRefresher] = useState(0);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -69,8 +74,16 @@ const Reactflow = () => {
         `/ivrnode/all?ivr_master_id=${id}`
       );
 
-      if (apiData.status && apiData?.data) {
+      if (
+        apiData.status &&
+        apiData?.data &&
+        apiData?.data?.nodes.length > 0 &&
+        apiData?.data?.edges.length > 0
+      ) {
         setInitialFlowData(apiData.data);
+        if (apiData.data?.nodes.length > 2) {
+          setButtonType("Update");
+        }
       }
     } catch (error) {
       console.error("Error fetching flow data:", error);
@@ -85,6 +98,12 @@ const Reactflow = () => {
     }
   }, [fetchData, initialFlowData, id]);
 
+  useEffect(() => {
+    if (initialFlowDataRefresher > 0) {
+      fetchData();
+    }
+  }, [initialFlowDataRefresher]);
+
   // Update nodes and edges when initialFlowData changes
   useEffect(() => {
     if (initialFlowData?.nodes && initialFlowData?.edges) {
@@ -95,18 +114,50 @@ const Reactflow = () => {
 
   const onConnect = useCallback(
     (connection) => {
-      const edge = {
-        ...connection,
-        animated: true,
-        id: `${connection.source}-${connection.sourceHandle}-${connection.target}`,
-        type: "customEdge",
-        isRemovable: true,
-        deletable: true,
-      };
-      setEdges((eds) => addEdge(edge, eds));
+      setEdges((eds) => {
+        // Check if an edge already exists from the same source and sourceHandle
+        const edgeExists = eds.some(
+          (edge) =>
+            edge.source === connection.source &&
+            edge.sourceHandle === connection.sourceHandle
+        );
+
+        if (edgeExists) {
+          toast.error("Only one edge allowed from this source and handle.");
+          return eds; // Return existing edges without adding new one
+        }
+
+        // Create new edge with custom properties
+        const newEdge = {
+          ...connection,
+          animated: true,
+          id: `${connection.source}-${connection.sourceHandle}-${connection.target}`,
+          type: "customEdge",
+          isRemovable: true,
+          deletable: true,
+        };
+
+        // Add the new edge
+        return addEdge(newEdge, eds);
+      });
     },
     [setEdges]
   );
+
+  // const onConnect = useCallback(
+  //   (connection) => {
+  //     const edge = {
+  //       ...connection,
+  //       animated: true,
+  //       id: `${connection.source}-${connection.sourceHandle}-${connection.target}`,
+  //       type: "customEdge",
+  //       isRemovable: true,
+  //       deletable: true,
+  //     };
+  //     setEdges((eds) => addEdge(edge, eds));
+  //   },
+  //   [setEdges]
+  // );
 
   // auto layout the flow
   const onLayout = useCallback(
@@ -142,18 +193,21 @@ const Reactflow = () => {
   // Map all nodes to include the onUpdate handler
   const nodesWithHandlers = nodes.map((node) => {
     switch (node.type) {
-      case "pressDigits":
+      case "pressdigits":
       case "extension":
-      case "ringGroup":
-      case "callCenter":
+      case "ringgroup":
+      case "queue":
       case "ivr":
       case "hangup":
-      case "backToIvr":
+      case "backtoivr":
       case "pstn":
         return {
           ...node,
           data: {
             ...node.data,
+            main_id: node.main_id,
+            setInitialFlowDataRefresher: () =>
+              setInitialFlowDataRefresher(initialFlowDataRefresher + 1),
             onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
           },
         };
@@ -163,6 +217,7 @@ const Reactflow = () => {
   });
 
   const exportFlowData = async () => {
+    setLoading(true);
     const flowData = { nodes, edges };
 
     const isPressDigitsValid = validatePressDigitsConnections(flowData);
@@ -170,6 +225,7 @@ const Reactflow = () => {
     console.log("flowData: ", flowData);
 
     if (!isPressDigitsValid || !isConnectedValid) {
+      setLoading(false);
       console.warn("❌ Export aborted due to validation failure.");
       return;
     }
@@ -196,12 +252,12 @@ const Reactflow = () => {
     const apiData = await generalPostFunction("/ivrnode/store", payload);
     if (apiData.status) {
       setLoading(false);
+      // navigate("/ivr");
+      // backToTop();
     } else {
       setLoading(false);
-      // alert("Something went wrong");
     }
 
-    console.log("✅ All validations passed.");
     console.log("📦 Final Exported Flow:", payload);
   };
 
@@ -240,7 +296,7 @@ const Reactflow = () => {
               <ConversationOptions />
               <div className="d-flex flex-col gap-2 pt-2">
                 <button onClick={exportFlowData} className="btn btn-primary ">
-                  Save
+                  {buttonType}
                 </button>
                 <button
                   onClick={() => onLayout("LR")}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const Hangup = ({ id, data }) => {
   const { setNodes } = useReactFlow();
@@ -13,6 +15,32 @@ const Hangup = ({ id, data }) => {
       data.onUpdate({ value: "hangup" });
     }
   }, [data]);
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
+    }
+  };
 
   return (
     <>
@@ -71,15 +99,7 @@ const Hangup = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>

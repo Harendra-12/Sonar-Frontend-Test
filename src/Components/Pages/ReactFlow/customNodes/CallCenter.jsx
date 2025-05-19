@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import { useDispatch, useSelector } from "react-redux";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const CallCenter = ({ id, data }) => {
   const dispatch = useDispatch();
@@ -25,14 +27,40 @@ const CallCenter = ({ id, data }) => {
   }, [callCenterArr, callCenterRefresh]);
   const handleCallCenter = (event) => {
     const selectedValue = event.target.value;
-    const selectedOption = callCenter.find(
-      (item) => item.id === parseInt(selectedValue)
-    );
-    if (selectedOption && data.onUpdate) {
+    // const selectedOption = callCenter.find(
+    //   (item) => item.id === parseInt(selectedValue)
+    // );
+    if (selectedValue && data.onUpdate) {
       data.onUpdate({
-        value: selectedOption.extension,
+        value: selectedValue,
         // ivr_option_id: String(selectedOption.id),
       });
+    }
+  };
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
     }
   };
 
@@ -74,7 +102,7 @@ const CallCenter = ({ id, data }) => {
               <select
                 name="callCenter"
                 id="callCenter"
-                value={data.value}
+                defaultValue={data.value || ""}
                 onChange={(e) => handleCallCenter(e)}
               >
                 <option value="" disabled selected>
@@ -82,7 +110,7 @@ const CallCenter = ({ id, data }) => {
                 </option>
                 {callCenter.map((value, index) => (
                   <option
-                    value={value.id}
+                    value={value.extension}
                     key={index}
                     data-extension={value.extension}
                     data-name={value.queue_name}
@@ -121,15 +149,7 @@ const CallCenter = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>

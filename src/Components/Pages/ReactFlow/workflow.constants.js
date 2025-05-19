@@ -2,14 +2,14 @@ export const initialNodes = [
   {
     id: "7",
     position: { x: 255, y: 210 },
-    type: "callBegin",
+    type: "callbegin",
     selected: false,
     dragging: false,
   },
   {
     id: "8",
     position: { x: 600, y: 200 },
-    type: "pressDigits",
+    type: "pressdigits",
     data: {
       label: "Press Digits",
       description: "Press digits for new task",

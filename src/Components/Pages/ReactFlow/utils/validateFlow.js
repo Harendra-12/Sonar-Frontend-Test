@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const validatePressDigitsConnections = (flowData) => {
   const { nodes, edges } = flowData;
   const errors = [];
@@ -17,7 +19,7 @@ export const validatePressDigitsConnections = (flowData) => {
   });
 
   nodes.forEach((node) => {
-    if (node.type === "pressDigits") {
+    if (node.type === "pressdigits") {
       // Build subNodes from fields if subNodes not present
       const subNodes =
         node.data?.subNodes ||
@@ -32,6 +34,7 @@ export const validatePressDigitsConnections = (flowData) => {
       subNodes.forEach((subNode) => {
         const handleId = `source-${subNode.id}`;
         const targetId = subNodeToTarget[handleId];
+        console.log("targetId: ", targetId);
 
         // Check 1: value is not empty or undefined (but allow '0')
         if (
@@ -39,6 +42,9 @@ export const validatePressDigitsConnections = (flowData) => {
           subNode.value === null ||
           (typeof subNode.value === "string" && subNode.value.trim() === "")
         ) {
+          toast.error(
+            `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
+          );
           errors.push(
             `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
           );
@@ -48,6 +54,9 @@ export const validatePressDigitsConnections = (flowData) => {
 
         // Check 2: must be connected
         if (!targetId) {
+          toast.error(
+            `❌ Subnode '${handleId}' is not connected to any target node.`
+          );
           errors.push(
             `❌ Subnode '${handleId}' is not connected to any target node.`
           );
@@ -57,6 +66,9 @@ export const validatePressDigitsConnections = (flowData) => {
 
         // Check 3: target must exist
         if (targetId && !nodeMap[targetId]) {
+          toast.error(
+            `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
+          );
           errors.push(
             `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
           );
@@ -72,6 +84,11 @@ export const validatePressDigitsConnections = (flowData) => {
   );
 
   if (duplicates.length > 0) {
+    toast.error(
+      `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
+        ", "
+      )}`
+    );
     errors.push(
       `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
         ", "
@@ -83,7 +100,7 @@ export const validatePressDigitsConnections = (flowData) => {
 
   if (errors.length > 0) {
     console.error("🚫 Validation Errors:\n" + errors.join("\n"));
-    alert("Validation Failed. See console for details.");
+    // alert("Validation Failed. See console for details.");
     return false;
   }
 
@@ -105,6 +122,9 @@ export const validateAllNodeConnections = (flowData) => {
   // Check each node for connection
   nodes.forEach((node) => {
     if (!connectedNodeIds.has(node.id)) {
+      toast.error(
+        `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`
+      );
       errors.push(
         `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`
       );
@@ -113,7 +133,7 @@ export const validateAllNodeConnections = (flowData) => {
 
   if (errors.length > 0) {
     console.error("🚫 Unconnected Node Errors:\n" + errors.join("\n"));
-    alert("Disconnected nodes found! See console for details.");
+    // alert("Disconnected nodes found! See console for details.");
     return false;
   }
 
