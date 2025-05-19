@@ -270,7 +270,7 @@ function DidListing({ page }) {
         (item) => item?.extension == extension
       );
       const userData = findData && allUserArr?.length > 0 && allUserArr?.find(
-        (item) => item.extension.extension == findData.extension
+        (item) => item?.extension?.extension == findData.extension
       );
 
       return `${userData?.name}- `;
@@ -516,6 +516,8 @@ function DidListing({ page }) {
                           <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
                         </select>
                         <label>entries</label>
                       </div>
@@ -545,6 +547,7 @@ function DidListing({ page }) {
                             ) : (
                               ""
                             )}
+                            <th>Recording</th>
                             {page === "number" ? (
                               <>
                                 <th>Usages</th>
@@ -573,7 +576,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 11 : 9}
+                              col={page === "pbx" ? 12 : 9}
                               row={15}
                             />
                           ) : (
@@ -617,6 +620,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
+                                      <td>{item?.configuration?item?.configuration?.record?"Enabled":"Disabled":"N/A"}</td>
 
                                       {page === "number" ? (
                                         <>
