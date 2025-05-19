@@ -270,7 +270,7 @@ function DidListing({ page }) {
         (item) => item?.extension == extension
       );
       const userData = findData && allUserArr?.length > 0 && allUserArr?.find(
-        (item) => item.extension.extension == findData.extension
+        (item) => item?.extension?.extension == findData.extension
       );
 
       return `${userData?.name}- `;
