@@ -100,7 +100,7 @@ export default function ExportPopUp({
   };
 
   const filterExportedData = () => {
-     const buildUrl = (baseApiUrl, params) => {
+    const buildUrl = (baseApiUrl, params) => {
       const queryParams = Object.entries(params)
         .filter(([key, value]) => value != null && value.length > 0)
         .flatMap(([key, value]) =>
@@ -117,14 +117,14 @@ export default function ExportPopUp({
     };
     return buildUrl("", {
       "Call-Direction[]": callDirection,
-       "application_state[]":
+      "application_state[]":
         page === "all"
           ? callType
           : page === "billing"
-          ? "pstn"
-          : page === "callrecording"
-          ? callType
-          : page,
+            ? "pstn"
+            : page === "callrecording"
+              ? callType
+              : page,
       variable_sip_from_user: debounceCallOriginFlag,
       variable_sip_to_user: debounceCallDestinationFlag,
       start_date: startDate,
@@ -402,7 +402,23 @@ export default function ExportPopUp({
                   <label className="formLabel text-start mb-0 w-100">
                     Call Type
                   </label>
-                  <select
+                  <Select
+                    isMulti
+                    onChange={(selectedOptions) => {
+                      const values = selectedOptions
+                        ? selectedOptions.map((opt) => opt.value)
+                        : [];
+                      setCallType(values);
+                      setPageNumber(1);
+                    }}
+                    options={callTypeOptions}
+                    isSearchable
+                    styles={customStyles}
+                    value={callTypeOptions.filter((opt) =>
+                      callType.includes(opt.value)
+                    )}
+                  />
+                  {/* <select
                     className="formItem"
                     onChange={(e) => {
                       setCallType(e.target.value);
@@ -414,14 +430,14 @@ export default function ExportPopUp({
                     <option value={"voicemail"}>Voice Mail</option>
                     <option value={"callcenter"}>Call Center</option>
                     <option value={"ringgroup"}>Ring Group</option>
-                  </select>
+                  </select> */}
                 </div>
               </>
             ) : (
               ""
             )}
             {page === "callrecording" &&
-            !filteredKeys.includes("Hangup-Cause") ? (
+              !filteredKeys.includes("Hangup-Cause") ? (
               ""
             ) : (
               <>
@@ -429,7 +445,23 @@ export default function ExportPopUp({
                   <label className="formLabel text-start mb-0 w-100">
                     Hangup Status
                   </label>
-                  <select
+                  <Select
+                    isMulti
+                    onChange={(selectedOptions) => {
+                      const values = selectedOptions
+                        ? selectedOptions.map((opt) => opt.value)
+                        : [];
+                      setHagupCause(values);
+                      setPageNumber(1);
+                    }}
+                    options={hangupCauseOptions}
+                    isSearchable
+                    styles={customStyles}
+                    value={hangupCauseOptions.filter((opt) =>
+                      hangupCause.includes(opt.value)
+                    )}
+                  />
+                  {/* <select
                     className="formItem"
                     onChange={(e) => {
                       setHagupCause(e.target.value);
@@ -442,14 +474,31 @@ export default function ExportPopUp({
                     <option value={"Voicemail"}>Voicemail</option>
                     <option value={"Cancelled"}>Cancelled</option>
                     <option value={"Failed"}>Failed</option>
-                  </select>
+                  </select> */}
                 </div>
                 {filteredKeys.includes("Hangup-Cause") && (
-                  <div className="formRow border-0 pe-xl-0 col-3">
+                  <div className="formRow border-0 col-4">
                     <label className="formLabel text-start mb-0 w-100">
                       Hangup Cause
                     </label>
-                    <select
+                    <Select
+                      isMulti
+                      onChange={(selectedOptions) => {
+                        const values = selectedOptions
+                          ? selectedOptions.map((opt) => opt.value)
+                          : [];
+                        setHangupStatus(values);
+                        setPageNumber(1);
+                      }}
+                      options={hangupStatusOptions}
+                      isSearchable
+                      styles={customStyles}
+                      value={hangupStatusOptions.filter((opt) =>
+                        hangupStatus.includes(opt.value)
+                      )}
+                    />
+
+                    {/* <select
                       className="formItem"
                       onChange={(e) => {
                         setHangupStatus(e.target.value);
@@ -507,7 +556,7 @@ export default function ExportPopUp({
                       <option value={"INVALID_NUMBER_FORMAT"}>
                         Invalid Number Format
                       </option>
-                    </select>
+                    </select> */}
                   </div>
                 )}
               </>
