@@ -211,25 +211,31 @@ function Call({
 
     if (filteredCalls[0] && !firstTimeClickedExtension) {
       setClickedExtension(
-        filteredCalls[0]["Caller-Callee-ID-Number"] === extension
-          ? filteredCalls[0]["Caller-Caller-ID-Number"]
-          : filteredCalls[0]["Caller-Callee-ID-Number"]
+       filteredCalls[0]["Call-Direction"] === "outbound"
+      ? filteredCalls[0]["variable_sip_to_user"]
+      : filteredCalls[0]["variable_sip_from_user"] === extension
+      ? filteredCalls[0]["variable_sip_to_user"]
+      : filteredCalls[0]["variable_sip_from_user"]
       );
       setFirstTimeClickedExtension(true);
     }
-
     setCallHistory(
       filteredCalls?.[0] &&
         allApiData?.filter((item) => {
           if (!isCustomerAdmin) {
             return (
-              (item["Caller-Callee-ID-Number"] === extension &&
-                item["Caller-Caller-ID-Number"] === clickedExtension) ||
-              (item["Caller-Caller-ID-Number"] === extension &&
-                item["Caller-Callee-ID-Number"] === clickedExtension)
+            //   item["variable_sip_from_user"] === clickedExtension ||
+            //   item["variable_sip_to_user"] === clickedExtension
+            // );
+              (
+                // item["variable_sip_from_user"] === extension &&
+                item["variable_sip_to_user"] === clickedExtension) ||
+              (
+                // item["variable_sip_to_user"] === extension &&
+                item["variable_sip_from_user"] === clickedExtension)
             );
           }
-          return true;
+          return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
         })
     );
   }, [data, clickStatus]);
@@ -247,9 +253,11 @@ function Call({
   const handleCallItemClick = (item) => {
     setClickedCall(item);
     setClickedExtension(
-      item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"]
+      item["Call-Direction"] === "outbound"
+      ? item["variable_sip_to_user"]
+      : item["variable_sip_from_user"] === extension
+      ? item["variable_sip_to_user"]
+      : item["variable_sip_from_user"]
     );
   };
 
@@ -483,15 +491,19 @@ function Call({
   useEffect(() => {
     if (clickedExtension) {
       const filteredHistory = data.filter((item) => {
+        console.log(item["variable_sip_from_user"], item["variable_sip_to_user"],clickedExtension);
+        
         if (!isCustomerAdmin) {
           return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
+            (
+              // item["variable_sip_from_user"] === extension &&
+              item["variable_sip_to_user"] === clickedExtension) ||
+            (
+              // item["variable_sip_to_user"] === extension &&
+              item["variable_sip_from_user"] === clickedExtension)
           );
         }
-        return item["Caller-Callee-ID-Number"] === clickedExtension;
+        return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
       });
       setCallHistory(filteredHistory);
     }

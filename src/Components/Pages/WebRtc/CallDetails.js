@@ -25,6 +25,9 @@ function CallDetails({
   setExtensionFromCdrMessage,
   allContact,
 }) {
+  // console.log("clickedCall", clickedCall);
+  // console.log("callHistory", callHistory);
+  
   const [callDetails, setCallDetails] = useState();
   const { connectStatus } = useSIPProvider();
   const account = useSelector((state) => state.account);
