@@ -338,7 +338,7 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setIsCallLoading(true)
+      // setIsCallLoading(true)
       if (callCurrentPage === 1) {
         // setCallLoading(true);
       } else {
@@ -383,10 +383,12 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
+      setIsCallLoading(true)
       if (callCurrentPage === 1) {
-        setCallLoading(true);
-      } else {
+        // setCallLoading(true);
         setIsCallLoading(false);
+      } else {
+        setIsCallLoading(true);
       }
       const basePaths = {
         all: "/call-details-phone",

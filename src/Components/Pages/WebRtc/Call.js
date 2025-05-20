@@ -244,8 +244,7 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -281,10 +280,10 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Call-Direction"] === "outbound"
-      ? item["variable_sip_to_user"]
-      : item["variable_sip_from_user"] === extension
-      ? item["variable_sip_to_user"]
-      : item["variable_sip_from_user"];
+        ? item["variable_sip_to_user"]
+        : item["variable_sip_from_user"] === extension
+          ? item["variable_sip_to_user"]
+          : item["variable_sip_from_user"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -307,7 +306,7 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-          item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
@@ -317,7 +316,7 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-          item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -326,7 +325,7 @@ function Call({
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-          item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",
@@ -350,15 +349,14 @@ function Call({
           key={item.id}
           onClick={() => handleCallItemClick(item)}
           onDoubleClick={() => handleDoubleClickCall(item)}
-          className={`callListItem wertc_iconBox border-bottom-0 ${
-            clickedCall && clickedCall.id === item.id ? "selected" : ""
-          }`}
+          className={`callListItem wertc_iconBox border-bottom-0 ${clickedCall && clickedCall.id === item.id ? "selected" : ""
+            }`}
         >
           <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
               <div
                 className="profileHolder"
-                // id={"profileOfflineNav"}
+              // id={"profileOfflineNav"}
               >
                 <i className="fa-light fa-user fs-5"></i>
               </div>
@@ -387,12 +385,21 @@ function Call({
                         {displayName
                           ? displayName
                           : item.caller_user
-                          ? item.caller_user.username
-                          : "USER XYZ"}
+                            ? item.caller_user.username
+                            : "USER XYZ"}
                       </h4>
                       {item.tag && <h5>({item.tag})</h5>}
                     </div>
                   </div>
+                  {item["variable_billsec"] > 0 && (
+                    <div className={`col-12 mx-auto mt-2`}>
+                      <div className="contactTags">
+                        <span data-id="2" className="duration">
+                          Duration: {formatTime(item["variable_billsec"])}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
@@ -587,8 +594,8 @@ function Call({
       callDetails["Call-Direction"] === "outbound"
         ? callDetails["variable_sip_to_user"]
         : callDetails["variable_sip_from_user"] === extension
-        ? callDetails["variable_sip_to_user"]
-        : callDetails["variable_sip_from_user"];
+          ? callDetails["variable_sip_to_user"]
+          : callDetails["variable_sip_from_user"];
     // callDetails?.["Caller-Callee-ID-Number"] == extension
     //   ? callDetails?.["Caller-Caller-ID-Number"]
     //   : callDetails?.["Caller-Callee-ID-Number"];
@@ -617,13 +624,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
-                  },
-                  optional: [{ facingMode: "user" }],
+                mandatory: {
+                  minWidth: 1280,
+                  minHeight: 720,
+                  minFrameRate: 30,
                 },
+                optional: [{ facingMode: "user" }],
+              },
         },
       }
     );
@@ -891,59 +898,55 @@ function Call({
                       {loading ? (
                         <ContentLoader />
                       ) : // Object.keys(groupedCalls).length < 0 ? (
-                      //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
-                      //     <div key={key}>
-                      //       <div key={date} className="dateHeader">
-                      //         <p>{date}</p>
-                      //       </div>
-                      //       {sortedGroupedCalls[date].map(renderCallItem)}
-                      //     </div>
-                      //   ))
-                      // )
-                      data.length > 0 ? (
-                        <>
-                          {data.map((item) => {
-                            return renderCallItem(item);
-                          })}
-                        </>
-                      ) : (
-                        <div className="startAJob">
-                          <div className="text-center mt-3">
-                            <img
-                              src={require("../../assets/images/empty-box.png")}
-                              alt="Empty"
-                            ></img>
-                            <div>
-                              <h5>
-                                No{" "}
-                                <span>
-                                  <b>
-                                    {clickStatus === "all"
-                                      ? "calls"
-                                      : clickStatus}
-                                  </b>
-                                </span>{" "}
-                                {clickStatus != "all" ? "calls" : ""} available.
-                              </h5>
-                              <h5>
-                                Please start a <b>call</b> to see them here.
-                              </h5>
+                        //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
+                        //     <div key={key}>
+                        //       <div key={date} className="dateHeader">
+                        //         <p>{date}</p>
+                        //       </div>
+                        //       {sortedGroupedCalls[date].map(renderCallItem)}
+                        //     </div>
+                        //   ))
+                        // )
+                        data.length > 0 ? (
+                          <>
+                            {data.map((item) => {
+                              return renderCallItem(item);
+                            })}
+                          </>
+                        ) : (
+                          <div className="startAJob">
+                            <div className="text-center mt-3">
+                              <img
+                                src={require("../../assets/images/empty-box.png")}
+                                alt="Empty"
+                              ></img>
+                              <div>
+                                <h5>
+                                  No{" "}
+                                  <span>
+                                    <b>
+                                      {clickStatus === "all"
+                                        ? "calls"
+                                        : clickStatus}
+                                    </b>
+                                  </span>{" "}
+                                  {clickStatus != "all" ? "calls" : ""} available.
+                                </h5>
+                                <h5>
+                                  Please start a <b>call</b> to see them here.
+                                </h5>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
                       {isCallLoading ? (
                         <>
-                          {/* <div className="text-center">
-                          <i
-                            className={
-                              isCallLoading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5 "
-                            }
-                            style={{ color: "var(--webUtilGray)" }}
-                          ></i>
-                        </div> */}
+                          <div className="text-center">
+                            <i
+                              className={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                              style={{ color: "var(--webUtilGray)" }}
+                            ></i>
+                          </div>
                         </>
                       ) : (
                         <div ref={targetRef}></div>
