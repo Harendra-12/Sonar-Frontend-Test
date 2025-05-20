@@ -14,6 +14,7 @@ table th {
     background-color: var(--table-head);
     white-space: nowrap;
     width: 200px;
+    color: var(--form-label);
 }
 
 table thead tr {

@@ -185,6 +185,7 @@ import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignE
 import GoSocket from "./Components/GlobalFunction/GoSocket";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
+import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -243,6 +244,7 @@ function App() {
       <Router>
         {adminLogout && <AdminLogoutPopUp />}
         <GoogleTranslate />
+        <MissedCallPopup />
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />

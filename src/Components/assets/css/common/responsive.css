@@ -11,6 +11,10 @@
         padding: 10px 4px;
     }
 
+    .tangoNavs .nav-tabs .nav-link {
+        font-size: 0.75rem;
+    }
+
 }
 
 @media (max-width: 1575px) {
@@ -124,6 +128,26 @@
     }
 }
 
+@media (max-device-width: 1480px) {
+    .messageSlideBox {
+        width: 40% !important;
+    }
+
+    .mainContentApp .contactListItem h5 {
+        max-width: 100px;
+    }
+
+    .callDetailsWidth {
+        max-width: 130px;
+        width: 100%;
+    }
+
+    .mainContentApp .webrtc_newMessageUi .profileHolder {
+        width: 35px;
+        height: 35px;
+
+    }
+}
 
 @media (max-device-width: 1366px) {
     /* h3 {
@@ -493,3 +517,4 @@
         display: block;
     }
 }
+
