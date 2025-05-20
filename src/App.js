@@ -185,7 +185,7 @@ import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignE
 import GoSocket from "./Components/GlobalFunction/GoSocket";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
-import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
+import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -243,8 +243,7 @@ function App() {
     <>
       <Router>
         {adminLogout && <AdminLogoutPopUp />}
-        <GoogleTranslate />
-        <MissedCallPopup />
+        {/* <GoogleTranslate /> */}
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -260,6 +259,7 @@ function App() {
 
           <Route element={<ProtectedRoute />} />
           <Route path="/ai-dashboard" element={<AIDashboard />} />
+          <Route path="/ai-search-cdr" element={<AICDRSearch />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -355,11 +355,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControl />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -374,11 +374,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControlAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -393,11 +393,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) ||
-              checkViewSidebar(
-                "AccessControlNode",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "AccessControlNode",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <AccessControlEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -834,11 +834,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-              checkViewSidebar(
-                "BillingAddress",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -1019,13 +1019,13 @@ function App() {
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
-          <Route path="/campaign-create" element={<CampaignCreate />} />
+          {/* <Route path="/campaign-create" element={<CampaignCreate />} /> */}
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
-          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          {/* <Route path="/campaign-edit" element={<CampaignEdit />} /> */}
           <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
 
-          <Route path="/campaign-create-new" element={<CampaignCreateNEW />} />
-          <Route path="/campaign-edit-new" element={<CampaignEditNEW />} />
+          <Route path="/campaign-create" element={<CampaignCreateNEW />} />
+          <Route path="/campaign-edit" element={<CampaignEditNEW />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}

@@ -1204,14 +1204,15 @@ input[type=number] {
     z-index: 1;
 }
 
-.activeCallsAgentWrapper .callDashParkedCalls {
+.activeCallsAgentWrapper .callDashParkedCalls.static {
     position: static;
     transform: none;
     max-width: 100%;
+    z-index: auto;
 }
 
-.activeCallsAgentWrapper .overviewTableWrapper,
-.activeCallsAgentWrapper .overviewTableWrapper>* {
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper,
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper>* {
     box-shadow: none;
 }
 
@@ -1219,15 +1220,16 @@ input[type=number] {
     height: 50vh;
 }
 
-.activeCallsAgentWrapper .callDashParkedCalls .overviewTableWrapper {
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper {
     box-shadow: none;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
+
 .activeCallsAgentWrapper .clearButton2 {
     position: absolute;
-    right: 0;
-    left: unset !important;
+    /* right: 0; */
+    /* left: unset !important; */
     top: 12px;
 }
 

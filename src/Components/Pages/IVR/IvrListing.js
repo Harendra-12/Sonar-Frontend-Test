@@ -45,10 +45,9 @@ const IvrListing = () => {
       setRefreshState(false);
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-
     // if (userInput.trim().length === 0) {
     //   getData();
     // } else {
@@ -57,7 +56,7 @@ const IvrListing = () => {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = true;
     getData(shouldLoad);
   }, [ivrArr, itemsPerPage, pageNumber, debouncedSearchTerm]);
@@ -84,10 +83,10 @@ const IvrListing = () => {
     }
   }
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = false;
     getData(shouldLoad);
-  }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -135,7 +134,8 @@ const IvrListing = () => {
                         {checkViewSidebar(
                           "IvrMaster",
                           slugPermissions,
-                          account?.permissions, "add"
+                          account?.permissions,
+                          "add"
                         ) ? (
                           <Link
                             to="/ivr-add"
@@ -280,7 +280,12 @@ const IvrListing = () => {
                                       <td>
                                         <button
                                           onClick={() =>
-                                            navigate(`/call-flow`)
+                                            navigate(`/call-flow`, {
+                                              state: {
+                                                id: item.id,
+                                                name: item.ivr_name,
+                                              },
+                                            })
                                           }
                                           className="tableButton callflow"
                                         >
@@ -371,7 +376,6 @@ const IvrListing = () => {
                         </span>
                       </button>
                     ) : (
-
                       <button
                         className="panelButton gray m-0 float-end"
                         onClick={() => {
@@ -397,7 +401,6 @@ const IvrListing = () => {
                         <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
-
                   </div>
                 </div>
               </div>

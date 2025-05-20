@@ -44,6 +44,7 @@ function OngoingCall({
   const callProgressDestination = useSelector((state) => state.callProgressDestination);
   const [showTranferableList, setShowTranferableList] = useState(false);
   const [showActiveSessions, setShowActiveSessions] = useState(false);
+  const activeCall = useSelector((state) => state.activeCall);
   const {
     isMuted,
     hangup,
@@ -565,7 +566,7 @@ function OngoingCall({
   }, [attendShow, hideDialpad])
 
   useEffect(() => {
-    if (callProgressDestination.length < 11) {
+    if (callProgressDestination.length < 5) {
       const filteredExtension = accountDetails?.extensions?.filter((acc) => acc.extension == callProgressDestination);
       const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
       setCallExtraInfo({
@@ -573,13 +574,13 @@ function OngoingCall({
         type: "user",
       });
     } else {
-      const didTag = didAll.filter((item) => item.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+     const isNumberPresent = activeCall.find((item)=>(item.cid_num == callProgressDestination || item.did_tag == callProgressDestination));
       setCallExtraInfo({
-        info: didTag?.[0]?.configuration?.tag || callProgressDestination,
+        info: isNumberPresent?.did_tag || callProgressDestination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll])
+  }, [accountDetails, didAll,activeCall])
 
 
 

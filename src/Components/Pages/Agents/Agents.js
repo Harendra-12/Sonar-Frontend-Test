@@ -141,23 +141,23 @@ function Agents({ type }) {
     }
   }
 
-  // useEffect(() => {
-  //   if (onlineUsers.length > 0 && agents) {
-  //     switch (onlineFilter) {
-  //       case "online":
-  //         const onlineAgents = agents.data.filter((item) => onlineUsers.includes(String(item.extension.extension)));
-  //         setFilterUser(onlineAgents);
-  //         break;
-  //       case "offline":
-  //         const offlineAgents = agents.data.filter((item) => !onlineUsers.includes(String(item.extension.extension)));
-  //         setFilterUser(offlineAgents);
-  //         break;
-  //       default:
-  //         setFilterUser(agents.data)
-  //         break;
-  //     }
-  //   }
-  // }, [onlineUsers, agents, onlineFilter])
+  useEffect(() => {
+    if (onlineUsers.length > 0 && agents) {
+      switch (onlineFilter) {
+        case "online":
+          const onlineAgents = agents.data.filter((item) => onlineUsers.includes(String(item.extension.extension)));
+          setFilterUser(onlineAgents);
+          break;
+        case "offline":
+          const offlineAgents = agents.data.filter((item) => !onlineUsers.includes(String(item.extension.extension)));
+          setFilterUser(offlineAgents);
+          break;
+        default:
+          setFilterUser(agents.data)
+          break;
+      }
+    }
+  }, [onlineUsers, agents, onlineFilter])
 
   // Getting token from online user by checking with extension
   function getToken(extension) {
@@ -273,7 +273,7 @@ function Agents({ type }) {
                         <thead>
                           <tr>
                             <th>Name</th>
-                            <th>Caller ID</th>
+                            {/* <th>Caller ID</th> */}
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Recording</th>
@@ -313,7 +313,7 @@ function Agents({ type }) {
                                       />
                                     </td>
                                   </tr>
-                                  : agents?.data?.map((item, index) => {
+                                  : filterUser?.map((item, index) => {
                                     return (
                                       <tr>
                                         <td>
@@ -332,7 +332,7 @@ function Agents({ type }) {
                                             <div className="ms-2">{item.name}</div>
                                           </div>
                                         </td>
-                                        <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                        {/* <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td> */}
                                         <td>{item.extension.extension}</td>
                                         <td>{item?.user_role?.roles?.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>

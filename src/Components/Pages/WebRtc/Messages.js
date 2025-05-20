@@ -138,8 +138,8 @@ function Messages({
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
-  const [autoReply,setAutoReply] = useState(false);
-  const [aiProcessing,setAiProcessing]=useState(false);
+  const [autoReply, setAutoReply] = useState(false);
+  const [aiProcessing, setAiProcessing] = useState(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -648,20 +648,23 @@ function Messages({
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
-      if(from === recipient[1] && autoReply){
+      if (from === recipient[1] && autoReply) {
         setAiProcessing(true);
         setMessageInput("Generating Ai response...");
-        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply",{message:body,user_id:account.id}).then((res)=>{
-          if(res.data.statusCode === 200){
+        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
+          console.log("Response", res);
+
+          if (res.data) {
             setMessageInput(res.data.reply);
             setAiProcessing(false);
           }
-        }).catch((err)=>{
+        }).catch((err) => {
+
           console.log(err);
           setMessageInput("");
         })
       }
-      
+
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
@@ -771,6 +774,19 @@ function Messages({
           setContact(newContact);
         }
       }
+
+      if (recipient?.length > 0) {
+        setUnreadMessage((prevState) => {
+          const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+            prevState;
+          return newState;
+        });
+        dispatch({
+          type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+          recipient: [...recipient]
+        })
+      }
+
     }
   }, [incomingMessage]);
   // ===========================================================
@@ -1900,6 +1916,15 @@ function Messages({
                                         prevState;
                                       return newState;
                                     });
+                                    dispatch({
+                                        type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                        recipient: [item?.extension,
+                                        item.id,
+                                        "singleChat",
+                                        item?.name,
+                                        item?.email,
+                                        profile_picture,]
+                                    })
                                     setManageGroupChat(false);
                                   }}
                                   className="w-100 "
@@ -2052,6 +2077,10 @@ function Messages({
                                     } = prevState;
                                     return newState;
                                   });
+                                  dispatch({
+                                    type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                    recipient: [...recipient]
+                                  })
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -2554,6 +2583,16 @@ function Messages({
                                     } = prevState;
                                     return newState;
                                   });
+                                  dispatch({
+                                    type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                    recipient: [
+                                      item.group_name,
+                                      item.id,
+                                      "groupChat",
+                                      item?.group_name,
+                                      item?.email,
+                                      profile_picture,]
+                                  })
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -3342,9 +3381,23 @@ function Messages({
                                       className="formItem "
                                       placeholder="Please enter your message"
                                       value={messageInput}
-                                      onChange={(e) =>
-                                        setMessageInput(e.target.value)
+                                      onChange={(e) => {
+                                        setMessageInput(e.target.value);
+                                        // setUnreadMessage((prevState) => {
+                                        //   const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+                                        //     prevState;
+                                        //   return newState;
+                                        // });
                                       }
+                                      }
+                                      // onClick={() => {
+                                      //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
+                                      //   setUnreadMessage((prevState) => {
+                                      //     const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+                                      //       prevState;
+                                      //     return newState;
+                                      //   });
+                                      // }}
                                       onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                           if (recipient[2] === "groupChat") {
@@ -3377,14 +3430,14 @@ function Messages({
 
                               <div className=" d-flex justify-content-between align-items-center gap-2">
                                 <div className="d-flex gap-1 align-items-center">
-                                  <Tippy  content="Auto Reply with AI">
-                                  <button
-                                    className={`clearButton2 eraser ${autoReply?"active":""}`}
-                                    onClick={() => setAutoReply(!autoReply)}
-                                  >
-                                    <i class="fa-solid fa-message-bot"></i>
-                                  </button>
-                                    
+                                  <Tippy content="Auto Reply with AI">
+                                    <button
+                                      className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
+                                      onClick={() => setAutoReply(!autoReply)}
+                                    >
+                                      <i class="fa-solid fa-message-bot"></i>
+                                    </button>
+
                                   </Tippy>
                                   <button
                                     className="clearButton2 gallery"

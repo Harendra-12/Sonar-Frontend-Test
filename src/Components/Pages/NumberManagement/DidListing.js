@@ -130,7 +130,10 @@ function DidListing({ page }) {
   // Fetch ALL DID
   async function getData(shouldLoad) {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`);
+    let allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    if (page === "pbx")
+      allDidUrl = `/did/all?search=${searchQuery}&usages=pbx&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    const apiData = await generalGetFunction(allDidUrl);
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
@@ -267,7 +270,7 @@ function DidListing({ page }) {
         (item) => item?.extension == extension
       );
       const userData = findData && allUserArr?.length > 0 && allUserArr?.find(
-        (item) => item.extension.extension == findData.extension
+        (item) => item?.extension?.extension == findData.extension
       );
 
       return `${userData?.name}- `;
@@ -429,9 +432,9 @@ function DidListing({ page }) {
                                   </thead>
                                   <tbody>
                                     {didAll?.data?.filter(
-                                        (item) =>
-                                          item.usages === "" || !item.usages
-                                      )
+                                      (item) =>
+                                        item.usages === "" || !item.usages
+                                    )
                                       .map((item, index) => {
                                         return (
                                           <tr>
@@ -513,6 +516,8 @@ function DidListing({ page }) {
                           <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
                         </select>
                         <label>entries</label>
                       </div>
@@ -542,6 +547,7 @@ function DidListing({ page }) {
                             ) : (
                               ""
                             )}
+                            <th>Recording</th>
                             {page === "number" ? (
                               <>
                                 <th>Usages</th>
@@ -570,7 +576,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 11 : 9}
+                              col={page === "pbx" ? 12 : 9}
                               row={15}
                             />
                           ) : (
@@ -614,6 +620,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
+                                      <td>{item?.configuration?item?.configuration?.record?"Enabled":"Disabled":"N/A"}</td>
 
                                       {page === "number" ? (
                                         <>
@@ -992,7 +999,6 @@ function DidListing({ page }) {
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
-                      {console.log('didWithPagination', didWithPagination)}
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={didWithPagination?.last_page}

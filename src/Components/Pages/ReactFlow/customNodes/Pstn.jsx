@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const Pstn = ({ id, data }) => {
   const { setNodes } = useReactFlow();
@@ -10,11 +12,43 @@ const Pstn = ({ id, data }) => {
   const [pstnval, setPstnval] = useState();
   const [isReadonly, setIsreadonly] = useState(false);
 
+  useEffect(() => {
+    if (data.value) {
+      setPstnval(data.value);
+    }
+  }, [data.value]);
+
   const handlePstn = (event) => {
     const selectedValue = event;
     setPstnval(selectedValue);
     if (data.onUpdate) {
       data.onUpdate({ value: selectedValue });
+    }
+  };
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
     }
   };
 
@@ -83,15 +117,7 @@ const Pstn = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>

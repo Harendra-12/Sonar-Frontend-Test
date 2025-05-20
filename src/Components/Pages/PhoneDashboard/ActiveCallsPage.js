@@ -410,7 +410,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <PanelGroup autoSaveId="example" direction="horizontal">
-                                        <Panel className='leftPanel' defaultSize={60} collapsible={true} minSize={25} ref={leftPanel}>
+                                        <Panel className='leftPanel' defaultSize={50} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
@@ -517,47 +517,39 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 </button>
                                             </Tippy>
                                         </PanelResizeHandle>
-                                        <Panel className='rightPanel' defaultSize={40} collapsible={true} minSize={25} ref={rightPanel}>
+                                        <Panel className='rightPanel' defaultSize={50} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className='activeCallsAgentWrapper position-relative'>
-                                            <Tippy content="Minimize this window">
-                                            <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                <i class="fa-light fa-arrows-maximize"></i>
-                                            </button>
-                                        </Tippy> 
-                                                {!isParentWebRtc &&  <AllActiveAgentStatus isActiveCallsPage={true}/> }
-                                            </div>
-                                        </Panel>
-                                    </PanelGroup>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='callDashParkedCalls' style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(98%, -50%)' }}>
-                            <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
-                                <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
-                            </button>
-                            <div className='overviewTableWrapper p-0'>
-                                <div className='overviewTableChild'>
-                                    <div className='d-flex flex-wrap'>
-                                        <div className="col-12">
-                                            <div className="heading">
                                                 <div className='d-flex'>
-                                                    <div className="content">
-                                                        <h4>Ringing Calls</h4>
-                                                        <p>You can see all of the ringing calls here</p>
-                                                    </div>
-                                                </div>
-                                                <div className="content">
-                                                    <p className='fw-bold'>Total Calls: {ringingState.length}</p>
-                                                    <p style={{ height: 21 }}></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className="col-12"
-                                            style={{ overflow: "auto", padding: "5px 20px 5px" }}
-                                        >
-                                            <>
-                                                <nav className='tangoNavs'>
+                                                    <Tippy content="Minimize this window">
+                                                        <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
+                                                            <i class="fa-light fa-arrows-maximize"></i>
+                                                        </button>
+                                                    </Tippy>
+                                                    <AllActiveAgentStatus isActiveCallsPage={true} isParentWebRtc={false} />
+                                                    <div className="callDashParkedCalls static" style={{ borderLeft: '1px solid var(--border-color)' }}>
+                                                        <div className='overviewTableWrapper p-0'>
+                                                            <div className='overviewTableChild'>
+                                                                <div className='d-flex flex-wrap'>
+                                                                    <div className="col-12">
+                                                                        <div className="heading" style={{ paddingLeft: isParentWebRtc && '55px' }}>
+                                                                            <div className='d-flex'>
+                                                                                <div className="content">
+                                                                                    <h4>Ringing Calls</h4>
+                                                                                    <p>You can see all of the ringing calls here</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="content">
+                                                                                <p className='fw-bold'>Total Calls: {ringingState.length}</p>
+                                                                                <p style={{ height: 21 }}></p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        className="col-12"
+                                                                        style={{ overflow: "auto", padding: "0px 10px" }}
+                                                                    >
+                                                                        <>
+                                                                            {/* <nav className='tangoNavs'>
                                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <button className="nav-link active" id="nav-allringing-tab" data-bs-toggle="tab" data-bs-target="#nav-allringing" type="button" role="tab" aria-controls="nav-allringing" aria-selected="true">All <span className="unread">{ringingState.length}</span></button>
                                                         <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
@@ -567,248 +559,255 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                         <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound <span className="unread" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{ringingState.filter((call) => call.direction === "inbound").length}</span></button>
                                                         <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
                                                     </div>
-                                                </nav>
-                                                <div className="tab-content" id="nav-tabContent">
-                                                    <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started since</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.map((item, key) => {
-                                                                            return (
-                                                                                <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : item?.direction === "inbound" ? "#fff3cd" : "" }}>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.did_tag}</td>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_name}</td>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.dest}</td>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td>
-                                                                                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
-                                                                                    {/* <td>{item.name.split("/")[1]}</td> */}
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                </nav> */}
+                                                                            <div className="tab-content mt-3" id="nav-tabContent" style={{ paddingTop: '35px' }}>
+                                                                                <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    {/* <th>To</th> */}
+                                                                                                    {/* <th>Feature Tag</th> */}
+                                                                                                    <th>Started since</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : item?.direction === "inbound" ? "#fff3cd" : "" }}>
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.did_tag}</td>
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_name}</td>
+                                                                                                                {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.dest}</td> */}
+                                                                                                                {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td> */}
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
+                                                                                                                {/* <td>{item.name.split("/")[1]}</td> */}
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-rgroupring" role="tabpanel" aria-labelledby="nav-rgroupring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started at</th>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-rgroupring" role="tabpanel" aria-labelledby="nav-rgroupring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    <th>To</th>
+                                                                                                    <th>Feature Tag</th>
+                                                                                                    <th>Started at</th>
 
-                                                                    </tr>
-                                                                </thead>
+                                                                                                </tr>
+                                                                                            </thead>
 
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.filter((call) => call.application_state === "ringgroup").map((item, key) => {
-                                                                            return (
-                                                                                <tr>
-                                                                                    <td>{key + 1}</td>
-                                                                                    <td>{item.did_tag}</td>
-                                                                                    <td>{item.cid_name}</td>
-                                                                                    <td>{item.dest}</td>
-                                                                                    <td>{item.feature_tag}</td>
-                                                                                    <td>{item.realTimeDuration}</td>
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.filter((call) => call.application_state === "ringgroup").map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key + 1}</td>
+                                                                                                                <td>{item.did_tag}</td>
+                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.dest}</td>
+                                                                                                                <td>{item.feature_tag}</td>
+                                                                                                                <td>{item.realTimeDuration}</td>
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-ccenterring" role="tabpanel" aria-labelledby="nav-ccenterring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started at</th>
-                                                                    </tr>
-                                                                </thead>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-ccenterring" role="tabpanel" aria-labelledby="nav-ccenterring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    <th>To</th>
+                                                                                                    <th>Feature Tag</th>
+                                                                                                    <th>Started at</th>
+                                                                                                </tr>
+                                                                                            </thead>
 
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.filter((call) => call.application_state === "callcenter").map((item, key) => {
-                                                                            return (
-                                                                                <tr>
-                                                                                    <td>{key + 1}</td>
-                                                                                    <td>{item.did_tag}</td>
-                                                                                    <td>{item.cid_name}</td>
-                                                                                    <td>{item.dest}</td>
-                                                                                    <td>{item.feature_tag}</td>
-                                                                                    <td>{item.realTimeDuration}</td>
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.filter((call) => call.application_state === "callcenter").map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key + 1}</td>
+                                                                                                                <td>{item.did_tag}</td>
+                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.dest}</td>
+                                                                                                                <td>{item.feature_tag}</td>
+                                                                                                                <td>{item.realTimeDuration}</td>
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-didring" role="tabpanel" aria-labelledby="nav-didring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>Total Count</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-didring" role="tabpanel" aria-labelledby="nav-didring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>Total Count</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
 
-                                                                    {numberCount && Object.keys(numberCount).map((item, key) => {
-                                                                        return (
-                                                                            <tr>
-                                                                                <td>{key + 1}</td>
-                                                                                <td>{item}</td>
-                                                                                <td>{numberCount[item]}</td>
-                                                                            </tr>
-                                                                        )
-                                                                    })}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-internalring" role="tabpanel" aria-labelledby="nav-internalring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started since</th>
-                                                                    </tr>
-                                                                </thead>
+                                                                                                {numberCount && Object.keys(numberCount).map((item, key) => {
+                                                                                                    return (
+                                                                                                        <tr>
+                                                                                                            <td>{key + 1}</td>
+                                                                                                            <td>{item}</td>
+                                                                                                            <td>{numberCount[item]}</td>
+                                                                                                        </tr>
+                                                                                                    )
+                                                                                                })}
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-internalring" role="tabpanel" aria-labelledby="nav-internalring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    <th>To</th>
+                                                                                                    <th>Feature Tag</th>
+                                                                                                    <th>Started since</th>
+                                                                                                </tr>
+                                                                                            </thead>
 
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.filter((item) => item.direction === "internal").map((item, key) => {
-                                                                            return (
-                                                                                <tr>
-                                                                                    <td>{key + 1}</td>
-                                                                                    <td>{item.did_tag}</td>
-                                                                                    <td>{item.cid_name}</td>
-                                                                                    <td>{item.dest}</td>
-                                                                                    <td>{item.feature_tag}</td>
-                                                                                    <td>{item.realTimeDuration}</td>
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.filter((item) => item.direction === "internal").map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key + 1}</td>
+                                                                                                                <td>{item.did_tag}</td>
+                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.dest}</td>
+                                                                                                                <td>{item.feature_tag}</td>
+                                                                                                                <td>{item.realTimeDuration}</td>
 
-                                                                                    {/* <td>{item.name.split("/")[1]}</td> */}
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                                                                                {/* <td>{item.name.split("/")[1]}</td> */}
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-inboundring" role="tabpanel" aria-labelledby="nav-inboundring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started since</th>
-                                                                    </tr>
-                                                                </thead>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-inboundring" role="tabpanel" aria-labelledby="nav-inboundring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    <th>To</th>
+                                                                                                    <th>Feature Tag</th>
+                                                                                                    <th>Started since</th>
+                                                                                                </tr>
+                                                                                            </thead>
 
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.filter((item) => item.direction === "inbound").map((item, key) => {
-                                                                            return (
-                                                                                <tr>
-                                                                                    <td>{key + 1}</td>
-                                                                                    <td>{item.did_tag}</td>
-                                                                                    <td>{item.cid_name}</td>
-                                                                                    <td>{item.dest}</td>
-                                                                                    <td>{item.feature_tag}</td>
-                                                                                    <td>{item.realTimeDuration}</td>
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.filter((item) => item.direction === "inbound").map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key + 1}</td>
+                                                                                                                <td>{item.did_tag}</td>
+                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.dest}</td>
+                                                                                                                <td>{item.feature_tag}</td>
+                                                                                                                <td>{item.realTimeDuration}</td>
 
-                                                                                    {/* <td>{item.name.split("/")[1]}</td> */}
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                                                                                {/* <td>{item.name.split("/")[1]}</td> */}
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div className="tab-pane fade" id="nav-outboundring" role="tabpanel" aria-labelledby="nav-outboundring-tab" tabindex="0">
-                                                        <div className="tableContainer" style={{ height: '50vh' }}>
-                                                            <table>
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Did Tag</th>
-                                                                        <th>From </th>
-                                                                        <th>To</th>
-                                                                        <th>Feature Tag</th>
-                                                                        <th>Started since</th>
-                                                                    </tr>
-                                                                </thead>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="tab-pane fade" id="nav-outboundring" role="tabpanel" aria-labelledby="nav-outboundring-tab" tabindex="0">
+                                                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Did Tag</th>
+                                                                                                    <th>From </th>
+                                                                                                    <th>To</th>
+                                                                                                    <th>Feature Tag</th>
+                                                                                                    <th>Started since</th>
+                                                                                                </tr>
+                                                                                            </thead>
 
-                                                                <tbody>
-                                                                    {
-                                                                        activeCall && updatedData.filter((item) => item.direction === "outbound").map((item, key) => {
-                                                                            return (
-                                                                                <tr>
-                                                                                    <td>{key + 1}</td>
-                                                                                    <td>{item.did_tag}</td>
-                                                                                    <td>{item.cid_name}</td>
-                                                                                    <td>{item.dest}</td>
-                                                                                    <td>{item.feature_tag}</td>
-                                                                                    <td>{item.realTimeDuration}</td>
+                                                                                            <tbody>
+                                                                                                {
+                                                                                                    activeCall && updatedData.filter((item) => item.direction === "outbound").map((item, key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key + 1}</td>
+                                                                                                                <td>{item.did_tag}</td>
+                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.dest}</td>
+                                                                                                                <td>{item.feature_tag}</td>
+                                                                                                                <td>{item.realTimeDuration}</td>
 
-                                                                                    {/* <td>{item.name.split("/")[1]}</td> */}
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                    }
+                                                                                                                {/* <td>{item.name.split("/")[1]}</td> */}
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
 
-                                                                </tbody>
-                                                            </table>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </>
-                                        </div>
-                                    </div>
+                                            </div>
+                                        </Panel>
+                                    </PanelGroup>
                                 </div>
                             </div>
                         </div>
