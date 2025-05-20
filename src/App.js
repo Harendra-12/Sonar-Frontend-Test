@@ -1019,13 +1019,13 @@ function App() {
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
-          <Route path="/campaign-create" element={<CampaignCreate />} />
+          {/* <Route path="/campaign-create" element={<CampaignCreate />} /> */}
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
-          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          {/* <Route path="/campaign-edit" element={<CampaignEdit />} /> */}
           <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
 
-          <Route path="/campaign-create-new" element={<CampaignCreateNEW />} />
-          <Route path="/campaign-edit-new" element={<CampaignEditNEW />} />
+          <Route path="/campaign-create" element={<CampaignCreateNEW />} />
+          <Route path="/campaign-edit" element={<CampaignEditNEW />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}
