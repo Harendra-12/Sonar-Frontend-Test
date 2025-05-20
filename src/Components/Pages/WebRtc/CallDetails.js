@@ -202,11 +202,11 @@ function CallDetails({
   };
 
   const displayName =
-      callDetails?.["Call-Direction"] === "outbound"
+    callDetails?.["Call-Direction"] === "outbound"
       ? callDetails?.["variable_sip_to_user"]
       : callDetails?.["variable_sip_from_user"] === extension
-      ? callDetails?.["variable_sip_to_user"]
-      : callDetails?.["variable_sip_from_user"];
+        ? callDetails?.["variable_sip_to_user"]
+        : callDetails?.["variable_sip_from_user"];
   return (
     <>
       <div className="messageOverlay ">
@@ -223,11 +223,11 @@ function CallDetails({
                   ? callDetails?.["Caller-Caller-ID-Number"]
                   : callDetails?.["Caller-Callee-ID-Number"]
                 : callDetails?.["Caller-Callee-ID-Number"]} */}
-                 {displayName
-                          ? displayName
-                          : callDetails?.caller_user
-                          ? callDetails?.caller_user?.username
-                          : "USER XYZ"}
+              {displayName
+                ? displayName
+                : callDetails?.caller_user
+                  ? callDetails?.caller_user?.username
+                  : "USER XYZ"}
             </p>
           </div>
           <div className="d-flex my-auto">
@@ -494,7 +494,7 @@ function CallDetails({
                             <th>Time</th>
                             <th>Call Type</th>
                             <th>Duration</th>
-                            <th>Recordings</th>
+                            {account?.user_role?.roles?.name != "Agent" && <th>Recordings</th>}
                             {/* <th></th> */}
                           </tr>
                         </thead>
@@ -626,7 +626,7 @@ function CallDetails({
                                     {formatDuration(item.variable_billsec)}
                                   </td>
 
-                                  <td>
+                                  {account?.user_role?.roles?.name != "Agent" && <td>
                                     {item.variable_billsec > 0 && <button
                                       className="tableButton px-2 mx-0"
                                       onClick={() => {
@@ -714,7 +714,7 @@ function CallDetails({
                                         <li className="dropdown-item"></li>
                                       </ul>
                                     </div> */}
-                                  </td>
+                                  </td>}
                                 </tr>
                                 {item?.recording_path &&
                                   currentPlaying === item?.recording_path && (
