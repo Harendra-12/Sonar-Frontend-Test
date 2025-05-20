@@ -1204,6 +1204,33 @@ input[type=number] {
     z-index: 1;
 }
 
+.activeCallsAgentWrapper .callDashParkedCalls {
+    position: static;
+    transform: none;
+    max-width: 100%;
+}
+
+.activeCallsAgentWrapper .overviewTableWrapper,
+.activeCallsAgentWrapper .overviewTableWrapper>* {
+    box-shadow: none;
+}
+
+.activeCallsAgentWrapper .tableContainer {
+    height: 50vh;
+}
+
+.activeCallsAgentWrapper .callDashParkedCalls .overviewTableWrapper {
+    box-shadow: none;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.activeCallsAgentWrapper .clearButton2 {
+    position: absolute;
+    right: 0;
+    left: unset !important;
+    top: 12px;
+}
+
 .callDashParkedCalls {
     max-width: 30%;
     position: fixed;
