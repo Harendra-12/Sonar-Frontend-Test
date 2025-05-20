@@ -79,7 +79,7 @@ function CdrFilterReport({ page }) {
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
@@ -100,13 +100,14 @@ function CdrFilterReport({ page }) {
   const [showDropDown, setShowDropdown] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false);
-  const [filteredColumns, setFilteredColumns] = useState([])
-  const [filteredColumnForTable, setFilteredColumnForTable] = useState([])
-  const [originalColumnSequenceForTable, setOriginalColumnSequenceForTable] = useState([])
-  const [columnsOptions, setColumnsOptions] = useState([])
-  const [columnOriginalSequence, setColumnOriginalSequence] = useState([])
+  const [filteredColumns, setFilteredColumns] = useState([]);
+  const [filteredColumnForTable, setFilteredColumnForTable] = useState([]);
+  const [originalColumnSequenceForTable, setOriginalColumnSequenceForTable] =
+    useState([]);
+  const [columnsOptions, setColumnsOptions] = useState([]);
+  const [columnOriginalSequence, setColumnOriginalSequence] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState("");
-  const [advanceSearch,setAdvanceSearch]=useState()
+  const [advanceSearch, setAdvanceSearch] = useState();
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -292,7 +293,6 @@ function CdrFilterReport({ page }) {
     getRingGroupDashboardData();
   }, [callBlockRefresh]);
 
-
   async function getData(shouldLoad) {
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
@@ -301,8 +301,8 @@ function CdrFilterReport({ page }) {
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-            )
+                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+              )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
@@ -319,10 +319,10 @@ function CdrFilterReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-              ? "pstn"
-              : page === "callrecording"
-                ? callType
-                : page,
+            ? "pstn"
+            : page === "callrecording"
+            ? callType
+            : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -395,7 +395,7 @@ function CdrFilterReport({ page }) {
   useEffect(() => {
     setLoading(true);
     const debounceTimeout = setTimeout(() => {
-      setRefreshState(true)
+      setRefreshState(true);
       const shouldLoad = true;
       getData(shouldLoad);
     }, 400); // wait 400ms after last change
@@ -549,48 +549,66 @@ function CdrFilterReport({ page }) {
     setDuplicatePopUpData(item);
   };
   function exportToCSV(data, filename = "data.csv") {
-  if (!data || !data.length) {
-    console.error("No data to export.");
-    return;
+    if (!data || !data.length) {
+      console.error("No data to export.");
+      return;
+    }
+    // const headers = Object.keys(data[0])
+
+    // 1. Define keys you want to prioritize/change order
+    const priorityKeys = [
+      "id",
+      "application_state_to_ext",
+      "variable_start_stamp",
+      "variable_billsec",
+      "variable_sip_from_user",
+      "tag",
+      "variable_sip_to_user",
+      "e_name",
+    ]; // move these to the front in this order
+
+    // 2. Get the remaining keys
+    const allKeys = Object.keys(data[0]);
+    const remainingKeys = allKeys.filter((key) => !priorityKeys.includes(key));
+
+    // 3. Combine into final column order
+    const columnOrder = [...priorityKeys, ...remainingKeys];
+    const columnMap = {
+      variable_billsec: "billsec",
+    };
+
+    // 2. Build headers from columnMap using columnOrder
+    const headers = columnOrder.map((key) => columnMap[key] || key);
+
+    // 3. Build rows using the defined columnOrder
+   const rows = data.map((obj) =>
+  columnOrder
+    .map((key) => {
+      let value = obj[key] ?? "";
+      if (key === "e_name") {
+        value = value.replace(/\s+/g, ".");
+      }
+      return JSON.stringify(value);
+    })
+    .join(",")
+);
+
+
+    // 4. Combine and export
+    const csvContent = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.download = filename;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
-  // const headers = Object.keys(data[0])
-
- // 1. Define keys you want to prioritize/change order
-  const priorityKeys = ["id", "application_state_to_ext","variable_start_stamp","variable_billsec","variable_sip_from_user","tag","variable_sip_to_user","e_name"]; // move these to the front in this order
-
-  // 2. Get the remaining keys
-  const allKeys = Object.keys(data[0]);
-  const remainingKeys = allKeys.filter((key) => !priorityKeys.includes(key));
-
-  // 3. Combine into final column order
-  const columnOrder = [...priorityKeys, ...remainingKeys];
-  const columnMap = {
-    variable_billsec: "billsec",
-  };
-
-  // 2. Build headers from columnMap using columnOrder
-  const headers = columnOrder.map((key) => columnMap[key] || key);
-
-  // 3. Build rows using the defined columnOrder
-  const rows = data.map((obj) =>
-    columnOrder.map((key) => JSON.stringify(obj[key] ?? "")).join(",")
-  );
-
-  // 4. Combine and export
-  const csvContent = [headers.join(","), ...rows].join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-
-  link.href = url;
-  link.download = filename;
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
 
   // function exportToCSV(data, filename = "data.csv") {
   //   if (!data || !data.length) {
@@ -601,14 +619,12 @@ function CdrFilterReport({ page }) {
   //   // Extract headers from the keys of the first object
   //   const headers = Object.keys(data[0]);
   //   console.log("headers", headers);
-    
 
   //   // Map data rows into CSV format
   //   const rows = data.map((obj) =>
   //     headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
   //   );
   //   console.log("rows", rows);
-    
 
   //   // Combine headers and rows into a single string
   //   const csvContent = [headers.join(","), ...rows].join("\n");
@@ -657,8 +673,8 @@ function CdrFilterReport({ page }) {
         filter === "missed"
           ? ["Missed", "Failed", "Voicemail"]
           : filter === "completed"
-            ? "Answered"
-            : ""
+          ? "Answered"
+          : ""
       );
       setCallDirection(direction === "all" ? "" : direction);
 
@@ -691,22 +707,17 @@ function CdrFilterReport({ page }) {
   };
 
   useEffect(() => {
-    const columns = []
-    const originKeys = []
+    const columns = [];
+    const originKeys = [];
     {
       showKeys.map((key) => {
-        if (
-          cdr?.data[0]?.hasOwnProperty(key) &&
-          key !== "id"
-        ) {
+        if (cdr?.data[0]?.hasOwnProperty(key) && key !== "id") {
           let formattedKey = "";
           if (key === "variable_sip_from_user") {
             formattedKey = "Caller No.";
           } else if (key === "variable_sip_to_user") {
             formattedKey = "Destination";
-          } else if (
-            key === "Caller-Orig-Caller-ID-Name"
-          ) {
+          } else if (key === "Caller-Orig-Caller-ID-Name") {
             formattedKey = "Caller Name";
           } else if (key === "recording_path") {
             formattedKey = "Recording";
@@ -714,9 +725,7 @@ function CdrFilterReport({ page }) {
             formattedKey = "Duration";
           } else if (key === "application_state") {
             formattedKey = "Via/Route";
-          } else if (
-            key === "application_state_to_ext"
-          ) {
+          } else if (key === "application_state_to_ext") {
             formattedKey = "Ext";
           } else if (key === "e_name") {
             formattedKey = "User Name";
@@ -730,70 +739,74 @@ function CdrFilterReport({ page }) {
             formattedKey = key
               .replace(/[-_]/g, " ")
               .toLowerCase()
-              .replace(/\b\w/g, (char) =>
-                char.toUpperCase()
-              );
+              .replace(/\b\w/g, (char) => char.toUpperCase());
           }
-          columns.push(formattedKey)
-          originKeys.push({ key: key, formattedKey: formattedKey })
-          setSelectedColumn(columns)
-
+          columns.push(formattedKey);
+          originKeys.push({ key: key, formattedKey: formattedKey });
+          setSelectedColumn(columns);
         }
         return null;
-      })
+      });
     }
     if (page !== "billing") {
-      columns.push("Block")
-      columns.push("Note")
-      columns.push("Duplicate")
-      originKeys.push({ key: "Block", formattedKey: "Block" })
-      originKeys.push({ key: "Note", formattedKey: "Note" })
-      originKeys.push({ key: "Duplicate", formattedKey: "Duplicate" })
-      setSelectedColumn(prev => [...prev, "Block", "note", "Duplicate"])
+      columns.push("Block");
+      columns.push("Note");
+      columns.push("Duplicate");
+      originKeys.push({ key: "Block", formattedKey: "Block" });
+      originKeys.push({ key: "Note", formattedKey: "Note" });
+      originKeys.push({ key: "Duplicate", formattedKey: "Duplicate" });
+      setSelectedColumn((prev) => [...prev, "Block", "note", "Duplicate"]);
     }
-    const indexOfOriginKey = originKeys?.findIndex((data) => data?.key == "recording_path")
+    const indexOfOriginKey = originKeys?.findIndex(
+      (data) => data?.key == "recording_path"
+    );
     if (indexOfOriginKey !== -1) {
       let removedItem = originKeys?.splice(indexOfOriginKey, 1)[0];
       let insertIndex = originKeys?.length - 3;
       originKeys.splice(insertIndex, 0, removedItem);
     }
-    setFilteredColumnForTable(originKeys)
-    setOriginalColumnSequenceForTable(originKeys)
-    let columnIndex = columns?.findIndex(val => val === "Recording");
+    setFilteredColumnForTable(originKeys);
+    setOriginalColumnSequenceForTable(originKeys);
+    let columnIndex = columns?.findIndex((val) => val === "Recording");
     if (columnIndex !== -1) {
       let removedItem = columns?.splice(columnIndex, 1)[0];
       let insertIndex = columns?.length - 3;
       columns?.splice(insertIndex, 0, removedItem);
     }
-    setFilteredColumns(columns)
+    setFilteredColumns(columns);
     const optionsCol = columns?.map((data, index) => ({
       value: data,
-      label: data
-    }))
-    optionsCol.shift()
-    const index = optionsCol?.findIndex((data) => data?.value == "Recording")
+      label: data,
+    }));
+    optionsCol.shift();
+    const index = optionsCol?.findIndex((data) => data?.value == "Recording");
     if (index !== -1) {
       let removedItem = optionsCol?.splice(index, 1)[0];
       let insertIndex = optionsCol?.length - 3;
       optionsCol?.splice(insertIndex, 0, removedItem);
     }
-    setColumnsOptions(optionsCol)
-    setColumnOriginalSequence(columns)
-  }, [showKeys, cdr?.data?.length])
+    setColumnsOptions(optionsCol);
+    setColumnOriginalSequence(columns);
+  }, [showKeys, cdr?.data?.length]);
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true);
     const shouldLoad = false;
     getData(shouldLoad);
-  }
+  };
 
   function getAdvanceSearch() {
-    if(advanceSearch){
-      axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { querry: advanceSearch }).then((res) => {
-        console.log("Response",res);
-       })
-    }else{
-      toast.error("Please enter some data to search")
+    if (advanceSearch) {
+      axios
+        .post(
+          "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
+          { querry: advanceSearch }
+        )
+        .then((res) => {
+          console.log("Response", res);
+        });
+    } else {
+      toast.error("Please enter some data to search");
     }
   }
   return (
@@ -803,16 +816,17 @@ function CdrFilterReport({ page }) {
         <section id="phonePage">
           <div className="container-fluid px-0 position-relative">
             <Header
-              title={`${page === "billing"
-                ? "Billing Reports"
-                : page === "callcenter"
+              title={`${
+                page === "billing"
+                  ? "Billing Reports"
+                  : page === "callcenter"
                   ? "Call Center Reports"
                   : page === "ringgroup"
-                    ? "Ring Group Reports"
-                    : page === "callrecording"
-                      ? "Call Recordings"
-                      : "CDR Reports"
-                }`}
+                  ? "Ring Group Reports"
+                  : page === "callrecording"
+                  ? "Call Recordings"
+                  : "CDR Reports"
+              }`}
             />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -824,12 +838,12 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing"
                             : page === "callcenter"
-                              ? "Call Center Reports"
-                              : page === "ringgroup"
-                                ? "Ring Group Reports"
-                                : page === "callrecording"
-                                  ? "Call Recordings"
-                                  : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                            ? "Ring Group Reports"
+                            : page === "callrecording"
+                            ? "Call Recordings"
+                            : "CDR Reports"}
 
                           <button
                             className="clearButton"
@@ -844,19 +858,18 @@ function CdrFilterReport({ page }) {
                               }
                             ></i>
                           </button>
-
                         </h4>
                         <p>
                           Here are all the{" "}
                           {page === "billing"
                             ? "Billing Reports"
                             : page === "callcenter"
-                              ? "Call Center Reports"
-                              : page === "ringgroup"
-                                ? "Ring Group Reports"
-                                : page === "callrecording"
-                                  ? "Call Recordings"
-                                  : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                            ? "Ring Group Reports"
+                            : page === "callrecording"
+                            ? "Call Recordings"
+                            : "CDR Reports"}
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -906,7 +919,7 @@ function CdrFilterReport({ page }) {
                             className="panelButton"
                             disabled={loading}
                             onClick={() => setExportPopup(true)}
-                          // type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                            // type="button" data-bs-toggle="dropdown" aria-expanded="true"
                           >
                             <span className="text">Export</span>
                             <span className="icon">
@@ -1153,7 +1166,7 @@ function CdrFilterReport({ page }) {
                         )}
 
                         {page === "all" &&
-                          filteredKeys.includes("variable_sip_to_user") ? (
+                        filteredKeys.includes("variable_sip_to_user") ? (
                           <>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
@@ -1240,7 +1253,7 @@ function CdrFilterReport({ page }) {
                           ""
                         )}
                         {page === "billing" ||
-                          !filteredKeys.includes("Hangup-Cause") ? (
+                        !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
                           <>
@@ -1405,44 +1418,57 @@ function CdrFilterReport({ page }) {
                               type="button"
                               data-bs-toggle="dropdown"
                               data-bs-auto-close="outside"
-                              style={{ width: '160px' }}
+                              style={{ width: "160px" }}
                             >
                               Column Filters
                             </button>
-                            <ul
-                              className="dropdown-menu"
-                            >
+                            <ul className="dropdown-menu">
                               {columnsOptions?.map((option) => (
-                                <li key={option.value} >
+                                <li key={option.value}>
                                   <div className="dropdown-item" href="#">
                                     <input
                                       type="checkbox"
-                                      checked={selectedColumn.includes(option.value)}
+                                      checked={selectedColumn.includes(
+                                        option.value
+                                      )}
                                       onChange={(event) => {
                                         const isChecked = event.target.checked;
                                         let updatedValues = [];
 
                                         if (isChecked) {
-                                          updatedValues = [...selectedColumn, option.value];
+                                          updatedValues = [
+                                            ...selectedColumn,
+                                            option.value,
+                                          ];
                                         } else {
                                           updatedValues = selectedColumn.filter(
                                             (value) => value !== option.value
                                           );
                                         }
 
-                                        const filteredArrayLocal = columnOriginalSequence?.filter((value) =>
-                                          updatedValues.includes(value)
-                                        );
+                                        const filteredArrayLocal =
+                                          columnOriginalSequence?.filter(
+                                            (value) =>
+                                              updatedValues.includes(value)
+                                          );
                                         setSelectedColumn(updatedValues);
                                         setFilteredColumns(filteredArrayLocal);
 
-                                        const filteredVallocal = originalColumnSequenceForTable?.filter(
-                                          (data) => updatedValues.includes(data?.formattedKey)
+                                        const filteredVallocal =
+                                          originalColumnSequenceForTable?.filter(
+                                            (data) =>
+                                              updatedValues.includes(
+                                                data?.formattedKey
+                                              )
+                                          );
+                                        setFilteredColumnForTable(
+                                          filteredVallocal
                                         );
-                                        setFilteredColumnForTable(filteredVallocal);
                                       }}
                                     />
-                                    <span className="text-dark ms-2">{option.label}</span>
+                                    <span className="text-dark ms-2">
+                                      {option.label}
+                                    </span>
                                   </div>
                                 </li>
                               ))}
@@ -1556,7 +1582,7 @@ function CdrFilterReport({ page }) {
                                           </td>
 
                                           {filteredColumnForTable.map((val) => {
-                                            const key = val?.key
+                                            const key = val?.key;
                                             if (
                                               item.hasOwnProperty(key) &&
                                               key !== "id"
@@ -1566,13 +1592,13 @@ function CdrFilterReport({ page }) {
                                                   <td key={key}>
                                                     {item["recording_path"] &&
                                                       item["variable_billsec"] >
-                                                      0 && (
+                                                        0 && (
                                                         <button
                                                           className="tableButton px-2 mx-0"
                                                           onClick={() => {
                                                             if (
                                                               item[
-                                                              "recording_path"
+                                                                "recording_path"
                                                               ] ===
                                                               currentPlaying
                                                             ) {
@@ -1583,16 +1609,16 @@ function CdrFilterReport({ page }) {
                                                             } else {
                                                               handlePlaying(
                                                                 item[
-                                                                "recording_path"
+                                                                  "recording_path"
                                                                 ]
                                                               );
                                                             }
                                                           }}
                                                         >
                                                           {currentPlaying ===
-                                                            item[
+                                                          item[
                                                             "recording_path"
-                                                            ] ? (
+                                                          ] ? (
                                                             <i className="fa-solid fa-chevron-up"></i>
                                                           ) : (
                                                             <i className="fa-solid fa-chevron-down"></i>
@@ -1618,12 +1644,13 @@ function CdrFilterReport({ page }) {
                                                   inbound: {
                                                     icon:
                                                       statusIcons[
-                                                      item.variable_DIALSTATUS
+                                                        item.variable_DIALSTATUS
                                                       ] ||
                                                       "fa-phone-arrow-down-left",
                                                     color:
                                                       item.variable_DIALSTATUS ==
-                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Missed" ||
+                                                      item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
@@ -1632,12 +1659,13 @@ function CdrFilterReport({ page }) {
                                                   outbound: {
                                                     icon:
                                                       statusIcons[
-                                                      item.variable_DIALSTATUS
+                                                        item.variable_DIALSTATUS
                                                       ] ||
                                                       "fa-phone-arrow-up-right",
                                                     color:
                                                       item.variable_DIALSTATUS ==
-                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Missed" ||
+                                                      item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
@@ -1646,11 +1674,12 @@ function CdrFilterReport({ page }) {
                                                   internal: {
                                                     icon:
                                                       statusIcons[
-                                                      item.variable_DIALSTATUS
+                                                        item.variable_DIALSTATUS
                                                       ] || "fa-headset",
                                                     color:
                                                       item.variable_DIALSTATUS ==
-                                                        "Missed" || item.variable_DIALSTATUS ==
+                                                        "Missed" ||
+                                                      item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
@@ -1660,7 +1689,7 @@ function CdrFilterReport({ page }) {
 
                                                 const callType =
                                                   callIcons[
-                                                  item["Call-Direction"]
+                                                    item["Call-Direction"]
                                                   ] || callIcons.internal;
 
                                                 return (
@@ -1688,11 +1717,11 @@ function CdrFilterReport({ page }) {
                                                       item["application_state"]
                                                     )
                                                       ? item[
-                                                      "other_leg_destination_number"
-                                                      ]
+                                                          "other_leg_destination_number"
+                                                        ]
                                                       : item[
-                                                      "Caller-Callee-ID-Number"
-                                                      ]}{" "}
+                                                          "Caller-Callee-ID-Number"
+                                                        ]}{" "}
                                                     {item[
                                                       "application_state_name"
                                                     ] &&
@@ -1724,20 +1753,22 @@ function CdrFilterReport({ page }) {
                                           })}
                                           {page !== "billing" && (
                                             <>
-                                              {
-                                                filteredColumnForTable?.find((data) => data?.key == "Block") &&
+                                              {filteredColumnForTable?.find(
+                                                (data) => data?.key == "Block"
+                                              ) && (
                                                 <td>
                                                   {item["Call-Direction"] ===
                                                     "inbound" ||
-                                                    item["Call-Direction"] ===
+                                                  item["Call-Direction"] ===
                                                     "outbound" ? (
                                                     <button
                                                       disabled={isBlocked}
                                                       effect="ripple"
-                                                      className={`tableButton delete ${isBlocked
-                                                        ? "bg-danger text-white"
-                                                        : ""
-                                                        } ms-0`}
+                                                      className={`tableButton delete ${
+                                                        isBlocked
+                                                          ? "bg-danger text-white"
+                                                          : ""
+                                                      } ms-0`}
                                                       style={{
                                                         height: "34px",
                                                         width: "34px",
@@ -1748,15 +1779,15 @@ function CdrFilterReport({ page }) {
                                                             "Call-Direction"
                                                           ] === "inbound"
                                                             ? item[
-                                                            "Caller-Caller-ID-Number"
-                                                            ]
-                                                            : item[
-                                                              "Call-Direction"
-                                                            ] === "outbound"
-                                                              ? item[
-                                                              "Caller-Callee-ID-Number"
+                                                                "Caller-Caller-ID-Number"
                                                               ]
-                                                              : "N/A"
+                                                            : item[
+                                                                "Call-Direction"
+                                                              ] === "outbound"
+                                                            ? item[
+                                                                "Caller-Callee-ID-Number"
+                                                              ]
+                                                            : "N/A"
                                                         );
                                                         setPopUp(true);
                                                       }}
@@ -1775,9 +1806,10 @@ function CdrFilterReport({ page }) {
                                                     ""
                                                   )}
                                                 </td>
-                                              }
-                                              {
-                                                filteredColumnForTable?.find((data) => data?.key == "Note") &&
+                                              )}
+                                              {filteredColumnForTable?.find(
+                                                (data) => data?.key == "Note"
+                                              ) && (
                                                 <td>
                                                   <button
                                                     effect="ripple"
@@ -1790,14 +1822,18 @@ function CdrFilterReport({ page }) {
                                                       setSelectedCdr(item.id);
                                                     }}
                                                   >
-                                                    <Tippy content={"View Note"}>
+                                                    <Tippy
+                                                      content={"View Note"}
+                                                    >
                                                       <i className="fa-solid fa-comment-dots"></i>
                                                     </Tippy>
                                                   </button>
                                                 </td>
-                                              }
-                                              {
-                                                filteredColumnForTable?.find((data) => data?.key == "Duplicate") &&
+                                              )}
+                                              {filteredColumnForTable?.find(
+                                                (data) =>
+                                                  data?.key == "Duplicate"
+                                              ) && (
                                                 <td>
                                                   {item?.duplicated == 1 && (
                                                     <button
@@ -1807,13 +1843,16 @@ function CdrFilterReport({ page }) {
                                                       }
                                                     >
                                                       <Tippy
-                                                        content={"View Duplicate"}
+                                                        content={
+                                                          "View Duplicate"
+                                                        }
                                                       >
                                                         <i className="fa-solid fa-clone"></i>
                                                       </Tippy>
                                                     </button>
                                                   )}
-                                                </td>}
+                                                </td>
+                                              )}
                                             </>
                                           )}
                                         </tr>
