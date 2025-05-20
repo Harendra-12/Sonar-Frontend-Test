@@ -438,6 +438,28 @@ function CampaignCreateNEW() {
                                 )}
                               </div>
                             </div>
+                            <div className="formRow align-items-start">
+                              <div className="formLabel">
+                                <label>Rechain</label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  {...register("rechain", { ...requiredValidator })}
+                                  defaultValue={"1"}
+                                >
+                                  <option value="1">Enabled</option>
+                                  <option value="0">Disabled</option>
+                                </select>
+                                {errors.rechain && (
+                                  <ErrorMessage
+                                    text={
+                                      errors.rechain.message
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
                             <div className="formRow">
                               <div className="formLabel">
                                 <label>Target Timezone</label>
@@ -919,27 +941,6 @@ function CampaignCreateNEW() {
                                 })} />
                                 {errors.max_attempts_per_record && (
                                   <ErrorMessage text={errors.max_attempts_per_record.message} />
-                                )}
-                              </div>
-                            </div>
-                            <div className="formRow col-xl-6">
-                              <div className="formLabel">
-                                <label>Rechain</label>
-                              </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem"
-                                  {...register("rechain", { ...requiredValidator })}
-                                >
-                                  <option value="1">Enabled</option>
-                                  <option value="0">Disabled</option>
-                                </select>
-                                {errors.rechain && (
-                                  <ErrorMessage
-                                    text={
-                                      errors.rechain.message
-                                    }
-                                  />
                                 )}
                               </div>
                             </div>
