@@ -19,14 +19,14 @@ const NODE_TYPES = [
   {
     code: "ringGroup",
     name: "Ring Group",
-    type: "ringGroup",
+    type: "ringgroup",
     description: "Press digits option for the user",
     icon: <i className="fa-solid fa-headset"></i>,
   },
   {
     code: "callCenter",
     name: "Call Center",
-    type: "callCenter",
+    type: "queue",
     description: "Press digits option for the user",
     icon: <i className="fa-solid fa-users"></i>,
   },
@@ -45,9 +45,9 @@ const NODE_TYPES = [
     icon: <i className="fa-solid fa-phone-slash"></i>,
   },
   {
-    code: "backToIvr",
+    code: "backtoivr",
     name: "Back To Ivr",
-    type: "backToIvr",
+    type: "backtoivr",
     description: "Press digits option for the user",
     icon: <i className="fa-solid fa-rotate-left"></i>,
   },

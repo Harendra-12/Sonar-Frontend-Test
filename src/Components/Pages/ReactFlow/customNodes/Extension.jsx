@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import { useDispatch, useSelector } from "react-redux";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const Extension = ({ id, data }) => {
   const dispatch = useDispatch();
-
   const { setNodes } = useReactFlow();
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false);
   const [extension, setExtension] = useState([]);
@@ -22,12 +23,41 @@ const Extension = ({ id, data }) => {
         extensionRefresh: extensionRefresh + 1,
       });
     }
-  }, [extensionArr, extensionRefresh]);
+  }, [extensionArr, extensionRefresh, dispatch]);
 
   const handleExtension = (event) => {
-    const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    const selectedOption = event.target.selectedOptions[0];
+    console.log("Selected option: ", selectedOption.dataset.extension);
+    if (selectedOption.value && data.onUpdate) {
+      data.onUpdate({
+        value: selectedOption.dataset.extension,
+      });
+    }
+  };
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
     }
   };
 
@@ -39,7 +69,7 @@ const Extension = ({ id, data }) => {
       >
         <div className="node-header">
           <div className="node-title">
-            ī<i className="fa-solid fa-phone-volume"></i>
+            <i className="fa-solid fa-phone-volume"></i>
             <input
               type="text"
               value={data.label}
@@ -67,14 +97,22 @@ const Extension = ({ id, data }) => {
           {extension.length < 1 && <p>No extension found</p>}
           {extension.length > 0 && (
             <div className="d-flex flex-column">
-              <label htmlFor="extension">Choose a extension:</label>
+              <label htmlFor="extension">Choose a extension:</label>{" "}
               <select
                 name="extension"
                 id="extension"
+                defaultValue={data.value || ""}
                 onChange={(e) => handleExtension(e)}
               >
+                <option value="" disabled selected>
+                  Select Extension
+                </option>
                 {extension.map((value, index) => (
-                  <option value={value.extension} key={index}>
+                  <option
+                    value={value.extension}
+                    key={index}
+                    data-extension={value.extension}
+                  >
                     {value.extension}
                   </option>
                 ))}
@@ -109,15 +147,7 @@ const Extension = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>

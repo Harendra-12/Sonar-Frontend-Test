@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import { useDispatch, useSelector } from "react-redux";
+import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 const Ivr = ({ id, data }) => {
   const dispatch = useDispatch();
@@ -23,11 +25,39 @@ const Ivr = ({ id, data }) => {
       });
     }
   }, [ivrRefresh, ivrArr]);
-
   const handleIvr = (event) => {
     const selectedValue = event.target.value;
-    if (data.onUpdate) {
-      data.onUpdate({ value: selectedValue });
+    if (selectedValue && data.onUpdate) {
+      data.onUpdate({
+        value: `ivr_${selectedValue}`,
+        // ivr_option_id: String(selectedValue),
+      });
+    }
+  };
+
+  // Delete node handler
+  const handleDeleteNode = async () => {
+    try {
+      if (data?.main_id) {
+        // If the node has a main_id, delete it from the backend first
+        const apiData = await generalDeleteFunction(`/ivrnode/${data.main_id}`);
+        if (!apiData?.status) {
+          toast.error(apiData?.message || "Failed to delete node");
+
+          return;
+        }
+      }
+
+      // Remove the node from the flow
+      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== id));
+      if (data.setInitialFlowDataRefresher) {
+        data.setInitialFlowDataRefresher();
+      }
+    } catch (error) {
+      toast.error("Error deleting node");
+      console.error("Error deleting node:", error);
+    } finally {
+      setAddNewTagPopUp(false);
     }
   };
 
@@ -65,10 +95,22 @@ const Ivr = ({ id, data }) => {
           {ivr.length < 1 && <p>No ivr found</p>}
           {ivr.length > 0 && (
             <div className="d-flex flex-column">
-              <label for="ivr">Choose a ivr:</label>
-              <select name="ivr" id="ivr" onChange={(e) => handleIvr(e)}>
+              <label for="ivr">Choose a ivr:</label>{" "}
+              <select
+                name="ivr"
+                id="ivr"
+                defaultValue={data.value.split("_")[1] || ""}
+                onChange={(e) => handleIvr(e)}
+              >
+                <option value="" disabled selected>
+                  Select IVR
+                </option>
                 {ivr.map((value, index) => (
-                  <option value={`ivr_${String(value.id)}`} key={index}>
+                  <option
+                    value={value.id}
+                    key={index}
+                    data-name={value.ivr_name}
+                  >
                     {value.ivr_name}
                   </option>
                 ))}
@@ -103,15 +145,7 @@ const Ivr = ({ id, data }) => {
                     <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => {
-                    setAddNewTagPopUp(false);
-                    setNodes((prevNodes) =>
-                      prevNodes.filter((node) => node.id !== id)
-                    );
-                  }}
-                >
+                <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
                     <i class="fa-solid fa-trash"></i>
