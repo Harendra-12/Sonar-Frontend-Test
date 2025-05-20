@@ -69,15 +69,15 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
 
     return (
         <>
-            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : isActiveCallsPage ? 'none' : 'translate(98%, -50%)' }}>
-               {!isActiveCallsPage && <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
+            <div className="callDashParkedCalls" style={!isActiveCallsPage ? { transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(98%, -50%)' } : undefined}>
+                {!isActiveCallsPage && <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
                     <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
                 </button>}
                 <div className="overviewTableWrapper p-0">
                     <div className="overviewTableChild">
                         <div className="d-flex flex-wrap">
                             <div className="col-12">
-                                <div className="heading">
+                                <div className="heading" style={isActiveCallsPage ? { paddingLeft: '55px' } : undefined}>
                                     <div className="content">
                                         <h4>Agent Status</h4>
                                         <p>You can see all of the active and inactive agents here</p>
