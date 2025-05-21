@@ -78,7 +78,11 @@ const Ivr = ({ id, data }) => {
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
+              style={{
+                cursor: "pointer",
+                opacity: "0.75",
+                fontSize: "initial",
+              }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -90,15 +94,30 @@ const Ivr = ({ id, data }) => {
           </button>
         </div>
         <p className="title">{data.description}</p>
-        <div style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
+        <div
+          style={{
+            backgroundColor: "#212529",
+            borderRadius: "10px",
+            padding: "8px",
+          }}
+        >
           {ivr.length < 1 && <p>No ivr found</p>}
           {ivr.length > 0 && (
             <div className="d-flex flex-column">
-              <label style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a IVR:</label>{" "}
+              <label
+                style={{
+                  fontSize: "0.875rem",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                  marginBottom: "5px",
+                }}
+              >
+                Choose a IVR:
+              </label>{" "}
               <select
                 name="ivr"
                 id="ivr"
-                defaultValue={data.value.split("_")[1] || ""}
+                defaultValue={data?.value.split("_")[1] || ""}
                 onChange={(e) => handleIvr(e)}
                 className="form-select"
               >
