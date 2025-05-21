@@ -76,7 +76,7 @@ const CallCenter = ({ id, data }) => {
               readOnly={isReadonly}
               onChange={(e) => data.onUpdate({ label: e.target.value })}
               onBlur={() => setIsreadonly(true)}
-              className="bg-transparent border-none"
+              className="bg-transparent border-0"
             />
 
             <i

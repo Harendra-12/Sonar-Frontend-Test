@@ -294,15 +294,15 @@ const Reactflow = () => {
           >
             <Panel position="top-right" className="conversation-panel">
               <ConversationOptions />
-              <div className="d-flex flex-col gap-2 pt-2">
-                <button onClick={exportFlowData} className="btn btn-primary ">
-                  {buttonType}
+              <div className="pt-2 w-100">
+                <button onClick={exportFlowData} className="panelButton static w-100">
+                  <span className="text">{buttonType}</span>
                 </button>
                 <button
                   onClick={() => onLayout("LR")}
-                  className="btn btn-success"
+                  className="panelButton static w-100 edit mt-2"
                 >
-                  Auto Layout
+                  <span className="text">Auto Layout</span>
                 </button>
               </div>
             </Panel>
