@@ -2490,7 +2490,7 @@ input[type=number] {
 }
 
 
-.missedCallAlertBox{
+.missedCallAlertBox {
     background: var(--me-body-bg2);
     padding: 15px 20px;
     position: fixed;
@@ -2501,31 +2501,52 @@ input[type=number] {
     z-index: 9999;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.14) 0 0 10px;
-     border: 1px solid rgba(201, 7, 7, 0.22);
+    border: 1px solid rgba(201, 7, 7, 0.22);
 }
-.missedCallAlertBox .callIfo{
+
+.missedCallAlertBox .callIfo {
     width: 50px;
     height: 50px;
     border-radius: 100px;
     background: #ce0202;
-   flex-shrink: 0;
+    flex-shrink: 0;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.missedCallAlertBox .details h4{
+
+.missedCallAlertBox .details h4 {
     font-size: 15px !important;
     margin-bottom: 5px;
 }
-.missedCallAlertBox .details p{
+
+.missedCallAlertBox .details p {
     font-size: 12px !important;
     color: var(--form-label);
     margin-bottom: 0;
 }
-.missedCallAlertBox .clearButton2{
+
+.missedCallAlertBox .clearButton2 {
     position: absolute;
     right: 0;
     top: 0;
     z-index: 5;
+}
+
+.balance-box {
+    background:linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
+    text-align: center;
+}
+
+.balance-box .itemWrapper {
+    background: transparent !important;
+}
+
+.balance-box .data-number3 {
+    backdrop-filter: blur(100px);
+    box-shadow: rgb(213 213 213 / 27%) 0 0 10px;
+    border-radius: 9px;
+    background: #ffffff2b;
+    border-top: 0;
 }
