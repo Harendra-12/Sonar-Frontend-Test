@@ -294,7 +294,7 @@ const Reactflow = () => {
           >
             <Panel position="top-right" className="conversation-panel">
               <ConversationOptions />
-              <div className="pt-2 w-100">
+              <div className="pt-3 w-100">
                 <button onClick={exportFlowData} className="panelButton static w-100">
                   <span className="text">{buttonType}</span>
                 </button>
