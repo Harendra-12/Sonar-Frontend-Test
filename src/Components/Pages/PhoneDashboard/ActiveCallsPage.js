@@ -321,7 +321,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                         </div>
                                                                         <div className='text-center'>
                                                                             <p>{item?.model_type}</p>
-                                                                            {item?.model?.tag &&<p><strong>Tag:</strong> {item?.model?.tag}</p>}
+                                                                            {item?.model?.tag && <p><strong>Tag:</strong> {item?.model?.tag}</p>}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -532,7 +532,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                             <div className='overviewTableChild'>
                                                                 <div className='d-flex flex-wrap'>
                                                                     <div className="col-12">
-                                                                        <div className="heading" style={{ paddingLeft: isParentWebRtc && '55px' }}>
+                                                                        <div className="heading">
                                                                             <div className='d-flex'>
                                                                                 <div className="content">
                                                                                     <h4>Ringing Calls</h4>
