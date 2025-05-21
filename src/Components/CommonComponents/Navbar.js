@@ -731,6 +731,7 @@ function Navbar() {
                             "/call-desposition",
                             "/agent-disposition-manage",
                             "/dialer-cdr-report",
+                            "/did-listing-tracker"
                           ])
                             ? "show"
                             : ""
@@ -839,7 +840,22 @@ function Navbar() {
                                   <div className="itemTitle">Desposition</div>
                                 </NavLink>
                               </li>
-
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/did-listing-dialer"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/did-listing-dialer"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Number Configuration</div>
+                                </NavLink>
+                              </li>
                               {/* <li className="tabItem ">
                                 <NavLink
                                   to="/call-desposition"

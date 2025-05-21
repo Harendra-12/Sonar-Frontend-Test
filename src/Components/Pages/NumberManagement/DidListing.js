@@ -80,6 +80,8 @@ function DidListing({ page }) {
         setDid(didAll?.data?.filter((item) => item.usage === "pbx"));
       } else if (page === "dialer") {
         setDid(didAll?.data?.filter((item) => item.usage === "dialer"));
+      } else if(page === "tracker"){
+        setDid(didAll?.data?.filter((item) => item?.usage === "tracker"))
       }
       const shouldLoad = true;
       getData(shouldLoad);
@@ -130,9 +132,9 @@ function DidListing({ page }) {
   // Fetch ALL DID
   async function getData(shouldLoad) {
     if (shouldLoad) setLoading(true);
-    let allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`
-    if (page === "pbx")
-      allDidUrl = `/did/all?search=${searchQuery}&usages=pbx&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    let allDidUrl = `/did/all?search=${searchQuery}&usages=${page}&page=${pageNumber}&row_per_page=${entriesPerPage}`
+    if (page === "number")
+      allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`
     const apiData = await generalGetFunction(allDidUrl);
     if (apiData?.status) {
       setLoading(false);
@@ -1039,6 +1041,7 @@ function DidListing({ page }) {
                     <option value="">None</option>
                     <option value="pbx">PBX</option>
                     <option value="dialer">Dialer</option>
+                    <option value="tracker">Tracker</option>
                   </select>
                   <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                     <button

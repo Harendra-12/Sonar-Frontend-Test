@@ -443,7 +443,7 @@ const counterReducer = (state = initialState, action) => {
       };
     case "SET_CAMPAIGN_DETAILS":
       return { ...state, campaignDetails: action.campaignDetails };
-    case "REMOVE_NOTIFICATION_FOR_MESSAGE": 
+    case ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE: 
       return { ...state, recipient_to_remove_notification: action?.recipient }
     default:
       return state;

@@ -44,6 +44,7 @@ import MessageProfileDetails from "./components/MessageProfileDetails";
 import ChatsCalls from "./components/ChatsCalls";
 import axios from "axios";
 import { set } from "date-fns";
+import { ActionType } from "../../Redux/reduxActionType";
 
 function Messages({
   setSelectedModule,
@@ -782,7 +783,7 @@ function Messages({
           return newState;
         });
         dispatch({
-          type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+          type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
           recipient: [...recipient]
         })
       }
@@ -1918,7 +1919,7 @@ function Messages({
                                       return newState;
                                     });
                                     dispatch({
-                                        type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
                                         recipient: [item?.extension,
                                         item.id,
                                         "singleChat",
@@ -2079,7 +2080,7 @@ function Messages({
                                     return newState;
                                   });
                                   dispatch({
-                                    type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                    type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
                                     recipient: [...recipient]
                                   })
                                   item.message_groupusers.map((user) => {
@@ -2585,7 +2586,7 @@ function Messages({
                                     return newState;
                                   });
                                   dispatch({
-                                    type: "REMOVE_NOTIFICATION_FOR_MESSAGE",
+                                    type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
                                     recipient: [
                                       item.group_name,
                                       item.id,

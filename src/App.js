@@ -693,6 +693,7 @@ function App() {
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
+          <Route path="/did-listing-dialer" element={<DidListing page="dialer" />} />
           <Route path="/did-config" element={<DidConfig />} />
           <Route path="/management-get-did" element={<NewGetDid />} />
           {/* <Route path="/add-number" element={<AddNumber />} /> */}
