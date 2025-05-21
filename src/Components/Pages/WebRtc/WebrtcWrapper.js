@@ -338,6 +338,7 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
+      setCallLoading(true);
       // setIsCallLoading(true)
       if (callCurrentPage === 1) {
         // setCallLoading(true);
@@ -533,6 +534,7 @@ const WebrtcWrapper = () => {
             endDate={callendDate}
             searchQuery={callsearchQuery}
             clickStatus={callclickStatus}
+            setCallClickStatus={setCallClickStatus}
             refreshCalls={refreshCalls}
             allApiData={callallApiData}
             data={calldata}

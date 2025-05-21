@@ -74,6 +74,7 @@ function Call({
   endDate,
   searchQuery,
   clickStatus,
+  setCallClickStatus,
   refreshCalls,
   allApiData,
   rawData,
@@ -211,32 +212,32 @@ function Call({
 
     if (filteredCalls[0] && !firstTimeClickedExtension) {
       setClickedExtension(
-       filteredCalls[0]["Call-Direction"] === "outbound"
-      ? filteredCalls[0]["variable_sip_to_user"]
-      : filteredCalls[0]["variable_sip_from_user"] === extension
-      ? filteredCalls[0]["variable_sip_to_user"]
-      : filteredCalls[0]["variable_sip_from_user"]
+        filteredCalls[0]["Call-Direction"] === "outbound"
+          ? filteredCalls[0]["variable_sip_to_user"]
+          : filteredCalls[0]["variable_sip_from_user"] === extension
+            ? filteredCalls[0]["variable_sip_to_user"]
+            : filteredCalls[0]["variable_sip_from_user"]
       );
       setFirstTimeClickedExtension(true);
     }
     setCallHistory(
       filteredCalls?.[0] &&
-        allApiData?.filter((item) => {
-          if (!isCustomerAdmin) {
-            return (
+      allApiData?.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
             //   item["variable_sip_from_user"] === clickedExtension ||
             //   item["variable_sip_to_user"] === clickedExtension
             // );
-              (
-                // item["variable_sip_from_user"] === extension &&
-                item["variable_sip_to_user"] === clickedExtension) ||
-              (
-                // item["variable_sip_to_user"] === extension &&
-                item["variable_sip_from_user"] === clickedExtension)
-            );
-          }
-          return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
-        })
+            (
+              // item["variable_sip_from_user"] === extension &&
+              item["variable_sip_to_user"] === clickedExtension) ||
+            (
+              // item["variable_sip_to_user"] === extension &&
+              item["variable_sip_from_user"] === clickedExtension)
+          );
+        }
+        return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
+      })
     );
   }, [data, clickStatus]);
   const formatTime = (duration) => {
@@ -253,10 +254,10 @@ function Call({
     setClickedCall(item);
     setClickedExtension(
       item["Call-Direction"] === "outbound"
-      ? item["variable_sip_to_user"]
-      : item["variable_sip_from_user"] === extension
-      ? item["variable_sip_to_user"]
-      : item["variable_sip_from_user"]
+        ? item["variable_sip_to_user"]
+        : item["variable_sip_from_user"] === extension
+          ? item["variable_sip_to_user"]
+          : item["variable_sip_from_user"]
     );
   };
 
@@ -498,8 +499,8 @@ function Call({
   useEffect(() => {
     if (clickedExtension) {
       const filteredHistory = data.filter((item) => {
-        console.log(item["variable_sip_from_user"], item["variable_sip_to_user"],clickedExtension);
-        
+        console.log(item["variable_sip_from_user"], item["variable_sip_to_user"], clickedExtension);
+
         if (!isCustomerAdmin) {
           return (
             (
@@ -881,13 +882,17 @@ function Call({
                 </div>
 
                 <div className="col-12">
-                  {/* <nav className="mt-3">
+                  <nav className="mt-3">
                     <div
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
+                      <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> All</button>
+                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> Inbound</button>
+                      <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> Outbound</button>
+                      <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> Missed</button>
                     </div>
-                  </nav> */}
+                  </nav>
                   <div className="tab-content">
                     <div
                       className="callList"

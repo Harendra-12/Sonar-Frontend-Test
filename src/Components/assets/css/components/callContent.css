@@ -180,8 +180,9 @@
     font-weight: 400;
     color: #ababab;
 }
-.callhistory-date{
-     font-size: 0.75rem !important;
+
+.callhistory-date {
+    font-size: 0.75rem !important;
     margin: 0px 0 5px;
     font-family: Roboto;
     font-weight: 400;
@@ -807,7 +808,7 @@
 
 .mainContentApp .webrtc_newMessageUi .tab-content .callList {
     overflow: hidden auto;
-    height: calc(100vh - 270px);
+    height: calc(100vh - 330px);
 }
 
 /* .newMessageWrapper {
@@ -935,7 +936,8 @@
     border-radius: 8px;
     padding: 10px !important;
 }
-.dropdown-menu.settingDropDown{
+
+.dropdown-menu.settingDropDown {
     position: absolute;
     inset: 0px auto auto 0px;
     margin: 0px;
