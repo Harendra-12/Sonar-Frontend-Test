@@ -2488,3 +2488,44 @@ input[type=number] {
     max-height: 300px;
     overflow-y: auto;
 }
+
+
+.missedCallAlertBox{
+    background: var(--me-body-bg2);
+    padding: 15px 20px;
+    position: fixed;
+    right: 10px;
+    bottom: 20px;
+    max-width: 350px;
+    width: 100%;
+    z-index: 9999;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.14) 0 0 10px;
+     border: 1px solid rgba(201, 7, 7, 0.22);
+}
+.missedCallAlertBox .callIfo{
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    background: #ce0202;
+   flex-shrink: 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.missedCallAlertBox .details h4{
+    font-size: 15px !important;
+    margin-bottom: 5px;
+}
+.missedCallAlertBox .details p{
+    font-size: 12px !important;
+    color: var(--form-label);
+    margin-bottom: 0;
+}
+.missedCallAlertBox .clearButton2{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+}

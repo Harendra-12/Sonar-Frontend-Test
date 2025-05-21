@@ -1706,8 +1706,7 @@ function Messages({
           </div>
           <div className="container-fluid ">
             <div className="row webrtc_newMessageUi">
-              <div
-                className="col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
+              <div className="col-12 col-xl-3 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
                 style={
                   {
                     // height: "100%",
@@ -2700,8 +2699,7 @@ function Messages({
                 </div>
                 {/* </div> */}
               </div>
-              <div
-                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
+              <div className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
@@ -3506,7 +3504,7 @@ function Messages({
                   {/* <Panel className='rightPanel' defaultSize={30} collapsible={true} minSize={25} ref={rightPanel}> */}
                   {manageGroupChat ? (
                     <div
-                      className="h-100"
+                      className="h-100 "
                       style={{
                         width: "30%",
                         transition: "all 0.4s ease-in-out",
@@ -3793,7 +3791,7 @@ function Messages({
                                             <i className="fa-light fa-user" />
                                           )}
                                         </div>
-                                        <div className="my-auto ms-2 ms-xl-3">
+                                        <div className="my-auto ms-2 ms-xl-3 ">
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
@@ -3886,7 +3884,7 @@ function Messages({
                     </div>
                   ) : (
                     <div
-                      className={`h-100`}
+                      className={`h-100 messageSlideBox`}
                       style={{
                         width:
                           isActiveAgentsOpen &&
