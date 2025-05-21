@@ -122,10 +122,10 @@
   background-color: #7c4585;
   color: white;
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  min-height: 400px;
-  min-width: 400px;
+  /* min-height: 400px; */
+  /* min-width: 400px; */
   display: flex;
   flex-direction: column;
 }
@@ -139,6 +139,7 @@
 .node-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .node-title i {
@@ -152,14 +153,15 @@
 }
 
 .node-delete-btn {
-  background: none;
-  border: 1px solid #991b1b;
-  height: 40px;
-  width: 40px;
+  background: #ffffff60;
+  /* border: 1px solid #ff0000; */
+  border: none;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   display: flex;
   align-items: center;
-  color: #991b1b;
+  color: #ff0000;
   font-size: 18px;
   justify-content: center;
 }
@@ -203,4 +205,42 @@
   color: white;
   font-weight: 400;
   text-transform: uppercase;
+}
+
+.pressDigitsWrapper {
+  background: #e16f00;
+  border-radius: 8px;
+  padding: 12px;
+  width: 280px;
+  position: relative;
+}
+
+.react-flow__node input.bg-transparent {
+  color: #fff;
+}
+
+.react-flow__node .title {
+  font-size: 0.75rem;
+  color: #fff;
+  opacity: 0.75;
+  font-style: normal;
+}
+
+.react-flow__node i {
+  color: #fff;
+}
+
+.react-flow__node .form-select {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: #fff;
+}
+
+.react-flow__node .form-select>* {
+  background-color: #212529;
+}
+
+.react-flow__node input {
+  background: transparent;
+  color: #fff;
 }

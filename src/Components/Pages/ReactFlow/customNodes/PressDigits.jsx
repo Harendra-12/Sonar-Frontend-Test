@@ -95,20 +95,11 @@ const PressDigits = ({ id, data }) => {
   };
 
   return (
-    <div
-      style={{
-        background: "#f8f9fa",
-        borderRadius: "8px",
-        padding: "12px",
-        width: "280px",
-        border: "1px solid #dee2e6",
-        position: "relative",
-      }}
-    >
+    <div className="pressDigitsWrapper">
       <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
+        style={{ display: "flex", alignItems: "center" }}
       >
-        <i className="fa-solid fa-keyboard" style={{ marginRight: "8px" }} />
+        <i className="fa-light fa-keyboard" style={{ marginRight: "8px" }} />
         {/* <h3 style={{ margin: 0, fontSize: "16px" }}>{data.label}</h3> */}
         <input
           type="text"
@@ -121,19 +112,19 @@ const PressDigits = ({ id, data }) => {
 
         <i
           className="fa-solid fa-pen-to-square ms-3"
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", opacity: '0.75' }}
           onClick={() => setIsreadonly(!isReadonly)}
         />
       </div>
 
-      <p style={{ fontSize: "12px", color: "#6c757d", marginBottom: "12px" }}>
+      <p className="title">
         {data.description}
       </p>
 
       <div
         style={{
           backgroundColor: "#212529",
-          borderRadius: "4px",
+          borderRadius: "10px",
           padding: "8px",
         }}
       >
@@ -144,7 +135,7 @@ const PressDigits = ({ id, data }) => {
             justifyContent: "space-between",
           }}
         >
-          <span style={{ color: "#f8f9fa", fontSize: "14px" }}>
+          <span style={{ color: "#f8f9fa", fontSize: "14px", fontStyle: "normal", fontWeight: "500" }}>
             Input Fields
           </span>
           <button
@@ -223,7 +214,7 @@ const PressDigits = ({ id, data }) => {
                   padding: "4px",
                 }}
               >
-                <i className="fa-solid fa-trash" />
+                <i className="fa-solid fa-trash text-danger" />
               </button>
             </div>
 
@@ -234,7 +225,7 @@ const PressDigits = ({ id, data }) => {
               onChange={(e) => handleSelectChange(field.id, e.target.value)}
             >
               <option value="" disabled>
-                select a digit
+                Select a digit
               </option>
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 .filter((digit) => {

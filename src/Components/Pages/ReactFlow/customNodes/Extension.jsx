@@ -65,11 +65,11 @@ const Extension = ({ id, data }) => {
     <>
       <div
         className="press-digits-node"
-        style={{ backgroundColor: "#FF90BB", overflow: "auto" }}
+        style={{ backgroundColor: "#ff5999", overflow: "auto" }}
       >
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-phone-volume"></i>
+            <i class="fa-light fa-phone-intercom"></i>
             <input
               type="text"
               value={data.label}
@@ -80,7 +80,7 @@ const Extension = ({ id, data }) => {
             />
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -88,20 +88,20 @@ const Extension = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
-        <div>
+        <p className="title">{data.description}</p>
+        <div style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
           {extension.length < 1 && <p>No extension found</p>}
           {extension.length > 0 && (
             <div className="d-flex flex-column">
-              <label htmlFor="extension">Choose a extension:</label>{" "}
+              <label htmlFor="extension" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Extension:</label>{" "}
               <select
                 name="extension"
                 id="extension"
                 defaultValue={data.value || ""}
+                className="form-select"
                 onChange={(e) => handleExtension(e)}
               >
                 <option value="" disabled selected>

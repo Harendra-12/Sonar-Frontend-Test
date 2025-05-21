@@ -69,7 +69,7 @@ const CallCenter = ({ id, data }) => {
       <div className="press-digits-node" style={{ backgroundColor: "#3D365C" }}>
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-users"></i>
+            <i className="fa-light fa-users"></i>
             <input
               type="text"
               value={data.label}
@@ -81,7 +81,7 @@ const CallCenter = ({ id, data }) => {
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -89,20 +89,20 @@ const CallCenter = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
-        <div>
+        <p className="title">{data.description}</p>
+        <div style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
           {callCenter.length < 1 && <p>No callCenter found</p>}
           {callCenter.length > 1 && (
             <div className="d-flex flex-column">
-              <label for="callCenter">Choose a callCenter:</label>{" "}
+              <label for="callCenter" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Call Center:</label>{" "}
               <select
                 name="callCenter"
                 id="callCenter"
                 defaultValue={data.value || ""}
+                className="form-select"
                 onChange={(e) => handleCallCenter(e)}
               >
                 <option value="" disabled selected>

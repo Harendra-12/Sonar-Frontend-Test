@@ -44,10 +44,10 @@ const Hangup = ({ id, data }) => {
 
   return (
     <>
-      <div className="press-digits-node" style={{ backgroundColor: "#3A59D1" }}>
+      <div className="press-digits-node" style={{ backgroundColor: "#f93c3c" }}>
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-headset"></i>
+            <i class="fa-light fa-phone-hangup"></i>
             <input
               type="text"
               value={data.label}
@@ -59,7 +59,7 @@ const Hangup = ({ id, data }) => {
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -67,11 +67,10 @@ const Hangup = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
+        <p className="title mb-0">{data.description}</p>
       </div>
       <CustomHandle type="target" position={Position.Left} />
       {/* <CustomHandle type="source" position={Position.Right} /> */}
