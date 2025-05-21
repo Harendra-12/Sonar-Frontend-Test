@@ -576,7 +576,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 12 : 9}
+                              col={page === "pbx" ? 12 : 10}
                               row={15}
                             />
                           ) : (
@@ -620,7 +620,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      <td>{item?.configuration?item?.configuration?.record?"Enabled":"Disabled":"N/A"}</td>
+                                      <td>{item?.configuration ? item?.configuration?.record ? "Enabled" : "Disabled" : "N/A"}</td>
 
                                       {page === "number" ? (
                                         <>
