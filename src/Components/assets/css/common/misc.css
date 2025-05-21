@@ -1204,14 +1204,15 @@ input[type=number] {
     z-index: 1;
 }
 
-.activeCallsAgentWrapper .callDashParkedCalls:not(.extra) {
+.activeCallsAgentWrapper .callDashParkedCalls.static {
     position: static;
     transform: none;
     max-width: 100%;
+    z-index: auto;
 }
 
-.activeCallsAgentWrapper .callDashParkedCalls:not(.extra) .overviewTableWrapper,
-.activeCallsAgentWrapper .callDashParkedCalls:not(.extra) .overviewTableWrapper>* {
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper,
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper>* {
     box-shadow: none;
 }
 
@@ -1219,7 +1220,7 @@ input[type=number] {
     height: 50vh;
 }
 
-.activeCallsAgentWrapper .callDashParkedCalls:not(.extra) .overviewTableWrapper {
+.activeCallsAgentWrapper .callDashParkedCalls.static .overviewTableWrapper {
     box-shadow: none;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;

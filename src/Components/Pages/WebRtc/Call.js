@@ -888,7 +888,7 @@ function Call({
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
                       <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> All</button>
-                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> Inbound</button>
+                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> Received</button>
                       <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> Outbound</button>
                       <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> Missed</button>
                     </div>
