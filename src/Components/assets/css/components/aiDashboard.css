@@ -212,7 +212,7 @@
     color: #7366ff !important;
 }
 
-.warning i {
+.warning.list-group-item i {
     color: #7366ff;
 }
 

@@ -305,7 +305,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             customModule?.map((item, index) => {
                                                 return (
                                                     <div className='col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-12' key={index}>
-                                                        <div className={`deviceProvision position-relative`} >
+                                                        <div className={`deviceProvision position-relative balance-box`} >
                                                             <button
                                                                 disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
@@ -313,20 +313,21 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                             </button>
                                                             <div className="itemWrapper a">
                                                                 <div className="heading h-auto d-block">
-                                                                    <div className='d-flex align-items-center0 justify-content-between '>
-                                                                        <div>
+                                                                    <div className='d-flex align-items-center justify-content-center flex-column '>
+                                                                        <div className='text-center'>
                                                                             <h5>{item?.name}</h5>
-                                                                            <p>Type: {item?.model_type}</p>
-                                                                        </div>
-                                                                        <div className='text-end'>
+                                                                            {/* <p>Type: {item?.model_type}</p> */}
                                                                             <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
-                                                                            <p>{item?.model?.tag && `Tag: ${item?.model?.tag}`}</p>
+                                                                        </div>
+                                                                        <div className='text-center'>
+                                                                            <p>{item?.model_type}</p>
+                                                                            {item?.model?.tag &&<p><strong>Tag:</strong> {item?.model?.tag}</p>}
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="data-number3 h-auto mt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
-                                                                    <div className="d-flex justify-content-center pt-2">
+                                                                <div className="data-number3 h-auto mt-2" >
+                                                                    <div className="d-flex justify-content-center py-2">
                                                                         {
                                                                             item.active ?
                                                                                 <div className="col-3">
