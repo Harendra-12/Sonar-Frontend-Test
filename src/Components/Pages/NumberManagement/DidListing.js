@@ -80,7 +80,7 @@ function DidListing({ page }) {
         setDid(didAll?.data?.filter((item) => item.usage === "pbx"));
       } else if (page === "dialer") {
         setDid(didAll?.data?.filter((item) => item.usage === "dialer"));
-      } else if(page === "tracker"){
+      } else if (page === "tracker") {
         setDid(didAll?.data?.filter((item) => item?.usage === "tracker"))
       }
       const shouldLoad = true;
@@ -578,7 +578,7 @@ function DidListing({ page }) {
                         <tbody>
                           {loading ? (
                             <SkeletonTableLoader
-                              col={page === "pbx" ? 12 : 10}
+                              col={page === "number" ? 10 : 12}
                               row={15}
                             />
                           ) : (
