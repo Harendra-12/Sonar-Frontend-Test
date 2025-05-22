@@ -117,7 +117,7 @@ const Ivr = ({ id, data }) => {
               <select
                 name="ivr"
                 id="ivr"
-                defaultValue={data?.value.split("_")[1] || ""}
+                defaultValue={data?.value?.split("_")[1] || ""}
                 onChange={(e) => handleIvr(e)}
                 className="form-select"
               >
