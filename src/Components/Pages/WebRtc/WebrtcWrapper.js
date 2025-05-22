@@ -391,11 +391,11 @@ const WebrtcWrapper = () => {
       } else {
         setIsCallLoading(true);
       }
-      const basePaths = {
-        all: "/call-details-phone",
-        incoming: "/cdr/inbound",
-        outgoing: "/cdr/outbound",
-        missed: "/cdr/missed",
+     const basePaths = {
+        all: "/call-details-phone?",
+        incoming: "/call-details-phone?inbound",
+        outgoing: "/call-details-phone?outbound",
+        missed: "/call-details-phone?missed",
       };
       const basePath = basePaths[callclickStatus] || "";
       if (basePath) {
@@ -403,7 +403,7 @@ const WebrtcWrapper = () => {
           callfilterBy === "date" || callstartDate == "" || callendDate == ""
             ? `date=${callstartDate}`
             : `date_range=${callstartDate},${callendDate}`;
-        const url = `${basePath}?page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
+        const url = `${basePath}&page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
         const apiData = await generalGetFunction(url);
 
         if (apiData.status) {
