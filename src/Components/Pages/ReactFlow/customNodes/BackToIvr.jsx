@@ -46,7 +46,7 @@ const BackToIvr = ({ id, data }) => {
       <div className="press-digits-node" style={{ backgroundColor: "#626F47" }}>
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-rotate-left"></i>
+            <i className="fa-light fa-rotate-left"></i>
             {/* <h1>{data.label}</h1> */}
             <input
               type="text"
@@ -54,12 +54,12 @@ const BackToIvr = ({ id, data }) => {
               readOnly={isReadonly}
               onChange={(e) => data.onUpdate({ label: e.target.value })}
               onBlur={() => setIsreadonly(true)}
-              className="bg-transparent border-none"
+              className="bg-transparent border-0"
             />
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -67,11 +67,10 @@ const BackToIvr = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
+        <p className="title mb-0">{data.description}</p>
       </div>
       <CustomHandle type="target" position={Position.Left} />
       {/* <CustomHandle type="source" position={Position.Right} /> */}

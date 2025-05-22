@@ -32,35 +32,37 @@
 .conversation-panel {
   top: 0;
   left: 0;
-  width: 15%;
-  height: 40%;
+  min-width: 300px;
+  width: max-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  background-color: #0f172b;
   border-radius: 10px;
 }
 
 .conversation-options {
   width: 100%;
   height: 100%;
-  border: 2px dashed #547792;
+  border: 2px dashed #ffffff;
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
-  background-color: #94b4c1;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: auto;
 }
+
 .conversation-options h1 {
-  color: #547792;
-  font-size: 18px;
+  color: #fff;
+  font-size: 1rem;
   margin-bottom: 10px;
-  border-bottom: 2px solid #547792;
+  text-transform: none;
+  font-style: normal;
 }
 
 .conversation-options ul {
@@ -72,24 +74,30 @@
   align-items: center;
   justify-content: flex-start;
   min-width: 100%;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   border-radius: 10px;
   padding: 0px 10px;
   cursor: pointer;
+  padding: 10px;
+  color: #fff;
+  font-style: normal;
 }
+
 .conversation-options li:hover {
-  background-color: #547792;
+  background-color: #ffffff50;
   color: white;
   transition: all 0.3s ease-in-out;
 }
+
 .conversation-options li:active {
-  background-color: #547792;
+  background-color: #3e8ef769;
   color: white;
   transition: all 0.3s ease-in-out;
 }
 
 .conversation-options li i {
-  font-size: 30px;
+  font-size: 1.25rem;
+  width: 25px;
 }
 
 .conversation-options li div {
@@ -97,13 +105,13 @@
 }
 
 .conversation-options li div h2 {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 0.875rem;
   margin: 0px;
 }
+
 .conversation-options li div p {
-  font-size: 12px;
-  font-weight: normal;
+  font-size: 0.75rem;
+  font-weight: 400;
   opacity: 51%;
   padding: 0px;
   margin: 0px;
@@ -114,52 +122,62 @@
   background-color: #7c4585;
   color: white;
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  min-height: 400px;
-  min-width: 400px;
+  /* min-height: 400px; */
+  /* min-width: 400px; */
   display: flex;
   flex-direction: column;
 }
+
 .node-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .node-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+
 .node-title i {
   font-size: 1.5rem;
   margin-right: 1rem;
 }
+
 .node-title h1 {
   font-size: 1.5rem;
   text-transform: uppercase;
 }
+
 .node-delete-btn {
-  background: none;
-  border: 1px solid #991b1b;
-  height: 40px;
-  width: 40px;
+  background: #ffffff60;
+  /* border: 1px solid #ff0000; */
+  border: none;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   display: flex;
   align-items: center;
-  color: #991b1b;
+  color: #ff0000;
   font-size: 18px;
   justify-content: center;
 }
+
 .node-delete-btn:hover {
   border: 1px solid #b91c1c;
   color: #b91c1c;
   transition: all 0.3s ease-in-out;
 }
+
 .node-description {
   font-size: 1rem;
   color: #f5f5f5;
   font-weight: 400;
 }
+
 .node-separator {
   width: 100%;
   height: 2px;
@@ -179,6 +197,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-style: normal;
 }
 
 .call-begin-node span {
@@ -186,4 +205,42 @@
   color: white;
   font-weight: 400;
   text-transform: uppercase;
+}
+
+.pressDigitsWrapper {
+  background: #e16f00;
+  border-radius: 8px;
+  padding: 12px;
+  width: 280px;
+  position: relative;
+}
+
+.react-flow__node input.bg-transparent {
+  color: #fff;
+}
+
+.react-flow__node .title {
+  font-size: 0.75rem;
+  color: #fff;
+  opacity: 0.75;
+  font-style: normal;
+}
+
+.react-flow__node i {
+  color: #fff;
+}
+
+.react-flow__node .form-select {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: #fff;
+}
+
+.react-flow__node .form-select>* {
+  background-color: #212529;
+}
+
+.react-flow__node input {
+  background: transparent;
+  color: #fff;
 }

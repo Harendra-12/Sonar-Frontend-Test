@@ -67,22 +67,22 @@ const RingGroup = ({ id, data }) => {
 
   return (
     <>
-      <div className="press-digits-node" style={{ backgroundColor: "#8ACCD5" }}>
+      <div className="press-digits-node" style={{ backgroundColor: "#8063ff" }}>
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-headset"></i>
+            <i class="fa-light fa-user-group"></i>
             <input
               type="text"
               value={data.label}
               readOnly={isReadonly}
               onChange={(e) => data.onUpdate({ label: e.target.value })}
               onBlur={() => setIsreadonly(true)}
-              className="bg-transparent border-none"
+              className="bg-transparent border-0"
             />
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -90,21 +90,21 @@ const RingGroup = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
-        <div>
+        <p className="title">{data.description}</p>
+        <div style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
           {ringGroup.length < 1 && <p>No ringGroup found</p>}
           {ringGroup.length > 0 && (
             <div className="d-flex flex-column">
-              <label for="ringGroup">Choose a ringGroup:</label>{" "}
+              <label for="ringGroup" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Ring Group:</label>{" "}
               <select
                 name="ringGroup"
                 id="ringGroup"
                 defaultValue={data.value || ""}
                 onChange={(e) => handleRingGroup(e)}
+                className="form-select"
               >
                 <option value="" disabled selected>
                   Select Ring Group

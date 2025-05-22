@@ -219,14 +219,14 @@ const RingGroupAdd = () => {
     setDestination(updatedDestination);
 
     // Update selectedAgentToEdit in case the selected agent gets deleted
-    const updatedAgentSelect = () => selectedAgentToEdit.map((agent) => {
-      if (id === agent.id) {
-        const arr = selectedAgentToEdit.filter((item) => item.id != id);
-        setSelectedAgentToEdit(arr);
-      }
-    })
-    updatedAgentSelect()
-
+    const updatedAgentSelect = () =>
+      selectedAgentToEdit.map((agent) => {
+        if (id === agent.id) {
+          const arr = selectedAgentToEdit.filter((item) => item.id != id);
+          setSelectedAgentToEdit(arr);
+        }
+      });
+    updatedAgentSelect();
 
     if (destinationValidation) {
       clearErrors("destinations");
@@ -235,7 +235,9 @@ const RingGroupAdd = () => {
 
   // Function to delete selected destination
   const deleteSelectedDestination = () => {
-    const updatedDestination = destination.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+    const updatedDestination = destination.filter(
+      (item) => !selectedAgentToEdit.some((agent) => agent.id === item.id)
+    );
     setDestination(updatedDestination);
     // Update selectedAgentToEdit in case the selected agent gets deleted
     setSelectedAgentToEdit([]);
@@ -243,7 +245,7 @@ const RingGroupAdd = () => {
     if (destinationValidation) {
       clearErrors("destinations");
     }
-  }
+  };
 
   // Function to validate destination
   const destinationValidation = () => {
@@ -451,7 +453,8 @@ const RingGroupAdd = () => {
         if (
           !bulkUploadSelectedAgents.some(
             (agent) => agent.extension.extension == item.extension.extension
-          ) && (item.usages === "pbx" || item.usages === "both")
+          ) &&
+          (item.usages === "pbx" || item.usages === "both")
         ) {
           handleCheckboxChange(item);
         }
@@ -504,6 +507,11 @@ const RingGroupAdd = () => {
       }
     });
   };
+
+  const actionListValueForForward = (value) => {
+    setValue("forward_to", value[0]);
+  };
+  const forwardStatus = watch("forward", "disabled");
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -655,8 +663,9 @@ const RingGroupAdd = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
-                              }`}
+                            className={`col-${
+                              showTimeoutDestinationToggle ? "4" : "12"
+                            }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -873,6 +882,97 @@ const RingGroupAdd = () => {
                         )}
                       </div>
                     </div>
+
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Forward Ring group</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Want to forword this ring group.
+                        </label>
+                      </div>
+                      <div
+                        className={`col-${
+                          forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                        }`}
+                      >
+                        {forwardStatus != "disabled" && (
+                          <div className="formLabel">
+                            <label>Type</label>
+                          </div>
+                        )}
+                        <select
+                          className="formItem"
+                          name="forward"
+                          id="selectFormRow"
+                          {...register("forward")}
+                          defaultValue={"disabled"}
+                          value={watch().forward}
+                          onChange={(e) => {
+                            register("forward").onChange(e);
+                            setValue("forward_to", "");
+                          }}
+                        >
+                          <option value="disabled">Disable</option>
+                          <option value="pstn">PSTN</option>
+                          {/* <option value="direct">Direct</option> */}
+                          <option value="extension">Extension</option>
+                          <option value="ring group">Ring Group</option>
+                          <option value="call center">Call Center</option>
+                          <option value="ivr">IVR</option>
+                        </select>
+                      </div>
+                      {forwardStatus === "pstn" &&
+                        forwardStatus != "disabled" && (
+                          <div className="col-3">
+                            <div className="formLabel">
+                              <label>PSTN</label>
+                            </div>
+                            <input
+                              type="number"
+                              name="forward_to"
+                              className="formItem"
+                              {...register("forward_to", {
+                                required: "PSTN is required",
+                                pattern: {
+                                  value: /^[0-9]*$/,
+                                  message: "Only digits are allowed",
+                                },
+                                minLength: {
+                                  value: 10,
+                                  message: "Must be at least 10 digits",
+                                },
+
+                                ...noSpecialCharactersValidator,
+                              })}
+                            />
+                            {errors.forward_to && (
+                              <ErrorMessage text={errors.forward_to.message} />
+                            )}
+                          </div>
+                        )}
+
+                      {forwardStatus !== "pstn" &&
+                        forwardStatus != "disabled" && (
+                          <div className="col-3">
+                            {watch().forward &&
+                              watch().forward?.length !== 0 && (
+                                <>
+                                  <div className="formLabel">
+                                    <label>Extension</label>
+                                  </div>
+                                  <ActionList
+                                    category={watch().forward}
+                                    title={null}
+                                    label={null}
+                                    getDropdownValue={actionListValueForForward}
+                                    value={watch().forward_to}
+                                    {...register("forward_to")}
+                                  />
+                                </>
+                              )}
+                          </div>
+                        )}
+                    </div>
                   </form>
                 </div>
                 <div className="col-12">
@@ -882,18 +982,20 @@ const RingGroupAdd = () => {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="buttonGroup">
-                      {selectedAgentToEdit.length > 1 &&
-                        <button className="panelButton delete"
+                      {selectedAgentToEdit.length > 1 && (
+                        <button
+                          className="panelButton delete"
                           onClick={deleteSelectedDestination}
                         >
                           <span className="text">Delete</span>
                           <span className="icon">
                             <i className="fa-solid fa-trash"></i>
                           </span>
-                        </button>}
+                        </button>
+                      )}
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                          selectedAgentToEdit.length != destination.length ? (
+                        selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             className="panelButton ms-2"
@@ -1002,14 +1104,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                              destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                item1.extension.extension &&
+                                                  item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -1180,8 +1282,9 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
-                                    }-auto`}
+                                  className={`me-2 h-100 m${
+                                    index === 0 ? "t" : "y"
+                                  }-auto`}
                                 >
                                   <button
                                     type="button"
@@ -1292,7 +1395,8 @@ const RingGroupAdd = () => {
                             !destination.some(
                               (agent) =>
                                 user.extension.extension == agent.destination
-                            ) && (user.usages === "pbx" || user.usages === "both")
+                            ) &&
+                            (user.usages === "pbx" || user.usages === "both")
                         )
                         .map((item, index) => {
                           return (
