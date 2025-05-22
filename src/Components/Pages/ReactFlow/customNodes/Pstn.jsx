@@ -5,6 +5,7 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import { borderRadius } from "@mui/system";
 
 const Pstn = ({ id, data }) => {
   const { setNodes } = useReactFlow();
@@ -57,19 +58,19 @@ const Pstn = ({ id, data }) => {
       <div className="press-digits-node" style={{ backgroundColor: "#670D2F" }}>
         <div className="node-header">
           <div className="node-title">
-            <i className="fa-solid fa-earth-americas"></i>
+            <i class="fa-light fa-mobile-signal"></i>
             <input
               type="text"
               value={data.label}
               readOnly={isReadonly}
               onChange={(e) => data.onUpdate({ label: e.target.value })}
               onBlur={() => setIsreadonly(true)}
-              className="bg-transparent border-none"
+              className="bg-transparent border-0"
             />
 
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -77,17 +78,18 @@ const Pstn = ({ id, data }) => {
             className="node-delete-btn"
             onClick={() => setAddNewTagPopUp(true)}
           >
-            <i className="fa-solid fa-trash" />
+            <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <p className="node-description">{data.description}</p>
-        <div className="node-separator"></div>
-        <div className="col-12">
+        <p className="title">{data.description}</p>
+        <div className="col-12" style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
+          <label style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a PSTN:</label>{" "}
           <PhoneInput
             placeholder="Enter phone number"
             limitMaxLength={true}
             value={pstnval}
             onChange={(e) => handlePstn(e)}
+            style={{ height: '38px', borderRadius: '0.375rem' }}
           />
         </div>
       </div>

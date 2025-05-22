@@ -6,7 +6,7 @@ const CallBegin = () => {
   return (
     <>
       <div className="call-begin-node">
-        <span>Call Begin</span>
+        <span><i class="fa-light fa-phone-volume me-2"></i> Call Begin</span>
       </div>
       <CustomHandle type="source" position={Position.Right} />
     </>
