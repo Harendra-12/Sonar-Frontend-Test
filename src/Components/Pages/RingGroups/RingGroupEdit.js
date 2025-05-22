@@ -636,6 +636,11 @@ const RingGroupEdit = () => {
       }
     });
   };
+
+  const actionListValueForForward = (value) => {
+    setValue("forward_action", value[0]);
+  };
+  const forwardStatus = watch("forward", "disabled");
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1026,6 +1031,96 @@ const RingGroupEdit = () => {
                           <ErrorMessage text={errors.tag.message} />
                         )}
                       </div>
+                    </div>
+                    <div className="formRow col-xl-3">
+                      <div className="formLabel">
+                        <label htmlFor="">Forward Ring group</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Want to forword this ring group.
+                        </label>
+                      </div>
+                      <div
+                        className={`col-${
+                          forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                        }`}
+                      >
+                        {forwardStatus != "disabled" && (
+                          <div className="formLabel">
+                            <label>Type</label>
+                          </div>
+                        )}
+                        <select
+                          className="formItem"
+                          name="forward"
+                          id="selectFormRow"
+                          {...register("forward")}
+                          defaultValue={"disabled"}
+                          value={watch().forward}
+                          onChange={(e) => {
+                            register("forward").onChange(e);
+                            setValue("forward_action", "");
+                          }}
+                        >
+                          <option value="disabled">Disable</option>
+                          <option value="pstn">PSTN</option>
+                          {/* <option value="direct">Direct</option> */}
+                          <option value="extension">Extension</option>
+                          <option value="ring group">Ring Group</option>
+                          <option value="call center">Call Center</option>
+                          <option value="ivr">IVR</option>
+                        </select>
+                      </div>
+                      {forwardStatus === "pstn" &&
+                        forwardStatus != "disabled" && (
+                          <div className="col-3">
+                            <div className="formLabel">
+                              <label>PSTN</label>
+                            </div>
+                            <input
+                              type="number"
+                              name="forward_to"
+                              className="formItem"
+                              {...register("forward_to", {
+                                required: "PSTN is required",
+                                pattern: {
+                                  value: /^[0-9]*$/,
+                                  message: "Only digits are allowed",
+                                },
+                                minLength: {
+                                  value: 10,
+                                  message: "Must be at least 10 digits",
+                                },
+
+                                ...noSpecialCharactersValidator,
+                              })}
+                            />
+                            {errors.forward_to && (
+                              <ErrorMessage text={errors.forward_to.message} />
+                            )}
+                          </div>
+                        )}
+
+                      {forwardStatus !== "pstn" &&
+                        forwardStatus != "disabled" && (
+                          <div className="col-3">
+                            {watch().forward &&
+                              watch().forward?.length !== 0 && (
+                                <>
+                                  <div className="formLabel">
+                                    <label>Extension</label>
+                                  </div>
+                                  <ActionList
+                                    category={watch().forward}
+                                    title={null}
+                                    label={null}
+                                    getDropdownValue={actionListValueForForward}
+                                    value={watch().forward_action}
+                                    {...register("forward_action")}
+                                  />
+                                </>
+                              )}
+                          </div>
+                        )}
                     </div>
                   </form>
                 </div>

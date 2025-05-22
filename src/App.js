@@ -186,6 +186,7 @@ import GoSocket from "./Components/GlobalFunction/GoSocket";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
+import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -249,7 +250,7 @@ function App() {
         <GlobalCalls />
         <Navbar />
         <OfflineNotice />
-
+         {/* <MissedCallPopup /> */}
         <Routes>
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
