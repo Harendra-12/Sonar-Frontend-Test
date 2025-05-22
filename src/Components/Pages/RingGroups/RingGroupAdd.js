@@ -509,7 +509,7 @@ const RingGroupAdd = () => {
   };
 
   const actionListValueForForward = (value) => {
-    setValue("forward_action", value[0]);
+    setValue("forward_to", value[0]);
   };
   const forwardStatus = watch("forward", "disabled");
   return (
@@ -909,7 +909,7 @@ const RingGroupAdd = () => {
                           value={watch().forward}
                           onChange={(e) => {
                             register("forward").onChange(e);
-                            setValue("forward_action", "");
+                            setValue("forward_to", "");
                           }}
                         >
                           <option value="disabled">Disable</option>
@@ -965,8 +965,8 @@ const RingGroupAdd = () => {
                                     title={null}
                                     label={null}
                                     getDropdownValue={actionListValueForForward}
-                                    value={watch().forward_action}
-                                    {...register("forward_action")}
+                                    value={watch().forward_to}
+                                    {...register("forward_to")}
                                   />
                                 </>
                               )}
