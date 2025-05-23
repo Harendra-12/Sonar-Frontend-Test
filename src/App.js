@@ -252,7 +252,7 @@ function App() {
         <OfflineNotice />
          {/* <MissedCallPopup /> */}
         <Routes>
-          <Route path="/messages" element={<Messages />} />
+          
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
@@ -260,6 +260,7 @@ function App() {
           <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/ai-dashboard" element={<AIDashboard />} />
           <Route path="/ai-search-cdr" element={<AICDRSearch />} />
           <Route path="/meeting-room" element={<Meeting />} />

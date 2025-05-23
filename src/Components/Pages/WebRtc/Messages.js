@@ -540,7 +540,7 @@ function Messages({
       (contact) => contact.extension === recipient?.[0]
     );
     const agentDetails = agents.find(
-      (agent) => agent.extension.extension === recipient?.[0]
+      (agent) => agent.id=== recipient?.[1]
     );
 
     if (!extensionExists) {
@@ -650,6 +650,8 @@ function Messages({
 
   useEffect(() => {
     if (incomingMessage) {
+      console.log("incomingMessage", incomingMessage);
+      
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
@@ -673,6 +675,8 @@ function Messages({
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
+      console.log("agentDetails", agentDetails);
+      
       const time = formatDateTime(new Date());
 
       const contactIndex = contact.findIndex(
@@ -794,6 +798,8 @@ function Messages({
 
     }
   }, [incomingMessage]);
+  console.log("contact", contact);
+  
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -944,7 +950,7 @@ function Messages({
       const apiData = await generalGetFunction("/user-all");
       if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
-        setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
+        setAllAgents(apiData.data);
         // setGroupSelecedAgents((prevSelected) => {
         //   return [...apiData.data.filter((item) => item.email === account.email)];
         // }
@@ -1937,7 +1943,7 @@ function Messages({
                                       (data) => data?.id == item?.id
                                     )?.profile_picture;
                                     setRecipient([
-                                      item?.extension,
+                                      item?.id,
                                       item.id,
                                       "singleChat",
                                       item?.name,
@@ -2194,7 +2200,7 @@ function Messages({
                               <div
                                 data-bell=""
                                 className={
-                                  recipient?.[0] === item?.extension.extension
+                                  recipient?.[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2205,7 +2211,7 @@ function Messages({
                                       (data) => data?.id == item?.id
                                     )?.profile_picture;
                                     setRecipient([
-                                      item?.extension.extension,
+                                      item?.id,
                                       item.id,
                                       "singleChat",
                                       item?.name,
@@ -2241,7 +2247,7 @@ function Messages({
                                     </div>
                                     <div className="ms-3">
                                       <p>{item?.username}</p>
-                                      <h5>{item?.extension.extension}</h5>
+                                      {/* <h5>{item?.extension.extension}</h5> */}
                                     </div>
                                   </div>
                                 </div>
@@ -3139,6 +3145,7 @@ function Messages({
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
+                          {console.log("Recipient", recipient)}
                           {recipient?.[0] ? (
                             <>
                               {allMessage?.[
