@@ -252,6 +252,7 @@ function App() {
         <OfflineNotice />
          {/* <MissedCallPopup /> */}
         <Routes>
+          <Route path="/messages" element={<Messages />} />
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />

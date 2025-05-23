@@ -19,7 +19,10 @@ function Login() {
   if (token && account) {
     if (account?.user_role?.roles?.name === "Agent") {
       navigate("/webrtc")
-    } else {
+    }else if(account?.user_role?.roles?.name.toLowerCase() === "employee"){
+      navigate("/messages")
+    }
+     else {
       navigate("/dashboard")
     }
   }

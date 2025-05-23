@@ -18,7 +18,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
@@ -57,10 +57,10 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
-  recipient,
-  setRecipient,
-  selectedChat,
-  setSelectedChat,
+  // recipient,
+  // setRecipient,
+  // selectedChat,
+  // setSelectedChat,
   // formatRelativeTime,
   // formatRelativeTime, accountDetails, onlineUser
 }) {
@@ -81,6 +81,8 @@ function Messages({
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
   const [contact, setContact] = useState([]);
+  const [recipient, setRecipient] = useState([]);
+  const [selectedChat, setSelectedChat] = useState("singleChat");
   const [chatHistory, setChatHistory] = useState([]);
   const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
@@ -129,6 +131,8 @@ function Messages({
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
+   const location = useLocation();
+  const pathSegments = location.pathname;
   const [selectFileExtension, setSelectFileExtension] = useState(null);
   const thisAudioRef = useRef(null);
   // const [currentPlaying, setCurrentPlaying] = useState("");
@@ -369,9 +373,9 @@ function Messages({
   useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
-        recipient[2] === "singleChat"
-          ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
-          : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
+        recipient?.[2] === "singleChat"
+          ? `/message/all?receiver_id=${recipient?.[1]}&page=${pageNumb}`
+          : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
       );
 
       apiData?.data?.data?.map((item) => {
@@ -380,7 +384,7 @@ function Messages({
         );
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
             {
               from: item.user_id,
               body: item?.message_text,
@@ -391,28 +395,28 @@ function Messages({
               message_type: item.message_type,
             },
             ...(prevState[
-              recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+              recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
             ] || []),
           ],
         }));
       });
       if (apiData?.status) {
         const newChatHistory = { ...chatHistory };
-        newChatHistory[recipient[0]] = {
+        newChatHistory[recipient?.[0]] = {
           total: apiData.data.total,
           pageNumber: apiData.data.current_page,
         };
         setChatHistory(newChatHistory);
       }
     }
-    if (recipient.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(recipient[0])) {
+    if (recipient?.length > 0 && allAgents?.length > 0) {
+      if (Object.keys(chatHistory).includes(recipient?.[0])) {
         if (
-          chatHistory[recipient[0]]?.total &&
-          chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+          chatHistory[recipient?.[0]]?.total &&
+          chatHistory[recipient?.[0]].pageNumber * 40 <
+          chatHistory[recipient?.[0]].total
         ) {
-          getData(chatHistory[recipient[0]].pageNumber + 1);
+          getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
           console.log("from first");
         }
@@ -486,7 +490,7 @@ function Messages({
     socketSendMessage({
       sharedMessage: messageContent,
       from: account?.id,
-      to: recipient[1],
+      to: recipient?.[1],
       key: "peerchat",
       action: "peerchat",
       type: messageType,
@@ -497,9 +501,9 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id);
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+      [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
         ...(prevState[
-          recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+          recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
         ] || []),
         {
           from: userDetails.id,
@@ -514,7 +518,7 @@ function Messages({
     }));
     // Update contact last message
     const contactIndex = contact.findIndex(
-      (contact) => contact.id === recipient[1]
+      (contact) => contact.id === recipient?.[1]
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
@@ -533,10 +537,10 @@ function Messages({
     setActiveTab("all");
 
     const extensionExists = contact.some(
-      (contact) => contact.extension === recipient[0]
+      (contact) => contact.extension === recipient?.[0]
     );
     const agentDetails = agents.find(
-      (agent) => agent.extension.extension === recipient[0]
+      (agent) => agent.extension.extension === recipient?.[0]
     );
 
     if (!extensionExists) {
@@ -545,7 +549,7 @@ function Messages({
         email: agentDetails.email,
         id: agentDetails.id,
         extension_id: agentDetails.extension_id,
-        extension: recipient[0],
+        extension: recipient?.[0],
         last_message_data: {
           message_text: messageInput,
           created_at: time,
@@ -564,7 +568,7 @@ function Messages({
   //     return;
   //   }
   //   if (isSIPReady) {
-  //     const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
+  //     const targetURI = `sip:${recipient?.[0]}@${account.domain.domain_name}`;
   //     const userAgent = sipProvider?.sessionManager?.userAgent;
 
   //     const target = UserAgent.makeURI(targetURI);
@@ -585,14 +589,14 @@ function Messages({
   //         setIsFreeSwitchMessage(true);
   //         setAllMessage((prevState) => ({
   //           ...prevState,
-  //           [recipient[0]]: [
-  //             ...(prevState[recipient[0]] || []),
+  //           [recipient?.[0]]: [
+  //             ...(prevState[recipient?.[0]] || []),
   //             { from: extension, body: messageInput || selectedUrl, time },
   //           ],
   //         }));
   //         // Update contact last message
   //         const contactIndex = contact.findIndex(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         if (contactIndex !== -1) {
   //           const newContact = [...contact];
@@ -603,10 +607,10 @@ function Messages({
   //         setActiveTab("all");
 
   //         const extensionExists = contact.some(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         const agentDetails = agents.find(
-  //           (agent) => agent.extension.extension === recipient[0]
+  //           (agent) => agent.extension.extension === recipient?.[0]
   //         );
 
   //         if (!extensionExists) {
@@ -615,7 +619,7 @@ function Messages({
   //             email: agentDetails.email,
   //             id: agentDetails.id,
   //             extension_id: agentDetails.extension_id,
-  //             extension: recipient[0],
+  //             extension: recipient?.[0],
   //             last_message_data: {
   //               message_text: messageInput,
   //               created_at: time,
@@ -649,7 +653,7 @@ function Messages({
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
-      if (from === recipient[1] && autoReply) {
+      if (from === recipient?.[1] && autoReply) {
         setAiProcessing(true);
         setMessageInput("Generating Ai response...");
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
@@ -756,7 +760,7 @@ function Messages({
 
         // Play music when message is received
 
-        if (recipient[0] !== from) {
+        if (recipient?.[0] !== from) {
           setUnreadMessage((prevState) => ({
             ...prevState,
             [from]: (prevState[from] || 0) + 1,
@@ -766,7 +770,7 @@ function Messages({
 
         // Update contact last message
         const contactIndex = contact.findIndex(
-          (contact) => contact.extension === recipient[0]
+          (contact) => contact.extension === recipient?.[0]
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
@@ -778,7 +782,7 @@ function Messages({
 
       if (recipient?.length > 0) {
         setUnreadMessage((prevState) => {
-          const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+          const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
             prevState;
           return newState;
         });
@@ -809,7 +813,7 @@ function Messages({
   //       const time = formatDateTime(new Date());
 
   //       const contactIndex = contact.findIndex(
-  //         (contact) => contact.extension === recipient[0]
+  //         (contact) => contact.extension === recipient?.[0]
   //       );
   //       if (contactIndex !== -1) {
   //         const newContact = [...contact];
@@ -889,7 +893,7 @@ function Messages({
 
   //         // Play music when message is received
 
-  //         if (recipient[0] !== from) {
+  //         if (recipient?.[0] !== from) {
   //           setUnreadMessage((prevState) => ({
   //             ...prevState,
   //             [from]: (prevState[from] || 0) + 1,
@@ -899,7 +903,7 @@ function Messages({
 
   //         // Update contact last message
   //         const contactIndex = contact.findIndex(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         if (contactIndex !== -1) {
   //           const newContact = [...contact];
@@ -1124,7 +1128,7 @@ function Messages({
         }));
         setGroups(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
-          (group) => group.id == recipient[1]
+          (group) => group.id == recipient?.[1]
         );
         if (isGroupSelected) {
           const profile_img = allAgents?.find(
@@ -1378,7 +1382,7 @@ function Messages({
     };
     setNewGroupLoader(true);
     const apiData = await generalPutFunction(
-      `/chatgroups/update/${recipient[1]}`,
+      `/chatgroups/update/${recipient?.[1]}`,
       parsedData
     );
     if (apiData.status) {
@@ -1393,7 +1397,7 @@ function Messages({
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
     const payLoad = {
-      message_group_id: recipient[1],
+      message_group_id: recipient?.[1],
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     setNewGroupLoader(true);
@@ -1443,8 +1447,8 @@ function Messages({
       action: "broadcastGroupMessage",
       user_id: account.id,
       sharedMessage: messageContent,
-      group_id: recipient[1],
-      group_name: recipient[0],
+      group_id: recipient?.[1],
+      group_name: recipient?.[0],
       user_name: account.name,
       user_extension: account.extension.extension,
       message_type: messageType,
@@ -1454,12 +1458,12 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id);
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+      [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
         ...(prevState[
-          recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+          recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
         ] || []),
         {
-          from: recipient[2] == "singleChat" ? recipient[1] : account?.id,
+          from: recipient?.[2] == "singleChat" ? recipient?.[1] : account?.id,
           body: messageContent, // Show appropriate text in the message history
           time,
           user_id: userDetails.id,
@@ -1471,7 +1475,7 @@ function Messages({
     }));
 
     const contactIndex = groups.findIndex(
-      (contact) => contact?.group_name === recipient[0]
+      (contact) => contact?.group_name === recipient?.[0]
     );
     if (contactIndex !== -1) {
       const newGroups = [...groups];
@@ -1648,6 +1652,11 @@ function Messages({
   };
   return (
     <>
+    <style>
+          {`#sidenNav{
+        display:none;
+      }`}
+        </style>
       {addNewTagPopUp && (
         <div className="backdropContact">
           <div className="addNewContactPopup">
@@ -1708,18 +1717,22 @@ function Messages({
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
       )}
       <main
-        className="mainContentApp "
+        className="mainContentApp"
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
               ? "250px"
               : "0",
+          marginLeft:
+            pathSegments === "/messages"
+              ? "0px"
+              : "210px",
         }}
       >
         <section>
           <div className="w-100 p-0">
             <HeaderApp
-              title={"Messages"}
+              title={pathSegments==="/messages"?account?.name:"Messages"}
               loading={messageRefresh}
               setLoading={setMessageRefresh}
               refreshApi={handleRefresh}
@@ -1913,7 +1926,7 @@ function Messages({
                                     : ""
                                 }
                                 className={
-                                  recipient[1] === item?.id
+                                  recipient?.[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2067,7 +2080,7 @@ function Messages({
                             return (
                               <div
                                 className={
-                                  recipient[1] === item.id
+                                  recipient?.[1] === item.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2181,7 +2194,7 @@ function Messages({
                               <div
                                 data-bell=""
                                 className={
-                                  recipient[0] === item?.extension.extension
+                                  recipient?.[0] === item?.extension.extension
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2571,7 +2584,7 @@ function Messages({
                             return (
                               <div
                                 className={
-                                  recipient[1] === item.id
+                                  recipient?.[1] === item.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2730,14 +2743,14 @@ function Messages({
                   {/* this is chat section *********** */}
                   <div className="col h-100 me-2" id="messagingBlock">
                     <div className="messageOverlay h-100">
-                      {recipient[0] ? (
+                      {recipient?.[0] ? (
                         <div className="contactHeader">
                           <div>
                             <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                              {recipient[5] != null ? (
+                              {recipient?.[5] != null ? (
                                 <div className="profileHolder">
                                   <img
-                                    src={recipient[5]}
+                                    src={recipient?.[5]}
                                     alt="profile"
                                     onError={(e) =>
                                       (e.target.src = require("../../assets/images/placeholder-image.webp"))
@@ -2759,15 +2772,15 @@ function Messages({
                               <h4 className="">
                                 {/* {
                                 contact?.find(
-                                  (contact) => contact.extension == recipient[0]
+                                  (contact) => contact.extension == recipient?.[0]
                                 )?.name
                               }{" "}-
                               {" "} */}
 
-                                {recipient[3]}
+                                {recipient?.[3]}
                               </h4>
                             </div>
-                            {/* <h4>{recipient[0]}</h4> */}
+                            {/* <h4>{recipient?.[0]}</h4> */}
                             <div className="contactTags">
                               {loading && (
                                 <div colSpan={99}>
@@ -2775,7 +2788,7 @@ function Messages({
                                 </div>
                               )}
                               {contact
-                                .find((contact) => contact.id == recipient[1])
+                                .find((contact) => contact.id == recipient?.[1])
                                 ?.tags?.map((item, key) => {
                                   return (
                                     <span
@@ -2842,7 +2855,7 @@ function Messages({
                                             onClick={() =>
                                               handleAssignTask(
                                                 item?.id,
-                                                recipient[1]
+                                                recipient?.[1]
                                               )
                                             }
                                           // className="removableTag"
@@ -2898,7 +2911,7 @@ function Messages({
                                                     onClick={() =>
                                                       handleAssignTask(
                                                         item?.id,
-                                                        recipient[1]
+                                                        recipient?.[1]
                                                       )
                                                     }
                                                   ><i className="fa-regular fa-check" /></button>
@@ -2940,7 +2953,7 @@ function Messages({
                                             //   onClick={() =>
                                             //     handleAssignTask(
                                             //       item.id,
-                                            //       recipient[0]
+                                            //       recipient?.[0]
                                             //     )
                                             //   }
                                             // >
@@ -2965,7 +2978,7 @@ function Messages({
                           <select className="ovalSelect">
                             <option>
                               {agents.map((item) => {
-                                if (item.extension.extension === recipient[0]) {
+                                if (item.extension.extension === recipient?.[0]) {
                                   return item.username;
                                 }
                               })}
@@ -2976,10 +2989,10 @@ function Messages({
                               ""
                             ) : (
                               <button
-                                // onClick={() => onSubmit("audio", recipient[0])}
+                                // onClick={() => onSubmit("audio", recipient?.[0])}
                                 onClick={() => {
                                   setMeetingPage("message");
-                                  setToUser(recipient[1]);
+                                  setToUser(recipient?.[1]);
                                   setCalling(true);
                                   dispatch({
                                     type: "SET_INTERNALCALLACTION",
@@ -2988,8 +3001,8 @@ function Messages({
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
-                                    to: recipient[1],
-                                    room_id: `${account.id}-${recipient[1]}`,
+                                    to: recipient?.[1],
+                                    room_id: `${account.id}-${recipient?.[1]}`,
                                     call_type: "audio",
                                   });
                                 }}
@@ -3001,10 +3014,10 @@ function Messages({
                             )}
                             {isVideoOn ? (
                               <button
-                                // onClick={() => onSubmit("video", recipient[0])}
+                                // onClick={() => onSubmit("video", recipient?.[0])}
                                 onClick={() => {
                                   setMeetingPage("message");
-                                  setToUser(recipient[1]);
+                                  setToUser(recipient?.[1]);
                                   setCalling(true);
                                   dispatch({
                                     type: "SET_INTERNALCALLACTION",
@@ -3013,8 +3026,8 @@ function Messages({
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
-                                    to: recipient[1],
-                                    room_id: `${account.id}-${recipient[1]}`,
+                                    to: recipient?.[1],
+                                    room_id: `${account.id}-${recipient?.[1]}`,
                                     call_type: "video",
                                   });
                                 }}
@@ -3087,14 +3100,14 @@ function Messages({
 
                                 {selectedChat === "groupChat" &&
                                   groups?.find(
-                                    (group) => group.group_name == recipient[0]
+                                    (group) => group.group_name == recipient?.[0]
                                   )?.created_by == account?.id ? (
                                   <li>
                                     <div
                                       className="dropdown-item text-danger"
                                       href="#"
                                       onClick={() =>
-                                        handleDeleteGroup(recipient[1])
+                                        handleDeleteGroup(recipient?.[1])
                                       }
                                     >
                                       Delete this group
@@ -3126,12 +3139,12 @@ function Messages({
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
-                          {recipient[0] ? (
+                          {recipient?.[0] ? (
                             <>
                               {allMessage?.[
                                 selectedChat === "groupChat"
-                                  ? recipient[0]
-                                  : recipient[1]
+                                  ? recipient?.[0]
+                                  : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                 const todayDate = new Date()
@@ -3171,7 +3184,7 @@ function Messages({
                                     {(
                                       selectedChat === "groupChat"
                                         ? item.from === account?.id
-                                        : item.from !== recipient[1]
+                                        : item.from !== recipient?.[1]
                                     ) ? (
                                       <div className="messageItem sender">
                                         <div className="second">
@@ -3285,7 +3298,7 @@ function Messages({
                             </div>
                           )}
                         </div>
-                        {recipient[0] ? (
+                        {recipient?.[0] ? (
                           <div className="messageInput textarea_inputTab">
                             {emojiOpen && (
                               <div
@@ -3405,7 +3418,7 @@ function Messages({
                                       onChange={(e) => {
                                         setMessageInput(e.target.value);
                                         // setUnreadMessage((prevState) => {
-                                        //   const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+                                        //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
                                         //     prevState;
                                         //   return newState;
                                         // });
@@ -3414,14 +3427,14 @@ function Messages({
                                       // onClick={() => {
                                       //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
                                       //   setUnreadMessage((prevState) => {
-                                      //     const { [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: _, ...newState } =
+                                      //     const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
                                       //       prevState;
                                       //     return newState;
                                       //   });
                                       // }}
                                       onKeyDown={(e) => {
                                         if (e.key === "Enter") {
-                                          if (recipient[2] === "groupChat") {
+                                          if (recipient?.[2] === "groupChat") {
                                             sendGroupMessage();
                                           } else {
                                             sendSingleMessage();
@@ -3490,7 +3503,7 @@ function Messages({
                                     effect="ripple"
                                     className="clearColorButton dark"
                                     onClick={() => {
-                                      if (recipient[2] === "groupChat") {
+                                      if (recipient?.[2] === "groupChat") {
                                         sendGroupMessage();
                                       } else {
                                         sendSingleMessage();
@@ -3910,7 +3923,7 @@ function Messages({
                         width:
                           isActiveAgentsOpen &&
                             recipient &&
-                            recipient.length > 0
+                            recipient?.length > 0
                             ? "30%"
                             : "0%",
                         transition: "all 0.4s ease-in-out",
@@ -3923,7 +3936,7 @@ function Messages({
                           transform:
                             isActiveAgentsOpen &&
                               recipient &&
-                              recipient.length > 0
+                              recipient?.length > 0
                               ? "translate(3%, 0%)"
                               : "translate(100%, 0%)",
                         }}
@@ -3937,7 +3950,7 @@ function Messages({
                             left:
                               isActiveAgentsOpen &&
                                 recipient &&
-                                recipient.length > 0
+                                recipient?.length > 0
                                 ? "-15px"
                                 : "-5px",
                             transition: "all 0.4s ease-in-out",
@@ -3946,7 +3959,7 @@ function Messages({
                           <i
                             className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
                               recipient &&
-                              recipient.length > 0
+                              recipient?.length > 0
                               ? "right"
                               : "left"
                               }`}
@@ -3957,13 +3970,13 @@ function Messages({
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
-                          {recipient && recipient.length > 0 ? (
+                          {recipient && recipient?.length > 0 ? (
                             <MessageProfileDetails
                               recipient={recipient}
                               messages={
-                                recipient[2] === "groupChat"
-                                  ? allMessage?.[recipient[3]]
-                                  : allMessage?.[recipient[1]]
+                                recipient?.[2] === "groupChat"
+                                  ? allMessage?.[recipient?.[3]]
+                                  : allMessage?.[recipient?.[1]]
                               }
                               selectedChat={selectedChat}
                             />
