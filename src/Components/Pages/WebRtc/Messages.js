@@ -249,7 +249,7 @@ function Messages({
     };
   }, [allMessage, recipient]);
 
-  const getData = async (shouldLoad) => {
+  const getContactAndAllTagData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const apiData = await generalGetFunction(`/message/contacts`);
     const tagData = await generalGetFunction("/tags/all");
@@ -304,7 +304,7 @@ function Messages({
   useEffect(() => {
     setMessageRefresh(true);
     const shouldLoad = true;
-    getData(shouldLoad);
+    getContactAndAllTagData(shouldLoad);
   }, [allAgents?.length == 0]);
 
   // useEffect(() => {
@@ -919,6 +919,7 @@ function Messages({
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessage]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (messageListRef.current) {
@@ -935,31 +936,6 @@ function Messages({
   }, []);
 
   useEffect(() => {
-    // const tag = allTags?.filter((tag) =>
-    //   contact?.every((contactItem) =>
-    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
-    //   )
-    // );
-    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
-    const tag = allTags?.filter((tag) =>
-      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
-    );
-
-    const filteredTag = tag?.filter((data) =>
-      data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
-    );
-
-    if (userTag?.length) {
-      setFilteredTags(filteredTag);
-    } else {
-      const filterTag = allTags?.filter((data) =>
-        data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
-      );
-      setFilteredTags(filterTag);
-    }
-  }, [allTags, contact, tagFilterInput, recipient]);
-
-  useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
       if (apiData?.status) {
@@ -973,6 +949,7 @@ function Messages({
     }
     getData();
   }, []);
+
   useEffect(() => {
     if (loginUser.length > 0) {
       const updatedOnlineUsers = loginUser
@@ -1113,60 +1090,7 @@ function Messages({
     }
   }
 
-  // Add new Tag
-  async function handleNewTag() {
-    if (newTag.length === 0) {
-      toast.error("Please enter a valid tag name");
-    } else {
-      setLoading(true);
-      const parsedData = {
-        name: newTag,
-      };
 
-      const apiData = await generalPostFunction(`/tags/store`, parsedData);
-      if (apiData.status) {
-        setLoading(false);
-        toast.success("Tag added successfully");
-        setAddNewTag(false);
-        setNewTag("");
-        setAllTags([...allTags, apiData.data]);
-      } else {
-        setLoading(false);
-      }
-    }
-  }
-
-  // Update tag
-  async function handleUpdateTag() {
-    if (upDateTag.length === 0) {
-      toast.error("Please enter a valid tag name");
-    } else {
-      setLoading(true);
-      const parsedData = {
-        name: upDateTag,
-      };
-      const apiData = await generalPutFunction(
-        `/tags/update/${selectedTag}`,
-        parsedData
-      );
-      if (apiData.status) {
-        setLoading(false);
-        toast.success("Tag updated successfully");
-        setUpDateTag("");
-        setSelectedTag("");
-        // Upadte the value of tag in existing data
-        const updatedTags = allTags.map((tag) => {
-          if (tag.id === selectedTag) {
-            return { ...tag, name: upDateTag };
-          }
-          return tag;
-        });
-        setAllTags(updatedTags);
-      } else {
-        setLoading(false);
-      }
-    }
-  }
 
   // Filter out the user from selcted group
   useEffect(() => {
@@ -1231,6 +1155,133 @@ function Messages({
     getGroups();
   }, [groupRefresh]);
 
+  // ============================= Tag Related Stuff ======= start here
+  useEffect(() => {
+    // const tag = allTags?.filter((tag) =>
+    //   contact?.every((contactItem) =>
+    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
+    //   )
+    // );
+    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
+    const defaultTag = allTags?.filter((data) => data?.default == 1)
+
+    const tag = defaultTag?.filter((tag) =>
+      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+    );
+    const filteredTag = tag?.filter((data) =>
+      data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
+    );
+
+    if (tagFilterInput) {
+      if (userTag?.length) {
+        const tag = allTags?.filter((tag) =>
+          userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+        );
+
+        const filteredTag = tag?.filter((data) =>
+          data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
+        );
+        setFilteredTags(filteredTag);
+      } else {
+        setFilteredTags(filteredTag);
+      }
+    } else {
+      setFilteredTags(filteredTag)
+    }
+
+  }, [allTags, contact, tagFilterInput, recipient]);
+
+  // Add new Tag
+  async function handleNewTag() {
+    if (newTag.length === 0) {
+      toast.error("Please enter a valid tag name");
+    } else {
+      setLoading(true);
+      const parsedData = {
+        name: newTag,
+      };
+
+      const apiData = await generalPostFunction(`/tags/store`, parsedData);
+      if (apiData.status) {
+        setLoading(false);
+        toast.success("Tag added successfully");
+        setAddNewTag(false);
+        setNewTag("");
+        setAllTags([...allTags, apiData.data]);
+      } else {
+        setLoading(false);
+      }
+    }
+  }
+
+  // Update tag
+  async function handleUpdateTag() {
+    if (upDateTag.length === 0) {
+      toast.error("Please enter a valid tag name");
+    } else {
+      setLoading(true);
+      const parsedData = {
+        name: upDateTag,
+      };
+      const apiData = await generalPutFunction(
+        `/tags/update/${selectedTag}`,
+        parsedData
+      );
+      if (apiData.status) {
+        setLoading(false);
+        toast.success("Tag updated successfully");
+        setUpDateTag("");
+        setSelectedTag("");
+        // Upadte the value of tag in existing data
+        const updatedTags = allTags.map((tag) => {
+          if (tag.id === selectedTag) {
+            return { ...tag, name: upDateTag };
+          }
+          return tag;
+        });
+        setAllTags(updatedTags);
+      } else {
+        setLoading(false);
+      }
+    }
+  }
+
+  // Handle assign task
+  async function handleAssignTask(tagId, userId) {
+    setLoading(true);
+    const parsedData = {
+      tag_id: tagId,
+      user_id: userId,
+    };
+    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
+    if (apiData.status) {
+      setContactRefresh(contactRefresh + 1);
+      const shouldLoad = true;
+      getContactAndAllTagData(shouldLoad)
+      // setLoading(false);
+      toast.success("Tag assigned successfully");
+      // setIsAssignmentClicked(true);
+    } else {
+      setLoading(false);
+    }
+  }
+
+  // Handle unassign task
+  async function handleUnassignTask(tagId) {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
+    if (apiData.status) {
+      setContactRefresh(contactRefresh + 1);
+      const shouldLoad = true;
+      getContactAndAllTagData(shouldLoad)
+      // setLoading(false);
+      toast.success("Tag unassigned successfully");
+      // setIsAssignmentClicked(true);
+    } else {
+      setLoading(false);
+    }
+  }
+
   // Delete tag
   async function handleDeleteTag(id) {
     setLoading(true);
@@ -1245,39 +1296,8 @@ function Messages({
       setLoading(false);
     }
   }
-
-  // Handle assign task
-  async function handleAssignTask(tagId, userId) {
-    setLoading(true);
-    const parsedData = {
-      tag_id: tagId,
-      user_id: userId,
-    };
-    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      setLoading(false);
-      toast.success("Tag assigned successfully");
-      setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
-
-  // Handle unassign task
-  async function handleUnassignTask(tagId) {
-    setLoading(true);
-    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      setLoading(false);
-      toast.success("Tag unassigned successfully");
-      setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
-
+  // ============================= Tag Related Stuff ======= end here
+  
   const filteredUsers = allAgents.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1623,7 +1643,7 @@ function Messages({
 
   const handleRefresh = () => {
     const shouldLoad = false;
-    getData(shouldLoad);
+    getContactAndAllTagData(shouldLoad);
     setMessageRefresh(true);
   };
   return (
@@ -1918,12 +1938,12 @@ function Messages({
                                       return newState;
                                     });
                                     dispatch({
-                                        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-                                        recipient: [item?.extension,
-                                        item.id,
+                                      type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                                      recipient: [item?.extension,
+                                      item.id,
                                         "singleChat",
-                                        item?.name,
-                                        item?.email,
+                                      item?.name,
+                                      item?.email,
                                         profile_picture,]
                                     })
                                     setManageGroupChat(false);
