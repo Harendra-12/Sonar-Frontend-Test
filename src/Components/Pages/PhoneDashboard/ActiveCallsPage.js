@@ -311,7 +311,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                                 <i className="fa-solid fa-pen" />
                                                             </button>
-                                                            <div className="itemWrapper a">
+                                                            <div className="itemWrapper a  datanumber4">
                                                                 <div className="heading h-auto d-block">
                                                                     <div className='d-flex align-items-center justify-content-center flex-column '>
                                                                         <div className='text-center'>
@@ -319,18 +319,18 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             {/* <p>Type: {item?.model_type}</p> */}
                                                                             <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
                                                                         </div>
-                                                                        <div className='text-center'>
+                                                                        <div className='text-center ' style={{paddingBottom:"2px"}}>
                                                                             <p>{item?.model_type}</p>
                                                                             {item?.model?.tag && <p><strong>Tag:</strong> {item?.model?.tag}</p>}
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="data-number3 h-auto mt-2" >
+                                                                <div className="data-number3 datanumber5 h-auto mt-2" >
                                                                     <div className="d-flex justify-content-center py-2">
                                                                         {
                                                                             item.active ?
-                                                                                <div className="col-3">
+                                                                                <div className="col-3 m-1">
                                                                                     <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
                                                                                         {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                         {/* <i
@@ -343,7 +343,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                         }
                                                                         {
                                                                             item?.ringing ?
-                                                                                <div className="col-3">
+                                                                                <div className="col-3 ms-2 mt-1">
 
                                                                                     <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
                                                                                         {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
@@ -352,12 +352,12 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
                                                                                     /> */}
                                                                                     </h4>
-                                                                                    <p className='p-0 m-0'>Ringing</p>
+                                                                                    <p className=''>Ringing</p>
                                                                                 </div> : " "
                                                                         }
                                                                         {
                                                                             item?.total ?
-                                                                                <div className="col-3">
+                                                                                <div className="col-3 ms-4 mt-1">
 
                                                                                     <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
                                                                                         {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
@@ -371,7 +371,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                         }
                                                                         {
                                                                             item?.missed ?
-                                                                                <div className="col-3">
+                                                                                <div className="col-3 m-1">
 
                                                                                     <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
                                                                                         {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
@@ -399,7 +399,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         checkViewSidebar("Usage", slugPermissions, account?.permissions, "add") &&
                                         <div className='col-xl-2 col-lg-3 col-md-3' onClick={() => { setAddNewMod(true); setSelectedModule(); setCustomPopup(true) }}>
                                             <div className={`deviceProvision h-100`} >
-                                                <div className="itemWrapper a addNew h-100">
+                                                <div className="itemWrapper a addNew">
                                                     <i className='fa-regular fa-plus'></i>
                                                     <p>Add New Module</p>
                                                 </div>
