@@ -808,7 +808,7 @@
 
 .mainContentApp .webrtc_newMessageUi .tab-content .callList {
     overflow: hidden auto;
-    height: calc(100vh - 330px);
+    height: calc(100vh - 207px);
 }
 
 /* .newMessageWrapper {

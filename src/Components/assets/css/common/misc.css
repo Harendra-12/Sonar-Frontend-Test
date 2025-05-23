@@ -2537,10 +2537,14 @@ input[type=number] {
 .balance-box {
     background:linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
     text-align: center;
+    height: 100%;
 }
 
 .balance-box .itemWrapper {
     background: transparent !important;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
 
 .balance-box .data-number3 {

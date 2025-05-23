@@ -887,10 +887,10 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> All</button>
-                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> Received</button>
-                      <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> Outbound</button>
-                      <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> Missed</button>
+                      <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> <span>All</span></button>
+                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> <span>Received</span></button>
+                      <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> <span>Outbound</span></button>
+                      <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
                     </div>
                   </nav>
                   <div className="tab-content">
