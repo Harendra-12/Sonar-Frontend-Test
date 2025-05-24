@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
 
 function FportalCampaign() {
- 
+   const navigate = useNavigate();
   return (
      <main className="mainContent">
     <section id="phonePage">
@@ -28,7 +28,7 @@ function FportalCampaign() {
                         </span>
                       </button>
                       <button
-                        onClick={() => Navigate("/buyer-add")}
+                        onClick={() => navigate("/call-forwarding-campaign-create")}
                         effect="ripple"
                         className="panelButton"
                       >
