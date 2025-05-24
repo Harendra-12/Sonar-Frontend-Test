@@ -1004,3 +1004,7 @@ h2.titleName {
 .basic-container input[type="checkbox"]:checked+label {
     color: #6366f1;
 }
+.mainContentApp .webrtc_newMessageUi .tab-content .callList.AllCall__list {
+    overflow: hidden auto;
+    height: calc(100vh - 357px);
+}
