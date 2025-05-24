@@ -731,7 +731,6 @@ function Navbar() {
                             "/call-desposition",
                             "/agent-disposition-manage",
                             "/dialer-cdr-report",
-                            "/did-listing-tracker"
                           ])
                             ? "show"
                             : ""
@@ -887,6 +886,7 @@ function Navbar() {
                             isChildActive([
                               "/tracker-dashboard",
                               "/did-listing-tracker",
+                              "/buyers"
                             ])
                               ? "true"
                               : "false"
@@ -903,6 +903,7 @@ function Navbar() {
                           className={`accordion-collapse collapse ${isChildActive([
                             "/tracker-dashboard",
                             "/did-listing-tracker",
+                            "/buyers"
                           ])
                             ? "show"
                             : ""
