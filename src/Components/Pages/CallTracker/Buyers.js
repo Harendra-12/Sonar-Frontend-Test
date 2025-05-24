@@ -11,15 +11,15 @@ function Buyers() {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Forwarding portal" />
+              <Header title="Buyers" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Forwarding portal</h4>
-                          <p>You can see all list of Forwarding portal</p>
+                          <h4> All Buyers </h4>
+                          <p>You can see all list of all buyers</p>
                         </div>
                         <div className="buttonGroup">
                           <button effect="ripple" className="panelButton gray">
@@ -41,7 +41,8 @@ function Buyers() {
                         </div>
                       </div>
                     </div>
-                    <div  className="col-12"
+                    <div
+                      className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       <div className="tableHeader">
@@ -76,75 +77,30 @@ function Buyers() {
                         <table>
                           <thead>
                             <tr>
-                              <th>Fportal name</th>
-                              <th>Type</th>
-                              <th>Active hours</th>
-                              <th>Start time </th>
-                              <th>End time</th>
-                              <th>Start Day</th>
-                              <th>End Day day</th>
-                              <th>Status</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
+                              <th>Buyer name</th>
+                              <th>Phone Number</th>
+                              <th>Alt Phone Number</th>
+                              <th>Email</th>
+                              <th>Address</th>
+                              <th>City</th>
+                              <th>State</th>
+                              <th>Province</th>
+                              <th>Postal code</th>
+                              <th>Country code</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                               <td>Rishabh maurya01</td>
-                              <td>Outbound</td>
-                              <td>60 min</td>
-                              <td>09:30pm </td>
-                              <td>10:30am</td>
-
-                              <td>24/03/2025</td>
-                              <td>05/04/2025</td>
-                              <td>
-                                <div className="my-auto position-relative mx-1">
-                                  {/* <label className="switch">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            // checked={
-                                                                            //     item.status == "active"
-                                                                            // }
-                                                                            // onClick={(e) => {
-                                                                            //     setSelectedRingGroup(item);
-                                                                            //     setPopUp(true);
-                                                                            // }}
-                                                                            // {...register("status")}
-                                                                            id="showAllCheck"
-                                                                        />
-                                                                        <span className="slider round" />
-                                                                    </label> */}
-                                  <div class="cl-toggle-switch">
-                                    <label class="cl-switch">
-                                      <input
-                                        type="checkbox"
-                                        id="showAllCheck"
-                                      />
-                                      <span></span>
-                                    </label>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <button
-                                  className="tableButton edit"
-                                  onClick={() => navigate(`/buyer-edit`)}
-                                >
-                                  <i className="fa-solid fa-pencil" />
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  className="tableButton delete"
-                                  // onClick={() => {
-                                  //     setPopUp(true);
-                                  //     setDeleteId(item.id);
-                                  // }}
-                                >
-                                  <i className="fa-solid fa-trash" />
-                                </button>
-                              </td>
+                              <td>97814569314</td>
+                              <td>45984566633</td>
+                              <td>rishabh@gmail.com</td>
+                              <td>Delhi</td>
+                              <td>Delhi</td>
+                              <td>Okhla</td>
+                              <td>NA</td>
+                              <td>4578</td>
+                              <td>91</td>
                             </tr>
                           </tbody>
                         </table>
