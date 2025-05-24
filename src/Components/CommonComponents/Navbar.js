@@ -886,7 +886,9 @@ function Navbar() {
                             isChildActive([
                               "/tracker-dashboard",
                               "/did-listing-tracker",
-                              "/buyers"
+                              "/buyers",
+                              "/buyer-add",
+                              "/buyer-edit"
                             ])
                               ? "true"
                               : "false"
@@ -903,7 +905,9 @@ function Navbar() {
                           className={`accordion-collapse collapse ${isChildActive([
                             "/tracker-dashboard",
                             "/did-listing-tracker",
-                            "/buyers"
+                            "/buyers",
+                            "/buyer-add",
+                            "/buyer-edit"
                           ])
                             ? "show"
                             : ""
