@@ -11,21 +11,21 @@ const BuyerAdd = () => {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Forwarding portal" />
+              <Header title="Add buyer" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Forwarding portal Add</h4>
-                          <p>Manage the Forwarding portal</p>
+                          <h4>Add Buyer</h4>
+                          <p>Add buyers</p>
                         </div>
                         <div className="buttonGroup">
                           <div className="d-flex align-items-center">
-                            <div className="formLabel py-0 me-2">
+                            {/* <div className="formLabel py-0 me-2">
                               <label for="selectFormRow">Enabled</label>
-                            </div>
+                            </div> */}
                             <div className="my-auto position-relative mx-1">
                               {/* <label className="switch">
                                 <input type="checkbox" id="showAllCheck" />
@@ -33,10 +33,7 @@ const BuyerAdd = () => {
                               </label> */}
                               <div class="cl-toggle-switch">
                                 <label class="cl-switch">
-                                  <input
-                                    type="checkbox" id="showAllCheck"
-
-                                  />
+                                  <input type="checkbox" id="showAllCheck" />
                                   <span></span>
                                 </label>
                               </div>
@@ -69,8 +66,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Forwarding Portal Name{" "}
-                              <span className="text-danger">*</span>
+                              Buyer Name <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a name.
@@ -83,46 +79,91 @@ const BuyerAdd = () => {
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label>Active hours</label>
+                            <label>
+                              Phone number{" "}
+                              <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
-                              select time
+                              Enter a name phone number.
                             </label>
                           </div>
                           <div className="col-6">
-                            <select
-                              className="formItem"
-                              // {...register("strategy")}
-                              id="selectFormRow"
-                            >
-                              <option value="enterprise">60 min</option>
-                              <option value="sequence">30 min</option>
-                            </select>
+                            <input type="text" className="formItem" />
                           </div>
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label>Forwarding Portal Type</label>
+                            <label>
+                              Alternate Phone number{" "}
+                              <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
-                              who seeks after it and wants to have it, simply
-                              because it is pain
+                              Enter a name phone number.
                             </label>
                           </div>
                           <div className="col-6">
-                            <select
-                              className="formItem"
-                              // {...register("strategy")}
-                              id="selectFormRow"
-                            >
-                              <option value="enterprise">Outbound</option>
-                              <option value="sequence">Trunk</option>
-                            </select>
+                            <input type="text" className="formItem" />
                           </div>
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label>Status</label>
+                            <label>
+                              Email <span className="text-danger">*</span>
+                            </label>
                             <label htmlFor="data" className="formItemDesc">
-                              There is no one who loves pain itself,
+                              Enter a Email id .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Address <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a address .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              City <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a City .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              State <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a State .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Province <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a province.
                             </label>
                           </div>
                           <div className="col-6">
@@ -130,7 +171,33 @@ const BuyerAdd = () => {
                           </div>
                         </div>
 
-                        <div className=" col-xl-6">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Province <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a province.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Postal code <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a postal code
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text" className="formItem" />
+                          </div>
+                        </div>
+                        {/* <div className=" col-xl-6">
                           <div>
                             <label>Call schedule</label>
                             <span className="text-danger">*</span>
@@ -185,10 +252,7 @@ const BuyerAdd = () => {
                                   <label for="selectFormRow">Enabled</label>
                                 </div>
                                 <div className="my-auto position-relative mx-1">
-                                  {/* <label className="switch">
-                                    <input type="checkbox" id="showAllCheck" />
-                                    <span className="slider round" />
-                                  </label> */}
+                                  
                                    <div class="cl-toggle-switch">
                                 <label class="cl-switch">
                                   <input
@@ -202,7 +266,7 @@ const BuyerAdd = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </form>
                     </div>
                   </div>

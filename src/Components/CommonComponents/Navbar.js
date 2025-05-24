@@ -995,6 +995,25 @@ function Navbar() {
                                   <div className="itemTitle">Source</div>
                                 </NavLink>
                               </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/elastic-trunk"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/elastic-trunk",
+                                        "/elastic-trunk",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Elastic trunk</div>
+                                </NavLink>
+                              </li>
                             </ul>
                           </div>
                         </div>
