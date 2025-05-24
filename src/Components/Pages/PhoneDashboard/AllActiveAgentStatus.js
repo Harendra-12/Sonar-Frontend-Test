@@ -119,11 +119,11 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
     return (
         <>
             <div className="callDashParkedCalls static"
-            // style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(98%, -50%)' }}
+                style={!isActiveCallsPage ? { transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(98%, -50%)' } : undefined}
             >
-                {/* <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
+                {!isActiveCallsPage && <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
                     <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
-                </button> */}
+                </button>}
                 <div className="overviewTableWrapper p-0">
                     <div className="overviewTableChild">
                         <div className="d-flex flex-wrap">
@@ -192,7 +192,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                     aria-labelledby="nav-online-tab"
                                                     tabIndex={0}
                                                 >
-                                                    <div className="tableContainer mt-0" style={{ width: '425px' }}>
+                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { width: '425px' } : undefined}>
                                                         <table>
                                                             <thead>
                                                                 <tr>
