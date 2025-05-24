@@ -1603,3 +1603,12 @@
 .showHideColumn .formItem{
     text-align: start;
 }
+
+.filePanelActive{
+    height: calc(100vh - 360px);
+    overflow: auto;
+}
+
+.webrtc_newMessageUi .messageOverlay.groupChat .messageList {
+    height: calc(100vh - 319px);
+}

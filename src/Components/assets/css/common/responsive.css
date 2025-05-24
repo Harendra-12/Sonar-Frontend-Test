@@ -14,6 +14,9 @@
     .tangoNavs .nav-tabs .nav-link {
         font-size: 0.75rem;
     }
+   .mainContentApp .contactListItem p.timeAgo, .callListItem p.timeAgo{
+        font-size: 14px;
+    }
 
 }
 
@@ -129,9 +132,9 @@
 }
 
 @media (max-device-width: 1480px) {
-    .messageSlideBox {
+    /* .messageSlideBox {
         width: 40% !important;
-    }
+    } */
 
     .mainContentApp .contactListItem h5 {
         max-width: 100px;
@@ -145,7 +148,14 @@
     .mainContentApp .webrtc_newMessageUi .profileHolder {
         width: 35px;
         height: 35px;
+    }
 
+    .file_list .ellipsisText {
+        width: 128px;
+    }
+
+    .webrtc_newMessageUi .messageOverlay.groupChat .messageList {
+        height: calc(100vh - 312px);
     }
 }
 
@@ -517,4 +527,3 @@
         display: block;
     }
 }
-

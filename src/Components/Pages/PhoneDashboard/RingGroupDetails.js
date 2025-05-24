@@ -88,7 +88,7 @@ const RingGroup = () => {
   return (
     <>
       {loading && <CircularLoader />}
-      <div className="overviewTableWrapper px-0 pt-0" id="rGroupAccordion">
+      <div className="overviewTableWrapper p-0" id="rGroupAccordion">
         <div className="overviewTableChild">
           <div className="d-flex flex-wrap">
             <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">

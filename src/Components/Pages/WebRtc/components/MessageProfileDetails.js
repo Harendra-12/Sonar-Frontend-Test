@@ -209,26 +209,28 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
             <input type="search" name="Search" id="headerSearch" placeholder="Search" value="" className="mb-2" onChange={() => featureUnderdevelopment()} />
 
             <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
-              {allFiles && allFiles?.length > 0 ? (
-                allFiles.map((item, index) => (
-                  <div className="file_list" key={index}>
-                    <div className="">
-                      <span className="shared-file-icon">
-                        {item.message_text && <i className={`fa-regular fa-file-${getExtension(item.message_text)}`}></i>}
-                      </span>
+              <div className="filePanelActive">
+                {allFiles && allFiles?.length > 0 ? (
+                  allFiles.map((item, index) => (
+                    <div className="file_list" key={index}>
+                      <div className="">
+                        <span className="shared-file-icon">
+                          {item.message_text && <i className={`fa-regular fa-file-${getExtension(item.message_text)}`}></i>}
+                        </span>
+                      </div>
+                      <div className=" ">
+                        <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
+                        <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                      </div>
+                      <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
+                        <button>
+                          <i className="fa-regular fa-arrow-down-to-line"></i>
+                        </button>
+                      </div>
                     </div>
-                    <div className=" ">
-                      <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                      <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
-                    </div>
-                    <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
-                      <button>
-                        <i className="fa-regular fa-arrow-down-to-line"></i>
-                      </button>
-                    </div>
-                  </div>
-                ))
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+                  ))
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+              </div>
             </div>
             <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0">
               {allFiles && allFiles?.length > 0 ? (

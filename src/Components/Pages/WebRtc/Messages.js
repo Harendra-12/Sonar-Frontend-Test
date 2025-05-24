@@ -2748,7 +2748,7 @@ function Messages({
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
                   <div className="col h-100 me-2" id="messagingBlock">
-                    <div className="messageOverlay h-100">
+                    <div className={`messageOverlay h-100 ${recipient[2]}`}>
                       {recipient?.[0] ? (
                         <div className="contactHeader">
                           <div>
