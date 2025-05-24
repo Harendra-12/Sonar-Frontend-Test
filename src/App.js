@@ -187,6 +187,7 @@ import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAnd
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
 import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
+import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1085,6 +1086,10 @@ function App() {
           <Route
             path="call-forwarding-campaign-create"
             element={<FportalCampaignCreate />}
+          />
+          <Route
+            path="elastic-trunk"
+            element={<ElasticTrunk />}
           />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
