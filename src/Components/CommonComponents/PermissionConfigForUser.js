@@ -3,6 +3,7 @@ import { backToTop, generalGetFunction } from '../GlobalFunction/globalFunction'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import SkeletonTableLoader from '../Loader/SkeletonTableLoader';
+import { useSelector } from 'react-redux';
 
 /**
  * PermissionConfigForUser is a React component that manages the configuration
@@ -38,7 +39,8 @@ function PermissionConfigForUser() {
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [loading, setLoading] = useState(false)
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const permissions = useSelector((state) => state.permissions);
 
   useEffect(() => {
     setRefreshState(true)
@@ -176,7 +178,7 @@ function PermissionConfigForUser() {
                       <PermissionConfigTable
                         selectedGroup={selectedGroup}
                         selectedRole={selectedRole}
-                        allPermissions={DemoData}
+                        allPermissions={permissions}
                         loading={loading}
                       />
                     </div>
@@ -207,7 +209,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
   useEffect(() => {
     // Fetch all Permission Data
-    setPermissionData(allPermissions.data);
+    setPermissionData(allPermissions);
 
     // Initialize with empty permissions for the selected role
     setRolePermissions(prev => ({
