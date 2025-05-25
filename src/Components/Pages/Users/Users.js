@@ -83,7 +83,7 @@ const Users = () => {
   async function getApi() {
     const apiData =
       await generalGetFunction(
-        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}&section=Accounts`
       );
     if (apiData?.status) {
       setUser(apiData.data);
