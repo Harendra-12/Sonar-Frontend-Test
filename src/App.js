@@ -188,6 +188,8 @@ import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
 import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
 import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
+import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
+import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1091,6 +1093,14 @@ function App() {
           <Route
             path="elastic-trunk"
             element={<ElasticTrunk />}
+          />
+          <Route
+            path="elastic-trunk-edit"
+            element={<ElasticTrunkEdit />}
+          />
+          <Route
+            path="elastic-trunk-add"
+            element={<ElasticTrunkAdd />}
           />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}

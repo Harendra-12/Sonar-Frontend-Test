@@ -894,7 +894,13 @@ function Navbar() {
                               "/did-listing-tracker",
                               "/buyers",
                               "/buyer-add",
-                              "/buyer-edit"
+                              "/buyer-edit",
+                              "/elastic-trunk",
+                              "/elastic-trunk-add",
+                              "/elastic-trunk-edit",
+                              "/call-forwarding-campaign",
+                              "/call-forwarding-campaign-create",
+                              "/call-forwarding-campaign-edit",
                             ])
                               ? "true"
                               : "false"
@@ -913,7 +919,13 @@ function Navbar() {
                             "/did-listing-tracker",
                             "/buyers",
                             "/buyer-add",
-                            "/buyer-edit"
+                            "/buyer-edit",
+                            "/elastic-trunk",
+                            "/elastic-trunk-add",
+                            "/elastic-trunk-edit",
+                            "/call-forwarding-campaign",
+                            "/call-forwarding-campaign-create",
+                            "/call-forwarding-campaign-edit",
                           ])
                             ? "show"
                             : ""
@@ -958,7 +970,7 @@ function Navbar() {
                                     isActive ||
                                       [
                                         "/call-forwarding-campaign-create",
-                                        "/call-forwarding-campaign-create",
+                                        "/call-forwarding-campaign-edit",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -1013,8 +1025,8 @@ function Navbar() {
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/elastic-trunk",
-                                        "/elastic-trunk",
+                                        "/elastic-trunk-add",
+                                        "/elastic-trunk-edit",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
