@@ -580,7 +580,7 @@ function EFax({ did }) {
                 style={{ height: "100%" }}
               >
                 <div className="row">
-                  <div className="col-12">
+                  <div className="col-12 ">
                     {clickStatus === "file" && (
 
                       <EFaxFile
@@ -873,18 +873,18 @@ function EFax({ did }) {
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
-                <div className="col-2 px-0">
+                <div className="col-12 px-0">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Delete document</h4>
-                  Are you sure you want to delete this document?
+                <div className="col-12 ps-0">
+                  <h4 className="text-center text-danger">Delete document</h4>
+                  <p className="text-center">Are you sure you want to delete this document?</p>
                   <br />
-                  <p>{deleteFile.file_name}</p>
+                  <p className="text-center">{deleteFile.file_name}</p>
                   <br />
-                  <div className="mt-2 d-flex justify-content-between">
+                  <div className="mt-2 d-flex justify-content-center gap-2">
                     <button
                       className="panelButton m-0"
                       onClick={deleteDocument}

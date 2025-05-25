@@ -26,7 +26,7 @@
   /* margin-top: 20px; */
   text-align: center;
   position: relative;
-  min-height: 188px;
+  /* min-height: 188px; */
   /* height: 100%; */
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -991,6 +991,7 @@
 
 .itemWrapper.b.dashboard_cardWrap .data-number2 h5 {
   color: var(--ui-accent-green) !important;
+  text-transform: capitalize;
 }
 
 .call_dCard {

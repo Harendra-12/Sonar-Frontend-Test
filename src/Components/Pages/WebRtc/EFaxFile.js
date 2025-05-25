@@ -118,9 +118,9 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
       className=""
       id="callDetails"
     >
-      <div className="profileView mb-2 shadow-none">
+      <div className="profileView mb-2 shadow-none mt-2">
         <div className="profileDetailsHolder">
-          <div className="header d-flex align-items-center pe-0">
+          <div className="header d-flex align-items-center">
             <div className="col-12">Upload eFax Document</div>
           </div>
           <div className="mt-2">
