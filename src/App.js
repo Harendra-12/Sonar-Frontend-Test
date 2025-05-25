@@ -251,9 +251,9 @@ function App() {
         <GlobalCalls />
         <Navbar />
         <OfflineNotice />
-         {/* <MissedCallPopup /> */}
+        {/* <MissedCallPopup /> */}
         <Routes>
-          
+
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
@@ -465,6 +465,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions
               ) ? (
                 <Users />

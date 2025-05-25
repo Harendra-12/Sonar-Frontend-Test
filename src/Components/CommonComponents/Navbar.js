@@ -187,7 +187,8 @@ function Navbar() {
                           {checkViewSidebar(
                             "User",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           ) ? (
                             <li className="tabItem ">
                               <NavLink
@@ -215,7 +216,8 @@ function Navbar() {
                           {checkViewSidebar(
                             "Extension",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           ) ? (
                             <li className="tabItem ">
                               <NavLink
@@ -243,7 +245,8 @@ function Navbar() {
                           {checkViewSidebar(
                             "Role",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           ) ? (
                             <li className="tabItem">
                               <NavLink
@@ -261,11 +264,13 @@ function Navbar() {
                           {(checkViewSidebar(
                             "AccessControl",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           ) || checkViewSidebar(
                             "AccessControlNode",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           )) ? (
                             <li className="tabItem">
                               <NavLink
@@ -292,7 +297,8 @@ function Navbar() {
                           {checkViewSidebar(
                             "Group",
                             permissions,
-                            account?.permissions
+                            account?.sectionPermissions,
+                            account?.permissions,
                           ) ? (
                             <li className="tabItem ">
                               <NavLink
