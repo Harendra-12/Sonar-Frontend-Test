@@ -173,7 +173,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "Account",
+                              "User",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -904,38 +904,51 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             }
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/agent-disposition-manage"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/agent-disposition-manage"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Desposition</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/did-listing-dialer"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/did-listing-dialer"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Number Configuration</div>
-                              </NavLink>
-                            </li>
+                            {checkViewSidebar(
+                              "Disposition",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) &&
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/agent-disposition-manage"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/agent-disposition-manage"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Desposition</div>
+                                </NavLink>
+                              </li>
+                            }
+                            {checkViewSidebar(
+                              "DidDetail",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) && <li className="tabItem ">
+                                <NavLink
+                                  to="/did-listing-dialer"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/did-listing-dialer"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Number Configuration</div>
+                                </NavLink>
+                              </li>
+                            }
                             {/* <li className="tabItem ">
                                 <NavLink
                                   to="/call-desposition"
@@ -1693,7 +1706,12 @@ function Navbar() {
                             </li>
                           ) : null} */}
 
-                            {isCustomerAdmin && (
+                            {checkViewSidebar(
+                              "Ratecard",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) &&
                               <li className="tabItem ">
                                 <NavLink
                                   to="/rate-card"
@@ -1711,7 +1729,7 @@ function Navbar() {
                                   <div className="itemTitle">Rate Card</div>
                                 </NavLink>
                               </li>
-                            )}
+                            }
                             {/* <li className="tabItem ">
                             <NavLink
                               to="/subscription-management"
@@ -1771,29 +1789,43 @@ function Navbar() {
                               </li>
                             }
 
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/billing-dashboard"
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    [
-                                      "/billing-dashboard",
-                                      "/billing-dashboard",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Billing Dashboard</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem">
-                              <NavLink to="/package-details">
-                                <div className="itemTitle">Package Details</div>
-                              </NavLink>
-                            </li>
+                            {checkViewSidebar(
+                              "Dashboard",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) &&
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/billing-dashboard"
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/billing-dashboard",
+                                        "/billing-dashboard",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Billing Dashboard</div>
+                                </NavLink>
+                              </li>
+                            }
+                            {checkViewSidebar(
+                              "Package",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) &&
+                              <li className="tabItem">
+                                <NavLink to="/package-details">
+                                  <div className="itemTitle">Package Details</div>
+                                </NavLink>
+                              </li>
+                            }
                           </ul>
                         </div>
                       </div>
