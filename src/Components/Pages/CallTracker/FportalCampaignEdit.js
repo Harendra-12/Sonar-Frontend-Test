@@ -130,6 +130,7 @@ function FportalCampaignEdit() {
         setCompletedStep(1);
         if (response.data?.forwarding_portals?.length > 0) {
           resetStep2(response.data?.forwarding_portals[0]);
+          setSelectedDids(response.data?.forwarding_portals[0]?.did_details.map((item) => item.id) || []);
           setCompletedStep(2);
         }
         setLoading(false);
