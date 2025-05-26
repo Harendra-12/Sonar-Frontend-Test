@@ -380,6 +380,11 @@ export function checkViewSidebar(
         // First check if item belongs to the current section
         if (!sectionPermissions?.includes(item.id)) continue;
 
+        // If no action specified, check if module section matches
+        if (!action && item.module_section === slug) {
+          return true;
+        }
+
         // If no action specified, check if model matches
         if (!action && item.model === slug) {
           return true;
