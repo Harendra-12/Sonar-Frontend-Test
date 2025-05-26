@@ -158,12 +158,12 @@ function BillingDashboard() {
             <Header title="Billing Dashboard" />
             <div className="overviewTableWrapper0">
               <div className="overviewTableChild0">
-                <div className="row">
+                <div className="row my-3">
                   <div className="col-12">
                     <div className="heading border-0 d-block">
-                      <div className="container-fluid">
+                      <div className="">
                         <div className="row ">
-                          <div className="col-xl-12 mt-xl-4">
+                          <div className="col-xl-12">
                             <div className="row">
                               <div className="col-xxl-4 col-xl-6 mb-3 ">
                                 <div className="itemWrapper a">
@@ -500,7 +500,7 @@ function BillingDashboard() {
                         </div>
                       </div>
 
-                      <div className="container-fluid">
+                      <div className="">
                         <div className="row">
                           <div className="col-xl-12">
                             <div className="row">
