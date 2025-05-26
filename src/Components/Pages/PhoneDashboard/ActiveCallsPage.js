@@ -311,7 +311,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                                 <i className="fa-solid fa-pen" />
                                                             </button>
-                                                            <div className="itemWrapper a  datanumber4">
+                                                            <div className="itemWrapper a  datanumber4 shadow-sm">
                                                                 <div className="heading h-auto d-block">
                                                                     <div className='d-flex align-items-center justify-content-center flex-column '>
                                                                         <div className='text-center'>
@@ -339,8 +339,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p>Active</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' />
-                                                                                    {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
+                                                                                     {/* <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' /> */}
+                                                                                    <p><i class="fa-solid fa-phone-volume text-info"></i></p>
                                                                                 </div> : ""
                                                                         }
                                                                         {
@@ -355,8 +355,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p className=''>Ringing</p> */}
-                                                                                      <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' />
-                                                                                    {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
+                                                                                      {/* <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' /> */}
+                                                                                    <p><i class="fa-solid fa-phone-arrow-right text-success"></i></p>
                                                                                 </div> : " "
                                                                         }
                                                                         {
@@ -371,7 +371,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p>Total</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' />
+                                                                                     {/* <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' /> */}
+                                                                                     <p><i class="fa-solid fa-phone text-orange"></i></p>
                                                                                 </div> : ""
                                                                         }
                                                                         {
@@ -382,7 +383,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
                                                                                     </h4>
                                                                                     {/* <p>Missed</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/missed.png')} alt='logout' />
+                                                                                     {/* <img className=" " src={require('../../assets/images/missed.png')} alt='logout' /> */}
+                                                                                     <p><i class="fa-solid fa-phone-missed text-danger"></i></p>
                                                                                 </div> : ""
                                                                         }
                                                                     </div>

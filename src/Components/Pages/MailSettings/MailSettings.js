@@ -178,7 +178,7 @@ const MailSettings = ({ style }) => {
                       </div>
                       <div
                         className="col-12"
-                        style={{ overflow: "auto", padding: "10px 20px 0" }}
+                        style={{ overflow: "auto", padding: "10px 10px" }}
                       >
                         <div className="mx-2 tableContainer">
                           <table>

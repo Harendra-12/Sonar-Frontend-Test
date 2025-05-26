@@ -205,7 +205,7 @@ function IvrOptions() {
                         >
                           <label>{index + 1}.</label>
                         </div>
-                        <div className="col-3 pe-2">
+                        <div className="col-3 pe-2 mb-2">
                           {index === 0 ? (
                             <div className="formLabel">
                               <label htmlFor="">Option Key</label>
@@ -235,7 +235,7 @@ function IvrOptions() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-3 pe-2">
+                        <div className="col-3 pe-2 mb-2">
                           {index === 0 ? (
                             <div className="formLabel">
                               <label htmlFor="">Action type</label>
@@ -281,7 +281,7 @@ function IvrOptions() {
                         </div>
                         {item.action_name === "pstn" ||
                           (editId === item.id && editAction_name === "pstn") ? (
-                          <div className="col-3 pe-2">
+                          <div className="col-3 pe-2 mb-2">
                             <PhoneInput
                               // disabled={
                               //   editId === item.id
@@ -299,7 +299,7 @@ function IvrOptions() {
                             />
                           </div>
                         ) : (
-                          <div className="col-3 pe-2">
+                          <div className="col-3 pe-2 mb-2">
                             <ActionList
                               title={index == 0 ? "Action" : null}
                               isDisabled={
@@ -374,7 +374,7 @@ function IvrOptions() {
                     <div className="formLabel pe-2" style={{ width: 30 }}>
                       <label>{options.length + 1}.</label>
                     </div>
-                    <div className="col-3 pe-2">
+                    <div className="col-3 pe-2 mb-2">
                       <div className="position-relative">
                         <select
                           type="text"
@@ -394,7 +394,7 @@ function IvrOptions() {
                         </select>
                       </div>
                     </div>
-                    <div className="col-3 pe-2">
+                    <div className="col-3 pe-2 mb-2">
                       <select
                         className="formItem me-0"
                         style={{ width: "100%" }}
@@ -425,7 +425,7 @@ function IvrOptions() {
                       </select>
                     </div>
                     {action_name === "pstn" ? (
-                      <div className="col-3 pe-2">
+                      <div className="col-3 pe-2 mb-2">
                         <PhoneInput
                           placeholder="Enter phone number"
                           limitMaxLength={true}
@@ -434,7 +434,7 @@ function IvrOptions() {
                         />
                       </div>
                     ) : (
-                      <div className="col-3 pe-2">
+                      <div className="col-3 pe-2 mb-2">
                         <ActionList
                           title={null}
                           isDisabled={

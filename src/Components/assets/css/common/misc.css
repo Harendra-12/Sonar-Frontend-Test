@@ -2545,6 +2545,7 @@ input[type=number] {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    min-height: 183px;
 }
 
 .balance-box .data-number3 {

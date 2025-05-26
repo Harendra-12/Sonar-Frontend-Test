@@ -27,7 +27,7 @@
   text-align: center;
   position: relative;
   /* min-height: 188px; */
-  /* height: 100%; */
+  height: 100%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06); */
@@ -967,6 +967,9 @@
   color: var(--listing-color3);
 }
 
+.itemWrapper.dashboard_cardWrap {
+  min-height: 188px;
+}
 .itemWrapper.dashboard_cardWrap.a {
   background: #005b70 !important;
 }

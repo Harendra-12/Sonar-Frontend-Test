@@ -419,9 +419,9 @@
         padding: 15px;
     }
 
-    .overviewTableWrapper .heading {
+    /* .overviewTableWrapper .heading {
         display: block;
-    }
+    } */
 
     .overviewTableWrapper .heading .content {
         margin-bottom: 15px;
@@ -568,4 +568,7 @@
     /* .flex_wrap575 {
         flex-wrap: wrap;
     } */
+    .overviewTableWrapper .heading {
+       flex-wrap: wrap;
+    }
 }

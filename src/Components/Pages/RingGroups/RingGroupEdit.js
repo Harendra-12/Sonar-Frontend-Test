@@ -1299,7 +1299,7 @@ const RingGroupEdit = () => {
                                         })}
                                     <option
                                       value="addUser"
-                                      className="addmusic"
+                                      // className="addmusic"
                                       style={{ cursor: "pointer" }}
                                     >
                                       Delete this user extension changed

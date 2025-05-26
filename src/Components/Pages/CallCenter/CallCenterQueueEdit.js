@@ -906,7 +906,7 @@ function CallCenterQueueEdit() {
                         tabindex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">
                                 Queue Name{" "}
@@ -916,7 +916,7 @@ function CallCenterQueueEdit() {
                                 Enter the queue name.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -935,14 +935,14 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Greeting</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Select the desired Greeting.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("greeting")}
                                 className="formItem w-100"
@@ -977,14 +977,14 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Strategy</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Select the queue ring strategy.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("strategy")}
                                 className="formItem w-100"
@@ -1002,14 +1002,14 @@ function CallCenterQueueEdit() {
                               </select>
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Music on Hold</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Select the desired hold music.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("moh_sound")}
                                 className="formItem w-100"
@@ -1044,14 +1044,14 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Record</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Save the recording.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("recording_enabled")}
                                 className="formItem w-100"
@@ -1063,7 +1063,7 @@ function CallCenterQueueEdit() {
                               </select>
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Discard Abandoned After</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1071,7 +1071,7 @@ function CallCenterQueueEdit() {
                                 is removed from the queue.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -1088,14 +1088,14 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Caller ID Name Prefix</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Set a prefix on the caller ID name.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -1112,14 +1112,14 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Tag</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Set a tag.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -1144,11 +1144,11 @@ function CallCenterQueueEdit() {
                         tabindex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Tier Rules Apply</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("tier_rules_apply")}
                                 className="formItem w-100"
@@ -1160,11 +1160,11 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Tier Rule Wait Second</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1181,13 +1181,13 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">
                                 Tier Rule Wait Multiply Level
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("tier_rule_wait_multiply_level")}
                                 className="formItem w-100"
@@ -1199,13 +1199,13 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">
                                 Tier Rule No Agent No Wait
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("tier_rule_no_agent_no_wait")}
                                 className="formItem w-100"
@@ -1226,11 +1226,11 @@ function CallCenterQueueEdit() {
                         tabindex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Max Wait Time</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1248,13 +1248,13 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">
                                 Max Wait Time with no agent
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1272,13 +1272,13 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">
                                 Max Wait Time With No Agent Time Reached{" "}
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1300,7 +1300,7 @@ function CallCenterQueueEdit() {
                               )}
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Action</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1308,7 +1308,7 @@ function CallCenterQueueEdit() {
                                 is reached.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <ActionList
                                 title={null}
                                 label={null}
@@ -1327,14 +1327,14 @@ function CallCenterQueueEdit() {
                         tabindex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Queue Announce</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Select the desired queue announce sound.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("queue_announce_sound")}
                                 className="formItem w-100"
@@ -1366,11 +1366,11 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Queue Announce Frequency</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1388,14 +1388,14 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Queue Description</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Define queue description.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="queue_description"
@@ -1411,7 +1411,7 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Queue Announcement</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1447,11 +1447,11 @@ function CallCenterQueueEdit() {
                         tabindex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Ring Progressively Delay</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="number"
                                 name="extension"
@@ -1469,14 +1469,14 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Record Template</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Define record template.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <input
                                 type="text"
                                 name="record_template"
@@ -1492,11 +1492,11 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Time Base Score</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("time_base_score")}
                                 className="formItem w-100"
@@ -1506,11 +1506,11 @@ function CallCenterQueueEdit() {
                               </select>
                             </div>
                           </div>
-                          <div className="formRow col-xl-3">
+                          <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
                               <label htmlFor="">Abandoned Resume Allowed</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                               <select
                                 {...register("abandoned_resume_allowed")}
                                 className="formItem w-100"
@@ -1525,14 +1525,14 @@ function CallCenterQueueEdit() {
                       </div>
                     </div>
 
-                    {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3 col-lg-12">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Agents On Load</label>
                   <label htmlFor="data" className="formItemDesc">
                     Truncate Agents On Load.
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <select
                     {...register("truncate-agents-on-load")}
                     className="formItem w-100"
@@ -1544,14 +1544,14 @@ function CallCenterQueueEdit() {
                 </div>
               </div> */}
 
-                    {/* <div className="formRow col-xl-3">
+                    {/* <div className="formRow col-xl-3 col-lg-12">
                 <div className="formLabel">
                   <label htmlFor="">Truncate Tiers On Load</label>
                   <label htmlFor="data" className="formItemDesc">
                     Truncate Tiers On Load.
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <select
                     {...register("truncate-tiers-on-load")}
                     className="formItem w-100"
@@ -1825,7 +1825,7 @@ function CallCenterQueueEdit() {
                                   </div>
                                   {advance.includes(item.id) && (
                                     <>
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Call Timeout
@@ -1849,7 +1849,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Reject Delay
@@ -1873,7 +1873,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Max No Answer
@@ -1897,7 +1897,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <label htmlFor="">Busy Delay</label>
@@ -1923,7 +1923,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <label htmlFor="">
@@ -1951,7 +1951,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <label htmlFor="">
@@ -1979,7 +1979,7 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <label htmlFor="">
@@ -2004,7 +2004,7 @@ function CallCenterQueueEdit() {
                                         </select>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <Tippy content='Truncate agents on load'>
@@ -2033,7 +2033,7 @@ function CallCenterQueueEdit() {
                                         </select>
                                       </div>
 
-                                      <div className="col-2 ps-0 pe-2">
+                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
                                         <div className="formLabel">
                                           {index === 0 ? (
                                             <Tippy content='Truncate tiers on load'>
@@ -2451,7 +2451,7 @@ function CallCenterQueueEdit() {
                   </div>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">Max No Answer</label>
                   </div>
@@ -2472,7 +2472,7 @@ function CallCenterQueueEdit() {
                   </div>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">No Answer Delay</label>
                   </div>
@@ -2537,7 +2537,7 @@ function CallCenterQueueEdit() {
                   </select>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">Truncate tiers on load</label>
                   </div>
@@ -2888,7 +2888,7 @@ function CallCenterQueueEdit() {
                   </div>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">No Answer Delay</label>
                   </div>
@@ -2910,7 +2910,7 @@ function CallCenterQueueEdit() {
                   </div>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">Reserve Agents</label>
                   </div>
@@ -2933,7 +2933,7 @@ function CallCenterQueueEdit() {
                   </select>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">Truncate agents on load</label>
                   </div>
@@ -2956,7 +2956,7 @@ function CallCenterQueueEdit() {
                   </select>
                 </div>
 
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                   <div className="formLabel">
                     <label htmlFor="">Truncate tiers on load</label>
                   </div>
