@@ -3,10 +3,12 @@ import Header from "../../CommonComponents/Header";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { numberValidator, requiredValidator } from "../../validations/validation";
 import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
+import CircularLoader from "../../Loader/CircularLoader";
+import Select from "react-select";
 
 function FportalCampaignCreate() {
   const navigate = useNavigate();
@@ -16,6 +18,9 @@ function FportalCampaignCreate() {
 
   const [campaignId, setCampaignId] = useState('');
   const [allBuyers, setAllBuyers] = useState([]);
+  const [trunks, setTrunks] = useState([]);
+  const [did, setDid] = useState([]);
+  const [selectedDids, setSelectedDids] = useState([]);
 
 
   const {
@@ -29,6 +34,7 @@ function FportalCampaignCreate() {
   const {
     register: registerStep2,
     handleSubmit: handleSubmitStep2,
+    watch: watchStep2,
     formState: { errors: errorsStep2 },
   } = useForm();
 
@@ -55,7 +61,7 @@ function FportalCampaignCreate() {
 
   const handleFormSubmitStepTwo = handleSubmitStep2(async (data) => {
     setLoading(true);
-    const payload = { ...data, fportal_campaign_id: campaignId };
+    const payload = { ...data, fportal_campaign_id: campaignId, dids: selectedDids };
     const apiData = await generalPostFunction("/fportal/store", payload);
     if (apiData?.status) {
       setLoading(false);
@@ -69,24 +75,62 @@ function FportalCampaignCreate() {
   })
 
   const getAllBuyers = async () => {
-    setLoading(true);
+    // setLoading(true);
     const response = await generalGetFunction('buyer/all');
     if (response.status) {
       setAllBuyers(response.data);
-      setLoading(false);
+      // setLoading(false);
     } else {
       toast.error(response.message);
-      setLoading(false);
+      // setLoading(false);
     }
   };
+
+  const getAllTrunk = async () => {
+    // setLoading(true);
+    const response = await generalGetFunction('fportaltrunk/all');
+    if (response.status) {
+      setTrunks(response.data);
+      // setLoading(false);
+    } else {
+      toast.error(response.message);
+      // setLoading(false);
+    }
+  };
+
+  async function getDidData() {
+    // setLoading(true);
+    try {
+      const getDid = await generalGetFunction("did/all?all-dids");
+      if (getDid?.status) {
+        setDid(getDid.data.filter((item) => item.usages === "tracker"));
+      }
+    } catch (error) {
+      console.error("Error fetching DID data:", error);
+    }
+  }
 
   // Initial data fetch
   useEffect(() => {
     getAllBuyers();
+    getAllTrunk();
+    getDidData();
   }, [])
+
+  const toggleSelect = (values) => {
+    setSelectedDids(values)
+  }
+
+  const allDidOptions = did.map((item) => ({
+    value: item.id,
+    label: item.did,
+  }))
+
+
 
   return (
     <main className="mainContent">
+      {loading && <CircularLoader />}
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row">
@@ -101,7 +145,7 @@ function FportalCampaignCreate() {
                         <p>You can see all list of Forwarding portal</p>
                       </div>
                       <div className="buttonGroup">
-                        <button effect="ripple" className="panelButton gray">
+                        <button className="panelButton gray" onClick={() => { navigate(-1); backToTop(); }}>
                           <span className="text">Back</span>
                           <span className="icon">
                             <i className="fa-solid fa-caret-left"></i>
@@ -429,6 +473,51 @@ function FportalCampaignCreate() {
                                 )}
                               </div>
                             </div>
+
+                            <div className="formRow col-xl-6 col-12">
+                              <div className='formLabel'>
+                                <label>
+                                  Outbound Caller ID
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <Select
+                                  onChange={(selectedOptions) => {
+                                    const values = (selectedOptions || []).map((option) => option.value)
+                                    toggleSelect(values)
+                                  }}
+                                  isMulti
+                                  value={allDidOptions.filter(option => selectedDids.includes(option.value))}
+                                  options={allDidOptions}
+                                  isSearchable
+                                  styles={customStyles}
+                                />
+                              </div>
+                            </div>
+
+                            {watchStep2().forward_type == 'trunk' &&
+                              <div className="formRow col-xl-6 col-12">
+                                <div className='formLabel'>
+                                  <label>
+                                    Total Send Call
+                                  </label>
+                                </div>
+                                <div className='col-6'>
+                                  <select className='formItem' {...registerStep2("trunk_id", { ...requiredValidator, })}>
+                                    <option value=''>Select Trunk</option>
+                                    {trunks.map((trunk) => (
+                                      <option key={trunk.id} value={trunk.id}>
+                                        {trunk.description}
+                                      </option>
+                                    ))}
+
+                                  </select>
+                                  {errorsStep2.total_send_call && (
+                                    <ErrorMessage text={errorsStep2.total_send_call.message} />
+                                  )}
+                                </div>
+                              </div>
+                            }
                           </form>
                         </div>
                       </>}
@@ -445,3 +534,78 @@ function FportalCampaignCreate() {
 }
 
 export default FportalCampaignCreate;
+
+// Custom styles for react-select
+export const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop: '2px',
+    paddingBottom: '2px',
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+    borderBottom: '1px solid var(--border-color)'
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    maxHeight: "150px",
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};
+
