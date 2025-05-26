@@ -37,7 +37,7 @@ function FportalCampaign() {
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
     if (id) {
-      navigate('/elastic-trunk-edit', { state: { id: id } });
+      navigate('/call-forwarding-campaign-edit', { state: { id: id } });
     }
   }
 

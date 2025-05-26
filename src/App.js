@@ -190,6 +190,7 @@ import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
 import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
 import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
 import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
+import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1089,6 +1090,10 @@ function App() {
           <Route
             path="call-forwarding-campaign-create"
             element={<FportalCampaignCreate />}
+          />
+          <Route
+            path="call-forwarding-campaign-edit"
+            element={<FportalCampaignEdit />}
           />
           <Route
             path="elastic-trunk"
