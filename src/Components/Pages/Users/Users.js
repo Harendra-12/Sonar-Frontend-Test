@@ -349,29 +349,23 @@ const Users = () => {
                               <option value="offline">Offline</option>
                               <option value="all">All</option>
                             </select></th>
-                            {checkViewSidebar("User", slugPermissions, account?.tablePermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
                             <th className="text-center">Activation</th>
-                            {checkViewSidebar("User", slugPermissions, account?.tablePermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
+                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                           </tr>
                         </thead>
                         <tbody className="">
-                          {noPermissionToRead && checkViewSidebar(
+                          {noPermissionToRead || !checkViewSidebar(
                             "User",
                             slugPermissions,
                             account?.sectionPermissions,
                             account?.permissions,
                             "read"
                           ) ? (
-                            // <div className="">
                             <tr>
-                              <td></td>
-                              <td></td>
-                              <td>You dont have any permission</td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td colSpan={99} className="text-center">You dont have any permission</td>
                             </tr>
-                          ) : // </div>
+                          ) :
                             loading ? (
                               <SkeletonTableLoader col={tableKeys?.length + 1} row={15} />
                             ) : (

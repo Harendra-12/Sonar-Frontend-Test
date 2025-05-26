@@ -394,8 +394,8 @@ export function checkViewSidebar(
         if (action) {
           for (const subItem of item.permissions) {
             if (
-              subItem.model === slug &&
-              subItem.action === action &&
+              subItem.model == slug &&
+              subItem.action == action &&
               userPermissions?.includes(subItem.id)
             ) {
               return true;
