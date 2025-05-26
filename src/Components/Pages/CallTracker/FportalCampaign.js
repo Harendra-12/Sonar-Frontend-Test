@@ -1,12 +1,65 @@
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { backToTop } from "../../GlobalFunction/globalFunction";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { backToTop, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
+import { toast } from "react-toastify";
+import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function FportalCampaign() {
-  const [refreshState, setRefreshState] = useState();
-  const handleRefreshBtnClicked = () => {
+  const navigate = useNavigate();
 
+  const [allFCampaigns, setAllFCampaigns] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
+  const { confirm, ModalComponent } = PromptFunctionPopup();
+
+  const getAllCampaigns = async () => {
+    setLoading(true);
+    const response = await generalGetFunction('fcampaign/all');
+    if (response.status) {
+      setAllFCampaigns(response.data);
+      setLoading(false);
+    } else {
+      toast.error(response.message);
+      setLoading(false);
+    }
+  };
+
+  // Initial data fetch
+  useEffect(() => {
+    getAllCampaigns();
+  }, [itemsPerPage, searchValue])
+
+  // Handle Edit Buyer
+  const handleConfigEdit = async (id) => {
+    if (id) {
+      navigate('/call-forwarding-campaign-edit', { state: { id: id } });
+    }
+  }
+
+  // Handle Delete Buyer
+  const handleDeleteConfig = async (id) => {
+    const userConfirmed = await confirm();
+    if (userConfirmed) {
+      setLoading(true);
+      try {
+        const apiCall = await generalDeleteFunction(`/fcampaign/${id}`);
+        if (apiCall.status) {
+          setLoading(false);
+          toast.success("Campaign Deleted Successfully.");
+          getAllCampaigns();
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    }
   }
   return (
     <main className="mainContent">
@@ -20,21 +73,7 @@ function FportalCampaign() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Forwarding portal {" "}
-                          <button
-                            className="clearButton"
-                            onClick={handleRefreshBtnClicked}
-                            disabled={refreshState}
-                          >
-                            <i
-                              className={
-                                refreshState
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </button>
-                        </h4>
+                        <h4>Forwarding portal</h4>
                         <p>You can see all list of Forwarding portal</p>
                       </div>
                       <div className="buttonGroup">
@@ -45,7 +84,7 @@ function FportalCampaign() {
                           </span>
                         </button>
                         <button
-                          onClick={() => Navigate("/buyer-add")}
+                          onClick={() => navigate("/call-forwarding-campaign-create")}
                           effect="ripple"
                           className="panelButton"
                         >
@@ -61,78 +100,91 @@ function FportalCampaign() {
                     className="col-12"
                     style={{ overflow: "auto", padding: "25px 20px 0px" }}
                   >
-                    <div className="tableHeader">
-                      <div className="showEntries">
-                        <label>Show</label>
-                        <select className="formItem">
-                          <option value={10}>10</option>
-                          <option value={20}>20</option>
-                          <option value={30}>30</option>
-                        </select>
-                        <label>entries</label>
-                      </div>
-                      <div className="searchBox">
-                        <label>Search:</label>
-                        <input type="text" className="formItem" defaultValue="" />
-                      </div>
-                    </div>
+                    {/* <div className="tableHeader">
+                        <div className="showEntries">
+                          <label>Show</label>
+                          <select
+                            className="formItem"
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                              setItemsPerPage(e.target.value);
+                            }}
+                          >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={30}>30</option>
+                          </select>
+                          <label>entries</label>
+                        </div>
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="text"
+                            name="Search"
+                            placeholder="Search"
+                            value={searchValue}
+                            className="formItem"
+                            onChange={(e) => setSearchValue(e.target.value)}
+                          />
+                        </div>
+                      </div> */}
                     <div className="tableContainer">
                       <table>
                         <thead>
                           <tr>
                             <th>Status</th>
                             <th>Name</th>
-                            <th>Mode</th>
-                            <th>DID(s)</th>
-                            <th>Gateway</th>
+                            <th>Phone Code</th>
+                            <th>PSTN No.</th>
+                            <th>Agent</th>
                             <th>Progress</th>
-                            <th>Agents</th>
-                            <th>Records</th>
-                            <th>Options</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>
-                              <div className="d-flex align-items-center justify-content-start ">
-                                <div className="phone-call">
-                                  <i className="fa-solid fa-pause" />
-                                </div>
-                                <div>
-                                  <span className="ms-1">Paused</span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <b>asdasd</b>
-                            </td>
-                            <td>preview</td>
-                            <td>1</td>
-                            <td>Gateway</td>
-                            <td className="">
-                              <div
-                                className="specialProgressWrap"
-                                style={{ cursor: "pointer" }}
-                              >
-                                <div className="specialProgress">
-                                  <div
-                                    className="segment success"
-                                    style={{ width: "85%" }}
-                                  />
-                                  <div
-                                    className="segment fail"
-                                    style={{ width: "5%" }}
-                                  />
-                                  <div
-                                    className="segment pending"
-                                    style={{ width: "10%" }}
-                                  />
-                                </div>
-                                <div className="specialProgressText">
-                                  <p>0.00%</p>
-                                  <span>0 of 1000</span>
-                                </div>
-                                {/* <div className="specialProgressWrapDetails">
+                          {loading ? <SkeletonTableLoader col={8} row={15} /> :
+                            allFCampaigns && allFCampaigns.length > 0 ?
+                              allFCampaigns.map((campaign, index) => (
+                                <tr key={index}>
+                                  <td>
+                                    <div className="d-flex align-items-center justify-content-start ">
+                                      <div className="phone-call">
+                                        <i className={`fa-solid fa-${campaign.status == 'active' ? 'play' : 'pause'}`} />
+                                      </div>
+                                      <div>
+                                        <span className="ms-1">{campaign.status}</span>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>{campaign.campaign_name}</td>
+                                  <td>{campaign.country_prefix}</td>
+                                  <td>{campaign.pstn_number}</td>
+                                  <td>{campaign.agent_name}</td>
+                                  <td className="">
+                                    <div
+                                      className="specialProgressWrap"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <div className="specialProgress">
+                                        <div
+                                          className="segment success"
+                                          style={{ width: "85%" }}
+                                        />
+                                        <div
+                                          className="segment fail"
+                                          style={{ width: "5%" }}
+                                        />
+                                        <div
+                                          className="segment pending"
+                                          style={{ width: "10%" }}
+                                        />
+                                      </div>
+                                      <div className="specialProgressText">
+                                        <p>0.00%</p>
+                                        <span>0 of 1000</span>
+                                      </div>
+                                      {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
                                     style={{
@@ -244,136 +296,24 @@ function FportalCampaign() {
                                   </li>
                                 </ul>
                               </div> */}
-                              </div>
-                            </td>
-                            <td>
-                              <div>
-                                <div className="avatar-container" />
-                              </div>
-                            </td>
-                            <td>
-                              <span className="ellipsis">CustomerList.xls</span>
-                            </td>
-                            <td>
-                              <div className="dropdown">
-                                <div
-                                  className="tableButton"
-                                  href="#"
-                                  role="button"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  <i className="fa-solid fa-ellipsis-vertical" />
-                                </div>
-                                <ul
-                                  className="dropdown-menu actionBtnDropdowns"
-                                  style={{}}
-                                >
-                                  <li className="dropdown-item">
-                                    <div className="clearButton text-align-start">
-                                      <i className="fa-regular fa-circle-stop me-2" />{" "}
-                                      Stop
                                     </div>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <div className="clearButton text-align-start">
-                                      <i className="fa-regular fa-circle-play me-2" />{" "}
-                                      Start
-                                    </div>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <div className="clearButton text-align-start">
-                                      <i className="fa-regular fa-pen me-2" /> Edit
-                                    </div>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <div className="clearButton text-align-start">
-                                      <i className="fa-regular fa-clock me-2" />{" "}
-                                      Schedule
-                                    </div>
-                                  </li>
-                                  <li className="dropdown-item">
-                                    <div className="clearButton text-align-start">
-                                      <i className="fa-regular fa-trash me-2" />{" "}
-                                      Delete
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
+                                  </td>
+                                  <td><button className="tableButton edit" onClick={() => handleConfigEdit(campaign.id)}><i className='fa-solid fa-pen' /></button></td>
+                                  <td><button className="tableButton delete" onClick={() => handleDeleteConfig(campaign.id)}><i className='fa-solid fa-trash' /></button></td>
+                                </tr>
+                              )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
+                          }
                         </tbody>
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
-                      <label
-                        className="col-6"
-                        style={{
-                          fontFamily: "Roboto",
-                          color: "var(--color-subtext)",
-                          fontWeight: 500,
-                          fontSize: 14,
-                        }}
-                      >
-                        Showing 1 to 1 of 1 Entries.
-                      </label>
-                      {/* <nav
-                      aria-label="pagination navigation"
-                      className="MuiPagination-root MuiPagination-text pagination_slider col-6 justify-content-end css-1oj2twp-MuiPagination-root"
-                    >
-                      <ul className="MuiPagination-ul css-wjh20t-MuiPagination-ul">
-                        <li>
-                          <button
-                            className="MuiButtonBase-root Mui-disabled MuiPaginationItem-root MuiPaginationItem-sizeMedium MuiPaginationItem-text MuiPaginationItem-circular MuiPaginationItem-colorPrimary MuiPaginationItem-textPrimary Mui-disabled MuiPaginationItem-previousNext css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root"
-                            tabIndex={-1}
-                            type="button"
-                            disabled=""
-                            aria-label="Go to previous page"
-                          >
-                            <svg
-                              className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiPaginationItem-icon css-g2z002-MuiSvgIcon-root-MuiPaginationItem-icon"
-                              focusable="false"
-                              aria-hidden="true"
-                              viewBox="0 0 24 24"
-                              data-testid="NavigateBeforeIcon"
-                            >
-                              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                            </svg>
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="MuiButtonBase-root MuiPaginationItem-root MuiPaginationItem-sizeMedium MuiPaginationItem-text MuiPaginationItem-circular MuiPaginationItem-colorPrimary MuiPaginationItem-textPrimary Mui-selected MuiPaginationItem-page css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root"
-                            tabIndex={0}
-                            type="button"
-                            aria-current="true"
-                            aria-label="page 1"
-                          >
-                            1
-                            <span className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root" />
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="MuiButtonBase-root Mui-disabled MuiPaginationItem-root MuiPaginationItem-sizeMedium MuiPaginationItem-text MuiPaginationItem-circular MuiPaginationItem-colorPrimary MuiPaginationItem-textPrimary Mui-disabled MuiPaginationItem-previousNext css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root"
-                            tabIndex={-1}
-                            type="button"
-                            disabled=""
-                            aria-label="Go to next page"
-                          >
-                            <svg
-                              className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiPaginationItem-icon css-g2z002-MuiSvgIcon-root-MuiPaginationItem-icon"
-                              focusable="false"
-                              aria-hidden="true"
-                              viewBox="0 0 24 24"
-                              data-testid="NavigateNextIcon"
-                            >
-                              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                            </svg>
-                          </button>
-                        </li>
-                      </ul>
-                    </nav> */}
+                      <PaginationComponent
+                      // pageNumber={(e) => setPageNumber(e)}
+                      // totalPage={ringGroup.last_page}
+                      // from={ringGroup.from}
+                      // to={ringGroup.to}
+                      // total={ringGroup.total}
+                      />
                     </div>
                   </div>
                 </div>
@@ -381,9 +321,9 @@ function FportalCampaign() {
             </div>
           </div>
         </div>
+        <ModalComponent task={"delete"} reference={"Trunk"} />
       </section>
     </main>
-
 
   );
 }

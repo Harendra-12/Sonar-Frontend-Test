@@ -1049,7 +1049,7 @@ function PhoneDashboard() {
                 </div> */}
               </div>
             </div>
-            {/* <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} /> */}
+            <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} isActiveCallsPage={false} isParentWebRtc={false} />
           </div>
         </div>
       </section>

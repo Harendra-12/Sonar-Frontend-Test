@@ -60,7 +60,7 @@ export async function generalGetFunction(endpoint) {
   // if(!token){
   //   return({
   //     status: false,
-      
+
   //   })
   // }
   handleDispatch({
@@ -331,35 +331,81 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
+// export function checkViewSidebar(
+//   slug,
+//   permissions,
+//   userPermissions,
+//   action = undefined
+// ) {
+//   const allPermission = [];
+//   for (let key in permissions) {
+//     if (Array.isArray(permissions[key])) {
+//       permissions[key].forEach((item) => {
+//         if (userPermissions?.includes(item.id)) {
+//           allPermission.push({
+//             id: item?.id,
+//             action: item?.action,
+//             model: item?.model,
+//           });
+//         }
+//       });
+//     }
+//   }
+//   if (!action) {
+//     const actionPresent = allPermission.find((item) => item.model === slug);
+//     if (actionPresent) return true;
+//   } else if (action) {
+//     const actionPresent = allPermission.find(
+//       (item) => item.model === slug && item.action === action
+//     );
+//     if (actionPresent) return true;
+//   }
+//   return false;
+// }
+
 export function checkViewSidebar(
   slug,
   permissions,
+  sectionPermissions,
   userPermissions,
   action = undefined
 ) {
-  const allPermission = [];
-  for (let key in permissions) {
-    if (Array.isArray(permissions[key])) {
-      permissions[key].forEach((item) => {
-        if (userPermissions?.includes(item.id)) {
-          allPermission.push({
-            id: item?.id,
-            action: item?.action,
-            model: item?.model,
-          });
+  // Return false immediately if no permissions exist
+  if (!permissions) return false;
+
+  for (const moduleName in permissions) {
+    const modulePermissions = permissions[moduleName];
+    if (Array.isArray(modulePermissions)) {
+      for (const item of modulePermissions) {
+        // First check if item belongs to the current section
+        if (!sectionPermissions?.includes(item.id)) continue;
+
+        // If no action specified, check if module section matches
+        if (!action && item.module_section === slug) {
+          return true;
         }
-      });
+
+        // If no action specified, check if model matches
+        if (!action && item.model === slug) {
+          return true;
+        }
+
+        // If action specified, check user permissions
+        if (action) {
+          for (const subItem of item.permissions) {
+            if (
+              subItem.model == slug &&
+              subItem.action == action &&
+              userPermissions?.includes(subItem.id)
+            ) {
+              return true;
+            }
+          }
+        }
+      }
     }
   }
-  if (!action) {
-    const actionPresent = allPermission.find((item) => item.model === slug);
-    if (actionPresent) return true;
-  } else if (action) {
-    const actionPresent = allPermission.find(
-      (item) => item.model === slug && item.action === action
-    );
-    if (actionPresent) return true;
-  }
+
   return false;
 }
 

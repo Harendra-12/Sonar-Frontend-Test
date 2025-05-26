@@ -62,7 +62,7 @@ function CdrFilterReport({ page }) {
   const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
     useState("");
   const [hangupCause, setHagupCause] = useState("");
-  const [hangupStatus, setHangupStatus] = useState("");
+  const [hangupStatus, setHangupStatus] = useState([]);
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
   const [timeFlag, setTimeFlag] = useState({
@@ -301,8 +301,8 @@ function CdrFilterReport({ page }) {
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-              )
+              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+            )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
@@ -319,10 +319,10 @@ function CdrFilterReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-            ? callType
-            : page,
+              ? "pstn"
+              : page === "callrecording"
+                ? callType
+                : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -581,17 +581,17 @@ function CdrFilterReport({ page }) {
     const headers = columnOrder.map((key) => columnMap[key] || key);
 
     // 3. Build rows using the defined columnOrder
-   const rows = data.map((obj) =>
-  columnOrder
-    .map((key) => {
-      let value = obj[key] ?? "";
-      if (key === "e_name") {
-        value = value.replace(/\s+/g, ".");
-      }
-      return JSON.stringify(value);
-    })
-    .join(",")
-);
+    const rows = data.map((obj) =>
+      columnOrder
+        .map((key) => {
+          let value = obj[key] ?? "";
+          if (key === "e_name") {
+            value = value.replace(/\s+/g, ".");
+          }
+          return JSON.stringify(value);
+        })
+        .join(",")
+    );
 
 
     // 4. Combine and export
@@ -673,8 +673,8 @@ function CdrFilterReport({ page }) {
         filter === "missed"
           ? ["Missed", "Failed", "Voicemail"]
           : filter === "completed"
-          ? "Answered"
-          : ""
+            ? "Answered"
+            : ""
       );
       setCallDirection(direction === "all" ? "" : direction);
 
@@ -816,17 +816,16 @@ function CdrFilterReport({ page }) {
         <section id="phonePage">
           <div className="container-fluid px-0 position-relative">
             <Header
-              title={`${
-                page === "billing"
-                  ? "Billing Reports"
-                  : page === "callcenter"
+              title={`${page === "billing"
+                ? "Billing Reports"
+                : page === "callcenter"
                   ? "Call Center Reports"
                   : page === "ringgroup"
-                  ? "Ring Group Reports"
-                  : page === "callrecording"
-                  ? "Call Recordings"
-                  : "CDR Reports"
-              }`}
+                    ? "Ring Group Reports"
+                    : page === "callrecording"
+                      ? "Call Recordings"
+                      : "CDR Reports"
+                }`}
             />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -838,12 +837,12 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
 
                           <button
                             className="clearButton"
@@ -864,12 +863,12 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing Reports"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -919,7 +918,7 @@ function CdrFilterReport({ page }) {
                             className="panelButton"
                             disabled={loading}
                             onClick={() => setExportPopup(true)}
-                            // type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                          // type="button" data-bs-toggle="dropdown" aria-expanded="true"
                           >
                             <span className="text">Export</span>
                             <span className="icon">
@@ -1166,13 +1165,47 @@ function CdrFilterReport({ page }) {
                         )}
 
                         {page === "all" &&
-                        filteredKeys.includes("variable_sip_to_user") ? (
+                          filteredKeys.includes("variable_sip_to_user") ? (
                           <>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Direction
                               </label>
-                              <Select
+                              <div className="dropdown">
+                                <button
+                                  className="formItem"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  data-bs-auto-close="outside"
+                                  style={{ width: "160px" }}
+                                >
+                                  Column Filters
+                                </button>
+                                <ul className="dropdown-menu">
+                                  {callDirectionOptions?.map((option) => (
+                                    <li key={option.value}>
+                                      <div className="dropdown-item" href="#">
+                                        <input
+                                          type="checkbox"
+                                          checked={callDirection?.includes(option?.value)}
+                                          onChange={() => {
+                                            setCallDirection((prev) =>
+                                              prev.includes(option.value)
+                                                ? prev.filter((val) => val !== option.value)
+                                                : [...prev, option.value]
+                                            );
+                                            setPageNumber(1);
+                                          }}
+                                        />
+                                        <span className="text-dark ms-2">
+                                          {option.label}
+                                        </span>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              {/* <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
                                   const values = selectedOptions
@@ -1187,7 +1220,7 @@ function CdrFilterReport({ page }) {
                                 value={callDirectionOptions.filter((opt) =>
                                   callDirection.includes(opt.value)
                                 )}
-                              />
+                              /> */}
                               {/* <select
                                 className="formItem"
                                 onChange={(e) => {
@@ -1215,7 +1248,41 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Type
                               </label>
-                              <Select
+                              <div className="dropdown">
+                                <button
+                                  className="formItem"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  data-bs-auto-close="outside"
+                                  style={{ width: "160px" }}
+                                >
+                                  Column Filters
+                                </button>
+                                <ul className="dropdown-menu">
+                                  {callTypeOptions?.map((option) => (
+                                    <li key={option.value}>
+                                      <div className="dropdown-item" href="#">
+                                        <input
+                                          type="checkbox"
+                                          checked={callType?.includes(option?.value)}
+                                          onChange={() => {
+                                            setCallType((prev) =>
+                                              prev.includes(option.value)
+                                                ? prev.filter((val) => val !== option.value)
+                                                : [...prev, option.value]
+                                            );
+                                            setPageNumber(1);
+                                          }}
+                                        />
+                                        <span className="text-dark ms-2">
+                                          {option.label}
+                                        </span>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              {/* <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
                                   const values = selectedOptions.map(
@@ -1230,7 +1297,7 @@ function CdrFilterReport({ page }) {
                                 value={callTypeOptions.filter((opt) =>
                                   callType.includes(opt.value)
                                 )}
-                              />
+                              /> */}
                               {/* <select
                                 className="formItem"
                                 onChange={(e) => {
@@ -1253,7 +1320,7 @@ function CdrFilterReport({ page }) {
                           ""
                         )}
                         {page === "billing" ||
-                        !filteredKeys.includes("Hangup-Cause") ? (
+                          !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
                           <>
@@ -1261,7 +1328,42 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Hangup Status
                               </label>
-                              <Select
+                              <div className="dropdown">
+                                <button
+                                  className="formItem"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  data-bs-auto-close="outside"
+                                  style={{ width: "160px" }}
+                                >
+                                  Column Filters
+                                </button>
+                                <ul className="dropdown-menu">
+                                  {hangupCauseOptions?.map((option) => (
+                                    <li key={option.value}>
+                                      <div className="dropdown-item" href="#">
+                                        <input
+                                          type="checkbox"
+                                          checked={hangupCause?.includes(option?.value)}
+                                          onChange={() => {
+                                            setHagupCause((prev) =>
+                                              prev.includes(option.value)
+                                                ? prev.filter((val) => val !== option.value)
+                                                : [...prev, option.value]
+                                            );
+                                            setPageNumber(1);
+                                          }}
+                                        />
+                                        <span className="text-dark ms-2">
+                                          {option.label}
+                                        </span>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              {/* <Select
                                 isMulti
                                 onChange={(selectedOptions) => {
                                   const values = selectedOptions.map(
@@ -1276,7 +1378,7 @@ function CdrFilterReport({ page }) {
                                 value={hangupCauseOptions.filter((opt) =>
                                   hangupCause.includes(opt.value)
                                 )}
-                              />
+                              /> */}
                               {/* <select
                                 className="formItem"
                                 onChange={(e) => {
@@ -1299,7 +1401,43 @@ function CdrFilterReport({ page }) {
                                 <label className="formLabel text-start mb-0 w-100">
                                   Hangup Cause
                                 </label>
-                                <Select
+                                <div className="dropdown">
+                                  <button
+                                    className="formItem"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside"
+                                    style={{ width: "160px" }}
+                                  >
+                                    Column Filters
+                                  </button>
+                                  <ul className="dropdown-menu">
+                                    {console.log('hangupStatusOptions', hangupStatusOptions)}
+                                    {console.log('hangupStatus', hangupStatus)}
+                                    {hangupStatusOptions?.map((option) => (
+                                      <li key={option.value}>
+                                        <div className="dropdown-item" href="#">
+                                          <input
+                                            type="checkbox"
+                                            checked={hangupStatus?.includes(option?.value)}
+                                            onChange={() => {
+                                              setHangupStatus((prev) =>
+                                                prev.includes(option.value)
+                                                  ? prev.filter((val) => val !== option.value)
+                                                  : [...prev, option.value]
+                                              );
+                                              setPageNumber(1);
+                                            }}
+                                          />
+                                          <span className="text-dark ms-2">
+                                            {option.label}
+                                          </span>
+                                        </div>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                {/* <Select
                                   isMulti
                                   onChange={(selectedOptions) => {
                                     const values = selectedOptions.map(
@@ -1314,7 +1452,7 @@ function CdrFilterReport({ page }) {
                                   value={hangupStatusOptions.filter((opt) =>
                                     hangupStatus.includes(opt.value)
                                   )}
-                                />
+                                /> */}
                                 {/* <select
                                   className="formItem"
                                   onChange={(e) => {
@@ -1592,13 +1730,13 @@ function CdrFilterReport({ page }) {
                                                   <td key={key}>
                                                     {item["recording_path"] &&
                                                       item["variable_billsec"] >
-                                                        0 && (
+                                                      0 && (
                                                         <button
                                                           className="tableButton px-2 mx-0"
                                                           onClick={() => {
                                                             if (
                                                               item[
-                                                                "recording_path"
+                                                              "recording_path"
                                                               ] ===
                                                               currentPlaying
                                                             ) {
@@ -1609,16 +1747,16 @@ function CdrFilterReport({ page }) {
                                                             } else {
                                                               handlePlaying(
                                                                 item[
-                                                                  "recording_path"
+                                                                "recording_path"
                                                                 ]
                                                               );
                                                             }
                                                           }}
                                                         >
                                                           {currentPlaying ===
-                                                          item[
+                                                            item[
                                                             "recording_path"
-                                                          ] ? (
+                                                            ] ? (
                                                             <i className="fa-solid fa-chevron-up"></i>
                                                           ) : (
                                                             <i className="fa-solid fa-chevron-down"></i>
@@ -1644,13 +1782,13 @@ function CdrFilterReport({ page }) {
                                                   inbound: {
                                                     icon:
                                                       statusIcons[
-                                                        item.variable_DIALSTATUS
+                                                      item.variable_DIALSTATUS
                                                       ] ||
                                                       "fa-phone-arrow-down-left",
                                                     color:
                                                       item.variable_DIALSTATUS ==
                                                         "Missed" ||
-                                                      item.variable_DIALSTATUS ==
+                                                        item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
@@ -1659,13 +1797,13 @@ function CdrFilterReport({ page }) {
                                                   outbound: {
                                                     icon:
                                                       statusIcons[
-                                                        item.variable_DIALSTATUS
+                                                      item.variable_DIALSTATUS
                                                       ] ||
                                                       "fa-phone-arrow-up-right",
                                                     color:
                                                       item.variable_DIALSTATUS ==
                                                         "Missed" ||
-                                                      item.variable_DIALSTATUS ==
+                                                        item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
@@ -1674,12 +1812,12 @@ function CdrFilterReport({ page }) {
                                                   internal: {
                                                     icon:
                                                       statusIcons[
-                                                        item.variable_DIALSTATUS
+                                                      item.variable_DIALSTATUS
                                                       ] || "fa-headset",
                                                     color:
                                                       item.variable_DIALSTATUS ==
                                                         "Missed" ||
-                                                      item.variable_DIALSTATUS ==
+                                                        item.variable_DIALSTATUS ==
                                                         "Failed"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
@@ -1689,7 +1827,7 @@ function CdrFilterReport({ page }) {
 
                                                 const callType =
                                                   callIcons[
-                                                    item["Call-Direction"]
+                                                  item["Call-Direction"]
                                                   ] || callIcons.internal;
 
                                                 return (
@@ -1717,11 +1855,11 @@ function CdrFilterReport({ page }) {
                                                       item["application_state"]
                                                     )
                                                       ? item[
-                                                          "other_leg_destination_number"
-                                                        ]
+                                                      "other_leg_destination_number"
+                                                      ]
                                                       : item[
-                                                          "Caller-Callee-ID-Number"
-                                                        ]}{" "}
+                                                      "Caller-Callee-ID-Number"
+                                                      ]}{" "}
                                                     {item[
                                                       "application_state_name"
                                                     ] &&
@@ -1756,103 +1894,102 @@ function CdrFilterReport({ page }) {
                                               {filteredColumnForTable?.find(
                                                 (data) => data?.key == "Block"
                                               ) && (
-                                                <td>
-                                                  {item["Call-Direction"] ===
-                                                    "inbound" ||
-                                                  item["Call-Direction"] ===
-                                                    "outbound" ? (
-                                                    <button
-                                                      disabled={isBlocked}
-                                                      effect="ripple"
-                                                      className={`tableButton delete ${
-                                                        isBlocked
+                                                  <td>
+                                                    {item["Call-Direction"] ===
+                                                      "inbound" ||
+                                                      item["Call-Direction"] ===
+                                                      "outbound" ? (
+                                                      <button
+                                                        disabled={isBlocked}
+                                                        effect="ripple"
+                                                        className={`tableButton delete ${isBlocked
                                                           ? "bg-danger text-white"
                                                           : ""
-                                                      } ms-0`}
+                                                          } ms-0`}
+                                                        style={{
+                                                          height: "34px",
+                                                          width: "34px",
+                                                        }}
+                                                        onClick={() => {
+                                                          setSelectedNumberToBlock(
+                                                            item[
+                                                              "Call-Direction"
+                                                            ] === "inbound"
+                                                              ? item[
+                                                              "Caller-Caller-ID-Number"
+                                                              ]
+                                                              : item[
+                                                                "Call-Direction"
+                                                              ] === "outbound"
+                                                                ? item[
+                                                                "Caller-Callee-ID-Number"
+                                                                ]
+                                                                : "N/A"
+                                                          );
+                                                          setPopUp(true);
+                                                        }}
+                                                      >
+                                                        <Tippy
+                                                          content={
+                                                            isBlocked
+                                                              ? "Blocked"
+                                                              : "Block"
+                                                          }
+                                                        >
+                                                          <i className="fa-solid fa-ban"></i>
+                                                        </Tippy>
+                                                      </button>
+                                                    ) : (
+                                                      ""
+                                                    )}
+                                                  </td>
+                                                )}
+                                              {filteredColumnForTable?.find(
+                                                (data) => data?.key == "Note"
+                                              ) && (
+                                                  <td>
+                                                    <button
+                                                      effect="ripple"
+                                                      className={`tableButton ms-0`}
                                                       style={{
                                                         height: "34px",
                                                         width: "34px",
                                                       }}
                                                       onClick={() => {
-                                                        setSelectedNumberToBlock(
-                                                          item[
-                                                            "Call-Direction"
-                                                          ] === "inbound"
-                                                            ? item[
-                                                                "Caller-Caller-ID-Number"
-                                                              ]
-                                                            : item[
-                                                                "Call-Direction"
-                                                              ] === "outbound"
-                                                            ? item[
-                                                                "Caller-Callee-ID-Number"
-                                                              ]
-                                                            : "N/A"
-                                                        );
-                                                        setPopUp(true);
+                                                        setSelectedCdr(item.id);
                                                       }}
                                                     >
                                                       <Tippy
-                                                        content={
-                                                          isBlocked
-                                                            ? "Blocked"
-                                                            : "Block"
-                                                        }
+                                                        content={"View Note"}
                                                       >
-                                                        <i className="fa-solid fa-ban"></i>
+                                                        <i className="fa-solid fa-comment-dots"></i>
                                                       </Tippy>
                                                     </button>
-                                                  ) : (
-                                                    ""
-                                                  )}
-                                                </td>
-                                              )}
-                                              {filteredColumnForTable?.find(
-                                                (data) => data?.key == "Note"
-                                              ) && (
-                                                <td>
-                                                  <button
-                                                    effect="ripple"
-                                                    className={`tableButton ms-0`}
-                                                    style={{
-                                                      height: "34px",
-                                                      width: "34px",
-                                                    }}
-                                                    onClick={() => {
-                                                      setSelectedCdr(item.id);
-                                                    }}
-                                                  >
-                                                    <Tippy
-                                                      content={"View Note"}
-                                                    >
-                                                      <i className="fa-solid fa-comment-dots"></i>
-                                                    </Tippy>
-                                                  </button>
-                                                </td>
-                                              )}
+                                                  </td>
+                                                )}
                                               {filteredColumnForTable?.find(
                                                 (data) =>
                                                   data?.key == "Duplicate"
                                               ) && (
-                                                <td>
-                                                  {item?.duplicated == 1 && (
-                                                    <button
-                                                      className={`tableButton edit ms-0`}
-                                                      onClick={() =>
-                                                        duplicateColumn(item)
-                                                      }
-                                                    >
-                                                      <Tippy
-                                                        content={
-                                                          "View Duplicate"
+                                                  <td>
+                                                    {item?.duplicated == 1 && (
+                                                      <button
+                                                        className={`tableButton edit ms-0`}
+                                                        onClick={() =>
+                                                          duplicateColumn(item)
                                                         }
                                                       >
-                                                        <i className="fa-solid fa-clone"></i>
-                                                      </Tippy>
-                                                    </button>
-                                                  )}
-                                                </td>
-                                              )}
+                                                        <Tippy
+                                                          content={
+                                                            "View Duplicate"
+                                                          }
+                                                        >
+                                                          <i className="fa-solid fa-clone"></i>
+                                                        </Tippy>
+                                                      </button>
+                                                    )}
+                                                  </td>
+                                                )}
                                             </>
                                           )}
                                         </tr>

@@ -187,6 +187,10 @@ import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAnd
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
 import MissedCallPopup from "./Components/CommonComponents/MissedCallPopup";
+import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
+import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
+import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
+import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -250,9 +254,9 @@ function App() {
         <GlobalCalls />
         <Navbar />
         <OfflineNotice />
-         {/* <MissedCallPopup /> */}
+        {/* <MissedCallPopup /> */}
         <Routes>
-          
+
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
@@ -311,7 +315,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <GroupsList />
               ) : (
@@ -325,7 +331,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "add"
               ) ? (
                 <AddGroupsList />
               ) : (
@@ -339,7 +347,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "edit"
               ) ? (
                 <EditGroupsList />
               ) : (
@@ -356,12 +366,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
                 ) ? (
                 <AccessControl />
               ) : (
@@ -375,12 +389,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "add"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
                 ) ? (
                 <AccessControlAdd />
               ) : (
@@ -394,12 +412,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "edit"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
                 ) ? (
                 <AccessControlEdit />
               ) : (
@@ -417,7 +439,9 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <RingGroups />
               ) : (
@@ -431,6 +455,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -446,6 +471,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -464,7 +490,9 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <Users />
               ) : (
@@ -478,6 +506,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -493,6 +522,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -509,6 +539,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -529,7 +560,9 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <Extensions />
               ) : (
@@ -543,6 +576,7 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -558,6 +592,7 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -818,7 +853,9 @@ function App() {
               checkViewSidebar(
                 "Role",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <Roles />
               ) : (
@@ -1085,6 +1122,22 @@ function App() {
           <Route
             path="call-forwarding-campaign-create"
             element={<FportalCampaignCreate />}
+          />
+          <Route
+            path="call-forwarding-campaign-edit"
+            element={<FportalCampaignEdit />}
+          />
+          <Route
+            path="elastic-trunk"
+            element={<ElasticTrunk />}
+          />
+          <Route
+            path="elastic-trunk-edit"
+            element={<ElasticTrunkEdit />}
+          />
+          <Route
+            path="elastic-trunk-add"
+            element={<ElasticTrunkAdd />}
           />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}

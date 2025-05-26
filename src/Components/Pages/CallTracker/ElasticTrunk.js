@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
-import { generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
-import { toast } from "react-toastify";
-import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
-import EmptyPrompt from "../../Loader/EmptyPrompt";
-import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
-
-function Buyers() {
+import React, { useEffect, useState } from 'react'
+import PaginationComponent from '../../CommonComponents/PaginationComponent'
+import { useNavigate } from 'react-router-dom'
+import Header from '../../CommonComponents/Header'
+import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
+import { generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { toast } from 'react-toastify';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
+import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+function ElasticTrunk() {
   const navigate = useNavigate();
-  const [allBuyers, setAllBuyers] = useState([]);
+
+  const [allTrunk, setAllTrunk] = useState([]);
   const [loading, setLoading] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
-  const getAllBuyers = async () => {
+  const getAllTrunk = async () => {
     setLoading(true);
-    const response = await generalGetFunction('buyer/all');
+    const response = await generalGetFunction('fportaltrunk/all');
     if (response.status) {
-      setAllBuyers(response.data);
+      setAllTrunk(response.data);
       setLoading(false);
     } else {
       toast.error(response.message);
@@ -30,13 +30,13 @@ function Buyers() {
 
   // Initial data fetch
   useEffect(() => {
-    getAllBuyers();
+    getAllTrunk();
   }, [itemsPerPage, searchValue])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
     if (id) {
-      navigate('/buyer-edit', { state: { id: id } });
+      navigate('/elastic-trunk-edit', { state: { id: id } });
     }
   }
 
@@ -46,11 +46,11 @@ function Buyers() {
     if (userConfirmed) {
       setLoading(true);
       try {
-        const apiCall = await generalDeleteFunction(`/buyer/${id}`);
+        const apiCall = await generalDeleteFunction(`/fportaltrunk/${id}`);
         if (apiCall.status) {
           setLoading(false);
-          toast.success("Buyer Deleted Successfully.");
-          getAllBuyers();
+          toast.success("Trunk Deleted Successfully.");
+          getAllTrunk();
         }
       } catch (err) {
         console.log(err);
@@ -65,17 +65,15 @@ function Buyers() {
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Buyers" />
+              <Header title="Elastic Trunk Portal" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4> All Buyers
-                            <button class="clearButton" onClick={getAllBuyers}><i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? 'fa-spin' : ''}`} /></button>
-                          </h4>
-                          <p>You can see all list of all buyers</p>
+                          <h4>Elastic Trunk <button class="clearButton" onClick={getAllTrunk}><i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? 'fa-spin' : ''}`} /></button></h4>
+                          <p>You can see all list of Elastic Trunk portal</p>
                         </div>
                         <div className="buttonGroup">
                           <button className="panelButton gray">
@@ -84,10 +82,7 @@ function Buyers() {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          <button
-                            onClick={() => navigate("/buyer-add")}
-                            className="panelButton"
-                          >
+                          <button onClick={() => navigate("/elastic-trunk-add")} className="panelButton">
                             <span className="text">Add</span>
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
@@ -96,8 +91,7 @@ function Buyers() {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-12"
+                    <div className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       {/* <div className="tableHeader">
@@ -132,39 +126,27 @@ function Buyers() {
                         <table>
                           <thead>
                             <tr>
-                              <th>Buyer name</th>
-                              <th>Phone Code</th>
-                              <th>Phone Number</th>
-                              <th>Alt Phone Number</th>
-                              <th>Email</th>
-                              <th>Address</th>
-                              <th>City</th>
-                              <th>State</th>
-                              <th>Province</th>
-                              <th>Postal code</th>
-                              <th>Country code</th>
+                              <th>Description</th>
+                              <th>Channel</th>
+                              <th>Status</th>
+                              <th>Caller ID </th>
+                              <th>Emergency Location</th>
                               <th>Edit</th>
                               <th>Delete</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ? <SkeletonTableLoader col={13} row={15} /> :
-                              allBuyers && allBuyers.length > 0 ?
-                                allBuyers.map((buyer, index) => (
+                            {loading ? <SkeletonTableLoader col={7} row={15} /> :
+                              allTrunk && allTrunk.length > 0 ?
+                                allTrunk.map((trunk, index) => (
                                   <tr key={index}>
-                                    <td>{buyer.name}</td>
-                                    <td>{buyer.phone_code}</td>
-                                    <td>{buyer.phone_number}</td>
-                                    <td>{buyer.alt_phone}</td>
-                                    <td>{buyer.email}</td>
-                                    <td>{buyer.address}</td>
-                                    <td>{buyer.city}</td>
-                                    <td>{buyer.state}</td>
-                                    <td>{buyer.province}</td>
-                                    <td>{buyer.postal_code}</td>
-                                    <td>{buyer.country_code}</td>
-                                    <td><button className="tableButton edit" onClick={() => handleConfigEdit(buyer.id)}><i className='fa-solid fa-pen' /></button></td>
-                                    <td><button className="tableButton delete" onClick={() => handleDeleteConfig(buyer.id)}><i className='fa-solid fa-trash' /></button></td>
+                                    <td>{trunk.description}</td>
+                                    <td>{trunk.channels}</td>
+                                    <td>{trunk.status == 1 ? 'On' : 'Off'}</td>
+                                    <td>{trunk.caller_id}</td>
+                                    <td>{trunk.emergency_location}</td>
+                                    <td><button className="tableButton edit" onClick={() => handleConfigEdit(trunk.id)}><i className='fa-solid fa-pen' /></button></td>
+                                    <td><button className="tableButton delete" onClick={() => handleDeleteConfig(trunk.id)}><i className='fa-solid fa-trash' /></button></td>
                                   </tr>
                                 )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
                             }
@@ -172,26 +154,26 @@ function Buyers() {
                         </table>
                       </div>
 
-                      {/* <div className="tableHeader mb-3">
+                      <div className="tableHeader mb-3">
                         <PaginationComponent
-                        pageNumber={(e) => setPageNumber(e)}
-                        totalPage={ringGroup.last_page}
-                        from={ringGroup.from}
-                        to={ringGroup.to}
-                        total={ringGroup.total}
+                        // pageNumber={(e) => setPageNumber(e)}
+                        // totalPage={ringGroup.last_page}
+                        // from={ringGroup.from}
+                        // to={ringGroup.to}
+                        // total={ringGroup.total}
                         />
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <ModalComponent task={"delete"} reference={"Buyer"} />
+          <ModalComponent task={"delete"} reference={"Trunk"} />
         </section>
       </main>
     </>
-  );
+  )
 }
 
-export default Buyers;
+export default ElasticTrunk

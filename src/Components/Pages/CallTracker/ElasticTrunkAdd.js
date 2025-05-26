@@ -9,55 +9,26 @@ import { emailValidator, lengthValidator, numberValidator, requiredValidator } f
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import PhoneInput, { getCountryCallingCode, parsePhoneNumber } from "react-phone-number-input";
 
-const BuyerAdd = () => {
+const ElasticTrunkAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [countryCode, setCountryCode] = useState();
-
 
   const { watch, register, formState: { errors }, reset, handleSubmit, setValue } = useForm();
 
-  // Handle Buyer Add
+  // Handle Trunk Add
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
-
-    const phoneNumber = parsePhoneNumber(data.phone_number);
-    const parsedNumber = phoneNumber?.nationalNumber;
-    const parsedAltNumber = parsePhoneNumber(data.alt_phone)?.nationalNumber;
-
-    const payload = { ...data, phone_number: parsedNumber || data.phone_number, alt_phone: parsedAltNumber || data.alt_phone, phone_code: phoneNumber?.countryCallingCode };
-
-    const apiData = await generalPostFunction("/buyer/store", payload);
+    const payload = { ...data };
+    const apiData = await generalPostFunction("/fportaltrunk/store", payload);
     if (apiData?.status) {
       setLoading(false);
       reset();
-      navigate('/buyers');
+      navigate('/elastic-trunk');
       toast.success(apiData.message);
     } else {
       setLoading(false);
     }
   });
-
-  // Fetch all countries
-  const fetchAllCountry = async () => {
-    setLoading(true);
-    if (!countryCode) {
-      try {
-        const apiData = await generalGetFunction("/available-countries");
-        if (apiData?.status) {
-          setCountryCode(apiData.data);
-          setLoading(false);
-          setTimeout(() => setValue("country_code", "US"), 100)
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
-
-  useEffect(() => {
-    fetchAllCountry();
-  }, [])
 
   return (
     <>
@@ -72,17 +43,31 @@ const BuyerAdd = () => {
           )}
           <div className="container-fluid">
             <div className="row">
-              <Header title="Add buyer" />
+              <Header title="Elastic Trunk Portal" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Add Buyer</h4>
-                          <p>Add buyers</p>
+                          <h4>Add Trunk</h4>
+                          <p>Add an elastic trunk for your portal</p>
                         </div>
                         <div className="buttonGroup">
+                          <div className="my-auto position-relative mx-1">
+                            <div class="cl-toggle-switch">
+                              <label class="cl-switch">
+                                <input
+                                  type="checkbox"
+                                  defaultChecked={"false"}
+                                  checked={watch().status}
+                                  {...register("status")}
+                                  id="showAllCheck"
+                                />
+                                <span></span>
+                              </label>
+                            </div>
+                          </div>
                           <button
                             effect="ripple"
                             className="panelButton gray"
@@ -110,19 +95,19 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Buyer Name <span className="text-danger">*</span>
+                              Description <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a name.
+                              Enter a description for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
                             <input type="text"
                               className="formItem"
-                              {...register("name", { ...requiredValidator, })}
+                              {...register("description", { ...requiredValidator, })}
                             />
-                            {errors.name && (
-                              <ErrorMessage text={errors.name.message} />
+                            {errors.description && (
+                              <ErrorMessage text={errors.description.message} />
                             )}
                           </div>
                         </div>
@@ -130,126 +115,109 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Phone number{" "}
+                              Channel{" "}
                               <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a phone number.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input type="text"
-                              className="formItem d-none"
-                              {...register("phone_number", { ...requiredValidator })}
-                            />
-                            <PhoneInput
-                              defaultCountry="US"
-                              placeholder="Enter phone number"
-                              limitMaxLength={true}
-                              value={watch("phone_number")}
-                              onChange={(value) => setValue("phone_number", value)}
-                            />
-                            {errors.phone_number && (
-                              <ErrorMessage text={errors.phone_number.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              Alternate Phone number{" "}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter a alt phone number.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input type="text"
-                              className="formItem d-none"
-                              {...register("alt_phone", { ...requiredValidator })}
-                            />
-                            <PhoneInput
-                              defaultCountry="US"
-                              placeholder="Enter alt phone number"
-                              limitMaxLength={true}
-                              value={watch("alt_phone")}
-                              onChange={(value) => setValue("alt_phone", value)}
-                            />
-                            {errors.alt_phone && (
-                              <ErrorMessage text={errors.alt_phone.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              Email <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter a Email id .
+                              Enter the channel for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
                             <input type="text"
                               className="formItem"
-                              {...register("email", {
-                                ...requiredValidator,
-                                ...emailValidator,
-                              })}
+                              {...register("channels", { ...requiredValidator })}
                             />
-                            {errors.email && (
-                              <ErrorMessage text={errors.email.message} />
+                            {errors.channels && (
+                              <ErrorMessage text={errors.channels.message} />
                             )}
                           </div>
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Address <span className="text-danger">*</span>
+                              Caller Id{" "}
+                              <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a address .
+                              Enter the caller id for the trunk.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text"
+                              className="formItem"
+                              {...register("caller_id", { ...requiredValidator })}
+                            />
+                            {errors.caller_id && (
+                              <ErrorMessage text={errors.caller_id.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Emergency Location <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a emergency location for the trunk.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text"
+                              className="formItem"
+                              {...register("emergency_location", { ...requiredValidator })}
+                            />
+                            {errors.emergency_location && (
+                              <ErrorMessage text={errors.emergency_location.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Auth Type <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a auth type for the trunk.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select {...register("auth_type", { ...requiredValidator, })} className="formItem">
+                              <option value="">Select Auth Type</option>
+                              <option value={0}>IP Based</option>
+                              <option value={1}>Username & Password</option>
+                            </select>
+                            {errors.auth_type && (
+                              <ErrorMessage text={errors.auth_type.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Domain IP <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter the domain IP for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
-                              {...register("address", { ...requiredValidator, })}
+                              {...register("domain_ip", { ...requiredValidator, })}
                             />
-                            {errors.address && (
-                              <ErrorMessage text={errors.address.message} />
+                            {errors.domain_ip && (
+                              <ErrorMessage text={errors.domain_ip.message} />
                             )}
                           </div>
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              City <span className="text-danger">*</span>
+                              Port <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a City .
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              {...register("city", { ...requiredValidator, })}
-                            />
-                            {errors.city && (
-                              <ErrorMessage text={errors.city.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              State <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter a State .
+                              Enter a port for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
@@ -258,72 +226,48 @@ const BuyerAdd = () => {
                               className="formItem"
                               {...register("state", { ...requiredValidator, })}
                             />
-                            {errors.state && (
-                              <ErrorMessage text={errors.state.message} />
+                            {errors.port && (
+                              <ErrorMessage text={errors.port.message} />
                             )}
                           </div>
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Province <span className="text-danger">*</span>
+                              SIP Username <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a province.
+                              Enter the sip username for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
-                              {...register("province", { ...requiredValidator, })}
+                              {...register("sip_username", { ...requiredValidator, })}
                             />
-                            {errors.province && (
-                              <ErrorMessage text={errors.province.message} />
+                            {errors.sip_username && (
+                              <ErrorMessage text={errors.sip_username.message} />
                             )}
                           </div>
                         </div>
-
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Postal code <span className="text-danger">*</span>
+                              SIP Password <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Enter a postal code
+                              Enter the sip password for the trunk.
                             </label>
                           </div>
                           <div className="col-6">
                             <input
                               type="text"
                               className="formItem"
-                              {...register("postal_code", { ...requiredValidator, })}
+                              {...register("sip_password", { ...requiredValidator, })}
                             />
-                            {errors.postal_code && (
-                              <ErrorMessage text={errors.postal_code.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              Country Code <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter a country code
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <select {...register("country_code", { ...requiredValidator, })} className="formItem">
-                              <option value="">Select Country Code</option>
-                              {countryCode && countryCode.map((country, index) => (
-                                <option key={index} value={country.country_code}>
-                                  {country.country} ({country.country_code})
-                                </option>
-                              ))}
-                            </select>
-                            {errors.country_code && (
-                              <ErrorMessage text={errors.country_code.message} />
+                            {errors.sip_password && (
+                              <ErrorMessage text={errors.sip_password.message} />
                             )}
                           </div>
                         </div>
@@ -340,4 +284,4 @@ const BuyerAdd = () => {
   );
 };
 
-export default BuyerAdd;
+export default ElasticTrunkAdd;

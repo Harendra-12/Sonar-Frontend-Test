@@ -281,7 +281,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                     aria-labelledby="nav-offline-tab"
                                                     tabIndex={0}
                                                 >
-                                                    <div className="tableContainer mt-0" style={{ width: '425px' }}>
+                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { width: '425px' } : undefined}>
                                                         <table>
                                                             <thead>
                                                                 <tr>

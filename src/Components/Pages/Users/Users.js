@@ -50,6 +50,7 @@ const Users = () => {
   const [onlineFilter, setonlineFilter] = useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
   const debouncedSearchTerm = useDebounce(userInput, 1000);
+  const [tableKeys, setTableKeys] = useState([]);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -83,10 +84,11 @@ const Users = () => {
   async function getApi() {
     const apiData =
       await generalGetFunction(
-        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}&section=Accounts`
       );
     if (apiData?.status) {
       setUser(apiData.data);
+      setTableKeys(apiData.filteredKeys);
       setFilterUser(apiData.data.data);
       dispatch({
         type: "SET_USERSBYACCOUNT",
@@ -266,7 +268,7 @@ const Users = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {checkViewSidebar("User", slugPermissions, account?.permissions, "add") ? (
+                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "add") ? (
                           <button
                             onClick={() => { backToTop(); navigate("/users-add") }}
                             // onClick={handleAddUserValidation}
@@ -313,7 +315,7 @@ const Users = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox position-relative">
+                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "search") && <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -322,49 +324,50 @@ const Users = () => {
                           value={userInput}
                           onChange={(e) => setuserInput(e.target.value)}
                         />
-                      </div>
+                      </div>}
                     </div>
                     <div className="tableContainer">
                       <table>
                         <thead>
                           <tr>
-                            <th>Username</th>
+                            {
+                              tableKeys && tableKeys.filter((key) => key !== 'id').map((item) => {
+                                return (
+                                  <th style={{ textTransform: "capitalize" }}>
+                                    {item}
+                                  </th>
+                                )
+                              })
+                            }
+                            {/* <th>Username</th>
                             <th>Extension</th>
-                            {/* <th>Account ID</th> */}
                             <th>Role</th>
-                            <th>Usage</th>
+                            <th>Usage</th> */}
                             <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
                               <option value="all" disabled>Status</option>
                               <option value="online">Online</option>
                               <option value="offline">Offline</option>
                               <option value="all">All</option>
                             </select></th>
-                            {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                            <th className="text-center">Activation <span>
-
-                            </span></th>
-                            <th className="text-center">Delete</th>
+                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                            <th className="text-center">Activation</th>
+                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                           </tr>
                         </thead>
                         <tbody className="">
-                          {noPermissionToRead && checkViewSidebar(
+                          {noPermissionToRead || !checkViewSidebar(
                             "User",
                             slugPermissions,
+                            account?.sectionPermissions,
                             account?.permissions,
                             "read"
                           ) ? (
-                            // <div className="">
                             <tr>
-                              <td></td>
-                              <td></td>
-                              <td>You dont have any permission</td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td colSpan={99} className="text-center">You dont have any permission</td>
                             </tr>
-                          ) : // </div>
+                          ) :
                             loading ? (
-                              <SkeletonTableLoader col={8} row={15} />
+                              <SkeletonTableLoader col={tableKeys?.length + 1} row={15} />
                             ) : (
                               <>
                                 {user &&
@@ -376,10 +379,37 @@ const Users = () => {
                                     // if (isCustomerAdmin) {
                                     //   return null; // Return null to avoid rendering the row
                                     // }
-
                                     return (
                                       <tr key={index}>
-                                        <td style={{ width: "180px" }}>
+                                        {tableKeys.filter((key) => key !== 'id').map((key, index) => {
+                                          if (key == 'profile_picture') {
+                                            return (
+                                              <td style={{ width: "180px" }}>
+                                                <div className="d-flex align-items-center">
+                                                  <div className="tableProfilePicHolder">
+                                                    {item.profile_picture ? (
+                                                      <img
+                                                        src={item.profile_picture}
+                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                      />
+                                                    ) : (
+                                                      <i className="fa-light fa-user" />
+                                                    )}
+                                                  </div>
+                                                  <div className="ms-2">{item.username}</div>
+                                                </div>
+                                              </td>
+                                            )
+                                          } else {
+                                            return (
+                                              <td key={index}>
+                                                {item[key] || "N/A"}
+                                              </td>
+                                            )
+                                          }
+                                        })}
+
+                                        {/* <td style={{ width: "180px" }}>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">
                                               {item.profile_picture ? (
@@ -396,7 +426,7 @@ const Users = () => {
                                         </td>
                                         <td style={{ width: "176px" }}>
                                           {item.extension?.extension || "N/A"}
-                                        </td>
+                                        </td> */}
                                         {/* <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
@@ -406,10 +436,10 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                        <td style={{ width: "106px" }}>
+                                        {/* <td style={{ width: "106px" }}>
                                           {item?.user_role?.roles?.name}
-                                        </td>
-                                        <td style={{ width: "129px" }}
+                                        </td> */}
+                                        {/* <td style={{ width: "129px" }}
                                           onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
@@ -417,7 +447,7 @@ const Users = () => {
                                           }
                                         >
                                           {item?.usages}
-                                        </td>
+                                        </td> */}
                                         <td style={{ width: "156px" }}>
                                           <span
                                             className={
@@ -427,7 +457,7 @@ const Users = () => {
                                             }
                                           ></span>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <td>
+                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
                                           <button
                                             className="tableButton edit mx-auto"
                                             onClick={() =>
@@ -475,7 +505,7 @@ const Users = () => {
                                             </div>
                                           </div>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
+                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
                                           <button
                                             className="tableButton delete mx-auto"
                                             onClick={() => {
