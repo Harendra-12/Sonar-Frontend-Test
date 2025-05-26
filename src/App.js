@@ -315,7 +315,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <GroupsList />
               ) : (
@@ -329,7 +331,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "add"
               ) ? (
                 <AddGroupsList />
               ) : (
@@ -343,7 +347,9 @@ function App() {
               checkViewSidebar(
                 "Group",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "edit"
               ) ? (
                 <EditGroupsList />
               ) : (
@@ -360,12 +366,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
                 ) ? (
                 <AccessControl />
               ) : (
@@ -379,12 +389,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "add"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
                 ) ? (
                 <AccessControlAdd />
               ) : (
@@ -398,12 +412,16 @@ function App() {
               checkViewSidebar(
                 "AccessControl",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "edit"
               ) ||
                 checkViewSidebar(
                   "AccessControlNode",
                   slugPermissions,
-                  account?.permissions
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
                 ) ? (
                 <AccessControlEdit />
               ) : (
@@ -421,7 +439,9 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <RingGroups />
               ) : (
@@ -435,6 +455,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -450,6 +471,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -469,7 +491,8 @@ function App() {
                 "User",
                 slugPermissions,
                 account?.sectionPermissions,
-                account?.permissions
+                account?.permissions,
+                "browse"
               ) ? (
                 <Users />
               ) : (
@@ -483,6 +506,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -498,6 +522,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -514,6 +539,7 @@ function App() {
               checkViewSidebar(
                 "User",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -534,7 +560,9 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <Extensions />
               ) : (
@@ -548,6 +576,7 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "add"
               ) ? (
@@ -563,6 +592,7 @@ function App() {
               checkViewSidebar(
                 "Extension",
                 slugPermissions,
+                account?.sectionPermissions,
                 account?.permissions,
                 "edit"
               ) ? (
@@ -823,7 +853,9 @@ function App() {
               checkViewSidebar(
                 "Role",
                 slugPermissions,
-                account?.permissions
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
               ) ? (
                 <Roles />
               ) : (

@@ -268,7 +268,7 @@ const Users = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {checkViewSidebar("User", slugPermissions, account?.permissions, "add") ? (
+                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "add") ? (
                           <button
                             onClick={() => { backToTop(); navigate("/users-add") }}
                             // onClick={handleAddUserValidation}
@@ -315,7 +315,7 @@ const Users = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox position-relative">
+                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "search") && <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -324,7 +324,7 @@ const Users = () => {
                           value={userInput}
                           onChange={(e) => setuserInput(e.target.value)}
                         />
-                      </div>
+                      </div>}
                     </div>
                     <div className="tableContainer">
                       <table>
@@ -358,7 +358,6 @@ const Users = () => {
                           {noPermissionToRead && checkViewSidebar(
                             "User",
                             slugPermissions,
-                            account?.tablePermissions,
                             account?.sectionPermissions,
                             account?.permissions,
                             "read"
@@ -374,7 +373,7 @@ const Users = () => {
                             </tr>
                           ) : // </div>
                             loading ? (
-                              <SkeletonTableLoader col={tableKeys?.length + 3} row={15} />
+                              <SkeletonTableLoader col={tableKeys?.length + 1} row={15} />
                             ) : (
                               <>
                                 {user &&
@@ -464,7 +463,7 @@ const Users = () => {
                                             }
                                           ></span>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <td>
+                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
                                           <button
                                             className="tableButton edit mx-auto"
                                             onClick={() =>
@@ -512,7 +511,7 @@ const Users = () => {
                                             </div>
                                           </div>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
+                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
                                           <button
                                             className="tableButton delete mx-auto"
                                             onClick={() => {
