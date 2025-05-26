@@ -1550,7 +1550,7 @@ function CdrFilterReport({ page }) {
                               selectedColumn?.includes(opt.value)
                             )}
                           /> */}
-                          <div className="dropdown">
+                          <div className="dropdown showHideColumn">
                             <button
                               className="formItem"
                               type="button"
@@ -1560,7 +1560,7 @@ function CdrFilterReport({ page }) {
                             >
                               Column Filters
                             </button>
-                            <ul className="dropdown-menu">
+                            <ul className="dropdown-menu ">
                               {columnsOptions?.map((option) => (
                                 <li key={option.value}>
                                   <div className="dropdown-item" href="#">

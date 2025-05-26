@@ -369,9 +369,9 @@ function PhoneDashboard() {
             </div>
             <div className="col-12 mt-3 tangoNavs">
               <AllCallsDetails />
-              <div className="row my-3 gx-xxl-3 gx-lg-2">
+              <div className="row my-1 gx-xxl-3 gx-lg-2">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper a d_card1">
+                  <div className="itemWrapper mt-0 a d_card1">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -431,7 +431,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper b d_card2 position-relative">
+                  <div className="itemWrapper mt-0 b d_card2 position-relative">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -481,7 +481,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper c d_card3">
+                  <div className="itemWrapper mt-0 c d_card3">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -530,7 +530,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper d d_card4">
+                  <div className="itemWrapper mt-0 d d_card4">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -580,18 +580,18 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row gx-xxl-3 gx-lg-2">
-                <div className="col-xxl-6 col-xl-12">
+                <div className="col-xxl-6 col-xl-6 mb-3">
                   <RingGroup />
                 </div>
-                <div className="col-xxl-6 col-xl-12">
+                <div className="col-xxl-6 col-xl-6">
                   <CallQueueDetails />
                 </div>
               </div>
             </div>
             <div className="col-xl-12">
-              <div className="row gx-xxl-3 gx-lg-2">
+              <div className="row gx-xxl-3 gx-lg-2 mt-0">
                 <div className='col-md-4 col-12'>
-                  <div className="itemWrapper a">
+                  <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
@@ -726,7 +726,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className='col-md-4 col-12'>
-                  <div className="itemWrapper a">
+                  <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
@@ -843,7 +843,7 @@ function PhoneDashboard() {
                   </div>
                 </div>
                 <div className='col-md-4 col-12'>
-                  <div className="itemWrapper a">
+                  <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
@@ -1049,7 +1049,7 @@ function PhoneDashboard() {
                 </div> */}
               </div>
             </div>
-            <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} />
+            <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} isActiveCallsPage={false} isParentWebRtc={false} />
           </div>
         </div>
       </section>

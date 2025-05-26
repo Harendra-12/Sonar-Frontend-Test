@@ -26,11 +26,11 @@
   /* margin-top: 20px; */
   text-align: center;
   position: relative;
-  /* min-height: 188px; */
-  height: 100%;
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  min-height: 188px;
+  /* height: 100%; */
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); */
 }
 
 .mainContent .itemWrapperb {
@@ -68,7 +68,7 @@
 }
 
 .mainContent .itemWrapper.accordion-item {
-  /* max-height: 370px; */
+  min-height: auto;
 }
 
 .mainContent .title {
@@ -449,7 +449,7 @@
 }
 
 .itemWrapper.a.addNew {
-  min-height: 95px;
+  /* min-height: 95px; */
   display: flex;
   flex-direction: column;
   justify-content: center;

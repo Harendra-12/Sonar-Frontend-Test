@@ -18,12 +18,11 @@ function Login() {
   const account = useSelector((state) => state.account);
   if (token && account) {
     if (account?.user_role?.roles?.name === "Agent") {
-      navigate("/webrtc")
-    }else if(account?.user_role?.roles?.name.toLowerCase() === "employee"){
-      navigate("/messages")
-    }
-     else {
-      navigate("/dashboard")
+      navigate("/webrtc");
+    } else if (account?.user_role?.roles?.name.toLowerCase() === "employee") {
+      navigate("/messages");
+    } else {
+      navigate("/dashboard");
     }
   }
   return (
@@ -67,10 +66,23 @@ function Login() {
                 <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
-                      <h3>An Effective PBX Solution for all your Business Communication Needs</h3>
+                      <h3>
+                        An Effective PBX Solution for all your Business
+                        Communication Needs
+                      </h3>
                       <p>Enter your credentials to access your control</p>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <img src={require("../assets/images/pbx.webp")} alt="logo" style={{ marginLeft: '0', width: "85%" }} />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src={require("../assets/images/pbx.webp")}
+                          alt="logo"
+                          style={{ marginLeft: "0", width: "85%" }}
+                        />
                       </div>
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
@@ -97,10 +109,10 @@ export function LoginComponent() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [popUp, setPopUp] = useState(false)
-  const [logInDetails, setLoginDetails] = useState([])
+  const [popUp, setPopUp] = useState(false);
+  const [logInDetails, setLoginDetails] = useState([]);
   const [logInText, setLogInText] = useState("");
-  const [logOutToken, setLogOutToken] = useState("")
+  const [logOutToken, setLogOutToken] = useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -157,7 +169,6 @@ export function LoginComponent() {
               window.scrollTo(0, 0);
               navigate("/temporary-dashboard");
             } else {
-
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
@@ -172,6 +183,12 @@ export function LoginComponent() {
                   window.scrollTo(0, 0);
                   navigate("/webrtc");
                 }
+              } else if (
+                profile.data.user_role?.roles?.name.toLowerCase() === "employee"
+              ) {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/messages");
               } else {
                 setLoading(false);
                 window.scrollTo(0, 0);
@@ -196,17 +213,17 @@ export function LoginComponent() {
 
   // function to handle time
   function formatTimeWithAMPM(timeString) {
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
 
     if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
       return "Invalid time format";
     }
 
-    let period = 'AM';
+    let period = "AM";
     let formattedHours = hours;
 
     if (hours >= 12) {
-      period = 'PM';
+      period = "PM";
       if (hours > 12) {
         formattedHours -= 12;
       }
@@ -216,42 +233,49 @@ export function LoginComponent() {
       formattedHours = 12; // Midnight is 12 AM
     }
 
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = seconds.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
   }
-
-
 
   // function to logout from specific device
   async function handleLogoutFromSpecificDevice(token) {
     try {
       setLoading(true);
-      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token }, token);
+      const logOut = await generalPostFunctionWithToken(
+        `${baseName}/logout-specific-device`,
+        { token: token },
+        token
+      );
       // console.log({logOut})
       if (logOut?.status) {
-        toast.success(logOut?.message)
+        toast.success(logOut?.message);
         setLoading(false);
-        setLoginDetails(logOut?.data)
-        setLogInText("You can login now")
+        setLoginDetails(logOut?.data);
+        setLogInText("You can login now");
       } else {
         console.log("00err", logOut);
         if (logOut?.message === "Token expired") {
-          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { token: token });
+          const expireLogout = await generalPostFunctionWithToken(
+            `${baseName}/logout-expired-token`,
+            { token: token }
+          );
           if (expireLogout?.status) {
-            toast.success(expireLogout?.message)
+            toast.success(expireLogout?.message);
             setLoading(false);
             // setLoginDetails(expireLogout?.data)
-            setLoginDetails(logInDetails.filter((item) => item.token !== token))
-            setLogInText("You can login now")
+            setLoginDetails(
+              logInDetails.filter((item) => item.token !== token)
+            );
+            setLogInText("You can login now");
           }
         }
       }
     } catch (error) {
       // console.log("00err",error)
-      setLoading(false)
-      toast.error("Something went wrong. Please try again.")
+      setLoading(false);
+      toast.error("Something went wrong. Please try again.");
     }
   }
 
@@ -332,6 +356,12 @@ export function LoginComponent() {
                   window.scrollTo(0, 0);
                   navigate("/webrtc");
                 }
+              } else if (
+                profile.data.user_role?.roles?.name.toLowerCase() === "employee"
+              ) {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/messages");
               } else {
                 setLoading(false);
                 window.scrollTo(0, 0);
@@ -346,27 +376,27 @@ export function LoginComponent() {
           setLoading(false);
           // toast.error("unauthorized access!");
         }
-
-
-      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
-        setLoading(false)
-        toast.error(checkLogin?.response?.data?.message)
+      } else if (
+        checkLogin?.response?.status === 401 ||
+        checkLogin?.response?.status === 403
+      ) {
+        setLoading(false);
+        toast.error(checkLogin?.response?.data?.message);
       } else {
         if (checkLogin?.message === "Network Error") {
-          toast.error("Network Error")
-          return
+          toast.error("Network Error");
+          return;
         }
-        if(checkLogin?.response?.data?.message==="user is disabled."){
-          toast.error("Your account is disabled. Please contact Admin.")
-          return
+        if (checkLogin?.response?.data?.message === "user is disabled.") {
+          toast.error("Your account is disabled. Please contact Admin.");
+          return;
         }
-        setLoading(false)
-        setLogOutToken(checkLogin?.response?.data?.data?.[0].token)
-        setPopUp(true)
-        setLoginDetails(checkLogin?.response?.data?.data)
-        setLogInText("You are already login on different device!")
+        setLoading(false);
+        setLogOutToken(checkLogin?.response?.data?.data?.[0].token);
+        setPopUp(true);
+        setLoginDetails(checkLogin?.response?.data?.data);
+        setLogInText("You are already login on different device!");
       }
-
     }
   }, [userName, password, dispatch, navigate]);
 
@@ -395,18 +425,24 @@ export function LoginComponent() {
     setLoading(true);
     setPopUp(false);
     try {
-      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`, logOutToken);
-      console.log({ logoutAll })
+      const logoutAll = await generalGetFunctionWithToken(
+        `${baseName}/logout?all`,
+        logOutToken
+      );
+      console.log({ logoutAll });
       if (logoutAll.status) {
         handleLogin();
       } else {
         if (logoutAll?.message === "Token expired") {
-          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { all: logOutToken, token: logOutToken });
+          const expireLogout = await generalPostFunctionWithToken(
+            `${baseName}/logout-expired-token`,
+            { all: logOutToken, token: logOutToken }
+          );
           if (expireLogout?.status) {
             handleLogin();
           } else {
-            setLoading(false)
-            toast.error("Something went wrong. Please try again.")
+            setLoading(false);
+            toast.error("Something went wrong. Please try again.");
           }
         }
         // setLoading(false);
@@ -415,7 +451,11 @@ export function LoginComponent() {
     } catch (error) {
       setLoading(false);
       console.error("Logout all error:", error);
-      toast.error(error.response?.message || error.message || "An unexpected error occurred");
+      toast.error(
+        error.response?.message ||
+          error.message ||
+          "An unexpected error occurred"
+      );
     }
   }
   return (
@@ -478,13 +518,19 @@ export function LoginComponent() {
           {/* Log out of multiple devices */}
           <div className="backdropContact">
             <div className="addNewContactPopup position-relative logoutPopup">
-              <button className="popup_close" onClick={() => {
-                setPopUp(false);
-              }}>
+              <button
+                className="popup_close"
+                onClick={() => {
+                  setPopUp(false);
+                }}
+              >
                 <i class="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
-                <img className="w-100 " src={require('../assets/images/login-cruve2.png')} />
+                <img
+                  className="w-100 "
+                  src={require("../assets/images/login-cruve2.png")}
+                />
                 {/* <div className="warning_img">
                 <img className=" " src={require('../assets/images/crisis.png')} />
               </div> */}
@@ -494,26 +540,46 @@ export function LoginComponent() {
                 {/* <div className="col-12 heading mb-0">
                 <i className="fa-solid fa-triangle-exclamation"></i>
               </div> */}
-                <p className="text-center mb-1">
-                  {logInText}
+                <p className="text-center mb-1">{logInText}</p>
+                <p className="text-center fs-6 text_warning ">
+                  You are logged in from the specific devices:{" "}
                 </p>
-                <p className="text-center fs-6 text_warning ">You are logged in from the specific devices: </p>
 
-                {logInDetails?.length > 0 &&
+                {logInDetails?.length > 0 && (
                   <ul className="mb-3 d-block">
                     {logInDetails?.map((item) => {
-                      return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
-                        <div>
-                          {item?.platform} - {item?.browser} - {item?.ip_address}
-                          <p style={{ fontSize: '0.75rem', marginBottom: '0' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
-                        </div>
-                        <div>
-                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
-                        </div>
-                      </li>
+                      return (
+                        <li
+                          className="d-flex align-items-center justify-content-between"
+                          style={{ width: "100%" }}
+                        >
+                          <div>
+                            {item?.platform} - {item?.browser} -{" "}
+                            {item?.ip_address}
+                            <p
+                              style={{ fontSize: "0.75rem", marginBottom: "0" }}
+                            >
+                              <b>Logged At</b>: {item.created_at.split("T")[0]}{" "}
+                              {formatTimeWithAMPM(
+                                item.created_at.split("T")[1].split(".")[0]
+                              )}
+                            </p>
+                          </div>
+                          <div>
+                            <button
+                              className="clearButton2 ms-2"
+                              onClick={() =>
+                                handleLogoutFromSpecificDevice(item?.token)
+                              }
+                            >
+                              <i className="fa-solid fa-power-off text-danger" />
+                            </button>
+                          </div>
+                        </li>
+                      );
                     })}
                   </ul>
-                }
+                )}
                 <div className="d-flex justify-content-between px-0">
                   {/* <button
                     className="panelButton m-0 float-end"
@@ -538,11 +604,14 @@ export function LoginComponent() {
                       className="fa-solid fa-check"
                     ></i></button> */}
 
-                  <button class="btn2" onClick={() => {
-                    setPopUp(false);
-                    setLoading(true)
-                    handleLogin()
-                  }}>
+                  <button
+                    class="btn2"
+                    onClick={() => {
+                      setPopUp(false);
+                      setLoading(true);
+                      handleLogin();
+                    }}
+                  >
                     <span class="text">Login</span>
                     <i class="fa-solid fa-paper-plane-top"></i>
                   </button>
@@ -553,8 +622,9 @@ export function LoginComponent() {
                       className="panelButton delete static m-0 px-2 bg-transparent shadow-none logout__Btn"
                       onClick={handleLogoutAll}
                     >
-
-                      <span className="text text-danger">Logout All Devices</span>
+                      <span className="text text-danger">
+                        Logout All Devices
+                      </span>
                       {/* <span className="icon">
                         <i className="fa-solid fa-power-off"></i>
                       </span> */}

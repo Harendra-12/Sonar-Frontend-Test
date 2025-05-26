@@ -17,8 +17,8 @@ const AgentSearch = ({
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
       if (apiData?.status) {
-        setUser(apiData.data.filter((item) => item.extension_id !== null));
-        getAllAgents(apiData.data.filter((item) => item.extension_id !== null));
+        setUser(apiData.data);
+        getAllAgents(apiData.data);
       }
     }
     getData();
@@ -37,8 +37,8 @@ const AgentSearch = ({
       options:
         user &&
         user?.map((item) => ({
-          value: [item.extension.extension, item.id],
-          label: `${item.username} - (${item.extension.extension})`,
+          value: [item.name, item.id],
+          label: `${item.username} `,
         })),
     },
   ];
