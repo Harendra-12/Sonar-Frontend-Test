@@ -136,13 +136,14 @@ function PermissionConfigForUser() {
                     </div>
                     <div className='col-12' style={{ padding: '25px 23px' }}>
                       <div className="row mb-0">
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-3 col-lg-12">
                           <div className='formLabel'>
                             <label>
                               Select Class Type
                             </label>
                           </div>
-                          <div className='col-6'>
+                          <div className='row'>
+                          <div className='col-xl-12 col-lg-12'>
                             <div className='row'>
                               <div className='col-6'>
                                 <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"group"}>
@@ -172,6 +173,7 @@ function PermissionConfigForUser() {
                                 </div>
                               )}
                             </div>
+                          </div>
                           </div>
                         </div>
                       </div>

@@ -587,7 +587,7 @@ function ClickToCallEdit() {
                                                                                                     <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                         <div className="d-flex align-items-center">
                                                                                                             <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
-                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                            <label className="ms-2 text-nowrap">Choose Color</label>
                                                                                                         </div>
                                                                                                     </button>
                                                                                                     <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
@@ -613,7 +613,7 @@ function ClickToCallEdit() {
                                                                                             Choose your text color scheme
                                                                                         </label>
                                                                                     </div>
-                                                                                    <div className="col-7">
+                                                                                    <div className="col-xxl-7 col-12">
                                                                                         <div className="d-flex align-items-center justify-content-between">
                                                                                             <div className="form-widths d-flex">
                                                                                                 <div className="me-2">
@@ -629,7 +629,7 @@ function ClickToCallEdit() {
                                                                                                     <button className="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                         <div className="d-flex align-items-center">
                                                                                                             <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
-                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                            <label className="ms-2 text-nowrap">Choose Color</label>
                                                                                                         </div>
                                                                                                     </button>
                                                                                                     <div className="dropdown-menu p-0" aria-labelledby="textColorPicker">
@@ -670,7 +670,7 @@ function ClickToCallEdit() {
                                                                                                     <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                         <div className="d-flex align-items-center">
                                                                                                             <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
-                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                            <label className="ms-2 text-nowrap">Choose Color</label>
                                                                                                         </div>
                                                                                                     </button>
                                                                                                     <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">

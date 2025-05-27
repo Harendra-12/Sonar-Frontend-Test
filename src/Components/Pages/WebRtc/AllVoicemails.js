@@ -452,7 +452,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                   {/* </div>
                   </nav> */}
                   <div className="tab-content">
-                    <div className="callList">
+                    <div className="callList voicemailCallList">
                       {loading && loadings ? (
                         <ContentLoader />
                       ) : Object.keys(groupedVoiceMails).length > 0 ? (

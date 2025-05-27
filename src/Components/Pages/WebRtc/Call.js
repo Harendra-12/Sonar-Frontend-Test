@@ -162,26 +162,26 @@ function Call({
     let filteredCalls = [];
     switch (clickStatus) {
       case "incoming":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) =>
             e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] > 0
         );
         break;
       case "outgoing":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) => e["Caller-Caller-ID-Number"] === extension
         );
         break;
       case "missed":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) =>
             e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] === 0
         );
         break;
       case "voicemail":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) => e["Call-Direction"] === "voicemail"
         );
         break;
@@ -206,22 +206,23 @@ function Call({
     //   });
     // }
     setPreviewCalls(filteredCalls);
-    if (clickedCall == null) {
-      setClickedCall(filteredCalls[0]);
-    }
+    // if (clickedCall == null) {
+    setClickedCall(data[0]);
+    // }
 
-    if (filteredCalls[0] && !firstTimeClickedExtension) {
-      setClickedExtension(
-        filteredCalls[0]["Call-Direction"] === "outbound"
-          ? filteredCalls[0]["variable_sip_to_user"]
-          : filteredCalls[0]["variable_sip_from_user"] === extension
-            ? filteredCalls[0]["variable_sip_to_user"]
-            : filteredCalls[0]["variable_sip_from_user"]
-      );
+    let localClickedExtension = null;
+    if (data[0]) {
+      localClickedExtension = data[0]["Call-Direction"] === "outbound"
+        ? data[0]["variable_sip_to_user"]
+        : data[0]["variable_sip_from_user"] === extension
+          ? data[0]["variable_sip_to_user"]
+          : data[0]["variable_sip_from_user"]
+      setClickedExtension(localClickedExtension);
       setFirstTimeClickedExtension(true);
     }
+
     setCallHistory(
-      filteredCalls?.[0] &&
+      data[0] &&
       allApiData?.filter((item) => {
         if (!isCustomerAdmin) {
           return (
@@ -230,13 +231,14 @@ function Call({
             // );
             (
               // item["variable_sip_from_user"] === extension &&
-              item["variable_sip_to_user"] === clickedExtension) ||
+              item["variable_sip_to_user"] === localClickedExtension
+            ) ||
             (
               // item["variable_sip_to_user"] === extension &&
-              item["variable_sip_from_user"] === clickedExtension)
+              item["variable_sip_from_user"] === localClickedExtension)
           );
         }
-        return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
+        return item["variable_sip_from_user"] === localClickedExtension || item["variable_sip_to_user"] === localClickedExtension;
       })
     );
   }, [data, clickStatus]);
@@ -355,71 +357,22 @@ function Call({
         >
           <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
-              <div
-                className="profileHolder"
-              // id={"profileOfflineNav"}
-              >
-                <i className="fa-light fa-user fs-5"></i>
-              </div>
-              {!isCustomerAdmin ? (
-                <div className="col-5 ms-xl-3" style={{ cursor: "pointer" }}>
-                  {/* <h4>
+              <div className="d-flex justify-content-start">
+                <div className="profileHolder"
+                // id={"profileOfflineNav"}
+                >
+                  <i className="fa-light fa-user fs-5"></i>
+                </div>
+                {!isCustomerAdmin ? (
+                  <div className="col-5 ms-xl-3" style={{ cursor: "pointer" }}>
+                    {/* <h4>
                     {item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
                       : item["Caller-Callee-ID-Number"] === extension
                         ? item["Caller-Caller-ID-Number"]
                         : item["Caller-Callee-ID-Number"]
                     }
                   </h4> */}
-                  <div className="d-flex align-items-center">
-                    {
-                      <Tippy
-                        content={
-                          `${callType.label} - ${item.variable_DIALSTATUS}` ||
-                          "N/A"
-                        }
-                      >
-                        {getCallTypeIcon()}
-                      </Tippy>
-                    }
-                    <div>
-                      <h4 className="mb-0">
-                        {displayName
-                          ? displayName
-                          : item.caller_user
-                            ? item.caller_user.username
-                            : "USER XYZ"}
-                      </h4>
-                      {item.tag && <h5>({item.tag})</h5>}
-                    </div>
-                  </div>
-                  {item["variable_billsec"] > 0 && (
-                    <div className={`col-12 mx-auto mt-2`}>
-                      <div className="contactTags">
-                        <span data-id="2" className="duration">
-                          Duration: {formatTime(item["variable_billsec"])}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  {/* <div className="contactTags">
-                  <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
-                </div> */}
-                </div>
-              ) : (
-                <div
-                  className="col my-auto ms-2 ms-xl-3"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div className="source">
-                      <h4>
-                        {matchingCallerContactForAdmin
-                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                          : item["Caller-Caller-ID-Number"]}
-                      </h4>
-                      {item.tag && <h5>({item.tag})</h5>}
-                    </div>
-                    <div className="callIconAdmin">
+                    <div className="d-flex align-items-center">
                       {
                         <Tippy
                           content={
@@ -427,33 +380,82 @@ function Call({
                             "N/A"
                           }
                         >
-                          {getCallTypeIcon(1)}
+                          {getCallTypeIcon()}
                         </Tippy>
                       }
-                    </div>
-                    <div className="destination">
-                      <h4>
-                        {matchingCalleeContactForAdmin
-                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                          : item["Caller-Callee-ID-Number"]}
-                      </h4>
-                      {/* <h5>Destination</h5> */}
-                    </div>
-                  </div>
-                  {item["variable_billsec"] > 0 && (
-                    <div className={`col-12 mx-auto mt-2`}>
-                      <div className="contactTags">
-                        <span data-id="2" className="duration">
-                          Duration: {formatTime(item["variable_billsec"])}
-                        </span>
+                      <div>
+                        <h4 className="mb-0">
+                          {displayName
+                            ? displayName
+                            : item.caller_user
+                              ? item.caller_user.username
+                              : "USER XYZ"}
+                        </h4>
+                        {item.tag && <h5>({item.tag})</h5>}
                       </div>
                     </div>
-                  )}
-                  {/* <div className="contactTags">
+                    {item["variable_billsec"] > 0 && (
+                      <div className={`col-12 mx-auto mt-2`}>
+                        <div className="contactTags">
+                          <span data-id="2" className="duration">
+                            Duration: {formatTime(item["variable_billsec"])}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div
+                    className="col my-auto ms-2 ms-xl-3"
+                    style={{ cursor: "pointer" }}>
+                    <div className="d-flex align-items-center">
+                      <div className="source">
+                        <h4>
+                          {matchingCallerContactForAdmin
+                            ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                            : item["Caller-Caller-ID-Number"]}
+                        </h4>
+                        {item.tag && <h5>({item.tag})</h5>}
+                      </div>
+                      <div className="callIconAdmin">
+                        {
+                          <Tippy
+                            content={
+                              `${callType.label} - ${item.variable_DIALSTATUS}` ||
+                              "N/A"
+                            }
+                          >
+                            {getCallTypeIcon(1)}
+                          </Tippy>
+                        }
+                      </div>
+                      <div className="destination">
+                        <h4>
+                          {matchingCalleeContactForAdmin
+                            ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                            : item["Caller-Callee-ID-Number"]}
+                        </h4>
+                        {/* <h5>Destination</h5> */}
+                      </div>
+                    </div>
+                    {item["variable_billsec"] > 0 && (
+                      <div className={`col-12 mx-auto mt-2`}>
+                        <div className="contactTags">
+                          <span data-id="2" className="duration">
+                            Duration: {formatTime(item["variable_billsec"])}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {/* <div className="contactTags">
+                  <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
+                </div> */}
+                  </div>
+                )}
+              </div>
 
               {/* {item["variable_billsec"] > 0 && (
                 <div
@@ -746,10 +748,7 @@ function Call({
           </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
-              <div
-                className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight"
-                style={{ overflow: "hidden" }}
-              >
+              <div className="allCallHistory pb-0 col-12 col-xl-5 col-lg-5 col-xxl-4 py-3 px-0 rounded-3 calcsHeight" style={{ overflow: "hidden" }}>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -796,7 +795,7 @@ function Call({
                             <option value={"date_range"}>Date Range</option>
                           </select>
                         </div>
-                        <div className="d-flex w-100">
+                        <div className="d-flex w-100 ">
                           {filterBy === "date" && (
                             <div className="ms-2 w-100">
                               <label className="formLabel text-start mb-0 w-100">
@@ -887,10 +886,43 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> <span>All</span></button>
-                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> <span>Inbound</span></button>
-                      <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> <span>Outbound</span></button>
-                      <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
+                      <button
+                        className={`tabLink ${clickStatus == "all" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("all")
+                        }}>
+                        <i class="fa-solid fa-phone-volume"></i>
+                        <span>All</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false)
+                          setCallClickStatus("incoming")
+                        }}
+                      >
+                        <i class="fa-solid fa-phone-arrow-down-left"></i>
+                        <span>Inbound</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("outgoing")
+                        }}
+                      >
+                        <i class="fa-solid fa-phone-arrow-up-right"></i>
+                        <span>Outbound</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "missed" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("missed")
+                        }
+                        }>
+                        <i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -900,7 +932,7 @@ function Call({
                       onScroll={handleScroll}
                       onClick={() => setSelectedModule("callDetails")}
                     >
-                      {loading ? (
+                      {(loading || isCallLoading) ? (
                         <ContentLoader />
                       ) : // Object.keys(groupedCalls).length < 0 ? (
                         //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
@@ -944,7 +976,12 @@ function Call({
                             </div>
                           </div>
                         )}
-                      {isCallLoading ? (
+                      {/* {isCallLoading ? (
+                        <ContentLoader />
+                      ) : (
+                        <></>
+                      )} */}
+                      {/* {isCallLoading ? (
                         <>
                           <div className="text-center">
                             <i
@@ -955,13 +992,13 @@ function Call({
                         </>
                       ) : (
                         <div ref={targetRef}></div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
               </div>
               <div
-                className="callDetails col-12 col-xl-8 col-lg-7 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
+                className="callDetails col-12 col-xl-7 col-lg-7 col-xxl-8 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
                 style={{ height: "calc(100vh - 100px)" }}
                 id="callDetails"
               >

@@ -25,9 +25,6 @@ function CallDetails({
   setExtensionFromCdrMessage,
   allContact,
 }) {
-  // console.log("clickedCall", clickedCall);
-  // console.log("callHistory", callHistory);
-  
   const [callDetails, setCallDetails] = useState();
   const { connectStatus } = useSIPProvider();
   const account = useSelector((state) => state.account);
@@ -207,6 +204,7 @@ function CallDetails({
       : callDetails?.["variable_sip_from_user"] === extension
         ? callDetails?.["variable_sip_to_user"]
         : callDetails?.["variable_sip_from_user"];
+        
   return (
     <>
       <div className="messageOverlay ">

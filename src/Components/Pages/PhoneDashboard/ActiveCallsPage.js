@@ -311,7 +311,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                                 <i className="fa-solid fa-pen" />
                                                             </button>
-                                                            <div className="itemWrapper a  datanumber4">
+                                                            <div className="itemWrapper a  datanumber4 shadow-sm">
                                                                 <div className="heading h-auto d-block">
                                                                     <div className='d-flex align-items-center justify-content-center flex-column '>
                                                                         <div className='text-center'>
