@@ -180,14 +180,14 @@ function Navbar() {
                             ) && (
                                 <li className="tabItem">
                                   <NavLink
-                                    to="/my-profile"
+                                    to="/users-profile"
                                     onClick={backToTop}
                                     className="nav-link"
                                   >
                                     {/* <div className="iconHolder">
                                   <i className="fa-regular fa-user"></i>
                                 </div> */}
-                                    <div className="itemTitle">Company Details</div>
+                                    <div className="itemTitle">My Profile</div>
                                   </NavLink>
                                 </li>
                               )}
@@ -607,7 +607,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                             {checkViewSidebar(
-                              "Agent",
+                              "User",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -689,7 +689,7 @@ function Navbar() {
                             ) : null}
 
                             {checkViewSidebar(
-                              "callBlocking",
+                              "Spam",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -714,7 +714,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "voicemail",
+                              "VoicemailRecording",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -864,7 +864,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Agent",
+                              "User",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1317,7 +1317,7 @@ function Navbar() {
                   }
 
                   {checkViewSidebar(
-                    "Click To Call",
+                    "Clicktocall",
                     permissions,
                     account?.sectionPermissions,
                     account?.permissions,
@@ -1798,17 +1798,6 @@ function Navbar() {
                               <li className="tabItem ">
                                 <NavLink
                                   to="/billing-dashboard"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                      [
-                                        "/billing-dashboard",
-                                        "/billing-dashboard",
-                                      ].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
                                 >
                                   <div className="itemTitle">Billing Dashboard</div>
                                 </NavLink>

@@ -301,13 +301,13 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
-                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") && !usageLoading ?
+                                        checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "read") && !usageLoading ?
                                             customModule?.map((item, index) => {
                                                 return (
                                                     <div className='col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-12' key={index}>
                                                         <div className={`deviceProvision position-relative balance-box`} >
                                                             <button
-                                                                disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
+                                                                disabled={!checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "edit")}
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                                 <i className="fa-solid fa-pen" />
                                                             </button>
@@ -319,7 +319,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             {/* <p>Type: {item?.model_type}</p> */}
                                                                             <h5 className='ellipsisText'>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
                                                                         </div>
-                                                                        <div className='text-center ' style={{paddingBottom:"2px"}}>
+                                                                        <div className='text-center ' style={{ paddingBottom: "2px" }}>
                                                                             <p>{item?.model_type}</p>
                                                                             {item?.model?.tag && <p><strong>Tag:</strong> {item?.model?.tag}</p>}
                                                                         </div>
@@ -339,7 +339,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p>Active</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' />
+                                                                                    <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' />
                                                                                     {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : ""
                                                                         }
@@ -355,7 +355,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p className=''>Ringing</p> */}
-                                                                                      <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' />
+                                                                                    <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' />
                                                                                     {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : " "
                                                                         }
@@ -371,7 +371,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                     /> */}
                                                                                     </h4>
                                                                                     {/* <p>Total</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' />
+                                                                                    <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' />
                                                                                 </div> : ""
                                                                         }
                                                                         {
@@ -382,7 +382,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
                                                                                     </h4>
                                                                                     {/* <p>Missed</p> */}
-                                                                                     <img className=" " src={require('../../assets/images/missed.png')} alt='logout' />
+                                                                                    <img className=" " src={require('../../assets/images/missed.png')} alt='logout' />
                                                                                 </div> : ""
                                                                         }
                                                                     </div>
@@ -402,7 +402,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             )
                                     }
                                     {
-                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "add") &&
+                                        checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "add") &&
                                         <div className='col-xl-2 col-lg-3 col-md-3' onClick={() => { setAddNewMod(true); setSelectedModule(); setCustomPopup(true) }}>
                                             <div className={`deviceProvision h-100`} >
                                                 <div className="itemWrapper mt-0 a addNew">

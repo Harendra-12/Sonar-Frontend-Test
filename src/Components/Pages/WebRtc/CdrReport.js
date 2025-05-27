@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
+  checkViewSidebar,
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
@@ -81,6 +82,7 @@ function CdrReport({ page }) {
   const [showAudio, setShowAudio] = useState(false)
   const [showCdrReport, setShowCdrReport] = useState(true);
   const [selectedCdrToDelete, setSelectedCdrToDelete] = useState([]);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
 
   const thisAudioRef = useRef(null);
@@ -1156,325 +1158,332 @@ function CdrReport({ page }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {loading ? (
-                          <SkeletonTableLoader
-                            col={
-                              page === "billing"
-                                ? 13
-                                : page === "callrecording"
-                                  ? 12
-                                  : 17
-                            }
-                            row={12}
-                          />
-                        ) : (
-                          <>
-                            {cdr?.data &&
-                              cdr?.data?.map((item, index) => {
-                                const isBlocked = callBlock?.some((block) => {
-                                  if (item["Call-Direction"] == "inbound") {
-                                    return (
-                                      item["Caller-Caller-ID-Number"] ==
-                                      block.number
-                                    );
-                                  } else if (
-                                    item["Call-Direction"] == "outbound"
-                                  ) {
-                                    return (
-                                      item["Caller-Callee-ID-Number"] ==
-                                      block.number
-                                    );
-                                  }
-                                });
+                        {!checkViewSidebar(
+                          "VoicemailRecording",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                          loading ? (
+                            <SkeletonTableLoader
+                              col={
+                                page === "billing"
+                                  ? 13
+                                  : page === "callrecording"
+                                    ? 12
+                                    : 17
+                              }
+                              row={12}
+                            />
+                          ) : (
+                            <>
+                              {cdr?.data &&
+                                cdr?.data?.map((item, index) => {
+                                  const isBlocked = callBlock?.some((block) => {
+                                    if (item["Call-Direction"] == "inbound") {
+                                      return (
+                                        item["Caller-Caller-ID-Number"] ==
+                                        block.number
+                                      );
+                                    } else if (
+                                      item["Call-Direction"] == "outbound"
+                                    ) {
+                                      return (
+                                        item["Caller-Callee-ID-Number"] ==
+                                        block.number
+                                      );
+                                    }
+                                  });
 
-                                // Map File Storage Sizes To CDR
-                                const matchedStorage = storageInformation?.file_details?.find(
-                                  (storage) => {
-                                    if (item["recording_path"] && item["variable_billsec"] > 0) {
-                                      if (storage.url === item["recording_path"].replace('s3.', '')) {
-                                        return storage.size;
+                                  // Map File Storage Sizes To CDR
+                                  const matchedStorage = storageInformation?.file_details?.find(
+                                    (storage) => {
+                                      if (item["recording_path"] && item["variable_billsec"] > 0) {
+                                        if (storage.url === item["recording_path"].replace('s3.', '')) {
+                                          return storage.size;
+                                        }
                                       }
                                     }
-                                  }
-                                );
-                                const storageSize = matchedStorage?.size || "N/A";
-                                console.log(selectedCdrToDelete);
+                                  );
+                                  const storageSize = matchedStorage?.size || "N/A";
+                                  console.log(selectedCdrToDelete);
 
-                                return (
-                                  <>
-                                    <tr key={index} className="cdrTableRow">
-                                      {page === "callrecording" && <td style={{ width: '20px' }}>
-                                        <input
-                                          type="checkbox"
-                                          onChange={() =>
-                                            handleSelectUserToEdit(item)
-                                          }
-                                          checked={selectedCdrToDelete.some(
-                                            (cdr) =>
-                                              cdr.id == item.id
+                                  return (
+                                    <>
+                                      <tr key={index} className="cdrTableRow">
+                                        {page === "callrecording" && <td style={{ width: '20px' }}>
+                                          <input
+                                            type="checkbox"
+                                            onChange={() =>
+                                              handleSelectUserToEdit(item)
+                                            }
+                                            checked={selectedCdrToDelete.some(
+                                              (cdr) =>
+                                                cdr.id == item.id
+                                            )}
+                                          ></input>
+                                        </td>}
+                                        <td style={{ width: '20px' }}>
+                                          {(pageNumber - 1) *
+                                            Number(itemsPerPage) +
+                                            (index + 1)}
+                                        </td>
+                                        <td>
+                                          {item["Call-Direction"] ===
+                                            "inbound" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-arrow-down-left me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Inbound
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "outbound" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-arrow-up-right me-1"
+                                                style={{ color: "var(--color3)" }}
+                                              ></i>{" "}
+                                              Outbound
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "missed" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Missed
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "transfer" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Transfer
+                                            </span>
+                                          ) : (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-headset me-1"
+                                                style={{ color: "var(--color2)" }}
+                                              ></i>{" "}
+                                              Internal
+                                            </span>
                                           )}
-                                        ></input>
-                                      </td>}
-                                      <td style={{ width: '20px' }}>
-                                        {(pageNumber - 1) *
-                                          Number(itemsPerPage) +
-                                          (index + 1)}
-                                      </td>
-                                      <td>
-                                        {item["Call-Direction"] ===
-                                          "inbound" ? (
-                                          <span>
-                                            <i
-                                              className="fa-solid fa-phone-arrow-down-left me-1"
-                                              style={{
-                                                color: "var(--funky-boy3)",
-                                              }}
-                                            ></i>{" "}
-                                            Inbound
-                                          </span>
-                                        ) : item["Call-Direction"] ===
-                                          "outbound" ? (
-                                          <span>
-                                            <i
-                                              className="fa-solid fa-phone-arrow-up-right me-1"
-                                              style={{ color: "var(--color3)" }}
-                                            ></i>{" "}
-                                            Outbound
-                                          </span>
-                                        ) : item["Call-Direction"] ===
-                                          "missed" ? (
-                                          <span>
-                                            <i
-                                              className="fa-solid fa-phone-missed me-1"
-                                              style={{
-                                                color: "var(--funky-boy3)",
-                                              }}
-                                            ></i>{" "}
-                                            Missed
-                                          </span>
-                                        ) : item["Call-Direction"] ===
-                                          "transfer" ? (
-                                          <span>
-                                            <i
-                                              className="fa-solid fa-phone-missed me-1"
-                                              style={{
-                                                color: "var(--funky-boy3)",
-                                              }}
-                                            ></i>{" "}
-                                            Transfer
-                                          </span>
-                                        ) : (
-                                          <span>
-                                            <i
-                                              className="fa-solid fa-headset me-1"
-                                              style={{ color: "var(--color2)" }}
-                                            ></i>{" "}
-                                            Internal
-                                          </span>
-                                        )}
-                                      </td>
-                                      {/* {page === "billing" ? (
+                                        </td>
+                                        {/* {page === "billing" ? (
                                         ""
                                       ) : (
                                         <td>{item["application_state"]}</td>
                                       )} */}
-                                      <td>
-                                        {item["Caller-Orig-Caller-ID-Name"]}
-                                      </td>
-                                      <td>{item["variable_sip_from_user"]}</td>
-                                      <td>{item["tag"]}</td>
-                                      <td>{item["variable_sip_to_user"]}</td>
-                                      <td>
-                                        {item["application_state"] ===
-                                          "intercept" ||
-                                          item["application_state"] ===
-                                          "eavesdrop" ||
-                                          item["application_state"] ===
-                                          "whisper" ||
-                                          item["application_state"] === "barge"
-                                          ? item["other_leg_destination_number"]
-                                          : item[
-                                          "Caller-Callee-ID-Number"
-                                          ]}{" "}
-                                        {item["application_state_name"] &&
-                                          `(${item["application_state_name"]})`}
-                                      </td>
-                                      {page === "callrecording" ? (
-                                        ""
-                                      ) : (
-                                        <>
-                                          <td>
-                                            {item["application_state_to_ext"]}
-                                          </td>
-                                          {/* time */}
-                                          <td>{item["e_name"]}</td>
-                                          <td>
-                                            {
-                                              item[
-                                                "variable_start_stamp"
-                                              ]?.split(" ")[0]
-                                            }
-                                          </td>
-                                          <td>
-                                            {
-                                              item[
-                                                "variable_start_stamp"
-                                              ]?.split(" ")[1]
-                                            }
-                                          </td>
-                                        </>
-                                      )}
-                                      <td>
-                                        {item["recording_path"] &&
-                                          item["variable_billsec"] > 0 && (
-                                            <>
-                                              <div className="d-flex justify-content-start align-items-center">
-                                                <button
-                                                  className="tableButton px-2 mx-0"
-                                                  onClick={() => {
-                                                    if (
-                                                      item[
-                                                      "recording_path"
-                                                      ] ===
-                                                      currentPlaying
-                                                    ) {
-                                                      setCurrentPlaying(
-                                                        ""
-                                                      );
-                                                      setAudioURL("");
-                                                    } else {
-                                                      handlePlaying(
+                                        <td>
+                                          {item["Caller-Orig-Caller-ID-Name"]}
+                                        </td>
+                                        <td>{item["variable_sip_from_user"]}</td>
+                                        <td>{item["tag"]}</td>
+                                        <td>{item["variable_sip_to_user"]}</td>
+                                        <td>
+                                          {item["application_state"] ===
+                                            "intercept" ||
+                                            item["application_state"] ===
+                                            "eavesdrop" ||
+                                            item["application_state"] ===
+                                            "whisper" ||
+                                            item["application_state"] === "barge"
+                                            ? item["other_leg_destination_number"]
+                                            : item[
+                                            "Caller-Callee-ID-Number"
+                                            ]}{" "}
+                                          {item["application_state_name"] &&
+                                            `(${item["application_state_name"]})`}
+                                        </td>
+                                        {page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <>
+                                            <td>
+                                              {item["application_state_to_ext"]}
+                                            </td>
+                                            {/* time */}
+                                            <td>{item["e_name"]}</td>
+                                            <td>
+                                              {
+                                                item[
+                                                  "variable_start_stamp"
+                                                ]?.split(" ")[0]
+                                              }
+                                            </td>
+                                            <td>
+                                              {
+                                                item[
+                                                  "variable_start_stamp"
+                                                ]?.split(" ")[1]
+                                              }
+                                            </td>
+                                          </>
+                                        )}
+                                        <td>
+                                          {item["recording_path"] &&
+                                            item["variable_billsec"] > 0 && (
+                                              <>
+                                                <div className="d-flex justify-content-start align-items-center">
+                                                  <button
+                                                    className="tableButton px-2 mx-0"
+                                                    onClick={() => {
+                                                      if (
                                                         item[
                                                         "recording_path"
-                                                        ]
-                                                      );
-                                                    }
-                                                  }}
-                                                >
-                                                  {currentPlaying ===
-                                                    item[
-                                                    "recording_path"
-                                                    ] ? (
-                                                    <i className="fa-solid fa-chevron-up"></i>
-                                                  ) : (
-                                                    <i className="fa-solid fa-chevron-down"></i>
-                                                  )}
-                                                </button>
-                                                <label className="ms-2">{item?.recording_size}</label>
-                                              </div>
-                                            </>
+                                                        ] ===
+                                                        currentPlaying
+                                                      ) {
+                                                        setCurrentPlaying(
+                                                          ""
+                                                        );
+                                                        setAudioURL("");
+                                                      } else {
+                                                        handlePlaying(
+                                                          item[
+                                                          "recording_path"
+                                                          ]
+                                                        );
+                                                      }
+                                                    }}
+                                                  >
+                                                    {currentPlaying ===
+                                                      item[
+                                                      "recording_path"
+                                                      ] ? (
+                                                      <i className="fa-solid fa-chevron-up"></i>
+                                                    ) : (
+                                                      <i className="fa-solid fa-chevron-down"></i>
+                                                    )}
+                                                  </button>
+                                                  <label className="ms-2">{item?.recording_size}</label>
+                                                </div>
+                                              </>
 
-                                            // <MusicPlayer
-                                            //   audioSrc={item["recording_path"]}
-                                            //   isPlaying={
-                                            //     currentPlaying ===
-                                            //     item["recording_path"]
-                                            //   }
-                                            //   onPlay={() => setCurrentPlaying(item["recording_path"])}
-                                            //   onStop={() => setCurrentPlaying(null)}
-                                            // />
-                                          )}
-                                      </td>
-                                      <td>
-                                        {formatTime(item["variable_billsec"])}
-                                      </td>
-                                      {page === "billing" ||
-                                        page === "callrecording" ? (
-                                        ""
-                                      ) : (
-                                        <>
-                                          <td>
-                                            {item["Hangup-Cause"]}
-                                            {/* {item["variable_DIALSTATUS"] === null
+                                              // <MusicPlayer
+                                              //   audioSrc={item["recording_path"]}
+                                              //   isPlaying={
+                                              //     currentPlaying ===
+                                              //     item["recording_path"]
+                                              //   }
+                                              //   onPlay={() => setCurrentPlaying(item["recording_path"])}
+                                              //   onStop={() => setCurrentPlaying(null)}
+                                              // />
+                                            )}
+                                        </td>
+                                        <td>
+                                          {formatTime(item["variable_billsec"])}
+                                        </td>
+                                        {page === "billing" ||
+                                          page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <>
+                                            <td>
+                                              {item["Hangup-Cause"]}
+                                              {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
                                           : item["variable_DIALSTATUS"]} */}
-                                          </td>
-                                          <td>{item["variable_DIALSTATUS"]}</td>
-                                        </>
-                                      )}
-                                      {page === "callrecording" ? (
-                                        ""
-                                      ) : (
-                                        <td>{item["call_cost"]}</td>
-                                      )}
-                                      {page === "billing" ||
-                                        page === "callrecording" ? (
-                                        ""
-                                      ) : (
-                                        <td>
-                                          {" "}
-                                          {
-                                            (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
-                                              <button
-                                                disabled={isBlocked}
-                                                effect="ripple"
-                                                className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                  } ms-0`}
-                                                // style={{ height: "34px" }}
-                                                onClick={() => {
-                                                  setSelectedNumberToBlock(
-                                                    item["Call-Direction"] ===
-                                                      "inbound"
-                                                      ? item[
-                                                      "Caller-Caller-ID-Number"
-                                                      ]
-                                                      : item["Call-Direction"] ===
-                                                        "outbound"
+                                            </td>
+                                            <td>{item["variable_DIALSTATUS"]}</td>
+                                          </>
+                                        )}
+                                        {page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <td>{item["call_cost"]}</td>
+                                        )}
+                                        {page === "billing" ||
+                                          page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <td>
+                                            {" "}
+                                            {
+                                              (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
+                                                <button
+                                                  disabled={isBlocked}
+                                                  effect="ripple"
+                                                  className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                    } ms-0`}
+                                                  // style={{ height: "34px" }}
+                                                  onClick={() => {
+                                                    setSelectedNumberToBlock(
+                                                      item["Call-Direction"] ===
+                                                        "inbound"
                                                         ? item[
-                                                        "Caller-Callee-ID-Number"
+                                                        "Caller-Caller-ID-Number"
                                                         ]
-                                                        : "N/A"
-                                                  );
-                                                  setPopUp(true);
-                                                }}
-                                              >
+                                                        : item["Call-Direction"] ===
+                                                          "outbound"
+                                                          ? item[
+                                                          "Caller-Callee-ID-Number"
+                                                          ]
+                                                          : "N/A"
+                                                    );
+                                                    setPopUp(true);
+                                                  }}
+                                                >
 
-                                                {/* <span className="text">
+                                                  {/* <span className="text">
                                             {isBlocked ? "Blocked" : "Block"}
                                           </span> */}
-                                                {/* <span className="icon"> */}
-                                                <Tippy
-                                                  content={
-                                                    isBlocked ? "Blocked" : "Block"
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-ban"></i>
-                                                </Tippy>
-                                                {/* </span> */}
-                                              </button>
-                                              : ""}
+                                                  {/* <span className="icon"> */}
+                                                  <Tippy
+                                                    content={
+                                                      isBlocked ? "Blocked" : "Block"
+                                                    }
+                                                  >
+                                                    <i className="fa-solid fa-ban"></i>
+                                                  </Tippy>
+                                                  {/* </span> */}
+                                                </button>
+                                                : ""}
+                                          </td>
+                                        )}
+                                        <td>
+                                          <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
+                                            <Tippy content={'View Note'}
+                                            >
+                                              <i className="fa-solid fa-comment-dots"></i>
+                                            </Tippy>
+                                          </button>
                                         </td>
-                                      )}
-                                      <td>
-                                        <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
-                                          <Tippy content={'View Note'}
-                                          >
-                                            <i className="fa-solid fa-comment-dots"></i>
-                                          </Tippy>
-                                        </button>
-                                      </td>
-                                      <td>
-                                        {item["recording_path"] &&
-                                          item["variable_billsec"] > 0 && (
-                                            <button className={`tableButton delete ms-0`} onClick={() => handleDeleteCallRecording(item.id)}>
-                                              <Tippy content={'Delete Recording'}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </Tippy>
-                                            </button>
-                                          )}
-                                      </td>
-                                    </tr>
-                                    {/* {currentPlaying ===
+                                        <td>
+                                          {item["recording_path"] &&
+                                            item["variable_billsec"] > 0 && (
+                                              <button className={`tableButton delete ms-0`} onClick={() => handleDeleteCallRecording(item.id)}>
+                                                <Tippy content={'Delete Recording'}
+                                                >
+                                                  <i className="fa-solid fa-trash"></i>
+                                                </Tippy>
+                                              </button>
+                                            )}
+                                        </td>
+                                      </tr>
+                                      {/* {currentPlaying ===
                                       item["recording_path"] &&
                                       item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2"> */}
-                                    {/* <audio
+                                      {/* <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
                                                 autoPlay={true}
@@ -1488,8 +1497,8 @@ function CdrReport({ page }) {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                    {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
-                                    {/* <button
+                                      {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
+                                      {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
@@ -1499,29 +1508,29 @@ function CdrReport({ page }) {
                                               >
                                                 <i className="fa-sharp fa-solid fa-download" />
                                               </button> */}
-                                    {/* <button className="audioCustomButton ms-1">
+                                      {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                    {/* </div>
+                                      {/* </div>
                                           </td>
                                         </tr>
                                       )} */}
-                                    {currentPlaying ===
-                                      item["recording_path"] &&
-                                      item["recording_path"] && (
-                                        <tr>
-                                          <td colSpan={99}>
-                                            <div className="audio-container mx-2">
-                                              <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item?.peak_json)} />
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      )}
-                                  </>
-                                );
-                              })}
-                          </>
-                        )}
+                                      {currentPlaying ===
+                                        item["recording_path"] &&
+                                        item["recording_path"] && (
+                                          <tr>
+                                            <td colSpan={99}>
+                                              <div className="audio-container mx-2">
+                                                <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item?.peak_json)} />
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )}
+                                    </>
+                                  );
+                                })}
+                            </>
+                          )}
 
                         {!loading && cdr && cdr.data?.length === 0 ? (
                           <td colSpan={99}>

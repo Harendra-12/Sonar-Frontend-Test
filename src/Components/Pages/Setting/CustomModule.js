@@ -87,18 +87,25 @@ function CustomModule() {
                                                 <span className="text">Back</span>
                                                 <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                             </button>
-                                            <button
-                                                onClick={() => {
-                                                    setAddNewMod(true); setSelectedModule(""); setPopup(true)
-                                                }}
-                                                type="button"
-                                                effect="ripple"
-                                                className="panelButton"
-                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "add"))}
-                                            >
-                                                <span className="text">Add</span>
-                                                <span className="icon"><i className="fa-solid fa-plus"></i></span>
-                                            </button>
+                                            {checkViewSidebar(
+                                                "Usage",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "add"
+                                            ) &&
+                                                <button
+                                                    onClick={() => {
+                                                        setAddNewMod(true); setSelectedModule(""); setPopup(true)
+                                                    }}
+                                                    type="button"
+                                                    effect="ripple"
+                                                    className="panelButton"
+                                                >
+                                                    <span className="text">Add</span>
+                                                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
+                                                </button>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -114,10 +121,7 @@ function CustomModule() {
                                                 <th>Ringing</th>
                                                 <th>Missed</th>
                                                 <th>Total</th>
-                                                {
-                                                    checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
-                                                        <th>Edit</th> : ""
-                                                }
+                                                {checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
                                             </thead>
                                             <tbody>
                                                 {loading ? <SkeletonTableLoader col={9} row={10} /> :

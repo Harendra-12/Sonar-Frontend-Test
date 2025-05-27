@@ -262,35 +262,23 @@ const RingGroups = () => {
                           {checkViewSidebar(
                             "Ringgroup",
                             slugPermissions,
+                            account?.sectionPermissions,
                             account?.permissions,
                             "add"
-                          ) ? (
-                            <Link
-                              // to="/ring-groups-add"
-                              // onClick={backToTop}
-                              onClick={handleRingGroupAddValidation}
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </Link>
-                          ) : (
-                            <button
-                              disabled
-                              onClick={handleRingGroupAddValidation}
-                              effect="ripple"
-                              className="panelButton"
-                              style={{ cursor: "not-allowed" }}
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                          ) && (
+                              <Link
+                                // to="/ring-groups-add"
+                                // onClick={backToTop}
+                                onClick={handleRingGroupAddValidation}
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -314,16 +302,24 @@ const RingGroups = () => {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            value={searchValue}
-                            className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
-                          />
-                        </div>
+                        {checkViewSidebar(
+                          "Ringgroup",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "search"
+                        ) &&
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              name="Search"
+                              value={searchValue}
+                              className="formItem"
+                              onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                          </div>
+                        }
                       </div>
                       <div className="tableContainer mb-0">
                         <table>
@@ -333,29 +329,23 @@ const RingGroups = () => {
                               <th>Extension</th>
                               <th>Strategy</th>
                               <th>Members</th>
-                              <th>Status</th>
+                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Status</th>}
                               <th>Description</th>
-                              <th className="text-center">Edit</th>
-                              <th className="text-center">Delete</th>
+                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                             </tr>
                           </thead>
                           <tbody>
-                            {noPermissionToRead &&
-                              checkViewSidebar(
+                            {noPermissionToRead ||
+                              !checkViewSidebar(
                                 "Ringgroup",
                                 slugPermissions,
+                                account?.sectionPermissions,
                                 account?.permissions,
                                 "read"
                               ) ? (
                               <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>No Permission</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colSpan={99}>You dont have any permission</td>
                               </tr>
                             ) : (
                               <>
@@ -367,31 +357,13 @@ const RingGroups = () => {
                                       ringGroup?.data?.map((item, index) => {
                                         return (
                                           <tr key={index}>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/ring-groups-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.name}
                                             </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/ring-groups-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.extension}
                                             </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/ring-groups-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.strategy}
                                             </td>
 
@@ -457,9 +429,16 @@ const RingGroups = () => {
                                             </td>
 
                                             {/* <td>(999) 999-9999, (999) 999-9999</td> */}
-                                            <td>
-                                              <div className="my-auto position-relative mx-1">
-                                                {/* <label className="switch">
+                                            {checkViewSidebar(
+                                              "Ringgroup",
+                                              slugPermissions,
+                                              account?.sectionPermissions,
+                                              account?.permissions,
+                                              "edit"
+                                            ) &&
+                                              <td>
+                                                <div className="my-auto position-relative mx-1">
+                                                  {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={
@@ -474,60 +453,69 @@ const RingGroups = () => {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
-                                                    <input type="checkbox"
-                                                      checked={
-                                                        item.status == "active"
-                                                      }
-                                                      onClick={(e) => {
-                                                        setSelectedRingGroup(item);
-                                                        setPopUp(true);
-                                                      }}
-                                                      // {...register("status")}
-                                                      id="showAllCheck"
-                                                    />
-                                                    <span></span>
-                                                  </label>
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox"
+                                                        checked={
+                                                          item.status == "active"
+                                                        }
+                                                        onClick={(e) => {
+                                                          setSelectedRingGroup(item);
+                                                          setPopUp(true);
+                                                        }}
+                                                        // {...register("status")}
+                                                        id="showAllCheck"
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/ring-groups-edit?id=${item.id}`
-                                                )
-                                              }
-                                              className="align-middle"
-                                              id="detailBox"
-                                            >
+                                              </td>
+                                            }
+                                            <td className="align-middle" id="detailBox">
                                               <p className="ellipsis mb-0"> {item.description}</p>
                                             </td>
-                                            <td>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() =>
-                                                  navigate(
-                                                    `/ring-groups-edit?id=${item.id}`
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil" />
-                                              </button>
-                                            </td>
-                                            <td>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setPopUp(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash" />
-                                                {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
-                                                {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
-                                              </button>
-                                            </td>
+                                            {checkViewSidebar(
+                                              "Ringgroup",
+                                              slugPermissions,
+                                              account?.sectionPermissions,
+                                              account?.permissions,
+                                              "edit"
+                                            ) &&
+                                              <td>
+                                                <button
+                                                  className="tableButton edit mx-auto"
+                                                  onClick={() =>
+                                                    navigate(
+                                                      `/ring-groups-edit?id=${item.id}`
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-pencil" />
+                                                </button>
+                                              </td>
+                                            }
+                                            {checkViewSidebar(
+                                              "Ringgroup",
+                                              slugPermissions,
+                                              account?.sectionPermissions,
+                                              account?.permissions,
+                                              "delete"
+                                            ) &&
+                                              <td>
+                                                <button
+                                                  className="tableButton delete mx-auto"
+                                                  onClick={() => {
+                                                    setPopUp(true);
+                                                    setDeleteId(item.id);
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-trash" />
+                                                  {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
+                                                  {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
+                                                </button>
+                                              </td>
+                                            }
                                             <div className="utilPopup"></div>
                                           </tr>
                                         );

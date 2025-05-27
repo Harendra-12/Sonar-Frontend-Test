@@ -12,9 +12,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const MailSettings = ({ style }) => {
+  const navigate = useNavigate();
   const slugPermissions = useSelector((state) => state?.permissions);
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState([]);
@@ -130,7 +131,7 @@ const MailSettings = ({ style }) => {
                               effect="ripple"
                               className="panelButton gray"
                               onClick={() => {
-                                Navigate(-1);
+                                navigate(-1);
                                 backToTop();
                               }}
                             >
@@ -144,33 +145,23 @@ const MailSettings = ({ style }) => {
                                 {checkViewSidebar(
                                   "MailSetting",
                                   slugPermissions,
-                                  account?.permissions, "add"
-                                ) ? (
-                                  <button
-                                    effect="ripple"
-                                    className="panelButton"
-                                    onClick={() => {
-                                      setMailSettingAddToggle(true);
-                                    }}
-                                  >
-                                    <span className="text">Add</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-plus"></i>
-                                    </span>
-                                  </button>
-                                ) : (
-                                  <button
-                                    effect="ripple"
-                                    className="panelButton"
-                                    disabled
-                                    style={{ cursor: "not-allowed" }}
-                                  >
-                                    <span className="text">Add</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-plus"></i>
-                                    </span>
-                                  </button>
-                                )}
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "add"
+                                ) && (
+                                    <button
+                                      effect="ripple"
+                                      className="panelButton"
+                                      onClick={() => {
+                                        setMailSettingAddToggle(true);
+                                      }}
+                                    >
+                                      <span className="text">Add</span>
+                                      <span className="icon">
+                                        <i className="fa-solid fa-plus"></i>
+                                      </span>
+                                    </button>
+                                  )}
                               </>
                             )}
                           </div>
@@ -189,20 +180,20 @@ const MailSettings = ({ style }) => {
                                 <th>Host</th>
                                 <th>Mail From</th>
                                 <th>Mail From Name</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
+                                {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                                {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
                               </tr>
                             </thead>
                             <tbody>
-                              {noPermission ? (
+                              {noPermission || !checkViewSidebar(
+                                "MailSetting",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
                                 <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>No Permission</td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
+                                  <td colSpan={99} className="text-center">You dont have any permission</td>
                                 </tr>
                               ) : (
                                 <>
@@ -232,7 +223,7 @@ const MailSettings = ({ style }) => {
                                             <td style={{ cursor: "default" }}>
                                               {data.mail_from_name}
                                             </td>
-                                            <td style={{ cursor: "default" }}>
+                                            {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td style={{ cursor: "default" }}>
                                               {" "}
                                               <button
                                                 className="tableButton edit"
@@ -253,8 +244,8 @@ const MailSettings = ({ style }) => {
                                               >
                                                 <i className="fa-solid fa-pencil"></i>
                                               </button>
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
+                                            </td>}
+                                            {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ cursor: "default" }}>
                                               <button
                                                 className="tableButton delete"
                                                 onClick={() => {
@@ -264,7 +255,7 @@ const MailSettings = ({ style }) => {
                                               >
                                                 <i className="fa-solid fa-trash"></i>
                                               </button>
-                                            </td>
+                                            </td>}
                                           </tr>
                                         ))}
 

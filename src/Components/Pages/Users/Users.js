@@ -17,6 +17,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 /**
  * This component is used to display a list of all users and their respective roles.
  * The component renders a table with the following columns: username, extension, role, usage, status, and actions.
@@ -51,6 +52,15 @@ const Users = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const debouncedSearchTerm = useDebounce(userInput, 1000);
   const [tableKeys, setTableKeys] = useState([]);
+  const [showKeys, setShowKeys] = useState([
+    "profile_picture",
+    "name",
+    "username",
+    "extension_id",
+    "usertype",
+    "usages",
+    "status"
+  ])
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -84,7 +94,7 @@ const Users = () => {
   async function getApi() {
     const apiData =
       await generalGetFunction(
-        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}&section=Accounts`
+        `/user/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
       );
     if (apiData?.status) {
       setUser(apiData.data);
@@ -331,10 +341,10 @@ const Users = () => {
                         <thead>
                           <tr>
                             {
-                              tableKeys && tableKeys.filter((key) => key !== 'id').map((item) => {
+                              tableKeys && tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((item) => {
                                 return (
                                   <th style={{ textTransform: "capitalize" }}>
-                                    {item}
+                                    {item == 'usages' ? 'usage' : item == 'extension_id' ? 'Extension' : item == 'usertype' ? 'Role' : item == 'status' ? 'activation' : item}
                                   </th>
                                 )
                               })
@@ -343,14 +353,13 @@ const Users = () => {
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Usage</th> */}
-                            <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                            {tableKeys.includes("socket_status") && <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
                               <option value="all" disabled>Status</option>
                               <option value="online">Online</option>
                               <option value="offline">Offline</option>
                               <option value="all">All</option>
-                            </select></th>
+                            </select></th>}
                             {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                            <th className="text-center">Activation</th>
                             {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                           </tr>
                         </thead>
@@ -367,7 +376,8 @@ const Users = () => {
                             </tr>
                           ) :
                             loading ? (
-                              <SkeletonTableLoader col={tableKeys?.length + 1} row={15} />
+                              // <SkeletonTableLoader col={tableKeys?.filter(key => showKeys.includes(key))?.length + 2} row={15} />
+                              <CircularLoader />
                             ) : (
                               <>
                                 {user &&
@@ -381,8 +391,8 @@ const Users = () => {
                                     // }
                                     return (
                                       <tr key={index}>
-                                        {tableKeys.filter((key) => key !== 'id').map((key, index) => {
-                                          if (key == 'profile_picture') {
+                                        {tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((key, index) => {
+                                          if (key == 'name') {
                                             return (
                                               <td style={{ width: "180px" }}>
                                                 <div className="d-flex align-items-center">
@@ -396,13 +406,45 @@ const Users = () => {
                                                       <i className="fa-light fa-user" />
                                                     )}
                                                   </div>
-                                                  <div className="ms-2">{item.username}</div>
+                                                  <div className="ms-2">{item.name}</div>
                                                 </div>
+                                              </td>
+                                            )
+                                          } else if (key == 'status') {
+                                            return (
+                                              <td style={{ width: "129px" }}>
+                                                <div className="position-relative d-flex">
+                                                  <div class="cl-toggle-switch ">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox"
+                                                        checked={item.status === "E"}
+                                                        onClick={(e) => {
+                                                          setSelectedUser(item);
+                                                          setPopUp(true);
+                                                        }}
+                                                        id="showAllCheck"
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            )
+                                          } else if (key == 'usertype') {
+                                            return (
+                                              <td style={{ width: "106px" }}>
+                                                {item?.user_role?.roles?.name}
+                                              </td>
+                                            )
+                                          } else if (key == 'extension_id') {
+                                            return (
+                                              <td style={{ width: "176px" }}>
+                                                {item.extension?.extension || "N/A"}
                                               </td>
                                             )
                                           } else {
                                             return (
-                                              <td key={index}>
+                                              <td key={index} style={{ width: key == 'usages' && '129px' }}>
                                                 {item[key] || "N/A"}
                                               </td>
                                             )
@@ -448,7 +490,7 @@ const Users = () => {
                                         >
                                           {item?.usages}
                                         </td> */}
-                                        <td style={{ width: "156px" }}>
+                                        {tableKeys.includes('socket_status') && <td style={{ width: "156px" }}>
                                           <span
                                             className={
                                               onlineUser.includes(item.id)
@@ -456,7 +498,7 @@ const Users = () => {
                                                 : "extensionStatus mx-auto"
                                             }
                                           ></span>
-                                        </td>
+                                        </td>}
                                         {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
                                           <button
                                             className="tableButton edit mx-auto"
@@ -469,42 +511,6 @@ const Users = () => {
                                             <i className="fa-solid fa-pencil"></i>
                                           </button>
                                         </td>}
-                                        <td style={{ width: "129px" }}
-                                        // onClick={() =>
-                                        //   handleStatusChange(item.id, item.status)
-                                        // }
-                                        >
-                                          {/* {item.status === "E"
-                                            ? "Enabled"
-                                            : "Disabled"} */}
-                                          <div className="mx-auto position-relative d-flex justify-content-center">
-                                            {/* <label className="switch">
-                                              <input
-                                                type="checkbox"
-                                                checked={item.status === "E"}
-                                                onClick={(e) => {
-                                                  setSelectedUser(item);
-                                                  setPopUp(true);
-                                                }}
-                                                id="showAllCheck"
-                                              />
-                                              <span className="slider round" />
-                                            </label> */}
-                                            <div class="cl-toggle-switch ">
-                                              <label class="cl-switch">
-                                                <input type="checkbox"
-                                                  checked={item.status === "E"}
-                                                  onClick={(e) => {
-                                                    setSelectedUser(item);
-                                                    setPopUp(true);
-                                                  }}
-                                                  id="showAllCheck"
-                                                />
-                                                <span></span>
-                                              </label>
-                                            </div>
-                                          </div>
-                                        </td>
                                         {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
                                           <button
                                             className="tableButton delete mx-auto"

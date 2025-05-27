@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { set } from 'react-hook-form';
 import CircularLoader from '../../Loader/CircularLoader';
+import { useSelector } from 'react-redux';
 
 function Meeting() {
     const [refreshState, setRefreshState] = useState(0);
@@ -28,6 +29,9 @@ function Meeting() {
     const viewVideoRef = useRef(null);
     const [pageLoading, setPageLoading] = useState(false);
     const [preSignedUrl, setPreSignedUrl] = useState('');
+
+    const account = useSelector((state) => state?.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
 
     const getData = async (shouldLoad) => {
         if (shouldLoad) setLoading(true);
@@ -174,17 +178,19 @@ function Meeting() {
                                                             <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
-                                                    <button
-                                                        type="button"
-                                                        className="panelButton disabled"
-                                                        title="You do not have permission to add"
-                                                        onClick={() => navigate("/meeting-add")}
-                                                    >
-                                                        <span className="text">Create</span>
-                                                        <span className="icon">
-                                                            <i className="fa-solid fa-plus"></i>
-                                                        </span>
-                                                    </button>
+                                                    {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "add") &&
+                                                        <button
+                                                            type="button"
+                                                            className="panelButton disabled"
+                                                            title="You do not have permission to add"
+                                                            onClick={() => navigate("/meeting-add")}
+                                                        >
+                                                            <span className="text">Create</span>
+                                                            <span className="icon">
+                                                                <i className="fa-solid fa-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -207,17 +213,19 @@ function Meeting() {
                                                     </select>
                                                     <label>entries</label>
                                                 </div>
-                                                <div className="searchBox position-relative">
-                                                    <label>Search:</label>
-                                                    <input
-                                                        type="text"
-                                                        name="Search"
-                                                        placeholder="Search"
-                                                        value={searchValue}
-                                                        className="formItem"
-                                                        onChange={(e) => setSearchValue(e.target.value)}
-                                                    />
-                                                </div>
+                                                {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "search") &&
+                                                    <div className="searchBox position-relative">
+                                                        <label>Search:</label>
+                                                        <input
+                                                            type="text"
+                                                            name="Search"
+                                                            placeholder="Search"
+                                                            value={searchValue}
+                                                            className="formItem"
+                                                            onChange={(e) => setSearchValue(e.target.value)}
+                                                        />
+                                                    </div>
+                                                }
                                             </div>
                                             <div className="tableContainer">
                                                 <table>
@@ -230,61 +238,63 @@ function Meeting() {
                                                             <th>Joining Pin</th>
                                                             <th>Meeting link</th>
                                                             <th>Recordings</th>
-                                                            <th>Delete</th>
+                                                            {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
                                                             {/* <th>Action</th> */}
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {loading ? (
-                                                            <SkeletonTableLoader col={8} row={15} />
-                                                        ) : (
-                                                            <>
-                                                                {conference &&
-                                                                    conference?.data?.map((item, key) => {
-                                                                        return (
-                                                                            <>
-                                                                                <tr key={key} onClick={() => handleGetRecord(item.id)}>
-                                                                                    <td >{item.conf_name}</td>
-                                                                                    <td>{item.conf_max_members}</td>
-                                                                                    <td>{item.conf_ext}</td>
-                                                                                    <td>
-                                                                                        <div className='d-flex align-items-center justify-content-start '>
-                                                                                            {moderatorPinId === item.id ? item.moderator_pin : "******"}
-                                                                                            <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        {item?.participate_pin && <div className='d-flex align-items-center justify-content-start '>
-                                                                                            {participantPinId === item.id ? item.participate_pin : "******"}
-                                                                                            <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                        </div>}
-                                                                                    </td>
-                                                                                    <td style={{ width: "174px" }}>{item.conf_url}</td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            className="tableButton"
-                                                                                            onClick={() => setShowRecordingsPopup(true)}
-                                                                                        >
-                                                                                            <i className="fa-solid fa-archive"></i>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            className="tableButton delete"
-                                                                                            onClick={() => {
-                                                                                                setDeleteId(item.id);
-                                                                                                setPopUp(true);
-                                                                                            }}
-                                                                                        >
-                                                                                            <i className="fa-solid fa-trash"></i>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </>
-                                                                        );
-                                                                    })}{" "}
-                                                            </>
-                                                        )}
+                                                        {!checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ?
+                                                            <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                                            loading ? (
+                                                                <SkeletonTableLoader col={8} row={15} />
+                                                            ) : (
+                                                                <>
+                                                                    {conference &&
+                                                                        conference?.data?.map((item, key) => {
+                                                                            return (
+                                                                                <>
+                                                                                    <tr key={key} onClick={() => handleGetRecord(item.id)}>
+                                                                                        <td >{item.conf_name}</td>
+                                                                                        <td>{item.conf_max_members}</td>
+                                                                                        <td>{item.conf_ext}</td>
+                                                                                        <td>
+                                                                                            <div className='d-flex align-items-center justify-content-start '>
+                                                                                                {moderatorPinId === item.id ? item.moderator_pin : "******"}
+                                                                                                <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            {item?.participate_pin && <div className='d-flex align-items-center justify-content-start '>
+                                                                                                {participantPinId === item.id ? item.participate_pin : "******"}
+                                                                                                <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                            </div>}
+                                                                                        </td>
+                                                                                        <td style={{ width: "174px" }}>{item.conf_url}</td>
+                                                                                        <td>
+                                                                                            <div
+                                                                                                className="tableButton"
+                                                                                                onClick={() => setShowRecordingsPopup(true)}
+                                                                                            >
+                                                                                                <i className="fa-solid fa-archive"></i>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
+                                                                                            <div
+                                                                                                className="tableButton delete"
+                                                                                                onClick={() => {
+                                                                                                    setDeleteId(item.id);
+                                                                                                    setPopUp(true);
+                                                                                                }}
+                                                                                            >
+                                                                                                <i className="fa-solid fa-trash"></i>
+                                                                                            </div>
+                                                                                        </td>}
+                                                                                    </tr>
+                                                                                </>
+                                                                            );
+                                                                        })}{" "}
+                                                                </>
+                                                            )}
                                                     </tbody>
                                                 </table>
                                             </div>

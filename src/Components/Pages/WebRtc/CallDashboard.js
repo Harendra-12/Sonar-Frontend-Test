@@ -44,7 +44,7 @@ function CallDashboard() {
 
   // Search All Users
   async function getData() {
-    const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`);
+    const userApi = await generalGetFunction(`/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
     if (userApi?.status) {
       setAllUser(userApi.data);
     }
