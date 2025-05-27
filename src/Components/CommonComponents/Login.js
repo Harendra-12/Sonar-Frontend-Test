@@ -190,9 +190,14 @@ export function LoginComponent() {
                 window.scrollTo(0, 0);
                 navigate("/messages");
               } else {
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/dashboard");
+                // setLoading(false);
+                // window.scrollTo(0, 0);
+                // navigate("/dashboard");
+                setTimeout(() => {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/dashboard");
+                })
               }
             }
           } else {
@@ -363,9 +368,15 @@ export function LoginComponent() {
                 window.scrollTo(0, 0);
                 navigate("/messages");
               } else {
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/dashboard");
+                // setLoading(false);
+                // window.scrollTo(0, 0);
+                // navigate("/dashboard");
+                setTimeout(() => {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/dashboard");
+                })
+
               }
             }
           } else {
@@ -453,8 +464,8 @@ export function LoginComponent() {
       console.error("Logout all error:", error);
       toast.error(
         error.response?.message ||
-          error.message ||
-          "An unexpected error occurred"
+        error.message ||
+        "An unexpected error occurred"
       );
     }
   }
