@@ -380,7 +380,8 @@ export function checkViewSidebar(
         // First check if item belongs to the current section
         if (!sectionPermissions?.includes(item.id)) continue;
 
-        // If no action specified, check if module section matches
+        // If no action specified, check if module section matches   ||   TODO: Handle it using "section_id" & Pass "browse" action in Navbar in all the menus. also pass account.sections for Main Sections. 
+        // basically the condtition will be like this > if (!action && sectionPermissions(item.section_id))
         if (!action && item.module_section === slug) {
           return true;
         }
