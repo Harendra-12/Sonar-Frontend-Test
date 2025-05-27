@@ -245,7 +245,7 @@ const RingGroupEdit = () => {
 
   // Function to handle click outside to close popup
   useEffect(() => {
-    const handleClickOutside = (event) => {};
+    const handleClickOutside = (event) => { };
 
     document.addEventListener("click", handleClickOutside);
 
@@ -742,7 +742,7 @@ const RingGroupEdit = () => {
                           Enter a name.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="extension"
@@ -766,7 +766,7 @@ const RingGroupEdit = () => {
                           Enter an extension.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="extension"
@@ -786,7 +786,7 @@ const RingGroupEdit = () => {
                           Select the ring strategy.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("strategy")}
@@ -807,12 +807,11 @@ const RingGroupEdit = () => {
                           Select the timeout destination for this ring group.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -936,7 +935,7 @@ const RingGroupEdit = () => {
                           destination is being called.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("ring_back")}
@@ -974,7 +973,7 @@ const RingGroupEdit = () => {
                           Enter the description.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="extension"
@@ -993,7 +992,7 @@ const RingGroupEdit = () => {
                       <div className="formLabel">
                         <label htmlFor="">Recording</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem me-0"
                           style={{ width: "100%" }}
@@ -1017,7 +1016,7 @@ const RingGroupEdit = () => {
                           Enter the tag.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="extension"
@@ -1040,9 +1039,8 @@ const RingGroupEdit = () => {
                         </label>
                       </div>
                       <div
-                        className={`col-${
-                          forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
-                        }`}
+                        className={`col-xxl-6 col-xl-12 col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "12"
+                          }`}
                       >
                         {forwardStatus != "disabled" && (
                           <div className="formLabel">
@@ -1131,7 +1129,7 @@ const RingGroupEdit = () => {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="d-flex tableHeader">
-                      <div className="searchBox position-relative">
+                      <div className="searchBox position-relative mb-2">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -1140,55 +1138,57 @@ const RingGroupEdit = () => {
                           onChange={(e) => setFilterExtension(e.target.value)}
                         />
                       </div>
-                      {selectedAgentToEdit.length > 1 && (
+                      <div className="d-flex align-items-center">
+                        {selectedAgentToEdit.length > 1 && (
+                          <button
+                            className="panelButton delete"
+                            onClick={deleteSelectedDestination}
+                          >
+                            <span className="text">Delete</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                        )}
+                        {selectedAgentToEdit.length > 0 &&
+                          selectedAgentToEdit.length != destination.length ? (
+                          <button
+                            type="button"
+                            className="panelButton ms-2"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton edit ms-2"
+                            onClick={() => {
+                              setSelectedAgentToEdit(destination);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit All</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        )}
                         <button
-                          className="panelButton delete"
-                          onClick={deleteSelectedDestination}
+                          onClick={() => setBulkAddPopUp(true)}
+                          className="panelButton"
                         >
-                          <span className="text">Delete</span>
+                          <span className="text">Add</span>
                           <span className="icon">
-                            <i className="fa-solid fa-trash"></i>
+                            <i className="fa-solid fa-plus"></i>
                           </span>
                         </button>
-                      )}
-                      {selectedAgentToEdit.length > 0 &&
-                      selectedAgentToEdit.length != destination.length ? (
-                        <button
-                          type="button"
-                          className="panelButton ms-2"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span className="text">Edit</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="panelButton edit ms-2"
-                          onClick={() => {
-                            setSelectedAgentToEdit(destination);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span className="text">Edit All</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      )}
-                      <button
-                        onClick={() => setBulkAddPopUp(true)}
-                        className="panelButton"
-                      >
-                        <span className="text">Add</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-plus"></i>
-                        </span>
-                      </button>
+                      </div>
                     </div>
                   </div>
                   <form className="row" style={{ padding: "0px 23px 20px" }}>
@@ -1456,9 +1456,8 @@ const RingGroupEdit = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`col-auto h-100 m${
-                                    index === 0 ? "t" : "y"
-                                  }-auto`}
+                                  className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                    }-auto`}
                                 >
                                   <button
                                     type="button"

@@ -264,6 +264,7 @@
   --active-number-bg: #ffffff2b;
   --balance-box-bg: linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
   --border20: #e5e5e5;
+    --loader-bg: #ffffff17;
 
 }
 
@@ -419,6 +420,7 @@
   --active-number-bg: #1d2c4f2b;
   --balance-box-bg: linear-gradient(90deg, rgb(29 32 87 / 55%) 0%, rgb(157 132 255 / 13%) 50%, rgb(49 28 71 / 72%) 100%);
    --border20: #3f3c3c;
+   --loader-bg: #1a1b3717;
 }
 
 :root.green {

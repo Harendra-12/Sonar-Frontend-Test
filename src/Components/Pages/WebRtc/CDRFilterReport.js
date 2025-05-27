@@ -1171,13 +1171,13 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Direction
                               </label>
-                              <div className="dropdown">
+                              <div className="dropdown w-100">
                                 <button
-                                  className="formItem"
+                                  className="formItem text-start"
                                   type="button"
                                   data-bs-toggle="dropdown"
                                   data-bs-auto-close="outside"
-                                  style={{ width: "160px" }}
+                                  // style={{ width: "160px" }}
                                 >
                                   Column Filters
                                 </button>
@@ -1248,13 +1248,13 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Call Type
                               </label>
-                              <div className="dropdown">
+                              <div className="dropdown w-100">
                                 <button
-                                  className="formItem"
+                                  className="formItem text-start"
                                   type="button"
                                   data-bs-toggle="dropdown"
                                   data-bs-auto-close="outside"
-                                  style={{ width: "160px" }}
+                                  // style={{ width: "160px" }}
                                 >
                                   Column Filters
                                 </button>
@@ -1328,13 +1328,13 @@ function CdrFilterReport({ page }) {
                               <label className="formLabel text-start mb-0 w-100">
                                 Hangup Status
                               </label>
-                              <div className="dropdown">
+                              <div className="dropdown w-100">
                                 <button
-                                  className="formItem"
+                                  className="formItem text-start"
                                   type="button"
                                   data-bs-toggle="dropdown"
                                   data-bs-auto-close="outside"
-                                  style={{ width: "160px" }}
+                                  // style={{ width: "160px" }}
                                 >
                                   Column Filters
                                 </button>
@@ -1401,13 +1401,13 @@ function CdrFilterReport({ page }) {
                                 <label className="formLabel text-start mb-0 w-100">
                                   Hangup Cause
                                 </label>
-                                <div className="dropdown">
+                                <div className="dropdown w-100">
                                   <button
-                                    className="formItem"
+                                    className="formItem text-start"
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside"
-                                    style={{ width: "160px" }}
+                                    // style={{ width: "160px" }}
                                   >
                                     Column Filters
                                   </button>
@@ -1550,13 +1550,13 @@ function CdrFilterReport({ page }) {
                               selectedColumn?.includes(opt.value)
                             )}
                           /> */}
-                          <div className="dropdown showHideColumn">
+                          <div className="dropdown showHideColumn w-100">
                             <button
                               className="formItem"
                               type="button"
                               data-bs-toggle="dropdown"
                               data-bs-auto-close="outside"
-                              style={{ width: "160px" }}
+                              // style={{ width: "160px" }}
                             >
                               Column Filters
                             </button>

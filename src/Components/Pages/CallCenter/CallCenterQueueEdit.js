@@ -710,7 +710,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel py-0 me-2">
                     <label htmlFor="selectFormRow">Enabled</label>
                   </div>
-                  <div className="my-auto position-relative mx-1">
+                  <div className="my-auto position-relative mb-2 mx-1">
                     <label className="switch">
                       <input
                         type="checkbox"
@@ -768,7 +768,7 @@ function CallCenterQueueEdit() {
                           <div className="formLabel py-0 me-2">
                             <label htmlFor="selectFormRow">Enabled</label>
                           </div>
-                          <div className="my-auto position-relative mx-1">
+                          <div className="my-auto position-relative mb-2 mx-1">
                             {/* <label className="switch">
                               <input
                                 type="checkbox"
@@ -1673,7 +1673,7 @@ function CallCenterQueueEdit() {
                                     }`}
                                 >
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "6"
+                                    className={`col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-${advance.includes(item.id) ? "2" : "4"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1682,7 +1682,7 @@ function CallCenterQueueEdit() {
                                         <span className="text-danger">*</span>
                                       </label>
                                     </div>}
-                                    <div className="position-relative">
+                                    <div className="position-relative mb-2">
                                       <select
                                         type="text"
                                         disabled
@@ -1752,7 +1752,7 @@ function CallCenterQueueEdit() {
                                     {index === 0 && <div className="formLabel">
                                       <label htmlFor="">Password</label>
                                     </div>}
-                                    <div className="position-relative">
+                                    <div className="position-relative mb-2">
                                       <input
                                         type="text"
                                         name="password"
@@ -1766,7 +1766,7 @@ function CallCenterQueueEdit() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                    className={`col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-${advance.includes(item.id) ? "1" : "2"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1774,7 +1774,7 @@ function CallCenterQueueEdit() {
                                     </div>}
                                     <select
                                       className="formItem me-0"
-                                      style={{ width: "100%" }}
+                                      // style={{ width: "100%" }}
                                       name="level"
                                       value={item.level}
                                       onChange={(e) =>
@@ -1795,7 +1795,7 @@ function CallCenterQueueEdit() {
                                     </select>
                                   </div>
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                    className={`col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-${advance.includes(item.id) ? "1" : "2"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1803,7 +1803,7 @@ function CallCenterQueueEdit() {
                                     </div>}
                                     <select
                                       className="formItem me-0"
-                                      style={{ width: "100%" }}
+                                      // style={{ width: "100%" }}
                                       name="position"
                                       value={item.position}
                                       onChange={(e) =>
@@ -1825,13 +1825,13 @@ function CallCenterQueueEdit() {
                                   </div>
                                   {advance.includes(item.id) && (
                                     <>
-                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
+                                      <div className="col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-2 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Call Timeout
                                           </label>
                                         </div>}
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="call_timeout"
@@ -1849,13 +1849,13 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
+                                      <div className="col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-2 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Reject Delay
                                           </label>
                                         </div>}
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="reject_delay_time"
@@ -1873,13 +1873,13 @@ function CallCenterQueueEdit() {
                                         </div>
                                       </div>
 
-                                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-4 ps-0 pe-2">
+                                      <div className="col-xl-3 col-lg-3 col-md-4 col-6 col-xxl-2 ps-0 pe-2">
                                         {index === 0 && <div className="formLabel">
                                           <label htmlFor="">
                                             Max No Answer
                                           </label>
                                         </div>}
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="max_no_answer"
@@ -1905,7 +1905,7 @@ function CallCenterQueueEdit() {
                                             ""
                                           )}
                                         </div>
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="busy_delay_time"
@@ -1933,7 +1933,7 @@ function CallCenterQueueEdit() {
                                             ""
                                           )}
                                         </div>
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="no_answer_delay_time"
@@ -1961,7 +1961,7 @@ function CallCenterQueueEdit() {
                                             ""
                                           )}
                                         </div>
-                                        <div className="position-relative">
+                                        <div className="position-relative mb-2">
                                           <input
                                             type="number"
                                             name="wrap_up_time"
@@ -2371,7 +2371,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Call Timeout</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="call_timeout"
@@ -2392,7 +2392,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Reject Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="reject_delay_time"
@@ -2413,7 +2413,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Busy Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="busy_delay_time"
@@ -2434,7 +2434,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Wrap Up Time</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="wrap_up_time"
@@ -2455,7 +2455,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Max No Answer</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="max_no_answer"
@@ -2476,7 +2476,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">No Answer Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="no_answer_delay_time"
@@ -2564,7 +2564,7 @@ function CallCenterQueueEdit() {
                 <div className="formLabel">
                   <label htmlFor="">Wrap Up Time</label>
                 </div>
-                <div className="position-relative">
+                <div className="position-relative mb-2">
                   <input
                     type="number"
                     name="wrap_up_time"
@@ -2784,7 +2784,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Reject Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="reject_delay_time"
@@ -2806,7 +2806,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Busy Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="busy_delay_time"
@@ -2827,7 +2827,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Call Timeout</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="call_timeout"
@@ -2848,7 +2848,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Max No Answer</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="max_no_answer"
@@ -2870,7 +2870,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">Wrap Up Time</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="wrap_up_time"
@@ -2892,7 +2892,7 @@ function CallCenterQueueEdit() {
                   <div className="formLabel">
                     <label htmlFor="">No Answer Delay</label>
                   </div>
-                  <div className="position-relative">
+                  <div className="position-relative mb-2">
                     <input
                       type="number"
                       name="no_answer_delay_time"

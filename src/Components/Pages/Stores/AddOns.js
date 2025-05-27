@@ -79,59 +79,62 @@ function AddOns() {
                             </div>
                             <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
                                 <>
-                                    <nav className="tangoNavs">
+                                    <nav className="tangoNavs store__nav">
                                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <button
-                                                className="nav-link active px-2"
-                                                id="nav-social-tab"
-                                                data-bs-toggle="tab"
-                                                data-bs-target="#nav-social"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="nav-social"
-                                                aria-selected="true"
-                                            >
-                                                All Addons
-                                            </button>
-                                            <button
-                                                className="nav-link px-2"
-                                                id="nav-exten-tab"
-                                                data-bs-toggle="tab"
-                                                data-bs-target="#nav-exten"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="nav-exten"
-                                                aria-selected="false"
-                                            >
-                                                Extensions
-                                            </button>
-                                            <button
-                                                className="nav-link px-2"
-                                                id="nav-package-tab"
-                                                // data-bs-toggle="tab"
-                                                // data-bs-target="#nav-package"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="nav-package"
-                                                aria-selected="true"
-                                                onClick={() => featureUnderdevelopment()}
-                                            >
-                                                Packages
-                                            </button>
-                                            <button
-                                                className="nav-link px-2"
-                                                id="nav-provision-tab"
-                                                // data-bs-toggle="tab"
-                                                // data-bs-target="#nav-util"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="nav-util"
-                                                aria-selected="false"
-                                                onClick={() => featureUnderdevelopment()}
-                                            >
-                                                Utilities
-                                            </button>
-                                            <div className='tableHeader justify-content-end ms-auto'>
+                                            <div className='d-flex  align-items-center gap-1'>
+                                                <button
+                                                    className="nav-link active px-2"
+                                                    id="nav-social-tab"
+                                                    data-bs-toggle="tab"
+                                                    data-bs-target="#nav-social"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-controls="nav-social"
+                                                    aria-selected="true"
+                                                >
+                                                    All Addons
+                                                </button>
+                                                <button
+                                                    className="nav-link px-2"
+                                                    id="nav-exten-tab"
+                                                    data-bs-toggle="tab"
+                                                    data-bs-target="#nav-exten"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-controls="nav-exten"
+                                                    aria-selected="false"
+                                                >
+                                                    Extensions
+                                                </button>
+                                                <button
+                                                    className="nav-link px-2"
+                                                    id="nav-package-tab"
+                                                    // data-bs-toggle="tab"
+                                                    // data-bs-target="#nav-package"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-controls="nav-package"
+                                                    aria-selected="true"
+                                                    onClick={() => featureUnderdevelopment()}
+                                                >
+                                                    Packages
+                                                </button>
+                                                <button
+                                                    className="nav-link px-2"
+                                                    id="nav-provision-tab"
+                                                    // data-bs-toggle="tab"
+                                                    // data-bs-target="#nav-util"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-controls="nav-util"
+                                                    aria-selected="false"
+                                                    onClick={() => featureUnderdevelopment()}
+                                                >
+                                                    Utilities
+                                                </button>
+
+                                            </div>
+                                            <div className='tableHeader justify-content-end ms-auto mb-2'>
                                                 <div class="searchBox position-relative">
                                                     <label>Search:</label>
                                                     <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />

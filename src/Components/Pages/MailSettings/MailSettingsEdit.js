@@ -121,7 +121,7 @@ const MailSettingsEdit = ({
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">Mail Settings Update</p>
               </div>
-              <div className="col-xl-3 ps-2">
+              <div className="col-xl-3 col-lg-12 ps-2">
                 <div className="d-flex justify-content-end">
                   <button
                     effect="ripple"
@@ -196,14 +196,14 @@ const MailSettingsEdit = ({
                   }}
                 >
                   <form action="#" className="row">
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Mail Driver</label>
                         <label htmlFor="mail_driver" className="formItemDesc">
                           Select Mail Driver Type
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           type="dropdown"
                           name="mail_driver"
@@ -233,14 +233,14 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Host</label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Enter Mail Host
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -257,14 +257,14 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Port</label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter Mail Port
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="number"
                           name="mail_port"
@@ -282,14 +282,14 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Username</label>
                         <label htmlFor="mail_username" className="formItemDesc">
                           Enter Mail Username
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_username"
@@ -306,14 +306,14 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Password</label>
                         <label htmlFor="mail_password" className="formItemDesc">
                           Enter Password
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="password"
                           name="mail_password"
@@ -328,7 +328,7 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Encryption</label>
                         <label
@@ -338,7 +338,7 @@ const MailSettingsEdit = ({
                           Select Encryption Type
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           type="dropdown"
                           name="mail_encryption"
@@ -375,7 +375,7 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Mail From</label>
                         <label
@@ -385,7 +385,7 @@ const MailSettingsEdit = ({
                           Enter Mail From
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_from_address"
@@ -405,7 +405,7 @@ const MailSettingsEdit = ({
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Mail From Name</label>
                         <label
@@ -415,7 +415,7 @@ const MailSettingsEdit = ({
                           Enter Mail From Name
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_from_name"

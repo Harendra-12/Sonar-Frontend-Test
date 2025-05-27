@@ -395,9 +395,13 @@
     }
 
     .formRow.col-xl-3 {
+    width: unset;
+    /* margin-right: 70px; */
+}
+    /* .formRow.col-xl-3 {
         width: inherit !important;
         margin-right: 0px;
-    }
+    } */
 
     .callerContent .user .userProfileContainer {
         margin: 0;
@@ -427,9 +431,9 @@
         margin-bottom: 15px;
     }
 
-    .formRow .col-6 {
+    /* .formRow .col-6 {
         width: 100%;
-    }
+    } */
 
     .formRow.col-xl-3:nth-child(odd) {
         margin-right: 0;
@@ -557,6 +561,9 @@
 
     .left_listClose {
         display: block;
+    }
+    .tangoNavs.store__nav .nav-tabs{
+        flex-direction: column-reverse;
     }
 }
 
