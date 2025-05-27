@@ -162,26 +162,26 @@ function Call({
     let filteredCalls = [];
     switch (clickStatus) {
       case "incoming":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) =>
             e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] > 0
         );
         break;
       case "outgoing":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) => e["Caller-Caller-ID-Number"] === extension
         );
         break;
       case "missed":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) =>
             e["Caller-Callee-ID-Number"] === extension &&
             e["variable_billsec"] === 0
         );
         break;
       case "voicemail":
-        filteredCalls = allCalls.filter(
+        filteredCalls = data.filter(
           (e) => e["Call-Direction"] === "voicemail"
         );
         break;
@@ -206,22 +206,23 @@ function Call({
     //   });
     // }
     setPreviewCalls(filteredCalls);
-    if (clickedCall == null) {
-      setClickedCall(filteredCalls[0]);
-    }
+    // if (clickedCall == null) {
+    setClickedCall(data[0]);
+    // }
 
-    if (filteredCalls[0] && !firstTimeClickedExtension) {
-      setClickedExtension(
-        filteredCalls[0]["Call-Direction"] === "outbound"
-          ? filteredCalls[0]["variable_sip_to_user"]
-          : filteredCalls[0]["variable_sip_from_user"] === extension
-            ? filteredCalls[0]["variable_sip_to_user"]
-            : filteredCalls[0]["variable_sip_from_user"]
-      );
+    let localClickedExtension = null;
+    if (data[0]) {
+      localClickedExtension = data[0]["Call-Direction"] === "outbound"
+        ? data[0]["variable_sip_to_user"]
+        : data[0]["variable_sip_from_user"] === extension
+          ? data[0]["variable_sip_to_user"]
+          : data[0]["variable_sip_from_user"]
+      setClickedExtension(localClickedExtension);
       setFirstTimeClickedExtension(true);
     }
+
     setCallHistory(
-      filteredCalls?.[0] &&
+      data[0] &&
       allApiData?.filter((item) => {
         if (!isCustomerAdmin) {
           return (
@@ -230,13 +231,14 @@ function Call({
             // );
             (
               // item["variable_sip_from_user"] === extension &&
-              item["variable_sip_to_user"] === clickedExtension) ||
+              item["variable_sip_to_user"] === localClickedExtension
+            ) ||
             (
               // item["variable_sip_to_user"] === extension &&
-              item["variable_sip_from_user"] === clickedExtension)
+              item["variable_sip_from_user"] === localClickedExtension)
           );
         }
-        return item["variable_sip_from_user"] === clickedExtension || item["variable_sip_to_user"] === clickedExtension;
+        return item["variable_sip_from_user"] === localClickedExtension || item["variable_sip_to_user"] === localClickedExtension;
       })
     );
   }, [data, clickStatus]);
@@ -887,10 +889,43 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      <button className={`tabLink ${clickStatus == "all" ? "active" : ""}`} onClick={() => setCallClickStatus("all")}><i class="fa-solid fa-phone-volume"></i> <span>All</span></button>
-                      <button className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`} onClick={() => setCallClickStatus("incoming")}><i class="fa-solid fa-phone-arrow-down-left"></i> <span>Inbound</span></button>
-                      <button className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`} onClick={() => setCallClickStatus("outgoing")}><i class="fa-solid fa-phone-arrow-up-right"></i> <span>Outbound</span></button>
-                      <button className={`tabLink ${clickStatus == "missed" ? "active" : ""}`} onClick={() => setCallClickStatus("missed")}><i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
+                      <button
+                        className={`tabLink ${clickStatus == "all" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("all")
+                        }}>
+                        <i class="fa-solid fa-phone-volume"></i>
+                        <span>All</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "incoming" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false)
+                          setCallClickStatus("incoming")
+                        }}
+                      >
+                        <i class="fa-solid fa-phone-arrow-down-left"></i>
+                        <span>Inbound</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "outgoing" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("outgoing")
+                        }}
+                      >
+                        <i class="fa-solid fa-phone-arrow-up-right"></i>
+                        <span>Outbound</span>
+                      </button>
+                      <button
+                        className={`tabLink ${clickStatus == "missed" ? "active" : ""}`}
+                        onClick={() => {
+                          setFirstTimeClickedExtension(false);
+                          setCallClickStatus("missed")
+                        }
+                        }>
+                        <i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -900,7 +935,7 @@ function Call({
                       onScroll={handleScroll}
                       onClick={() => setSelectedModule("callDetails")}
                     >
-                      {loading ? (
+                      {(loading || isCallLoading) ? (
                         <ContentLoader />
                       ) : // Object.keys(groupedCalls).length < 0 ? (
                         //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
@@ -944,7 +979,12 @@ function Call({
                             </div>
                           </div>
                         )}
-                      {isCallLoading ? (
+                      {/* {isCallLoading ? (
+                        <ContentLoader />
+                      ) : (
+                        <></>
+                      )} */}
+                      {/* {isCallLoading ? (
                         <>
                           <div className="text-center">
                             <i
@@ -955,7 +995,7 @@ function Call({
                         </>
                       ) : (
                         <div ref={targetRef}></div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
