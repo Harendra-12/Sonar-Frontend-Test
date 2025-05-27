@@ -126,7 +126,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                 <div className="text-danger my-2">{error}</div>
             ) : (
                 <>
-                    <div className="col-xxl-6 col-lg-12">
+                    <div className="col-xxl-6 col-lg-12 mb-2">
                         <div
                             ref={waveformRef}
                             style={{

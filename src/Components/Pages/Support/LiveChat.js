@@ -352,16 +352,15 @@ function LiveChat() {
                         </div>
                       </div>
                     </div>
-                    <div className="chat-input-section">
+                    <div className="chat-input-section align-items-center">
                       <input type="text" placeholder="Type your message here..." />
                       <div className="btn">
                         <button className="btns">
                           <i className="fa-solid fa-paper-plane" />
                         </button>
                       </div>
-                    </div>
                     <div className="icons-header ">
-                      <div className="ms-3  mb-3">
+                      <div className="">
                         <div className="d-flex justify-content-start align-items center">
                           <div className="phone a">
                             <i className="fa-solid fa-camera" />
@@ -377,6 +376,7 @@ function LiveChat() {
                           </div>
                         </div>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>

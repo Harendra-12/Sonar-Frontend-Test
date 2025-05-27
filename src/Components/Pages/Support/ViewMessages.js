@@ -45,7 +45,7 @@ function ViewMessages() {
                                     </div>
                                     <div className="col-12 col-xl-12 col-lg-12 col-xxl-12 callDetails eFaxCompose" >
                                         <div className="row">
-                                            <div className='col-4'>
+                                            <div className='col-lg-4 col-12'>
                                                 <div className='allticketshow mt-4'>
 
 
@@ -120,7 +120,7 @@ function ViewMessages() {
                                                 </div>
 
                                             </div>
-                                            <div className="col-8">
+                                            <div className="col-lg-8 col-12">
                                                 <div className="messageOverlay">
                                                     <div className="contactHeader">
                                                         <div>

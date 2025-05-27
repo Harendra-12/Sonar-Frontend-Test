@@ -617,7 +617,7 @@ function CampaignEditNEW() {
 
                   <div className="col-12" style={{ padding: "25px 23px" }}>
                     <div className="row">
-                      <div className="col-xl-2 col-3">
+                      <div className="col-xxl-2 col-lg-3 col-md-12 col-12">
                         <div className="someTempDialerDesign">
                           <ul>
                             <li

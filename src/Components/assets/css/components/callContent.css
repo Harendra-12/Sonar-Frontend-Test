@@ -1008,3 +1008,7 @@ h2.titleName {
     overflow: hidden auto;
     height: calc(100vh - 357px);
 }
+.mainContentApp .webrtc_newMessageUi .tab-content .callList.voicemailCallList {
+    overflow: hidden auto;
+    height: calc(100vh - 242px);
+}
