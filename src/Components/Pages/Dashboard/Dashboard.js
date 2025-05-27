@@ -35,16 +35,16 @@ const Dashboard = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const didAll = useSelector((state) => state.didAll);
   const [allDID, setAllDID] = useState([]);
-  const [ allUserList, setAllUserList ] = useState([])
+  const [allUserList, setAllUserList] = useState([])
 
   const getAllUser = async () => {
-      const userApi = await generalGetFunction(
-        `/user/search?account=${account.account_id}`
-      );
-      if (userApi?.status) {
-        setAllUserList(userApi.data);
-      }
+    const userApi = await generalGetFunction(
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+    );
+    if (userApi?.status) {
+      setAllUserList(userApi.data);
     }
+  }
 
   // Getting all DID from did listing
   useEffect(() => {
@@ -642,47 +642,49 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper c dashboard_cardWrap d_card3">
-                        <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
-                              <h5>Package Information</h5>
-                              <p>Click to view details</p>
-                            </div>
-                            <div className="col-3">
-                              <i className="fa-duotone fa-file" onClick={() => navigate("/package-details")}></i>
+                    {checkViewSidebar("Package", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                      <div className="col-xl-3 mb-3 mb-xl-0">
+                        <div className="itemWrapper c dashboard_cardWrap d_card3">
+                          <div className="heading">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h5>Package Information</h5>
+                                <p>Click to view details</p>
+                              </div>
+                              <div className="col-3">
+                                <i className="fa-duotone fa-file" onClick={() => navigate("/package-details")}></i>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
-                              <h5>{accountDetails?.package?.name}</h5>
-                              <p>
-                                {accountDetails?.package?.regular_price} / Year
-                              </p>
-                              <p>
-                                {accountDetails?.extensions?.length}{" "}
-                                Extensions / {accountDetails?.dids?.length} DIDs
-                              </p>
-                            </div>
-                            {/* <div className="col-3">
+                          <div className="data-number2">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h5>{accountDetails?.package?.name}</h5>
+                                <p>
+                                  {accountDetails?.package?.regular_price} / Year
+                                </p>
+                                <p>
+                                  {accountDetails?.extensions?.length}{" "}
+                                  Extensions / {accountDetails?.dids?.length} DIDs
+                                </p>
+                              </div>
+                              {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
                             </div> */}
+                            </div>
+                          </div>
+                          <div className="d_chartImg">
+                            <img
+                              src={require("../../assets/images/d-chart2.png")}
+                              alt="diagram"
+                            />
                           </div>
                         </div>
-                        <div className="d_chartImg">
-                          <img
-                            src={require("../../assets/images/d-chart2.png")}
-                            alt="diagram"
-                          />
-                        </div>
                       </div>
-                    </div>
+                    }
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper d d_card4 dashboard_cardWrap ">
                         <div className="heading">
@@ -863,7 +865,7 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )} */}
-                        {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
+                        {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart">
@@ -930,10 +932,11 @@ const Dashboard = () => {
                               )}
                             </div>
                           </div>
-                        )}
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                            {/* <DoughnutChart
+                        }
+                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                          <div className="col-xl-3 mb-3 mb-xl-0">
+                            <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                              {/* <DoughnutChart
                               fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
                                 callCardData.handled.inboundAnswered,
@@ -946,128 +949,133 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            {onlineExtension && allUserList?.length ?
-                              <div className='circularProgressWrapper'>
-                                <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                  <circle className="bg"
-                                    cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
-                                  ></circle>
-                                  <circle className="fg"
-                                    cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
-                                    stroke-dasharray="361.25 361.25"
-                                  ></circle>
-                                </svg>
-                                <div className='circularProgressContent'>
-                                  <div className="data-number">
-                                    <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList?.length}</span>
+                              {onlineExtension && allUserList?.length ?
+                                <div className='circularProgressWrapper'>
+                                  <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                    <circle className="bg"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
+                                    ></circle>
+                                    <circle className="fg"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
+                                      stroke-dasharray="361.25 361.25"
+                                    ></circle>
+                                  </svg>
+                                  <div className='circularProgressContent'>
+                                    <div className="data-number">
+                                      <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList?.length}</span>
+                                    </div>
+                                    <p>Total Online Agents</p>
                                   </div>
-                                  <p>Total Online Agents</p>
                                 </div>
-                              </div>
-                              : (
+                                : (
+                                  <div className="deviceProvision position-relative h-100">
+                                    <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                      <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        }
+                        {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                          <div className="col-xl-3 mb-3 mb-xl-0">
+                            <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                              {/* <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
+                              percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
+                                callCardData.handled.count,
+                              ]}
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            /> */}
+                              {accountDetails && accountDetails.extensions ? (
+                                <div className='circularProgressWrapper'>
+                                  <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                    <circle className="bg"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
+                                    ></circle>
+                                    <circle className="fg"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
+                                      stroke-dasharray="361.25 361.25"
+                                    ></circle>
+                                  </svg>
+                                  <div className='circularProgressContent'>
+                                    <div className="data-number">
+                                      <label style={{ color: '#ff8c42' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                    </div>
+                                    <p>Total Available Extensions</p>
+                                  </div>
+                                </div>
+                              ) : (
                                 <div className="deviceProvision position-relative h-100">
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                     <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
                                 </div>
                               )}
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                            {/* <DoughnutChart
-                              fields={["Inbound", "Outbound", "Total"]}
-                              percentage={[
-                                callCardData.handled.inboundAnswered,
-                                callCardData.handled.outboundAnswered,
-                                callCardData.handled.count,
-                              ]}
-                              centerTitle={`${extensionList}/${Number(
-                                accountDetails?.package?.number_of_user
-                              )}`}
-                              centerDesc="Extensions Details"
-                              colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            /> */}
-                            {accountDetails && accountDetails.extensions ? (
-                              <div className='circularProgressWrapper'>
-                                <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                  <circle className="bg"
-                                    cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
-                                  ></circle>
-                                  <circle className="fg"
-                                    cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
-                                    stroke-dasharray="361.25 361.25"
-                                  ></circle>
-                                </svg>
-                                <div className='circularProgressContent'>
-                                  <div className="data-number">
-                                    <label style={{ color: '#ff8c42' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                        }
+                        {checkViewSidebar("DidDetail", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                          <div className="col-xl-3 mb-3 mb-xl-0">
+                            <div className="itemWrapper a">
+                              <div className="heading dashboard_headerPart">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-9">
+                                    <h5>DID Information</h5>
+                                    <p>Click to view all available DIDs</p>
                                   </div>
-                                  <p>Total Available Extensions</p>
+                                  <div className="col-3">
+                                    <i className="fa-solid fa-file-invoice" onClick={() => navigate("/did-listing")}></i>
+                                  </div>
                                 </div>
                               </div>
-                            ) : (
-                              <div className="deviceProvision position-relative h-100">
-                                <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                  <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="itemWrapper a">
-                            <div className="heading dashboard_headerPart">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-9">
-                                  <h5>DID Information</h5>
-                                  <p>Click to view all available DIDs</p>
-                                </div>
-                                <div className="col-3">
-                                  <i className="fa-solid fa-file-invoice" onClick={() => navigate("/did-listing")}></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-12">
-                                  <ul>
-                                    <li className="d_extension_listing">
-                                      Total DID Purchasd{" "}
-                                      <span className="float-end">
-                                        {allDID?.length}
-                                      </span>
-                                    </li>
-                                    <li className="d_extension_listing">
-                                      Default Outbound Number{" "}
-                                      <span className="float-end">
-                                        {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
-                                      </span>
-                                    </li>
-                                    <li className="d_extension_listing">
-                                      Default Fax Number{" "}
-                                      <span className="float-end">
-                                        {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
-                                      </span>
-                                    </li>
-                                    <li className="d_extension_listing">
-                                      Default SMS{" "}
-                                      <span className="float-end">
-                                        {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
-                                      </span>
-                                    </li>
-                                    <li className="d_extension_listing">
-                                      Default WhatsApp{" "}
-                                      <span className="float-end">
-                                        {allDID?.filter((item) => item.default_whatsapp == 1)[0]?.did}
-                                      </span>
-                                    </li>
-                                  </ul>
+                              <div className="data-number2">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-12">
+                                    <ul>
+                                      <li className="d_extension_listing">
+                                        Total DID Purchasd{" "}
+                                        <span className="float-end">
+                                          {allDID?.length}
+                                        </span>
+                                      </li>
+                                      <li className="d_extension_listing">
+                                        Default Outbound Number{" "}
+                                        <span className="float-end">
+                                          {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
+                                        </span>
+                                      </li>
+                                      <li className="d_extension_listing">
+                                        Default Fax Number{" "}
+                                        <span className="float-end">
+                                          {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
+                                        </span>
+                                      </li>
+                                      <li className="d_extension_listing">
+                                        Default SMS{" "}
+                                        <span className="float-end">
+                                          {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
+                                        </span>
+                                      </li>
+                                      <li className="d_extension_listing">
+                                        Default WhatsApp{" "}
+                                        <span className="float-end">
+                                          {allDID?.filter((item) => item.default_whatsapp == 1)[0]?.did}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        }
                       </div>
                     </div>
                   </div>

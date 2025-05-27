@@ -381,14 +381,13 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        {!addNewMod &&
-                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}
-                                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete"))}
-                                                            >
+                                                        {checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete") ?
+                                                            !addNewMod &&
+                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}>
                                                                 <span className="text" >Delete</span>
                                                                 <span className="icon"><i className="fa-solid fa-trash"></i></span>
                                                             </button>
-                                                        }
+                                                            : ""}
                                                         <button type='button' className="panelButton ms-auto" onClick={() => { addNewMod ? addNewCustomFilter() : updateCustomFilter() }}>
                                                             <span className="text" >{addNewCustomFilter ? "Save" : "Update"}</span>
                                                             <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>

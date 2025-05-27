@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import GraphChart from '../../CommonComponents/GraphChart';
-import { generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import Header from '../../CommonComponents/Header';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function PackageAndSubscriptionDetails() {
     const accountDetails = useSelector((state) => state.accountDetails);
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
     const navigate = useNavigate();
 
     // Graph Module
@@ -141,147 +143,170 @@ function PackageAndSubscriptionDetails() {
                     </div>
                     <div className='container-fluid mt-3'>
                         <div className="row">
-                            <div
-                                className="col-xl-3 mb-3 mb-xl-0"
-                                style={{ cursor: "pointer" }}
-                            >
-                                <div className="itemWrapper a">
-                                    <div className="heading">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>Package Type</h5>
-                                                <p>Click to view details</p>
-                                            </div>
-                                            <div className="col-3">
-                                                <i className="fa-duotone fa-cube"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="data-number2">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>{accountDetails?.package.name}</h5>
-                                                <p>
-                                                    Price: ${accountDetails?.package?.regular_price}{" "}
-                                                    /{" "}
-                                                    {accountDetails?.package?.subscription_type ===
-                                                        "annually"
-                                                        ? "Annually"
-                                                        : "Monthly"}
-                                                </p>
-                                                <p>
-                                                    Started On:{" "}
-                                                    {
-                                                        accountDetails?.subscription?.[0]?.created_at?.split(
-                                                            "T"
-                                                        )[0]
-                                                    }
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <img
-                                                    alt="dashboard"
-                                                    src={require("../../assets/images/icons/diagram.png")}
-                                                />
+                            {checkViewSidebar(
+                                "Package",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                            ) &&
+                                <div
+                                    className="col-xl-3 mb-3 mb-xl-0"
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    <div className="itemWrapper a">
+                                        <div className="heading">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>Package Type</h5>
+                                                    <p>Click to view details</p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <i className="fa-duotone fa-cube"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-3 mb-3 mb-xl-0">
-                                <div className="itemWrapper b">
-                                    <div className="heading">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>Upcoming Transaction</h5>
-                                                <p>
-                                                    {
-                                                        accountDetails?.subscription[0].end_date?.split(
-                                                            " "
-                                                        )[0]
-                                                    }
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <i className="fa-duotone fa-money-check-dollar" onClick={() => { navigate("/card-details") }}></i>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="data-number2">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>${accountDetails?.package?.regular_price}</h5>
-                                                <p>
-                                                    End Date:{" "}
-                                                    {accountDetails?.subscription[0].end_date?.split(" ")[0]}
-                                                </p>
-                                                <p>
-                                                    {accountDetails?.package?.subscription_type ===
-                                                        "annually"
-                                                        ? "Annually"
-                                                        : "Monthly"}{" "}
-                                                    Basis
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <img
-                                                    alt="dashboard"
-                                                    src={require("../../assets/images/icons/diagram.png")}
-                                                />
+                                        <div className="data-number2">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>{accountDetails?.package.name}</h5>
+                                                    <p>
+                                                        Price: ${accountDetails?.package?.regular_price}{" "}
+                                                        /{" "}
+                                                        {accountDetails?.package?.subscription_type ===
+                                                            "annually"
+                                                            ? "Annually"
+                                                            : "Monthly"}
+                                                    </p>
+                                                    <p>
+                                                        Started On:{" "}
+                                                        {
+                                                            accountDetails?.subscription?.[0]?.created_at?.split(
+                                                                "T"
+                                                            )[0]
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <img
+                                                        alt="dashboard"
+                                                        src={require("../../assets/images/icons/diagram.png")}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-xl-3 mb-3 mb-xl-0">
-                                <div className="itemWrapper c">
-                                    <div className="heading">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>Last Transaction</h5>
-                                                <p>
-                                                    #{accountDetails?.payments[0]?.transaction_id}
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <i className="fa-solid fa-dollar-sign" onClick={() => navigate("/card-transaction-list")}></i>
+                            }
+                            {checkViewSidebar(
+                                "Package",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                            ) &&
+                                <div className="col-xl-3 mb-3 mb-xl-0">
+                                    <div className="itemWrapper b">
+                                        <div className="heading">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>Upcoming Transaction</h5>
+                                                    <p>
+                                                        {
+                                                            accountDetails?.subscription[0].end_date?.split(
+                                                                " "
+                                                            )[0]
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <i className="fa-duotone fa-money-check-dollar" onClick={() => { navigate("/card-details") }}></i>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="data-number2">
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className="col-9">
-                                                <h5>
-                                                    ${accountDetails?.payments[0]?.amount_subtotal}
-                                                </h5>
-                                                <p>
-                                                    Transaction Time:{" "}
-                                                    {
-                                                        accountDetails?.payments[0]?.transaction_date.split(
-                                                            " "
-                                                        )[0]
-                                                    }
-                                                    ,{" "}
-                                                    {
-                                                        accountDetails?.payments[0]?.transaction_date.split(
-                                                            " "
-                                                        )[1]
-                                                    }
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <img
-                                                    alt="dashboard"
-                                                    src={require("../../assets/images/icons/diagram.png")}
-                                                />
+                                        <div className="data-number2">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>${accountDetails?.package?.regular_price}</h5>
+                                                    <p>
+                                                        End Date:{" "}
+                                                        {accountDetails?.subscription[0].end_date?.split(" ")[0]}
+                                                    </p>
+                                                    <p>
+                                                        {accountDetails?.package?.subscription_type ===
+                                                            "annually"
+                                                            ? "Annually"
+                                                            : "Monthly"}{" "}
+                                                        Basis
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <img
+                                                        alt="dashboard"
+                                                        src={require("../../assets/images/icons/diagram.png")}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                            {checkViewSidebar(
+                                "Payment",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                            ) &&
+                                <div className="col-xl-3 mb-3 mb-xl-0">
+                                    <div className="itemWrapper c">
+                                        <div className="heading">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>Last Transaction</h5>
+                                                    <p>
+                                                        #{accountDetails?.payments[0]?.transaction_id}
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <i className="fa-solid fa-dollar-sign" onClick={() => navigate("/card-transaction-list")}></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="data-number2">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-9">
+                                                    <h5>
+                                                        ${accountDetails?.payments[0]?.amount_subtotal}
+                                                    </h5>
+                                                    <p>
+                                                        Transaction Time:{" "}
+                                                        {
+                                                            accountDetails?.payments[0]?.transaction_date.split(
+                                                                " "
+                                                            )[0]
+                                                        }
+                                                        ,{" "}
+                                                        {
+                                                            accountDetails?.payments[0]?.transaction_date.split(
+                                                                " "
+                                                            )[1]
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <img
+                                                        alt="dashboard"
+                                                        src={require("../../assets/images/icons/diagram.png")}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
 
                             <div className="col-xl-3 mb-3 mb-xl-0">
                                 <div className="itemWrapper d">
@@ -349,135 +374,151 @@ function PackageAndSubscriptionDetails() {
                             </div>
                             <div className="col-xl-12 mt-xl-4">
                                 <div className="row">
-                                    <div className="col-xl-4 mb-3 mb-xl-0">
-                                        <div className="itemWrapper a">
-                                            <div className="heading">
-                                                <div className="d-flex flex-wrap justify-content-between">
-                                                    <div className="col-9">
-                                                        <h5>Invoices</h5>
-                                                        <p>Last 5 invoices</p>
-                                                    </div>
-                                                    <div className="col-3">
-                                                        <i className="fa-duotone fa-file-invoice" onClick={() => navigate("/card-transaction-list")}></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="data-number2">
-                                                <div className="d-flex flex-wrap justify-content-between">
-                                                    <div className="col-12">
-                                                        <ul>
-                                                            {accountDetails?.payments
-                                                                ?.slice(0, 5)
-                                                                .map((item, index) => (
-                                                                    <li key={index}>
-                                                                        {item.transaction_date}
-                                                                        <span
-                                                                            className="float-end fw-bold"
-                                                                            onClick={() =>
-                                                                                downloadImage(item.invoice_url)
-                                                                            }
-                                                                        >
-                                                                            ${item.amount_subtotal}{" "}
-                                                                        </span>
-                                                                    </li>
-                                                                ))}
-                                                        </ul>
+                                    {checkViewSidebar(
+                                        "Payment",
+                                        slugPermissions,
+                                        account?.sectionPermissions,
+                                        account?.permissions,
+                                        "read"
+                                    ) &&
+                                        <div className="col-xl-4 mb-3 mb-xl-0">
+                                            <div className="itemWrapper a">
+                                                <div className="heading">
+                                                    <div className="d-flex flex-wrap justify-content-between">
+                                                        <div className="col-9">
+                                                            <h5>Invoices</h5>
+                                                            <p>Last 5 invoices</p>
+                                                        </div>
+                                                        <div className="col-3">
+                                                            <i className="fa-duotone fa-file-invoice" onClick={() => navigate("/card-transaction-list")}></i>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 mb-3 mb-xl-0">
-                                        <div className="itemWrapper b">
-                                            <div className="heading">
-                                                <div className="d-flex flex-wrap justify-content-between">
-                                                    <div className="col-9">
-                                                        <h5>Billing Address</h5>
-                                                        <p>Click the icon to change it</p>
-                                                    </div>
-                                                    <div className="col-3">
-                                                        <i className="fa-duotone fa-address-card" onClick={() => navigate("/card-details")}></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="data-number2">
-                                                <div className="d-flex flex-wrap justify-content-between">
-                                                    <div className="col-12">
-                                                        <ul>
-                                                            <li>
-                                                                Full Name{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.fullname
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                Phone{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.contact_no
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                Email{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.email
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                Address{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.address
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                City, State
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.city
-                                                                    }
-                                                                    ,{" "}
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.state
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                Zip Code{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.zip
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                Country{" "}
-                                                                <span className="float-end">
-                                                                    {
-                                                                        accountDetails?.billing_address[0]
-                                                                            ?.country
-                                                                    }
-                                                                </span>
-                                                            </li>
-                                                        </ul>
+                                                <div className="data-number2">
+                                                    <div className="d-flex flex-wrap justify-content-between">
+                                                        <div className="col-12">
+                                                            <ul>
+                                                                {accountDetails?.payments
+                                                                    ?.slice(0, 5)
+                                                                    .map((item, index) => (
+                                                                        <li key={index}>
+                                                                            {item.transaction_date}
+                                                                            <span
+                                                                                className="float-end fw-bold"
+                                                                                onClick={() =>
+                                                                                    downloadImage(item.invoice_url)
+                                                                                }
+                                                                            >
+                                                                                ${item.amount_subtotal}{" "}
+                                                                            </span>
+                                                                        </li>
+                                                                    ))}
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
+                                    {checkViewSidebar(
+                                        "BillingAddress",
+                                        slugPermissions,
+                                        account?.sectionPermissions,
+                                        account?.permissions,
+                                        "read"
+                                    ) &&
+                                        <div className="col-xl-4 mb-3 mb-xl-0">
+                                            <div className="itemWrapper b">
+                                                <div className="heading">
+                                                    <div className="d-flex flex-wrap justify-content-between">
+                                                        <div className="col-9">
+                                                            <h5>Billing Address</h5>
+                                                            <p>Click the icon to change it</p>
+                                                        </div>
+                                                        <div className="col-3">
+                                                            <i className="fa-duotone fa-address-card" onClick={() => navigate("/card-details")}></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="data-number2">
+                                                    <div className="d-flex flex-wrap justify-content-between">
+                                                        <div className="col-12">
+                                                            <ul>
+                                                                <li>
+                                                                    Full Name{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.fullname
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    Phone{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.contact_no
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    Email{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.email
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    Address{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.address
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    City, State
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.city
+                                                                        }
+                                                                        ,{" "}
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.state
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    Zip Code{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.zip
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    Country{" "}
+                                                                    <span className="float-end">
+                                                                        {
+                                                                            accountDetails?.billing_address[0]
+                                                                                ?.country
+                                                                        }
+                                                                    </span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
                                     <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
                                         <div className="itemWrapper c">
                                             <div className='heading h-auto'>

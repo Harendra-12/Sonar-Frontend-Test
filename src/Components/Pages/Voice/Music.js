@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   featureUnderdevelopment,
   fileUploadFunction,
   generalDeleteFunction,
@@ -41,6 +42,7 @@ function Music() {
   const [showAudio, setShowAudio] = useState(false);
   const [showDropDown, setShowDropdown] = useState(false);
   const thisAudioRef = useRef(null);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   async function getData(haveMusilAll) {
     const apiData = await generalGetFunction(`/sound/all`);
@@ -283,7 +285,7 @@ function Music() {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
+                        {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "add") && <button
                           // to="/ring-groups-add"
                           // onClick={backToTop}
                           onClick={() => setNewMusicPopup(!newMusicPopup)}
@@ -294,7 +296,7 @@ function Music() {
                           <span className="icon">
                             <i className="fa-solid fa-plus"></i>
                           </span>
-                        </button>
+                        </button>}
                       </div>
                     </div>
                   </div>
@@ -310,14 +312,15 @@ function Music() {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          className="formItem"
-                          onChange={() => featureUnderdevelopment()}
-                        />
-                      </div>
+                      {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "search") &&
+                        <div className="searchBox">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            className="formItem"
+                            onChange={() => featureUnderdevelopment()}
+                          />
+                        </div>}
                     </div>
                     <div className="tableContainer">
                       <table>
@@ -327,8 +330,8 @@ function Music() {
                             <th>Type</th>
                             <th>Added Date</th>
                             <th>Play</th>
-                            <th>Delete</th>
-                            <th>Edit</th>
+                            {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
+                            {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
                           </tr>
                         </thead>
                         <tbody>
@@ -365,40 +368,47 @@ function Music() {
                                   </tr>
                                 );
                               })} */}
-                          {loading ? (
-                            <SkeletonTableLoader col={6} row={15} />
-                          ) : (
-                            <>
-                              {music &&
-                                music.map((item, index) => {
-                                  const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
+                          {!checkViewSidebar(
+                            "Sound",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "read"
+                          ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                            loading ? (
+                              <SkeletonTableLoader col={6} row={15} />
+                            ) : (
+                              <>
+                                {music &&
+                                  music.map((item, index) => {
+                                    const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
 
-                                  return (
-                                    <React.Fragment key={item.id}>
-                                      <tr>
-                                        <td>{item.name}</td>
-                                        <td>{item.type}</td>
-                                        <td>{item.created_at.split("T")[0]}</td>
-                                        <td>
-                                          <button
-                                            className="tableButton px-2 mx-0"
-                                            onClick={() => {
-                                              if (item.path === currentPlaying) {
-                                                setCurrentPlaying("");
-                                                setAudioURL("");
-                                              } else {
-                                                handlePlaying(item.path);
-                                              }
-                                            }}
-                                          >
-                                            {currentPlaying ===
-                                              item.path ? (
-                                              <i className="fa-solid fa-chevron-up"></i>
-                                            ) : (
-                                              <i className="fa-solid fa-chevron-down"></i>
-                                            )}
-                                          </button>
-                                          {/* {showDropDown && isCurrent && (
+                                    return (
+                                      <React.Fragment key={item.id}>
+                                        <tr>
+                                          <td>{item.name}</td>
+                                          <td>{item.type}</td>
+                                          <td>{item.created_at.split("T")[0]}</td>
+                                          <td>
+                                            <button
+                                              className="tableButton px-2 mx-0"
+                                              onClick={() => {
+                                                if (item.path === currentPlaying) {
+                                                  setCurrentPlaying("");
+                                                  setAudioURL("");
+                                                } else {
+                                                  handlePlaying(item.path);
+                                                }
+                                              }}
+                                            >
+                                              {currentPlaying ===
+                                                item.path ? (
+                                                <i className="fa-solid fa-chevron-up"></i>
+                                              ) : (
+                                                <i className="fa-solid fa-chevron-down"></i>
+                                              )}
+                                            </button>
+                                            {/* {showDropDown && isCurrent && (
                                             <ul className="dropdown-menu d-block  actionBtnDropdowns" key={index} >
                                               <>
                                                 <li className="dropdown-item">
@@ -440,33 +450,34 @@ function Music() {
                                               <li className="dropdown-item"></li>
                                             </ul>
                                           )} */}
-                                        </td>
-                                        <td>
-                                          <button
-                                            className="tableButton delete"
-                                            onClick={() => {
-                                              setDeletePopup(true);
-                                              setDeleteId(item.id);
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-trash"></i>
-                                          </button>
-                                        </td>
-                                        <td>
-                                          <button
-                                            className="tableButton edit"
-                                            onClick={() => {
-                                              setSelectedMusicToEdit(item);
-                                              setSelectedMusicName(item.name);
-                                              setSelectedMusicType(item.type);
-                                              setMusicEditPopup(true);
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-edit"></i>
-                                          </button>
-                                        </td>
-                                      </tr>
-                                      {/* {isCurrent && (
+                                          </td>
+                                          {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  setDeletePopup(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>}
+                                          {checkViewSidebar("Sound", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
+                                            <button
+                                              className="tableButton edit"
+                                              onClick={() => {
+                                                setSelectedMusicToEdit(item);
+                                                setSelectedMusicName(item.name);
+                                                setSelectedMusicType(item.type);
+                                                setMusicEditPopup(true);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-edit"></i>
+                                            </button>
+                                          </td>}
+                                        </tr>
+                                        {/* {isCurrent && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
@@ -490,7 +501,7 @@ function Music() {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                      {/* <button
+                                        {/* <button
                                               className="audioCustomButton"
                                               onClick={() => {
                                                 const link =
@@ -505,26 +516,26 @@ function Music() {
                                             >
                                               <i className="fa-sharp fa-solid fa-download"></i>
                                             </button> */}
-                                      {/* </div>
+                                        {/* </div>
                                           </td>
                                         </tr>
                                       )} */}
-                                      {currentPlaying ===
-                                        item.path &&
-                                        item.path && (
-                                          <tr>
-                                            <td colSpan={99}>
-                                              <div className="audio-container mx-2">
-                                                <AudioWaveformCommon audioUrl={audioURL} />
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        )}
-                                    </React.Fragment>
-                                  );
-                                })}
-                            </>
-                          )}
+                                        {currentPlaying ===
+                                          item.path &&
+                                          item.path && (
+                                            <tr>
+                                              <td colSpan={99}>
+                                                <div className="audio-container mx-2">
+                                                  <AudioWaveformCommon audioUrl={audioURL} />
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          )}
+                                      </React.Fragment>
+                                    );
+                                  })}
+                              </>
+                            )}
                         </tbody>
                       </table>
                     </div>

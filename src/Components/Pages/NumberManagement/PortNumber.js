@@ -181,32 +181,22 @@ function PortNumber() {
                           {checkViewSidebar(
                             "Port",
                             slugPermissions,
-                            account?.permissions, "add"
-                          ) ? (
-                            <Link
-                              to="/port-number-add"
-                              onClick={backToTop}
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </Link>
-                          ) : (
-                            <button
-                              effect="ripple"
-                              className="panelButton "
-                              disabled
-                              style={{ cursor: "not-allowed" }}
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "add"
+                          ) && (
+                              <Link
+                                to="/port-number-add"
+                                onClick={backToTop}
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -222,14 +212,22 @@ function PortNumber() {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            className="formItem"
-                            onChange={() => featureUnderdevelopment()}
-                          />
-                        </div>
+                        {checkViewSidebar(
+                          "Port",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "search"
+                        ) &&
+                          <div className="searchBox">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              className="formItem"
+                              onChange={() => featureUnderdevelopment()}
+                            />
+                          </div>
+                        }
                       </div>
                       <div className="tableContainer">
                         <table>
@@ -248,18 +246,15 @@ function PortNumber() {
                             </tr>
                           </thead>
                           <tbody>
-                            {noPermissionToRead ? (
+                            {noPermissionToRead || !checkViewSidebar(
+                              "Port",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
                               <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td> No Permission</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colSpan={99}>No Permission</td>
                               </tr>
                             ) : loading ?
                               (<SkeletonTableLoader col={10} row={15} />)

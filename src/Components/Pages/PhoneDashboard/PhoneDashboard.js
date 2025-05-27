@@ -71,7 +71,7 @@ function PhoneDashboard() {
       //   navigate
       // );
       const userApi = await generalGetFunction(
-        `/user/search?account=${account.account_id}`,
+        `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`,
         navigate
       );
       // if (apiData.status) {

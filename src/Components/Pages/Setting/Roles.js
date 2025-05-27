@@ -406,6 +406,7 @@ function Roles() {
                         {checkViewSidebar(
                           "Role",
                           permissions,
+                          account?.sectionPermissions,
                           account?.permissions, "add"
                         ) ? (
                           <button

@@ -166,7 +166,7 @@ export default function GroupsList() {
                       account?.permissions,
                       "add"
                     ) ? ( */}
-                        {checkViewSidebar("Group", slugPermissions, account?.permissions, "add") && <Link
+                        {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "add") && <Link
                           to="/groups-add"
                           // onClick={backToTop}
                           // onClick={handleRingGroupAddValidation}
@@ -233,8 +233,8 @@ export default function GroupsList() {
                           <tr>
                             <th>Name</th>
                             <th>Members</th>
-                            {checkViewSidebar("Group", slugPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
-                            {checkViewSidebar("Group", slugPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
+                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
+                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
                           </tr>
                         </thead>
                         <tbody>
@@ -242,6 +242,7 @@ export default function GroupsList() {
                             checkViewSidebar(
                               "Group",
                               slugPermissions,
+                              account?.sectionPermissions,
                               account?.permissions,
                               "read"
                             ) ? (
@@ -319,7 +320,7 @@ export default function GroupsList() {
                                             {/* <td>(999) 999-9999, (999) 999-9999</td> */}
 
 
-                                            {checkViewSidebar("Group", slugPermissions, account?.permissions, "edit") && <td>
+                                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
                                               <button
                                                 className="tableButton edit mx-auto"
                                                 onClick={() =>
@@ -331,7 +332,7 @@ export default function GroupsList() {
                                                 <i className="fa-solid fa-pencil" />
                                               </button>
                                             </td>}
-                                            {checkViewSidebar("Group", slugPermissions, account?.permissions, "delete") && <td>
+                                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
                                               <button
                                                 className="tableButton delete mx-auto"
                                                 onClick={() => {
@@ -357,7 +358,7 @@ export default function GroupsList() {
                               </>
                             ) : (
                               <tr>
-                                <td colSpan={2} className='text-center'>No Permission</td>
+                                <td colSpan={99} className='text-center'>No Permission</td>
                               </tr>
                             )}
                         </tbody>

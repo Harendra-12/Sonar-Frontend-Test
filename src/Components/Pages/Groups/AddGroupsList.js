@@ -59,7 +59,7 @@ export default function AddGroupsList() {
   useEffect(() => {
     async function getUsers() {
       try {
-        const users = await generalGetFunction(`/user/search?account=${account.account_id}`);
+        const users = await generalGetFunction(`/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
         setUsers(users?.data);
         setLoading(false);
       } catch (error) { }

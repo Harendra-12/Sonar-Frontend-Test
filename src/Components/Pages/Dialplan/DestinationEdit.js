@@ -7,7 +7,7 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";
@@ -69,7 +69,7 @@ function DestinationEdit() {
         //   `/domain/search?account=${account.account_id}`
         // );
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}`
+          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
 
         // if (domain.status) {

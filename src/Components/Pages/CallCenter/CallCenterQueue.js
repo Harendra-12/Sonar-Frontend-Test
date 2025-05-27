@@ -293,33 +293,22 @@ function CallCenterQueue() {
                           {checkViewSidebar(
                             "CallCenterQueue",
                             slugPermissions,
+                            account?.sectionPermissions,
                             account?.permissions, "add"
-                          ) ? (
-                            <Link
-                              // to="/cal-center-queue-add"
-                              // onClick={backToTop}
-                              onClick={handleAddCallCenterValidation}
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </Link>
-                          ) : (
-                            <button
-                              type="button"
-                              className="panelButton disabled"
-                              disabled
-                              title="You do not have permission to add"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                          ) && (
+                              <Link
+                                // to="/cal-center-queue-add"
+                                // onClick={backToTop}
+                                onClick={handleAddCallCenterValidation}
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -342,16 +331,24 @@ function CallCenterQueue() {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            value={searchValue}
-                            className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
-                          />
-                        </div>
+                        {checkViewSidebar(
+                          "CallCenterQueue",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "search"
+                        ) &&
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              name="Search"
+                              value={searchValue}
+                              className="formItem"
+                              onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                          </div>
+                        }
                       </div>
                       <div className="tableContainer">
                         <table>
@@ -362,27 +359,21 @@ function CallCenterQueue() {
                               <th>Extension</th>
                               <th>Strategy</th>
                               <th>Total Agents</th>
-                              <th className="text-center">Status</th>
-                              <th className='text-center'>Edit</th>
-                              <th className='text-center'>Delete</th>
+                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Status</th>}
+                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
+                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
                             </tr>
                           </thead>
                           <tbody>
-                            {noPermissionToRead && checkViewSidebar(
+                            {noPermissionToRead || !checkViewSidebar(
                               "CallCenterQueue",
                               slugPermissions,
-                              account?.permissions, "read"
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
                             ) ? (
                               <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>No Permission</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colSpan={99}>No Permission</td>
                               </tr>
                             ) : (
                               <>
@@ -394,40 +385,16 @@ function CallCenterQueue() {
                                       callCenter.data.map((item) => {
                                         return (
                                           <tr>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/cal-center-queue-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.tag}
                                             </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/cal-center-queue-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.queue_name}
                                             </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/cal-center-queue-edit?id =${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.extension}
                                             </td>
-                                            <td
-                                              onClick={() =>
-                                                navigate(
-                                                  `/cal-center-queue-edit?id=${item.id}`
-                                                )
-                                              }
-                                            >
+                                            <td>
                                               {item.strategy}
                                             </td>
                                             <td >
@@ -486,9 +453,10 @@ function CallCenterQueue() {
                                               </Tippy>
 
                                             </td>
-                                            <td>
-                                              <div className="my-auto position-relative d-flex justify-content-center ">
-                                                {/* <label className="switch">
+                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                              <td>
+                                                <div className="my-auto position-relative d-flex justify-content-center ">
+                                                  {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={item.status == 1}
@@ -501,23 +469,23 @@ function CallCenterQueue() {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
-                                                    <input
-                                                      type="checkbox"
-                                                      checked={item.status == 1}
-                                                      onClick={(e) => {
-                                                        setSelectedCallCenter(item);
-                                                        setPopUp(true);
-                                                      }}
-                                                      // {...register("status")}
-                                                      id="showAllCheck"
-                                                    />
-                                                    <span></span>
-                                                  </label>
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input
+                                                        type="checkbox"
+                                                        checked={item.status == 1}
+                                                        onClick={(e) => {
+                                                          setSelectedCallCenter(item);
+                                                          setPopUp(true);
+                                                        }}
+                                                        // {...register("status")}
+                                                        id="showAllCheck"
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                              {/* <button
+                                                {/* <button
                                           className="tableButton"
                                           onClick={() =>
                                             navigate(
@@ -527,32 +495,37 @@ function CallCenterQueue() {
                                         >
                                           <i className="fa-duotone fa-gear"></i>
                                         </button> */}
-                                            </td>
-                                            <td>
-                                              {" "}
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() =>
-                                                  navigate(
-                                                    `/cal-center-queue-edit?id=${item.id}`
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil"></i>
-                                              </button>
-                                            </td>
-                                            <td>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setPopUp(true);
-                                                  // setDeleteToggle(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </button>
-                                            </td>
+                                              </td>
+                                            }
+                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                              <td>
+                                                {" "}
+                                                <button
+                                                  className="tableButton edit mx-auto"
+                                                  onClick={() =>
+                                                    navigate(
+                                                      `/cal-center-queue-edit?id=${item.id}`
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-pencil"></i>
+                                                </button>
+                                              </td>
+                                            }
+                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
+                                              <td>
+                                                <button
+                                                  className="tableButton delete mx-auto"
+                                                  onClick={() => {
+                                                    setPopUp(true);
+                                                    // setDeleteToggle(true);
+                                                    setDeleteId(item.id);
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-trash"></i>
+                                                </button>
+                                              </td>
+                                            }
                                           </tr>
                                         );
                                       })}
