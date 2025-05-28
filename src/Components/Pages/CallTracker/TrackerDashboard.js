@@ -17,9 +17,9 @@ function TrackerDashboard() {
                         <div className="container-fluid">
                             <div className='col-xl-12'>
                                 <div className="row mt-3">
-                                    <div className='col-xxl-4 col-xl-6'>
+                                    <div className='col-xxl-4 col-xl-6 mb-3'>
                                         <div className='row g-3'>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper a">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -34,7 +34,7 @@ function TrackerDashboard() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper b">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -49,7 +49,7 @@ function TrackerDashboard() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper c">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -64,7 +64,7 @@ function TrackerDashboard() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper d">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -79,7 +79,7 @@ function TrackerDashboard() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper a">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -94,7 +94,7 @@ function TrackerDashboard() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-md-6 col-sm-6 col-12 ">
                                                 <div className="itemWrapper b">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between">
@@ -111,7 +111,7 @@ function TrackerDashboard() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col-3 d-xxl-block d-xl-none'>
+                                    <div className='col-xxl-3 col-xl-6 mb-3'>
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
                                                 <div className="d-flex flex-wrap justify-content-between">
@@ -145,7 +145,7 @@ function TrackerDashboard() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col-xxl-5 col-xl-6'>
+                                    <div className='col-xxl-5 col-xl-12 mb-3'>
                                         <div className='itemWrapper a'>
                                             <div className="row g-3">
                                                 <div className='col-12'>
@@ -258,7 +258,7 @@ function TrackerDashboard() {
                                 </div>
                             </div>
                             <div className='col-xl-12'>
-                                <div className='overviewTableWrapper px-0'>
+                                <div className='overviewTableWrapper px-0 pt-0'>
                                     <div className='overviewTableChild'>
                                         <div className='d-flex flex-wrap'>
                                             <div className='col-12'>

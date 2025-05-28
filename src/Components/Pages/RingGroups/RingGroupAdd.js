@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -58,6 +59,9 @@ const RingGroupAdd = () => {
     status: "active",
   });
 
+  const slugPermissions = useSelector((state) => state?.permissions);
+
+
   // Using useForm hook to manage data and validation we are setting some default value in it as well
   const {
     register,
@@ -102,7 +106,7 @@ const RingGroupAdd = () => {
       async function getData() {
         setLoading(true);
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}`
+          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
         const ringBack = await generalGetFunction("/sound/all?type=ringback");
         if (apidataUser?.status) {
@@ -663,9 +667,8 @@ const RingGroupAdd = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -891,9 +894,8 @@ const RingGroupAdd = () => {
                         </label>
                       </div>
                       <div
-                        className={`col-${
-                          forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
-                        }`}
+                        className={`col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                          }`}
                       >
                         {forwardStatus != "disabled" && (
                           <div className="formLabel">
@@ -993,9 +995,9 @@ const RingGroupAdd = () => {
                           </span>
                         </button>
                       )}
-                      {destination.length > 0 &&
+                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ? destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != destination.length ? (
+                          selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             className="panelButton ms-2"
@@ -1022,8 +1024,8 @@ const RingGroupAdd = () => {
                               <i className="fa-solid fa-pen"></i>
                             </span>
                           </button>
-                        ))}
-                      <button
+                        )) : ""}
+                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") && <button
                         type="button"
                         className="panelButton"
                         onClick={() => {
@@ -1036,10 +1038,17 @@ const RingGroupAdd = () => {
                         <span className="icon">
                           <i className="fa-solid fa-plus"></i>
                         </span>
-                      </button>
+                      </button>}
                     </div>
                   </div>
-                  {destination.length > 0 && (
+                  {checkViewSidebar(
+                    "User",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "read"
+                  ) ? destination.length > 0 &&
+                  (
                     <form className="row" style={{ padding: "0px 23px 20px" }}>
                       <div className="formRow col-xl-12">
                         {destination.map((item, index) => {
@@ -1104,14 +1113,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                              destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                  item1.extension.extension &&
+                                                item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -1282,9 +1291,8 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${
-                                    index === 0 ? "t" : "y"
-                                  }-auto`}
+                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                    }-auto`}
                                 >
                                   <button
                                     type="button"
@@ -1307,7 +1315,7 @@ const RingGroupAdd = () => {
                         </label>
                       </div>
                     </form>
-                  )}
+                  ) : <p style={{ padding: "0px 23px 20px" }}>You do not have permission to read!</p>}
                 </div>
               </div>
             </div>

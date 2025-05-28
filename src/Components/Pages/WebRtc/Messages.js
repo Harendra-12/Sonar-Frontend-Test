@@ -3398,7 +3398,7 @@ function Messages({
                                 </div>
                               </nav>
                             </div>
-                            <div className="d-flex w-100">
+                            <div className="d-flex w-100 flex_wrap575">
                               <div
                                 className="tab-content textSms me-2"
                                 id="nav-tabContent"
@@ -4005,15 +4005,15 @@ function Messages({
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xl-4">
-                    <div className="col-2 px-0">
+                    <div className="col-12">
                       <div className="iconWrapper">
                         <i className="fa-duotone fa-triangle-exclamation"></i>
                       </div>
                     </div>
-                    <div className="col-10 ps-0">
-                      <h4>Warning!</h4>
-                      <p>Are you sure you want to leave from this group?</p>
-                      <div className="mt-2 d-flex justify-content-between">
+                    <div className="col-12 ">
+                      <h4 className="text-orange text-center">Warning!</h4>
+                      <p className="text-center">Are you sure you want to leave from this group?</p>
+                      <div className="mt-2 d-flex justify-content-center gap-2">
                         <button
                           disabled={loading}
                           className="panelButton m-0"

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { numberValidator, requiredValidator } from "../../validations/validation";
 import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
 import CircularLoader from "../../Loader/CircularLoader";
 import Select from "react-select";
 
-function FportalCampaignCreate() {
+function FportalCampaignEdit() {
   const navigate = useNavigate();
+  const locationState = useLocation();
+
   const [loading, setLoading] = useState(false)
   const [stepSelector, setStepSelector] = useState(1);
   const [completedStep, setCompletedStep] = useState(0);
@@ -23,11 +25,13 @@ function FportalCampaignCreate() {
   const [selectedDids, setSelectedDids] = useState([]);
 
 
+
   const {
     register: registerStep1,
     handleSubmit: handleSubmitStep1,
     setValue: setValueStep1,
     watch: watchStep1,
+    reset: resetStep1,
     formState: { errors: errorsStep1 },
   } = useForm();
 
@@ -35,6 +39,7 @@ function FportalCampaignCreate() {
     register: registerStep2,
     handleSubmit: handleSubmitStep2,
     watch: watchStep2,
+    reset: resetStep2,
     formState: { errors: errorsStep2 },
   } = useForm();
 
@@ -45,14 +50,11 @@ function FportalCampaignCreate() {
     const parsedNumber = phoneNumber?.nationalNumber;
 
     const payload = { ...data, country_prefix: phoneNumber?.countryCallingCode, pstn_number: parsedNumber };
-    const apiData = await generalPostFunction("/fcampaign/store", payload);
+    const apiData = await generalPutFunction(`/fcampaign/${locationState.state.id}`, payload);
     if (apiData?.status) {
-
       toast.success(apiData.message);
-      setCampaignId(apiData.data.id);
       setCompletedStep(1);
       setStepSelector(2);
-
     } else {
       setLoading(false);
       toast.error(apiData?.message || apiData?.error);
@@ -62,7 +64,7 @@ function FportalCampaignCreate() {
   const handleFormSubmitStepTwo = handleSubmitStep2(async (data) => {
     setLoading(true);
     const payload = { ...data, fportal_campaign_id: campaignId, dids: selectedDids };
-    const apiData = await generalPostFunction("/fportal/store", payload);
+    const apiData = await (completedStep < 2 ? generalPostFunction('/fportal/store', payload) : generalPutFunction(`/fportal/${data.id}`, payload));
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
@@ -79,7 +81,7 @@ function FportalCampaignCreate() {
     const response = await generalGetFunction('buyer/all');
     if (response.status) {
       setAllBuyers(response.data);
-      // setLoading(false);
+      setLoading(false);
     } else {
       toast.error(response.message);
       // setLoading(false);
@@ -117,6 +119,29 @@ function FportalCampaignCreate() {
     getDidData();
   }, [])
 
+  // Get This Campaign Data
+  useEffect(() => {
+    const getThisCampaign = async () => {
+      setLoading(true);
+      const response = await generalGetFunction(`fcampaign/${locationState.state.id}`);
+      if (response.status) {
+        resetStep1(response.data);
+        setCampaignId(response.data.id);
+        setCompletedStep(1);
+        if (response.data?.forwarding_portals?.length > 0) {
+          resetStep2(response.data?.forwarding_portals[0]);
+          setSelectedDids(response.data?.forwarding_portals[0]?.did_details.map((item) => item.id) || []);
+          setCompletedStep(2);
+        }
+        setLoading(false);
+      } else {
+        toast.error(response.message);
+        setLoading(false);
+      }
+    };
+    getThisCampaign();
+  }, [])
+
   const toggleSelect = (values) => {
     setSelectedDids(values)
   }
@@ -125,8 +150,6 @@ function FportalCampaignCreate() {
     value: item.id,
     label: item.did,
   }))
-
-
 
   return (
     <main className="mainContent">
@@ -157,14 +180,14 @@ function FportalCampaignCreate() {
                           onClick={() => {
                             if (completedStep === 0) {
                               handleFormSubmitStepOne();
-                            } else if (completedStep === 1) {
+                            } else if (completedStep > 0) {
                               handleFormSubmitStepTwo();
                             }
                           }}
                         >
-                          <span className="text" >{completedStep === 1 ? 'Save' : 'Next'}</span>
+                          <span className="text" >{completedStep > 0 ? 'Save' : 'Next'}</span>
                           <span className="icon">
-                            <i className={`fa-solid fa-${completedStep === 1 ? 'floppy-disk' : 'caret-right'}`}></i>
+                            <i className={`fa-solid fa-${completedStep > 0 ? 'floppy-disk' : 'caret-right'}`}></i>
                           </span>
                         </button>
                       </div>
@@ -350,11 +373,11 @@ function FportalCampaignCreate() {
                                 </label>
                               </div>
                               <div className='col-6'>
-                                <input type='number' className='formItem'
-                                  {...registerStep2("active_hours", {
-                                    ...requiredValidator,
-                                    ...numberValidator,
-                                  })} />
+                                <select className='formItem' {...registerStep2("active_hours", { ...requiredValidator })} defaultValue={""}>
+                                  <option value="">Select Option</option>
+                                  <option value="0">False</option>
+                                  <option value="1">True</option>
+                                </select>
                                 {errorsStep2.active_hours && (
                                   <ErrorMessage text={errorsStep2.active_hours.message} />
                                 )}
@@ -533,7 +556,7 @@ function FportalCampaignCreate() {
   );
 }
 
-export default FportalCampaignCreate;
+export default FportalCampaignEdit;
 
 // Custom styles for react-select
 export const customStyles = {
@@ -608,4 +631,3 @@ export const customStyles = {
     color: "var(--form-input-text)",
   }),
 };
-

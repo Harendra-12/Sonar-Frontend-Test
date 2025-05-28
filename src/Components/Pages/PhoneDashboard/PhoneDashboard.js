@@ -71,7 +71,7 @@ function PhoneDashboard() {
       //   navigate
       // );
       const userApi = await generalGetFunction(
-        `/user/search?account=${account.account_id}`,
+        `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`,
         navigate
       );
       // if (apiData.status) {
@@ -369,8 +369,8 @@ function PhoneDashboard() {
             </div>
             <div className="col-12 mt-3 tangoNavs">
               <AllCallsDetails />
-              <div className="row my-1 gx-xxl-3 gx-lg-2">
-                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
+              <div className="row ">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-3">
                   <div className="itemWrapper mt-0 a d_card1">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -430,7 +430,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-3">
                   <div className="itemWrapper mt-0 b d_card2 position-relative">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -480,7 +480,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-3">
                   <div className="itemWrapper mt-0 c d_card3">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -529,7 +529,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-3">
                   <div className="itemWrapper mt-0 d d_card4">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -590,7 +590,7 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row gx-xxl-3 gx-lg-2 mt-0">
-                <div className='col-md-4 col-12'>
+                <div className='col-xl-4 col-lg-12 col-12 mb-3'>
                   <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -725,7 +725,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-md-4 col-12'>
+                <div className='col-xl-4 col-lg-12 col-12 mb-3'>
                   <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -842,7 +842,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-md-4 col-12'>
+                <div className='col-xl-4 col-lg-12 col-12 mb-3'>
                   <div className="itemWrapper mt-0 a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">

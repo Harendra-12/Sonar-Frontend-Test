@@ -203,13 +203,13 @@ function IvrEdit() {
                   }}
                 >
                   <form action="#" className="row">
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">
                           Name <span className="text-danger">*</span>
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -226,14 +226,14 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Type </label>
                         <label htmlFor="mail_host" className="formItemDesc">
                           Select the type of IVR
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("ivr_type", {
@@ -246,7 +246,7 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">
                           Greet Sound <span className="text-danger">*</span>
@@ -255,7 +255,7 @@ function IvrEdit() {
                           Upload a greet when entering the menu.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("greet_long", {
@@ -289,7 +289,7 @@ function IvrEdit() {
                         )}
                       </div>
                     </div>
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">
                           Invalid Sound <span className="text-danger">*</span>
@@ -298,7 +298,7 @@ function IvrEdit() {
                           Upload an invalid sound.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("invalid_sound", {
@@ -333,7 +333,7 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">
                           Exit Sound <span className="text-danger">*</span>
@@ -343,7 +343,7 @@ function IvrEdit() {
                           exists.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           className="formItem"
                           {...register("exit_sound", {
@@ -378,11 +378,11 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Confirm Macro</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -399,7 +399,7 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">
                           Confirm Attempts{" "}
@@ -409,7 +409,7 @@ function IvrEdit() {
                           Enter number of confirm attempts
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           type="number"
                           name="mail_host"
@@ -437,7 +437,7 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Timeout</label>
                         <label htmlFor="mail_port" className="formItemDesc">
@@ -445,7 +445,7 @@ function IvrEdit() {
                           the greeting or the confirm macro.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="number"
                           name="mail_host"
@@ -461,14 +461,14 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Max Failure</label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter max failure
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="number"
                           name="mail_host"
@@ -484,7 +484,7 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Inter Digit Timeout</label>
                         <label htmlFor="mail_port" className="formItemDesc">
@@ -492,7 +492,7 @@ function IvrEdit() {
                           playing the prompt again if no input is received.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <input
                           type="number"
                           name="mail_host"
@@ -509,14 +509,14 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Min Digit</label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter minimum number of digit
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           type="number"
                           name="mail_host"
@@ -553,14 +553,14 @@ function IvrEdit() {
                       </div>
                     </div>
 
-                    <div className="formRow col-xl-3">
+                    <div className="formRow col-xl-3 col-lg-12">
                       <div className="formLabel">
                         <label htmlFor="">Max Digit</label>
                         <label htmlFor="mail_port" className="formItemDesc">
                           Enter maximum number of digit
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-12 col-12">
                         <select
                           // defaultValue="1"
                           type="number"

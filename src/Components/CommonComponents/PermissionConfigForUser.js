@@ -3,6 +3,7 @@ import { backToTop, generalGetFunction } from '../GlobalFunction/globalFunction'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import SkeletonTableLoader from '../Loader/SkeletonTableLoader';
+import { useSelector } from 'react-redux';
 
 /**
  * PermissionConfigForUser is a React component that manages the configuration
@@ -38,7 +39,8 @@ function PermissionConfigForUser() {
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [loading, setLoading] = useState(false)
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const permissions = useSelector((state) => state.permissions);
 
   useEffect(() => {
     setRefreshState(true)
@@ -134,13 +136,14 @@ function PermissionConfigForUser() {
                     </div>
                     <div className='col-12' style={{ padding: '25px 23px' }}>
                       <div className="row mb-0">
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-3 col-lg-12">
                           <div className='formLabel'>
                             <label>
                               Select Class Type
                             </label>
                           </div>
-                          <div className='col-6'>
+                          <div className='row'>
+                          <div className='col-xl-12 col-lg-12'>
                             <div className='row'>
                               <div className='col-6'>
                                 <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"group"}>
@@ -171,12 +174,13 @@ function PermissionConfigForUser() {
                               )}
                             </div>
                           </div>
+                          </div>
                         </div>
                       </div>
                       <PermissionConfigTable
                         selectedGroup={selectedGroup}
                         selectedRole={selectedRole}
-                        allPermissions={DemoData}
+                        allPermissions={permissions}
                         loading={loading}
                       />
                     </div>
@@ -207,7 +211,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
   useEffect(() => {
     // Fetch all Permission Data
-    setPermissionData(allPermissions.data);
+    setPermissionData(allPermissions);
 
     // Initialize with empty permissions for the selected role
     setRolePermissions(prev => ({

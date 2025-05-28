@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddNewAddress from "./AddNewAddress";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -48,7 +49,8 @@ function CardAndBilling() {
   const [autoPayAmount, setAutoPayAmount] = useState("");
   const [autoPayStatus, setAutoPayStatus] = useState("enable");
   const [autoPaymentFetchData, setAutoPaymentFetchData] = useState(null)
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -466,23 +468,31 @@ function CardAndBilling() {
                   <div className="row gy-3">
                     <div className="col-xxl-8 col-xl-9">
                       <div className="row gy-3">
-                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 billinCardWrapper">
-                          <Cards
-                            className="cardWrapper row align-items-center col-12 mx-auto"
-                            number={selectedCard?.[0]?.card_number}
-                            expiry={`${selectedCard?.[0]?.exp_month
-                              ? selectedCard?.[0]?.exp_month < 10
-                                ? `0${selectedCard?.[0]?.exp_month}`
-                                : selectedCard?.[0]?.exp_month
-                              : ""
-                              }/${selectedCard?.[0]?.exp_year
-                                ? selectedCard?.[0]?.exp_year
+                        {checkViewSidebar(
+                          "CardDetail",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) &&
+                          <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 billinCardWrapper">
+                            <Cards
+                              className="cardWrapper row align-items-center col-12 mx-auto"
+                              number={selectedCard?.[0]?.card_number}
+                              expiry={`${selectedCard?.[0]?.exp_month
+                                ? selectedCard?.[0]?.exp_month < 10
+                                  ? `0${selectedCard?.[0]?.exp_month}`
+                                  : selectedCard?.[0]?.exp_month
                                 : ""
-                              }`}
-                            cvc={selectedCard?.[0]?.cvc}
-                            name={selectedCard?.[0]?.name}
-                          />
-                        </div>
+                                }/${selectedCard?.[0]?.exp_year
+                                  ? selectedCard?.[0]?.exp_year
+                                  : ""
+                                }`}
+                              cvc={selectedCard?.[0]?.cvc}
+                              name={selectedCard?.[0]?.name}
+                            />
+                          </div>
+                        }
                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
                           <div className="itemWrapper a billing_card1">
                             <div className="heading d-flex justify-content-between align-items-center gap-1">
@@ -603,52 +613,72 @@ function CardAndBilling() {
                         </div>
                       </div>
                       <div className="row pt-2">
-                        <div className="col-xl-6">
-                          <div className="profileView pb-0 pe-0">
-                            <div className="profileDetailsHolder position-relative" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                              <div className="col-xl-12">
-                                <div className="header d-flex align-items-center justify-content-between">
-                                  <div className="col-5">Payment Method</div>
-                                  <div className="col-5 text-end">
-                                    <button
-                                      className="panelButton m-0 ms-auto"
-                                      onClick={() => setCardPopUp(true)}
-                                    >
-                                      <span className="text">Add</span>
-                                      <span className="icon">
-                                        <i className="fa-solid fa-plus"></i>
-                                      </span>
-                                    </button>
+                        {checkViewSidebar(
+                          "CardDetail",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) &&
+                          <div className="col-xl-6">
+                            <div className="profileView pb-0 pe-0">
+                              <div className="profileDetailsHolder position-relative" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                                <div className="col-xl-12">
+                                  <div className="header d-flex align-items-center justify-content-between">
+                                    <div className="col-5">Payment Method</div>
+                                    {checkViewSidebar(
+                                      "CardDetail",
+                                      slugPermissions,
+                                      account?.sectionPermissions,
+                                      account?.permissions,
+                                      "add"
+                                    ) && <div className="col-5 text-end">
+                                        <button
+                                          className="panelButton m-0 ms-auto"
+                                          onClick={() => setCardPopUp(true)}
+                                        >
+                                          <span className="text">Add</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-plus"></i>
+                                          </span>
+                                        </button>
+                                      </div>}
                                   </div>
-                                </div>
-                                {cardList && (
-                                  <>
-                                    {cardList.map((item, key) => {
-                                      return (
-                                        <div className="col-xl-12 pt-3" key={key}>
-                                          <div
-                                            className={`savedCardWrapper ${item.default ? "active" : ""
-                                              }`}
-                                          >
-                                            <div className="imgWrapper">
-                                              <div className="card-logo-container">
-                                                <Cards
-                                                  number={item.card_number}
-                                                  name=""
-                                                  expiry=""
-                                                  cvc=""
-                                                  focused=""
-                                                />
+                                  {cardList && (
+                                    <>
+                                      {cardList.map((item, key) => {
+                                        return (
+                                          <div className="col-xl-12 pt-3" key={key}>
+                                            <div
+                                              className={`savedCardWrapper ${item.default ? "active" : ""
+                                                }`}
+                                            >
+                                              <div className="imgWrapper">
+                                                <div className="card-logo-container">
+                                                  <Cards
+                                                    number={item.card_number}
+                                                    name=""
+                                                    expiry=""
+                                                    cvc=""
+                                                    focused=""
+                                                  />
+                                                </div>
                                               </div>
-                                            </div>
-                                            <div className="ms-4">
-                                              <label>
-                                                **** **** ****{" "}
-                                                {item.card_number.slice(-4)}
-                                              </label>
-                                            </div>
-                                            <div className="ms-auto">
-                                              {/* <label className="switch">
+                                              <div className="ms-4">
+                                                <label>
+                                                  **** **** ****{" "}
+                                                  {item.card_number.slice(-4)}
+                                                </label>
+                                              </div>
+                                              {checkViewSidebar(
+                                                "CardDetail",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "edit"
+                                              ) &&
+                                                <div className="ms-auto">
+                                                  {/* <label className="switch">
                                                 <input
                                                   type="checkbox"
                                                   id="showAllCheck"
@@ -667,106 +697,136 @@ function CardAndBilling() {
                                                 />
                                                 <span className="slider round"></span>
                                               </label> */}
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
-                                                  <input type="checkbox"
-                                                    checked={item.default}
-                                                    onChange={(e) => {
-                                                      if (e.target.checked) {
-                                                        setSelectedCardId(item.id);
-                                                        setCardConfirmationPopUp(true);
-                                                        setDisableCard(false);
-                                                      } else {
-                                                        setSelectedCardId(item.id);
-                                                        setCardConfirmationPopUp(true);
-                                                        setDisableCard(true);
-                                                      }
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox"
+                                                        checked={item.default}
+                                                        onChange={(e) => {
+                                                          if (e.target.checked) {
+                                                            setSelectedCardId(item.id);
+                                                            setCardConfirmationPopUp(true);
+                                                            setDisableCard(false);
+                                                          } else {
+                                                            setSelectedCardId(item.id);
+                                                            setCardConfirmationPopUp(true);
+                                                            setDisableCard(true);
+                                                          }
+                                                        }}
+                                                        id="showAllCheck"
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
+                                                </div>}
+                                              {checkViewSidebar(
+                                                "CardDetail",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "delete"
+                                              ) &&
+                                                <div className="ms-3">
+                                                  <button
+                                                    className="clearButton"
+                                                    onClick={() => {
+                                                      setCardDelId(item.id);
+                                                      setCardDelPopUp(true);
                                                     }}
-                                                    id="showAllCheck"
-                                                  />
-                                                  <span></span>
-                                                </label>
-                                              </div>
-                                            </div>
-                                            <div className="ms-3">
-                                              <button
-                                                className="clearButton"
-                                                onClick={() => {
-                                                  setCardDelId(item.id);
-                                                  setCardDelPopUp(true);
-                                                }}
-                                              >
-                                                <i className="fa-duotone text-danger fa-trash"></i>
-                                              </button>
+                                                  >
+                                                    <i className="fa-duotone text-danger fa-trash"></i>
+                                                  </button>
+                                                </div>
+                                              }
                                             </div>
                                           </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </>
-                                )}
+                                        );
+                                      })}
+                                    </>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-xl-6">
-                          <div className="profileView px-0">
-                            <div className="profileDetailsHolder position-relative" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                              <div className="col-xl-12">
-                                <div className="header d-flex align-items-center justify-content-between">
-                                  <div className="col-5">Billing Information</div>
-                                  <button
-                                    className="panelButton m-0 ms-auto"
-                                    onClick={() => setBillingPopUp(true)}
-                                  >
-                                    <span className="text">Add</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-plus"></i>
-                                    </span>
-                                  </button>
-                                </div>
-                                {billingList &&
-                                  billingList.map((item, key) => {
-                                    return (
-                                      <div
-                                        key={key}
-                                        className="accordion accordion-flush pt-3"
-                                        id={key}
+                        }
+                        {checkViewSidebar(
+                          "BillingAddress",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) &&
+                          <div className="col-xl-6">
+                            <div className="profileView px-0">
+                              <div className="profileDetailsHolder position-relative" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                                <div className="col-xl-12">
+                                  <div className="header d-flex align-items-center justify-content-between">
+                                    <div className="col-5">Billing Information</div>
+                                    {checkViewSidebar(
+                                      "BillingAddress",
+                                      slugPermissions,
+                                      account?.sectionPermissions,
+                                      account?.permissions,
+                                      "add"
+                                    ) &&
+                                      <button
+                                        className="panelButton m-0 ms-auto"
+                                        onClick={() => setBillingPopUp(true)}
                                       >
-                                        <div className="accordion-item">
-                                          <h2
-                                            className={`accordion-header addressDrawer ${item.default ? "active" : ""
-                                              }`}
-                                          >
-                                            <div
-                                              className="d-flex flex-wrap align-items-center"
-                                              style={{ padding: "0 10px" }}
+                                        <span className="text">Add</span>
+                                        <span className="icon">
+                                          <i className="fa-solid fa-plus"></i>
+                                        </span>
+                                      </button>
+                                    }
+                                  </div>
+                                  {billingList &&
+                                    billingList.map((item, key) => {
+                                      return (
+                                        <div
+                                          key={key}
+                                          className="accordion accordion-flush pt-3"
+                                          id={key}
+                                        >
+                                          <div className="accordion-item">
+                                            <h2
+                                              className={`accordion-header addressDrawer ${item.default ? "active" : ""
+                                                }`}
                                             >
-                                              <div className="col">
-                                                <button
-                                                  className="accordion-button collapsed justify-content-between bg-transparent"
-                                                  type="button"
-                                                  data-bs-toggle="collapse"
-                                                  data-bs-target={`#flush-collapse${key}`}
-                                                  aria-expanded="false"
-                                                  aria-controls={`flush-collapse${key}`}
-                                                >
-                                                  <div>
-                                                    <h5
-                                                      className="mb-0"
-                                                      style={{
-                                                        maxWidth: 250,
-                                                        textOverflow: "ellipsis",
-                                                        overflow: "hidden",
-                                                      }}
-                                                    >
-                                                      {item.fullname}
-                                                    </h5>
-                                                  </div>
-                                                </button>
-                                              </div>
-                                              <div className="ms-auto d-flex">
-                                                {/* <label className="switch">
+                                              <div
+                                                className="d-flex flex-wrap align-items-center"
+                                                style={{ padding: "0 10px" }}
+                                              >
+                                                <div className="col">
+                                                  <button
+                                                    className="accordion-button collapsed justify-content-between bg-transparent"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target={`#flush-collapse${key}`}
+                                                    aria-expanded="false"
+                                                    aria-controls={`flush-collapse${key}`}
+                                                  >
+                                                    <div>
+                                                      <h5
+                                                        className="mb-0"
+                                                        style={{
+                                                          maxWidth: 250,
+                                                          textOverflow: "ellipsis",
+                                                          overflow: "hidden",
+                                                        }}
+                                                      >
+                                                        {item.fullname}
+                                                      </h5>
+                                                    </div>
+                                                  </button>
+                                                </div>
+                                                {checkViewSidebar(
+                                                  "BillingAddress",
+                                                  slugPermissions,
+                                                  account?.sectionPermissions,
+                                                  account?.permissions,
+                                                  "edit"
+                                                ) && <div className="ms-auto d-flex">
+                                                    {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     id="showAllCheck"
@@ -796,343 +856,358 @@ function CardAndBilling() {
                                                   <span className="slider round"></span>
                                                 </label> */}
 
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
-                                                    <input type="checkbox"
-                                                      checked={item.default}
-                                                      onChange={(e) => {
-                                                        if (e.target.checked) {
-                                                          setSelecetedBillingId(
-                                                            item.id
-                                                          );
-                                                          setSelectedCardId();
-                                                          setBillingConfirmationPopUp(
-                                                            true
-                                                          );
-                                                          setDisableBilling(false);
-                                                        } else {
-                                                          setSelecetedBillingId(
-                                                            item.id
-                                                          );
-                                                          setSelectedCardId();
-                                                          setBillingConfirmationPopUp(
-                                                            true
-                                                          );
-                                                          setDisableBilling(true);
-                                                        }
-                                                      }}
-                                                      id="showAllCheck"
-                                                    />
-                                                    <span></span>
-                                                  </label>
-                                                </div>
+                                                    <div class="cl-toggle-switch">
+                                                      <label class="cl-switch">
+                                                        <input type="checkbox"
+                                                          checked={item.default}
+                                                          onChange={(e) => {
+                                                            if (e.target.checked) {
+                                                              setSelecetedBillingId(
+                                                                item.id
+                                                              );
+                                                              setSelectedCardId();
+                                                              setBillingConfirmationPopUp(
+                                                                true
+                                                              );
+                                                              setDisableBilling(false);
+                                                            } else {
+                                                              setSelecetedBillingId(
+                                                                item.id
+                                                              );
+                                                              setSelectedCardId();
+                                                              setBillingConfirmationPopUp(
+                                                                true
+                                                              );
+                                                              setDisableBilling(true);
+                                                            }
+                                                          }}
+                                                          id="showAllCheck"
+                                                        />
+                                                        <span></span>
+                                                      </label>
+                                                    </div>
+                                                  </div>}
                                               </div>
-                                            </div>
-                                          </h2>
-                                          <div
-                                            id={`flush-collapse${key}`}
-                                            className="accordion-collapse collapse"
-                                            data-bs-parent={`#${key}`}
-                                          >
-                                            <div className="accordion-body">
-                                              <ul className="billingDetails">
-                                                <div
-                                                  className="pe-3"
-                                                  style={{ width: "25%" }}
-                                                >
-                                                  <li>
-                                                    <span>Full Name:</span>
-                                                  </li>
-                                                  <li>
-                                                    <span>Phone:</span>
-                                                  </li>
-                                                  <li>
-                                                    <span>Email Address:</span>
-                                                  </li>
-                                                  <li>
-                                                    <span>Address:</span>{" "}
-                                                  </li>
-                                                  <li>
-                                                    <span>City:</span>{" "}
-                                                  </li>
-                                                  <li>
-                                                    <span>State:</span>{" "}
-                                                  </li>
-                                                  <li>
-                                                    <span>Zip Code:</span>{" "}
-                                                  </li>
-                                                  <li>
-                                                    <span>Country:</span>{" "}
-                                                  </li>
-                                                </div>
-                                                <div style={{ width: "75%" }}>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.name
-                                                          : item.fullname
-                                                      }
-                                                      name="name"
-                                                      className={`noinputfield ${errorBilling.name
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="text"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.phone
-                                                          : item.contact_no
-                                                      }
-                                                      placeholder="Phone number"
-                                                      name="phone"
-                                                      className={`noinputfield ${errorBilling.phone
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="number"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.email
-                                                          : item.email
-                                                      }
-                                                      placeholder="Email Address"
-                                                      name="email"
-                                                      className={`noinputfield ${errorBilling.email
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="email"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.address
-                                                          : item.address
-                                                      }
-                                                      placeholder="Full address"
-                                                      name="address"
-                                                      className={`noinputfield ${errorBilling.address
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="text"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.city
-                                                          : item.city
-                                                      }
-                                                      placeholder="City"
-                                                      name="city"
-                                                      className={`noinputfield ${errorBilling.city
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="text"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.state
-                                                          : item.state
-                                                      }
-                                                      placeholder="State"
-                                                      name="state"
-                                                      className={`noinputfield ${errorBilling.state
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="text"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.zip
-                                                          : item.zip
-                                                      }
-                                                      placeholder="Zip Code"
-                                                      name="zip"
-                                                      className={`noinputfield ${errorBilling.zip
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="number"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                  <li>
-                                                    <input
-                                                      value={
-                                                        item.id === editBillId
-                                                          ? billing.country
-                                                          : item.country
-                                                      }
-                                                      placeholder="Country"
-                                                      name="country"
-                                                      className={`noinputfield ${errorBilling.country
-                                                        ? "error-border"
-                                                        : editBillId
-                                                          ? "edit"
-                                                          : ""
-                                                        }`}
-                                                      onChange={(e) =>
-                                                        billingChnage(e)
-                                                      }
-                                                      type="text"
-                                                      disabled={
-                                                        item.id === editBillId
-                                                          ? false
-                                                          : true
-                                                      }
-                                                    />
-                                                  </li>
-                                                </div>
-                                              </ul>
-                                              <div className="d-flex mt-2">
-                                                {editBillId === item.id ? (
-                                                  <div className="me-3">
-                                                    <button
-                                                      className="tableButton edit"
-                                                      onClick={() => {
-                                                        handleSubmit();
-                                                        // setEditBillId()
-                                                      }}
-                                                    >
-                                                      <i className="fa-solid fa-check"></i>{" "}
-                                                    </button>
-                                                  </div>
-                                                ) : (
-                                                  <div className="me-3">
-                                                    <button
-                                                      className="tableButton"
-                                                      onClick={() => {
-                                                        setEditBillId(item.id);
-                                                        setBilling((prevData) => ({
-                                                          ...prevData,
-                                                          name: item.fullname,
-                                                          email: item.email,
-                                                          phone: item.contact_no,
-                                                          city: item.city,
-                                                          address: item.address,
-                                                          country: item.country,
-                                                          state: item.state,
-                                                          zip: item.zip,
-                                                        }));
-                                                      }}
-                                                    >
-                                                      <i className="fa-solid fa-pen-to-square"></i>{" "}
-                                                    </button>
-                                                  </div>
-                                                )}
-                                                <div>
-                                                  <button
-                                                    className="tableButton delete"
-                                                    onClick={() => {
-                                                      setDelBillId(item.id);
-                                                      setBillDelPopUp(true);
-                                                    }}
+                                            </h2>
+                                            <div
+                                              id={`flush-collapse${key}`}
+                                              className="accordion-collapse collapse"
+                                              data-bs-parent={`#${key}`}
+                                            >
+                                              <div className="accordion-body">
+                                                <ul className="billingDetails">
+                                                  <div
+                                                    className="pe-3"
+                                                    style={{ width: "25%" }}
                                                   >
-                                                    <i className="fa-solid fa-trash"></i>{" "}
-                                                  </button>
+                                                    <li>
+                                                      <span>Full Name:</span>
+                                                    </li>
+                                                    <li>
+                                                      <span>Phone:</span>
+                                                    </li>
+                                                    <li>
+                                                      <span>Email Address:</span>
+                                                    </li>
+                                                    <li>
+                                                      <span>Address:</span>{" "}
+                                                    </li>
+                                                    <li>
+                                                      <span>City:</span>{" "}
+                                                    </li>
+                                                    <li>
+                                                      <span>State:</span>{" "}
+                                                    </li>
+                                                    <li>
+                                                      <span>Zip Code:</span>{" "}
+                                                    </li>
+                                                    <li>
+                                                      <span>Country:</span>{" "}
+                                                    </li>
+                                                  </div>
+                                                  <div style={{ width: "75%" }}>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.name
+                                                            : item.fullname
+                                                        }
+                                                        name="name"
+                                                        className={`noinputfield ${errorBilling.name
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="text"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.phone
+                                                            : item.contact_no
+                                                        }
+                                                        placeholder="Phone number"
+                                                        name="phone"
+                                                        className={`noinputfield ${errorBilling.phone
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="number"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.email
+                                                            : item.email
+                                                        }
+                                                        placeholder="Email Address"
+                                                        name="email"
+                                                        className={`noinputfield ${errorBilling.email
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="email"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.address
+                                                            : item.address
+                                                        }
+                                                        placeholder="Full address"
+                                                        name="address"
+                                                        className={`noinputfield ${errorBilling.address
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="text"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.city
+                                                            : item.city
+                                                        }
+                                                        placeholder="City"
+                                                        name="city"
+                                                        className={`noinputfield ${errorBilling.city
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="text"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.state
+                                                            : item.state
+                                                        }
+                                                        placeholder="State"
+                                                        name="state"
+                                                        className={`noinputfield ${errorBilling.state
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="text"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.zip
+                                                            : item.zip
+                                                        }
+                                                        placeholder="Zip Code"
+                                                        name="zip"
+                                                        className={`noinputfield ${errorBilling.zip
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="number"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                    <li>
+                                                      <input
+                                                        value={
+                                                          item.id === editBillId
+                                                            ? billing.country
+                                                            : item.country
+                                                        }
+                                                        placeholder="Country"
+                                                        name="country"
+                                                        className={`noinputfield ${errorBilling.country
+                                                          ? "error-border"
+                                                          : editBillId
+                                                            ? "edit"
+                                                            : ""
+                                                          }`}
+                                                        onChange={(e) =>
+                                                          billingChnage(e)
+                                                        }
+                                                        type="text"
+                                                        disabled={
+                                                          item.id === editBillId
+                                                            ? false
+                                                            : true
+                                                        }
+                                                      />
+                                                    </li>
+                                                  </div>
+                                                </ul>
+                                                <div className="d-flex mt-2">
+                                                  {editBillId === item.id ? (
+                                                    <div className="me-3">
+                                                      <button
+                                                        className="tableButton edit"
+                                                        onClick={() => {
+                                                          handleSubmit();
+                                                          // setEditBillId()
+                                                        }}
+                                                      >
+                                                        <i className="fa-solid fa-check"></i>{" "}
+                                                      </button>
+                                                    </div>
+                                                  ) : (
+                                                    <div className="me-3">
+                                                      {checkViewSidebar(
+                                                        "BillingAddress",
+                                                        slugPermissions,
+                                                        account?.sectionPermissions,
+                                                        account?.permissions,
+                                                        "edit"
+                                                      ) && <button
+                                                        className="tableButton"
+                                                        onClick={() => {
+                                                          setEditBillId(item.id);
+                                                          setBilling((prevData) => ({
+                                                            ...prevData,
+                                                            name: item.fullname,
+                                                            email: item.email,
+                                                            phone: item.contact_no,
+                                                            city: item.city,
+                                                            address: item.address,
+                                                            country: item.country,
+                                                            state: item.state,
+                                                            zip: item.zip,
+                                                          }));
+                                                        }}
+                                                      >
+                                                          <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                                        </button>}
+                                                    </div>
+                                                  )}
+                                                  <div>
+                                                    {checkViewSidebar(
+                                                      "BillingAddress",
+                                                      slugPermissions,
+                                                      account?.sectionPermissions,
+                                                      account?.permissions,
+                                                      "delete"
+                                                    ) &&
+                                                      <button
+                                                        className="tableButton delete"
+                                                        onClick={() => {
+                                                          setDelBillId(item.id);
+                                                          setBillDelPopUp(true);
+                                                        }}
+                                                      >
+                                                        <i className="fa-solid fa-trash"></i>{" "}
+                                                      </button>
+                                                    }
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    );
-                                  })}
+                                      );
+                                    })}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        }
                       </div>
                       {/* <div className="row gy-3 pt-2">
                     <div className="col-xl-12 pe-0">
@@ -1140,192 +1215,200 @@ function CardAndBilling() {
                     </div>
                   </div> */}
                     </div>
-                    <div className="col-xxl-4 col-xl-3">
-                      <div className="col-xl-12">
-                        <div className="itemWrapper a h-100" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                          <div className="heading dashboard_headerPart">
-                            <div className="col-10">
-                              <h5>Invoices</h5>
-                              <p>As on:{" "}
-                                {new Date().toLocaleString("en-GB", {
-                                  year: "numeric",
-                                  month: "2-digit",
-                                  day: "2-digit",
-                                }).replace(/\//g, "-")
-                                }
-                              </p>
+                    {checkViewSidebar(
+                      "Payment",
+                      slugPermissions,
+                      account?.sectionPermissions,
+                      account?.permissions,
+                      "read"
+                    ) &&
+                      <div className="col-xxl-4 col-xl-3">
+                        <div className="col-xl-12">
+                          <div className="itemWrapper a h-100" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                            <div className="heading dashboard_headerPart">
+                              <div className="col-10">
+                                <h5>Invoices</h5>
+                                <p>As on:{" "}
+                                  {new Date().toLocaleString("en-GB", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                  }).replace(/\//g, "-")
+                                  }
+                                </p>
+                              </div>
+                              <div
+                                className="col-2"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => navigate("/card-transaction-list")}
+                              >
+                                <i
+                                  className="fa-solid fa-eye"
+                                  style={{
+                                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                  }}
+                                ></i>
+                              </div>
                             </div>
-                            <div
-                              className="col-2"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => navigate("/card-transaction-list")}
-                            >
-                              <i
-                                className="fa-solid fa-eye"
-                                style={{
-                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
-                                }}
-                              ></i>
-                            </div>
+                            <ul className="invoiceList">
+                              {accountDetails.payments.map((item, key) => {
+                                return (
+                                  <li key={key}>
+                                    <div className="col-xxl-7 col-xl-6">
+                                      <p>{item.transaction_date}</p>
+                                    </div>
+                                    <div className="me-2" style={{ width: 55 }}>
+                                      <p>${item.amount_subtotal}</p>
+                                    </div>
+                                    <div
+                                      style={{ cursor: "pointer", fontWeight: "500" }}
+                                      className="tableButton blue"
+                                      onClick={() =>
+                                        downloadImage(
+                                          item.invoice_url,
+                                          `invoice${item.transaction_date?.split(" ")[0]
+                                          }`
+                                        )
+                                      }
+                                    >
+                                      <i className="fa-solid fa-download"></i>{" "}
+                                    </div>
+                                    <div className="col-12">
+                                      <span>#{item.transaction_id}</span>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
                           </div>
-                          <ul className="invoiceList">
-                            {accountDetails.payments.map((item, key) => {
-                              return (
-                                <li key={key}>
-                                  <div className="col-xxl-7 col-xl-6">
-                                    <p>{item.transaction_date}</p>
+                        </div>
+                        <div className="col-12">
+                          <div className="row">
+                            <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
+                              <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                                <div className="heading d-flex justify-content-between align-items-center gap-1">
+                                  <div className="">
+                                    <h5>Last Transaction</h5>
+                                    <p>On:{" "}
+                                      {
+                                        accountDetails?.payments[0].transaction_date?.split(
+                                          " "
+                                        )[0]
+                                      }
+                                    </p>
                                   </div>
-                                  <div className="me-2" style={{ width: 55 }}>
-                                    <p>${item.amount_subtotal}</p>
-                                  </div>
-                                  <div
-                                    style={{ cursor: "pointer", fontWeight: "500" }}
-                                    className="tableButton blue"
+                                  <div className=""
+                                    style={{ cursor: "pointer" }}
                                     onClick={() =>
                                       downloadImage(
-                                        item.invoice_url,
-                                        `invoice${item.transaction_date?.split(" ")[0]
+                                        accountDetails?.payments[0].invoice_url,
+                                        `invoice${accountDetails?.payments[0].transaction_date?.split(
+                                          " "
+                                        )[0]
                                         }`
                                       )
                                     }
                                   >
-                                    <i className="fa-solid fa-download"></i>{" "}
+                                    <i
+                                      className="fa-duotone fa-ballot-check"
+                                      style={{
+                                        boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
+                                      }}
+                                    ></i>
                                   </div>
-                                  <div className="col-12">
-                                    <span>#{item.transaction_id}</span>
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="col-12">
-                        <div className="row">
-                          <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
-                            <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                              <div className="heading d-flex justify-content-between align-items-center gap-1">
-                                <div className="">
-                                  <h5>Last Transaction</h5>
-                                  <p>On:{" "}
-                                    {
-                                      accountDetails?.payments[0].transaction_date?.split(
-                                        " "
-                                      )[0]
-                                    }
-                                  </p>
                                 </div>
-                                <div className=""
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() =>
-                                    downloadImage(
-                                      accountDetails?.payments[0].invoice_url,
-                                      `invoice${accountDetails?.payments[0].transaction_date?.split(
-                                        " "
-                                      )[0]
-                                      }`
-                                    )
-                                  }
-                                >
-                                  <i
-                                    className="fa-duotone fa-ballot-check"
-                                    style={{
-                                      boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
-                                    }}
-                                  ></i>
-                                </div>
-                              </div>
-                              <div className="data-number2">
-                                <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                  <div className="col-10">
-                                    <h5>
-                                      ${" "}
-                                      {
-                                        accountDetails?.payments[0].amount_subtotal?.split(
-                                          "."
-                                        )[0]
-                                      }
-                                      .
-                                      <sub style={{ fontSize: 14 }}>
+                                <div className="data-number2">
+                                  <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div className="col-10">
+                                      <h5>
+                                        ${" "}
                                         {
                                           accountDetails?.payments[0].amount_subtotal?.split(
                                             "."
-                                          )[1]
+                                          )[0]
                                         }
-                                      </sub>
-                                    </h5>
-                                    <p>
-                                      <b>Transaction ID</b>: #
-                                      {accountDetails?.payments[0].transaction_id}
-                                    </p>
+                                        .
+                                        <sub style={{ fontSize: 14 }}>
+                                          {
+                                            accountDetails?.payments[0].amount_subtotal?.split(
+                                              "."
+                                            )[1]
+                                          }
+                                        </sub>
+                                      </h5>
+                                      <p>
+                                        <b>Transaction ID</b>: #
+                                        {accountDetails?.payments[0].transaction_id}
+                                      </p>
+                                    </div>
+                                    <div className="col-2"></div>
                                   </div>
-                                  <div className="col-2"></div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
-                            <div
-                              className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
-                              style={{ backgroundColor: "var(--ele-color2)" }}
-                            >
-                              <div className="heading d-flex justify-content-between align-items-center gap-1">
+                            <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
+                              <div
+                                className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
+                                style={{ backgroundColor: "var(--ele-color2)" }}
+                              >
+                                <div className="heading d-flex justify-content-between align-items-center gap-1">
 
-                                <div className="">
-                                  <h5>Auto Pay Feature</h5>
-                                  {
-                                    !autoPaymentFetchData ? "" :
-                                      <p style={{ fontSize: '0.875rem', fontWeight: '600' }}>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
-                                  }
-                                </div>
+                                  <div className="">
+                                    <h5>Auto Pay Feature</h5>
+                                    {
+                                      !autoPaymentFetchData ? "" :
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '600' }}>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
+                                    }
+                                  </div>
 
-                                <div className="" style={{ cursor: "pointer" }}>
-                                  <i
-                                    className="fa-duotone fa-circle-dollar"
-                                    style={{
-                                      boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
-                                      cursor: "default"
-                                    }}
-                                  />
+                                  <div className="" style={{ cursor: "pointer" }}>
+                                    <i
+                                      className="fa-duotone fa-circle-dollar"
+                                      style={{
+                                        boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                        cursor: "default"
+                                      }}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="data-number2">
-                                <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                  {
-                                    !autoPaymentFetchData ?
-                                      <div className="col-2" >
-                                        <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
-                                          <span className="text">Add</span>
-                                          <span className="icon"><i className="fa-solid fa-edit" /></span>
-                                        </button>
-                                      </div> :
-                                      <>
-                                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                                          <h5>
-                                            $ {autoPaymentFetchData.amount}
-                                          </h5>
-                                          <p>
-                                            <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
-                                          </p>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
-                                          <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
-                                            <span className="text">Edit</span>
-                                            <span className="icon"><i className="fa-solid fa-pen" /></span>
+                                <div className="data-number2">
+                                  <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                    {
+                                      !autoPaymentFetchData ?
+                                        <div className="col-2" >
+                                          <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
+                                            <span className="text">Add</span>
+                                            <span className="icon"><i className="fa-solid fa-edit" /></span>
                                           </button>
-                                        </div>
-                                      </>
-                                  }
+                                        </div> :
+                                        <>
+                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                            <h5>
+                                              $ {autoPaymentFetchData.amount}
+                                            </h5>
+                                            <p>
+                                              <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
+                                            </p>
+                                          </div>
+                                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                                            <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
+                                              <span className="text">Edit</span>
+                                              <span className="icon"><i className="fa-solid fa-pen" /></span>
+                                            </button>
+                                          </div>
+                                        </>
+                                    }
 
 
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    }
                   </div>
                 </div>
               </div>

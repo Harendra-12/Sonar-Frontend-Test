@@ -220,9 +220,11 @@ function Agents({ type }) {
                         </button>
 
                         {checkViewSidebar(
-                          "CallCenterAgent",
+                          "User",
                           slugPermissions,
-                          account?.permissions, "add") &&
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "add") &&
                           <button
                             onClick={() => {
                               navigate("/agents-pbx-add");
@@ -257,16 +259,22 @@ function Agents({ type }) {
                         <label>entries</label>
                       </div>
 
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          name="Search"
-                          className="formItem"
-                          value={userInput}
-                          onChange={(e) => setuserInput(e?.target?.value)}
-                        />
-                      </div>
+                      {checkViewSidebar(
+                        "User",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "search") &&
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            className="formItem"
+                            value={userInput}
+                            onChange={(e) => setuserInput(e?.target?.value)}
+                          />
+                        </div>}
                     </div>
                     <div className="tableContainer">
                       <table>
@@ -286,13 +294,17 @@ function Agents({ type }) {
                               </select>
                             </th>
                             {checkViewSidebar(
-                              "CallCenterAgent",
+                              "User",
                               slugPermissions,
-                              account?.permissions, "edit") && <th className="text-center">LogOut</th>}
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "edit") && <th className="text-center">LogOut</th>}
                             {checkViewSidebar(
-                              "CallCenterAgent",
+                              "User",
                               slugPermissions,
-                              account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "edit") && <th className="text-center">Edit</th>}
                             {/* <th>Status</th> */}
                           </tr>
                         </thead>
@@ -303,77 +315,79 @@ function Agents({ type }) {
                             <>
                               {
                                 checkViewSidebar(
-                                  "CallCenterAgent",
+                                  "User",
                                   slugPermissions,
-                                  account?.permissions, "read") ? agents?.data?.length === 0 ?
-                                  <tr>
-                                    <td colSpan={99}>
-                                      <EmptyPrompt
-                                        name="Agent"
-                                      />
-                                    </td>
-                                  </tr>
-                                  : filterUser?.map((item, index) => {
-                                    return (
-                                      <tr>
-                                        <td>
-                                          <div className="d-flex align-items-center">
-                                            <div className="tableProfilePicHolder">
-                                              {item.profile_picture ? (
-                                                <img
-                                                  alt="profile"
-                                                  src={item.profile_picture}
-                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                />
-                                              ) : (
-                                                <i className="fa-light fa-user" />
-                                              )}
+                                  account?.sectionPermissions,
+                                  account?.permissions, "read") ?
+                                  agents?.data?.length === 0 ?
+                                    <tr>
+                                      <td colSpan={99}>
+                                        <EmptyPrompt
+                                          name="Agent"
+                                        />
+                                      </td>
+                                    </tr>
+                                    : filterUser?.map((item, index) => {
+                                      return (
+                                        <tr>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <div className="tableProfilePicHolder">
+                                                {item.profile_picture ? (
+                                                  <img
+                                                    alt="profile"
+                                                    src={item.profile_picture}
+                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                  />
+                                                ) : (
+                                                  <i className="fa-light fa-user" />
+                                                )}
+                                              </div>
+                                              <div className="ms-2">{item.name}</div>
                                             </div>
-                                            <div className="ms-2">{item.name}</div>
-                                          </div>
-                                        </td>
-                                        {/* <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td> */}
-                                        <td>{item.extension.extension}</td>
-                                        <td>{item?.user_role?.roles?.name}</td>
-                                        <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
-                                        <td>
-                                          <span
-                                            className={
-                                              onlineUsers.includes(item.extension.extension)
-                                                ? "extensionStatus online mx-auto"
-                                                : "extensionStatus mx-auto"
-                                            }
-                                          ></span>
-                                        </td>
-                                        {
-                                          getToken(item.extension.extension) && onlineUsers.includes(item.extension.extension) ? <td>
-                                            <button
-                                              className="tableButton delete mx-auto"
-                                              onClick={() => {
-                                                setIsAgentLogoutPopup(true);
-                                                setAgentLogOutToken(getToken(item.extension.extension)[0].token);
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-power-off"></i>
-                                            </button>
-                                          </td> : <td></td>
-                                        }
-                                        {checkViewSidebar(
-                                          "CallCenterAgent",
-                                          slugPermissions,
-                                          account?.permissions, "edit") && <td>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() => {
-                                                navigate(`/agents-edit?id=${item.id}`, {
-                                                  state: item,
-                                                });
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>}
-                                        {/* <td>
+                                          </td>
+                                          {/* <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td> */}
+                                          <td>{item.extension.extension}</td>
+                                          <td>{item?.user_role?.roles?.name}</td>
+                                          <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
+                                          <td>
+                                            <span
+                                              className={
+                                                onlineUsers.includes(item.extension.extension)
+                                                  ? "extensionStatus online mx-auto"
+                                                  : "extensionStatus mx-auto"
+                                              }
+                                            ></span>
+                                          </td>
+                                          {
+                                            getToken(item.extension.extension) && onlineUsers.includes(item.extension.extension) ? <td>
+                                              <button
+                                                className="tableButton delete mx-auto"
+                                                onClick={() => {
+                                                  setIsAgentLogoutPopup(true);
+                                                  setAgentLogOutToken(getToken(item.extension.extension)[0].token);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-power-off"></i>
+                                              </button>
+                                            </td> : <td></td>
+                                          }
+                                          {checkViewSidebar(
+                                            "CallCenterAgent",
+                                            slugPermissions,
+                                            account?.permissions, "edit") && <td>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() => {
+                                                  navigate(`/agents-edit?id=${item.id}`, {
+                                                    state: item,
+                                                  });
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>}
+                                          {/* <td>
                             account?.permissions,"edit")&& <td>
                             <button
                               className="tableButton edit"
@@ -398,20 +412,13 @@ function Agents({ type }) {
                                     </label>
                                   </div>
                                 </td> */}
-                                      </tr>
-                                    );
-                                  }) : (
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>No Permission</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                  </tr>
-                                )
+                                        </tr>
+                                      );
+                                    }) : (
+                                    <tr>
+                                      <td colSpan={99}>You dont have any permission</td>
+                                    </tr>
+                                  )
                               }
                             </>
                           )}

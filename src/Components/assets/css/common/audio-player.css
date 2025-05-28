@@ -84,7 +84,7 @@ audio {
   background: #383838;
   height: 30px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   position: sticky;
   top: 0;
   width: 100%;

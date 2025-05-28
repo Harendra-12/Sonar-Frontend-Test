@@ -363,71 +363,22 @@ function Call({
         >
           <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
-              <div
-                className="profileHolder"
-              // id={"profileOfflineNav"}
-              >
-                <i className="fa-light fa-user fs-5"></i>
-              </div>
-              {!isCustomerAdmin ? (
-                <div className="col-5 ms-xl-3" style={{ cursor: "pointer" }}>
-                  {/* <h4>
+              <div className="d-flex justify-content-start">
+                <div className="profileHolder"
+                // id={"profileOfflineNav"}
+                >
+                  <i className="fa-light fa-user fs-5"></i>
+                </div>
+                {!isCustomerAdmin ? (
+                  <div className="col-5 ms-xl-3" style={{ cursor: "pointer" }}>
+                    {/* <h4>
                     {item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
                       : item["Caller-Callee-ID-Number"] === extension
                         ? item["Caller-Caller-ID-Number"]
                         : item["Caller-Callee-ID-Number"]
                     }
                   </h4> */}
-                  <div className="d-flex align-items-center">
-                    {
-                      <Tippy
-                        content={
-                          `${callType.label} - ${item.variable_DIALSTATUS}` ||
-                          "N/A"
-                        }
-                      >
-                        {getCallTypeIcon()}
-                      </Tippy>
-                    }
-                    <div>
-                      <h4 className="mb-0">
-                        {displayName
-                          ? displayName
-                          : item.caller_user
-                            ? item.caller_user.username
-                            : "USER XYZ"}
-                      </h4>
-                      {item.tag && <h5>({item.tag})</h5>}
-                    </div>
-                  </div>
-                  {item["variable_billsec"] > 0 && (
-                    <div className={`col-12 mx-auto mt-2`}>
-                      <div className="contactTags">
-                        <span data-id="2" className="duration">
-                          Duration: {formatTime(item["variable_billsec"])}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  {/* <div className="contactTags">
-                  <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
-                </div> */}
-                </div>
-              ) : (
-                <div
-                  className="col my-auto ms-2 ms-xl-3"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div className="source">
-                      <h4>
-                        {matchingCallerContactForAdmin
-                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                          : item["Caller-Caller-ID-Number"]}
-                      </h4>
-                      {item.tag && <h5>({item.tag})</h5>}
-                    </div>
-                    <div className="callIconAdmin">
+                    <div className="d-flex align-items-center">
                       {
                         <Tippy
                           content={
@@ -435,33 +386,82 @@ function Call({
                             "N/A"
                           }
                         >
-                          {getCallTypeIcon(1)}
+                          {getCallTypeIcon()}
                         </Tippy>
                       }
-                    </div>
-                    <div className="destination">
-                      <h4>
-                        {matchingCalleeContactForAdmin
-                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                          : item["Caller-Callee-ID-Number"]}
-                      </h4>
-                      {/* <h5>Destination</h5> */}
-                    </div>
-                  </div>
-                  {item["variable_billsec"] > 0 && (
-                    <div className={`col-12 mx-auto mt-2`}>
-                      <div className="contactTags">
-                        <span data-id="2" className="duration">
-                          Duration: {formatTime(item["variable_billsec"])}
-                        </span>
+                      <div>
+                        <h4 className="mb-0">
+                          {displayName
+                            ? displayName
+                            : item.caller_user
+                              ? item.caller_user.username
+                              : "USER XYZ"}
+                        </h4>
+                        {item.tag && <h5>({item.tag})</h5>}
                       </div>
                     </div>
-                  )}
-                  {/* <div className="contactTags">
+                    {item["variable_billsec"] > 0 && (
+                      <div className={`col-12 mx-auto mt-2`}>
+                        <div className="contactTags">
+                          <span data-id="2" className="duration">
+                            Duration: {formatTime(item["variable_billsec"])}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div
+                    className="col my-auto ms-2 ms-xl-3"
+                    style={{ cursor: "pointer" }}>
+                    <div className="d-flex align-items-center">
+                      <div className="source">
+                        <h4>
+                          {matchingCallerContactForAdmin
+                            ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                            : item["Caller-Caller-ID-Number"]}
+                        </h4>
+                        {item.tag && <h5>({item.tag})</h5>}
+                      </div>
+                      <div className="callIconAdmin">
+                        {
+                          <Tippy
+                            content={
+                              `${callType.label} - ${item.variable_DIALSTATUS}` ||
+                              "N/A"
+                            }
+                          >
+                            {getCallTypeIcon(1)}
+                          </Tippy>
+                        }
+                      </div>
+                      <div className="destination">
+                        <h4>
+                          {matchingCalleeContactForAdmin
+                            ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                            : item["Caller-Callee-ID-Number"]}
+                        </h4>
+                        {/* <h5>Destination</h5> */}
+                      </div>
+                    </div>
+                    {item["variable_billsec"] > 0 && (
+                      <div className={`col-12 mx-auto mt-2`}>
+                        <div className="contactTags">
+                          <span data-id="2" className="duration">
+                            Duration: {formatTime(item["variable_billsec"])}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {/* <div className="contactTags">
+                  <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
+                </div> */}
+                  </div>
+                )}
+              </div>
 
               {/* {item["variable_billsec"] > 0 && (
                 <div
@@ -754,10 +754,7 @@ function Call({
           </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
-              <div
-                className="allCallHistory pb-0 col-12 col-xl-4 col-lg-5 col-xxl-3 py-3 px-0 rounded-3 calcsHeight"
-                style={{ overflow: "hidden" }}
-              >
+              <div className="allCallHistory pb-0 col-12 col-xl-5 col-lg-5 col-xxl-4 py-3 px-0 rounded-3 calcsHeight" style={{ overflow: "hidden" }}>
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -804,7 +801,7 @@ function Call({
                             <option value={"date_range"}>Date Range</option>
                           </select>
                         </div>
-                        <div className="d-flex w-100">
+                        <div className="d-flex w-100 ">
                           {filterBy === "date" && (
                             <div className="ms-2 w-100">
                               <label className="formLabel text-start mb-0 w-100">
@@ -1015,7 +1012,7 @@ function Call({
                 </div>
               </div>
               <div
-                className="callDetails col-12 col-xl-8 col-lg-7 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
+                className="callDetails col-12 col-xl-7 col-lg-7 col-xxl-8 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
                 style={{ height: "calc(100vh - 100px)" }}
                 id="callDetails"
               >

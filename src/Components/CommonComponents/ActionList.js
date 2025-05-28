@@ -57,7 +57,7 @@ const ActionList = ({
   const ivrArr = useSelector((state) => state.ivr);
   const aiAgentsArr = useSelector((state) => state.aiAgents);
   const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
-  const [allUserList,  setAllUserList] = useState([])
+  const [allUserList, setAllUserList] = useState([])
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -208,7 +208,7 @@ const ActionList = ({
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}`
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
     );
     if (userApi?.status) {
       setAllUserList(userApi.data);

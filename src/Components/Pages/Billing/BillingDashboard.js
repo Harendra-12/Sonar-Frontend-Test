@@ -158,14 +158,14 @@ function BillingDashboard() {
             <Header title="Billing Dashboard" />
             <div className="overviewTableWrapper0">
               <div className="overviewTableChild0">
-                <div className="row">
+                <div className="row my-3">
                   <div className="col-12">
                     <div className="heading border-0 d-block">
-                      <div className="container-fluid">
+                      <div className="">
                         <div className="row ">
-                          <div className="col-xl-12 mt-xl-4">
+                          <div className="col-xl-12">
                             <div className="row">
-                              <div className="col-xl-4 mb-3 mb-xl-0">
+                              <div className="col-xxl-4 col-xl-6 mb-3 ">
                                 <div className="itemWrapper a">
                                   <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between">
@@ -270,7 +270,7 @@ function BillingDashboard() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-xl-4 mb-3 mb-xl-0">
+                              <div className="col-xxl-4 col-xl-6 mb-3 ">
                                 <div className="itemWrapper a">
                                   <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between">
@@ -375,7 +375,7 @@ function BillingDashboard() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
+                              <div className="col-xxl-4 col-lg-12 chartWrapper mb-3">
                                 <div className="itemWrapper c">
                                   <div className='heading h-auto'>
                                     <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -500,11 +500,11 @@ function BillingDashboard() {
                         </div>
                       </div>
 
-                      <div className="container-fluid">
+                      <div className="">
                         <div className="row">
                           <div className="col-xl-12">
-                            <div className="row mt-3">
-                              <div className="col-xxl-9 col-xl-9">
+                            <div className="row">
+                              <div className="col-xxl-9 col-xl-12 mb-3">
                                 <div className="row g-3">
                                   <div className="col-6">
                                     <div className="itemWrapper a">
@@ -719,7 +719,7 @@ function BillingDashboard() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-xxl-3 col-xl-9">
+                              <div className="col-xxl-3 col-xl-12">
                                 <div className="itemWrapper a">
                                   <div className='heading h-auto'>
                                     <div className="d-flex flex-wrap justify-content-between align-items-center">

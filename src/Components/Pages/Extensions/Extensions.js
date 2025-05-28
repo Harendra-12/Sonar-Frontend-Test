@@ -39,6 +39,7 @@ const Extensions = () => {
     "effectiveCallerIdName",
     "outbundCallerIdName",
     "description",
+    "sofia_status"
   ];
   const slugPermissions = useSelector((state) => state?.permissions);
   const [allDID, setAllDID] = useState([]);
@@ -70,7 +71,7 @@ const Extensions = () => {
   // Trigger user api to get latest users
   const getCurrentUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}`
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
     );
     if (userApi?.status) {
       setUserList(userApi.data);
@@ -271,16 +272,24 @@ const Extensions = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <Link
-                          to="/store-extension"
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Buy</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-cart-shopping"></i>
-                          </span>
-                        </Link>
+                        {checkViewSidebar(
+                          "Extension",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "add"
+                        ) &&
+                          <Link
+                            to="/store-extension"
+                            effect="ripple"
+                            className="panelButton"
+                          >
+                            <span className="text">Buy</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-cart-shopping"></i>
+                            </span>
+                          </Link>
+                        }
                       </div>
                     </div>
                   </div>
@@ -302,23 +311,32 @@ const Extensions = () => {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          value={searchValue}
-                          className="formItem"
-                          onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                      </div>
+                      {checkViewSidebar(
+                        "Extension",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "search"
+                      ) && <div className="searchBox">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            value={searchValue}
+                            className="formItem"
+                            onChange={(e) => setSearchValue(e.target.value)}
+                          />
+                        </div>
+                      }
                     </div>
                     <div className="tableContainer">
                       <table>
                         <tbody>
-                          {noPermissionToRead && checkViewSidebar(
+                          {noPermissionToRead || !checkViewSidebar(
                             "Extension",
                             slugPermissions,
-                            account?.permissions, "read"
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "read"
                           ) ? (
                             <tr>
                               <td></td>
@@ -370,26 +388,32 @@ const Extensions = () => {
                                                     char.toUpperCase()
                                                   );
                                               }
-                                              return (
-                                                <th key={key}>
-                                                  {formattedKey}
-                                                </th>
-                                              );
+                                              if (key == 'sofia_status') {
+                                                return (
+                                                  <th className="text-center">
+                                                    <span>
+                                                      <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                                                        <option value="all" disabled>Status</option>
+                                                        <option value="online">Online</option>
+                                                        <option value="offline">Offline</option>
+                                                        <option value="all">All</option>
+                                                      </select>
+                                                    </span>
+                                                  </th>
+                                                )
+                                              } else {
+                                                return (
+                                                  <th key={key}>
+                                                    {formattedKey}
+                                                  </th>
+                                                );
+                                              }
                                             })}
                                             <th>Default Outbound Number</th>
-                                            <th className="text-center">
-                                              <span>
-                                                <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
-                                                  <option value="all" disabled>Status</option>
-                                                  <option value="online">Online</option>
-                                                  <option value="offline">Offline</option>
-                                                  <option value="all">All</option>
-                                                </select>
-                                              </span>
-                                            </th>
                                             {checkViewSidebar(
                                               "Extension",
                                               slugPermissions,
+                                              account?.sectionPermissions,
                                               account?.permissions,
                                               "edit"
                                             ) && (
@@ -438,24 +462,25 @@ const Extensions = () => {
                                                                     <div className="ms-2">{foundUser.name}</div>
                                                                   </div>
                                                                   : ""
-                                                                : item[key]}
+                                                                : key == 'sofia_status' ? (
+                                                                  <span
+                                                                    className={
+                                                                      onlineExtension.includes(
+                                                                        item.extension
+                                                                      )
+                                                                        ? "extensionStatus online mx-auto"
+                                                                        : "extensionStatus mx-auto"
+                                                                    }
+                                                                  ></span>
+                                                                ) :
+                                                                  item[key]}
                                                             </td>
                                                           ))}
                                                           <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
-                                                          <td>
-                                                            <span
-                                                              className={
-                                                                onlineExtension.includes(
-                                                                  item.extension
-                                                                )
-                                                                  ? "extensionStatus online mx-auto"
-                                                                  : "extensionStatus mx-auto"
-                                                              }
-                                                            ></span>
-                                                          </td>
                                                           {checkViewSidebar(
                                                             "Extension",
                                                             slugPermissions,
+                                                            account?.sectionPermissions,
                                                             account?.permissions,
                                                             "edit"
                                                           ) && (
