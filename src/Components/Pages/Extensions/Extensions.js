@@ -15,6 +15,7 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 const Extensions = () => {
   const navigate = useNavigate();
   const [extension, setExtension] = useState();
@@ -428,7 +429,8 @@ const Extensions = () => {
                                         </thead>
                                         {
                                           loading ? (
-                                            <SkeletonTableLoader col={7} row={15} />
+                                            // <SkeletonTableLoader col={7} row={15} />
+                                              <ThreeDotedLoader />
                                           )
                                             : (
                                               <tbody>

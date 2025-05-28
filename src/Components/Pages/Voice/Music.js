@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 
 function Music() {
@@ -376,7 +377,8 @@ function Music() {
                             "read"
                           ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                             loading ? (
-                              <SkeletonTableLoader col={6} row={15} />
+                              // <SkeletonTableLoader col={6} row={15} />
+                                <ThreeDotedLoader />
                             ) : (
                               <>
                                 {music &&

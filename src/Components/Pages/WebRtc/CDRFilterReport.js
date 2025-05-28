@@ -29,6 +29,7 @@ import DropdownForAudio from "../../DropdownForAudio";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import Select from "react-select";
 import axios from "axios";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -1549,14 +1550,16 @@ function CdrFilterReport({ page }) {
                                 "read"
                               ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                                 loading ? (
-                                  <SkeletonTableLoader
-                                    col={
-                                      page === "billing"
-                                        ? showKeys.length
-                                        : showKeys.length + 1
-                                    }
-                                    row={12}
-                                  />
+                                  // <SkeletonTableLoader
+                                  //   col={
+                                  //     page === "billing"
+                                  //       ? showKeys.length
+                                  //       : showKeys.length + 1
+                                  //   }
+                                  //   row=
+                                  // {12}
+                                  // />
+                                   <ThreeDotedLoader />
                                 ) : (
                                   <>
                                     {cdr?.data?.map((item, index) => {

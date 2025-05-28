@@ -89,6 +89,7 @@ table tr th:first-child {
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
     background-color: var(--ele-color);
     min-height: 271px;
+    position: relative;
 }
 
 .tableContainer thead {

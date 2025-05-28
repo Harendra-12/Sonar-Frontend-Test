@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function DidListing({ page }) {
   const [did, setDid] = useState();
@@ -630,10 +631,11 @@ function DidListing({ page }) {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader
-                              col={page === "number" ? 10 : 12}
-                              row={15}
-                            />
+                            // <SkeletonTableLoader
+                            //   col={page === "number" ? 10 : 12}
+                            //   row={15}
+                            // />
+                              <ThreeDotedLoader />
                           ) : (
                             <>
                               {did &&

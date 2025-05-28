@@ -18,6 +18,8 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import CircularLoader from "../../Loader/CircularLoader";
+import NewDotedLoader from "../../Loader/NewDotedLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 /**
  * This component is used to display a list of all users and their respective roles.
  * The component renders a table with the following columns: username, extension, role, usage, status, and actions.
@@ -336,7 +338,7 @@ const Users = () => {
                         />
                       </div>}
                     </div>
-                    <div className="tableContainer">
+                    <div className="tableContainer position-relative">
                       <table>
                         <thead>
                           <tr>
@@ -377,7 +379,8 @@ const Users = () => {
                           ) :
                             loading ? (
                               // <SkeletonTableLoader col={tableKeys?.filter(key => showKeys.includes(key))?.length + 2} row={15} />
-                              <CircularLoader />
+                              // <NewDotedLoader />
+                              <ThreeDotedLoader />
                             ) : (
                               <>
                                 {user &&
@@ -557,20 +560,21 @@ const Users = () => {
             </div>
           </div>
         </div>
+        {/* <ThreeDotedLoader /> */}
       </section>
       {popUp ? (
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
-                <div className="col-2 px-0">
+                <div className="col-12">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
+                <div className="col-12 ">
+                  <h4 className="text-orange text-center">Warning!</h4>
+                  <p className="text-center">
                     {deleteId
                       ? "Are you sure you want to delete this user?"
                       : ""}

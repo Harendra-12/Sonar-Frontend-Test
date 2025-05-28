@@ -18,6 +18,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -378,7 +379,8 @@ function CallCenterQueue() {
                             ) : (
                               <>
                                 {loading ? (
-                                  <SkeletonTableLoader col={8} row={15} />
+                                  // <SkeletonTableLoader col={8} row={15} />
+                                    <ThreeDotedLoader />
                                 ) : (
                                   <>
                                     {callCenter &&

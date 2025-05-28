@@ -7,6 +7,7 @@ import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function FportalCampaign() {
   const navigate = useNavigate();
@@ -143,7 +144,10 @@ function FportalCampaign() {
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ? <SkeletonTableLoader col={8} row={15} /> :
+                          {loading ?
+                          //  <SkeletonTableLoader col={8} row={15} />
+                            <ThreeDotedLoader />
+                           :
                             allFCampaigns && allFCampaigns.length > 0 ?
                               allFCampaigns.map((campaign, index) => (
                                 <tr key={index}>

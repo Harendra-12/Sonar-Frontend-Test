@@ -6,6 +6,7 @@ import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import { toast } from 'react-toastify';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function AllAiAgent() {
     const navigate = useNavigate();
@@ -119,7 +120,10 @@ function AllAiAgent() {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {loading ? <SkeletonTableLoader row={15} col={5} /> : (
+                                                        {loading ?
+                                                        //  <SkeletonTableLoader row={15} col={5} />
+                                                          <ThreeDotedLoader />
+                                                          : (
                                                             <>
                                                                 {allConfigData?.length > 0 ?
                                                                     allConfigData?.map((item, index) => {

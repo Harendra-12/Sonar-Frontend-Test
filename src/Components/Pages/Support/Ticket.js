@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useNavigate } from 'react-router-dom'
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 
 function Ticket() {
@@ -157,9 +158,12 @@ function Ticket() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {/* {loading ? (
-                                    <SkeletonTableLoader col={3} row={15} />
+                                  {/* {loading ? 
+                                  (
+                                    // <SkeletonTableLoader col={3} row={15} />
+                                     <ThreeDotedLoader />
                                   ) : ( */}
+                                    
                                   <>
 
                                     <tr >
@@ -194,6 +198,7 @@ function Ticket() {
                                     </tr>
 
                                   </>
+                                  {/* // )} */}
                                 </tbody>
                               </table>
                             </div>

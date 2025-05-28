@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function PortNumber() {
   const navigate = useNavigate();
@@ -257,7 +258,10 @@ function PortNumber() {
                                 <td colSpan={99}>No Permission</td>
                               </tr>
                             ) : loading ?
-                              (<SkeletonTableLoader col={10} row={15} />)
+                              (
+                              // <SkeletonTableLoader col={10} row={15} />
+                                  <ThreeDotedLoader />
+                              )
                               : (
                                 <>
                                   {portData.length > 0 &&
