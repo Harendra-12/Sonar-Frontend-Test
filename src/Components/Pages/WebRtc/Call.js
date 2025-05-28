@@ -83,10 +83,12 @@ function Call({
   setEndDate,
   setSearchQuery,
   setFilterBy,
-  setIsLoading,
+  setLoading,
   setIsCallLoading,
   loading,
   isCallLoading,
+  isChatLoadedForNextPage,
+  setIsChatLoadedForNextPage
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -122,6 +124,7 @@ function Call({
     if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
       if (!isCallLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
+        setIsChatLoadedForNextPage(true)
       }
     }
   };
@@ -158,6 +161,7 @@ function Call({
       setEndDate(endDateFlag);
     }
   }, [startDateFlag, endDateFlag, filterBy]);
+
   useEffect(() => {
     let filteredCalls = [];
     switch (clickStatus) {
@@ -206,42 +210,44 @@ function Call({
     //   });
     // }
     setPreviewCalls(filteredCalls);
-    // if (clickedCall == null) {
-    setClickedCall(data[0]);
-    // }
+    if (!isChatLoadedForNextPage) {
+      setClickedCall(data[0]);
 
-    let localClickedExtension = null;
-    if (data[0]) {
-      localClickedExtension = data[0]["Call-Direction"] === "outbound"
-        ? data[0]["variable_sip_to_user"]
-        : data[0]["variable_sip_from_user"] === extension
+
+      let localClickedExtension = null;
+      if (data[0]) {
+        localClickedExtension = data[0]["Call-Direction"] === "outbound"
           ? data[0]["variable_sip_to_user"]
-          : data[0]["variable_sip_from_user"]
-      setClickedExtension(localClickedExtension);
-      setFirstTimeClickedExtension(true);
-    }
+          : data[0]["variable_sip_from_user"] === extension
+            ? data[0]["variable_sip_to_user"]
+            : data[0]["variable_sip_from_user"]
+        setClickedExtension(localClickedExtension);
+        setFirstTimeClickedExtension(true);
+      }
 
-    setCallHistory(
-      data[0] &&
-      allApiData?.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            //   item["variable_sip_from_user"] === clickedExtension ||
-            //   item["variable_sip_to_user"] === clickedExtension
-            // );
-            (
-              // item["variable_sip_from_user"] === extension &&
-              item["variable_sip_to_user"] === localClickedExtension
-            ) ||
-            (
-              // item["variable_sip_to_user"] === extension &&
-              item["variable_sip_from_user"] === localClickedExtension)
-          );
-        }
-        return item["variable_sip_from_user"] === localClickedExtension || item["variable_sip_to_user"] === localClickedExtension;
-      })
-    );
+      setCallHistory(
+        data[0] &&
+        allApiData?.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              //   item["variable_sip_from_user"] === clickedExtension ||
+              //   item["variable_sip_to_user"] === clickedExtension
+              // );
+              (
+                // item["variable_sip_from_user"] === extension &&
+                item["variable_sip_to_user"] === localClickedExtension
+              ) ||
+              (
+                // item["variable_sip_to_user"] === extension &&
+                item["variable_sip_from_user"] === localClickedExtension)
+            );
+          }
+          return item["variable_sip_from_user"] === localClickedExtension || item["variable_sip_to_user"] === localClickedExtension;
+        })
+      );
+    }
   }, [data, clickStatus]);
+
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
@@ -894,6 +900,8 @@ function Call({
                         onClick={() => {
                           setFirstTimeClickedExtension(false);
                           setCallClickStatus("all")
+                          setLoading(true)
+                          setIsChatLoadedForNextPage(false)
                         }}>
                         <i class="fa-solid fa-phone-volume"></i>
                         <span>All</span>
@@ -903,6 +911,8 @@ function Call({
                         onClick={() => {
                           setFirstTimeClickedExtension(false)
                           setCallClickStatus("incoming")
+                          setLoading(true)
+                          setIsChatLoadedForNextPage(false)
                         }}
                       >
                         <i class="fa-solid fa-phone-arrow-down-left"></i>
@@ -913,6 +923,8 @@ function Call({
                         onClick={() => {
                           setFirstTimeClickedExtension(false);
                           setCallClickStatus("outgoing")
+                          setLoading(true)
+                          setIsChatLoadedForNextPage(false)
                         }}
                       >
                         <i class="fa-solid fa-phone-arrow-up-right"></i>
@@ -923,6 +935,8 @@ function Call({
                         onClick={() => {
                           setFirstTimeClickedExtension(false);
                           setCallClickStatus("missed")
+                          setLoading(true)
+                          setIsChatLoadedForNextPage(false)
                         }
                         }>
                         <i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
@@ -935,7 +949,7 @@ function Call({
                       onScroll={handleScroll}
                       onClick={() => setSelectedModule("callDetails")}
                     >
-                      {(loading || isCallLoading) ? (
+                      {loading ? (
                         <ContentLoader />
                       ) : // Object.keys(groupedCalls).length < 0 ? (
                         //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
@@ -984,7 +998,7 @@ function Call({
                       ) : (
                         <></>
                       )} */}
-                      {/* {isCallLoading ? (
+                      {(isCallLoading && !loading) ? (
                         <>
                           <div className="text-center">
                             <i
@@ -995,7 +1009,7 @@ function Call({
                         </>
                       ) : (
                         <div ref={targetRef}></div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>

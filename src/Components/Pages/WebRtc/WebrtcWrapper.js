@@ -24,7 +24,7 @@ import { Rnd } from "react-rnd";
 import ConferenceConfig from "./Conference/ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
@@ -93,6 +93,7 @@ const WebrtcWrapper = () => {
   const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callCurrentPage, setCallCurrentPage] = useState(1);
+  const [isChatLoadedForNextPage, setIsChatLoadedForNextPage] = useState(false)
   const [callstartDate, setCallStartDate] = useState("");
   const [callendDate, setCallEndDate] = useState("");
   const [callsearchQuery, setCallSearchQuery] = useState("");
@@ -120,6 +121,7 @@ const WebrtcWrapper = () => {
   const gainNodeRef = useRef(null);
   const analyserRef = useRef(null);
   const audio = new Audio(ringtone);
+   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -378,7 +380,7 @@ const WebrtcWrapper = () => {
   }, [
     callstartDate,
     callendDate,
-    callsearchQuery,
+    debouncedSearchTerm,
     callclickStatus,
     refreshCalls,
   ]);
@@ -549,6 +551,8 @@ const WebrtcWrapper = () => {
             setIsCallLoading={setIsCallLoading}
             loading={callloading}
             isCallLoading={isCallLoading}
+            isChatLoadedForNextPage={isChatLoadedForNextPage}
+            setIsChatLoadedForNextPage={setIsChatLoadedForNextPage}
           />
         )}
         {activePage === "all-contacts" && (
