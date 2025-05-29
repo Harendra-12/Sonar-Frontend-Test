@@ -1091,14 +1091,14 @@ function Roles() {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xxl-4 col-xl-5 col-md-5">
-                    <div className="col-2 px-0">
+                    <div className="col-12 mb-2">
                       <div className="iconWrapper">
                         <i className="fa-duotone fa-circle-exclamation"></i>
                       </div>
                     </div>
-                    <div className="col-10 ps-0">
-                      <div >
-                        <h4>
+                    <div className="col-12">
+                      <div className="mb-2">
+                        <h4 className="text-center text-orange">
                           Please type the name of new role below
                         </h4>
                       </div>
@@ -1120,7 +1120,7 @@ function Roles() {
                           }}
                         ></input>
                       </div>
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-center gap-2 mt-3">
                         <button
                           className="panelButton m-0"
                           onClick={() => {

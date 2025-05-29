@@ -1244,14 +1244,15 @@ function Navbar() {
                                 <div className="itemTitle">Dashboard</div>
                               </Link>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">
                                   Number Configuration
                                 </div>
                               </Link>
-                            </li>
-                            <li className="tabItem ">
+                            </li> */}
+                        
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-ai-agent"
                                 onClick={() => backToTop()}
@@ -1270,8 +1271,56 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Agents</div>
                               </NavLink>
+                            </li> */}
+                            <li className="tabItem ">
+                              <NavLink
+                              onClick={() => featureUnderdevelopment()}
+                                // onClick={() => backToTop()}
+                                // className={({ isActive }) =>
+                                //   isActive ||
+                                //     [
+                                //       "/all-ai-agent",
+                                //       "/ai-agent-add",
+                                //       "/ai-agent-edit",
+                                //     ].some((path) =>
+                                //       window.location.pathname.includes(path)
+                                //     )
+                                //     ? "nav-link active"
+                                //     : "nav-link"
+                                // }
+                              >
+                                <div className="itemTitle">All Agents</div>
+                              </NavLink>
+                            </li>
+
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Knowledge Base</div>
+                              </Link>
+                            </li>
+                                <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">
+                                  Phone Number
+                                </div>
+                              </Link>
                             </li>
                             <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Batch Calls</div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Call History</div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Billing</div>
+                              </Link>
+                            </li>
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Call Reports</div>
                               </Link>
@@ -1290,7 +1339,7 @@ function Navbar() {
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Knowledge Base</div>
                               </Link>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
@@ -2114,6 +2163,7 @@ function Navbar() {
                             isChildActive([
                               "/knowledge-base",
                               "/ticket",
+                              "/live-chat",
                               "/view-massage",
                             ])
                               ? "true"
@@ -2131,6 +2181,7 @@ function Navbar() {
                           className={`accordion-collapse collapse ${isChildActive([
                             "/knowledge-base",
                             "/ticket",
+                            "/live-chat",
                             "/view-massage",
                           ])
                             ? "show"
