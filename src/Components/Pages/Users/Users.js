@@ -339,122 +339,123 @@ const Users = () => {
                       </div>}
                     </div>
                     <div className="tableContainer position-relative">
-                      <table>
-                        <thead>
-                          <tr>
-                            {
-                              tableKeys && tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((item) => {
-                                return (
-                                  <th style={{ textTransform: "capitalize" }}>
-                                    {item == 'usages' ? 'usage' : item == 'extension_id' ? 'Extension' : item == 'usertype' ? 'Role' : item == 'status' ? 'activation' : item}
-                                  </th>
-                                )
-                              })
-                            }
-                            {/* <th>Username</th>
+                      {loading ? (
+                        // <SkeletonTableLoader col={tableKeys?.filter(key => showKeys.includes(key))?.length + 2} row={15} />
+                        // <NewDotedLoader />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              {
+                                tableKeys && tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((item) => {
+                                  return (
+                                    <th style={{ textTransform: "capitalize" }}>
+                                      {item == 'usages' ? 'usage' : item == 'extension_id' ? 'Extension' : item == 'usertype' ? 'Role' : item == 'status' ? 'activation' : item}
+                                    </th>
+                                  )
+                                })
+                              }
+                              {/* <th>Username</th>
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Usage</th> */}
-                            {tableKeys.includes("socket_status") && <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
-                              <option value="all" disabled>Status</option>
-                              <option value="online">Online</option>
-                              <option value="offline">Offline</option>
-                              <option value="all">All</option>
-                            </select></th>}
-                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                            {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
-                          </tr>
-                        </thead>
-                        <tbody className="">
-                          {noPermissionToRead || !checkViewSidebar(
-                            "User",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? (
-                            <tr>
-                              <td colSpan={99} className="text-center">You dont have any permission</td>
+                              {tableKeys.includes("socket_status") && <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                                <option value="all" disabled>Status</option>
+                                <option value="online">Online</option>
+                                <option value="offline">Offline</option>
+                                <option value="all">All</option>
+                              </select></th>}
+                              {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                              {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                             </tr>
-                          ) :
-                            loading ? (
-                              // <SkeletonTableLoader col={tableKeys?.filter(key => showKeys.includes(key))?.length + 2} row={15} />
-                              // <NewDotedLoader />
-                              <ThreeDotedLoader />
-                            ) : (
-                              <>
-                                {user &&
-                                  filterUser?.map((item, index) => {
-                                    const isCustomerAdmin =
-                                      account.email === item.email;
+                          </thead>
+                          <tbody className="">
+                            {noPermissionToRead || !checkViewSidebar(
+                              "User",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
+                              <tr>
+                                <td colSpan={99} className="text-center">You dont have any permission</td>
+                              </tr>
+                            ) :
+                              (
+                                <>
+                                  {user &&
+                                    filterUser?.map((item, index) => {
+                                      const isCustomerAdmin =
+                                        account.email === item.email;
 
-                                    // Skip rendering the row if isCustomerAdmin is true
-                                    // if (isCustomerAdmin) {
-                                    //   return null; // Return null to avoid rendering the row
-                                    // }
-                                    return (
-                                      <tr key={index}>
-                                        {tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((key, index) => {
-                                          if (key == 'name') {
-                                            return (
-                                              <td style={{ width: "180px" }}>
-                                                <div className="d-flex align-items-center">
-                                                  <div className="tableProfilePicHolder">
-                                                    {item.profile_picture ? (
-                                                      <img
-                                                        src={item.profile_picture}
-                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                      />
-                                                    ) : (
-                                                      <i className="fa-light fa-user" />
-                                                    )}
+                                      // Skip rendering the row if isCustomerAdmin is true
+                                      // if (isCustomerAdmin) {
+                                      //   return null; // Return null to avoid rendering the row
+                                      // }
+                                      return (
+                                        <tr key={index}>
+                                          {tableKeys.filter(key => showKeys.includes(key) && key !== 'profile_picture').map((key, index) => {
+                                            if (key == 'name') {
+                                              return (
+                                                <td style={{ width: "180px" }}>
+                                                  <div className="d-flex align-items-center">
+                                                    <div className="tableProfilePicHolder">
+                                                      {item.profile_picture ? (
+                                                        <img
+                                                          src={item.profile_picture}
+                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        />
+                                                      ) : (
+                                                        <i className="fa-light fa-user" />
+                                                      )}
+                                                    </div>
+                                                    <div className="ms-2">{item.name}</div>
                                                   </div>
-                                                  <div className="ms-2">{item.name}</div>
-                                                </div>
-                                              </td>
-                                            )
-                                          } else if (key == 'status') {
-                                            return (
-                                              <td style={{ width: "129px" }}>
-                                                <div className="position-relative d-flex">
-                                                  <div class="cl-toggle-switch ">
-                                                    <label class="cl-switch">
-                                                      <input type="checkbox"
-                                                        checked={item.status === "E"}
-                                                        onClick={(e) => {
-                                                          setSelectedUser(item);
-                                                          setPopUp(true);
-                                                        }}
-                                                        id="showAllCheck"
-                                                      />
-                                                      <span></span>
-                                                    </label>
+                                                </td>
+                                              )
+                                            } else if (key == 'status') {
+                                              return (
+                                                <td style={{ width: "129px" }}>
+                                                  <div className="position-relative d-flex">
+                                                    <div class="cl-toggle-switch ">
+                                                      <label class="cl-switch">
+                                                        <input type="checkbox"
+                                                          checked={item.status === "E"}
+                                                          onClick={(e) => {
+                                                            setSelectedUser(item);
+                                                            setPopUp(true);
+                                                          }}
+                                                          id="showAllCheck"
+                                                        />
+                                                        <span></span>
+                                                      </label>
+                                                    </div>
                                                   </div>
-                                                </div>
-                                              </td>
-                                            )
-                                          } else if (key == 'usertype') {
-                                            return (
-                                              <td style={{ width: "106px" }}>
-                                                {item?.user_role?.roles?.name}
-                                              </td>
-                                            )
-                                          } else if (key == 'extension_id') {
-                                            return (
-                                              <td style={{ width: "176px" }}>
-                                                {item.extension?.extension || "N/A"}
-                                              </td>
-                                            )
-                                          } else {
-                                            return (
-                                              <td key={index} style={{ width: key == 'usages' && '129px' }}>
-                                                {item[key] || "N/A"}
-                                              </td>
-                                            )
-                                          }
-                                        })}
+                                                </td>
+                                              )
+                                            } else if (key == 'usertype') {
+                                              return (
+                                                <td style={{ width: "106px" }}>
+                                                  {item?.user_role?.roles?.name}
+                                                </td>
+                                              )
+                                            } else if (key == 'extension_id') {
+                                              return (
+                                                <td style={{ width: "176px" }}>
+                                                  {item.extension?.extension || "N/A"}
+                                                </td>
+                                              )
+                                            } else {
+                                              return (
+                                                <td key={index} style={{ width: key == 'usages' && '129px' }}>
+                                                  {item[key] || "N/A"}
+                                                </td>
+                                              )
+                                            }
+                                          })}
 
-                                        {/* <td style={{ width: "180px" }}>
+                                          {/* <td style={{ width: "180px" }}>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">
                                               {item.profile_picture ? (
@@ -472,7 +473,7 @@ const Users = () => {
                                         <td style={{ width: "176px" }}>
                                           {item.extension?.extension || "N/A"}
                                         </td> */}
-                                        {/* <td
+                                          {/* <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
@@ -481,10 +482,10 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                        {/* <td style={{ width: "106px" }}>
+                                          {/* <td style={{ width: "106px" }}>
                                           {item?.user_role?.roles?.name}
                                         </td> */}
-                                        {/* <td style={{ width: "129px" }}
+                                          {/* <td style={{ width: "129px" }}
                                           onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
@@ -493,53 +494,54 @@ const Users = () => {
                                         >
                                           {item?.usages}
                                         </td> */}
-                                        {tableKeys.includes('socket_status') && <td style={{ width: "156px" }}>
-                                          <span
-                                            className={
-                                              onlineUser.includes(item.id)
-                                                ? "extensionStatus online mx-auto"
-                                                : "extensionStatus mx-auto"
-                                            }
-                                          ></span>
-                                        </td>}
-                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
-                                          <button
-                                            className="tableButton edit mx-auto"
-                                            onClick={() =>
-                                              navigate(`/users-config`, {
-                                                state: item,
-                                              })
-                                            }
-                                          >
-                                            <i className="fa-solid fa-pencil"></i>
-                                          </button>
-                                        </td>}
-                                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
-                                          <button
-                                            className="tableButton delete mx-auto"
-                                            onClick={() => {
-                                              setPopUp(true);
-                                              setDeleteId(item.id);
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-trash" />
-                                          </button>
-                                        </td>}
-                                      </tr>
-                                    );
-                                  })}
-                              </>
-                            )}
+                                          {tableKeys.includes('socket_status') && <td style={{ width: "156px" }}>
+                                            <span
+                                              className={
+                                                onlineUser.includes(item.id)
+                                                  ? "extensionStatus online mx-auto"
+                                                  : "extensionStatus mx-auto"
+                                              }
+                                            ></span>
+                                          </td>}
+                                          {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() =>
+                                                navigate(`/users-config`, {
+                                                  state: item,
+                                                })
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>}
+                                          {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ width: "150px" }} >
+                                            <button
+                                              className="tableButton delete mx-auto"
+                                              onClick={() => {
+                                                setPopUp(true);
+                                                setDeleteId(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash" />
+                                            </button>
+                                          </td>}
+                                        </tr>
+                                      );
+                                    })}
+                                </>
+                              )}
 
-                          {user && user.length === 0 ? (
-                            <td colSpan={99}>
-                              <EmptyPrompt name="User" link="users-add" />
-                            </td>
-                          ) : (
-                            ""
-                          )}
-                        </tbody>
-                      </table>
+                            {user && user.length === 0 ? (
+                              <td colSpan={99}>
+                                <EmptyPrompt name="User" link="users-add" />
+                              </td>
+                            ) : (
+                              ""
+                            )}
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {user && user.data.length > 0 ? (
