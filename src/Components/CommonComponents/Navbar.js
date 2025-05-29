@@ -130,6 +130,7 @@ function Navbar() {
                             "/groups-edit",
                             "/access-control-list",
                             "/access-control-list-add",
+                            "/access-control-list-edit"
                           ])
                             ? "true"
                             : "false"
@@ -164,6 +165,7 @@ function Navbar() {
                           "/groups-edit",
                           "/access-control-list",
                           "/access-control-list-add",
+                          "/access-control-list-edit"
                         ])
                           ? "show"
                           : ""
@@ -1321,12 +1323,15 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
-                    "Clicktocall",
-                    permissions,
-                    account?.sectionPermissions,
-                    account?.permissions,
-                  ) &&
+                  {accountDetails?.add_on_subscription.find(
+                    (item) => item?.addon_id == 2
+                  ) ?
+                    checkViewSidebar(
+                      "Clicktocall",
+                      permissions,
+                      account?.sectionPermissions,
+                      account?.permissions,
+                    ) &&
                     <li className="dashboard ">
                       <NavLink
                         to="/click-to-call-listing"
@@ -1339,7 +1344,7 @@ function Navbar() {
                         <div className="itemTitle">Click To Call</div>
                       </NavLink>
                     </li>
-                  }
+                    : ""}
 
                   <li className="">
                     <button
@@ -2175,7 +2180,6 @@ function Navbar() {
 =======
                                 <Link
                                   // to="/ticket"
->>>>>>> 58f23a9cba051b7df48f14373b604f6b4a334397
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||

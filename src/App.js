@@ -215,6 +215,7 @@ function App() {
   const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
+  const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
   const { sendMessage } = Socket();
   GoSocket();
@@ -404,20 +405,23 @@ function App() {
           <Route
             path="/access-control-list"
             element={
-              checkViewSidebar(
-                "AccessControl",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ||
-                checkViewSidebar(
-                  "AccessControlNode",
+              accountDetails?.add_on_subscription.find(
+                (item) => item?.addon_id == 7
+              ) &&
+                (checkViewSidebar(
+                  "AccessControl",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ? (
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "browse"
+                  )) ? (
                 <AccessControl />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -427,20 +431,23 @@ function App() {
           <Route
             path="/access-control-list-add"
             element={
-              checkViewSidebar(
-                "AccessControl",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ||
-                checkViewSidebar(
-                  "AccessControlNode",
+              accountDetails?.add_on_subscription.find(
+                (item) => item?.addon_id == 7
+              ) &&
+                (checkViewSidebar(
+                  "AccessControl",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "add"
-                ) ? (
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "add"
+                  )) ? (
                 <AccessControlAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -450,20 +457,23 @@ function App() {
           <Route
             path="/access-control-list-edit"
             element={
-              checkViewSidebar(
-                "AccessControl",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ||
-                checkViewSidebar(
-                  "AccessControlNode",
+              accountDetails?.add_on_subscription.find(
+                (item) => item?.addon_id == 7
+              ) &&
+                (checkViewSidebar(
+                  "AccessControl",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "edit"
-                ) ? (
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "edit"
+                  )) ? (
                 <AccessControlEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -1344,38 +1354,48 @@ function App() {
           {/* Spam Filter end */}
 
           <Route path="click-to-call-edit" element={
-            checkViewSidebar(
-              "Clicktocall",
-              slugPermissions,
-              account?.sectionPermissions,
-              account?.permissions,
-              "edit"
-            ) ?
-              <ClickToCallEdit /> :
-              <Navigate to="/dashboard" replace />
-          } />
-          <Route
-            path="click-to-call-listing"
-            element={
+            accountDetails?.add_on_subscription.find(
+              (item) => item?.addon_id == 2
+            ) &&
               checkViewSidebar(
                 "Clicktocall",
                 slugPermissions,
                 account?.sectionPermissions,
                 account?.permissions,
-                "browse"
+                "edit"
               ) ?
+              <ClickToCallEdit /> :
+              <Navigate to="/dashboard" replace />
+          } />
+
+          <Route
+            path="click-to-call-listing"
+            element={
+              accountDetails?.add_on_subscription.find(
+                (item) => item?.addon_id == 2
+              ) &&
+                checkViewSidebar(
+                  "Clicktocall",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ?
                 <ClickToCallListing /> :
                 <Navigate to="/dashboard" replace />
             }
           />
           <Route path="click-to-call-add" element={
-            checkViewSidebar(
-              "Clicktocall",
-              slugPermissions,
-              account?.sectionPermissions,
-              account?.permissions,
-              "add"
-            ) ?
+            accountDetails?.add_on_subscription.find(
+              (item) => item?.addon_id == 2
+            ) &&
+              checkViewSidebar(
+                "Clicktocall",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "add"
+              ) ?
               <ClickToCallSetup /> :
               <Navigate to="/dashboard" replace />
           } />
