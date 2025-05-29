@@ -150,9 +150,16 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one agent");
       return
     }
-
+    const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)
     setLoading(true);
-    const payload = { ...data, business_numbers: selectedItems, account_id: account.account_id, status: "Active", user_id: selectedAgent, scheduler_info: schedulerInfo };
+    const payload = { 
+      ...data, 
+      business_numbers: selectedItems, 
+      account_id: account.account_id, 
+      status: "Active", 
+      user_id: selectedAgent, 
+      ...(isChangeInSchedulerInfo ? { scheduler_info: schedulerInfo } : {})
+    };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
       setLoading(false);
