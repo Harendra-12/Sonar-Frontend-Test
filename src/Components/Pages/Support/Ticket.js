@@ -455,8 +455,8 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                   <textarea
                     type="text"
                     name="extension"
-                    className="formItem"
-                    rows={3}
+                    className="formItem h-auto"
+                    rows={2}
                     {...register("description", { ...requiredValidator, })}
                   />
                   {errors.description && (
