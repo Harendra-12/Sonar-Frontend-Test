@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
 import { useNavigate } from "react-router-dom";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const MailSettings = ({ style }) => {
   const navigate = useNavigate();
@@ -172,107 +173,101 @@ const MailSettings = ({ style }) => {
                         style={{ overflow: "auto", padding: "10px 10px" }}
                       >
                         <div className="mx-2 tableContainer">
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Mail Driver</th>
-                                <th>Username</th>
-                                <th>Host</th>
-                                <th>Mail From</th>
-                                <th>Mail From Name</th>
-                                {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
-                                {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {noPermission || !checkViewSidebar(
-                                "MailSetting",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                          {loading ? (
+                            <ThreeDotedLoader />
+                          ) :
+                            <table>
+                              <thead>
                                 <tr>
-                                  <td colSpan={99} className="text-center">You dont have any permission</td>
+                                  <th>Mail Driver</th>
+                                  <th>Username</th>
+                                  <th>Host</th>
+                                  <th>Mail From</th>
+                                  <th>Mail From Name</th>
+                                  {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                                  {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
                                 </tr>
-                              ) : (
-                                <>
-                                  {loading ? (
-                                    <tr>
-                                      <td colSpan={99}>
-                                        <ContentLoader />
-                                      </td>
-                                    </tr>
-                                  ) : (
-                                    <>
-                                      {mailSettings &&
-                                        mailSettings.map((data, index) => (
-                                          <tr key={index}>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_driver}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_username}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_host}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_from_address}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_from_name}
-                                            </td>
-                                            {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td style={{ cursor: "default" }}>
-                                              {" "}
-                                              <button
-                                                className="tableButton edit"
-                                                // onClick={() =>
-                                                //   navigate(
-                                                //     // `/mail-settings-edit?id=${data.id}`
-                                                //     `/mail-settings-edit`,
-                                                //     {
-                                                //       state: data.id,
-                                                //     }
-                                                //   )
-                                                // }
-                                                onClick={() =>
-                                                  handleEditMailSettings(
-                                                    data.id
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil"></i>
-                                              </button>
-                                            </td>}
-                                            {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ cursor: "default" }}>
-                                              <button
-                                                className="tableButton delete"
-                                                onClick={() => {
-                                                  setOpenPopup(true);
-                                                  setDeleteSetingsId(data.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </button>
-                                            </td>}
-                                          </tr>
-                                        ))}
+                              </thead>
+                              <tbody>
+                                {noPermission || !checkViewSidebar(
+                                  "MailSetting",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
+                                  <tr>
+                                    <td colSpan={99} className="text-center">You dont have any permission</td>
+                                  </tr>
+                                ) : (
+                                  <>
+                                    {mailSettings &&
+                                      mailSettings.map((data, index) => (
+                                        <tr key={index}>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_driver}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_username}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_host}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_from_address}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_from_name}
+                                          </td>
+                                          {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td style={{ cursor: "default" }}>
+                                            {" "}
+                                            <button
+                                              className="tableButton edit"
+                                              // onClick={() =>
+                                              //   navigate(
+                                              //     // `/mail-settings-edit?id=${data.id}`
+                                              //     `/mail-settings-edit`,
+                                              //     {
+                                              //       state: data.id,
+                                              //     }
+                                              //   )
+                                              // }
+                                              onClick={() =>
+                                                handleEditMailSettings(
+                                                  data.id
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>}
+                                          {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ cursor: "default" }}>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                setOpenPopup(true);
+                                                setDeleteSetingsId(data.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                          </td>}
+                                        </tr>
+                                      ))}
 
-                                      {mailSettings.length === 0 && (
-                                        <td colSpan={99}>
-                                          <EmptyPrompt
-                                            name="Mail Settings"
-                                            link="mail-settings-add"
-                                          />
-                                        </td>
-                                      )}
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </tbody>
-                          </table>
+                                    {mailSettings.length === 0 && (
+                                      <td colSpan={99}>
+                                        <EmptyPrompt
+                                          name="Mail Settings"
+                                          link="mail-settings-add"
+                                        />
+                                      </td>
+                                    )}
+                                  </>
+                                )}
+                              </tbody>
+                            </table>
+                          }
                         </div>
                       </div>
                     </div>

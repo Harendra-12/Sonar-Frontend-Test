@@ -229,142 +229,140 @@ export default function GroupsList() {
                   </div>
                 </div> */}
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Members</th>
-                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
-                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {
-                            checkViewSidebar(
-                              "Group",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "read"
-                            ) ? (
-                              <>
-                                {loading ? (
-                                  // <SkeletonTableLoader col={4} row={10} />
-                                    <ThreeDotedLoader />
-                                ) : (
-                                  <>
-                                    {groups && groups.length > 0 ?
-                                      groups?.map((item, index) => {
-                                        return (
-                                          <tr key={index}>
-                                            <td>
-                                              {item.group_name}
-                                            </td>
-                                            <td >
-                                              <div className='group__dropdown' style={{ width: 'max-content' }}>
-                                                <Tippy content={
-                                                  <ul className="dropdown-menu-hover"
-                                                    style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}
-                                                  >
-                                                    {/* <li className="col-12">
+                      {loading ? (
+                        // <SkeletonTableLoader col={4} row={10} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Members</th>
+                              {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
+                              {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {
+                              checkViewSidebar(
+                                "Group",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
+                                <>
+                                  {groups && groups.length > 0 ?
+                                    groups?.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td>
+                                            {item.group_name}
+                                          </td>
+                                          <td >
+                                            <div className='group__dropdown' style={{ width: 'max-content' }}>
+                                              <Tippy content={
+                                                <ul className="dropdown-menu-hover"
+                                                  style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}
+                                                >
+                                                  {/* <li className="col-12">
                                                     <div className="dropdown-item fw-bold disabled">
                                                       Agents
                                                     </div>
                                                   </li> */}
-                                                    {item.groupusers.map(
-                                                      (item, index) => (
-                                                        <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
-                                                          <span className="avatar-container">
-                                                            {
-                                                              item.user?.profile_picture ?
-                                                                <img
-                                                                  alt="profile"
-                                                                  src={item.user?.profile_picture}
-                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                /> : <i className="fa-light fa-user"></i>}
-                                                          </span> <span className="ms-2">{item?.user?.name}</span>
-                                                        </div>
-                                                      )
-                                                    )}
-                                                    {/* {item.agents.length > 6 && <li className="col-12">
+                                                  {item.groupusers.map(
+                                                    (item, index) => (
+                                                      <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                        <span className="avatar-container">
+                                                          {
+                                                            item.user?.profile_picture ?
+                                                              <img
+                                                                alt="profile"
+                                                                src={item.user?.profile_picture}
+                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                              /> : <i className="fa-light fa-user"></i>}
+                                                        </span> <span className="ms-2">{item?.user?.name}</span>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {/* {item.agents.length > 6 && <li className="col-12">
                                                   <Link to="/agents" className="dropdown-item text-center text-primary">
                                                     See More
                                                   </Link>
                                                 </li>} */}
-                                                  </ul>
-                                                } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }} followCursor={true} plugins={[followCursor]}>
-                                                  <div className="hover-dropdown">
-                                                    {/* {item.agents.length} */}
-                                                    <div className="avatar-container">
-                                                      {item.groupusers?.slice(0, 4).map((item, index) => {
-                                                        return (
-                                                          <Tippy key={index} content={item?.user?.name}>
-                                                            {item.user?.profile_picture ? (
-                                                              <img
-                                                                alt="avatar"
-                                                                src={item.user?.profile_picture}
-                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                              />
-                                                            ) : (
-                                                              <i className="fa-light fa-user"></i>
-                                                            )}
-                                                          </Tippy>
-                                                        )
-                                                      })}
-                                                      {item.groupusers.length > 4 && <span>+{item.groupusers.length - 4}</span>}
-                                                    </div>
+                                                </ul>
+                                              } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }} followCursor={true} plugins={[followCursor]}>
+                                                <div className="hover-dropdown">
+                                                  {/* {item.agents.length} */}
+                                                  <div className="avatar-container">
+                                                    {item.groupusers?.slice(0, 4).map((item, index) => {
+                                                      return (
+                                                        <Tippy key={index} content={item?.user?.name}>
+                                                          {item.user?.profile_picture ? (
+                                                            <img
+                                                              alt="avatar"
+                                                              src={item.user?.profile_picture}
+                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
+                                                      )
+                                                    })}
+                                                    {item.groupusers.length > 4 && <span>+{item.groupusers.length - 4}</span>}
                                                   </div>
-                                                </Tippy>
-                                              </div>
+                                                </div>
+                                              </Tippy>
+                                            </div>
 
-                                            </td>
+                                          </td>
 
-                                            {/* <td>(999) 999-9999, (999) 999-9999</td> */}
+                                          {/* <td>(999) 999-9999, (999) 999-9999</td> */}
 
 
-                                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() =>
-                                                  navigate(
-                                                    `/groups-edit?id=${item.id}`, { state: { item: item } }
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil" />
-                                              </button>
-                                            </td>}
-                                            {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setPopUp(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash" />
-                                              </button>
-                                            </td>}
-                                          </tr>
-                                        );
-                                      }) :
-                                      <td colSpan={99}>
-                                        <EmptyPrompt
-                                          name="Groups"
-                                          link="groups-add"
-                                        />
-                                      </td>
-                                    }
-                                  </>
-                                )}
-                              </>
-                            ) : (
-                              <tr>
-                                <td colSpan={99} className='text-center'>No Permission</td>
-                              </tr>
-                            )}
-                        </tbody>
-                      </table>
+                                          {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td>
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/groups-edit?id=${item.id}`, { state: { item: item } }
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pencil" />
+                                            </button>
+                                          </td>}
+                                          {checkViewSidebar("Group", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
+                                            <button
+                                              className="tableButton delete mx-auto"
+                                              onClick={() => {
+                                                setPopUp(true);
+                                                setDeleteId(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash" />
+                                            </button>
+                                          </td>}
+                                        </tr>
+                                      );
+                                    }) :
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Groups"
+                                        link="groups-add"
+                                      />
+                                    </td>
+                                  }
+                                </>
+                              ) : (
+                                <tr>
+                                  <td colSpan={99} className='text-center'>No Permission</td>
+                                </tr>
+                              )}
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     {popUp ? (
                       <div className="popup">

@@ -1529,360 +1529,361 @@ function CdrFilterReport({ page }) {
                     </div>
 
                     <div className="tableContainer">
-                      <table>
-                        {cdr?.data?.length > 0 ? (
-                          <>
-                            <thead>
-                              <tr style={{ whiteSpace: "nowrap" }}>
-                                <th>#</th>
-                                {filteredColumns?.map((column, index) => {
-                                  return <th key={index}>{column}</th>;
-                                })}
-                              </tr>
-                            </thead>
+                      {loading ? (
+                        // <SkeletonTableLoader
+                        //   col={
+                        //     page === "billing"
+                        //       ? showKeys.length
+                        //       : showKeys.length + 1
+                        //   }
+                        //   row=
+                        // {12}
+                        // />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          {cdr?.data?.length > 0 ? (
+                            <>
+                              <thead>
+                                <tr style={{ whiteSpace: "nowrap" }}>
+                                  <th>#</th>
+                                  {filteredColumns?.map((column, index) => {
+                                    return <th key={index}>{column}</th>;
+                                  })}
+                                </tr>
+                              </thead>
 
-                            <tbody>
-                              {!checkViewSidebar(
-                                page == "ringgroup" ? "RingGroup" : page == "callcenter" ? "CallCenterQueue" : "ChannelHangupComplete",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                                loading ? (
-                                  // <SkeletonTableLoader
-                                  //   col={
-                                  //     page === "billing"
-                                  //       ? showKeys.length
-                                  //       : showKeys.length + 1
-                                  //   }
-                                  //   row=
-                                  // {12}
-                                  // />
-                                   <ThreeDotedLoader />
-                                ) : (
-                                  <>
-                                    {cdr?.data?.map((item, index) => {
-                                      const isBlocked = callBlock?.some(
-                                        (block) => {
-                                          if (
-                                            item["Call-Direction"] === "inbound"
-                                          ) {
-                                            return (
-                                              item["Caller-Caller-ID-Number"] ===
-                                              block.number
-                                            );
-                                          } else if (
-                                            item["Call-Direction"] === "outbound"
-                                          ) {
-                                            return (
-                                              item["Caller-Callee-ID-Number"] ===
-                                              block.number
-                                            );
+                              <tbody>
+                                {!checkViewSidebar(
+                                  page == "ringgroup" ? "RingGroup" : page == "callcenter" ? "CallCenterQueue" : "ChannelHangupComplete",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                  (
+                                    <>
+                                      {cdr?.data?.map((item, index) => {
+                                        const isBlocked = callBlock?.some(
+                                          (block) => {
+                                            if (
+                                              item["Call-Direction"] === "inbound"
+                                            ) {
+                                              return (
+                                                item["Caller-Caller-ID-Number"] ===
+                                                block.number
+                                              );
+                                            } else if (
+                                              item["Call-Direction"] === "outbound"
+                                            ) {
+                                              return (
+                                                item["Caller-Callee-ID-Number"] ===
+                                                block.number
+                                              );
+                                            }
                                           }
-                                        }
-                                      );
+                                        );
 
-                                      return (
-                                        <React.Fragment key={index}>
-                                          <tr className="cdrTableRow">
-                                            <td>
-                                              {(pageNumber - 1) *
-                                                Number(itemsPerPage) +
-                                                (index + 1)}
-                                            </td>
+                                        return (
+                                          <React.Fragment key={index}>
+                                            <tr className="cdrTableRow">
+                                              <td>
+                                                {(pageNumber - 1) *
+                                                  Number(itemsPerPage) +
+                                                  (index + 1)}
+                                              </td>
 
-                                            {filteredColumnForTable.map((val) => {
-                                              const key = val?.key;
-                                              if (
-                                                item.hasOwnProperty(key) &&
-                                                key !== "id"
-                                              ) {
-                                                if (key === "recording_path") {
-                                                  return (
-                                                    <td key={key}>
-                                                      {item["recording_path"] &&
-                                                        item["variable_billsec"] >
-                                                        0 && (
-                                                          <button
-                                                            className="tableButton px-2 mx-0"
-                                                            onClick={() => {
-                                                              if (
-                                                                item[
-                                                                "recording_path"
-                                                                ] ===
-                                                                currentPlaying
-                                                              ) {
-                                                                setCurrentPlaying(
-                                                                  ""
-                                                                );
-                                                                setAudioURL("");
-                                                              } else {
-                                                                handlePlaying(
+                                              {filteredColumnForTable.map((val) => {
+                                                const key = val?.key;
+                                                if (
+                                                  item.hasOwnProperty(key) &&
+                                                  key !== "id"
+                                                ) {
+                                                  if (key === "recording_path") {
+                                                    return (
+                                                      <td key={key}>
+                                                        {item["recording_path"] &&
+                                                          item["variable_billsec"] >
+                                                          0 && (
+                                                            <button
+                                                              className="tableButton px-2 mx-0"
+                                                              onClick={() => {
+                                                                if (
                                                                   item[
                                                                   "recording_path"
+                                                                  ] ===
+                                                                  currentPlaying
+                                                                ) {
+                                                                  setCurrentPlaying(
+                                                                    ""
+                                                                  );
+                                                                  setAudioURL("");
+                                                                } else {
+                                                                  handlePlaying(
+                                                                    item[
+                                                                    "recording_path"
+                                                                    ]
+                                                                  );
+                                                                }
+                                                              }}
+                                                            >
+                                                              {currentPlaying ===
+                                                                item[
+                                                                "recording_path"
+                                                                ] ? (
+                                                                <i className="fa-solid fa-chevron-up"></i>
+                                                              ) : (
+                                                                <i className="fa-solid fa-chevron-down"></i>
+                                                              )}
+                                                            </button>
+                                                          )}
+                                                      </td>
+                                                    );
+                                                  } else if (
+                                                    key === "Call-Direction"
+                                                  ) {
+                                                    const statusIcons = {
+                                                      Missed:
+                                                        "fa-solid fa-phone-missed",
+                                                      Cancelled:
+                                                        "fa-solid fa-phone-xmark",
+                                                      Failed:
+                                                        "fa-solid fa-phone-slash",
+                                                      transfer:
+                                                        "fa-solid fa-arrow-right-arrow-left",
+                                                    };
+                                                    const callIcons = {
+                                                      inbound: {
+                                                        icon:
+                                                          statusIcons[
+                                                          item.variable_DIALSTATUS
+                                                          ] ||
+                                                          "fa-phone-arrow-down-left",
+                                                        color:
+                                                          item.variable_DIALSTATUS ==
+                                                            "Missed" ||
+                                                            item.variable_DIALSTATUS ==
+                                                            "Failed"
+                                                            ? "var(--funky-boy4)"
+                                                            : "var(--funky-boy3)",
+                                                        label: "Inbound",
+                                                      },
+                                                      outbound: {
+                                                        icon:
+                                                          statusIcons[
+                                                          item.variable_DIALSTATUS
+                                                          ] ||
+                                                          "fa-phone-arrow-up-right",
+                                                        color:
+                                                          item.variable_DIALSTATUS ==
+                                                            "Missed" ||
+                                                            item.variable_DIALSTATUS ==
+                                                            "Failed"
+                                                            ? "var(--funky-boy4)"
+                                                            : "var(--color3)",
+                                                        label: "Outbound",
+                                                      },
+                                                      internal: {
+                                                        icon:
+                                                          statusIcons[
+                                                          item.variable_DIALSTATUS
+                                                          ] || "fa-headset",
+                                                        color:
+                                                          item.variable_DIALSTATUS ==
+                                                            "Missed" ||
+                                                            item.variable_DIALSTATUS ==
+                                                            "Failed"
+                                                            ? "var(--funky-boy4)"
+                                                            : "var(--color2)",
+                                                        label: "Internal",
+                                                      },
+                                                    };
+
+                                                    const callType =
+                                                      callIcons[
+                                                      item["Call-Direction"]
+                                                      ] || callIcons.internal;
+
+                                                    return (
+                                                      <td key={key}>
+                                                        <i
+                                                          className={`fa-solid ${callType.icon} me-1`}
+                                                          style={{
+                                                            color: callType.color,
+                                                          }}
+                                                        ></i>
+                                                        {callType.label}
+                                                      </td>
+                                                    );
+                                                  } else if (
+                                                    key === "application_state"
+                                                  ) {
+                                                    return (
+                                                      <td key={key}>
+                                                        {[
+                                                          "intercept",
+                                                          "eavesdrop",
+                                                          "whisper",
+                                                          "barge",
+                                                        ].includes(
+                                                          item["application_state"]
+                                                        )
+                                                          ? item[
+                                                          "other_leg_destination_number"
+                                                          ]
+                                                          : item[
+                                                          "Caller-Callee-ID-Number"
+                                                          ]}{" "}
+                                                        {item[
+                                                          "application_state_name"
+                                                        ] &&
+                                                          `(${item["application_state_name"]})`}
+                                                      </td>
+                                                    );
+                                                  } else if (
+                                                    key === "variable_billsec"
+                                                  ) {
+                                                    return (
+                                                      <td key={key}>
+                                                        {formatTime(
+                                                          item["variable_billsec"]
+                                                        )}
+                                                      </td>
+                                                    );
+                                                  } else if (
+                                                    key === "call_cost" &&
+                                                    item[key]
+                                                  ) {
+                                                    return <td>${item[key]}</td>;
+                                                  } else {
+                                                    return (
+                                                      <td key={key}>{item[key]}</td>
+                                                    );
+                                                  }
+                                                }
+                                                return null;
+                                              })}
+                                              {page !== "billing" && (
+                                                <>
+                                                  {filteredColumnForTable?.find(
+                                                    (data) => data?.key == "Block"
+                                                  ) && (
+                                                      <td>
+                                                        {item["Call-Direction"] ===
+                                                          "inbound" ||
+                                                          item["Call-Direction"] ===
+                                                          "outbound" ? (
+                                                          <button
+                                                            disabled={isBlocked}
+                                                            effect="ripple"
+                                                            className={`tableButton delete ${isBlocked
+                                                              ? "bg-danger text-white"
+                                                              : ""
+                                                              } ms-0`}
+                                                            style={{
+                                                              height: "34px",
+                                                              width: "34px",
+                                                            }}
+                                                            onClick={() => {
+                                                              setSelectedNumberToBlock(
+                                                                item[
+                                                                  "Call-Direction"
+                                                                ] === "inbound"
+                                                                  ? item[
+                                                                  "Caller-Caller-ID-Number"
                                                                   ]
-                                                                );
-                                                              }
+                                                                  : item[
+                                                                    "Call-Direction"
+                                                                  ] === "outbound"
+                                                                    ? item[
+                                                                    "Caller-Callee-ID-Number"
+                                                                    ]
+                                                                    : "N/A"
+                                                              );
+                                                              setPopUp(true);
                                                             }}
                                                           >
-                                                            {currentPlaying ===
-                                                              item[
-                                                              "recording_path"
-                                                              ] ? (
-                                                              <i className="fa-solid fa-chevron-up"></i>
-                                                            ) : (
-                                                              <i className="fa-solid fa-chevron-down"></i>
-                                                            )}
+                                                            <Tippy
+                                                              content={
+                                                                isBlocked
+                                                                  ? "Blocked"
+                                                                  : "Block"
+                                                              }
+                                                            >
+                                                              <i className="fa-solid fa-ban"></i>
+                                                            </Tippy>
                                                           </button>
+                                                        ) : (
+                                                          ""
                                                         )}
-                                                    </td>
-                                                  );
-                                                } else if (
-                                                  key === "Call-Direction"
-                                                ) {
-                                                  const statusIcons = {
-                                                    Missed:
-                                                      "fa-solid fa-phone-missed",
-                                                    Cancelled:
-                                                      "fa-solid fa-phone-xmark",
-                                                    Failed:
-                                                      "fa-solid fa-phone-slash",
-                                                    transfer:
-                                                      "fa-solid fa-arrow-right-arrow-left",
-                                                  };
-                                                  const callIcons = {
-                                                    inbound: {
-                                                      icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] ||
-                                                        "fa-phone-arrow-down-left",
-                                                      color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
-                                                          ? "var(--funky-boy4)"
-                                                          : "var(--funky-boy3)",
-                                                      label: "Inbound",
-                                                    },
-                                                    outbound: {
-                                                      icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] ||
-                                                        "fa-phone-arrow-up-right",
-                                                      color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
-                                                          ? "var(--funky-boy4)"
-                                                          : "var(--color3)",
-                                                      label: "Outbound",
-                                                    },
-                                                    internal: {
-                                                      icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] || "fa-headset",
-                                                      color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
-                                                          ? "var(--funky-boy4)"
-                                                          : "var(--color2)",
-                                                      label: "Internal",
-                                                    },
-                                                  };
-
-                                                  const callType =
-                                                    callIcons[
-                                                    item["Call-Direction"]
-                                                    ] || callIcons.internal;
-
-                                                  return (
-                                                    <td key={key}>
-                                                      <i
-                                                        className={`fa-solid ${callType.icon} me-1`}
-                                                        style={{
-                                                          color: callType.color,
-                                                        }}
-                                                      ></i>
-                                                      {callType.label}
-                                                    </td>
-                                                  );
-                                                } else if (
-                                                  key === "application_state"
-                                                ) {
-                                                  return (
-                                                    <td key={key}>
-                                                      {[
-                                                        "intercept",
-                                                        "eavesdrop",
-                                                        "whisper",
-                                                        "barge",
-                                                      ].includes(
-                                                        item["application_state"]
-                                                      )
-                                                        ? item[
-                                                        "other_leg_destination_number"
-                                                        ]
-                                                        : item[
-                                                        "Caller-Callee-ID-Number"
-                                                        ]}{" "}
-                                                      {item[
-                                                        "application_state_name"
-                                                      ] &&
-                                                        `(${item["application_state_name"]})`}
-                                                    </td>
-                                                  );
-                                                } else if (
-                                                  key === "variable_billsec"
-                                                ) {
-                                                  return (
-                                                    <td key={key}>
-                                                      {formatTime(
-                                                        item["variable_billsec"]
-                                                      )}
-                                                    </td>
-                                                  );
-                                                } else if (
-                                                  key === "call_cost" &&
-                                                  item[key]
-                                                ) {
-                                                  return <td>${item[key]}</td>;
-                                                } else {
-                                                  return (
-                                                    <td key={key}>{item[key]}</td>
-                                                  );
-                                                }
-                                              }
-                                              return null;
-                                            })}
-                                            {page !== "billing" && (
-                                              <>
-                                                {filteredColumnForTable?.find(
-                                                  (data) => data?.key == "Block"
-                                                ) && (
-                                                    <td>
-                                                      {item["Call-Direction"] ===
-                                                        "inbound" ||
-                                                        item["Call-Direction"] ===
-                                                        "outbound" ? (
+                                                      </td>
+                                                    )}
+                                                  {filteredColumnForTable?.find(
+                                                    (data) => data?.key == "Note"
+                                                  ) && (
+                                                      <td>
                                                         <button
-                                                          disabled={isBlocked}
                                                           effect="ripple"
-                                                          className={`tableButton delete ${isBlocked
-                                                            ? "bg-danger text-white"
-                                                            : ""
-                                                            } ms-0`}
+                                                          className={`tableButton ms-0`}
                                                           style={{
                                                             height: "34px",
                                                             width: "34px",
                                                           }}
                                                           onClick={() => {
-                                                            setSelectedNumberToBlock(
-                                                              item[
-                                                                "Call-Direction"
-                                                              ] === "inbound"
-                                                                ? item[
-                                                                "Caller-Caller-ID-Number"
-                                                                ]
-                                                                : item[
-                                                                  "Call-Direction"
-                                                                ] === "outbound"
-                                                                  ? item[
-                                                                  "Caller-Callee-ID-Number"
-                                                                  ]
-                                                                  : "N/A"
-                                                            );
-                                                            setPopUp(true);
+                                                            setSelectedCdr(item.id);
                                                           }}
                                                         >
                                                           <Tippy
-                                                            content={
-                                                              isBlocked
-                                                                ? "Blocked"
-                                                                : "Block"
-                                                            }
+                                                            content={"View Note"}
                                                           >
-                                                            <i className="fa-solid fa-ban"></i>
+                                                            <i className="fa-solid fa-comment-dots"></i>
                                                           </Tippy>
                                                         </button>
-                                                      ) : (
-                                                        ""
-                                                      )}
-                                                    </td>
-                                                  )}
-                                                {filteredColumnForTable?.find(
-                                                  (data) => data?.key == "Note"
-                                                ) && (
-                                                    <td>
-                                                      <button
-                                                        effect="ripple"
-                                                        className={`tableButton ms-0`}
-                                                        style={{
-                                                          height: "34px",
-                                                          width: "34px",
-                                                        }}
-                                                        onClick={() => {
-                                                          setSelectedCdr(item.id);
-                                                        }}
-                                                      >
-                                                        <Tippy
-                                                          content={"View Note"}
-                                                        >
-                                                          <i className="fa-solid fa-comment-dots"></i>
-                                                        </Tippy>
-                                                      </button>
-                                                    </td>
-                                                  )}
-                                                {filteredColumnForTable?.find(
-                                                  (data) =>
-                                                    data?.key == "Duplicate"
-                                                ) && (
-                                                    <td>
-                                                      {item?.duplicated == 1 && (
-                                                        <button
-                                                          className={`tableButton edit ms-0`}
-                                                          onClick={() =>
-                                                            duplicateColumn(item)
-                                                          }
-                                                        >
-                                                          <Tippy
-                                                            content={
-                                                              "View Duplicate"
+                                                      </td>
+                                                    )}
+                                                  {filteredColumnForTable?.find(
+                                                    (data) =>
+                                                      data?.key == "Duplicate"
+                                                  ) && (
+                                                      <td>
+                                                        {item?.duplicated == 1 && (
+                                                          <button
+                                                            className={`tableButton edit ms-0`}
+                                                            onClick={() =>
+                                                              duplicateColumn(item)
                                                             }
                                                           >
-                                                            <i className="fa-solid fa-clone"></i>
-                                                          </Tippy>
-                                                        </button>
-                                                      )}
-                                                    </td>
-                                                  )}
-                                              </>
-                                            )}
-                                          </tr>
-                                          {currentPlaying ===
-                                            item["recording_path"] &&
-                                            item["recording_path"] && (
-                                              <tr>
-                                                <td colSpan="17">
-                                                  <div className="audio-container mx-2">
-                                                    <AudioWaveformCommon
-                                                      audioUrl={audioURL}
-                                                      peaksData={JSON.parse(
-                                                        item.peak_json
-                                                      )}
-                                                    />
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            )}
-                                          {/* {
+                                                            <Tippy
+                                                              content={
+                                                                "View Duplicate"
+                                                              }
+                                                            >
+                                                              <i className="fa-solid fa-clone"></i>
+                                                            </Tippy>
+                                                          </button>
+                                                        )}
+                                                      </td>
+                                                    )}
+                                                </>
+                                              )}
+                                            </tr>
+                                            {currentPlaying ===
+                                              item["recording_path"] &&
+                                              item["recording_path"] && (
+                                                <tr>
+                                                  <td colSpan="17">
+                                                    <div className="audio-container mx-2">
+                                                      <AudioWaveformCommon
+                                                        audioUrl={audioURL}
+                                                        peaksData={JSON.parse(
+                                                          item.peak_json
+                                                        )}
+                                                      />
+                                                    </div>
+                                                  </td>
+                                                </tr>
+                                              )}
+                                            {/* {
                                           transcribeLink === item?.recording_path ?
                                             <tr
                                               className="show"
@@ -1894,21 +1895,22 @@ function CdrFilterReport({ page }) {
                                             </tr>
                                             : ""
                                         } */}
-                                        </React.Fragment>
-                                      );
-                                    })}
-                                  </>
-                                )}
-                            </tbody>
-                          </>
-                        ) : cdr?.data?.length === 0 && !loading ? (
-                          <div>
-                            <EmptyPrompt type="generic" />
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </table>
+                                          </React.Fragment>
+                                        );
+                                      })}
+                                    </>
+                                  )}
+                              </tbody>
+                            </>
+                          ) : cdr?.data?.length === 0 && !loading ? (
+                            <div>
+                              <EmptyPrompt type="generic" />
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {!loading && cdr && cdr?.data?.length > 0 ? (

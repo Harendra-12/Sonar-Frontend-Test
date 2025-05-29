@@ -21,7 +21,7 @@ const Extensions = () => {
   const [extension, setExtension] = useState();
   const [filteredExtension, setFilteredExtension] = useState([]);
   const account = useSelector((state) => state.account);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const [pageNumber, setPageNumber] = useState(1);
   const registerUser = useSelector((state) => state.registerUser);
@@ -330,8 +330,11 @@ const Extensions = () => {
                       }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <tbody>
+                      {loading ? (
+                        // <SkeletonTableLoader col={7} row={15} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
                           {noPermissionToRead || !checkViewSidebar(
                             "Extension",
                             slugPermissions,
@@ -339,176 +342,162 @@ const Extensions = () => {
                             account?.permissions,
                             "read"
                           ) ? (
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td>No Permissions</td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
+                            <tbody>
+                              <tr>
+                                <td colSpan={99}>You dont have any permission</td>
+                              </tr>
+                            </tbody>
                           ) : (
                             <>
-
-                              <>
-                                {extension &&
-                                  extension?.data?.length > 0 &&
-                                  (() => {
-                                    // Filter showKeys to include only keys that exist in extension.data
-                                    const validKeys = showKeys.filter((key) =>
-                                      extension.data.some(
-                                        (item) => key in item
-                                      )
-                                    );
-                                    return (
-                                      <table>
-                                        <thead>
-                                          <tr>
-                                            {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => {
-                                              let formattedKey = "";
-                                              if (
-                                                key ===
-                                                "effectiveCallerIdName"
-                                              ) {
-                                                formattedKey =
-                                                  "Effective CID Name";
-                                              } else if (
-                                                key === "outbundCallerIdName"
-                                              ) {
-                                                formattedKey =
-                                                  "Outbound CID Name";
-                                              }
-                                              else {
-                                                formattedKey = key
-                                                  .replace(/[-_]/g, " ")
-                                                  .toLowerCase()
-                                                  .replace(/\b\w/g, (char) =>
-                                                    char.toUpperCase()
-                                                  );
-                                              }
-                                              if (key == 'sofia_status') {
-                                                return (
-                                                  <th className="text-center">
-                                                    <span>
-                                                      <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
-                                                        <option value="all" disabled>Status</option>
-                                                        <option value="online">Online</option>
-                                                        <option value="offline">Offline</option>
-                                                        <option value="all">All</option>
-                                                      </select>
-                                                    </span>
-                                                  </th>
-                                                )
-                                              } else {
-                                                return (
-                                                  <th key={key}>
-                                                    {formattedKey}
-                                                  </th>
+                              {extension &&
+                                extension?.data?.length > 0 &&
+                                (() => {
+                                  // Filter showKeys to include only keys that exist in extension.data
+                                  const validKeys = showKeys.filter((key) =>
+                                    extension.data.some(
+                                      (item) => key in item
+                                    )
+                                  );
+                                  return (
+                                    <>
+                                      <thead>
+                                        <tr>
+                                          {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => {
+                                            let formattedKey = "";
+                                            if (
+                                              key ===
+                                              "effectiveCallerIdName"
+                                            ) {
+                                              formattedKey =
+                                                "Effective CID Name";
+                                            } else if (
+                                              key === "outbundCallerIdName"
+                                            ) {
+                                              formattedKey =
+                                                "Outbound CID Name";
+                                            }
+                                            else {
+                                              formattedKey = key
+                                                .replace(/[-_]/g, " ")
+                                                .toLowerCase()
+                                                .replace(/\b\w/g, (char) =>
+                                                  char.toUpperCase()
                                                 );
-                                              }
-                                            })}
-                                            <th>Default Outbound Number</th>
-                                            {checkViewSidebar(
-                                              "Extension",
-                                              slugPermissions,
-                                              account?.sectionPermissions,
-                                              account?.permissions,
-                                              "edit"
-                                            ) && (
+                                            }
+                                            if (key == 'sofia_status') {
+                                              return (
                                                 <th className="text-center">
-                                                  Edit
+                                                  <span>
+                                                    <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                                                      <option value="all" disabled>Status</option>
+                                                      <option value="online">Online</option>
+                                                      <option value="offline">Offline</option>
+                                                      <option value="all">All</option>
+                                                    </select>
+                                                  </span>
                                                 </th>
-                                              )}
-                                            <th className="text-center">
-                                              Add Devices
-                                            </th>
-                                          </tr>
-                                        </thead>
-                                        {
-                                          loading ? (
-                                            // <SkeletonTableLoader col={7} row={15} />
-                                              <ThreeDotedLoader />
-                                          )
-                                            : (
-                                              <tbody>
-                                                {filteredExtension.map(
-                                                  (item, index) => {
-                                                    const foundUser =
-                                                      userWithExtension.find(
-                                                        (value) =>
-                                                          value.extension ===
-                                                          item.extension
-                                                      );
-                                                    return (
-                                                      <>
-                                                        <tr key={index}>
-                                                          {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => (
-                                                            <td key={key}>
-                                                              {key === "user"
-                                                                ? foundUser
-                                                                  ?
-                                                                  <div className="d-flex align-items-center">
-                                                                    <div className="tableProfilePicHolder">
-                                                                      {foundUser.profile_picture ? (
-                                                                        <img
-                                                                          src={foundUser.profile_picture}
-                                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                        />
-                                                                      ) : (
-                                                                        <i className="fa-light fa-user" />
-                                                                      )}
-                                                                    </div>
-                                                                    <div className="ms-2">{foundUser.name}</div>
-                                                                  </div>
-                                                                  : ""
-                                                                : key == 'sofia_status' ? (
-                                                                  <span
-                                                                    className={
-                                                                      onlineExtension.includes(
-                                                                        item.extension
-                                                                      )
-                                                                        ? "extensionStatus online mx-auto"
-                                                                        : "extensionStatus mx-auto"
-                                                                    }
-                                                                  ></span>
-                                                                ) :
-                                                                  item[key]}
-                                                            </td>
-                                                          ))}
-                                                          <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
-                                                          {checkViewSidebar(
-                                                            "Extension",
-                                                            slugPermissions,
-                                                            account?.sectionPermissions,
-                                                            account?.permissions,
-                                                            "edit"
-                                                          ) && (
-                                                              <td
-                                                                style={{
-                                                                  cursor: "default",
-                                                                }}
-                                                              >
-                                                                <button
-                                                                  className="tableButton edit mx-auto"
-                                                                  onClick={() =>
-                                                                    navigate(
-                                                                      `/extensions-edit?id=${item.id}`
-                                                                    )
-                                                                  }
-                                                                >
-                                                                  <i className="fa-solid fa-pencil"></i>
-                                                                </button>
-                                                              </td>
-                                                            )}
-                                                          <td
-                                                            style={{
-                                                              cursor: "default",
-                                                            }}
-                                                          >
-                                                            {/* {item.provisionings ? (
+                                              )
+                                            } else {
+                                              return (
+                                                <th key={key}>
+                                                  {formattedKey}
+                                                </th>
+                                              );
+                                            }
+                                          })}
+                                          <th>Default Outbound Number</th>
+                                          {checkViewSidebar(
+                                            "Extension",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit"
+                                          ) && (
+                                              <th className="text-center">
+                                                Edit
+                                              </th>
+                                            )}
+                                          <th className="text-center">
+                                            Add Devices
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {filteredExtension.map(
+                                          (item, index) => {
+                                            const foundUser =
+                                              userWithExtension.find(
+                                                (value) =>
+                                                  value.extension ===
+                                                  item.extension
+                                              );
+                                            return (
+                                              <>
+                                                <tr key={index}>
+                                                  {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => (
+                                                    <td key={key}>
+                                                      {key === "user"
+                                                        ? foundUser
+                                                          ?
+                                                          <div className="d-flex align-items-center">
+                                                            <div className="tableProfilePicHolder">
+                                                              {foundUser.profile_picture ? (
+                                                                <img
+                                                                  src={foundUser.profile_picture}
+                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                />
+                                                              ) : (
+                                                                <i className="fa-light fa-user" />
+                                                              )}
+                                                            </div>
+                                                            <div className="ms-2">{foundUser.name}</div>
+                                                          </div>
+                                                          : ""
+                                                        : key == 'sofia_status' ? (
+                                                          <span
+                                                            className={
+                                                              onlineExtension.includes(
+                                                                item.extension
+                                                              )
+                                                                ? "extensionStatus online mx-auto"
+                                                                : "extensionStatus mx-auto"
+                                                            }
+                                                          ></span>
+                                                        ) :
+                                                          item[key]}
+                                                    </td>
+                                                  ))}
+                                                  <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                                  {checkViewSidebar(
+                                                    "Extension",
+                                                    slugPermissions,
+                                                    account?.sectionPermissions,
+                                                    account?.permissions,
+                                                    "edit"
+                                                  ) && (
+                                                      <td
+                                                        style={{
+                                                          cursor: "default",
+                                                        }}
+                                                      >
+                                                        <button
+                                                          className="tableButton edit mx-auto"
+                                                          onClick={() =>
+                                                            navigate(
+                                                              `/extensions-edit?id=${item.id}`
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa-solid fa-pencil"></i>
+                                                        </button>
+                                                      </td>
+                                                    )}
+                                                  <td
+                                                    style={{
+                                                      cursor: "default",
+                                                    }}
+                                                  >
+                                                    {/* {item.provisionings ? (
                                                         <button
                                                           className="tableButton edit mx-auto"
                                                           onClick={() =>
@@ -528,35 +517,34 @@ const Extensions = () => {
                                                           <i className="fa-solid fa-phone-office"></i>
                                                         </button>
                                                       ) : ( */}
-                                                            <button
-                                                              className="tableButton mx-auto"
-                                                              onClick={() =>
-                                                                navigate(
-                                                                  "/all-devices",
-                                                                  {
-                                                                    state: {
-                                                                      extension:
-                                                                        item.extension,
-                                                                      id: item.id,
-                                                                    },
-                                                                  }
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fa-solid fa-plus"></i>
-                                                            </button>
-                                                            {/* )} */}
-                                                          </td>
-                                                        </tr>
-                                                      </>
-                                                    );
-                                                  }
-                                                )}
-                                              </tbody>)}
-                                      </table>
-                                    );
-                                  })()}
-                              </>
+                                                    <button
+                                                      className="tableButton mx-auto"
+                                                      onClick={() =>
+                                                        navigate(
+                                                          "/all-devices",
+                                                          {
+                                                            state: {
+                                                              extension:
+                                                                item.extension,
+                                                              id: item.id,
+                                                            },
+                                                          }
+                                                        )
+                                                      }
+                                                    >
+                                                      <i className="fa-solid fa-plus"></i>
+                                                    </button>
+                                                    {/* )} */}
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      </tbody>
+                                    </>
+                                  );
+                                })()}
                             </>
                           )}
 
@@ -570,8 +558,8 @@ const Extensions = () => {
                           ) : (
                             ""
                           )}
-                        </tbody>
-                      </table>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {extension && extension.data.length > 0 ? (
@@ -593,7 +581,7 @@ const Extensions = () => {
           </div>
         </div>
       </section>
-    </main>
+    </main >
   );
 };
 

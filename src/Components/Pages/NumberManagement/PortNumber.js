@@ -231,38 +231,38 @@ function PortNumber() {
                         }
                       </div>
                       <div className="tableContainer">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Id</th>
-                              <th>Name</th>
-                              <th>Company Name</th>
-                              <th>Billing Address</th>
-                              <th>Pin</th>
-                              <th>Carrier</th>
-                              <th>Account no.</th>
-                              <th>Phone no.</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {noPermissionToRead || !checkViewSidebar(
-                              "Port",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "read"
-                            ) ? (
+                        {loading ?
+                          (
+                            // <SkeletonTableLoader col={10} row={15} />
+                            <ThreeDotedLoader />
+                          )
+                          : <table>
+                            <thead>
                               <tr>
-                                <td colSpan={99}>No Permission</td>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Company Name</th>
+                                <th>Billing Address</th>
+                                <th>Pin</th>
+                                <th>Carrier</th>
+                                <th>Account no.</th>
+                                <th>Phone no.</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                               </tr>
-                            ) : loading ?
-                              (
-                              // <SkeletonTableLoader col={10} row={15} />
-                                  <ThreeDotedLoader />
-                              )
-                              : (
+                            </thead>
+                            <tbody>
+                              {noPermissionToRead || !checkViewSidebar(
+                                "Port",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
+                                <tr>
+                                  <td colSpan={99}>No Permission</td>
+                                </tr>
+                              ) : (
                                 <>
                                   {portData.length > 0 &&
                                     portData.map((item) => {
@@ -372,8 +372,9 @@ function PortNumber() {
                                   )}
                                 </>
                               )}
-                          </tbody>
-                        </table>
+                            </tbody>
+                          </table>
+                        }
                       </div>
                     </div>
                   </div>

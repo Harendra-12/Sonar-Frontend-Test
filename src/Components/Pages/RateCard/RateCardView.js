@@ -161,31 +161,32 @@ function RateCardView() {
                                         <div className='tab-content' id="nav-tabContent">
                                             <div className='tab-pane fade show active' id="nav-in" role="tabpanel">
                                                 <div className="tableContainer">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Source</th>
-                                                                <th>Destination</th>
-                                                                {/* <th>Vendor Name</th> */}
-                                                                <th>Country</th>
-                                                                <th>Selling Billing Block</th>
-                                                                {/* <th>Outbound Rate</th> */}
-                                                                <th>Inbound Rate</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {!checkViewSidebar(
-                                                                "Ratecard",
-                                                                slugPermissions,
-                                                                account?.sectionPermissions,
-                                                                account?.permissions,
-                                                                "read"
-                                                            ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                                                                loading ?
-                                                                    // <SkeletonTableLoader col={6} row={15} />
-                                                                     <ThreeDotedLoader />
-                                                                     : (
+                                                    {loading ?
+                                                        // <SkeletonTableLoader col={6} row={15} />
+                                                        <ThreeDotedLoader />
+                                                        :
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Source</th>
+                                                                    <th>Destination</th>
+                                                                    {/* <th>Vendor Name</th> */}
+                                                                    <th>Country</th>
+                                                                    <th>Selling Billing Block</th>
+                                                                    {/* <th>Outbound Rate</th> */}
+                                                                    <th>Inbound Rate</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {!checkViewSidebar(
+                                                                    "Ratecard",
+                                                                    slugPermissions,
+                                                                    account?.sectionPermissions,
+                                                                    account?.permissions,
+                                                                    "read"
+                                                                ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                                                    (
                                                                         <>
                                                                             {rateCardList && rateCardList?.data?.length === 0 ? (
                                                                                 <tr>
@@ -211,8 +212,9 @@ function RateCardView() {
                                                                             )}
                                                                         </>
                                                                     )}
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    }
                                                 </div>
                                             </div>
                                             <div className='tab-pane fade' id="nav-out" role="tabpanel">

@@ -229,76 +229,78 @@ function Meeting() {
                                                 }
                                             </div>
                                             <div className="tableContainer">
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Conference Name</th>
-                                                            <th>Max. Members</th>
-                                                            <th>Conference ID</th>
-                                                            <th>Moderator Pin</th>
-                                                            <th>Joining Pin</th>
-                                                            <th>Meeting link</th>
-                                                            <th>Recordings</th>
-                                                            {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
-                                                            {/* <th>Action</th> */}
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {!checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ?
-                                                            <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                                                            loading ? (
-                                                                // <SkeletonTableLoader col={8} row={15} />
-                                                                  <ThreeDotedLoader />
-                                                            ) : (
-                                                                <>
-                                                                    {conference &&
-                                                                        conference?.data?.map((item, key) => {
-                                                                            return (
-                                                                                <>
-                                                                                    <tr key={key} onClick={() => handleGetRecord(item.id)}>
-                                                                                        <td >{item.conf_name}</td>
-                                                                                        <td>{item.conf_max_members}</td>
-                                                                                        <td>{item.conf_ext}</td>
-                                                                                        <td>
-                                                                                            <div className='d-flex align-items-center justify-content-start '>
-                                                                                                {moderatorPinId === item.id ? item.moderator_pin : "******"}
-                                                                                                <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            {item?.participate_pin && <div className='d-flex align-items-center justify-content-start '>
-                                                                                                {participantPinId === item.id ? item.participate_pin : "******"}
-                                                                                                <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                            </div>}
-                                                                                        </td>
-                                                                                        <td style={{ width: "174px" }}>{item.conf_url}</td>
-                                                                                        <td>
-                                                                                            <div
-                                                                                                className="tableButton"
-                                                                                                onClick={() => setShowRecordingsPopup(true)}
-                                                                                            >
-                                                                                                <i className="fa-solid fa-archive"></i>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
-                                                                                            <div
-                                                                                                className="tableButton delete"
-                                                                                                onClick={() => {
-                                                                                                    setDeleteId(item.id);
-                                                                                                    setPopUp(true);
-                                                                                                }}
-                                                                                            >
-                                                                                                <i className="fa-solid fa-trash"></i>
-                                                                                            </div>
-                                                                                        </td>}
-                                                                                    </tr>
-                                                                                </>
-                                                                            );
-                                                                        })}{" "}
-                                                                </>
-                                                            )}
-                                                    </tbody>
-                                                </table>
+                                                {loading ? (
+                                                    // <SkeletonTableLoader col={8} row={15} />
+                                                    <ThreeDotedLoader />
+                                                ) :
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Conference Name</th>
+                                                                <th>Max. Members</th>
+                                                                <th>Conference ID</th>
+                                                                <th>Moderator Pin</th>
+                                                                <th>Joining Pin</th>
+                                                                <th>Meeting link</th>
+                                                                <th>Recordings</th>
+                                                                {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
+                                                                {/* <th>Action</th> */}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {!checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ?
+                                                                <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                                                (
+                                                                    <>
+                                                                        {conference &&
+                                                                            conference?.data?.map((item, key) => {
+                                                                                return (
+                                                                                    <>
+                                                                                        <tr key={key} onClick={() => handleGetRecord(item.id)}>
+                                                                                            <td >{item.conf_name}</td>
+                                                                                            <td>{item.conf_max_members}</td>
+                                                                                            <td>{item.conf_ext}</td>
+                                                                                            <td>
+                                                                                                <div className='d-flex align-items-center justify-content-start '>
+                                                                                                    {moderatorPinId === item.id ? item.moderator_pin : "******"}
+                                                                                                    <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                {item?.participate_pin && <div className='d-flex align-items-center justify-content-start '>
+                                                                                                    {participantPinId === item.id ? item.participate_pin : "******"}
+                                                                                                    <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                                </div>}
+                                                                                            </td>
+                                                                                            <td style={{ width: "174px" }}>{item.conf_url}</td>
+                                                                                            <td>
+                                                                                                <div
+                                                                                                    className="tableButton"
+                                                                                                    onClick={() => setShowRecordingsPopup(true)}
+                                                                                                >
+                                                                                                    <i className="fa-solid fa-archive"></i>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
+                                                                                                <div
+                                                                                                    className="tableButton delete"
+                                                                                                    onClick={() => {
+                                                                                                        setDeleteId(item.id);
+                                                                                                        setPopUp(true);
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <i className="fa-solid fa-trash"></i>
+                                                                                                </div>
+                                                                                            </td>}
+                                                                                        </tr>
+                                                                                    </>
+                                                                                );
+                                                                            })}{" "}
+                                                                    </>
+                                                                )}
+                                                        </tbody>
+                                                    </table>
+                                                }
                                             </div>
                                         </div>
                                     </div>

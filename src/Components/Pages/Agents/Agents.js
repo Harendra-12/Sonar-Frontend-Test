@@ -278,42 +278,42 @@ function Agents({ type }) {
                         </div>}
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            {/* <th>Caller ID</th> */}
-                            <th>Extension</th>
-                            <th>Role</th>
-                            <th>Recording</th>
-                            <th className="text-center">
-                              <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
-                                <option value="all" disabled>Status</option>
-                                <option value="online">Online</option>
-                                <option value="offline">Offline</option>
-                                <option value="all">All</option>
-                              </select>
-                            </th>
-                            {checkViewSidebar(
-                              "User",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "edit") && <th className="text-center">LogOut</th>}
-                            {checkViewSidebar(
-                              "User",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "edit") && <th className="text-center">Edit</th>}
-                            {/* <th>Status</th> */}
-                          </tr>
-                        </thead>
-                        <tbody className="">
-                          {loading ? (
-                            // <SkeletonTableLoader col={8} row={15} />
-                              <ThreeDotedLoader />
-                          ) : (
+                      {loading ? (
+                        // <SkeletonTableLoader col={8} row={15} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              {/* <th>Caller ID</th> */}
+                              <th>Extension</th>
+                              <th>Role</th>
+                              <th>Recording</th>
+                              <th className="text-center">
+                                <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                                  <option value="all" disabled>Status</option>
+                                  <option value="online">Online</option>
+                                  <option value="offline">Offline</option>
+                                  <option value="all">All</option>
+                                </select>
+                              </th>
+                              {checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit") && <th className="text-center">LogOut</th>}
+                              {checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit") && <th className="text-center">Edit</th>}
+                              {/* <th>Status</th> */}
+                            </tr>
+                          </thead>
+                          <tbody className="">
                             <>
                               {
                                 checkViewSidebar(
@@ -423,9 +423,9 @@ function Agents({ type }) {
                                   )
                               }
                             </>
-                          )}
-                        </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent

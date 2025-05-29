@@ -352,113 +352,112 @@ function CallCenterQueue() {
                         }
                       </div>
                       <div className="tableContainer">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Tag</th>
-                              <th>Queue Name</th>
-                              <th>Extension</th>
-                              <th>Strategy</th>
-                              <th>Total Agents</th>
-                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Status</th>}
-                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
-                              {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {noPermissionToRead || !checkViewSidebar(
-                              "CallCenterQueue",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "read"
-                            ) ? (
+                        {loading ? (
+                          // <SkeletonTableLoader col={8} row={15} />
+                          <ThreeDotedLoader />
+                        ) :
+                          <table>
+                            <thead>
                               <tr>
-                                <td colSpan={99}>No Permission</td>
+                                <th>Tag</th>
+                                <th>Queue Name</th>
+                                <th>Extension</th>
+                                <th>Strategy</th>
+                                <th>Total Agents</th>
+                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Status</th>}
+                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
+                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
                               </tr>
-                            ) : (
-                              <>
-                                {loading ? (
-                                  // <SkeletonTableLoader col={8} row={15} />
-                                    <ThreeDotedLoader />
-                                ) : (
-                                  <>
-                                    {callCenter &&
-                                      callCenter.data.map((item) => {
-                                        return (
-                                          <tr>
-                                            <td>
-                                              {item.tag}
-                                            </td>
-                                            <td>
-                                              {item.queue_name}
-                                            </td>
-                                            <td>
-                                              {item.extension}
-                                            </td>
-                                            <td>
-                                              {item.strategy}
-                                            </td>
-                                            <td >
-                                              <Tippy content={
-                                                <ul className="dropdown-menu-hover"
-                                                  style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
-                                                >
-                                                  {/* <li className="col-12">
+                            </thead>
+                            <tbody>
+                              {noPermissionToRead || !checkViewSidebar(
+                                "CallCenterQueue",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
+                                <tr>
+                                  <td colSpan={99}>No Permission</td>
+                                </tr>
+                              ) : (
+                                <>
+                                  {callCenter &&
+                                    callCenter.data.map((item) => {
+                                      return (
+                                        <tr>
+                                          <td>
+                                            {item.tag}
+                                          </td>
+                                          <td>
+                                            {item.queue_name}
+                                          </td>
+                                          <td>
+                                            {item.extension}
+                                          </td>
+                                          <td>
+                                            {item.strategy}
+                                          </td>
+                                          <td >
+                                            <Tippy content={
+                                              <ul className="dropdown-menu-hover"
+                                                style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
+                                              >
+                                                {/* <li className="col-12">
                                                     <div className="dropdown-item fw-bold disabled">
                                                       Agents
                                                     </div>
                                                   </li> */}
-                                                  {item.agents.map(
-                                                    (item, index) => (
-                                                      <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
-                                                        <span className="avatar-container">
-                                                          {
-                                                            item.profile_picture ?
-                                                              <img
-                                                                alt="profile"
-                                                                src={item.profile_picture}
-                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                              /> : <i className="fa-light fa-user"></i>}
-                                                        </span> <span className="ms-2">{item?.username}</span>
-                                                      </div>
-                                                    )
-                                                  )}
-                                                  {/* {item.agents.length > 6 && <li className="col-12">
+                                                {item.agents.map(
+                                                  (item, index) => (
+                                                    <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                      <span className="avatar-container">
+                                                        {
+                                                          item.profile_picture ?
+                                                            <img
+                                                              alt="profile"
+                                                              src={item.profile_picture}
+                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                            /> : <i className="fa-light fa-user"></i>}
+                                                      </span> <span className="ms-2">{item?.username}</span>
+                                                    </div>
+                                                  )
+                                                )}
+                                                {/* {item.agents.length > 6 && <li className="col-12">
                                                   <Link to="/agents" className="dropdown-item text-center text-primary">
                                                     See More
                                                   </Link>
                                                 </li>} */}
-                                                </ul>
-                                              } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
-                                                <div className="hover-dropdown">
-                                                  {/* {item.agents.length} */}
-                                                  <div className="avatar-container">
-                                                    {item.agents?.slice(0, 4).map((item, index) => {
-                                                      return (
-                                                        <Tippy key={index} content={item?.username}>
-                                                          {item.profile_picture ? (
-                                                            <img
-                                                              alt="avatar"
-                                                              src={item.profile_picture}
-                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                            />
-                                                          ) : (
-                                                            <i className="fa-light fa-user"></i>
-                                                          )}
-                                                        </Tippy>
-                                                      )
-                                                    })}
-                                                    {item.agents.length > 4 && <span>+{item.agents.length - 4}</span>}
-                                                  </div>
+                                              </ul>
+                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                              <div className="hover-dropdown">
+                                                {/* {item.agents.length} */}
+                                                <div className="avatar-container">
+                                                  {item.agents?.slice(0, 4).map((item, index) => {
+                                                    return (
+                                                      <Tippy key={index} content={item?.username}>
+                                                        {item.profile_picture ? (
+                                                          <img
+                                                            alt="avatar"
+                                                            src={item.profile_picture}
+                                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                          />
+                                                        ) : (
+                                                          <i className="fa-light fa-user"></i>
+                                                        )}
+                                                      </Tippy>
+                                                    )
+                                                  })}
+                                                  {item.agents.length > 4 && <span>+{item.agents.length - 4}</span>}
                                                 </div>
-                                              </Tippy>
+                                              </div>
+                                            </Tippy>
 
-                                            </td>
-                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
-                                              <td>
-                                                <div className="my-auto position-relative d-flex justify-content-center ">
-                                                  {/* <label className="switch">
+                                          </td>
+                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                            <td>
+                                              <div className="my-auto position-relative d-flex justify-content-center ">
+                                                {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={item.status == 1}
@@ -471,23 +470,23 @@ function CallCenterQueue() {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
-                                                      <input
-                                                        type="checkbox"
-                                                        checked={item.status == 1}
-                                                        onClick={(e) => {
-                                                          setSelectedCallCenter(item);
-                                                          setPopUp(true);
-                                                        }}
-                                                        // {...register("status")}
-                                                        id="showAllCheck"
-                                                      />
-                                                      <span></span>
-                                                    </label>
-                                                  </div>
+                                                <div class="cl-toggle-switch">
+                                                  <label class="cl-switch">
+                                                    <input
+                                                      type="checkbox"
+                                                      checked={item.status == 1}
+                                                      onClick={(e) => {
+                                                        setSelectedCallCenter(item);
+                                                        setPopUp(true);
+                                                      }}
+                                                      // {...register("status")}
+                                                      id="showAllCheck"
+                                                    />
+                                                    <span></span>
+                                                  </label>
                                                 </div>
-                                                {/* <button
+                                              </div>
+                                              {/* <button
                                           className="tableButton"
                                           onClick={() =>
                                             navigate(
@@ -497,57 +496,56 @@ function CallCenterQueue() {
                                         >
                                           <i className="fa-duotone fa-gear"></i>
                                         </button> */}
-                                              </td>
-                                            }
-                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
-                                              <td>
-                                                {" "}
-                                                <button
-                                                  className="tableButton edit mx-auto"
-                                                  onClick={() =>
-                                                    navigate(
-                                                      `/cal-center-queue-edit?id=${item.id}`
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-pencil"></i>
-                                                </button>
-                                              </td>
-                                            }
-                                            {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
-                                              <td>
-                                                <button
-                                                  className="tableButton delete mx-auto"
-                                                  onClick={() => {
-                                                    setPopUp(true);
-                                                    // setDeleteToggle(true);
-                                                    setDeleteId(item.id);
-                                                  }}
-                                                >
-                                                  <i className="fa-solid fa-trash"></i>
-                                                </button>
-                                              </td>
-                                            }
-                                          </tr>
-                                        );
-                                      })}
-                                    {callCenter &&
-                                      callCenter.data.length === 0 ? (
-                                      <td colSpan={99}>
-                                        <EmptyPrompt
-                                          name="Call Center"
-                                          link="cal-center-queue-add"
-                                        />
-                                      </td>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </>
-                                )}
-                              </>
-                            )}
-                          </tbody>
-                        </table>
+                                            </td>
+                                          }
+                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                            <td>
+                                              {" "}
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() =>
+                                                  navigate(
+                                                    `/cal-center-queue-edit?id=${item.id}`
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete mx-auto"
+                                                onClick={() => {
+                                                  setPopUp(true);
+                                                  // setDeleteToggle(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                        </tr>
+                                      );
+                                    })}
+                                  {callCenter &&
+                                    callCenter.data.length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Call Center"
+                                        link="cal-center-queue-add"
+                                      />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              )}
+                            </tbody>
+                          </table>
+                        }
                       </div>
                       <div className="tableHeader mb-3">
                         {callCenter && callCenter?.data?.length > 0 ? (

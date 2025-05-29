@@ -188,140 +188,142 @@ const IvrListing = () => {
                       }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Confirm Attempts</th>
-                            <th>Timeout</th>
-                            <th>Max Failures</th>
-                            {checkViewSidebar("IvrOptions", slugPermissions, account?.sectionPermissions, account?.permissions, "browse") && <th>Options</th>}
-                            <th>Call Flow</th>
-                            {checkViewSidebar("IvrMaster", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th> Edit</th>}
-                            {checkViewSidebar("IvrMaster", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {!checkViewSidebar(
-                            "IvrMaster",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read") ? <tr>You dont have any permission</tr> :
-                            loading ? (
-                              // <SkeletonTableLoader col={8} row={15} />
-                                <ThreeDotedLoader />
-                            ) : (
-                              <>
-                                {ivr &&
-                                  ivr.data.map((item, index) => {
-                                    return (
-                                      <tr key={index}>
-                                        <td>
-                                          {item.ivr_name}
-                                        </td>
-                                        <td>
-                                          {item.ivr_type == "0"
-                                            ? "Child"
-                                            : "Master"}
-                                        </td>
-                                        <td>
-                                          {item.confirm_attempts}
-                                        </td>
-                                        <td>
-                                          {item.timeout}
-                                        </td>
-                                        <td>
-                                          {item.max_failures}
-                                        </td>
-                                        {checkViewSidebar(
-                                          "IvrOptions",
-                                          slugPermissions,
-                                          account?.sectionPermissions,
-                                          account?.permissions,
-                                          "browse") &&
-                                          < td >
+                      {loading ? (
+                        // <SkeletonTableLoader col={8} row={15} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th>Confirm Attempts</th>
+                              <th>Timeout</th>
+                              <th>Max Failures</th>
+                              {checkViewSidebar("IvrOptions", slugPermissions, account?.sectionPermissions, account?.permissions, "browse") && <th>Options</th>}
+                              <th>Call Flow</th>
+                              {checkViewSidebar("IvrMaster", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th> Edit</th>}
+                              {checkViewSidebar("IvrMaster", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {!checkViewSidebar(
+                              "IvrMaster",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read") ? <tr>You dont have any permission</tr> :
+                              (
+                                <>
+                                  {ivr &&
+                                    ivr.data.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td>
+                                            {item.ivr_name}
+                                          </td>
+                                          <td>
+                                            {item.ivr_type == "0"
+                                              ? "Child"
+                                              : "Master"}
+                                          </td>
+                                          <td>
+                                            {item.confirm_attempts}
+                                          </td>
+                                          <td>
+                                            {item.timeout}
+                                          </td>
+                                          <td>
+                                            {item.max_failures}
+                                          </td>
+                                          {checkViewSidebar(
+                                            "IvrOptions",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "browse") &&
+                                            < td >
+                                              <button
+                                                onClick={() =>
+                                                  navigate(`/ivr-options`, {
+                                                    state: {
+                                                      id: item.id,
+                                                      name: item.ivr_name,
+                                                    },
+                                                  })
+                                                }
+                                                className="tableButton option"
+                                              >
+                                                <i className="fa-duotone fa-gear"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                          <td>
                                             <button
                                               onClick={() =>
-                                                navigate(`/ivr-options`, {
+                                                navigate(`/call-flow`, {
                                                   state: {
                                                     id: item.id,
                                                     name: item.ivr_name,
                                                   },
                                                 })
                                               }
-                                              className="tableButton option"
+                                              className="tableButton callflow"
                                             >
                                               <i className="fa-duotone fa-gear"></i>
                                             </button>
                                           </td>
-                                        }
-                                        <td>
-                                          <button
-                                            onClick={() =>
-                                              navigate(`/call-flow`, {
-                                                state: {
-                                                  id: item.id,
-                                                  name: item.ivr_name,
-                                                },
-                                              })
-                                            }
-                                            className="tableButton callflow"
-                                          >
-                                            <i className="fa-duotone fa-gear"></i>
-                                          </button>
-                                        </td>
-                                        {checkViewSidebar(
-                                          "IvrMaster",
-                                          slugPermissions,
-                                          account?.sectionPermissions,
-                                          account?.permissions,
-                                          "edit") &&
-                                          <td>
-                                            {" "}
-                                            <button
-                                              className="tableButton edit"
-                                              onClick={() =>
-                                                navigate(`/ivr-edit`, {
-                                                  state: item.id,
-                                                })
-                                              }
-                                            >
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>}
-                                        {checkViewSidebar(
-                                          "IvrMaster",
-                                          slugPermissions,
-                                          account?.sectionPermissions,
-                                          account?.permissions,
-                                          "delete") &&
-                                          <td>
-                                            <button
-                                              className="tableButton delete"
-                                              onClick={() => {
-                                                setPopUp(true);
-                                                setDeleteId(item.id);
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-trash"></i>
-                                            </button>
-                                          </td>}
-                                      </tr>
-                                    );
-                                  })}
-                                {ivr && ivr.length === 0 ? (
-                                  <td colSpan={99}>
-                                    <EmptyPrompt name="IVR " link="ivr-add" />
-                                  </td>
-                                ) : (
-                                  ""
-                                )}
-                              </>
-                            )}
-                        </tbody>
-                      </table>
+                                          {checkViewSidebar(
+                                            "IvrMaster",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit") &&
+                                            <td>
+                                              {" "}
+                                              <button
+                                                className="tableButton edit"
+                                                onClick={() =>
+                                                  navigate(`/ivr-edit`, {
+                                                    state: item.id,
+                                                  })
+                                                }
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>}
+                                          {checkViewSidebar(
+                                            "IvrMaster",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "delete") &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  setPopUp(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>}
+                                        </tr>
+                                      );
+                                    })}
+                                  {ivr && ivr.length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt name="IVR " link="ivr-add" />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              )}
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {ivr && ivr.data?.length > 0 ? (

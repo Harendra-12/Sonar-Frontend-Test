@@ -15,6 +15,7 @@ import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { useSelector } from "react-redux";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 
 function VoiceMailReport() {
@@ -202,72 +203,73 @@ function VoiceMailReport() {
                       }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Source</th>
-                            <th>Destination</th>
-                            {/* <th>Recording Path</th> */}
-                            <th>Recording</th>
-                            <th>Duration</th>
-                            <th>Created At</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {!checkViewSidebar(
-                            "VoicemailRecording",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? <tr><td colSpan={99}>You don't have any permission</td></tr> :
-                            voiceMail && voiceMail.data.length > 0 ?
-                              voiceMail?.data.map((item, index) => {
-                                return (
-                                  <>
-                                    <tr className="cdrTableRow">
-                                      <td>{index + 1}.</td>
-                                      <td>{item.src}</td>
-                                      <td>{item.dest}</td>
-                                      {/* <td>www.voicemailrecordingpath.com</td> */}
-                                      <td>
-                                        <button
-                                          className="tableButton px-2 mx-0"
-                                          onClick={() => {
-                                            if (
-                                              item[
-                                              "recording_path"
-                                              ] ===
-                                              currentPlaying
-                                            ) {
-                                              setCurrentPlaying(
-                                                ""
-                                              );
-                                              setAudioURL("");
-                                            } else {
-                                              handlePlaying(
+                      {loading ? <ThreeDotedLoader /> :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Source</th>
+                              <th>Destination</th>
+                              {/* <th>Recording Path</th> */}
+                              <th>Recording</th>
+                              <th>Duration</th>
+                              <th>Created At</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {!checkViewSidebar(
+                              "VoicemailRecording",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? <tr><td colSpan={99}>You don't have any permission</td></tr> :
+                              voiceMail && voiceMail.data.length > 0 ?
+                                voiceMail?.data.map((item, index) => {
+                                  return (
+                                    <>
+                                      <tr className="cdrTableRow">
+                                        <td>{index + 1}.</td>
+                                        <td>{item.src}</td>
+                                        <td>{item.dest}</td>
+                                        {/* <td>www.voicemailrecordingpath.com</td> */}
+                                        <td>
+                                          <button
+                                            className="tableButton px-2 mx-0"
+                                            onClick={() => {
+                                              if (
                                                 item[
                                                 "recording_path"
-                                                ]
-                                              );
-                                            }
-                                          }}
-                                        >
-                                          {currentPlaying ===
-                                            item[
-                                            "recording_path"
-                                            ] ? (
-                                            <i className="fa-solid fa-chevron-up"></i>
-                                          ) : (
-                                            <i className="fa-solid fa-chevron-down"></i>
-                                          )}
-                                        </button>
-                                      </td>
-                                      <td>{item.duration}</td>
-                                      <td>{extractDate(item.created_at)}</td>
-                                    </tr>
-                                    {/* {currentPlaying == item["recording_path"] && (
+                                                ] ===
+                                                currentPlaying
+                                              ) {
+                                                setCurrentPlaying(
+                                                  ""
+                                                );
+                                                setAudioURL("");
+                                              } else {
+                                                handlePlaying(
+                                                  item[
+                                                  "recording_path"
+                                                  ]
+                                                );
+                                              }
+                                            }}
+                                          >
+                                            {currentPlaying ===
+                                              item[
+                                              "recording_path"
+                                              ] ? (
+                                              <i className="fa-solid fa-chevron-up"></i>
+                                            ) : (
+                                              <i className="fa-solid fa-chevron-down"></i>
+                                            )}
+                                          </button>
+                                        </td>
+                                        <td>{item.duration}</td>
+                                        <td>{extractDate(item.created_at)}</td>
+                                      </tr>
+                                      {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
@@ -284,7 +286,7 @@ function VoiceMailReport() {
                                             type="audio/mpeg"
                                           />
                                         </audio> */}
-                                    {/* <AudioWaveformCommon audioUrl={audioURL} />
+                                      {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -293,32 +295,33 @@ function VoiceMailReport() {
                                     </td>
                                   </tr>
                                 )} */}
-                                    {currentPlaying ===
-                                      item["recording_path"] &&
-                                      item["recording_path"] && (
-                                        <tr>
-                                          <td colSpan={99}>
-                                            <div className="audio-container mx-2">
-                                              <AudioWaveformCommon audioUrl={audioURL} />
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      )}
-                                  </>
-                                );
-                              })
-                              : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
-                          }
+                                      {currentPlaying ===
+                                        item["recording_path"] &&
+                                        item["recording_path"] && (
+                                          <tr>
+                                            <td colSpan={99}>
+                                              <div className="audio-container mx-2">
+                                                <AudioWaveformCommon audioUrl={audioURL} />
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )}
+                                    </>
+                                  );
+                                })
+                                : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
+                            }
 
-                          {/* {!loading && cdr && cdr.data.length === 0 ? (
+                            {/* {!loading && cdr && cdr.data.length === 0 ? (
                                                         <td colSpan={99}>
                                                             <EmptyPrompt name="Call" link="dashboard" />
                                                         </td>
                                                     ) : (
                                                         ""
                                                     )} */}
-                        </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent

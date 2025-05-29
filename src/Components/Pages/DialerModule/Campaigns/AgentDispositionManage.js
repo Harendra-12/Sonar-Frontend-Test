@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../CommonComponents/Header";
 
-import { backToTop, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction, } from "../../../GlobalFunction/globalFunction";
+import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction, } from "../../../GlobalFunction/globalFunction";
 import Tippy from "@tippyjs/react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ContentLoader from "../../../Loader/ContentLoader";
+import { useSelector } from "react-redux";
 
 function AgentDispositionManage() {
     const navigate = useNavigate()
@@ -16,7 +17,9 @@ function AgentDispositionManage() {
     const [newDesposition, setNewDisposition] = useState("")
     const [updateDesposition, setUpdateDesposition] = useState(false)
     const [addNew, setAddNew] = useState(false)
-    const [refresh, setRefresh] = useState(0)
+    const [refresh, setRefresh] = useState(0);
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
 
     useEffect(() => {
         async function getData() {
@@ -112,16 +115,6 @@ function AgentDispositionManage() {
                                                             <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
-                                                    <button
-                                                        type="button"
-                                                        className="panelButton"
-
-                                                    >
-                                                        <span className="text">Save</span>
-                                                        <span className="icon">
-                                                            <i className="fa-solid fa-floppy-disk"></i>
-                                                        </span>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,57 +129,72 @@ function AgentDispositionManage() {
                                                         >
                                                             Available Agent Disposition Methods
                                                         </div>
-                                                        <div className="col-auto">
-                                                            <button type="button" className="panelButton" onClick={() => { setAddNew(true); setNewDisposition(""); setUpdateDesposition(false) }}>
-                                                                <span className="text">Add</span>
-                                                                <span className="icon">
-                                                                    <i className="fa-solid fa-plus"></i>
-                                                                </span>
-                                                            </button>
-                                                        </div>
+                                                        {checkViewSidebar(
+                                                            "Disposition",
+                                                            slugPermissions,
+                                                            account?.sectionPermissions,
+                                                            account?.permissions,
+                                                            "add"
+                                                        ) &&
+                                                            <div className="col-auto">
+                                                                <button type="button" className="panelButton" onClick={() => { setAddNew(true); setNewDisposition(""); setUpdateDesposition(false) }}>
+                                                                    <span className="text">Add</span>
+                                                                    <span className="icon">
+                                                                        <i className="fa-solid fa-plus"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        }
                                                     </div>
                                                     <div className="col-xl-12">
-                                                        {allDisposition?.map((item, index) => {
-                                                            return (
-                                                                <div className="col-xl-12 pt-3 " key={index}>
-                                                                    <div className="d-flex justify-content-center align-items-center">
-                                                                        <div className="savedCardWrapper col">
-                                                                            <div>
-                                                                                <label>{item.name}</label>
+                                                        {!checkViewSidebar(
+                                                            "Disposition",
+                                                            slugPermissions,
+                                                            account?.sectionPermissions,
+                                                            account?.permissions,
+                                                            "read"
+                                                        ) ? <p>You dont have any permission</p> :
+                                                            allDisposition?.map((item, index) => {
+                                                                return (
+                                                                    <div className="col-xl-12 pt-3 " key={index}>
+                                                                        <div className="d-flex justify-content-center align-items-center">
+                                                                            <div className="savedCardWrapper col">
+                                                                                <div>
+                                                                                    <label>{item.name}</label>
+                                                                                </div>
                                                                             </div>
+                                                                            {item.is_default === 1 ? "" :
+                                                                                <div className="d-flex align-items-center ">
+                                                                                    <Tippy content='Edit this disposition'>
+                                                                                        <button
+                                                                                            onClick={() => {
+                                                                                                setSelectedDisposition(item.id);
+                                                                                                setNewDisposition(item.name);
+                                                                                                setUpdateDesposition(true);
+                                                                                                setAddNew(false);
+                                                                                            }}
+                                                                                            className="tableButton edit m-2" >
+                                                                                            <i className="fa-solid fa-pencil"></i>
+                                                                                        </button>
+                                                                                    </Tippy>
+                                                                                    <Tippy content='Delete this disposition'>
+                                                                                        <button
+                                                                                            onClick={() => {
+                                                                                                setSelectedDisposition(item.id);
+                                                                                                setAddNew(false);
+                                                                                                setUpdateDesposition(false);
+                                                                                                setDeletePopUp(true);
+                                                                                            }}
+                                                                                            className="tableButton delete m-2">
+                                                                                            <i className="fa-solid fa-trash" />
+                                                                                        </button>
+                                                                                    </Tippy>
+                                                                                </div>
+                                                                            }
                                                                         </div>
-                                                                        {item.is_default === 1 ? "" :
-                                                                            <div className="d-flex align-items-center ">
-                                                                                <Tippy content='Edit this disposition'>
-                                                                                    <button
-                                                                                        onClick={() => {
-                                                                                            setSelectedDisposition(item.id);
-                                                                                            setNewDisposition(item.name);
-                                                                                            setUpdateDesposition(true);
-                                                                                            setAddNew(false);
-                                                                                        }}
-                                                                                        className="tableButton edit m-2" >
-                                                                                        <i className="fa-solid fa-pencil"></i>
-                                                                                    </button>
-                                                                                </Tippy>
-                                                                                <Tippy content='Delete this disposition'>
-                                                                                    <button
-                                                                                        onClick={() => {
-                                                                                            setSelectedDisposition(item.id);
-                                                                                            setAddNew(false);
-                                                                                            setUpdateDesposition(false);
-                                                                                            setDeletePopUp(true);
-                                                                                        }}
-                                                                                        className="tableButton delete m-2">
-                                                                                        <i className="fa-solid fa-trash" />
-                                                                                    </button>
-                                                                                </Tippy>
-                                                                            </div>
-                                                                        }
                                                                     </div>
-                                                                </div>
-                                                            )
-                                                        })}
+                                                                )
+                                                            })}
                                                     </div>
                                                 </div>
                                                 {addNew || updateDesposition ?

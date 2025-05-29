@@ -130,6 +130,7 @@ function Navbar() {
                             "/groups-edit",
                             "/access-control-list",
                             "/access-control-list-add",
+                            "/access-control-list-edit"
                           ])
                             ? "true"
                             : "false"
@@ -164,6 +165,7 @@ function Navbar() {
                           "/groups-edit",
                           "/access-control-list",
                           "/access-control-list-add",
+                          "/access-control-list-edit"
                         ])
                           ? "show"
                           : ""
@@ -267,40 +269,43 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
-
-                            {(checkViewSidebar(
-                              "AccessControl",
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                            ) || checkViewSidebar(
-                              "AccessControlNode",
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                            )) ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/access-control-list"
-                                  onClick={backToTop}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                      [
-                                        "/access-control-list",
-                                        "/access-control-list-add",
-                                      ].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Access Control</div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              <></>
-                            )}
+                            {accountDetails?.add_on_subscription.find(
+                              (item) => item?.addon_id == 7
+                            ) ?
+                              (checkViewSidebar(
+                                "AccessControl",
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                              ) || checkViewSidebar(
+                                "AccessControlNode",
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                              )) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/access-control-list"
+                                    onClick={backToTop}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/access-control-list",
+                                          "/access-control-list-add",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Access Control</div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                <></>
+                              ) : ""
+                            }
                             {checkViewSidebar(
                               "Group",
                               permissions,
@@ -753,7 +758,8 @@ function Navbar() {
                             "/agent-disposition-manage",
                             "/dialer-cdr-report",
                             "/campaign-create",
-                            "/campaign-edit"
+                            "/campaign-edit",
+                            "/did-listing-dialer"
                           ])
                             ? "true"
                             : "false"
@@ -778,7 +784,8 @@ function Navbar() {
                           "/agent-disposition-manage",
                           "/dialer-cdr-report",
                           "/campaign-create",
-                          "/campaign-edit"
+                          "/campaign-edit",
+                          "/did-listing-dialer"
                         ])
                           ? "show"
                           : ""
@@ -890,7 +897,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Campaignlead",
+                              "Campaign",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1171,7 +1178,7 @@ function Navbar() {
                         type="button"
                         className={({ isActive }) =>
                           isActive ||
-                            ["/ivr-add", "/ivr-edit"].some((path) =>
+                            ["/ivr-add", "/ivr-edit", "/ivr-options"].some((path) =>
                               window.location.pathname.includes(path)
                             )
                             ? "nav-link active"
@@ -1318,12 +1325,15 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
-                    "Clicktocall",
-                    permissions,
-                    account?.sectionPermissions,
-                    account?.permissions,
-                  ) &&
+                  {accountDetails?.add_on_subscription.find(
+                    (item) => item?.addon_id == 2
+                  ) ?
+                    checkViewSidebar(
+                      "Clicktocall",
+                      permissions,
+                      account?.sectionPermissions,
+                      account?.permissions,
+                    ) &&
                     <li className="dashboard ">
                       <NavLink
                         to="/click-to-call-listing"
@@ -1336,7 +1346,7 @@ function Navbar() {
                         <div className="itemTitle">Click To Call</div>
                       </NavLink>
                     </li>
-                  }
+                    : ""}
 
                   <li className="">
                     <button
@@ -1621,7 +1631,7 @@ function Navbar() {
                             "/subscription-management",
                             "/rate-card",
                             "/billing-card-and-wallet",
-                            "billing-dashboard",
+                            "/billing-dashboard",
                             "/package-details",
                           ])
                             ? "true"
@@ -1644,7 +1654,7 @@ function Navbar() {
                           "/subscription-management",
                           "/rate-card",
                           "/billing-card-and-wallet",
-                          "billing-dashboard",
+                          "/billing-dashboard",
                           "/package-details",
                         ])
                           ? "show"
@@ -1839,6 +1849,7 @@ function Navbar() {
                             "/call-recording-settings",
                             "/voice-music",
                             "/custom-module",
+                            "/global-permission-config"
                           ])
                             ? "true"
                             : "false"
@@ -2172,7 +2183,6 @@ function Navbar() {
 =======
                                 <Link
                                   // to="/ticket"
->>>>>>> 58f23a9cba051b7df48f14373b604f6b4a334397
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||

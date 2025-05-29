@@ -143,37 +143,37 @@ function PermissionConfigForUser() {
                             </label>
                           </div>
                           <div className='row'>
-                          <div className='col-xl-12 col-lg-12'>
-                            <div className='row'>
-                              <div className='col-6'>
-                                <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"group"}>
-                                  <option value={"group"}>Group</option>
-                                  <option value={"role"}>Role</option>
-                                </select>
+                            <div className='col-xl-12 col-lg-12'>
+                              <div className='row'>
+                                <div className='col-6'>
+                                  <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"role"}>
+                                    <option value={"group"}>Group</option>
+                                    <option value={"role"}>Role</option>
+                                  </select>
+                                </div>
+                                {classType === "group" ? (
+                                  <div className='col-6'>
+                                    <select className='formItem' onChange={(e) => setSelectedGroup(e.target.value)}>
+                                      <option value={""}>Select Group</option>
+                                      {allGroupList?.map((item, index) => (
+                                        <option key={index} value={item.id}>{item.group_name}</option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                ) : (
+                                  <div className='col-6'>
+                                    <select className='formItem' onChange={(e) => setSelectedRole(e.target.value)}>
+                                      <option value={""}>Select Role</option>
+                                      {allRoleList.map((item, index) => {
+                                        return (
+                                          <option key={index} value={item.id}>{item.name}</option>
+                                        )
+                                      })}
+                                    </select>
+                                  </div>
+                                )}
                               </div>
-                              {classType === "group" ? (
-                                <div className='col-6'>
-                                  <select className='formItem' onChange={(e) => setSelectedGroup(e.target.value)}>
-                                    <option value={""}>Select Group</option>
-                                    {allGroupList?.map((item, index) => (
-                                      <option key={index} value={item.id}>{item.group_name}</option>
-                                    ))}
-                                  </select>
-                                </div>
-                              ) : (
-                                <div className='col-6'>
-                                  <select className='formItem' onChange={(e) => setSelectedRole(e.target.value)}>
-                                    <option value={""}>Select Role</option>
-                                    {allRoleList.map((item, index) => {
-                                      return (
-                                        <option key={index} value={item.id}>{item.name}</option>
-                                      )
-                                    })}
-                                  </select>
-                                </div>
-                              )}
                             </div>
-                          </div>
                           </div>
                         </div>
                       </div>

@@ -78,11 +78,11 @@ function DidListing({ page }) {
       if (page === "number") {
         setDid(didAll?.data);
       } else if (page === "pbx") {
-        setDid(didAll?.data?.filter((item) => item.usage === "pbx"));
+        setDid(didAll?.data?.filter((item) => item.usages === "pbx"));
       } else if (page === "dialer") {
-        setDid(didAll?.data?.filter((item) => item.usage === "dialer"));
+        setDid(didAll?.data?.filter((item) => item.usages === "dialer"));
       } else if (page === "tracker") {
-        setDid(didAll?.data?.filter((item) => item?.usage === "tracker"))
+        setDid(didAll?.data?.filter((item) => item?.usages === "tracker"))
       }
       const shouldLoad = true;
       getData(shouldLoad);
@@ -543,100 +543,100 @@ function DidListing({ page }) {
                       }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>DID</th>
-                            <th>E911</th>
-                            <th>Cname</th>
-                            <th>SMS</th>
-                            {page === "pbx" ? (
-                              <>
-                                <th>Tag</th>
-                                <th>Route</th>
-                              </>
-                            ) : (
-                              ""
-                            )}
-                            <th>Recording</th>
-                            {page === "number" ? (
-                              <>
-                                <th>Usages</th>
-                              </>
-                            ) : (
-                              ""
-                            )}
-                            {checkViewSidebar(
-                              "DidDetail",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "edit"
-                            ) &&
-                              <th style={{ textAlign: "center" }}>
-                                WhatsApp DID
-                              </th>
-                            }
-                            {checkViewSidebar(
-                              "DidDetail",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "edit"
-                            ) &&
-                              <th style={{ textAlign: "center" }}>E-fax DID</th>
-                            }
-                            {
-                              checkViewSidebar(
+                      {loading ? (
+                        // <SkeletonTableLoader
+                        //   col={page === "number" ? 10 : 12}
+                        //   row={15}
+                        // />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>DID</th>
+                              <th>E911</th>
+                              <th>Cname</th>
+                              <th>SMS</th>
+                              {page === "pbx" ? (
+                                <>
+                                  <th>Tag</th>
+                                  <th>Route</th>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                              <th>Recording</th>
+                              {page === "number" ? (
+                                <>
+                                  <th>Usages</th>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                              {checkViewSidebar(
                                 "DidDetail",
                                 slugPermissions,
                                 account?.sectionPermissions,
                                 account?.permissions,
                                 "edit"
                               ) &&
-                              <th style={{ textAlign: "center" }}>SMS DID</th>
-                            }
-                            {page === "pbx" ? (
-                              <>
                                 <th style={{ textAlign: "center" }}>
-                                  Default Caller DID
+                                  WhatsApp DID
                                 </th>
-                              </>
-                            ) : (
-                              ""
-                            )}
-                            {checkViewSidebar(
-                              "DidDetail",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "delete"
-                            ) && checkViewSidebar(
-                              "DidDetail",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "edit"
-                            ) && checkViewSidebar(
-                              "DidConfigure",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "browse"
-                            ) ?
-                              <th style={{ textAlign: "center" }}>Options</th> : ""
-                            }
-                            {/* <th>Delete</th> */}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {loading ? (
-                            // <SkeletonTableLoader
-                            //   col={page === "number" ? 10 : 12}
-                            //   row={15}
-                            // />
-                              <ThreeDotedLoader />
-                          ) : (
+                              }
+                              {checkViewSidebar(
+                                "DidDetail",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit"
+                              ) &&
+                                <th style={{ textAlign: "center" }}>E-fax DID</th>
+                              }
+                              {
+                                checkViewSidebar(
+                                  "DidDetail",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) &&
+                                <th style={{ textAlign: "center" }}>SMS DID</th>
+                              }
+                              {page === "pbx" ? (
+                                <>
+                                  <th style={{ textAlign: "center" }}>
+                                    Default Caller DID
+                                  </th>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                              {checkViewSidebar(
+                                "DidDetail",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "delete"
+                              ) && checkViewSidebar(
+                                "DidDetail",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit"
+                              ) && checkViewSidebar(
+                                "DidConfigure",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "browse"
+                              ) ?
+                                <th style={{ textAlign: "center" }}>Options</th> : ""
+                              }
+                              {/* <th>Delete</th> */}
+                            </tr>
+                          </thead>
+                          <tbody>
                             <>
                               {did &&
                                 did.map((item) => {
@@ -1125,9 +1125,9 @@ function DidListing({ page }) {
                                   );
                                 })}
                             </>
-                          )}
-                        </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent
