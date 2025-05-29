@@ -8,6 +8,7 @@ import EmptyPrompt from '../../Loader/EmptyPrompt';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import { use } from 'react';
 import { useSelector } from 'react-redux';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function RateCardView() {
     const navigate = useNavigate();
@@ -182,7 +183,9 @@ function RateCardView() {
                                                                 "read"
                                                             ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                                                                 loading ?
-                                                                    <SkeletonTableLoader col={6} row={15} /> : (
+                                                                    // <SkeletonTableLoader col={6} row={15} />
+                                                                     <ThreeDotedLoader />
+                                                                     : (
                                                                         <>
                                                                             {rateCardList && rateCardList?.data?.length === 0 ? (
                                                                                 <tr>

@@ -6,6 +6,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function DialerCdrReport() {
   const navigate = useNavigate();
@@ -309,7 +310,10 @@ function DialerCdrReport() {
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ? <SkeletonTableLoader row={15} col={11} /> :
+                          {loading ? 
+                          // <SkeletonTableLoader row={15} col={11} />
+                            <ThreeDotedLoader />
+                           :
                             filteredData && filteredData?.data?.length > 0 ? (
                               filteredData?.data?.map((item, index) => (
                                 <tr key={index}>

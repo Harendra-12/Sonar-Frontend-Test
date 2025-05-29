@@ -15,6 +15,7 @@ import EmptyPrompt from '../../Loader/EmptyPrompt';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
 import { toast } from 'react-toastify';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 export default function GroupsList() {
   const [refreshState, setRefreshState] = useState(false);
@@ -248,7 +249,8 @@ export default function GroupsList() {
                             ) ? (
                               <>
                                 {loading ? (
-                                  <SkeletonTableLoader col={4} row={10} />
+                                  // <SkeletonTableLoader col={4} row={10} />
+                                    <ThreeDotedLoader />
                                 ) : (
                                   <>
                                     {groups && groups.length > 0 ?

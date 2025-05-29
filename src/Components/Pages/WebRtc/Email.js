@@ -11,8 +11,9 @@ import MailReply from "./mailBox/MailReply";
 import EmailList from "./mailBox/EmailList";
 import ActionListMulti from "../../CommonComponents/ActionListMulti";
 import HeaderApp from "./HeaderApp";
+import NewMail from "./mailBox/NewMail";
 
-function Email() {
+function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
   const [refreshState, setRefreshState] = useState(false);
   const sessions = useSelector((state) => state.sessions);
@@ -22,11 +23,28 @@ function Email() {
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
   const [mailSettings, setMailSettings] = useState([]);
+  const [showNewMail, setShowNewMail] = useState(false);
+  const [showMailList, setShowMailList] = useState(true);
+  const [mailReplay, setMailReplay] = useState(false)
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleShowNewMail = (props) => {
+    setShowNewMail(props);
+  };
+
+  const handleListingClick = (props) => {
+    // console.log('hiii');
+    setShowMailList(props)
+  }
+
+  const handleMailReplay = (props) => {
+    setMailReplay(props)
+  }
+
 
   const fetchData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
@@ -53,6 +71,10 @@ function Email() {
     const shouldLoad = false;
     fetchData(shouldLoad);
   }
+
+
+
+
 
   return (
     <>
@@ -268,29 +290,45 @@ function Email() {
                   <div className="card-header d-flex justify-content-between align-items-center" style={{ borderColor: "var(--me-border1)", }}>
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
                     {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="btn btn-primary" onClick={() => { setShowNewMail(true); setMailReplay(false) }}>
                       <i class="fa-regular fa-envelope me-2"></i>  New Email</button>
                   </div>
                   <div className="card-body" style={{ height: "calc(100vh - 135px)", }}>
                     <div className="d-flex ">
-                      <div className="card mail_leftbar rounded-end-3 mb-0">
-                        <div className="card-body">
+                      <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
+                        <div className="card-body ps-0">
                           <ul>
-                            <li className="mail_list active">
-                              <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2"></i> Inbox</p>
-                              <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
+                            <li className=" " >
+                              <button className="mail_list active" onClick={() => { setShowMailList(true) }}>
+                                <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2" ></i> Inbox</p>
+                                <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
+                              </button>
                             </li>
-                            <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></li>
-                            <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></li>
-                            <li className="mail_list">
-                              <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p>
+                            <li ><button className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></button></li>
+                            <li className=""><button className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></button></li>
+                            <li className="">
+                              <button className="mail_list"> <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
                             </li>
                           </ul>
                         </div>
                       </div>
                       <div className="table_card">
-                        {/* <EmailList /> */}
-                        <MailReply />
+                        {/* {!selectedMail ?(
+                          <EmailList  />
+                           ) : (
+                             
+                             <MailReply />
+                        ) }
+                        {showNewMail && <NewMail />} */}
+                        {
+                          showMailList && !mailReplay && !showNewMail && <EmailList handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
+                        }
+                        {
+                          mailReplay && !showMailList && !showNewMail && <MailReply handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
+                        }
+                        {
+                          showNewMail && !mailReplay && <NewMail handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
+                        }
                       </div>
                     </div>
                   </div>
@@ -301,7 +339,7 @@ function Email() {
         </section>
       </main>
 
-
+      {/* 
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div class="modal-content">
@@ -357,21 +395,7 @@ function Email() {
                       </select>
                     </div>
                   </div>
-                  {/* <div className=" col-12">
-                    <div className="from-group">
-                      <label htmlFor="" className="from-label">BCC</label>
-                      <select
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                      >
-                        <option value={"test12@gmail.com"}>test12@gmail.com</option>
-                        <option value={"text22@gmail.com"}>text22@gmail.com</option>
-                        <option value={"test11@gmail.com"}>test11@gmail.com</option>
-                        <option value={"test15@gmail.com"}>test15@gmail.com</option>
-                      </select>
-                    </div>
-                  </div> */}
+                 
                   <div className=" col-12">
                     <div className="from-group">
                       <label htmlFor="" className="from-label">Subjects</label>
@@ -407,7 +431,7 @@ function Email() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -25,6 +25,7 @@ import Duplicates from "../WebRtc/Duplicates";
 import ExportPopUp from "../WebRtc/ExportPopUp";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import axios from "axios";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -457,10 +458,11 @@ function AICDRSearch({ page }) {
 
                                                         <tbody>
                                                             {loading ? (
-                                                                <SkeletonTableLoader
-                                                                    col={showKeys.length}
-                                                                    row={12}
-                                                                />
+                                                                // <SkeletonTableLoader
+                                                                //     col={showKeys.length}
+                                                                //     row={12}
+                                                                // />
+                                                                  <ThreeDotedLoader />
                                                             ) : (
                                                                 <>
                                                                     {cdr?.data?.map((item, index) => {

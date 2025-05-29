@@ -7,6 +7,7 @@ import { generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/
 import { toast } from 'react-toastify';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 function ElasticTrunk() {
   const navigate = useNavigate();
 
@@ -136,7 +137,10 @@ function ElasticTrunk() {
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ? <SkeletonTableLoader col={7} row={15} /> :
+                            {loading ? 
+                            // <SkeletonTableLoader col={7} row={15} /> 
+                              <ThreeDotedLoader />
+                            :
                               allTrunk && allTrunk.length > 0 ?
                                 allTrunk.map((trunk, index) => (
                                   <tr key={index}>

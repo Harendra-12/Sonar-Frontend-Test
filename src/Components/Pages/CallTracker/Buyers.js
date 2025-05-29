@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function Buyers() {
   const navigate = useNavigate();
@@ -148,7 +149,10 @@ function Buyers() {
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ? <SkeletonTableLoader col={13} row={15} /> :
+                            {loading ? 
+                            // <SkeletonTableLoader col={13} row={15} />
+                              <ThreeDotedLoader />
+                             :
                               allBuyers && allBuyers.length > 0 ?
                                 allBuyers.map((buyer, index) => (
                                   <tr key={index}>

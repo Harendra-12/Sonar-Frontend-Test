@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
 import { useSelector } from 'react-redux'
+import ThreeDotedLoader from '../../../Loader/ThreeDotedLoader';
 
 function Campaigns() {
   const navigate = useNavigate();
@@ -218,7 +219,8 @@ function Campaigns() {
                           </thead>
                           <tbody>
                             {loading ? (
-                              <SkeletonTableLoader col={8} row={15} />
+                              // <SkeletonTableLoader col={8} row={15} />
+                                <ThreeDotedLoader />
                             ) : (
                               <>
                                 {campaign?.data?.length > 0 ?

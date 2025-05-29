@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 /**
  * Agents Component
  * 
@@ -310,7 +311,8 @@ function Agents({ type }) {
                         </thead>
                         <tbody className="">
                           {loading ? (
-                            <SkeletonTableLoader col={8} row={15} />
+                            // <SkeletonTableLoader col={8} row={15} />
+                              <ThreeDotedLoader />
                           ) : (
                             <>
                               {

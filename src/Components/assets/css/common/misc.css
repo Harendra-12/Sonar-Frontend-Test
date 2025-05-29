@@ -1857,11 +1857,13 @@ input[type=number] {
     font-size: 14px;
     color: var(--black);
     font-weight: 500;
-    /* transition: all 0.4s ease-in-out; */
+    transition: all 0.4s ease-in-out;
     padding: 10px 15px;
     border-radius: 5px;
     width: 100%;
     margin-bottom: 10px;
+    border: none;
+    background: transparent;
 }
 
 .mail_leftbar .mail_list:hover {
@@ -2584,9 +2586,11 @@ input[type=number] {
     gap: 2px;
     padding: 5px;
 }
-.numberActive_box h4{
+
+.numberActive_box h4 {
     font-size: 14px !important;
 }
+
 /* .datanumber4{
     position:relative;
 }
@@ -2594,3 +2598,9 @@ input[type=number] {
         position:absolute;
     top: 106px;
 } */
+
+.imgWrapper.loader {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}

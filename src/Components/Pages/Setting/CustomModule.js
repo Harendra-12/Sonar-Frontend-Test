@@ -6,6 +6,7 @@ import Header from '../../CommonComponents/Header';
 import CustomDashboardManage from './CustomDashboardManage';
 import { useSelector } from 'react-redux';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function CustomModule() {
     const account = useSelector((state) => state.account);
@@ -124,7 +125,10 @@ function CustomModule() {
                                                 {checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
                                             </thead>
                                             <tbody>
-                                                {loading ? <SkeletonTableLoader col={9} row={10} /> :
+                                                {loading ? 
+                                                // <SkeletonTableLoader col={9} row={10} />
+                                                  <ThreeDotedLoader /> 
+                                                :
                                                     <>
                                                         {
                                                             customModule?.map((item, index) => {

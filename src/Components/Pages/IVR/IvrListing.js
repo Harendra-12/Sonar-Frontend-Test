@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const IvrListing = () => {
   const dispatch = useDispatch();
@@ -209,7 +210,8 @@ const IvrListing = () => {
                             account?.permissions,
                             "read") ? <tr>You dont have any permission</tr> :
                             loading ? (
-                              <SkeletonTableLoader col={8} row={15} />
+                              // <SkeletonTableLoader col={8} row={15} />
+                                <ThreeDotedLoader />
                             ) : (
                               <>
                                 {ivr &&

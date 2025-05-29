@@ -18,6 +18,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
@@ -350,7 +351,8 @@ const RingGroups = () => {
                             ) : (
                               <>
                                 {loading ? (
-                                  <SkeletonTableLoader col={8} row={15} />
+                                  // <SkeletonTableLoader col={8} row={15} />
+                                    <ThreeDotedLoader />
                                 ) : (
                                   <>
                                     {ringGroup &&

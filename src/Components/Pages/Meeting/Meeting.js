@@ -8,6 +8,7 @@ import axios from 'axios';
 import { set } from 'react-hook-form';
 import CircularLoader from '../../Loader/CircularLoader';
 import { useSelector } from 'react-redux';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function Meeting() {
     const [refreshState, setRefreshState] = useState(0);
@@ -246,7 +247,8 @@ function Meeting() {
                                                         {!checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ?
                                                             <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                                                             loading ? (
-                                                                <SkeletonTableLoader col={8} row={15} />
+                                                                // <SkeletonTableLoader col={8} row={15} />
+                                                                  <ThreeDotedLoader />
                                                             ) : (
                                                                 <>
                                                                     {conference &&
