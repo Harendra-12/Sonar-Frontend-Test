@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function LiveChat() {
+  const [loading, setLoading] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
   const account = useSelector((state) => state.account);
   const [aiMessageLog, setAiMessageLog] = useState([])
@@ -15,6 +16,7 @@ function LiveChat() {
     if (!sendMessage || sendMessage.trim() === "") {
       toast.error("Please enter a message");
     } else {
+      setLoading(true);
       const payload = {
         "user_id": account.id,
         "session_id": "testestsetset",
@@ -23,12 +25,14 @@ function LiveChat() {
       }
       axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/chat_bot", payload).then((res) => {
         setSendMessage("");
+        setLoading(false);
         setAiMessageLog((prev) => {
           return [...prev, { ...res.data, time: new Date().toLocaleTimeString() }];
         });
       })
         .catch((err) => {
           toast.error(err.message);
+          setLoading(false);
         });
     }
   }
@@ -168,8 +172,9 @@ function LiveChat() {
                             </div>
                             <div className="borders-color-chat">
                               <img
-                                src="https://spruko.com/demo/rixzo/dist/assets/images/faces/9.jpg"
-                                alt="You"
+                                src={account?.profile_picture ? account?.profile_picture : require('../../assets/images/placeholder-image.webp')}
+                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                alt="User"
                                 className="user-image"
                               />
                             </div>
@@ -177,9 +182,8 @@ function LiveChat() {
                           <div className="chat-message incomings">
                             <div className="borders-color-chat">
                               <img
-                                src={account?.profile_picture ? account?.profile_picture : require('../../assets/images/placeholder-image.webp')}
-                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                alt="User"
+                                src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                                alt="You"
                                 className="user-image"
                               />
                             </div>
@@ -196,8 +200,8 @@ function LiveChat() {
                     <div className="chat-input-section align-items-center">
                       <input type="text" placeholder="Type your message here..." onChange={(e) => setSendMessage(e.target.value)} value={sendMessage} />
                       <div className="btn">
-                        <button className="btns" onClick={handleSendMessageToAI}>
-                          <i className="fa-solid fa-paper-plane" />
+                        <button className="btns" onClick={handleSendMessageToAI} disabled={loading}>
+                          <i className={`fa-solid fa-${loading ? 'arrows-rotate fa-spin' : 'paper-plane'}`} />
                         </button>
                       </div>
                       <div className="icons-header ">
