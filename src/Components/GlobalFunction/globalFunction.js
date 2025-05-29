@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
 const token = localStorage.getItem("token");
+const account = localStorage.getItem("account");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -370,6 +371,9 @@ export function checkViewSidebar(
   userPermissions,
   action = undefined
 ) {
+  // Return true immediately if user is a company
+  if (JSON.parse(account)?.usertype == 'Company') return true;
+
   // Return false immediately if no permissions exist
   if (!permissions) return false;
 

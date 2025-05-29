@@ -267,40 +267,43 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
-
-                            {(checkViewSidebar(
-                              "AccessControl",
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                            ) || checkViewSidebar(
-                              "AccessControlNode",
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                            )) ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/access-control-list"
-                                  onClick={backToTop}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                      [
-                                        "/access-control-list",
-                                        "/access-control-list-add",
-                                      ].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Access Control</div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              <></>
-                            )}
+                            {accountDetails?.add_on_subscription.find(
+                              (item) => item?.addon_id == 7
+                            ) ?
+                              (checkViewSidebar(
+                                "AccessControl",
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                              ) || checkViewSidebar(
+                                "AccessControlNode",
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                              )) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/access-control-list"
+                                    onClick={backToTop}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/access-control-list",
+                                          "/access-control-list-add",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Access Control</div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                <></>
+                              ) : ""
+                            }
                             {checkViewSidebar(
                               "Group",
                               permissions,
