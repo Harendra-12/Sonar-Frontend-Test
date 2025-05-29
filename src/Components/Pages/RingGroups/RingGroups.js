@@ -323,124 +323,123 @@ const RingGroups = () => {
                         }
                       </div>
                       <div className="tableContainer mb-0">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Extension</th>
-                              <th>Strategy</th>
-                              <th>Members</th>
-                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Status</th>}
-                              <th>Description</th>
-                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                              {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {noPermissionToRead ||
-                              !checkViewSidebar(
-                                "Ringgroup",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                        {loading ? (
+                          // <SkeletonTableLoader col={8} row={15} />
+                          <ThreeDotedLoader />
+                        ) :
+                          <table>
+                            <thead>
                               <tr>
-                                <td colSpan={99}>You dont have any permission</td>
+                                <th>Name</th>
+                                <th>Extension</th>
+                                <th>Strategy</th>
+                                <th>Members</th>
+                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Status</th>}
+                                <th>Description</th>
+                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
+                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
                               </tr>
-                            ) : (
-                              <>
-                                {loading ? (
-                                  // <SkeletonTableLoader col={8} row={15} />
-                                    <ThreeDotedLoader />
-                                ) : (
-                                  <>
-                                    {ringGroup &&
-                                      ringGroup?.data?.map((item, index) => {
-                                        return (
-                                          <tr key={index}>
-                                            <td>
-                                              {item.name}
-                                            </td>
-                                            <td>
-                                              {item.extension}
-                                            </td>
-                                            <td>
-                                              {item.strategy}
-                                            </td>
+                            </thead>
+                            <tbody>
+                              {noPermissionToRead ||
+                                !checkViewSidebar(
+                                  "Ringgroup",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
+                                <tr>
+                                  <td colSpan={99}>You dont have any permission</td>
+                                </tr>
+                              ) : (
+                                <>
+                                  {ringGroup &&
+                                    ringGroup?.data?.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td>
+                                            {item.name}
+                                          </td>
+                                          <td>
+                                            {item.extension}
+                                          </td>
+                                          <td>
+                                            {item.strategy}
+                                          </td>
 
-                                            <td>
-                                              {/* {item.ring_group_destination.length} */}
-                                              <Tippy content={
-                                                <ul className="dropdown-menu-hover"
-                                                  style={{ columnCount: item.ring_group_destination.length > 8 ? 2 : 1 }}
-                                                >
-                                                  {/* <li className="col-12">
+                                          <td>
+                                            {/* {item.ring_group_destination.length} */}
+                                            <Tippy content={
+                                              <ul className="dropdown-menu-hover"
+                                                style={{ columnCount: item.ring_group_destination.length > 8 ? 2 : 1 }}
+                                              >
+                                                {/* <li className="col-12">
                                                     <div className="dropdown-item fw-bold disabled">
                                                       Agents
                                                     </div>
                                                   </li> */}
-                                                  {item.ring_group_destination.map(
-                                                    (item, index) => (
-                                                      <li>
-                                                        <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
-                                                          <span className="avatar-container">
-                                                            {
-                                                              item.profile_picture ?
-                                                                <img
-                                                                  alt="profile"
-                                                                  src={item.profile_picture}
-                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                /> : <i className="fa-light fa-user"></i>}
-                                                          </span>
-                                                          <span className="ms-2">{item?.username}</span>
-                                                        </div>
-                                                      </li>
-                                                    )
-                                                  )}
-                                                  {/* {item.ring_group_destination.length > 6 && <li className="col-12">
+                                                {item.ring_group_destination.map(
+                                                  (item, index) => (
+                                                    <li>
+                                                      <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
+                                                        <span className="avatar-container">
+                                                          {
+                                                            item.profile_picture ?
+                                                              <img
+                                                                alt="profile"
+                                                                src={item.profile_picture}
+                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                              /> : <i className="fa-light fa-user"></i>}
+                                                        </span>
+                                                        <span className="ms-2">{item?.username}</span>
+                                                      </div>
+                                                    </li>
+                                                  )
+                                                )}
+                                                {/* {item.ring_group_destination.length > 6 && <li className="col-12">
                                                     <Link to="/agents" className="dropdown-item text-center text-primary">
                                                       Show More
                                                     </Link>
                                                   </li>} */}
-                                                </ul>
-                                              } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
-                                                <div className="hover-dropdown">
-                                                  <div className="avatar-container">
-                                                    {item.ring_group_destination?.slice(0, 4).map((item, index) => {
-                                                      return (
-                                                        <Tippy key={index} content={item?.username}>
-                                                          {item.profile_picture ? (
-                                                            <img
-                                                              alt="profile"
-                                                              src={item.profile_picture}
-                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                            />
-                                                          ) : (
-                                                            <i className="fa-light fa-user"></i>
-                                                          )}
-                                                        </Tippy>
-                                                      )
-                                                    })}
-                                                    {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length - 4}</span>}
-                                                  </div>
+                                              </ul>
+                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                              <div className="hover-dropdown">
+                                                <div className="avatar-container">
+                                                  {item.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                                    return (
+                                                      <Tippy key={index} content={item?.username}>
+                                                        {item.profile_picture ? (
+                                                          <img
+                                                            alt="profile"
+                                                            src={item.profile_picture}
+                                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                          />
+                                                        ) : (
+                                                          <i className="fa-light fa-user"></i>
+                                                        )}
+                                                      </Tippy>
+                                                    )
+                                                  })}
+                                                  {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length - 4}</span>}
                                                 </div>
-                                              </Tippy>
+                                              </div>
+                                            </Tippy>
 
 
-                                            </td>
+                                          </td>
 
-                                            {/* <td>(999) 999-9999, (999) 999-9999</td> */}
-                                            {checkViewSidebar(
-                                              "Ringgroup",
-                                              slugPermissions,
-                                              account?.sectionPermissions,
-                                              account?.permissions,
-                                              "edit"
-                                            ) &&
-                                              <td>
-                                                <div className="my-auto position-relative mx-1">
-                                                  {/* <label className="switch">
+                                          {/* <td>(999) 999-9999, (999) 999-9999</td> */}
+                                          {checkViewSidebar(
+                                            "Ringgroup",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit"
+                                          ) &&
+                                            <td>
+                                              <div className="my-auto position-relative mx-1">
+                                                {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={
@@ -455,92 +454,90 @@ const RingGroups = () => {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
-                                                      <input type="checkbox"
-                                                        checked={
-                                                          item.status == "active"
-                                                        }
-                                                        onClick={(e) => {
-                                                          setSelectedRingGroup(item);
-                                                          setPopUp(true);
-                                                        }}
-                                                        // {...register("status")}
-                                                        id="showAllCheck"
-                                                      />
-                                                      <span></span>
-                                                    </label>
-                                                  </div>
+                                                <div class="cl-toggle-switch">
+                                                  <label class="cl-switch">
+                                                    <input type="checkbox"
+                                                      checked={
+                                                        item.status == "active"
+                                                      }
+                                                      onClick={(e) => {
+                                                        setSelectedRingGroup(item);
+                                                        setPopUp(true);
+                                                      }}
+                                                      // {...register("status")}
+                                                      id="showAllCheck"
+                                                    />
+                                                    <span></span>
+                                                  </label>
                                                 </div>
-                                              </td>
-                                            }
-                                            <td className="align-middle" id="detailBox">
-                                              <p className="ellipsis mb-0"> {item.description}</p>
+                                              </div>
                                             </td>
-                                            {checkViewSidebar(
-                                              "Ringgroup",
-                                              slugPermissions,
-                                              account?.sectionPermissions,
-                                              account?.permissions,
-                                              "edit"
-                                            ) &&
-                                              <td>
-                                                <button
-                                                  className="tableButton edit mx-auto"
-                                                  onClick={() =>
-                                                    navigate(
-                                                      `/ring-groups-edit?id=${item.id}`
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-pencil" />
-                                                </button>
-                                              </td>
-                                            }
-                                            {checkViewSidebar(
-                                              "Ringgroup",
-                                              slugPermissions,
-                                              account?.sectionPermissions,
-                                              account?.permissions,
-                                              "delete"
-                                            ) &&
-                                              <td>
-                                                <button
-                                                  className="tableButton delete mx-auto"
-                                                  onClick={() => {
-                                                    setPopUp(true);
-                                                    setDeleteId(item.id);
-                                                  }}
-                                                >
-                                                  <i className="fa-solid fa-trash" />
-                                                  {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
-                                                  {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
-                                                </button>
-                                              </td>
-                                            }
-                                            <div className="utilPopup"></div>
-                                          </tr>
-                                        );
-                                      })}
-                                    {ringGroup &&
-                                      ringGroup?.data?.length === 0 ? (
-                                      <td colSpan={99}>
-                                        <EmptyPrompt
-                                          name="Ring Group"
-                                          link="ring-groups-add"
-                                        />
-                                      </td>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </>
-                                )}
-                              </>
-                            )}
-                          </tbody>
-                        </table>
+                                          }
+                                          <td className="align-middle" id="detailBox">
+                                            <p className="ellipsis mb-0"> {item.description}</p>
+                                          </td>
+                                          {checkViewSidebar(
+                                            "Ringgroup",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit"
+                                          ) &&
+                                            <td>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() =>
+                                                  navigate(
+                                                    `/ring-groups-edit?id=${item.id}`
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa-solid fa-pencil" />
+                                              </button>
+                                            </td>
+                                          }
+                                          {checkViewSidebar(
+                                            "Ringgroup",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "delete"
+                                          ) &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete mx-auto"
+                                                onClick={() => {
+                                                  setPopUp(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash" />
+                                                {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
+                                                {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
+                                              </button>
+                                            </td>
+                                          }
+                                          <div className="utilPopup"></div>
+                                        </tr>
+                                      );
+                                    })}
+                                  {ringGroup &&
+                                    ringGroup?.data?.length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Ring Group"
+                                        link="ring-groups-add"
+                                      />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              )}
+                            </tbody>
+                          </table>
+                        }
                       </div>
-
                       <div className="tableFooter">
                         {ringGroup && ringGroup?.data?.length > 0 ? (
                           <PaginationComponent

@@ -14,6 +14,7 @@ import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const ClickToCallListing = () => {
   const [callBlock, setCallBlock] = useState();
@@ -180,75 +181,78 @@ const ClickToCallListing = () => {
                       }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Company Name</th>
-                            <th>Usage</th>
-                            <th>Action</th>
-                            {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
-                            {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {!checkViewSidebar(
-                            "Clicktocall",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                            loading ? (
-                              <SkeletonTableLoader col={5} row={15} />
-                            ) : (
-                              <>
-                                {callBlock &&
-                                  callBlock.data?.map((item, index) => {
-                                    return (
-                                      <tr key={index}>
-                                        <td>{item.company_name}</td>
-                                        <td>{item.usages}</td>
-                                        <td>{item.action}</td>
-                                        {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
-                                          <td>
-                                            <button
-                                              className="tableButton edit"
-                                              onClick={() => navigate(`/click-to-call-edit?id=${item.id}`)}
-                                            >
-                                              <i className="fa-solid fa-pen"></i>
-                                            </button>
-                                          </td>
-                                        }
-                                        {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
-                                          <td>
-                                            <button
-                                              className="tableButton delete"
-                                              onClick={() => {
-                                                setDeletePopup(true);
-                                                setDeleteId(item.id);
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-trash"></i>
-                                            </button>
-                                          </td>
-                                        }
-                                      </tr>
-                                    );
-                                  })}
-                                {callBlock && callBlock.length === 0 ? (
-                                  <td colSpan={99}>
-                                    <EmptyPrompt
-                                      name="Call Blocking"
-                                      link="call-blocking"
-                                    />
-                                  </td>
-                                ) : (
-                                  ""
-                                )}
-                              </>
-                            )}
-                        </tbody>
-                      </table>
+                      {loading ? (
+                        // <SkeletonTableLoader col={5} row={15} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Company Name</th>
+                              <th>Usage</th>
+                              <th>Action</th>
+                              {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                              {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {!checkViewSidebar(
+                              "Clicktocall",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                              (
+                                <>
+                                  {callBlock &&
+                                    callBlock.data?.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td>{item.company_name}</td>
+                                          <td>{item.usages}</td>
+                                          <td>{item.action}</td>
+                                          {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                            <td>
+                                              <button
+                                                className="tableButton edit"
+                                                onClick={() => navigate(`/click-to-call-edit?id=${item.id}`)}
+                                              >
+                                                <i className="fa-solid fa-pen"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                          {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  setDeletePopup(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                        </tr>
+                                      );
+                                    })}
+                                  {callBlock && callBlock.length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Call Blocking"
+                                        link="call-blocking"
+                                      />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              )}
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {callBlock && callBlock?.data?.length > 0 ? (

@@ -6,6 +6,7 @@ import { backToTop, checkViewSidebar, formatTimeWithAMPM, generalGetFunction } f
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 const BillingCardAndWallet = () => {
     const [loading, setLoading] = useState(false);
@@ -172,32 +173,34 @@ const BillingCardAndWallet = () => {
                                             style={{ overflow: "auto", padding: "10px 20px 0" }}
                                         >
                                             <div className="tableContainer">
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Transaction ID</th>
-                                                            <th>Transaction Type</th>
-                                                            <th>Amount</th>
-                                                            <th>Wallet Balance</th>
-                                                            <th>Date</th>
-                                                            <th>Time</th>
-                                                            <th>Description</th>
-                                                            <th className='text-center'>Download</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {!checkViewSidebar(
-                                                            "WalletTransaction",
-                                                            slugPermissions,
-                                                            account?.permissions,
-                                                            "read"
-                                                        ) && !checkViewSidebar(
-                                                            "Payment",
-                                                            slugPermissions,
-                                                            account?.permissions,
-                                                            "read"
-                                                        ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                                                            loading ? <SkeletonTableLoader row={10} col={8} /> :
+                                                {loading ?
+                                                    //    <SkeletonTableLoader row={10} col={8} /> 
+                                                    <ThreeDotedLoader />
+                                                    : <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Transaction ID</th>
+                                                                <th>Transaction Type</th>
+                                                                <th>Amount</th>
+                                                                <th>Wallet Balance</th>
+                                                                <th>Date</th>
+                                                                <th>Time</th>
+                                                                <th>Description</th>
+                                                                <th className='text-center'>Download</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {!checkViewSidebar(
+                                                                "WalletTransaction",
+                                                                slugPermissions,
+                                                                account?.permissions,
+                                                                "read"
+                                                            ) && !checkViewSidebar(
+                                                                "Payment",
+                                                                slugPermissions,
+                                                                account?.permissions,
+                                                                "read"
+                                                            ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                                                                 allCardTransactions && allCardTransactions?.data?.length > 0 ?
                                                                     allCardTransactions.data.map((item, index) => {
                                                                         const walletChange = allWaletTransactions?.data?.filter((transac) => transac.payment_gateway_transaction_id === item.transaction_id);
@@ -266,9 +269,10 @@ const BillingCardAndWallet = () => {
                                                                     }) : <tr>
                                                                         <td colSpan={99}><EmptyPrompt generic={true} /></td>
                                                                     </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
                                             </div>
                                             <div className="tableHeader mb-3">
                                                 {allCardTransactions && allCardTransactions.data.length > 0 ? (

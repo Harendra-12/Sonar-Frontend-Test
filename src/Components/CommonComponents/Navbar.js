@@ -758,7 +758,8 @@ function Navbar() {
                             "/agent-disposition-manage",
                             "/dialer-cdr-report",
                             "/campaign-create",
-                            "/campaign-edit"
+                            "/campaign-edit",
+                            "/did-listing-dialer"
                           ])
                             ? "true"
                             : "false"
@@ -783,7 +784,8 @@ function Navbar() {
                           "/agent-disposition-manage",
                           "/dialer-cdr-report",
                           "/campaign-create",
-                          "/campaign-edit"
+                          "/campaign-edit",
+                          "/did-listing-dialer"
                         ])
                           ? "show"
                           : ""
@@ -895,7 +897,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Campaignlead",
+                              "Campaign",
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1176,7 +1178,7 @@ function Navbar() {
                         type="button"
                         className={({ isActive }) =>
                           isActive ||
-                            ["/ivr-add", "/ivr-edit"].some((path) =>
+                            ["/ivr-add", "/ivr-edit", "/ivr-options"].some((path) =>
                               window.location.pathname.includes(path)
                             )
                             ? "nav-link active"
@@ -1629,7 +1631,7 @@ function Navbar() {
                             "/subscription-management",
                             "/rate-card",
                             "/billing-card-and-wallet",
-                            "billing-dashboard",
+                            "/billing-dashboard",
                             "/package-details",
                           ])
                             ? "true"
@@ -1652,7 +1654,7 @@ function Navbar() {
                           "/subscription-management",
                           "/rate-card",
                           "/billing-card-and-wallet",
-                          "billing-dashboard",
+                          "/billing-dashboard",
                           "/package-details",
                         ])
                           ? "show"
@@ -1847,6 +1849,7 @@ function Navbar() {
                             "/call-recording-settings",
                             "/voice-music",
                             "/custom-module",
+                            "/global-permission-config"
                           ])
                             ? "true"
                             : "false"

@@ -291,7 +291,17 @@ function App() {
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
           <Route
             path="/agent-disposition-manage"
-            element={<AgentDispositionManage />}
+            element={
+              checkViewSidebar(
+                "Disposition",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse"
+              ) ?
+                <AgentDispositionManage />
+                : <Navigate to="/dashboard" replace />
+            }
           />
 
           <Route
@@ -1275,7 +1285,8 @@ function App() {
                 "IvrMaster",
                 slugPermissions,
                 account?.sectionPermissions,
-                account?.permissions
+                account?.permissions,
+                "browse"
               ) ? (
                 <IvrListing />
               ) : (
