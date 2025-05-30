@@ -21,6 +21,7 @@ function LiveChat() {
       setAiMessageLog((prev) => {
         return [...prev, { message: sendMessage, time: new Date().toLocaleTimeString(), status: 'pending' }];
       });
+      setSendMessage("");
       const payload = {
         "user_id": account.id,
         "session_id": 'ticket_id-' + locationState?.state || 'n/a',
@@ -28,7 +29,6 @@ function LiveChat() {
         "crm_data_used": false,
       }
       axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/chat_bot", payload).then((res) => {
-        setSendMessage("");
         setLoading(false);
         setAiMessageLog((prev) => {
           return [...prev, { ...res.data, time: new Date().toLocaleTimeString(), status: 'success' }];
@@ -37,7 +37,6 @@ function LiveChat() {
         .catch((err) => {
           toast.error(err.message);
           setLoading(false);
-          setSendMessage("");
         });
     }
   }
