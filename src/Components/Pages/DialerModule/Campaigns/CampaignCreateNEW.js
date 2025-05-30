@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
@@ -16,6 +16,8 @@ function CampaignCreateNEW() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [stepSelector, setStepSelector] = useState(1);
+  const [leadsEditState, setLeadsEditState] = useState();
+  const [popUp, setPopUp] = useState(false);
   const [did, setDid] = useState([]);
   const [agents, setAgents] = useState([]);
   const [pageNumber, setPageNumber] = useState(1)
@@ -31,6 +33,7 @@ function CampaignCreateNEW() {
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
   const [timeZone, setTimeZone] = useState([]);
+  const [specificLeads, setSpecificLeads] = useState()
 
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
@@ -152,12 +155,12 @@ function CampaignCreateNEW() {
     }
     const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)
     setLoading(true);
-    const payload = { 
-      ...data, 
-      business_numbers: selectedItems, 
-      account_id: account.account_id, 
-      status: "Active", 
-      user_id: selectedAgent, 
+    const payload = {
+      ...data,
+      business_numbers: selectedItems,
+      account_id: account.account_id,
+      status: "Active",
+      user_id: selectedAgent,
       ...(isChangeInSchedulerInfo ? { scheduler_info: schedulerInfo } : {})
     };
     const apiData = await generalPostFunction("/campaign/store", payload);
@@ -208,23 +211,29 @@ function CampaignCreateNEW() {
 
   // Step three form submit for adding agents
   async function handleFormSubmitStepThree(id) {
-    if (selectedAgent.length === 0) {
-      toast.error("Please select at least one agent");
-      return
-    }
-    setLoading(true);
-    const payload = { campaign_id: campaignId || id, user_id: selectedAgent, status: "active" };
-    const apiData = await generalPostFunction("/campaign-agent/store", payload);
-    if (apiData?.status) {
-      // setCompletedStep(3)
-      // setStepSelector(4)
-      setLoading(false);
-      toast.success(apiData.message);
-      return true;
-    } else {
-      setLoading(false);
-      toast.error(apiData?.message || apiData?.error);
-    }
+     navigate(-1)
+    // if (selectedAgent.length === 0) {
+    //   toast.error("Please select at least one agent");
+    //   return
+    // }
+    // setLoading(true);
+    // const payload = { campaign_id: campaignId || id, user_id: selectedAgent, status: "active" };
+    // const apiData = await generalPostFunction("/campaign-agent/store", payload);
+    // if (apiData?.status) {
+    //   // setCompletedStep(3)
+    //   // setStepSelector(4)
+    //   setLoading(false);
+    //   toast.success(apiData.message);
+    //   return true;
+    // } else {
+    //   setLoading(false);
+    //   toast.error(apiData?.message || apiData?.error);
+    // }
+  }
+
+  const handleFinishStep = () => {
+    navigate(-1)
+    // setCompletedStep(4)
   }
 
   // Step four form submit for adding leads
@@ -241,9 +250,11 @@ function CampaignCreateNEW() {
         parsedData.append("campaign_id", campaignId);
         const apiData = await fileUploadFunction("/campaign-lead/store", parsedData);
         if (apiData.status) {
-          navigate(-1)
+          const res = await generalGetFunction(`/campaign/show/${campaignId}`);
+
+          setSpecificLeads(res?.data?.leads)
           setLoading(false);
-          setCompletedStep(4)
+          setAddNewCsvToggle(false)
           setNewFile();
           toast.success(apiData.message);
         } else {
@@ -313,6 +324,33 @@ function CampaignCreateNEW() {
     value: item.id,
     label: item.did,
   }))
+
+  const updateLead = (updatedLead) => {
+  setSpecificLeads(prevLeads =>
+    prevLeads.map(lead =>
+      lead.id === updatedLead.id ? { ...lead, ...updatedLead } : lead
+    )
+  );
+};
+
+  const handleUpdateLeads = async () => {
+      const payload = { ...leadsEditState };
+      setLoading(true);
+      const apiData = await generalPutFunction(
+        `/campaign-lead/update/${leadsEditState.id}`,
+        payload
+      );
+      if (apiData?.status) {
+        console.log('apidata', apiData)
+        updateLead(apiData?.data)
+        setLoading(false);
+        toast.success(apiData.message);
+        setPopUp(false);
+      } else {
+        setLoading(false);
+      }
+    };
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -369,7 +407,7 @@ function CampaignCreateNEW() {
                             } else if (completedStep === 2) {
                               handleFormSubmitStepThree();
                             } else if (completedStep === 3) {
-                              handleFormSubmitStepFour();
+                              handleFinishStep();
                             }
                           }}
                         >
@@ -1640,6 +1678,9 @@ function CampaignCreateNEW() {
                                                 </p>
                                               )}
                                             </div>
+                                            <button
+                                              onClick={() => handleFormSubmitStepFour()}
+                                            >Submit File</button>
                                           </div>
                                         </div>
                                       </div>
@@ -1802,17 +1843,29 @@ function CampaignCreateNEW() {
                                         </tr>
                                       </thead>
                                       <tbody className="">
-                                        <tr>
-                                          <td>Test</td>
-                                          <td>123456789</td>
-                                          <td>1</td>
-                                          <td>Test test etsetestse</td>
-                                          <td>
-                                            <button className="tableButton edit">
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>
-                                        </tr>
+                                        {
+                                          specificLeads?.map((item) => {
+                                            return (
+                                              <tr>
+                                                <td>{item?.first_name}{" "}{item?.last_name}</td>
+                                                <td>{item?.phone_code}{" "}{item?.phone_number}</td>
+                                                <td>{item?.country_code}</td>
+                                                <td>{item?.address1}</td>
+                                                <td>
+                                                  <button
+                                                    className="tableButton edit"
+                                                    onClick={() => {
+                                                      setLeadsEditState(item);
+                                                      setPopUp(true);
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-pencil"></i>
+                                                  </button>
+                                                </td>
+                                              </tr>
+                                            )
+                                          })
+                                        }
                                       </tbody>
                                     </table>
                                   </div>
@@ -1883,6 +1936,233 @@ function CampaignCreateNEW() {
             </div>
           </div>
         </div>
+        {popUp ? (
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading mb-0">
+                  <i className="fa-light fa-circle-exclamation"></i>
+                  <h5>Lead Edit</h5>
+                </div>
+                <div className="col-12" style={{ padding: "0px 0px 10px" }}>
+                  <form className="mb-0 d-flex flex-wrap">
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>First Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.first_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              first_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Last Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.last_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              last_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Phone Number</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_number}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_number: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 1</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address1}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address1: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 2</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address2}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address2: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>City</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.city}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              city: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>State</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.state}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              state: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Country code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Zip Code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.postal_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              postal_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Gender</label>
+                      </div>
+                      <div className="col-12">
+                        <select
+                          name=""
+                          id=""
+                          className="formItem "
+                          value={leadsEditState.gender}
+                          onChange={(e) =>
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              gender: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="M">Male</option>
+                          <option value="F">Female</option>
+                          <option value="O">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => handleUpdateLeads()}
+                  >
+                    <span className="text">Confirm</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton gray m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    <span className="text">Cancel</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </section>
       {loading && <CircularLoader />}
     </main>
