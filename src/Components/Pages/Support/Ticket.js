@@ -229,14 +229,18 @@ function Ticket() {
                                               <label className={`tableLabel ${item.status == 'open' ? 'success' : 'fail'}`} style={{ textTransform: 'capitalize' }}>{item.status}</label>
                                             </div>
                                           </td>
-                                          <td><div className=''>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() => featureUnderdevelopment()}
-                                            >
-                                              <i className="fa-regular fa-eye"></i>
-                                            </button>
-                                          </div></td>
+                                          <td>
+                                            <div className=''>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() => navigate('/live-chat', {
+                                                  state: item.id,
+                                                })}
+                                              >
+                                                <i className="fa-regular fa-eye"></i>
+                                              </button>
+                                            </div>
+                                          </td>
                                           <td>
                                             <div className='d-flex align-items-center justify-content-start'>
                                               <button

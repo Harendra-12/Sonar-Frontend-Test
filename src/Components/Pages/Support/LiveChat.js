@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -10,29 +10,34 @@ function LiveChat() {
   const [loading, setLoading] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
   const account = useSelector((state) => state.account);
-  const [aiMessageLog, setAiMessageLog] = useState([])
+  const [aiMessageLog, setAiMessageLog] = useState([]);
+  const locationState = useLocation();
 
   const handleSendMessageToAI = () => {
     if (!sendMessage || sendMessage.trim() === "") {
       toast.error("Please enter a message");
     } else {
       setLoading(true);
+      setAiMessageLog((prev) => {
+        return [...prev, { message: sendMessage, time: new Date().toLocaleTimeString(), status: 'pending' }];
+      });
       const payload = {
         "user_id": account.id,
-        "session_id": "testestsetset",
+        "session_id": 'ticket_id-' + locationState?.state || 'n/a',
         "message": sendMessage,
-        "crm_data_used": "no",
+        "crm_data_used": false,
       }
       axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/chat_bot", payload).then((res) => {
         setSendMessage("");
         setLoading(false);
         setAiMessageLog((prev) => {
-          return [...prev, { ...res.data, time: new Date().toLocaleTimeString() }];
+          return [...prev, { ...res.data, time: new Date().toLocaleTimeString(), status: 'success' }];
         });
       })
         .catch((err) => {
           toast.error(err.message);
           setLoading(false);
+          setSendMessage("");
         });
     }
   }
@@ -163,7 +168,7 @@ function LiveChat() {
                       </div> */}
                       {aiMessageLog && aiMessageLog.length > 0 ? aiMessageLog?.map((item, index) => (
                         <>
-                          <div className="chat-message outgoings">
+                          {item.status == "pending" && <div className="chat-message outgoings">
                             <div className="message-content message-time">
                               <p>
                                 {item.message}
@@ -178,8 +183,8 @@ function LiveChat() {
                                 className="user-image"
                               />
                             </div>
-                          </div>
-                          <div className="chat-message incomings">
+                          </div>}
+                          {item.status == "success" && <div className="chat-message incomings">
                             <div className="borders-color-chat">
                               <img
                                 src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
@@ -193,12 +198,12 @@ function LiveChat() {
                               </p>
                               <p className="timestamp">{item.time}</p>
                             </div>
-                          </div>
+                          </div>}
                         </>
                       )) : ""}
                     </div>
                     <div className="chat-input-section align-items-center">
-                      <input type="text" placeholder="Type your message here..." onChange={(e) => setSendMessage(e.target.value)} value={sendMessage} />
+                      <input type="text" placeholder="Type your message here..." onChange={(e) => setSendMessage(e.target.value)} value={sendMessage} disabled={loading} />
                       <div className="btn">
                         <button className="btns" onClick={handleSendMessageToAI} disabled={loading}>
                           <i className={`fa-solid fa-${loading ? 'arrows-rotate fa-spin' : 'paper-plane'}`} />
