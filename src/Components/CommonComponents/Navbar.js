@@ -1279,20 +1279,21 @@ function Navbar() {
                             </li> */}
                             <li className="tabItem ">
                               <NavLink
-                              onClick={() => featureUnderdevelopment()}
-                                // onClick={() => backToTop()}
-                                // className={({ isActive }) =>
-                                //   isActive ||
-                                //     [
-                                //       "/all-ai-agent",
-                                //       "/ai-agent-add",
-                                //       "/ai-agent-edit",
-                                //     ].some((path) =>
-                                //       window.location.pathname.includes(path)
-                                //     )
-                                //     ? "nav-link active"
-                                //     : "nav-link"
-                                // }
+                               to="/ai-all-agent"
+                              // onClick={() => featureUnderdevelopment()}
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-all-agent",
+                                      // "/ai-agent-add",
+                                      // "/ai-agent-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
                               >
                                 <div className="itemTitle">All Agents</div>
                               </NavLink>

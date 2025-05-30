@@ -1,0 +1,40 @@
+.card80 {
+    max-width: 90%;
+    width: 100%;
+}
+
+.popup_box {
+    border: 1px solid var(--me-border1);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 383px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+}
+.card-title{
+     color: var(--immortalBlack);
+}
+.aiAgentTab .nav {
+    max-width: 300px;
+    width: 100%;
+}
+
+.aiAgentTab .nav .nav-link {
+    text-align: start;
+}
+
+.card-body.aiAgentTab .popup-border {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.aiAgentTab .nav-link {
+    color: var(--immortalBlack);
+}
+.popup_box h5{
+     color: var(--immortalBlack);
+}
