@@ -101,8 +101,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Accounts",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -372,8 +373,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Number Management",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -485,8 +487,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "PBX",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -739,8 +742,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Dialer",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -1168,8 +1172,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Interactive Voice Response",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1349,8 +1354,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Meeting Rooms",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1380,8 +1386,9 @@ function Navbar() {
                     checkViewSidebar(
                       "Clicktocall",
                       permissions,
-                      account?.sectionPermissions,
+                      account?.sections,
                       account?.permissions,
+                      "section"
                     ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1455,8 +1462,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Reports",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -1664,8 +1672,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Billings",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -1884,8 +1893,9 @@ function Navbar() {
                   {checkViewSidebar(
                     "Settings",
                     permissions,
-                    account?.sectionPermissions,
+                    account?.sections,
                     account?.permissions,
+                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -2165,6 +2175,7 @@ function Navbar() {
                               "/ticket",
                               "/live-chat",
                               "/view-massage",
+                              "/live-chat"
                             ])
                               ? "true"
                               : "false"
@@ -2183,6 +2194,7 @@ function Navbar() {
                             "/ticket",
                             "/live-chat",
                             "/view-massage",
+                            "/live-chat"
                           ])
                             ? "show"
                             : ""

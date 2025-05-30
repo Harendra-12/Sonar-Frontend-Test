@@ -1,15 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
-import { backToTop } from '../../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { ActionType } from '../../../Redux/reduxActionType';
 
 function Leads() {
+    const dispatch = useDispatch();
     const [refreshState, setRefreshState] = useState()
+    const [leadsDetails, setLeadsDetails] = useState()
     const navigate = useNavigate();
+    const getLead = async () => {
+        const res = await generalGetFunction(`/campaign-lead/all`);
+        if (res?.status) {
+            dispatch({
+                type: ActionType?.SET_ALL_LEADS_LIST,
+                payload: res.data
+            })
+            setLeadsDetails(res?.data)
+        }
+    }
+    useEffect(() => {
+        getLead()
+    }, [])
+
     const handleRefreshBtnClicked = () => {
 
     }
+
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -116,54 +135,61 @@ function Leads() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>78</td>
-                                                        <td>xyz</td>
-                                                        <td>USA CST</td>
-                                                        <td>Campaign Name</td>
-                                                        <td>1200</td>
-                                                        <td>
-                                                            <div className="my-auto position-relative d-flex justify-content-center">
-                                                                {/* <label className="switch">
+
+                                                    {
+                                                        leadsDetails?.data?.map((data) => {
+                                                            return (
+                                                                <tr>
+                                                                    <td>{data?.id}</td>
+                                                                    <td>{data?.first_name}</td>
+                                                                    <td>static</td>
+                                                                    <td>{data?.title}</td>
+                                                                    <td>{data?.tries}</td>
+                                                                    <td>
+                                                                        <div className="my-auto position-relative d-flex justify-content-center">
+                                                                            {/* <label className="switch">
                                                                     <input
                                                                         type="checkbox"
                                                                         id="showAllCheck"
                                                                     />
                                                                     <span className="slider round" />
                                                                 </label> */}
-                                                                <div class="cl-toggle-switch">
-                                                                    <label class="cl-switch">
-                                                                        <input type="checkbox"
-                                                                            id="showAllCheck"
-                                                                        />
-                                                                        <span></span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                className="tableButton mx-auto blue"
-                                                            >
-                                                                <i className="fa-solid fa-download"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                className="tableButton edit mx-auto"
-                                                                onClick={() => navigate('/lead-edit')}
-                                                            >
-                                                                <i className="fa-solid fa-pen"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                className="tableButton delete mx-auto"
-                                                            >
-                                                                <i className="fa-solid fa-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                                            <div class="cl-toggle-switch">
+                                                                                <label class="cl-switch">
+                                                                                    <input type="checkbox"
+                                                                                        id="showAllCheck"
+                                                                                    />
+                                                                                    <span></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button
+                                                                            className="tableButton mx-auto blue"
+                                                                        >
+                                                                            <i className="fa-solid fa-download"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button
+                                                                            className="tableButton edit mx-auto"
+                                                                            onClick={() => navigate('/lead-edit')}
+                                                                        >
+                                                                            <i className="fa-solid fa-pen"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button
+                                                                            className="tableButton delete mx-auto"
+                                                                        >
+                                                                            <i className="fa-solid fa-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
