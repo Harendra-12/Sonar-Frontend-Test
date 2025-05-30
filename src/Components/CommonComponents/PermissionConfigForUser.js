@@ -4,6 +4,7 @@ import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import SkeletonTableLoader from '../Loader/SkeletonTableLoader';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 /**
  * PermissionConfigForUser is a React component that manages the configuration
@@ -146,7 +147,7 @@ function PermissionConfigForUser() {
                             <div className='col-xl-12 col-lg-12'>
                               <div className='row'>
                                 <div className='col-6'>
-                                  <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"role"}>
+                                  <select className='formItem' onChange={(e) => setClassType(e.target.value)} defaultValue={"role"} disabled={true}>
                                     <option value={"group"}>Group</option>
                                     <option value={"role"}>Role</option>
                                   </select>
@@ -178,6 +179,7 @@ function PermissionConfigForUser() {
                         </div>
                       </div>
                       <PermissionConfigTable
+                        allRoleList={allRoleList}
                         selectedGroup={selectedGroup}
                         selectedRole={selectedRole}
                         allPermissions={permissions}
@@ -197,7 +199,7 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissions, loading }) {
+export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole, allPermissions, loading }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
@@ -207,6 +209,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
     tablePermissions: [],
     sectionPermissions: []
   });
+  const account = useSelector((state) => state.account);
   const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
@@ -216,32 +219,50 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
     // Initialize with empty permissions for the selected role
     setRolePermissions(prev => ({
       ...prev,
-      role_id: selectedRole
+      role_id: selectedRole || [],
+      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions?.map(permission => permission.permission_id) || [],
+      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions?.map(permission => permission.permission_id) || [],
+      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions?.map(permission => permission.permission_id) || []
     }));
-  }, [selectedRole]);
+  }, [selectedRole, allRoleList]);
+
+  console.log(expandedRows);
 
 
-  const toggleRowExpand = (section, model, type) => {
+  const toggleRowExpand = (permission, section, model, type, bool) => {
+    if (!account.sectionPermissions.includes(section) || !account.permissions.includes(permission)) {
+      return;
+    }
+
     setExpandedRows(prev => {
-      if (!section || !model || !type) {
-        return prev;
-      }
-
       const exists = prev.some(
         item => item.section === section && item.model === model && item.type === type
       );
 
-      if (exists) {
-        return prev.filter(
-          item => !(item.section === section && item.model === model && item.type === type)
-        );
+      if (bool) {
+        // Expand: Add row if it doesn't exist
+        if (!exists) {
+          return [...prev, { section, model, type }];
+        }
+        return prev; // No change if already expanded
+      } else {
+        // Collapse: Remove row if it exists
+        if (exists) {
+          return prev.filter(
+            item => !(item.section === section && item.model === model && item.type === type)
+          );
+        }
+        return prev; // No change if already collapsed
       }
-
-      return [...prev, { section, model, type }];
     });
   };
 
   const togglePermission = (type, id, checked) => {
+    if (!account[type].includes(id)) {
+      toast.error("You don't have permission to perform this action", { toastId: "permission-error" });
+      return;
+    }
+
     setRolePermissions(prev => {
       const newPermissions = { ...prev };
 
@@ -260,6 +281,21 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
   };
 
   const handleMasterToggle = (modelId, sectionId, permissions, tableRecords, checked) => {
+    if (!account.sectionPermissions.includes(modelId)) {
+      toast.error("You don't have permission to perform this action", { toastId: "permission-error" });
+      return;
+    }
+    if (permissions.length > 0 || tableRecords.length > 0) {
+      const permissionIds = permissions.map(p => p.id);
+      const tableRecordIds = tableRecords.map(r => r.id);
+      if (!permissionIds.every(id => account.permissions.includes(id)) ||
+        !tableRecordIds.every(id => account.permissions.includes(id))) {
+        toast.error("You don't have permission to perform this action", { toastId: "permission-error" });
+        // return;
+      }
+    }
+
+
     setRolePermissions(prev => {
       const newPermissions = { ...prev };
 
@@ -277,8 +313,8 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
         }
 
         // Add section permission
-        if (!newPermissions.sectionPermissions.includes(sectionId)) {
-          newPermissions.sectionPermissions = [...newPermissions.sectionPermissions, sectionId];
+        if (!newPermissions.sectionPermissions.includes(modelId)) {
+          newPermissions.sectionPermissions = [...newPermissions.sectionPermissions, modelId];
         }
       } else {
         // Remove all permissions for this model
@@ -306,7 +342,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
         if (!hasOtherPermissions) {
           newPermissions.sectionPermissions = newPermissions.sectionPermissions.filter(
-            id => id !== sectionId
+            id => id !== modelId
           );
         }
       }
@@ -320,29 +356,19 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
     // Ensure section permission is added when any permission is checked
     if (checked) {
-      togglePermission('sectionPermissions', sectionId, true);
+      togglePermission('sectionPermissions', modelId, true);
     } else {
       // Check if we should remove the section permission
       const model = Object.values(permissionData)
         .flat()
-        .find(m => m.id === modelId);
+        .find(m => m.id == modelId);
 
       const hasOtherPermissions = model.permissions.some(
         p => p.id !== permissionId && rolePermissions.permissions.includes(p.id)
       );
 
       if (!hasOtherPermissions) {
-        const otherModelsInSection = Object.values(permissionData)
-          .flat()
-          .filter(m => m.module_section === sectionId && m.id !== modelId);
-
-        const sectionHasOtherPermissions = otherModelsInSection.some(m =>
-          m.permissions.some(p => rolePermissions.permissions.includes(p.id))
-        );
-
-        if (!sectionHasOtherPermissions) {
-          togglePermission('sectionPermissions', sectionId, false);
-        }
+        togglePermission('sectionPermissions', modelId, false);
       }
     }
   };
@@ -352,7 +378,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
     // Ensure section permission is added when any column permission is checked
     if (checked) {
-      togglePermission('sectionPermissions', sectionId, true);
+      togglePermission('sectionPermissions', modelId, true);
     }
   };
 
@@ -362,11 +388,15 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
 
   console.log(rolePermissions);
 
-  const toggleSection = (sectionName) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionName]: !prev[sectionName]
-    }));
+  const toggleSection = (sectionName, models) => {
+    const permissionMatch = models.some(m => rolePermissions.sectionPermissions.includes(m.id));
+
+    if (!permissionMatch) {
+      setExpandedSections(prev => ({
+        ...prev,
+        [sectionName]: !prev[sectionName]
+      }));
+    }
   };
 
   const toggleAllColumnPermissions = (model, checked, rowKey) => {
@@ -409,7 +439,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                   <input
                     type="checkbox"
                     checked={!!expandedSections[sectionName]}
-                    onChange={() => toggleSection(sectionName)}
+                    onChange={() => toggleSection(sectionName, models)}
                   />
                   <span></span>
                 </label>
@@ -504,9 +534,9 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                           if (permission.action === "read" || permission.action === "edit") {
                                             const type = permission.action === "read" ? "view" : "edit";
                                             if (e.target.checked) {
-                                              toggleRowExpand(sectionName, model.model, type);
+                                              toggleRowExpand(permission.id, model.id, model.model, type, true);
                                             } else {
-                                              toggleRowExpand(sectionName, model.model, type);
+                                              toggleRowExpand(permission.id, model.id, model.model, type, false);
                                               // Untoggle all column permissions for this type
                                               toggleAllColumnPermissions(model, false, type);
                                             }
@@ -522,9 +552,9 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                           </tr>
                           {model.table_records.length > 0 &&
                             expandedRows
-                              .filter(row => row.section === sectionName && row.model === model.model)
+                              .filter(row => row.section === model.id && row.model === model.model)
                               .map((row, index) => {
-                                const rowKey = `${sectionName}-${model.model}-${row.type}-${index}`;
+                                const rowKey = `${model.id}-${model.model}-${row.type}-${index}`;
                                 const checkedState = model.table_records
                                   .filter(record => record.action === row.type)
                                   .every(r => rolePermissions.tablePermissions.includes(r.id));
