@@ -381,14 +381,8 @@ export function checkViewSidebar(
     const modulePermissions = permissions[moduleName];
     if (Array.isArray(modulePermissions)) {
       for (const item of modulePermissions) {
-        // First check if item belongs to the current section
-        if (!sectionPermissions?.includes(item.id)) continue;
-
-        // If no action specified, check if module section matches   ||   TODO: Handle it using "section_id" & Pass "browse" action in Navbar in all the menus. also pass account.sections for Main Sections. 
-        // basically the condtition will be like this > if (!action && sectionPermissions(item.section_id))
-        if (!action && item.module_section === slug) {
-          return true;
-        }
+        // Check if item belongs to the module section or current section
+        if (!sectionPermissions?.includes(action == "section" ? item.section_id : item.id)) continue;
 
         // If no action specified, check if model matches
         if (!action && item.model === slug) {
@@ -396,7 +390,7 @@ export function checkViewSidebar(
         }
 
         // If action specified, check user permissions
-        if (action) {
+        if (action && action !== "section") {
           for (const subItem of item.permissions) {
             if (
               subItem.model == slug &&
