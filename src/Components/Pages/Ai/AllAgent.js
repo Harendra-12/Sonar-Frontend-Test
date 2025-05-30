@@ -8,6 +8,8 @@ const AllAgent = () => {
 
     const [isAgentCreatePopup, setIsAgentCreatePopup] = useState(false);
     const [refreshState, setRefreshState] = useState(false)
+     const [addUploadAgentToggle, setAddUploadAgentToggle] = useState(false);
+
     const handleRefreshBtnClicked = () => {
         setRefreshState(true)
         // const shouldLoad = false
@@ -55,7 +57,9 @@ const AllAgent = () => {
                                                     </button>
 
 
-                                                    <button className="panelButton edit" >
+                                                    <button className="panelButton edit" onClick={() => {
+                                                        setAddUploadAgentToggle(true);
+                                                    }}>
                                                         <span className="text">import</span>
                                                         <span className="icon">
                                                             <i className="fa-solid fa-file-csv"></i>
@@ -462,7 +466,7 @@ const AllAgent = () => {
                                                                 </div>
                                                                 <div className=" text-center">
                                                                     <h5 className="mb-0 mt-2 text-center">
-                                                                       Start from Blank
+                                                                        Start from Blank
                                                                     </h5>
                                                                     {/* <span>
                                                                         Lorem Ipsum has been the industry's standard dummy text ever
@@ -509,69 +513,197 @@ const AllAgent = () => {
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                                                <div className='d-flex gap-2'>
+                                                            <div className='popup_box'>
+                                                                <div className="popup-border text-center p-2">
+                                                                    <input
+                                                                        type="file"
+                                                                        className="form-control-file d-none"
+                                                                        id="fileInput"
+                                                                        accept=".csv"
 
+                                                                    />
+                                                                    <label
+                                                                        htmlFor="fileInput"
+                                                                        className="d-block"
+                                                                    >
+                                                                        <div className="p-2 text-center">
+                                                                            <i
+                                                                                className="fa-solid fa-plus"
+                                                                                style={{ fontSize: 40, color: '#03c2f4' }}
+                                                                            />
+                                                                            {/* <p className="mb-0 mt-2 text-center">
+                                                                                Healthcare Check-in <br />
+                                                                                <span> Transfer Call</span>
+                                                                            </p> */}
+
+                                                                        </div>
+                                                                    </label>
+
+                                                                </div>
+                                                                <div className=" text-center">
+                                                                    <h5 className="mb-0 mt-2 text-center">
+                                                                        Start from Blank
+                                                                    </h5>
+                                                                    {/* <span>
+                                                                        Lorem Ipsum has been the industry's standard dummy text ever
+                                                                    </span> */}
+                                                                </div>
+                                                            </div>
+                                                            <div className='popup_box'>
+                                                                <div className="popup-border text-center p-2">
+                                                                    <input
+                                                                        type="file"
+                                                                        className="form-control-file d-none"
+                                                                        id="fileInput"
+                                                                        accept=".csv"
+
+                                                                    />
+                                                                    <label
+                                                                        htmlFor="fileInput"
+                                                                        className="d-block"
+                                                                    >
+                                                                        <div className="p-2 text-center">
+                                                                            <i
+                                                                                className="fa-solid fa-phone-arrow-up-right"
+                                                                                style={{ fontSize: 20, color: '#03c2f4' }}
+                                                                            />
+                                                                            <h5 className="mb-0 mt-2 text-center">
+                                                                                Healthcare Check-in <br />
+                                                                                <span> Transfer Call</span>
+                                                                            </h5>
+
+                                                                        </div>
+                                                                    </label>
+
+                                                                </div>
+                                                                <div className=" text-center">
+
+                                                                    <h5 className="mb-0 mt-2 text-center">
+                                                                        Healthcare Check-in
+                                                                    </h5>
+                                                                    <span>
+                                                                        Lorem Ipsum has been the industry's standard dummy text ever
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-
-                                            {/* <div className="popup-border text-center p-2">
-                                                <input
-                                                    type="file"
-                                                    className="form-control-file d-none"
-                                                    id="fileInput"
-                                                    accept=".csv"
-                                                    onChange={(e) => {
-                                                        const file = e.target.files[0];
-                                                        if (file) {
-                                                            const fileName =
-                                                                file.name.replace(/ /g, "-");
-                                                            const newFile = new File(
-                                                                [file],
-                                                                fileName,
-                                                                {
-                                                                    type: file.type,
-                                                                }
-                                                            );
-                                                            setNewFile(newFile);
-                                                            handleFileChange(e);
-                                                        }
-                                                    }}
-                                                />
-                                                <label
-                                                    htmlFor="fileInput"
-                                                    className="d-block"
-                                                >
-                                                    <div className="test-user text-center">
-                                                        <i
-                                                            className="fa-solid fa-cloud-arrow-up"
-                                                            style={{ fontSize: 30 }}
-                                                        />
-                                                        <p className="mb-0 mt-2 text-center">
-                                                            Drag and Drop or{" "}
-                                                            <span>Click on upload</span>
-                                                        </p>
-                                                        <span>
-                                                            Supports formats : MP3, Max
-                                                            Size: 2MB
-                                                        </span>
-                                                    </div>
-                                                </label>
-                                                {fileName && (
-                                                    <p className="mt-3 text-center">
-                                                        Selected File:{" "}
-                                                        <strong>{fileName}</strong>
-                                                    </p>
-                                                )}
-                                            </div> */}
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 }
+
+                {addUploadAgentToggle && (
+                    <div className="popup music">
+                        <div className="container h-100">
+                            <div className="row h-100 justify-content-center align-items-center">
+                                <div
+                                    className="card px-0 col-5 shadow-none"
+                                    style={{
+                                        border: "1px solid var(--border-color)",
+                                    }}
+                                >
+                                    <div className="header bg-transparent">
+                                        <div className="d-flex justify-content-between">
+                                            <h5 className="card-title fs14 border-bootm fw700">
+                                                Upload an Agent
+                                            </h5>
+                                            <button className="clearButton2 xl" onClick={() => setAddUploadAgentToggle(!addUploadAgentToggle)}>
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="card-body">
+                                        <div className="popup-border text-center p-2">
+                                            <input
+                                                type="file"
+                                                className="form-control-file d-none"
+                                                id="fileInput"
+                                                accept=".csv"
+                                                // onChange={(e) => {
+                                                //     const file = e.target.files[0];
+                                                //     if (file) {
+                                                //         // Check if the file type is MP3
+
+                                                //         const fileName =
+                                                //             file.name.replace(/ /g, "-");
+                                                //         const newFile = new File(
+                                                //             [file],
+                                                //             fileName,
+                                                //             {
+                                                //                 type: file.type,
+                                                //             }
+                                                //         );
+                                                //         setNewFile(newFile);
+                                                //         handleFileChange(e);
+                                                //     }
+                                                // }}
+                                            />
+                                            <label
+                                                htmlFor="fileInput"
+                                                className="d-block"
+                                            >
+                                                <div className="test-user text-center">
+                                                    <i
+                                                        className="fa-solid fa-cloud-arrow-up"
+                                                        style={{ fontSize: 30 }}
+                                                    />
+                                                    <p className="mb-0 mt-2 text-center">
+                                                        Drag and Drop or{" "}
+                                                        <span>Click on upload</span>
+                                                    </p>
+                                                    <span>
+                                                        Supports formats : MP3, Max
+                                                        Size: 2MB
+                                                    </span>
+                                                </div>
+                                            </label>
+                                            {/* {fileName && (
+                                                <p className="mt-3 text-center">
+                                                    Selected File:{" "}
+                                                    <strong>{fileName}</strong>
+                                                </p>
+                                            )} */}
+                                        </div>
+                                    </div>
+                                    <div className="card-footer">
+                                        <div className="d-flex justify-content-between">
+                                            <button
+                                                className="panelButton m-0"
+                                                // onClick={handleNewImage}
+                                                // disabled={!newImage}
+                                                // onClick={() => handleFormSubmitStepFour()}
+                                            >
+                                                <span className="text">Confirm</span>
+                                                <span className="icon">
+                                                    <i className="fa-solid fa-check"></i>
+                                                </span>
+                                            </button>
+                                            <button
+                                                className="panelButton gray"
+                                                onClick={() => {
+                                                    setAddUploadAgentToggle(false);
+                                                    // setNewImage(null);
+                                                }}
+                                            >
+                                                <span className="text">Cancel</span>
+                                                <span className="icon">
+                                                    <i className="fa-solid fa-xmark"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
             </main>
         </>

@@ -1281,14 +1281,12 @@ function Navbar() {
                             <li className="tabItem ">
                               <NavLink
                                to="/ai-all-agent"
-                              // onClick={() => featureUnderdevelopment()}
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
                                       "/ai-all-agent",
-                                      // "/ai-agent-add",
-                                      // "/ai-agent-edit",
+                                     
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1299,12 +1297,31 @@ function Navbar() {
                                 <div className="itemTitle">All Agents</div>
                               </NavLink>
                             </li>
-
                             <li className="tabItem ">
+                              <NavLink
+                               to="/ai-knowledge-base"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-knowledge-base",
+                                      
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Knowledge Base</div>
+                              </NavLink>
+                            </li>
+
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Knowledge Base</div>
                               </Link>
-                            </li>
+                            </li> */}
                                 <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">

@@ -189,6 +189,7 @@ import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
 import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
 import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
 import AllAgent from "./Components/Pages/Ai/AllAgent";
+import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -825,6 +826,7 @@ function App() {
           {/* --------------- ai path start */}
 
                <Route path="/ai-all-agent" element={<AllAgent />} />
+               <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}

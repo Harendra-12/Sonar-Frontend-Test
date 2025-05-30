@@ -25,6 +25,9 @@
 .aiAgentTab .nav .nav-link {
     text-align: start;
 }
+.aiAgentTab .nav .nav-link.active{
+    background-color: var(--color2);
+}
 
 .card-body.aiAgentTab .popup-border {
     height: 100%;
