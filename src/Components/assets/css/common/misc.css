@@ -824,8 +824,8 @@ input[type=number] {
 }
 
 .permissionListWrapper {
-    overflow-y: auto;
-    height: calc(100vh - 300px);
+    overflow: hidden auto;
+    height: calc(100vh - 250px);
 }
 
 .permissionListWrapper .accordion-item {
