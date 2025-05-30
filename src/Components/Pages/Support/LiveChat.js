@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { Navigate, useLocation } from 'react-router-dom';
 import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
@@ -40,6 +40,27 @@ function LiveChat() {
         });
     }
   }
+
+  // Function to handle Enter key press
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        handleSendMessageToAI();
+      }
+    },
+    [handleSendMessageToAI]
+  );
+
+  // Listen to enter press and then trigger login
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
