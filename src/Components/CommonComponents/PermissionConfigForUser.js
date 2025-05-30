@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { backToTop, generalGetFunction } from '../GlobalFunction/globalFunction';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
@@ -220,14 +220,20 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
     setRolePermissions(prev => ({
       ...prev,
       role_id: selectedRole || [],
-      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions?.map(permission => permission.permission_id) || [],
-      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions?.map(permission => permission.permission_id) || [],
-      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions?.map(permission => permission.permission_id) || []
+      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
     }));
   }, [selectedRole, allRoleList]);
 
-  console.log(expandedRows);
-
+  const resetPermissionToInitialState = () => {
+    setRolePermissions(prev => ({
+      role_id: selectedRole || [],
+      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+    }));
+  }
 
   const toggleRowExpand = (permission, section, model, type, bool) => {
     if (!account.sectionPermissions.includes(section) || !account.permissions.includes(permission)) {
@@ -257,8 +263,28 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
     });
   };
 
+  useEffect(() => {
+    const savedPermissions = [];
+    for (const moduleName in permissionData) {
+      const modulePermissions = permissionData[moduleName];
+      if (Array.isArray(modulePermissions)) {
+        for (const item of modulePermissions) {
+          for (const subItem of item.permissions) {
+            if (rolePermissions.sectionPermissions.includes(item.id)) {
+              if (rolePermissions.permissions.includes(subItem.id) && (subItem.action == "read" || subItem.action == "edit") && savedPermissions.findIndex(item => item.id == subItem.id) == -1) {
+                const newArr = { ...subItem, section: item.id, type: subItem.action == "read" ? "view" : "edit" };
+                savedPermissions.push(newArr);
+              }
+            }
+          }
+        }
+      }
+    }
+    setExpandedRows(savedPermissions)
+  }, [rolePermissions])
+
   const togglePermission = (type, id, checked) => {
-    if (!account[type].includes(id)) {
+    if (account.usertype !== 'Company' && !account[type].includes(id)) {
       toast.error("You don't have permission to perform this action", { toastId: "permission-error" });
       return;
     }
@@ -294,7 +320,6 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
         // return;
       }
     }
-
 
     setRolePermissions(prev => {
       const newPermissions = { ...prev };
@@ -430,7 +455,7 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
   return (
     <div className='col-xl-12 col-xxl-8'>
       {Object.entries(permissionData).map(([sectionName, models]) => (
-        <div key={sectionName} className='itemWrapper a shadow-none border-0 px-0 permissionsConfigWrapper'>
+        <div key={sectionName} className='itemWrapper d shadow-none border-0 px-0 permissionsConfigWrapper'>
           <div className="heading h-auto justify-content-between">
             <div className='d-flex'>
               <h5 className='me-3'>{sectionName}</h5>
@@ -446,36 +471,43 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
               </div>
             </div>
             {expandedSections[sectionName] && (
-              <div className="my-auto position-relative mx-1 d-flex">
-                <span className='me-2'>Master: </span>
-                <div class="cl-toggle-switch">
-                  <label class="cl-switch">
-                    <input
-                      type="checkbox"
-                      checked={models.every(model =>
-                        model.permissions.every(p =>
-                          rolePermissions.permissions.includes(p.id)
-                        ) &&
-                        model.table_records.every(r =>
-                          rolePermissions.tablePermissions.includes(r.id)
-                        )
-                      )}
-                      onChange={(e) => {
-                        models.forEach(model => {
-                          handleMasterToggle(
-                            model.id,
-                            model.module_section,
-                            model.permissions,
-                            model.table_records,
-                            e.target.checked
-                          );
-                        });
-                      }}
-                    />
-                    <span></span>
-                  </label>
+              <>
+                <div className='d-flex'>
+                  <div onClick={resetPermissionToInitialState}>
+                    <i className='fa-solid fa-trash' />
+                  </div>
+                  <div className="my-auto position-relative ms-3 me-1 d-flex">
+                    <span className='me-2'>Master: </span>
+                    <div class="cl-toggle-switch">
+                      <label class="cl-switch">
+                        <input
+                          type="checkbox"
+                          checked={models.every(model =>
+                            model.permissions.every(p =>
+                              rolePermissions.permissions.includes(p.id)
+                            ) &&
+                            model.table_records.every(r =>
+                              rolePermissions.tablePermissions.includes(r.id)
+                            )
+                          )}
+                          onChange={(e) => {
+                            models.forEach(model => {
+                              handleMasterToggle(
+                                model.id,
+                                model.module_section,
+                                model.permissions,
+                                model.table_records,
+                                e.target.checked
+                              );
+                            });
+                          }}
+                        />
+                        <span></span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
           {expandedSections[sectionName] && (
@@ -523,7 +555,7 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
                                     <label class="cl-switch">
                                       <input
                                         type="checkbox"
-                                        checked={rolePermissions.permissions.includes(permission.id)}
+                                        checked={rolePermissions.sectionPermissions.includes(model.id) && rolePermissions.permissions.includes(permission.id)}
                                         onChange={(e) => {
                                           handlePermissionToggle(
                                             permission.id,
@@ -561,24 +593,28 @@ export function PermissionConfigTable({ allRoleList, selectedGroup, selectedRole
 
                                 return (
                                   <tr key={rowKey}>
-                                    <td colSpan={7}>
-                                      <div className="p-3 bg-light0">
-                                        <div className="d-flex justify-content-between align-items-center">
-                                          <h6>
-                                            Column Permissions - <b>{row.type.charAt(0).toUpperCase() + row.type.slice(1)}</b>
-                                          </h6>
-                                          <div className="my-auto position-relative mx-1 d-flex">
-                                            <span className="me-2">Master: </span>
-                                            <input
-                                              type="checkbox"
-                                              checked={checkedState}
-                                              onChange={(e) => {
-                                                toggleAllColumnPermissions(model, e.target.checked, row.type)
-                                              }}
-                                            />
+                                    <td colSpan={7} className="accordion" id={`accordion-${rowKey}`}>
+                                      <div className="bg-transparent border-0 accordion-item">
+                                        <div className='d-flex justify-content-between align-items-center mb-2 border-bottom'>
+                                          <div className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#test-${rowKey}`} aria-expanded="true" aria-controls={`test-${rowKey}`}>
+                                            <h6>
+                                              Column Permissions - <b>{row.type.charAt(0).toUpperCase() + row.type.slice(1)}</b>
+                                            </h6>
+                                          </div>
+                                          <div className='pe-2'>
+                                            <div className="my-auto position-relative mx-1 d-flex">
+                                              <span className="me-2">Master: </span>
+                                              <input
+                                                type="checkbox"
+                                                checked={checkedState}
+                                                onChange={(e) => {
+                                                  toggleAllColumnPermissions(model, e.target.checked, row.type)
+                                                }}
+                                              />
+                                            </div>
                                           </div>
                                         </div>
-                                        <div className="row">
+                                        <div className="row accordion-collapse collapse" id={`test-${rowKey}`} aria-labelledby="headingOne" data-bs-parent={`#accordion-${rowKey}`}>
                                           {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
                                             const columnRecords = model.table_records.filter(r => r.column_name === column);
                                             const filteredColumnRecords = columnRecords.filter(record => record.action === row.type);
