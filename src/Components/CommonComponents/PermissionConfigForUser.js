@@ -473,7 +473,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
 
 
   return (
-    <div className={`col-xl-12 ${standalone ? 'col-xxl-8' : ''}`}>
+    <div className={`col-xl-12 ${standalone ? 'col-xxl-8' : ''} userPermission__contentBox`}>
       {Object.entries(permissionData).map(([sectionName, models]) => {
         // Filter 
         const filteredModels = models.filter((model) => {
@@ -482,7 +482,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         return (
           <div key={sectionName} className='itemWrapper d shadow-none border-0 px-0 permissionsConfigWrapper'>
             <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-              <div className='d-flex'>
+              <div className='d-flex justify-content-between align-items-center w-100'>
                 <h5 className='me-3'>{sectionName}</h5>
                 <div class="cl-toggle-switch">
                   <label class="cl-switch">
@@ -497,7 +497,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
               </div>
               {expandedSections[sectionName] && (
                 <>
-                  <div className='d-flex'>
+                  <div className='d-flex ms-2'>
                     <div onClick={resetPermissionToInitialState}>
                       <i className='fa-solid fa-trash' />
                     </div>
@@ -619,10 +619,10 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                   return (
                                     <tr key={rowKey}>
                                       <td colSpan={7} className="accordion" id={`accordion-${rowKey}`}>
-                                        <div className="bg-transparent border-0 accordion-item">
-                                          <div className='d-flex justify-content-between align-items-center mb-2 border-bottom'>
+                                        <div className="bg-transparent border-0 accordion-item permission_accordionBody">
+                                          <div className='d-flex justify-content-between align-items-center '>
                                             <div className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#test-${rowKey}`} aria-expanded="true" aria-controls={`test-${rowKey}`}>
-                                              <h6>
+                                              <h6 className='mb-0'>
                                                 Column Permissions - <b>{row.type.charAt(0).toUpperCase() + row.type.slice(1)}</b>
                                               </h6>
                                             </div>

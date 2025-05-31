@@ -211,7 +211,7 @@ function CampaignCreateNEW() {
 
   // Step three form submit for adding agents
   async function handleFormSubmitStepThree(id) {
-     navigate(-1)
+    navigate(-1)
     // if (selectedAgent.length === 0) {
     //   toast.error("Please select at least one agent");
     //   return
@@ -326,30 +326,30 @@ function CampaignCreateNEW() {
   }))
 
   const updateLead = (updatedLead) => {
-  setSpecificLeads(prevLeads =>
-    prevLeads.map(lead =>
-      lead.id === updatedLead.id ? { ...lead, ...updatedLead } : lead
-    )
-  );
-};
+    setSpecificLeads(prevLeads =>
+      prevLeads.map(lead =>
+        lead.id === updatedLead.id ? { ...lead, ...updatedLead } : lead
+      )
+    );
+  };
 
   const handleUpdateLeads = async () => {
-      const payload = { ...leadsEditState };
-      setLoading(true);
-      const apiData = await generalPutFunction(
-        `/campaign-lead/update/${leadsEditState.id}`,
-        payload
-      );
-      if (apiData?.status) {
-        console.log('apidata', apiData)
-        updateLead(apiData?.data)
-        setLoading(false);
-        toast.success(apiData.message);
-        setPopUp(false);
-      } else {
-        setLoading(false);
-      }
-    };
+    const payload = { ...leadsEditState };
+    setLoading(true);
+    const apiData = await generalPutFunction(
+      `/campaign-lead/update/${leadsEditState.id}`,
+      payload
+    );
+    if (apiData?.status) {
+      console.log('apidata', apiData)
+      updateLead(apiData?.data)
+      setLoading(false);
+      toast.success(apiData.message);
+      setPopUp(false);
+    } else {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="mainContent">
@@ -1678,9 +1678,36 @@ function CampaignCreateNEW() {
                                                 </p>
                                               )}
                                             </div>
-                                            <button
+                                            {/* <button
                                               onClick={() => handleFormSubmitStepFour()}
-                                            >Submit File</button>
+                                            >Submit File</button> */}
+                                          </div>
+                                          <div className="card-footer">
+                                            <div className="d-flex justify-content-between">
+                                              <button
+                                                className="panelButton m-0"
+                                                // onClick={handleNewImage}
+                                                // disabled={!newImage}
+                                                 onClick={() => handleFormSubmitStepFour()}
+                                              >
+                                                <span className="text">Confirm</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-check"></i>
+                                                </span>
+                                              </button>
+                                              <button
+                                                className="panelButton gray"
+                                                onClick={() => {
+                                                  setAddNewCsvToggle(false);
+                                                  // setNewImage(null);
+                                                }}
+                                              >
+                                                <span className="text">Cancel</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-xmark"></i>
+                                                </span>
+                                              </button>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>

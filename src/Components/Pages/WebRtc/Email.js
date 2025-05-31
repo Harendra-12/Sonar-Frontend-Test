@@ -23,27 +23,51 @@ function Email({ selectedMail }) {
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
   const [mailSettings, setMailSettings] = useState([]);
-  const [showNewMail, setShowNewMail] = useState(false);
   const [showMailList, setShowMailList] = useState(true);
-  const [mailReplay, setMailReplay] = useState(false)
+  const [mailReplay, setMailReplay] = useState(false);
+  const [showNewMail, setShowNewMail] = useState(false);
+  const [activeList, setActiveList] = useState("inbox");
+
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleShowNewMail = (props) => {
-    setShowNewMail(props);
+  // const handleShowNewMail = () => {
+  //   setShowNewMail();
+  // };
+
+  // const handleListingClick = () => {
+  //   // console.log('hiii');
+  //   setShowMailList()
+  // }
+
+  // const handleMailReplay = () => {
+  //   setMailReplay()
+  // }
+
+
+
+  const handleShowNewMail = () => {
+    setShowNewMail(true);
+    setShowMailList(false);
+    setMailReplay(false);
   };
 
-  const handleListingClick = (props) => {
-    // console.log('hiii');
-    setShowMailList(props)
-  }
+  const handleListingClick = (inbox) => {
+    setShowMailList(true);
+    setShowNewMail(false);
+    setMailReplay(false);
+    setActiveList(inbox);
+  };
 
-  const handleMailReplay = (props) => {
-    setMailReplay(props)
-  }
+  const handleMailReplay = () => {
+    setMailReplay(true);
+    setShowMailList(false);
+    setShowNewMail(false);
+  };
+
 
 
   const fetchData = async (shouldLoad) => {
@@ -299,15 +323,36 @@ function Email({ selectedMail }) {
                         <div className="card-body ps-0">
                           <ul>
                             <li className=" " >
-                              <button className="mail_list active" onClick={() => { setShowMailList(true) }}>
+                              <button
+                                // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
+                                //   onClick={handleListingClick}
+                                className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
+                                onClick={() => handleListingClick("inbox")}
+                              >
                                 <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2" ></i> Inbox</p>
                                 <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
                               </button>
                             </li>
-                            <li ><button className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></button></li>
-                            <li className=""><button className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></button></li>
+                            <li >
+                              <button
+                                // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
+                                className={`mail_list ${activeList === "sent" ? "active" : ""}`}
+                                onClick={() => handleListingClick("sent")}
+                              ><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p>
+                              </button>
+                            </li>
                             <li className="">
-                              <button className="mail_list"> <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
+                              <button
+                                className={`mail_list ${activeList === "starred" ? "active" : ""}`}
+                                onClick={() => handleListingClick("starred")}
+                              ><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p>
+                              </button>
+                            </li>
+                            <li className="">
+                              <button 
+                              className={`mail_list ${activeList === "deleted" ? "active" : ""}`}
+          onClick={() => handleListingClick("deleted")}
+                                > <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
                             </li>
                           </ul>
                         </div>
@@ -320,7 +365,13 @@ function Email({ selectedMail }) {
                              <MailReply />
                         ) }
                         {showNewMail && <NewMail />} */}
+                        {/* {
+                          !showMailList &&  <EmailList handleMailReplay={handleMailReplay}  />
+                        }
                         {
+                          !mailReplay &&   <MailReply   />
+                        } */}
+                        {/* {
                           showMailList && !mailReplay && !showNewMail && <EmailList handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
                         }
                         {
@@ -328,7 +379,33 @@ function Email({ selectedMail }) {
                         }
                         {
                           showNewMail && !mailReplay && <NewMail handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
-                        }
+                        } */}
+
+                        {showMailList && !mailReplay && !showNewMail && (
+                          <EmailList
+                            handleShowNewMail={handleShowNewMail}
+                            handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                          />
+                        )}
+
+                        {mailReplay && !showMailList && !showNewMail && (
+                          <MailReply
+                            handleShowNewMail={handleShowNewMail}
+                            handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                          />
+                        )}
+
+                        {showNewMail && !mailReplay && (
+                          <NewMail
+                            handleShowNewMail={handleShowNewMail}
+                            handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                          />
+                        )}
+
+
                       </div>
                     </div>
                   </div>

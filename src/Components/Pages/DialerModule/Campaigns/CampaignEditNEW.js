@@ -2357,6 +2357,33 @@ function CampaignEditNEW() {
                                                 )}
                                               </div>
                                             </div>
+                                             <div className="card-footer">
+                                            <div className="d-flex justify-content-between">
+                                              <button
+                                                className="panelButton m-0"
+                                                // onClick={handleNewImage}
+                                                // disabled={!newImage}
+                                                 onClick={() => handleFormSubmitStepFour()}
+                                              >
+                                                <span className="text">Confirm</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-check"></i>
+                                                </span>
+                                              </button>
+                                              <button
+                                                className="panelButton gray"
+                                                onClick={() => {
+                                                  setAddNewCsvToggle(false);
+                                                  // setNewImage(null);
+                                                }}
+                                              >
+                                                <span className="text">Cancel</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-xmark"></i>
+                                                </span>
+                                              </button>
+                                            </div>
+                                          </div>
                                           </div>
                                         </div>
                                       </div>
