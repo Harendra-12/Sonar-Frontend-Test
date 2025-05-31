@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
 const token = localStorage.getItem("token");
-const account = localStorage.getItem("account");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -371,6 +370,7 @@ export function checkViewSidebar(
   userPermissions,
   action = undefined
 ) {
+  const account = localStorage.getItem("account");
   // Return true immediately if user is a company
   if (JSON.parse(account)?.usertype == 'Company') return true;
 
@@ -383,6 +383,10 @@ export function checkViewSidebar(
       for (const item of modulePermissions) {
         // Check if item belongs to the module section or current section
         if (!sectionPermissions?.includes(action == "section" ? item.section_id : item.id)) continue;
+
+        if (sectionPermissions?.includes(action == "section" ? item.section_id : item.id)) {
+          return true;
+        }
 
         // If no action specified, check if model matches
         if (!action && item.model === slug) {

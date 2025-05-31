@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 
 const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
@@ -35,12 +36,16 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const accountDetailsRefresh = useSelector(
     (state) => state.accountDetailsRefresh
   );
+  const permissions = useSelector((state) => state.permissions);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
   const [defaultPermission, setDefaultPermission] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
+  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
+  const [editPermission, setEditPermission] = useState(false);
+
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   // const [filterExtensions, setFilterExtensions] = useState();
@@ -296,7 +301,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       status,
       role_id,
       account_id: account.account_id,
-      permissions: selectedPermission,
+      // permissions: selectedPermission,
+      sectionPermissions: userPermissionBridge.sectionPermissions,
+      permissions: userPermissionBridge.permissions,
+      tablePermissions: userPermissionBridge.tablePermissions,
       extension_id: selectedSearch.value,
       usages: data.usages,
       alias: data.alias,
@@ -927,9 +935,11 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           className="col-xl-6"
                           style={{
                             borderLeft: "1px solid var(--border-color)",
+                            // height: "500px",
+                            // overflow: 'auto'
                           }}
                         >
-                          <div className="profileView p-0">
+                          {/* <div className="profileView p-0">
                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                               <div className="col-xl-12">
                                 <div className="headerCommon d-flex align-items-center">
@@ -1011,6 +1021,17 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   )}
                               </div>
                             </div>
+                          </div> */}
+                          <div className="permissionListWrapper">
+                            <PermissionConfigTable
+                              standalone={false}
+                              allRoleList={role}
+                              selectedRole={watch().role_id}
+                              allPermissions={permissions}
+                              loading={loading}
+                              setLoading={setLoading}
+                              setUserPermissionBridge={setUserPermissionBridge}
+                            />
                           </div>
                         </div>
                       )}

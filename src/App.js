@@ -189,6 +189,8 @@ import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
 import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
 import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
 import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
+import AllAgent from "./Components/Pages/Ai/AllAgent";
+import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -822,6 +824,12 @@ function App() {
           <Route path="/sofia-add-setting" element={<SofiaAddSetting />} />
           <Route path="/sofia-edit-setting" element={<SofiaEditSetting />} />
           {/* Sofia path end */}
+
+          {/* --------------- ai path start */}
+
+               <Route path="/ai-all-agent" element={<AllAgent />} />
+               <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
+          {/* --------------- ai path end */}
 
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />

@@ -22,6 +22,7 @@ function Navbar() {
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
+
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
   const isChildActive = (childPaths) => {
@@ -1249,14 +1250,15 @@ function Navbar() {
                                 <div className="itemTitle">Dashboard</div>
                               </Link>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">
                                   Number Configuration
                                 </div>
                               </Link>
-                            </li>
-                            <li className="tabItem ">
+                            </li> */}
+                        
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-ai-agent"
                                 onClick={() => backToTop()}
@@ -1275,8 +1277,74 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Agents</div>
                               </NavLink>
+                            </li> */}
+                            <li className="tabItem ">
+                              <NavLink
+                               to="/ai-all-agent"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-all-agent",
+                                     
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">All Agents</div>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
+                              <NavLink
+                               to="/ai-knowledge-base"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-knowledge-base",
+                                      
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Knowledge Base</div>
+                              </NavLink>
+                            </li>
+
+                            {/* <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Knowledge Base</div>
+                              </Link>
+                            </li> */}
+                                <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">
+                                  Phone Number
+                                </div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Batch Calls</div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Call History</div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link onClick={() => featureUnderdevelopment()}>
+                                <div className="itemTitle">Billing</div>
+                              </Link>
+                            </li>
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Call Reports</div>
                               </Link>
@@ -1295,7 +1363,7 @@ function Navbar() {
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Knowledge Base</div>
                               </Link>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
@@ -2124,6 +2192,7 @@ function Navbar() {
                             isChildActive([
                               "/knowledge-base",
                               "/ticket",
+                              "/live-chat",
                               "/view-massage",
                               "/live-chat"
                             ])
@@ -2142,6 +2211,7 @@ function Navbar() {
                           className={`accordion-collapse collapse ${isChildActive([
                             "/knowledge-base",
                             "/ticket",
+                            "/live-chat",
                             "/view-massage",
                             "/live-chat"
                           ])

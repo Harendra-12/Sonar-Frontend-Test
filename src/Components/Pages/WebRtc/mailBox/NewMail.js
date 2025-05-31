@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NewMail = ({handleShowNewMail, handleListingClick, handleMailReplay }) => {
+const NewMail = ({ handleShowNewMail, handleListingClick, handleMailReplay }) => {
     return (
         <>
             <div className="read_message">
@@ -126,9 +126,32 @@ const NewMail = ({handleShowNewMail, handleListingClick, handleMailReplay }) => 
                                             </div>
                                         </div>
                                     </div>
+                                  
                                 </div>
                             </form>
                         </div>
+                          <div className='mb-3'>
+                                        <div className="d-flex justify-content-end gap-2">
+                                            <button
+                                                className="panelButton m-0"
+                                               
+                                            >
+                                                <span className="text">Send</span>
+                                                <span className="icon">
+                                                    <i className="fa-solid fa-check"></i>
+                                                </span>
+                                            </button>
+                                            <button
+                                                className="panelButton gray m-0 float-end"
+                                               
+                                            >
+                                                <span className="text">Cancel</span>
+                                                <span className="icon">
+                                                    <i className="fa-solid fa-xmark"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
                     </div>
                 </div>
             </div>
