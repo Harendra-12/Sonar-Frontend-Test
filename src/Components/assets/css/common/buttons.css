@@ -58,7 +58,10 @@
 }
 
 .clearButton2.danger {
-  color: red
+  color: #ff0000
+}
+.panelButton.danger {
+    background-color: #ff0000;
 }
 
 .panelButtonOLD {
