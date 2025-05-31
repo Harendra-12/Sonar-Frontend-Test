@@ -1069,3 +1069,8 @@
 .call_dCard h3 {
   font-size: 20px;
 }
+
+
+.numberActive_box p{
+  font-size: clamp(10px, 1vw, 12px) !important;
+}

@@ -26,6 +26,10 @@
     .mainContentApp .contactListItem h5 {
         max-width: 200px;
     }
+    .numberActive_box p {
+        font-size: 10px !important;
+    }
+
 }
 
 @media (max-device-width: 2250px) {
