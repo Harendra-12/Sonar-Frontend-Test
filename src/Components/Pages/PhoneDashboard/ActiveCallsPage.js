@@ -331,15 +331,15 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                         {
                                                                             item.active ?
                                                                                 <div className="col-3 numberActive_box">
-                                                                                    <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
+                                                                                    <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700 }}>
                                                                                         {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                         {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
                                                                                     /> */}
                                                                                     </h4>
-                                                                                    {/* <p>Active</p> */}
-                                                                                    <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' />
+                                                                                    <p>Active</p>
+                                                                                    {/* <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' /> */}
                                                                                     {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : ""
                                                                         }
@@ -347,15 +347,15 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             item?.ringing ?
                                                                                 <div className="col-3 numberActive_box">
 
-                                                                                    <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
+                                                                                    <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
                                                                                         {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
                                                                                         {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
                                                                                     /> */}
                                                                                     </h4>
-                                                                                    {/* <p className=''>Ringing</p> */}
-                                                                                    <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' />
+                                                                                    <p className=''>Ringing</p>
+                                                                                    {/* <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' /> */}
                                                                                     {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : " "
                                                                         }
@@ -363,26 +363,26 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             item?.total ?
                                                                                 <div className="col-3 numberActive_box">
 
-                                                                                    <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
+                                                                                    <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
                                                                                         {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                         {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
                                                                                     /> */}
                                                                                     </h4>
-                                                                                    {/* <p>Total</p> */}
-                                                                                    <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' />
+                                                                                    <p>Total</p>
+                                                                                    {/* <img className=" " src={require('../../assets/images/totalCall.png')} alt='logout' /> */}
                                                                                 </div> : ""
                                                                         }
                                                                         {
                                                                             item?.missed ?
                                                                                 <div className="col-3 numberActive_box">
 
-                                                                                    <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
+                                                                                    <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700, }}>
                                                                                         {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
                                                                                     </h4>
-                                                                                    {/* <p>Missed</p> */}
-                                                                                    <img className=" " src={require('../../assets/images/missed.png')} alt='logout' />
+                                                                                    <p>Missed</p>
+                                                                                    {/* <img className=" " src={require('../../assets/images/missed.png')} alt='logout' /> */}
                                                                                 </div> : ""
                                                                         }
                                                                     </div>
