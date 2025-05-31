@@ -37,8 +37,8 @@ function UserConfiguration() {
   const [checkedUserPermissionData, setCheckedUserPermissionData] = useState(
     []
   );
-  const [selectAll,setSelectAll]=useState(false)
-  const[loading,setLoading]=useState(false)
+  const [selectAll, setSelectAll] = useState(false)
+  const [loading, setLoading] = useState(false)
   const location = useLocation();
   const locationState = location.state;
 
@@ -56,35 +56,35 @@ function UserConfiguration() {
         if (locationState.table_permissions.length > 0) {
           setCheckedUserPermissionData([...locationState.table_permissions]);
         }
-      } catch (error) {}
+      } catch (error) { }
     };
     permissionData();
   }, []);
-/**
- * Function to set user permission data based on the selected accordion data.
- * This function will also reset the select all checkbox value to false.
- * @param {string} data
- */
+  /**
+   * Function to set user permission data based on the selected accordion data.
+   * This function will also reset the select all checkbox value to false.
+   * @param {string} data
+   */
   const handleSetUserPermissionData = (data) => {
     setSelectAll(false)
     // console.log(userPermission[data])
     const permissionData = permissionDataForAccordian(
-     userPermission[data]
+      userPermission[data]
     );
     // console.log({permissionData})
     setUserPermissionData(permissionData);
     setActiveUserPermission(data);
 
   };
-/**
- * Handle permission save button click.
- * This function will send a post request to the
- * assign-table-permissions API with the user details
- * and the checked permissions.
- * If the request is successful then it will show a
- * success toast message and otherwise it will show
- * an error toast message.
- */
+  /**
+   * Handle permission save button click.
+   * This function will send a post request to the
+   * assign-table-permissions API with the user details
+   * and the checked permissions.
+   * If the request is successful then it will show a
+   * success toast message and otherwise it will show
+   * an error toast message.
+   */
   const handlePermissionSave = async () => {
     const payload = {
       ...usersDetails,
@@ -135,7 +135,7 @@ function UserConfiguration() {
   }
   return (
     <>
-      {loading?<CircularLoader/>:<main className="mainContent">
+      {loading ? <CircularLoader /> : <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="User Configuration" />
@@ -190,7 +190,7 @@ function UserConfiguration() {
                       >
                         User Settings
                       </button>
-                      <button
+                      {/* <button
                         className="nav-link"
                         id="nav-exten-tab"
                         data-bs-toggle="tab"
@@ -201,7 +201,7 @@ function UserConfiguration() {
                         aria-selected="false"
                       >
                         Permissions Configuration
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   <div
@@ -320,12 +320,11 @@ function UserConfiguration() {
                                               >
                                                 <div className="d-flex justify-content-center align-items-center">
                                                   <div
-                                                    className={`savedCardWrapper col ${
-                                                      activeUserPermission ===
-                                                      item
+                                                    className={`savedCardWrapper col ${activeUserPermission ===
+                                                        item
                                                         ? "active"
                                                         : ""
-                                                    }`}
+                                                      }`}
                                                   >
                                                     <div>
                                                       <label>{item}</label>
@@ -345,7 +344,7 @@ function UserConfiguration() {
                                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                                               <div className="col-xl-12">
                                                 <div className="headerCommon d-flex align-items-center">
-                                                <div className="col d-flex justify-content-between">
+                                                  <div className="col d-flex justify-content-between">
                                                     Permissions for Role{" "}
                                                     <span
                                                       style={{
@@ -353,15 +352,15 @@ function UserConfiguration() {
                                                           "var(--ui-accent)",
                                                         fontWeight: 600,
                                                       }}
-                                                
+
                                                     >
                                                       {/* {selectedRole} */}
-                                                    
-                                                      <div><span className="m-3">Select All</span><input type="checkbox" checked={selectAll} onChange={(e)=>{
-                                                        if(e.target.checked){
+
+                                                      <div><span className="m-3">Select All</span><input type="checkbox" checked={selectAll} onChange={(e) => {
+                                                        if (e.target.checked) {
                                                           setSelectAll(true)
-                                                          userPermissionData.map((item)=>{
-                                                           
+                                                          userPermissionData.map((item) => {
+
                                                             setCheckedUserPermissionData(
                                                               (pre) => [
                                                                 ...pre,
@@ -373,11 +372,11 @@ function UserConfiguration() {
                                                                 ),
                                                               ])
                                                           })
-                                                        }else{
+                                                        } else {
                                                           setSelectAll(false)
                                                           setCheckedUserPermissionData([])
                                                         }
-                                                      }}/></div>
+                                                      }} /></div>
                                                     </span>
                                                   </div>
                                                 </div>
@@ -476,9 +475,9 @@ function UserConfiguration() {
                                                                             (
                                                                               pre
                                                                             ) => [
-                                                                              ...pre,
-                                                                              action?.id,
-                                                                            ]
+                                                                                ...pre,
+                                                                                action?.id,
+                                                                              ]
                                                                           );
                                                                         } else {
                                                                           const newCheck =

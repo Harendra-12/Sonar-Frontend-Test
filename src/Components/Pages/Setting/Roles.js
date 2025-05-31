@@ -199,7 +199,9 @@ function Roles() {
     const parsedData = isNewRole
       ? {
         role_id: newAddedRoleId,
-        permissions: addNewRolePermissions,
+        sectionPermissions: userPermissionBridge.sectionPermissions,
+        permissions: userPermissionBridge.permissions,
+        tablePermissions: userPermissionBridge.tablePermissions,
       }
       : {
         role_id: selectedRoleId,
@@ -816,6 +818,10 @@ function Roles() {
                             </>
                           )}
                         </div>
+                        {selectedRole == "Agent" && <span>
+                          This will apper only for agents (Agents will only
+                          access webrtc)
+                        </span>}
                         <PermissionConfigTable
                           standalone={false}
                           allRoleList={role}
@@ -961,7 +967,7 @@ function Roles() {
               </div>
               <div>
                 <div>
-                  {selectedRole == "Agent" || role.filter((item) => item.id == addSelectedRoleId) ? (
+                  {selectedRole == "Agent" ? (
                     <div className="d-flex flex-column">
                       <span>
                         This will apper only for agents (Agents will only
