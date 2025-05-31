@@ -16,7 +16,8 @@ import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import HeaderApp from "./HeaderApp";
-
+import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
+import { Rnd } from "react-rnd";
 
 function AllVoicemails({ isCustomerAdmin }) {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [filteredVoiceMail, setFilteredVoiceMail] = useState([]);
   const loadings = useSelector((state) => state.loading);
   const [loading, setLoading] = useState(false);
-  const [allVoiceMailRefresh, setAllVoiceMailRefresh] = useState(false)
+  const [allVoiceMailRefresh, setAllVoiceMailRefresh] = useState(false);
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
   const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
   const { sessionManager, connectStatus } = useSIPProvider();
@@ -38,8 +39,9 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [audioURL, setAudioURL] = useState("");
   const [showInfoAudio, setShowInfoAudio] = useState(false);
   const [showLogsAudio, setShowLogsAudio] = useState("");
-
-
+  const [transcribeLink, setTranscribeLink] = useState();
+  const [size, setSize] = useState({ width: 'auto', height: 'auto' });
+  const [position, setPosition] = useState({ x: 550, y: -200 });
 
   // useEffect(() => {
   //   const handlePlaying = async (audio) => {
@@ -74,7 +76,6 @@ function AllVoicemails({ isCustomerAdmin }) {
   //   }
   // }, [clickedVoiceMail])
 
-
   useEffect(() => {
     if (thisAudioRef.current) {
       thisAudioRef.current.load(); // Reload the audio source
@@ -86,21 +87,19 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(
-      `/voicemails?page=${pageNumber}`
-    );
+    const apiData = await generalGetFunction(`/voicemails?page=${pageNumber}`);
     if (apiData?.status) {
       setVoiceMail(apiData.data);
       setLoading(false);
-      setAllVoiceMailRefresh(false)
+      setAllVoiceMailRefresh(false);
     } else {
       setLoading(false);
-      setAllVoiceMailRefresh(false)
+      setAllVoiceMailRefresh(false);
     }
-  }
+  };
 
   useEffect(() => {
-    setAllVoiceMailRefresh(true)
+    setAllVoiceMailRefresh(true);
     const shouldLoad = true;
     getData(shouldLoad);
   }, [pageNumber]);
@@ -217,8 +216,9 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem wertc_iconBox border-bottom-0 border-end-0 ${clickedVoiceMail?.id === item?.id ? "selected" : ""
-        }`}
+      className={`callListItem wertc_iconBox border-bottom-0 border-end-0 ${
+        clickedVoiceMail?.id === item?.id ? "selected" : ""
+      }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
@@ -338,10 +338,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     }
   };
 
-  const handleTranscript = () => {
-
-
-  }
+  const handleTranscript = () => {};
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     let hours = date.getHours();
@@ -357,7 +354,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     if (!isCustomerAdmin) {
       return (
         item.dest ==
-        getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
         item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
       );
     } else {
@@ -368,10 +365,10 @@ function AllVoicemails({ isCustomerAdmin }) {
   });
 
   const handleRefreshBtnClicked = () => {
-    setAllVoiceMailRefresh(true)
+    setAllVoiceMailRefresh(true);
     const shouldLoad = false;
     getData(shouldLoad);
-  }
+  };
 
   return (
     <>
@@ -389,11 +386,15 @@ function AllVoicemails({ isCustomerAdmin }) {
       >
         <section className="callPage">
           <div className=" ps-xl-0 stickyHeader">
-            <HeaderApp title={"Voicemails"} loading={loading} setLoading={setLoading} refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)} />
+            <HeaderApp
+              title={"Voicemails"}
+              loading={loading}
+              setLoading={setLoading}
+              refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)}
+            />
           </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
-
               <div className=" allCallHistory pb-0 col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 calcsHeight ">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
@@ -505,7 +506,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
               </div>
               {clickedVoiceMail && (
-                <div className="callDetails col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
+                <div
+                  className="callDetails col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -642,7 +644,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                 style={{
                                   borderInline: "1px solid var(--me-border1)",
                                   borderRadius: "10px",
-                                  overflow: "hidden"
+                                  overflow: "hidden",
                                 }}
                               >
                                 <button
@@ -655,7 +657,8 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-home"
                                   aria-selected="true"
                                 >
-                                  <i class="fa-light fa-circle-info me-1"></i>  Info
+                                  <i class="fa-light fa-circle-info me-1"></i>{" "}
+                                  Info
                                 </button>
                                 <button
                                   className="tabLink"
@@ -667,7 +670,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-profile"
                                   aria-selected="false"
                                 >
-                                  <i class="fa-light fa-list-ul me-1"></i>  Logs
+                                  <i class="fa-light fa-list-ul me-1"></i> Logs
                                 </button>
                               </div>
                             </nav>
@@ -694,7 +697,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr >
+                                      <tr>
                                         <td>
                                           {formatDate(
                                             clickedVoiceMail.created_at
@@ -736,15 +739,21 @@ function AllVoicemails({ isCustomerAdmin }) {
                                           <button
                                             className="tableButton px-2 mx-0"
                                             onClick={() => {
-                                              if (clickedVoiceMail.recording_path === currentPlaying) {
+                                              if (
+                                                clickedVoiceMail.recording_path ===
+                                                currentPlaying
+                                              ) {
                                                 setCurrentPlaying("");
                                                 setAudioURL("");
                                               } else {
-                                                handlePlaying(clickedVoiceMail.recording_path);
+                                                handlePlaying(
+                                                  clickedVoiceMail.recording_path
+                                                );
                                               }
                                             }}
                                           >
-                                            {currentPlaying === clickedVoiceMail.recording_path ? (
+                                            {currentPlaying ===
+                                            clickedVoiceMail.recording_path ? (
                                               <i className="fa-solid fa-chevron-up"></i>
                                             ) : (
                                               <i className="fa-solid fa-chevron-down"></i>
@@ -830,8 +839,11 @@ function AllVoicemails({ isCustomerAdmin }) {
                                       </tr>
                                     </tbody>
                                   </table>
-                                  {currentPlaying === clickedVoiceMail.recording_path && clickedVoiceMail.recording_path && <div className="audio-container mx-2">
-                                    {/* <audio
+                                  {currentPlaying ===
+                                    clickedVoiceMail.recording_path &&
+                                    clickedVoiceMail.recording_path && (
+                                      <div className="audio-container mx-2">
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -854,11 +866,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     >
                                       <i className="fa-sharp fa-solid fa-download" />
                                     </button> */}
-                                    {/* <button className="audioCustomButton ms-1">
+                                        {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                    <AudioWaveformCommon audioUrl={audioURL} />
-                                  </div>}
+                                        <AudioWaveformCommon
+                                          audioUrl={audioURL}
+                                        />
+                                      </div>
+                                    )}
                                 </div>
                               </div>
                               <div
@@ -886,7 +901,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     <tbody>
                                       {selectedVoiceMailExtensionList &&
                                         selectedVoiceMailExtensionList.length >
-                                        0 &&
+                                          0 &&
                                         selectedVoiceMailExtensionList.map(
                                           (item, index) => {
                                             return (
@@ -942,85 +957,97 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   >
                                                     {item.duration}
                                                   </td>
-                                                  <td>   <div className="dropdown">
-                                                    <div
-                                                      className={`tableButton`}
-                                                      href="#"
-                                                      role="button"
-                                                      data-bs-toggle="dropdown"
-                                                      aria-expanded="false"
-                                                    >
-                                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                                    </div>
-                                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                                      <>
-                                                        <li className="dropdown-item">
-                                                          <div
-                                                            className="clearButton text-align-start"
-                                                            onClick={() => {
-                                                              setShowLogsAudio(item.id)
-                                                              if (item?.recording_path) {
-                                                                handlePlaying(
-                                                                  item?.recording_path
+                                                  <td>
+                                                    {" "}
+                                                    <div className="dropdown">
+                                                      <div
+                                                        className={`tableButton`}
+                                                        href="#"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                      >
+                                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                                      </div>
+                                                      <ul className="dropdown-menu actionBtnDropdowns">
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={() => {
+                                                                setShowLogsAudio(
+                                                                  item.id
                                                                 );
-                                                              }
-                                                            }}
-                                                          >
-
-                                                            <i
-                                                              className={`fa-solid fa-${item.configuration !== null
-                                                                ? "play"
-                                                                : "triangle-exclamation"
+                                                                if (
+                                                                  item?.recording_path
+                                                                ) {
+                                                                  handlePlaying(
+                                                                    item?.recording_path
+                                                                  );
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item.configuration !==
+                                                                  null
+                                                                    ? "play"
+                                                                    : "triangle-exclamation"
                                                                 } me-2`}
-                                                            ></i>{" "}
-                                                            {item.configuration !== null
-                                                              ? "Play "
-                                                              : "Configure"}
-                                                          </div>
-                                                        </li>
+                                                              ></i>{" "}
+                                                              {item.configuration !==
+                                                              null
+                                                                ? "Play "
+                                                                : "Configure"}
+                                                            </div>
+                                                          </li>
 
-                                                        <li className="dropdown-item">
-                                                          <div
-                                                            className="clearButton text-align-start"
-                                                            onClick={() =>
-                                                              handleTranscript()
-                                                            }
-                                                          >
-                                                            <i className="fa-solid fa-bolt me-2"></i>
-                                                            Transcript
-                                                          </div>
-                                                        </li>
-                                                      </>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={() =>
+                                                                setTranscribeLink(
+                                                                  item.recording_path
+                                                                )
+                                                              }
+                                                            >
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
 
-                                                      <>
-                                                        <li className="dropdown-item">
-                                                          <div
-                                                            className="clearButton text-align-start"
-                                                            onClick={() =>
-                                                              handleAudioDownload(
-                                                                item.recording_path
-                                                              )
-                                                            }
-                                                          >
-                                                            <i className="fa-regular fa-download"></i>{" "}
-                                                            Download
-                                                          </div>
-                                                        </li>
-                                                      </>
-                                                      <li className="dropdown-item"></li>
-                                                    </ul>
-                                                  </div></td>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={() =>
+                                                                handleAudioDownload(
+                                                                  item.recording_path
+                                                                )
+                                                              }
+                                                            >
+                                                              <i className="fa-regular fa-download"></i>{" "}
+                                                              Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    </div>
+                                                  </td>
                                                 </tr>
-                                                {showLogsAudio == item?.id && <tr
-                                                  // className="collapse"
-                                                  key={`voiceMail${index}`}
-                                                >
-                                                  <td colSpan={7}>
-                                                    <div
-                                                      className="audio-container"
-                                                      id={`voiceMail${index}`}
-                                                    >
-                                                      {/* <audio controls={true}>
+                                                {showLogsAudio == item?.id && (
+                                                  <tr
+                                                    // className="collapse"
+                                                    key={`voiceMail${index}`}
+                                                  >
+                                                    <td colSpan={7}>
+                                                      <div
+                                                        className="audio-container"
+                                                        id={`voiceMail${index}`}
+                                                      >
+                                                        {/* <audio controls={true}>
                                                         <source
                                                           src=""
                                                           type="audio/ogg"
@@ -1033,18 +1060,20 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                           type="audio/mpeg"
                                                         />
                                                       </audio> */}
-                                                      {/* Custom buttons */}
-                                                      {/* <button className="audioCustomButton">
+                                                        {/* Custom buttons */}
+                                                        {/* <button className="audioCustomButton">
                                                         <i className="fa-sharp fa-solid fa-download" />
                                                       </button>
                                                       <button className="audioCustomButton ms-1">
                                                         <i className="fa-sharp fa-solid fa-box-archive" />
                                                       </button> */}
-                                                      <AudioWaveformCommon audioUrl={audioURL} />
-                                                    </div>
-                                                  </td>
-
-                                                </tr>}
+                                                        <AudioWaveformCommon
+                                                          audioUrl={audioURL}
+                                                        />
+                                                      </div>
+                                                    </td>
+                                                  </tr>
+                                                )}
                                               </>
                                             );
                                           }
@@ -1064,6 +1093,33 @@ function AllVoicemails({ isCustomerAdmin }) {
             </div>
           </div>
         </section>
+        
+        {transcribeLink && (
+          <Rnd
+            size={{ width: size.width, height: size.height }}
+            position={{ x: position.x, y: position.y }}
+            onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
+            onResizeStop={(e, direction, ref, delta, position) => {
+              setSize({
+                width: ref.style.width,
+                height: ref.style.height,
+              });
+              setPosition(position);
+            }}
+            minWidth={"300px"}
+            maxWidth={"600px"}
+            maxHeight={"450px"}
+            style={{ position: "fixed", zIndex: "999" }}
+            dragHandleClassName="drag-handle"
+          >
+            <div className="col-12 drag-handle">
+              <AudioTranscribe
+                url={transcribeLink}
+                setTranscribeLink={setTranscribeLink}
+              />
+            </div>
+          </Rnd>
+        )}
       </main>
       {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
         <>
