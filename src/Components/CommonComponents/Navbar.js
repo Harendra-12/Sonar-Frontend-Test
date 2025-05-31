@@ -22,6 +22,7 @@ function Navbar() {
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
+
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
   const isChildActive = (childPaths) => {
