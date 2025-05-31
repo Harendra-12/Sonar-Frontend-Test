@@ -186,6 +186,7 @@ function PermissionConfigForUser() {
                         allPermissions={permissions}
                         loading={loading}
                         setLoading={setLoading}
+                        standalone={true}
                       />
                     </div>
                   </div>
@@ -480,7 +481,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         });
         return (
           <div key={sectionName} className='itemWrapper d shadow-none border-0 px-0 permissionsConfigWrapper'>
-            <div className="heading h-auto justify-content-between">
+            <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
               <div className='d-flex'>
                 <h5 className='me-3'>{sectionName}</h5>
                 <div class="cl-toggle-switch">

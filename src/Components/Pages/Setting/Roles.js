@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import CircularLoader from "../../Loader/CircularLoader";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function Roles() {
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
   const [newAddedRoleId, setNewAddedRoleId] = useState(null);
+  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
   const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate();
   const inputRefs = useRef([]);
@@ -201,7 +203,9 @@ function Roles() {
       }
       : {
         role_id: selectedRoleId,
-        permissions: selectedPermission,
+        sectionPermissions: userPermissionBridge.sectionPermissions,
+        permissions: userPermissionBridge.permissions,
+        tablePermissions: userPermissionBridge.tablePermissions,
       };
     try {
       const apiData = await generalPostFunction(
@@ -583,7 +587,7 @@ function Roles() {
                     </div>
                     {selectedRoleId && (
                       <div className="col-xl-8 pe-xl-0">
-                        <div className="profileView p-0 pb-2 ">
+                        {/* <div className="profileView p-0 pb-2 ">
                           <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                             <div
                               className="col-xl-12"
@@ -777,7 +781,50 @@ function Roles() {
                               </div>
                             )}
                           </div>
+                        </div> */}
+                        <div className="headerCommon d-flex justify-content-between align-items-center pe-0">
+                          <div className="col">
+                            Permissions for{" "}
+                            <span
+                              style={{
+                                color: "var(--ui-accent)",
+                                fontWeight: 600,
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {selectedRole}
+                            </span>
+                          </div>
+                          {selectedIsDefault === 1 ? (
+                            <></>
+                          ) : (
+                            <>
+                              {" "}
+                              <div className="col-auto text-end">
+                                <button
+                                  className="panelButton ms-auto"
+                                  onClick={() =>
+                                    handlePermissionSave(false)
+                                  }
+                                >
+                                  <span className="text">Confirm</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-check"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            </>
+                          )}
                         </div>
+                        <PermissionConfigTable
+                          standalone={false}
+                          allRoleList={role}
+                          selectedRole={selectedRoleId}
+                          allPermissions={permissions}
+                          loading={loading}
+                          setLoading={setLoading}
+                          setUserPermissionBridge={setUserPermissionBridge}
+                        />
                       </div>
                     )}
                   </div>
@@ -913,14 +960,14 @@ function Roles() {
                 <h5>Select Permissions for this Role</h5>
               </div>
               <div>
-                <div className="accordion permissionListWrapper ">
-                  {selectedRole === "Agent" ? (
+                <div>
+                  {selectedRole == "Agent" || role.filter((item) => item.id == addSelectedRoleId) ? (
                     <div className="d-flex flex-column">
                       <span>
                         This will apper only for agents (Agents will only
                         access webrtc)
                       </span>
-                      <div className="accordion permissionListWrapper ">
+                      {/* <div className="accordion permissionListWrapper ">
                         {filteredPermission &&
                           Object.keys(filteredPermission).map(
                             (item, key) => (
@@ -987,11 +1034,11 @@ function Roles() {
                               </div>
                             )
                           )}
-                      </div>
+                      </div> */}
                     </div>
                   ) : (
-                    <div className="accordion permissionListWrapper h-auto">
-                      {filteredPermission &&
+                    <div className="permissionListWrapper">
+                      {/* {filteredPermission &&
                         Object.keys(filteredPermission).map((item, key) => (
                           <div className="accordion-item" key={key}>
                             <h2
@@ -1050,7 +1097,16 @@ function Roles() {
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ))} */}
+                      <PermissionConfigTable
+                        standalone={false}
+                        allRoleList={role}
+                        selectedRole={addSelectedRoleId}
+                        allPermissions={permissions}
+                        loading={loading}
+                        setLoading={setLoading}
+                        setUserPermissionBridge={setUserPermissionBridge}
+                      />
                     </div>
                   )}
                 </div>
