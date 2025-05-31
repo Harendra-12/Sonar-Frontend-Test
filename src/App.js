@@ -188,6 +188,7 @@ import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
 import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
 import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
 import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
+import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -217,11 +218,12 @@ function App() {
   const account = useSelector((state) => state?.account);
   const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
-  const { sendMessage } = Socket();
+  // const { sendMessage } = Socket();
+  const { sendMessage } = GoMessageSocket()
   GoSocket();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
-  }, [Socket]);
+  }, [GoMessageSocket]);
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{

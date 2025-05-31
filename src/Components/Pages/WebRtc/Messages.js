@@ -1511,7 +1511,7 @@ function Messages({
         require("../../assets/music/message-notification.mp3")
       );
       const from = groupMessage?.user_id;
-      const body = groupMessage?.sharedMessage;
+      const body = groupMessage?.message_text;
       setIsFreeSwitchMessage(true);
       const time = formatDateTime(new Date());
       setAllMessage((prevState) => ({

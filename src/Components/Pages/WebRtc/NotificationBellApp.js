@@ -8,6 +8,7 @@ function NotificationBellApp() {
     const state = useSelector((state) => state)
     const recipient_to_remove_notification = state?.recipient_to_remove_notification;
     const incomingMessage = useSelector((state) => state.incomingMessage);
+    const groupMessage = state.groupMessage;
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
@@ -19,11 +20,11 @@ function NotificationBellApp() {
 
     useEffect(() => {
         if (incomingMessage) {
-            const currentMessageId = incomingMessage.id;
+            const currentMessageId = incomingMessage.uuid;
             if (currentMessageId !== prevMessageIdRef.current) {
                 if (!deletedNotificationId?.has(currentMessageId)) {
                     setIncomingMessageList((prevList) => {
-                        const exists = prevList.some(msg => msg.id === incomingMessage.id);
+                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
                         if (!exists) {
                             return [...prevList, incomingMessage];
                         }
@@ -31,7 +32,7 @@ function NotificationBellApp() {
                     });
 
                     setAllNotification((prevList) => {
-                        const exists = prevList.some(msg => msg.id === incomingMessage.id);
+                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
                         if (!exists) {
                             return [...prevList, incomingMessage];
                         }
@@ -42,6 +43,27 @@ function NotificationBellApp() {
             }
         }
     }, [incomingMessage]);
+
+    useEffect(() => {
+        if (groupMessage) {
+            debugger
+            const currentMessageId = groupMessage.uuid;
+            if (currentMessageId !== prevMessageIdRef.current) {
+                if (!deletedNotificationId?.has(currentMessageId)) {
+                    setAllNotification((prevList) => {
+                        const exists = prevList.some(msg => msg.uuid === groupMessage.uuid);
+                        if (!exists) {
+                            return [...prevList, groupMessage];
+                        }
+                        return prevList;
+                    });
+                }
+                prevMessageIdRef.current = currentMessageId;
+            }
+        }
+    }, [groupMessage]);
+
+    
 
     useEffect(() => {
         if (recipient_to_remove_notification !== null) {
@@ -57,7 +79,7 @@ function NotificationBellApp() {
         if (item.message_text) {
             const updatedNotifications = allNotification.filter(msg => msg.uuid !== item.uuid);
             setAllNotification(updatedNotifications);
-            deletedMessageIdsRef.current.add(item.id);
+            deletedMessageIdsRef.current.add(item.uuid);
             dispatch({ type: 'SET_DELETEDNOTIFFID', deletedNotificationId: new Set(deletedMessageIdsRef.current) });
         }
     };
