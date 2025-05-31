@@ -41,7 +41,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [showLogsAudio, setShowLogsAudio] = useState("");
   const [transcribeLink, setTranscribeLink] = useState();
   const [size, setSize] = useState({ width: 'auto', height: 'auto' });
-  const [position, setPosition] = useState({ x: 550, y: -200 });
+  const [position, setPosition] = useState({ x: 600, y: 500 });
 
   // useEffect(() => {
   //   const handlePlaying = async (audio) => {
@@ -216,9 +216,8 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   const renderCallItem = (item) => (
     <div
-      className={`callListItem wertc_iconBox border-bottom-0 border-end-0 ${
-        clickedVoiceMail?.id === item?.id ? "selected" : ""
-      }`}
+      className={`callListItem wertc_iconBox border-bottom-0 border-end-0 ${clickedVoiceMail?.id === item?.id ? "selected" : ""
+        }`}
       onClick={() => handleVoiceMailClick(item)}
     >
       <div className="row justify-content-between align-items-center">
@@ -338,7 +337,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     }
   };
 
-  const handleTranscript = () => {};
+  const handleTranscript = () => { };
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     let hours = date.getHours();
@@ -354,7 +353,7 @@ function AllVoicemails({ isCustomerAdmin }) {
     if (!isCustomerAdmin) {
       return (
         item.dest ==
-          getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
+        getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest) ||
         item.src == getSourceName(clickedVoiceMail.src, clickedVoiceMail.dest)
       );
     } else {
@@ -753,7 +752,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                             }}
                                           >
                                             {currentPlaying ===
-                                            clickedVoiceMail.recording_path ? (
+                                              clickedVoiceMail.recording_path ? (
                                               <i className="fa-solid fa-chevron-up"></i>
                                             ) : (
                                               <i className="fa-solid fa-chevron-down"></i>
@@ -901,7 +900,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     <tbody>
                                       {selectedVoiceMailExtensionList &&
                                         selectedVoiceMailExtensionList.length >
-                                          0 &&
+                                        0 &&
                                         selectedVoiceMailExtensionList.map(
                                           (item, index) => {
                                             return (
@@ -988,15 +987,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                               }}
                                                             >
                                                               <i
-                                                                className={`fa-solid fa-${
-                                                                  item.configuration !==
+                                                                className={`fa-solid fa-${item.configuration !==
                                                                   null
-                                                                    ? "play"
-                                                                    : "triangle-exclamation"
-                                                                } me-2`}
+                                                                  ? "play"
+                                                                  : "triangle-exclamation"
+                                                                  } me-2`}
                                                               ></i>{" "}
                                                               {item.configuration !==
-                                                              null
+                                                                null
                                                                 ? "Play "
                                                                 : "Configure"}
                                                             </div>
@@ -1093,7 +1091,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             </div>
           </div>
         </section>
-        
+
         {transcribeLink && (
           <Rnd
             size={{ width: size.width, height: size.height }}
@@ -1109,7 +1107,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             minWidth={"300px"}
             maxWidth={"600px"}
             maxHeight={"450px"}
-            style={{ position: "fixed", zIndex: "999" }}
+            style={{ position: "fixed", zIndex: "9999" }}
             dragHandleClassName="drag-handle"
           >
             <div className="col-12 drag-handle">
