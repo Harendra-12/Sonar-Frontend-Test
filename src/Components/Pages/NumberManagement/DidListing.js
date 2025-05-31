@@ -75,15 +75,15 @@ function DidListing({ page }) {
     setRefreshState(true);
     if (didAll?.data) {
       setLoading(true);
-      if (page === "number") {
-        setDid(didAll?.data);
-      } else if (page === "pbx") {
-        setDid(didAll?.data?.filter((item) => item.usages === "pbx"));
-      } else if (page === "dialer") {
-        setDid(didAll?.data?.filter((item) => item.usages === "dialer"));
-      } else if (page === "tracker") {
-        setDid(didAll?.data?.filter((item) => item?.usages === "tracker"))
-      }
+      // if (page == "number") {
+      //   setDid(didAll?.data);
+      // } else if (page == "pbx") {
+      //   setDid(didAll?.data?.filter((item) => item.usages == "pbx"));
+      // } else if (page == "dialer") {
+      //   setDid(didAll?.data?.filter((item) => item.usages == "dialer"));
+      // } else if (page == "tracker") {
+      //   setDid(didAll?.data?.filter((item) => item?.usages == "tracker"))
+      // }
       const shouldLoad = true;
       getData(shouldLoad);
     } else {
@@ -140,16 +140,18 @@ function DidListing({ page }) {
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
-      if (page === "number") {
-        setDid(apiData.data?.data);
-        setDidWithPagination(apiData?.data);
-      } else if (page === "pbx") {
-        setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
-        setDidWithPagination(apiData?.data);
-      } else if (page === "dialer") {
-        setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
-        setDidWithPagination(apiData?.data);
-      }
+      // if (page === "number") {
+      //   setDid(apiData.data?.data);
+      //   setDidWithPagination(apiData?.data);
+      // } else if (page === "pbx") {
+      //   setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
+      //   setDidWithPagination(apiData?.data);
+      // } else if (page === "dialer") {
+      //   setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
+      //   setDidWithPagination(apiData?.data);
+      // }
+      setDid(apiData.data?.data);
+      setDidWithPagination(apiData?.data);
       dispatch({
         type: "SET_DIDALL",
         didAll: apiData.data || [],
@@ -346,6 +348,7 @@ function DidListing({ page }) {
                         {checkViewSidebar(
                           "DidConfigure",
                           slugPermissions,
+                          account?.sectionPermissions,
                           account?.permissions,
                           "add"
                         ) && (
