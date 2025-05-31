@@ -475,10 +475,14 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
   return (
     <div className={`col-xl-12 ${standalone ? 'col-xxl-8' : ''} userPermission__contentBox`}>
       {Object.entries(permissionData).map(([sectionName, models]) => {
-        // Filter 
+        // Filter models based on permission
         const filteredModels = models.filter((model) => {
           return account.sectionPermissions.includes(model.id)
         });
+        // Skip if no model IDs are in account.sections
+        if (!models.some(m => account.sections.includes(m.section_id))) {
+          return null;
+        }
         return (
           <div key={sectionName} className='itemWrapper d shadow-none border-0 px-0 permissionsConfigWrapper'>
             <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
@@ -652,7 +656,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                     <div className="card-body">
                                                       {filteredColumnRecords.map(record => (
                                                         <div key={record.id} className="d-flex justify-content-between">
-                                                          <label className="text-capitalize">
+                                                          <label className="text-capitalize" style={{ whiteSpace: 'break-spaces' }}>
                                                             {column.replace(/_/g, ' ')}
                                                           </label>
                                                           <div className="cl-toggle-switch">
