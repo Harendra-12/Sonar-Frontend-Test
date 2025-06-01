@@ -961,7 +961,7 @@ function Messages({
   }, []);
 
   useEffect(() => {
-    if (loginUser.length > 0) {
+    if (loginUser?.length > 0) {
       const updatedOnlineUsers = loginUser
         .map((item) => {
           const findUser = agents.find((agent) => agent.id === item.id);
