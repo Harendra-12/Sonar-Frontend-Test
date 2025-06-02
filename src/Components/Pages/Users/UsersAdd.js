@@ -217,12 +217,13 @@ const UsersAdd = () => {
         permissions: userPermissionBridge.permissions,
         tablePermissions: userPermissionBridge.tablePermissions,
       },
-      ...{
-        profile_picture: profileImage,
-      },
+      // ...{
+      //   profile_picture: profileImage,
+      // },
     };
     setLoading(true);
-    const addUser = await fileUploadFunction("/user/create", payload);
+    // const addUser = await fileUploadFunction("/user/create", payload);
+    const addUser = await generalPostFunction("/user/create", payload);
 
     if (addUser?.status) {
       reset();
