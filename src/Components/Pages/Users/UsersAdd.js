@@ -23,6 +23,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,6 +51,8 @@ const UsersAdd = () => {
   const [profilePicPopup, setProfilePicPopup] = useState(false);
   const [newImage, setNewImage] = useState();
   const [profileImage, setProfileImage] = useState(null);
+  const permissions = useSelector((state) => state.permissions);
+  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
 
   const {
     register,
@@ -209,7 +212,10 @@ const UsersAdd = () => {
       ...updatedData,
       ...{
         account_id: account.account_id,
-        permissions: selectedPermission,
+        // permissions: selectedPermission,
+        sectionPermissions: userPermissionBridge.sectionPermissions,
+        permissions: userPermissionBridge.permissions,
+        tablePermissions: userPermissionBridge.tablePermissions,
       },
       ...{
         profile_picture: profileImage,
@@ -889,7 +895,7 @@ const UsersAdd = () => {
 
                     {selectedRole && (
                       <div className="col-xl-6">
-                        <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                        {/* <div className="profileDetailsHolder position-relative p-0 shadow-none">
                           <div className="col-xl-12">
                             <div className="headerCommon d-flex align-items-center">
                               <div className="col-5">
@@ -902,11 +908,6 @@ const UsersAdd = () => {
                                 >
                                   {selectedRole}
                                 </span>
-                                {/* <span><input type="checkbox" checked={allChecked} onChange={(e)=>{
-                                  const isChecked = e.target.checked;
-                                  setAllChecked(!allChecked)
-                                  handleAllParentCheckboxChange(isChecked)
-                                }}/> Select All</span> */}
                               </div>
                             </div>
                           </div>
@@ -975,6 +976,17 @@ const UsersAdd = () => {
                                 )
                               )}
                           </div>
+                        </div> */}
+                        <div className="permissionListWrapper">
+                          <PermissionConfigTable
+                            standalone={false}
+                            allRoleList={role}
+                            selectedRole={watch().role_id}
+                            allPermissions={permissions}
+                            loading={loading}
+                            setLoading={setLoading}
+                            setUserPermissionBridge={setUserPermissionBridge}
+                          />
                         </div>
                       </div>
                     )}
