@@ -168,9 +168,9 @@ function CampaignCreateNEW() {
       account_id: account.account_id,
       status: "Active",
       user_id: selectedAgent,
-      ...(watch().active_hours ? { scheduler_info: schedulerInfo } : {}),
-      date_range_start: `${watch().start_date} ${watch().start_time}`,
-      date_range_end: `${watch().end_date} ${watch().end_time}`,
+      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
+      date_range_start: `${watch().date_range_start.split("T")[0]} ${watch().date_range_start.split("T")[1]}:00`,
+      date_range_end: `${watch().date_range_end.split("T")[0]} ${watch().date_range_end.split("T")[1]}:00`,
     };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
@@ -613,20 +613,20 @@ function CampaignCreateNEW() {
                                       <label>From Date / Time</label>
                                     </div>
                                     <div className='row gx-2'>
-                                      <div className='col-6'>
+                                      <div className='col-12'>
                                         <input
-                                          type="date"
+                                          type="datetime-local"
                                           className="formItem"
-                                          {...register("start_date", { ...requiredValidator })}
+                                          {...register("date_range_start", { ...requiredValidator })}
                                         />
                                       </div>
-                                      <div className='col-6'>
+                                      {/* <div className='col-6'>
                                         <input
                                           type="time"
                                           className="formItem"
                                           {...register("start_time", { ...requiredValidator })}
                                         />
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                   <div className="col-6 ps-2">
@@ -634,20 +634,20 @@ function CampaignCreateNEW() {
                                       <label>To Date / Time</label>
                                     </div>
                                     <div className='row gx-2'>
-                                      <div className='col-6'>
+                                      <div className='col-12'>
                                         <input
-                                          type="date"
+                                          type="datetime-local"
                                           className="formItem"
-                                          {...register("end_date", { ...requiredValidator })}
+                                          {...register("date_range_end", { ...requiredValidator })}
                                         />
                                       </div>
-                                      <div className='col-6'>
+                                      {/* <div className='col-6'>
                                         <input
                                           type="time"
                                           className="formItem"
                                           {...register("end_time", { ...requiredValidator })}
                                         />
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
