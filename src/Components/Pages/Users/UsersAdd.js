@@ -198,7 +198,7 @@ const UsersAdd = () => {
 
     let updatedData = {
       ...data,
-      extension_id: selectedExtension,
+      extension_id: selectedExtension == 'null' ? null : selectedExtension,
       ...{
         name: `${firstName} ${lastName}`,
         // domain_id: `${domainId}`,
@@ -223,6 +223,7 @@ const UsersAdd = () => {
     };
     setLoading(true);
     const addUser = await fileUploadFunction("/user/create", payload);
+
     if (addUser?.status) {
       reset();
       setSelectedPermission([]);
@@ -739,7 +740,7 @@ const UsersAdd = () => {
                                 );
 
                                 if (selectedRole) {
-                                  setSelectedRole(selectedRole.name);
+                                  setSelectedRole(selectedRole.id);
                                   setSelectedPermission(
                                     selectedRole.permissions.map(
                                       (item) => item.permission_id
@@ -893,7 +894,6 @@ const UsersAdd = () => {
                         </div>
                       </form>
                     </div>
-
                     {selectedRole && (
                       <div className="col-xl-6">
                         {/* <div className="profileDetailsHolder position-relative p-0 shadow-none">
@@ -982,7 +982,7 @@ const UsersAdd = () => {
                           <PermissionConfigTable
                             standalone={false}
                             allRoleList={role}
-                            selectedRole={watch().role_id}
+                            selectedRole={selectedRole}
                             allPermissions={permissions}
                             loading={loading}
                             setLoading={setLoading}
