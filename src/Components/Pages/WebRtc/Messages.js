@@ -131,7 +131,7 @@ function Messages({
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
-   const location = useLocation();
+  const location = useLocation();
   const pathSegments = location.pathname;
   const [selectFileExtension, setSelectFileExtension] = useState(null);
   const thisAudioRef = useRef(null);
@@ -540,7 +540,7 @@ function Messages({
       (contact) => contact.extension === recipient?.[0]
     );
     const agentDetails = agents.find(
-      (agent) => agent.id=== recipient?.[1]
+      (agent) => agent.id === recipient?.[1]
     );
 
     if (!extensionExists) {
@@ -651,7 +651,7 @@ function Messages({
   useEffect(() => {
     if (incomingMessage) {
       console.log("incomingMessage", incomingMessage);
-      
+
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
@@ -676,7 +676,7 @@ function Messages({
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
       console.log("agentDetails", agentDetails);
-      
+
       const time = formatDateTime(new Date());
 
       const contactIndex = contact.findIndex(
@@ -799,7 +799,7 @@ function Messages({
     }
   }, [incomingMessage]);
   console.log("contact", contact);
-  
+
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -1307,7 +1307,7 @@ function Messages({
     }
   }
   // ============================= Tag Related Stuff ======= end here
-  
+
   const filteredUsers = allAgents.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1448,6 +1448,7 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
+    if (messageContent === '') return;
     const messageType = checkMessageType(messageContent);
     socketSendMessage({
       action: "broadcastGroupMessage",
@@ -1550,7 +1551,21 @@ function Messages({
         audio.play();
       }
     }
+
+    if (recipient?.length > 0) {
+      setUnreadMessage((prevState) => {
+        const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+          prevState;
+        return newState;
+      });
+      dispatch({
+        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+        recipient: [...recipient]
+      })
+    }
+
   }, [groupMessage]);
+
 
   // Handle logic to make any user admin or remove any user from admin
   async function manageAdmin(id, groupId, userId, isAdmin) {
@@ -1658,11 +1673,11 @@ function Messages({
   };
   return (
     <>
-    <style>
-          {`#sidenNav{
+      <style>
+        {`#sidenNav{
         display:none;
       }`}
-        </style>
+      </style>
       {addNewTagPopUp && (
         <div className="backdropContact">
           <div className="addNewContactPopup">
@@ -1738,7 +1753,7 @@ function Messages({
         <section>
           <div className="w-100 p-0">
             <HeaderApp
-              title={pathSegments==="/messages"?account?.name:"Messages"}
+              title={pathSegments === "/messages" ? account?.name : "Messages"}
               loading={messageRefresh}
               setLoading={setMessageRefresh}
               refreshApi={handleRefresh}
@@ -2119,7 +2134,13 @@ function Messages({
                                   });
                                   dispatch({
                                     type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-                                    recipient: [...recipient]
+                                    recipient: [
+                                      item.group_name,
+                                      item.id,
+                                      "groupChat",
+                                      item?.group_name,
+                                      item?.email,
+                                      null,]
                                   })
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
@@ -2147,7 +2168,7 @@ function Messages({
                                     </div>
                                     <div className="ms-3 flex-grow-1">
                                       <p>
-                                        {item.group_name}
+                                        {item.group_name} {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <>{" "}(<>{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</>)</>}
                                         <span className=" text-end mb-0">
                                           <p className="timeAgo">
                                             {item?.last_message_data?.created_at
@@ -2611,6 +2632,7 @@ function Messages({
                                     item?.email,
                                     profile_picture,
                                   ]);
+
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
                                   setSelectedgroupUsers(
@@ -3423,7 +3445,19 @@ function Messages({
                                       placeholder="Please enter your message"
                                       value={messageInput}
                                       onChange={(e) => {
-                                        setMessageInput(e.target.value);
+                                        const value = e.target.value;
+                                        const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+
+                                        if (value.trim() === '') {
+                                          setMessageInput('');
+                                          return;
+                                        }
+
+                                        if (wordCount <= 250) {
+                                          setMessageInput(value);
+                                        } else {
+                                          toast.warn("Text is too long!")
+                                        }
                                         // setUnreadMessage((prevState) => {
                                         //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
                                         //     prevState;
