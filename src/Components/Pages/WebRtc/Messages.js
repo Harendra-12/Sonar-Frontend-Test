@@ -3982,30 +3982,31 @@ function Messages({
                               : "translate(100%, 0%)",
                         }}
                       >
-                        <button
-                          onClick={() =>
-                            setIsActiveAgentsOpen(!isActiveAgentsOpen)
-                          }
-                          className="callDashParkedCallsBtn"
-                          style={{
-                            left:
-                              isActiveAgentsOpen &&
+                        {recipient && recipient?.length > 0 ?
+                          <button
+                            onClick={() =>
+                              setIsActiveAgentsOpen(!isActiveAgentsOpen)
+                            }
+                            className="callDashParkedCallsBtn"
+                            style={{
+                              left:
+                                isActiveAgentsOpen &&
+                                  recipient &&
+                                  recipient?.length > 0
+                                  ? "-15px"
+                                  : "-5px",
+                              transition: "all 0.4s ease-in-out",
+                            }}
+                          >
+                            <i
+                              className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
                                 recipient &&
                                 recipient?.length > 0
-                                ? "-15px"
-                                : "-5px",
-                            transition: "all 0.4s ease-in-out",
-                          }}
-                        >
-                          <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
-                              recipient &&
-                              recipient?.length > 0
-                              ? "right"
-                              : "left"
-                              }`}
-                          />
-                        </button>
+                                ? "right"
+                                : "left"
+                                }`}
+                            />
+                          </button> : ""}
                         <div
                           className=" h-100"
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}

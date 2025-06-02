@@ -357,8 +357,10 @@ function CampaignEditNEW() {
       business_numbers: selectedItems,
       account_id: account.account_id,
       status: "Active",
-      scheduler_info: schedulerInfo,
-      user_id: selectedAgent
+      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
+      user_id: selectedAgent,
+      date_range_start: `${watch().date_range_start.split("T")[0]} ${watch().date_range_start.split("T")[1]}:00`,
+      date_range_end: `${watch().date_range_end.split("T")[0]} ${watch().date_range_end.split("T")[1]}:00`,
     };
     const apiData = await generalPutFunction(
       `/campaign/update/${value}`,
@@ -844,20 +846,20 @@ function CampaignEditNEW() {
                                         <label>From Date / Time</label>
                                       </div>
                                       <div className='row gx-2'>
-                                        <div className='col-6'>
+                                        <div className='col-12'>
                                           <input
-                                            type="date"
+                                            type="datetime-local"
                                             className="formItem"
-                                            {...register("start_date", { ...requiredValidator })}
+                                            {...register("date_range_start", { ...requiredValidator })}
                                           />
                                         </div>
-                                        <div className='col-6'>
+                                        {/* <div className='col-6'>
                                           <input
                                             type="time"
                                             className="formItem"
                                             {...register("start_time", { ...requiredValidator })}
                                           />
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-6 ps-2">
@@ -865,349 +867,366 @@ function CampaignEditNEW() {
                                         <label>To Date / Time</label>
                                       </div>
                                       <div className='row gx-2'>
-                                        <div className='col-6'>
+                                        <div className='col-12'>
                                           <input
-                                            type="date"
+                                            type="datetime-local"
                                             className="formItem"
-                                            {...register("end_date", { ...requiredValidator })}
+                                            {...register("date_range_end", { ...requiredValidator })}
                                           />
                                         </div>
-                                        <div className='col-6'>
+                                        {/* <div className='col-6'>
                                           <input
                                             type="time"
                                             className="formItem"
                                             {...register("end_time", { ...requiredValidator })}
                                           />
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div className="formRow d-block">
+                              <div className="formRow">
                                 <div className="formLabel">
-                                  <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                  <label>Active Hours</label>
                                 </div>
-                                <div style={{ width: 'fit-content', marginTop: '10px' }}>
-                                  <div className="timeTableWrapper col-auto">
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Sunday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Sunday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Sunday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Sunday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                <div className="col-6">
+                                  <select className="formItem" {...register("active_hours", { ...requiredValidator })}>
+                                    <option value="">Select Option</option>
+                                    <option value="1">True</option>
+                                    <option value="0">False</option>
+                                  </select>
+                                  {errors.active_hours && (
+                                    <ErrorMessage text={errors.active_hours.message} />
+                                  )}
+                                </div>
+                              </div>
+                              {watch().active_hours &&
+                                <div className="formRow d-block">
+                                  <div className="formLabel">
+                                    <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                  </div>
+                                  <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                    <div className="timeTableWrapper col-auto">
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Sunday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Sunday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Monday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Monday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Monday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Monday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Monday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Monday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Monday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Monday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Tuesday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Tuesday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Tuesday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Tuesday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Wednesday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Wednesday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Wednesday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Wednesday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Thursday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Thursday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Thursday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Thursday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Thursday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Thursday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Friday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Friday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Friday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Friday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Friday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Friday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Friday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Friday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="col-12">
-                                      <div className="wrapper mb-0">
-                                        <div className="item" style={{ width: '95px' }}>
-                                          <input type="checkbox"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Saturday' ? { ...day, status: e.target.checked } : day
-                                              ));
-                                            }} />
-                                          <label className="ms-2 fw-bold">Saturday</label>
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Saturday' ? { ...day, start_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <input type="time" className="formItem"
-                                            onChange={(e) => {
-                                              setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.day === 'Saturday' ? { ...day, end_time: e.target.value } : day
-                                              ));
-                                            }} />
-                                        </div>
-                                        <div className="item">
-                                          <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
-                                                <input type="checkbox" id="showAllCheck"
-                                                  onChange={(e) => {
-                                                    setSchedulerInfo(prevState => prevState.map(day =>
-                                                      day.day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
-                                                    ));
-                                                  }} />
-                                                <span></span>
-                                              </label>
-                                            </div>
+                                      <div className="col-12">
+                                        <div className="wrapper mb-0">
+                                          <div className="item" style={{ width: '95px' }}>
+                                            <input type="checkbox"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Saturday' ? { ...day, status: e.target.checked } : day
+                                                ));
+                                              }} />
+                                            <label className="ms-2 fw-bold">Saturday</label>
                                           </div>
-                                          <label className="ms-1">Full day</label>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <input type="time" className="formItem"
+                                              onChange={(e) => {
+                                                setSchedulerInfo(prevState => prevState.map(day =>
+                                                  day.day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                                ));
+                                              }} />
+                                          </div>
+                                          <div className="item">
+                                            <div className="my-auto position-relative mx-1">
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox" id="showAllCheck"
+                                                    onChange={(e) => {
+                                                      setSchedulerInfo(prevState => prevState.map(day =>
+                                                        day.day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
+                                                      ));
+                                                    }} />
+                                                  <span></span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <label className="ms-1">Full day</label>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              }
                             </form>
                             <div
                               className="itemWrapper a p-0 mt-2 h-auto"
@@ -2357,33 +2376,33 @@ function CampaignEditNEW() {
                                                 )}
                                               </div>
                                             </div>
-                                             <div className="card-footer">
-                                            <div className="d-flex justify-content-between">
-                                              <button
-                                                className="panelButton m-0"
-                                                // onClick={handleNewImage}
-                                                // disabled={!newImage}
-                                                 onClick={() => handleFormSubmitStepFour()}
-                                              >
-                                                <span className="text">Confirm</span>
-                                                <span className="icon">
-                                                  <i className="fa-solid fa-check"></i>
-                                                </span>
-                                              </button>
-                                              <button
-                                                className="panelButton gray"
-                                                onClick={() => {
-                                                  setAddNewCsvToggle(false);
-                                                  // setNewImage(null);
-                                                }}
-                                              >
-                                                <span className="text">Cancel</span>
-                                                <span className="icon">
-                                                  <i className="fa-solid fa-xmark"></i>
-                                                </span>
-                                              </button>
+                                            <div className="card-footer">
+                                              <div className="d-flex justify-content-between">
+                                                <button
+                                                  className="panelButton m-0"
+                                                  // onClick={handleNewImage}
+                                                  // disabled={!newImage}
+                                                  onClick={() => handleFormSubmitStepFour()}
+                                                >
+                                                  <span className="text">Confirm</span>
+                                                  <span className="icon">
+                                                    <i className="fa-solid fa-check"></i>
+                                                  </span>
+                                                </button>
+                                                <button
+                                                  className="panelButton gray"
+                                                  onClick={() => {
+                                                    setAddNewCsvToggle(false);
+                                                    // setNewImage(null);
+                                                  }}
+                                                >
+                                                  <span className="text">Cancel</span>
+                                                  <span className="icon">
+                                                    <i className="fa-solid fa-xmark"></i>
+                                                  </span>
+                                                </button>
+                                              </div>
                                             </div>
-                                          </div>
                                           </div>
                                         </div>
                                       </div>

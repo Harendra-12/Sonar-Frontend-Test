@@ -175,8 +175,21 @@ const UsersAdd = () => {
       if (fileSizeInMB > maxSizeInMB) {
         toast.error(`Please choose a file less than ${maxSizeInMB}MB.`);
       } else {
-        setProfilePicPopup(false);
-        setProfileImage(newImage);
+        const parsedData = new FormData();
+        parsedData.append("profile_picture", newImage);
+        const apiData = await fileUploadFunction(
+          `/user/create-profile-picture-url`,
+          parsedData
+        );
+        if (apiData.status) {
+          setProfileImage(apiData?.data);
+          setProfilePicPopup(false);
+          // setRefresh(refresh + 1);
+          toast.success(apiData.message);
+        } else {
+          setProfilePicPopup(false);
+          toast.error(apiData.message);
+        }
       }
     } else {
       toast.error("Please choose a file");
@@ -217,9 +230,9 @@ const UsersAdd = () => {
         permissions: userPermissionBridge.permissions,
         tablePermissions: userPermissionBridge.tablePermissions,
       },
-      // ...{
-      //   profile_picture: profileImage,
-      // },
+      ...{
+        profile_picture: profileImage,
+      },
     };
     setLoading(true);
     // const addUser = await fileUploadFunction("/user/create", payload);
@@ -638,9 +651,8 @@ const UsersAdd = () => {
                                   <img
                                     src={
                                       profileImage
-                                        ? URL.createObjectURL(profileImage)
-                                        : profileImage ||
-                                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                        ? profileImage
+                                        : require('../../assets/images/placeholder-image.webp')
                                     }
                                     alt="profile"
                                     style={{
@@ -649,6 +661,7 @@ const UsersAdd = () => {
                                       objectFit: "cover",
                                       borderRadius: "50%",
                                     }}
+                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                   />
                                 </div>
                               </button>
