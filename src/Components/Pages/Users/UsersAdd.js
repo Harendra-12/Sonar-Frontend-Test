@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import CircularLoader from "../../Loader/CircularLoader";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
@@ -226,6 +226,7 @@ const UsersAdd = () => {
     if (addUser?.status) {
       reset();
       setSelectedPermission([]);
+      setUserPermissionBridge([]); // Variable Bridge for New Permission 
       toast.success(addUser.message);
       setLoading(false);
       dispatch({
