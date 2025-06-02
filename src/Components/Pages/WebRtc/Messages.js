@@ -131,7 +131,7 @@ function Messages({
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
-   const location = useLocation();
+  const location = useLocation();
   const pathSegments = location.pathname;
   const [selectFileExtension, setSelectFileExtension] = useState(null);
   const thisAudioRef = useRef(null);
@@ -540,7 +540,7 @@ function Messages({
       (contact) => contact.extension === recipient?.[0]
     );
     const agentDetails = agents.find(
-      (agent) => agent.id=== recipient?.[1]
+      (agent) => agent.id === recipient?.[1]
     );
 
     if (!extensionExists) {
@@ -651,7 +651,7 @@ function Messages({
   useEffect(() => {
     if (incomingMessage) {
       console.log("incomingMessage", incomingMessage);
-      
+
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
@@ -676,7 +676,7 @@ function Messages({
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
       console.log("agentDetails", agentDetails);
-      
+
       const time = formatDateTime(new Date());
 
       const contactIndex = contact.findIndex(
@@ -799,7 +799,7 @@ function Messages({
     }
   }, [incomingMessage]);
   console.log("contact", contact);
-  
+
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -1307,7 +1307,7 @@ function Messages({
     }
   }
   // ============================= Tag Related Stuff ======= end here
-  
+
   const filteredUsers = allAgents.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1658,11 +1658,11 @@ function Messages({
   };
   return (
     <>
-    <style>
-          {`#sidenNav{
+      <style>
+        {`#sidenNav{
         display:none;
       }`}
-        </style>
+      </style>
       {addNewTagPopUp && (
         <div className="backdropContact">
           <div className="addNewContactPopup">
@@ -1738,7 +1738,7 @@ function Messages({
         <section>
           <div className="w-100 p-0">
             <HeaderApp
-              title={pathSegments==="/messages"?account?.name:"Messages"}
+              title={pathSegments === "/messages" ? account?.name : "Messages"}
               loading={messageRefresh}
               setLoading={setMessageRefresh}
               refreshApi={handleRefresh}
@@ -3948,30 +3948,31 @@ function Messages({
                               : "translate(100%, 0%)",
                         }}
                       >
-                        <button
-                          onClick={() =>
-                            setIsActiveAgentsOpen(!isActiveAgentsOpen)
-                          }
-                          className="callDashParkedCallsBtn"
-                          style={{
-                            left:
-                              isActiveAgentsOpen &&
+                        {recipient && recipient?.length > 0 ?
+                          <button
+                            onClick={() =>
+                              setIsActiveAgentsOpen(!isActiveAgentsOpen)
+                            }
+                            className="callDashParkedCallsBtn"
+                            style={{
+                              left:
+                                isActiveAgentsOpen &&
+                                  recipient &&
+                                  recipient?.length > 0
+                                  ? "-15px"
+                                  : "-5px",
+                              transition: "all 0.4s ease-in-out",
+                            }}
+                          >
+                            <i
+                              className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
                                 recipient &&
                                 recipient?.length > 0
-                                ? "-15px"
-                                : "-5px",
-                            transition: "all 0.4s ease-in-out",
-                          }}
-                        >
-                          <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
-                              recipient &&
-                              recipient?.length > 0
-                              ? "right"
-                              : "left"
-                              }`}
-                          />
-                        </button>
+                                ? "right"
+                                : "left"
+                                }`}
+                            />
+                          </button> : ""}
                         <div
                           className=" h-100"
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
