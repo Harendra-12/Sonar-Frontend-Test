@@ -37,6 +37,7 @@ function CampaignCreateNEW() {
 
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
+      name: 'Sunday',
       recurring_day: 'Sunday',
       status: false,
       start_time: '',
@@ -44,6 +45,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Monday',
       recurring_day: 'Monday',
       status: false,
       start_time: '',
@@ -51,6 +53,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Tuesday',
       recurring_day: 'Tuesday',
       status: false,
       start_time: '',
@@ -58,6 +61,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Wednesday',
       recurring_day: 'Wednesday',
       status: false,
       start_time: '',
@@ -65,6 +69,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Thursday',
       recurring_day: 'Thursday',
       status: false,
       start_time: '',
@@ -72,6 +77,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Friday',
       recurring_day: 'Friday',
       status: false,
       start_time: '',
@@ -79,6 +85,7 @@ function CampaignCreateNEW() {
       full_day: false,
     },
     {
+      name: 'Saturday',
       recurring_day: 'Saturday',
       status: false,
       start_time: '',
@@ -161,7 +168,9 @@ function CampaignCreateNEW() {
       account_id: account.account_id,
       status: "Active",
       user_id: selectedAgent,
-      ...(isChangeInSchedulerInfo ? { scheduler_info: schedulerInfo } : {})
+      ...(watch().active_hours ? { scheduler_info: schedulerInfo } : {}),
+      date_range_start: `${watch().start_date} ${watch().start_time}`,
+      date_range_end: `${watch().end_date} ${watch().end_time}`,
     };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
@@ -644,330 +653,347 @@ function CampaignCreateNEW() {
                                 </div>
                               </div>
                             </div>
-                            <div className="formRow d-block">
+                            <div className="formRow">
                               <div className="formLabel">
-                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                <label>Active Hours</label>
                               </div>
-                              <div style={{ width: 'fit-content', marginTop: '10px' }}>
-                                <div className="timeTableWrapper col-auto">
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Sunday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                              <div className="col-6">
+                                <select className="formItem" {...register("active_hours", { ...requiredValidator })}>
+                                  <option value="">Select Option</option>
+                                  <option value="1">True</option>
+                                  <option value="0">False</option>
+                                </select>
+                                {errors.active_hours && (
+                                  <ErrorMessage text={errors.active_hours.message} />
+                                )}
+                              </div>
+                            </div>
+                            {watch().active_hours &&
+                              <div className="formRow d-block">
+                                <div className="formLabel">
+                                  <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                </div>
+                                <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                  <div className="timeTableWrapper col-auto">
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Sunday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Monday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Monday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Monday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Monday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Tuesday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Tuesday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Wednesday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Wednesday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Thursday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Thursday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Friday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Friday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Friday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Friday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper mb-0">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
-                                            ));
-                                          }} />
-                                        <label className="ms-2 fw-bold">Saturday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem"
-                                          onChange={(e) => {
-                                            setSchedulerInfo(prevState => prevState.map(day =>
-                                              day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
-                                            ));
-                                          }} />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
-                                                onChange={(e) => {
-                                                  setSchedulerInfo(prevState => prevState.map(day =>
-                                                    day.recurring_day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
-                                                  ));
-                                                }} />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper mb-0">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Saturday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            }
                           </form>
                           <div
                             className="itemWrapper a p-0 mt-2 h-auto"
@@ -1688,7 +1714,7 @@ function CampaignCreateNEW() {
                                                 className="panelButton m-0"
                                                 // onClick={handleNewImage}
                                                 // disabled={!newImage}
-                                                 onClick={() => handleFormSubmitStepFour()}
+                                                onClick={() => handleFormSubmitStepFour()}
                                               >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon">
