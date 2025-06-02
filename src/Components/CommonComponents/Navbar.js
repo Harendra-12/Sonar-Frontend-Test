@@ -1208,6 +1208,9 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/all-ai-agent",
+                            "/ai-all-agent",
+                            "/ai-knowledge-base",
+                            '  /ai-phone-number',
                             "/ai-agent-add",
                             "/ai-agent-edit",
                           ])
@@ -1225,6 +1228,9 @@ function Navbar() {
                         id="collapse14"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/all-ai-agent",
+                          "/ai-all-agent",
+                          "/ai-knowledge-base",
+                          '/ai-phone-number',
                           "/ai-agent-add",
                           "/ai-agent-edit",
                         ])
@@ -1257,7 +1263,7 @@ function Navbar() {
                                 </div>
                               </Link>
                             </li> */}
-                        
+
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-ai-agent"
@@ -1280,13 +1286,13 @@ function Navbar() {
                             </li> */}
                             <li className="tabItem ">
                               <NavLink
-                               to="/ai-all-agent"
+                                to="/ai-all-agent"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
                                       "/ai-all-agent",
-                                     
+
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1299,13 +1305,13 @@ function Navbar() {
                             </li>
                             <li className="tabItem ">
                               <NavLink
-                               to="/ai-knowledge-base"
+                                to="/ai-knowledge-base"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
                                       "/ai-knowledge-base",
-                                      
+
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1316,19 +1322,38 @@ function Navbar() {
                                 <div className="itemTitle">Knowledge Base</div>
                               </NavLink>
                             </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/ai-phone-number"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-phone-number",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">  Phone Number</div>
+                              </NavLink>
+                            </li>
 
                             {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Knowledge Base</div>
                               </Link>
                             </li> */}
-                                <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">
                                   Phone Number
                                 </div>
                               </Link>
-                            </li>
+                            </li> */}
                             <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Batch Calls</div>

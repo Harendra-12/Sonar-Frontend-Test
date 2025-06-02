@@ -311,8 +311,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                                 <i className="fa-solid fa-pen" />
                                                             </button>
-                                                            <div className="itemWrapper a  datanumber4 shadow-sm">
-                                                                <div className="heading h-auto d-block">
+                                                            <div className="itemWrapper a  datanumber4 shadow-sm p-0">
+                                                                <div className="heading h-auto d-block p-3">
                                                                     <div className='d-flex align-items-center justify-content-center flex-column '>
                                                                         <div className='text-center'>
                                                                             <h6 className='fw-semibold mb-0 f-s-14 ellipsisText'>{item?.name}</h6>
@@ -326,7 +326,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="data-number3 datanumber5 h-auto mt-2" >
+                                                                <div className="data-number3 datanumber5 h-auto mt-2 m-2" >
                                                                     <div className="d-flex justify-content-center gap-1 py-2">
                                                                         {
                                                                             item.active ?
