@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import CircularLoader from "../../Loader/CircularLoader";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import {
   emailValidator,
   lengthValidator,
@@ -23,6 +23,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,6 +51,8 @@ const UsersAdd = () => {
   const [profilePicPopup, setProfilePicPopup] = useState(false);
   const [newImage, setNewImage] = useState();
   const [profileImage, setProfileImage] = useState(null);
+  const permissions = useSelector((state) => state.permissions);
+  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
 
   const {
     register,
@@ -195,7 +198,7 @@ const UsersAdd = () => {
 
     let updatedData = {
       ...data,
-      extension_id: selectedExtension,
+      extension_id: selectedExtension == 'null' ? null : selectedExtension,
       ...{
         name: `${firstName} ${lastName}`,
         // domain_id: `${domainId}`,
@@ -209,7 +212,10 @@ const UsersAdd = () => {
       ...updatedData,
       ...{
         account_id: account.account_id,
-        permissions: selectedPermission,
+        // permissions: selectedPermission,
+        sectionPermissions: userPermissionBridge.sectionPermissions,
+        permissions: userPermissionBridge.permissions,
+        tablePermissions: userPermissionBridge.tablePermissions,
       },
       ...{
         profile_picture: profileImage,
@@ -217,9 +223,11 @@ const UsersAdd = () => {
     };
     setLoading(true);
     const addUser = await fileUploadFunction("/user/create", payload);
+
     if (addUser?.status) {
       reset();
       setSelectedPermission([]);
+      setUserPermissionBridge([]); // Variable Bridge for New Permission 
       toast.success(addUser.message);
       setLoading(false);
       dispatch({
@@ -732,7 +740,7 @@ const UsersAdd = () => {
                                 );
 
                                 if (selectedRole) {
-                                  setSelectedRole(selectedRole.name);
+                                  setSelectedRole(selectedRole.id);
                                   setSelectedPermission(
                                     selectedRole.permissions.map(
                                       (item) => item.permission_id
@@ -886,10 +894,9 @@ const UsersAdd = () => {
                         </div>
                       </form>
                     </div>
-
                     {selectedRole && (
                       <div className="col-xl-6">
-                        <div className="profileDetailsHolder position-relative p-0 shadow-none">
+                        {/* <div className="profileDetailsHolder position-relative p-0 shadow-none">
                           <div className="col-xl-12">
                             <div className="headerCommon d-flex align-items-center">
                               <div className="col-5">
@@ -902,11 +909,6 @@ const UsersAdd = () => {
                                 >
                                   {selectedRole}
                                 </span>
-                                {/* <span><input type="checkbox" checked={allChecked} onChange={(e)=>{
-                                  const isChecked = e.target.checked;
-                                  setAllChecked(!allChecked)
-                                  handleAllParentCheckboxChange(isChecked)
-                                }}/> Select All</span> */}
                               </div>
                             </div>
                           </div>
@@ -975,6 +977,17 @@ const UsersAdd = () => {
                                 )
                               )}
                           </div>
+                        </div> */}
+                        <div className="permissionListWrapper">
+                          <PermissionConfigTable
+                            standalone={false}
+                            allRoleList={role}
+                            selectedRole={selectedRole}
+                            allPermissions={permissions}
+                            loading={loading}
+                            setLoading={setLoading}
+                            setUserPermissionBridge={setUserPermissionBridge}
+                          />
                         </div>
                       </div>
                     )}

@@ -162,13 +162,16 @@ const Users = () => {
       extension_id: selectedUser.extension_id,
       name: selectedUser.name,
       permissions: selectedUser.permissions,
-      role_id: selectedUser.role_id,
+      sectionPermissions: selectedUser.sectionPermissions,
+      tablePermissions: selectedUser.tablePermissions,
+      role_id: selectedUser.user_role.role_id,
       status: selectedUser.status === "E" ? "D" : "E",
       timezone_id: selectedUser.timezone_id,
     };
 
     setPopUp(false);
     const apiData = await generalPutFunction(`user/${id}`, payload);
+
     if (apiData.status) {
       const updatedData = user.data.map((item) => {
         if (item.id === id) {
@@ -208,6 +211,7 @@ const Users = () => {
         usersByAccount: { ...user, data: updatedData },
       });
       toast.success(apiData.message)
+      setLoading(false);
     } else {
       toast.error(apiData.error);
     }

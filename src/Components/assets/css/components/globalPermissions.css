@@ -29,6 +29,27 @@
 
 .permissionsConfigWrapper {
     /* border-bottom: 1px solid var(--border-color); */
+    border-radius: 10px;
+    background-color: var(--ele-color);
+    text-align: center;
+    position: relative;
+    height: 100%;
+    margin-bottom: 10px;
+}
+
+
+.permissionsConfigWrapper .heading i {
+    font-size: 1rem;
+    padding: 13px;
+    border-radius: 10px;
+    color: var(--funky-boy4);
+    background-color: var(--funky-boy4-trans);
+    float: inline-end;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 5px;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    text-align: center;
 }
 
 .permissionsConfigWrapper table tr {

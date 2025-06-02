@@ -176,25 +176,18 @@ function Navbar() {
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
-                            {checkViewSidebar(
-                              "User",
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                            ) && (
-                                <li className="tabItem">
-                                  <NavLink
-                                    to="/users-profile"
-                                    onClick={backToTop}
-                                    className="nav-link"
-                                  >
-                                    {/* <div className="iconHolder">
+                            <li className="tabItem">
+                              <NavLink
+                                to="/users-profile"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                {/* <div className="iconHolder">
                                   <i className="fa-regular fa-user"></i>
                                 </div> */}
-                                    <div className="itemTitle">My Profile</div>
-                                  </NavLink>
-                                </li>
-                              )}
+                                <div className="itemTitle">My Profile</div>
+                              </NavLink>
+                            </li>
                             {checkViewSidebar(
                               "User",
                               permissions,
@@ -1257,7 +1250,7 @@ function Navbar() {
                                 </div>
                               </Link>
                             </li> */}
-                        
+
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-ai-agent"
@@ -1280,13 +1273,13 @@ function Navbar() {
                             </li> */}
                             <li className="tabItem ">
                               <NavLink
-                               to="/ai-all-agent"
+                                to="/ai-all-agent"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
                                       "/ai-all-agent",
-                                     
+
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1299,13 +1292,13 @@ function Navbar() {
                             </li>
                             <li className="tabItem ">
                               <NavLink
-                               to="/ai-knowledge-base"
+                                to="/ai-knowledge-base"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
                                       "/ai-knowledge-base",
-                                      
+
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1322,7 +1315,7 @@ function Navbar() {
                                 <div className="itemTitle">Knowledge Base</div>
                               </Link>
                             </li> */}
-                                <li className="tabItem ">
+                            <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">
                                   Phone Number

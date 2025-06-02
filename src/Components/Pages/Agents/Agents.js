@@ -73,7 +73,8 @@ function Agents({ type }) {
   const allDID = useSelector((state) => state.didAll);
   const debouncedSearchTerm = useDebounce(userInput, 1000);
   const [onlineFilter, setonlineFilter] = useState("all")
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
@@ -88,7 +89,7 @@ function Agents({ type }) {
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const apiData = await generalGetFunction(
-      `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+      `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
     );
     if (apiData?.status) {
       setAgents(apiData.data);
@@ -96,7 +97,10 @@ function Agents({ type }) {
       setRefreshState(false)
     } else {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
+      if (apiData?.status === 403) {
+        setNoPermissionToRead(true);
+      }
     }
   };
 
@@ -316,7 +320,7 @@ function Agents({ type }) {
                           <tbody className="">
                             <>
                               {
-                                checkViewSidebar(
+                                noPermissionToRead || checkViewSidebar(
                                   "User",
                                   slugPermissions,
                                   account?.sectionPermissions,

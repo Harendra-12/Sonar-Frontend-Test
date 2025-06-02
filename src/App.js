@@ -597,17 +597,7 @@ function App() {
               )
             }
           />
-          <Route path="/users-profile" element={
-            checkViewSidebar(
-              "User",
-              slugPermissions,
-              account?.sectionPermissions,
-              account?.permissions,
-              "read"
-            ) ?
-              <UserProfile /> :
-              <Navigate to="/dashboard" replace />
-          } />
+          <Route path="/users-profile" element={<UserProfile />} />
           <Route
             path="/users-edit"
             element={
@@ -827,8 +817,8 @@ function App() {
 
           {/* --------------- ai path start */}
 
-               <Route path="/ai-all-agent" element={<AllAgent />} />
-               <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
+          <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}

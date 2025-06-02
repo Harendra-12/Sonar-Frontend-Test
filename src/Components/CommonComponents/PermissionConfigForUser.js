@@ -484,7 +484,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
           return null;
         }
         return (
-          <div key={sectionName} className='itemWrapper d shadow-none border-0 px-0 permissionsConfigWrapper'>
+          <div key={sectionName} className='permissionsConfigWrapper'>
             <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
               <div className='d-flex justify-content-between align-items-center w-100'>
                 <h5 className='me-3'>{sectionName}</h5>
@@ -624,7 +624,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                     <tr key={rowKey}>
                                       <td colSpan={7} className="accordion" id={`accordion-${rowKey}`}>
                                         <div className="bg-transparent border-0 accordion-item permission_accordionBody">
-                                          <div className='d-flex justify-content-between align-items-center '>
+                                          <div className='d-flex justify-content-between align-items-center' style={{ backgroundColor: 'var(--ele-color)', borderRadius: '10px' }}>
                                             <div className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#test-${rowKey}`} aria-expanded="true" aria-controls={`test-${rowKey}`}>
                                               <h6 className='mb-0'>
                                                 Column Permissions - <b>{row.type.charAt(0).toUpperCase() + row.type.slice(1)}</b>
@@ -632,7 +632,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                             </div>
                                             <div className='pe-2'>
                                               <div className="my-auto position-relative mx-1 d-flex">
-                                                <span className="me-2">Master: </span>
+                                                <span className="me-2" style={{ color: 'var(--immortalBlack)' }}>Master: </span>
                                                 <input
                                                   type="checkbox"
                                                   checked={checkedState}
@@ -643,46 +643,48 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                               </div>
                                             </div>
                                           </div>
-                                          <div className="row accordion-collapse collapse" id={`test-${rowKey}`} aria-labelledby="headingOne" data-bs-parent={`#accordion-${rowKey}`}>
-                                            {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
-                                              const columnRecords = model.table_records.filter(r => r.column_name === column);
-                                              const filteredColumnRecords = columnRecords.filter(record => record.action === row.type);
+                                          <div className="accordion-collapse collapse" id={`test-${rowKey}`} aria-labelledby="headingOne" data-bs-parent={`#accordion-${rowKey}`}>
+                                            <div className="row" style={{ padding: '10px' }}>
+                                              {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
+                                                const columnRecords = model.table_records.filter(r => r.column_name === column);
+                                                const filteredColumnRecords = columnRecords.filter(record => record.action === row.type);
 
-                                              if (filteredColumnRecords.length === 0) return null;
+                                                if (filteredColumnRecords.length === 0) return null;
 
-                                              return (
-                                                <div key={column} className="col-md-3 mb-3">
-                                                  <div className="card">
-                                                    <div className="card-body">
-                                                      {filteredColumnRecords.map(record => (
-                                                        <div key={record.id} className="d-flex justify-content-between">
-                                                          <label className="text-capitalize" style={{ whiteSpace: 'break-spaces' }}>
-                                                            {column.replace(/_/g, ' ')}
-                                                          </label>
-                                                          <div className="cl-toggle-switch">
-                                                            <label className="cl-switch">
-                                                              <input
-                                                                type="checkbox"
-                                                                checked={rolePermissions.tablePermissions.includes(record.id)}
-                                                                onChange={(e) =>
-                                                                  handleColumnToggle(
-                                                                    record.id,
-                                                                    model.id,
-                                                                    model.module_section,
-                                                                    e.target.checked
-                                                                  )
-                                                                }
-                                                              />
-                                                              <span></span>
+                                                return (
+                                                  <div key={column} className="col-md-3 mb-3">
+                                                    <div className="card">
+                                                      <div className="card-body">
+                                                        {filteredColumnRecords.map(record => (
+                                                          <div key={record.id} className="d-flex justify-content-between">
+                                                            <label className="text-capitalize" style={{ whiteSpace: 'break-spaces' }}>
+                                                              {column.replace(/_/g, ' ')}
                                                             </label>
+                                                            <div className="cl-toggle-switch">
+                                                              <label className="cl-switch">
+                                                                <input
+                                                                  type="checkbox"
+                                                                  checked={rolePermissions.tablePermissions.includes(record.id)}
+                                                                  onChange={(e) =>
+                                                                    handleColumnToggle(
+                                                                      record.id,
+                                                                      model.id,
+                                                                      model.module_section,
+                                                                      e.target.checked
+                                                                    )
+                                                                  }
+                                                                />
+                                                                <span></span>
+                                                              </label>
+                                                            </div>
                                                           </div>
-                                                        </div>
-                                                      ))}
+                                                        ))}
+                                                      </div>
                                                     </div>
                                                   </div>
-                                                </div>
-                                              );
-                                            })}
+                                                );
+                                              })}
+                                            </div>
                                           </div>
                                         </div>
                                       </td>
