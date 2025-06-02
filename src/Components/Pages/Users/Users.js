@@ -211,6 +211,7 @@ const Users = () => {
         usersByAccount: { ...user, data: updatedData },
       });
       toast.success(apiData.message)
+      setLoading(false);
     } else {
       toast.error(apiData.error);
     }
