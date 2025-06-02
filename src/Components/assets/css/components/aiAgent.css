@@ -26,7 +26,9 @@
     text-align: start;
 }
 .aiAgentTab .nav .nav-link.active{
-    background-color: var(--color2);
+    /* background-color: var(--color2); */
+    background-color: var(--tab-active);
+    color: var(--active-text);
 }
 
 .card-body.aiAgentTab .popup-border {
@@ -44,7 +46,8 @@
 .KnowledgeLeftinfo{
     padding: 20px;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: var(--knowledge-leftinfo);
+    height: 100% ;
 }
 .info_header{
     display: flex;
@@ -63,13 +66,92 @@
     color: var(--form-label);
 }
 .knowledge__list .nav .nav-link.active{
-    background-color: #dbedff;
+    background-color: var(--bg_1);
+       color: var(--active-text);
 }
 .knowledge__list .nav .nav-link.active i{
     color: #066ed7;
 }
 .KnowledgeRightinfo {
-    background-color: #f9f9f9;
+    background-color: var(--knowledge-leftinfo);
     height: 100%;
     border-radius: 10px;
+}
+/* .absoluteSvg{
+    position: absolute;
+    inset: 0;
+    margin: auto;
+} */
+ .absoluteSvg svg{
+    color: var(--svg-color);
+ }
+ .aitable_button{
+    border: 1px solid var(--me-border1);
+    border-radius: 5px;
+    transition: all 0.4s ease-in-out;
+    color: var(--color-subtext);
+ }
+ .aitable_button:hover{
+  border-color: #066ed7;
+  color: #066ed7;
+ }
+ .table__icon{
+    font-size: 25px;
+    color: #9595a9;
+ }
+.detailsTable h5{
+    color: var(--immortalBlack);
+ }
+ .detailsTable p{
+    color: #adadad;
+    font-size: 12px;
+ }
+ .sub_text{
+    font-size: 14px;
+    color: var(--color-subtext);
+ }
+ .baseNav .nav.nav-pills{
+    background-color: #8585b50d;
+    width: 100%;
+    max-width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+ }
+ .baseNav .nav.nav-pills .nav-link{
+   padding: 5px 15px;
+   font-size: 14px;
+   font-weight: 500;
+ }
+ .panelButton.add{
+    background: #6462f8;
+ }
+ .baseNav textarea{
+    height: inherit;
+ }
+.addKnowledgeBas .popup.music .card .card-body .popup-border {
+    border: 2px dotted var(--border-color);
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+.text_success{
+    color: rgb(0 171 43);
+}
+.addFile_box{
+    border: 1px solid var(--me-border1);
+    border-radius: 10px;
+    padding: 15px;
+
+}
+.addFile_box .fa-file {
+   color: var(--color-subtext);
+}
+.d_card{
+    background: #000;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 15px;
+}
+.d_card .text2{
+font-size: 12px;
+color: var(--color-subtext);
 }

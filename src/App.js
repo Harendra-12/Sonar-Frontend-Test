@@ -191,6 +191,7 @@ import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignE
 import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
 import AllAgent from "./Components/Pages/Ai/AllAgent";
 import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
+import AiPhoneNumber from "./Components/Pages/Ai/AiPhoneNumber";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -819,6 +820,7 @@ function App() {
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
+          <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}

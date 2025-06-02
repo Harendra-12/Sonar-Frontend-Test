@@ -260,17 +260,23 @@
   --gradient-bg2: linear-gradient(90deg, rgb(96 186 221 / 28%) 0%, rgb(115 239 166 / 17%) 50%, rgb(233 255 201 / 41%) 100%);
   --gradient-bg3: linear-gradient(90deg, rgb(255 178 178 / 29%) 0%, rgb(181 167 21 / 11%) 50%, rgb(255 104 0 / 18%) 100%);
 
-    --active-call-shadow: rgb(213 213 213 / 27%) 0 0 10px;
+  --active-call-shadow: rgb(213 213 213 / 27%) 0 0 10px;
   --active-number-bg: #ffffff2b;
   --balance-box-bg: linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
   --border20: #e5e5e5;
-    --loader-bg: #ffffff17;
+  --loader-bg: #ffffff17;
+  --svg-color: #e1e1e1;
+  --tab-active: #62a7f82e;
+  --active-text: #2c2c2c;
+  --knowledge-leftinfo: #f9f9f9;
+  --bg_1: #dbedff;
 
 }
 
 :root.dark {
   --nav-color: #171717;
-
+  --active-text: #cfcfcf;
+  --tab-active: #4060852e;
   /* --ui-accent: #141718; */
   /* --bg-color: #212121; */
   --bg-color: #1d1e22;
@@ -419,8 +425,12 @@
   --active-call-shadow: rgb(0 0 0 / 27%) 0 0 10px;
   --active-number-bg: #1d2c4f2b;
   --balance-box-bg: linear-gradient(90deg, rgb(29 32 87 / 55%) 0%, rgb(157 132 255 / 13%) 50%, rgb(49 28 71 / 72%) 100%);
-   --border20: #3f3c3c;
-   --loader-bg: #1a1b3717;
+  --border20: #3f3c3c;
+  --loader-bg: #1a1b3717;
+  --svg-color: #525252;
+  --knowledge-leftinfo: #242832;
+    --bg_1: #3f4750;
+
 }
 
 :root.green {
