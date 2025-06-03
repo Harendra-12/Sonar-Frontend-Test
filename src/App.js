@@ -192,6 +192,7 @@ import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
 import AllAgent from "./Components/Pages/Ai/AllAgent";
 import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 import AiPhoneNumber from "./Components/Pages/Ai/AiPhoneNumber";
+import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -347,6 +348,17 @@ function App() {
               "browse"
             ) ?
               <ActiveCallsPage /> :
+              <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/custom-dashboard" element={
+            checkViewSidebar(
+              "CustomDashboard",
+              slugPermissions,
+              account?.sectionPermissions,
+              account?.permissions,
+              "browse"
+            ) ?
+              <CustomDashboardPage /> :
               <Navigate to="/dashboard" replace />
           } />
           <Route

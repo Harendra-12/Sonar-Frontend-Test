@@ -1,132 +1,309 @@
-import React, { useEffect, useState } from "react";
-import Header from "../../CommonComponents/Header";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { numberValidator, requiredValidator } from "../../validations/validation";
-import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
-import CircularLoader from "../../Loader/CircularLoader";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Header from "../../CommonComponents/Header";
+import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import CircularLoader from "../../Loader/CircularLoader";
+import { requiredValidator } from "../../validations/validation";
 
 function FportalCampaignCreate() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItemForBuyer, setSelectedItemForBuyer] = useState([])
+  const [did, setDid] = useState([]);
+  const [isActiveHour, setIsActiveHour] = useState(false);
+  const [isStatus, setIsStatus] = useState(false);
+  const [allBuyers, setAllBuyers] = useState([]);
+  const [allTrunk, setAllTrunk] = useState([])
+  const [schedulerInfo, setSchedulerInfo] = useState([
+    {
+      name: 'Sunday',
+      recurring_day: 'Sunday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Monday',
+      recurring_day: 'Monday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Tuesday',
+      recurring_day: 'Tuesday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Wednesday',
+      recurring_day: 'Wednesday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Thursday',
+      recurring_day: 'Thursday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Friday',
+      recurring_day: 'Friday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Saturday',
+      recurring_day: 'Saturday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+  ]);
+
+
+  const [campaignId, setCampaignId] = useState('');
+  const [selectedDids, setSelectedDids] = useState([]);
   const [stepSelector, setStepSelector] = useState(1);
   const [completedStep, setCompletedStep] = useState(0);
 
-  const [campaignId, setCampaignId] = useState('');
-  const [allBuyers, setAllBuyers] = useState([]);
   const [trunks, setTrunks] = useState([]);
-  const [did, setDid] = useState([]);
-  const [selectedDids, setSelectedDids] = useState([]);
 
 
   const {
-    register: registerStep1,
-    handleSubmit: handleSubmitStep1,
-    setValue: setValueStep1,
-    watch: watchStep1,
-    formState: { errors: errorsStep1 },
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch
   } = useForm();
 
-  const {
-    register: registerStep2,
-    handleSubmit: handleSubmitStep2,
-    watch: watchStep2,
-    formState: { errors: errorsStep2 },
-  } = useForm();
+  // const getAllBuyers = async () => {
+  //   // setLoading(true);
+  //   const response = await generalGetFunction('buyer/all');
+  //   if (response.status) {
+  //     setAllBuyers(response.data);
+  //     // setLoading(false);
+  //   } else {
+  //     toast.error(response.message);
+  //     // setLoading(false);
+  //   }
+  // };
 
-  const handleFormSubmitStepOne = handleSubmitStep1(async (data) => {
-    setLoading(true);
+  // const getAllTrunk = async () => {
+  //   // setLoading(true);
+  //   const response = await generalGetFunction('fportaltrunk/all');
+  //   if (response.status) {
+  //     setTrunks(response.data);
+  //     // setLoading(false);
+  //   } else {
+  //     toast.error(response.message);
+  //     // setLoading(false);
+  //   }
+  // };
 
-    const phoneNumber = parsePhoneNumber(data.pstn_number);
-    const parsedNumber = phoneNumber?.nationalNumber;
+  // async function getDidData() {
+  //   // setLoading(true);
+  //   try {
+  //     const getDid = await generalGetFunction("did/all?all-dids");
+  //     if (getDid?.status) {
+  //       setDid(getDid.data.filter((item) => item.usages === "tracker"));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching DID data:", error);
+  //   }
+  // }
 
-    const payload = { ...data, country_prefix: phoneNumber?.countryCallingCode, pstn_number: parsedNumber };
-    const apiData = await generalPostFunction("/fcampaign/store", payload);
-    if (apiData?.status) {
+  // // Initial data fetch
+  // useEffect(() => {
+  //   getAllBuyers();
+  //   getAllTrunk();
+  //   getDidData();
+  // }, [])
 
-      toast.success(apiData.message);
-      setCampaignId(apiData.data.id);
-      setCompletedStep(1);
-      setStepSelector(2);
+  // const {
+  //   register: registerStep1,
+  //   handleSubmit: handleSubmitStep1,
+  //   setValue: setValueStep1,
+  //   watch: watchStep1,
+  //   formState: { errors: errorsStep1 },
+  // } = useForm();
 
-    } else {
-      setLoading(false);
-      toast.error(apiData?.message || apiData?.error);
-    }
-  })
+  // const {
+  //   register: registerStep2,
+  //   handleSubmit: handleSubmitStep2,
+  //   watch: watchStep2,
+  //   formState: { errors: errorsStep2 },
+  // } = useForm();
 
-  const handleFormSubmitStepTwo = handleSubmitStep2(async (data) => {
-    setLoading(true);
-    const payload = { ...data, fportal_campaign_id: campaignId, dids: selectedDids };
-    const apiData = await generalPostFunction("/fportal/store", payload);
-    if (apiData?.status) {
-      setLoading(false);
-      toast.success(apiData.message);
-      setCompletedStep(1);
-      navigate('/call-forwarding-campaign');
-    } else {
-      setLoading(false);
-      toast.error(apiData?.message || apiData?.error);
-    }
-  })
+  // const handleFormSubmitStepOne = handleSubmitStep1(async (data) => {
+  //   setLoading(true);
 
-  const getAllBuyers = async () => {
-    // setLoading(true);
-    const response = await generalGetFunction('buyer/all');
-    if (response.status) {
-      setAllBuyers(response.data);
-      // setLoading(false);
-    } else {
-      toast.error(response.message);
-      // setLoading(false);
-    }
-  };
+  //   const phoneNumber = parsePhoneNumber(data.pstn_number);
+  //   const parsedNumber = phoneNumber?.nationalNumber;
 
-  const getAllTrunk = async () => {
-    // setLoading(true);
-    const response = await generalGetFunction('fportaltrunk/all');
-    if (response.status) {
-      setTrunks(response.data);
-      // setLoading(false);
-    } else {
-      toast.error(response.message);
-      // setLoading(false);
-    }
-  };
+  //   const payload = { ...data, country_prefix: phoneNumber?.countryCallingCode, pstn_number: parsedNumber };
+  //   const apiData = await generalPostFunction("/fcampaign/store", payload);
+  //   if (apiData?.status) {
 
-  async function getDidData() {
-    // setLoading(true);
-    try {
-      const getDid = await generalGetFunction("did/all?all-dids");
-      if (getDid?.status) {
-        setDid(getDid.data.filter((item) => item.usages === "tracker"));
-      }
-    } catch (error) {
-      console.error("Error fetching DID data:", error);
-    }
-  }
+  //     toast.success(apiData.message);
+  //     setCampaignId(apiData.data.id);
+  //     setCompletedStep(1);
+  //     setStepSelector(2);
 
-  // Initial data fetch
-  useEffect(() => {
-    getAllBuyers();
-    getAllTrunk();
-    getDidData();
-  }, [])
+  //   } else {
+  //     setLoading(false);
+  //     toast.error(apiData?.message || apiData?.error);
+  //   }
+  // })
+
+  // const handleFormSubmitStepTwo = handleSubmitStep2(async (data) => {
+  //   setLoading(true);
+  //   const payload = { ...data, fportal_campaign_id: campaignId, dids: selectedDids };
+  //   const apiData = await generalPostFunction("/fportal/store", payload);
+  //   if (apiData?.status) {
+  //     setLoading(false);
+  //     toast.success(apiData.message);
+  //     setCompletedStep(1);
+  //     navigate('/call-forwarding-campaign');
+  //   } else {
+  //     setLoading(false);
+  //     toast.error(apiData?.message || apiData?.error);
+  //   }
+  // })
+
+  // const toggleSelect = (values) => {
+  //   setSelectedDids(values)
+  // }
+
+  // const allDidOptions = did.map((item) => ({
+  //   value: item.id,
+  //   label: item.did,
+  // }))
+
 
   const toggleSelect = (values) => {
-    setSelectedDids(values)
+    setSelectedItems(values)
   }
+
+  const getDidData = async () => {
+    const getDid = await generalGetFunction("did/all?all-dids")
+    if (getDid?.status) {
+      setDid(getDid.data.filter((item) => item.usages === "dialer"))
+    }
+  }
+
+  const getAllBuyers = async () => {
+    const res = await generalGetFunction("buyer/all");
+    if (res?.status) {
+      setAllBuyers(res?.data)
+    }
+  }
+
+  const getElasticTrunk = async () => {
+    const res = await generalGetFunction("/fportaltrunk/all");
+    if (res?.status) {
+      setAllTrunk(res?.data)
+    }
+  }
+
+  useEffect(() => {
+    getDidData()
+    getAllBuyers()
+    getElasticTrunk()
+  }, [])
 
   const allDidOptions = did.map((item) => ({
     value: item.id,
     label: item.did,
   }))
 
+  const allBuyersOption = allBuyers?.map((item) => ({
+    value: item?.id,
+    label: `${item?.name} - ${item?.phone_code}${item?.phone_number}`
+  }))
+  
+  const allTrunkOptios = allTrunk?.map((item) => ({
+    value: item?.id,
+    label: item?.description
+  }))
 
+  const formatDateTime = (input) => {
+    if (!input.includes(':00')) {
+      input += ':00';
+    }
+    const date = new Date(input);
+    if (isNaN(date)) {
+      console.error('Invalid date:', input);
+      return '';
+    }
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const hours = `${date.getHours()}`.padStart(2, '0');
+    const minutes = `${date.getMinutes()}`.padStart(2, '0');
+    const seconds = `${date.getSeconds()}`.padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  const convertTimeToDateTime = (timeStr, dateStr = '2025-06-02', timeOffsetHours = -7) => {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const date = new Date(dateStr);
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(0);
+  date.setHours(date.getHours() + timeOffsetHours);
+  const pad = (n) => String(n).padStart(2, '0');
+  const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  return formatted;
+}
+
+
+  const handleFormSubmit = handleSubmit(async (data) => {
+    const startDate = formatDateTime(watch()?.start_date)
+    const endDate = formatDateTime(watch()?.end_date)
+    setLoading(true);
+    const payload = {
+      ...data,
+      buyers: selectedItemForBuyer?.map((val, key) => ({ id: val, priority: key + 1 })),
+      dids: selectedItems,
+      active_hours: isActiveHour ? "1" : "0",
+      start_date: startDate,
+      end_date: endDate,
+      schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
+        end_time: convertTimeToDateTime(item?.end_time),
+        full_day: item?.full_day,
+        name: item?.name,
+        recurring_day: item?.recurring_day,
+        start_time: convertTimeToDateTime(item?.start_time),
+        status: item?.status
+      }))
+    };  
+    const apiData = await generalPostFunction("/fcampaign/store", payload);
+    if (apiData?.status) {
+      setLoading(false);
+      navigate('/call-forwarding-campaign');
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+    }
+  });
 
   return (
     <main className="mainContent">
@@ -151,7 +328,14 @@ function FportalCampaignCreate() {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
+                        <button type="button" className="panelButton" onClick={handleFormSubmit}>
+                          <span className="text">Save</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-floppy-disk"></i>
+                          </span>
+                        </button>
+                        {/* previous code ==================== start here */}
+                        {/* <button
                           type="button"
                           className="panelButton"
                           onClick={() => {
@@ -166,11 +350,13 @@ function FportalCampaignCreate() {
                           <span className="icon">
                             <i className={`fa-solid fa-${completedStep === 1 ? 'floppy-disk' : 'caret-right'}`}></i>
                           </span>
-                        </button>
+                        </button> */}
+                        {/* preview code ==================== end here */}
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: '25px 23px' }}>
+                  {/* preview code ==================== start here */}
+                  {/* <div className="col-12" style={{ padding: '25px 23px' }}>
                     <div className="row">
                       <div className="col-xl-2 col-3">
                         <div className='someTempDialerDesign'>
@@ -521,6 +707,661 @@ function FportalCampaignCreate() {
                           </form>
                         </div>
                       </>}
+                    </div>
+                  </div> */}
+                  {/* previous code ==================== end here */}
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
+                  >
+                    <div className="tableContainer">
+                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <form className="row mb-0">
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Campaign Name
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("campaign_name", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.campaign_name && (
+                                <ErrorMessage text={errors.campaign_name.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Source
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("source", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.source && (
+                                <ErrorMessage text={errors.source.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Agent Name
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("agent_name", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.agent_name && (
+                                <ErrorMessage text={errors.agent_name.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Originate Timeout
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                {...register("originate_timeout", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.originate_timeout && (
+                                <ErrorMessage text={errors.originate_timeout.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Status
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    checked={isStatus}
+                                    id="showAllCheck"
+                                    onChange={() => setIsStatus(prev => !prev)}
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Forward Type
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <select defaultValue={"pstn"} className='formItem'
+                                {...register("forward_type", {
+                                  ...requiredValidator,
+                                })}
+                              >
+                                <option value="pstn">PSTN</option>
+                                <option value="trunk">Trunk</option>
+                              </select>
+                              {errors.forward_type && (
+                                <ErrorMessage text={errors.forward_type.message} />
+                              )}
+                            </div>
+                          </div>
+                          {
+                            watch()?.forward_type === "trunk" &&
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Trunk
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <select
+                                  className='formItem'
+                                  {...register("trunk_id", {
+                                    ...requiredValidator,
+                                  })}
+                                >
+                                  {allTrunkOptios?.map((data) => (
+                                    <>
+                                      <option value={data?.value}>{data?.label}</option>
+                                    </>
+
+
+                                  ))}
+                                </select>
+                                {errors.trunk_id && (
+                                  <ErrorMessage text={errors.trunk_id.message} />
+                                )}
+                              </div>
+                            </div>
+                          }
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Start Date
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <div className='row gx-2'>
+                                <div className='col-12'>
+                                  <input
+                                    type="datetime-local"
+                                    className="formItem"
+                                    {...register("start_date", { ...requiredValidator })}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                End Date
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <div className='row gx-2'>
+                                <div className='col-12'>
+                                  <input
+                                    type="datetime-local"
+                                    className="formItem"
+                                    {...register("end_date", { ...requiredValidator })}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Monthly Call Limit
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                {...register("monthly_call_limit", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.monthly_call_limit && (
+                                <ErrorMessage text={errors.monthly_call_limit.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Daily Call Limit
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                {...register("daily_call_limit", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.daily_call_limit && (
+                                <ErrorMessage text={errors.daily_call_limit.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Live Call Limit
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                {...register("live_call_limit", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.live_call_limit && (
+                                <ErrorMessage text={errors.live_call_limit.message} />
+                              )}
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Total Send Call
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                {...register("total_send_call", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.total_send_call && (
+                                <ErrorMessage text={errors.total_send_call.message} />
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Buyer
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <Select
+                                onChange={(selectedOptions) => {
+                                  const values = (selectedOptions || []).map((option) => option.value)
+                                  setSelectedItemForBuyer(values)
+                                }}
+                                value={allBuyersOption.filter(option => selectedItemForBuyer?.includes(option.value))}
+                                isMulti
+                                options={allBuyersOption}
+                                isSearchable
+                                styles={customStyles}
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Did
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <Select
+                                onChange={(selectedOptions) => {
+                                  const values = (selectedOptions || []).map((option) => option.value)
+                                  toggleSelect(values)
+                                }}
+                                value={allDidOptions.filter(option => selectedItems.includes(option.value))}
+                                isMulti
+                                options={allDidOptions}
+                                isSearchable
+                                styles={customStyles}
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow">
+                            <div className='formLabel'>
+                              <label>
+                                Active Hours
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    checked={isActiveHour}
+                                    id="showAllCheck"
+                                    onChange={() => setIsActiveHour(prev => !prev)}
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          {
+                            isActiveHour &&
+                            <div className="formRow d-block">
+                              <div className="formLabel">
+                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                              </div>
+                              <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                <div className="timeTableWrapper col-auto">
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Sunday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {                              
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Monday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Monday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Tuesday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Wednesday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Thursday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Friday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Friday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper mb-0">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
+                                            ));
+                                          }} />
+                                        <label className="ms-2 fw-bold">Saturday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem"
+                                          onChange={(e) => {
+                                            setSchedulerInfo(prevState => prevState.map(day =>
+                                              day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                            ));
+                                          }} />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck"
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          }
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>

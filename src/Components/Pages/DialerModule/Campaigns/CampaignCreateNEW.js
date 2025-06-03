@@ -169,8 +169,8 @@ function CampaignCreateNEW() {
       status: "Active",
       user_id: selectedAgent,
       ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
-      date_range_start: `${watch().date_range_start.split("T")[0]} ${watch().date_range_start.split("T")[1]}:00`,
-      date_range_end: `${watch().date_range_end.split("T")[0]} ${watch().date_range_end.split("T")[1]}:00`,
+      start_date: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
+      end_date: `${watch().end_date.split("T")[0]} ${watch().end_date.split("T")[1]}:00`,
     };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
@@ -617,7 +617,7 @@ function CampaignCreateNEW() {
                                         <input
                                           type="datetime-local"
                                           className="formItem"
-                                          {...register("date_range_start", { ...requiredValidator })}
+                                          {...register("start_date", { ...requiredValidator })}
                                         />
                                       </div>
                                       {/* <div className='col-6'>
@@ -638,7 +638,7 @@ function CampaignCreateNEW() {
                                         <input
                                           type="datetime-local"
                                           className="formItem"
-                                          {...register("date_range_end", { ...requiredValidator })}
+                                          {...register("end_date", { ...requiredValidator })}
                                         />
                                       </div>
                                       {/* <div className='col-6'>
@@ -668,7 +668,7 @@ function CampaignCreateNEW() {
                                 )}
                               </div>
                             </div>
-                            {watch().active_hours &&
+                            {watch().active_hours == true &&
                               <div className="formRow d-block">
                                 <div className="formLabel">
                                   <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>

@@ -578,6 +578,18 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
+                              {checkViewSidebar(
+                              "CustomDashboard",
+                              permissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                            ) && (
+                                <li className="tabItem ">
+                                  <NavLink to="/custom-dashboard" onClick={backToTop}>
+                                    <div className="itemTitle">Custom Dashboard</div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               "DidConfigure",
                               permissions,
