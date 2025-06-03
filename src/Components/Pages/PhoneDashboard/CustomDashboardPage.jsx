@@ -292,7 +292,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        {!isParentWebRtc && <Header title="Active Calls" />}
+                        {!isParentWebRtc && <Header title="Custom Dashboard" />}
                         <div className="overviewTableWrapper p-3">
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
