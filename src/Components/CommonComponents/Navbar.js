@@ -1211,6 +1211,7 @@ function Navbar() {
                             "/ai-all-agent",
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
+                            "/ai-call-history",
                             "/ai-agent-add",
                             "/ai-agent-edit",
                           ])
@@ -1231,6 +1232,7 @@ function Navbar() {
                           "/ai-all-agent",
                           "/ai-knowledge-base",
                           '/ai-phone-number',
+                          '/ai-call-history',
                           "/ai-agent-add",
                           "/ai-agent-edit",
                         ])
@@ -1341,6 +1343,25 @@ function Navbar() {
                                 <div className="itemTitle">  Phone Number</div>
                               </NavLink>
                             </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/ai-call-history"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-call-history",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">  Call History</div>
+                              </NavLink>
+                            </li>
 
                             {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
@@ -1359,11 +1380,11 @@ function Navbar() {
                                 <div className="itemTitle">Batch Calls</div>
                               </Link>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Call History</div>
                               </Link>
-                            </li>
+                            </li> */}
                             <li className="tabItem ">
                               <Link onClick={() => featureUnderdevelopment()}>
                                 <div className="itemTitle">Billing</div>

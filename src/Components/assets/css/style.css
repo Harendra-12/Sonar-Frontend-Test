@@ -270,6 +270,7 @@
   --active-text: #2c2c2c;
   --knowledge-leftinfo: #f9f9f9;
   --bg_1: #dbedff;
+  --bg-form1: #0c54a117;
 
 }
 
@@ -429,7 +430,8 @@
   --loader-bg: #1a1b3717;
   --svg-color: #525252;
   --knowledge-leftinfo: #242832;
-    --bg_1: #3f4750;
+  --bg_1: #3f4750;
+  --bg-form1: #00000030;
 
 }
 
