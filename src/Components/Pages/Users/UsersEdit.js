@@ -155,7 +155,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
             if (!isCustomerAdmin) {
               setSelectedPermission(newData.permissions);
               if (newData?.user_role) {
-                setSelectedRole(newData?.user_role["roles"]?.name);
+                setSelectedRole(newData?.user_role.role_id);
               }
             }
 
@@ -742,7 +742,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     );
 
                                     setValue("role_id", e.target.value);
-                                    setSelectedRole(roleName.name);
+                                    setSelectedRole(e.target.value);
                                     setSelectedPermission(
                                       e.target.value === ""
                                         ? ""
@@ -1030,13 +1030,13 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <PermissionConfigTable
                               standalone={false}
                               allRoleList={role}
-                              selectedRole={watch().role_id}
+                              selectedRole={selectedRole}
                               allPermissions={permissions}
                               loading={loading}
                               setLoading={setLoading}
                               setUserPermissionBridge={setUserPermissionBridge}
                               existingUserData={locationState}
-                              isUserBased={true}
+                              isUserFilter={true}
                             />
                           </div>
                         </div>
