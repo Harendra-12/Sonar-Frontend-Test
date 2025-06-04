@@ -202,7 +202,7 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setUserPermissionBridge }) {
+export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setUserPermissionBridge, existingUserData, isUserBased }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
@@ -219,14 +219,26 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
     // Fetch all Permission Data
     setPermissionData(allPermissions);
 
-    // Initialize with empty permissions for the selected role
-    setRolePermissions(prev => ({
-      ...prev,
-      role_id: selectedRole || [],
-      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
-      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
-      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
-    }));
+    if (isUserBased && existingUserData.user_role.role_id == selectedRole) {
+      // Initialize with permissions for the selected user
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: existingUserData?.permissions || [],
+        tablePermissions: existingUserData?.tablePermissions || [],
+        sectionPermissions: existingUserData?.sectionPermissions || []
+      }));
+    } else {
+      // Initialize with permissions for the selected role
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+        tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+        sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+      }));
+    }
+
   }, [selectedRole, allRoleList]);
 
   useEffect(() => {
@@ -236,12 +248,25 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
   }, [rolePermissions]);
 
   const resetPermissionToInitialState = () => {
-    setRolePermissions(prev => ({
-      role_id: selectedRole || [],
-      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
-      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
-      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
-    }));
+    if (isUserBased && existingUserData.user_role.role_id == selectedRole) {
+      // Initialize with permissions for the selected user
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: existingUserData?.permissions || [],
+        tablePermissions: existingUserData?.tablePermissions || [],
+        sectionPermissions: existingUserData?.sectionPermissions || []
+      }));
+    } else {
+      // Initialize with permissions for the selected role
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+        tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+        sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+      }));
+    }
   }
 
   const toggleRowExpand = (permission, section, model, type, bool) => {
