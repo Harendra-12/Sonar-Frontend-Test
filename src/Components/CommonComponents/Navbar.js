@@ -1212,6 +1212,8 @@ function Navbar() {
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
                             "/ai-call-history",
+                            "/ai-billing",
+                            "/ai-batch-call",
                             "/ai-agent-add",
                             "/ai-agent-edit",
                           ])
@@ -1233,6 +1235,8 @@ function Navbar() {
                           "/ai-knowledge-base",
                           '/ai-phone-number',
                           '/ai-call-history',
+                          '/ai-billing',
+                          "/ai-batch-call",
                           "/ai-agent-add",
                           "/ai-agent-edit",
                         ])
@@ -1362,54 +1366,44 @@ function Navbar() {
                                 <div className="itemTitle">  Call History</div>
                               </NavLink>
                             </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/ai-billing"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-billing",
 
-                            {/* <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Knowledge Base</div>
-                              </Link>
-                            </li> */}
-                            {/* <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">
-                                  Phone Number
-                                </div>
-                              </Link>
-                            </li> */}
-                            <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Batch Calls</div>
-                              </Link>
-                            </li>
-                            {/* <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Call History</div>
-                              </Link>
-                            </li> */}
-                            <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Billing</div>
-                              </Link>
-                            </li>
-                            {/* <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Call Reports</div>
-                              </Link>
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">  Billing</div>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Analytics</div>
-                              </Link>
+                              <NavLink
+                                to="/ai-batch-call"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-batch-call",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle"> Batch Call</div>
+                              </NavLink>
                             </li>
-                            <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Billing</div>
-                              </Link>
-                            </li>
-                            <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">Knowledge Base</div>
-                              </Link>
-                            </li> */}
                           </ul>
                         </div>
                       </div>

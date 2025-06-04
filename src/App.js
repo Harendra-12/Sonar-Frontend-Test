@@ -192,6 +192,8 @@ import AllAgent from "./Components/Pages/Ai/AllAgent";
 import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 import AiPhoneNumber from "./Components/Pages/Ai/AiPhoneNumber";
 import CallHistory from "./Components/Pages/Ai/CallHistory";
+import Billing from "./Components/Pages/Ai/Billing";
+import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -831,6 +833,8 @@ function App() {
                <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
                <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
                <Route path="/ai-call-history" element={<CallHistory />} />
+               <Route path="/ai-billing" element={<Billing />} />
+               <Route path="/ai-batch-call" element={<AiBatchCall />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}

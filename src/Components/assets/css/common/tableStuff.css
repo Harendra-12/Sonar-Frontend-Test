@@ -11,10 +11,10 @@ table td {
 table th {
     padding: 5px 10px !important;
     font-size: 0.875rem;
-    background-color: var(--table-head);
+    background-color: var(--table-head) !important;
     white-space: nowrap;
     width: 200px;
-    color: var(--form-label);
+    color: var(--form-label ) !important;
 }
 
 table thead tr {
@@ -23,14 +23,14 @@ table thead tr {
 }
 
 table tbody tr {
-    background-color: var(--table-even-bg);
+    background-color: var(--table-even-bg) !important;
     /* transition: 0.1s ease-in; */
     /* border-bottom: 1px solid var(--border-color); */
     position: relative;
 }
 
 table tbody tr:not(:last-child) {
-    /* border-bottom: 1px solid var(--border-color); */
+    /* border-bottom: 1px solid var(--border-color) !important; */
 }
 
 table tbody tr td {
@@ -54,8 +54,13 @@ table tbody tr:hover {
 }
 
 table tbody tr:nth-child(even) {
-    background-color: var(--table-odd-color);
+    background-color: var(--table-odd-color) !important;
     /* background-color: var(--table-even-bg); */
+}
+.table>:not(caption)>*>*{
+      background-color: var(--table-odd-color) !important;
+       color: var(--form-label ) !important;
+       border-bottom: 1px solid var(--me-border1) !important; 
 }
 
 table tr td:first-child {
@@ -81,7 +86,7 @@ table tr th:first-child {
 } */
 .tableContainer {
     margin-top: 10px;
-    border: 1px solid var(--table-border-color);
+    border: 1px solid var(--table-border-color) !important;
     overflow: hidden auto;
     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     border-radius: 5px;

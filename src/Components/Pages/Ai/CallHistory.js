@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 import Tippy from '@tippyjs/react';
+import Transcription from './Transcription';
+import Data from './Data';
+import DetailLogs from './DetailLogs';
 
 const CallHistory = () => {
 
@@ -220,9 +223,12 @@ const CallHistory = () => {
                 {/* 
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button> */}
 
-                <div class="offcanvas offcanvas-end w-25" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas offcanvas-end w-30" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                     <div class="offcanvas-header">
-
+                        <div>
+                            <h5 class="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
+                            <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>See all the details of this Call History</p>
+                        </div>
                         <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body p-3">
@@ -231,7 +237,7 @@ const CallHistory = () => {
                             <button className=' bg-transparent border-0 text-danger'><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <div className="content">
-                            <p className='mb-0' style={{ color: 'var(--importantBlack)' }}><strong>Agent:</strong> <span className='fs-12'> Patient Screening (from template)(age...875)</span>
+                            <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Agent:</strong> <span className='fs-12'> Patient Screening (from template)(age...875)</span>
                                 <button
                                     className="clearButton"
                                     onClick={() => { setIdCopy(!idCopy) }}
@@ -246,10 +252,10 @@ const CallHistory = () => {
 
                                 </button>
                             </p>
-                            <p className='mb-0' style={{ color: 'var(--importantBlack)' }}><strong>Version:</strong> <span className='fs-12'> 0</span>
+                            <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Version:</strong> <span className='fs-12'> 0</span>
 
                             </p>
-                            <p className='mb-0' style={{ color: 'var(--importantBlack)' }}><strong>Call ID:</strong> <span className='fs-12'>cal...7a7</span>
+                            <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Call ID:</strong> <span className='fs-12'>cal...7a7</span>
                                 <button
                                     className="clearButton"
                                     onClick={() => { setIdCopy(!idCopy) }}
@@ -264,19 +270,162 @@ const CallHistory = () => {
 
                                 </button>
                             </p>
-                            <p className='mb-0' style={{ color: 'var(--importantBlack)' }}><strong>Duration:</strong> <span className='fs-12'>06/03/2025 14:40 - 06/03/2025 14:42</span></p>
-                            <p className='mb-0' style={{ color: 'var(--importantBlack)' }}><strong>Cost:</strong> <span className='fs-12'>$0.318</span></p>
+                            <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Duration:</strong> <span className='fs-12'>06/03/2025 14:40 - 06/03/2025 14:42</span></p>
+                            <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Cost:</strong> <span className='fs-12'>$0.318</span></p>
                         </div>
-                        <div className='d-flex justify-content-between align-items-center gap-3 my-3 border rounded-3 p-2'>
+                        <div className='d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2' style={{ border: '1px solid var(--me-border1)' }}>
                             <audio controls className="w-[300px] h-10">
                                 <source src='src="https://dxc03zgurdly9.cloudfront.net/b275b2dd2dd862aac68665c735024960be447db5228cbd317f378952076625e8/recording.wav"' />
-                                Your browser does not support the audio element.
                             </audio>
                             <button className="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button>
                         </div>
-                        <div className='border rounded-3 p-2'>
-                            <h6>Conversation Analysis</h6>
-                            <p>Preset</p>
+                        <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
+                            <h6 style={{ color: 'var(--immortalBlack)' }}>Conversation Analysis</h6>
+                            <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>Preset</p>
+                            <div className='d-flex justify-content-start align-items-center gap-2'>
+                                <p className='status_text'><i class="fa-regular fa-square-check"></i> <span>Call Successful</span></p>
+                                <p className='status_text'><i class="fa-solid fa-circle-small text-success"></i> <span className='endedTxt'>Successful</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-center gap-2'>
+                                <p className='status_text'><i class="fa-solid fa-headphones"></i> <span>Call Status</span></p>
+                                <p className='status_text'><i class="fa-solid fa-circle-small text-danger"></i> <span className='endedTxt'>Ended</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-center gap-2'>
+                                <p className='status_text'><i class="fa-regular fa-user-vneck-hair"></i> <span>User Sentiment</span></p>
+                                <p className='status_text'><i class="fa-solid fa-circle-small text-primary"></i> <span className='endedTxt'>Neutral</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-center gap-2'>
+                                <p className='status_text'><i class="fa-regular fa-phone"></i> <span>Disconnection Reason</span></p>
+                                <p className='status_text'><i class="fa-solid fa-circle-small text-warning"></i> <span className='endedTxt'>User_hangup</span></p>
+                            </div>
+                        </div>
+                        <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
+                            <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>Custom</p>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'> <span>_do you feel safe in your current living situation?</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>No, I feel unsafe sometimes.</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'><span>_do you have problems with any of the following in your home?</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>None of the above.</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'> <span>_do you currently have a steady place to live?</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>No.</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'><span>_calculate the number of concerned questions</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>3</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'><span>_in the past 12 months, has lack of reliable transportation prevented you from:</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>None of the above.</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'><span>_within the past 12 months, have you worried about running out of food before you had money to buy more?</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>Never true.</span></p>
+                            </div>
+                            <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
+                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <p className='status_text'><span>_are you currently employed?</span></p>
+                                <p className='status_text ms-5'><span className='endedTxt'>No, I’m not seeking work right now.</span></p>
+                            </div>
+                        </div>
+                        <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
+                            <h6 className='f-s-14' style={{ color: 'var(--immortalBlack)' }}>Summary</h6>
+                            <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>The user, Evie Wang, expressed discomfort in sharing personal information for verification but eventually provided her details. The agent confirmed that they could assist her with health and social services and asked about her living situation and food security, to which Evie indicated she does not have a steady place to live but has never worried about running out of food.</p>
+
+                        </div>
+                        <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
+                            <h6 className='f-s-14' style={{ color: 'var(--immortalBlack)' }}>Summary</h6>
+                            <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>The user, Evie Wang, expressed discomfort in sharing personal information for verification but eventually provided her details. The agent confirmed that they could assist her with health and social services and asked about her living situation and food security, to which Evie indicated she does not have a steady place to live but has never worried about running out of food.</p>
+
+                        </div>
+                        <div
+                            className="col-12 formScroller"
+                        >
+                            <nav className="tangoNavs historyNav">
+                                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <button
+                                        className="nav-link active"
+                                        id="nav-user-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-user"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-user"
+                                        aria-selected="true"
+                                    >
+                                        Transcription
+                                    </button>
+                                    <button
+                                        className="nav-link"
+                                        id="nav-exten-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-exten"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-exten"
+                                        aria-selected="false"
+                                    >
+                                        Data
+                                    </button>
+                                    <button
+                                        className="nav-link"
+                                        id="nav-provision-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-exten-1"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-exten-1"
+                                        aria-selected="false"
+                                    >
+                                        Detail Logs
+                                    </button>
+                                </div>
+                            </nav>
+                            <div
+                                className="tab-content"
+                                id="nav-tabContent"
+                                style={{
+                                    border: "none",
+                                    paddingTop: '20px'
+                                }}
+                            >
+                                <div
+                                    className="tab-pane fade show active"
+                                    id="nav-user"
+                                    role="tabpanel"
+                                    aria-labelledby="nav-user-tab"
+                                    tabindex="0"
+                                >
+                                    <Transcription />
+                                </div>
+                                <div
+                                    className="tab-pane fade"
+                                    id="nav-exten"
+                                    role="tabpanel"
+                                    aria-labelledby="nav-exten-tab"
+                                    tabindex="0"
+                                >
+                                    <Data />
+                                </div>
+                                <div
+                                    className="tab-pane fade"
+                                    id="nav-exten-1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav-provision-tab"
+                                    tabindex="0"
+                                >
+                                    <DetailLogs />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

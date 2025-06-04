@@ -199,12 +199,100 @@
     max-width: 50%;
     width: 100%;
 }
-.offcanvas{
+
+.w-30 {
+    max-width: 35%;
+    width: 100% !important;
+}
+
+.offcanvas {
     background: var(--ele-color);
 }
-.offcanvas-body .heading{
+
+.offcanvas-body .heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+}
+
+.offcanvas-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.table__details .status_text {
+    font-size: 14px;
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.table__details .status_text i {
+    margin-right: 10px;
+    color: var(--color-subtext);
+}
+
+.table__details .status_text span.endedTxt {
+    color: var(--color-subtext);
+}
+
+.table__details .status_text span {
+    color: var(--immortalBlack);
+}
+
+.transcription_accordion .accordion-button::after {
+    font-size: 12px;
+}
+
+.dataBox {
+    background: #00000024;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.billingTable {
+    padding: 20px;
+    margin: 0;
+}
+
+.first_td_padding {
+    padding-left: 30px !important;
+}
+
+.first_td_padding2 {
+    padding-left: 40px !important;
+}
+
+.rotate-icon {
+    transition: transform 0.3s ease;
+}
+
+.collapsed .rotate-icon {
+    transform: rotate(0deg);
+}
+
+.rotate-icon.active,
+[aria-expanded="true"] .rotate-icon {
+    transform: rotate(180deg);
+}
+
+.tangoNavs.historyNav .nav-tabs .nav-link {
+    padding: 10px 19px;
+}
+
+.usage_card {
+    border: 1px solid var(--me-border1);
+    border-radius: 10px;
+    /* padding: 10px; */
+    height: 100%;
+}
+
+.panelButton.xlWidth {
+    width: 231px;
+}
+
+.panelButton.xlWidth .icon {
+    transform: translateX(195px);
+}
+
+.panelButton.xlWidth:hover .icon {
+    transform: translateX(0);
 }
