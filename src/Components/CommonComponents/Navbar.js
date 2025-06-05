@@ -757,6 +757,7 @@ function Navbar() {
                             "/leads",
                             "/lead-add",
                             "/lead-edit",
+                            "/lead-view",
                             "/campaigns",
                             "/agents-dialer",
                             "/call-desposition",
@@ -783,6 +784,7 @@ function Navbar() {
                           "/leads",
                           "/lead-add",
                           "/lead-edit",
+                          "/lead-view",
                           "/campaigns",
                           "/agents-dialer",
                           "/call-desposition",
@@ -864,7 +866,7 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                      ["/lead-add", "/lead-edit"].some((path) =>
+                                      ["/lead-add", "/lead-edit", "/lead-view"].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
                                       ? "nav-link active"
