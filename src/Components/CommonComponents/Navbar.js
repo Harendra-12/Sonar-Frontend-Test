@@ -507,6 +507,7 @@ function Navbar() {
                             "/call-dashboard",
                             "/active-calls",
                             "/voicemail-report",
+                            "/custom-dashboard"
                           ])
                             ? "true"
                             : "false"
@@ -541,6 +542,7 @@ function Navbar() {
                           "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
+                          "/custom-dashboard"
                         ])
                           ? "show"
                           : ""
