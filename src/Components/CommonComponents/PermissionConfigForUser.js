@@ -221,7 +221,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
     setPermissionData(allPermissions);
 
     // Initialize with permissions for the selected role
-    if (isUserFilter && selectedRole == existingUserData.user_role.role_id) {
+    if (isUserFilter && selectedRole == existingUserData?.user_role?.role_id) {
       setRolePermissions(prev => ({
         ...prev,
         role_id: selectedRole || [],
@@ -242,7 +242,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
 
   const resetPermissionToInitialState = () => {
     // Initialize with permissions for the selected role
-    if (isUserFilter && selectedRole == existingUserData.user_role.role_id) {
+    if (isUserFilter && selectedRole == existingUserData?.user_role?.role_id) {
       setRolePermissions(prev => ({
         ...prev,
         role_id: selectedRole || [],

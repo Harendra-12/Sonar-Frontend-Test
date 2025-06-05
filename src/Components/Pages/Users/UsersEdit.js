@@ -272,10 +272,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       toast.error("Password must be at least 5 characters");
       return;
     }
-    if (userPermissionBridge?.permissions?.length === 0 || userPermissionBridge?.sectionPermissions?.length === 0 || userPermissionBridge?.tablePermissions?.length === 0) {
-      toast.error("Permissions cannot be empty!");
-      return;
-    }
     const {
       firstName,
       lastName,
