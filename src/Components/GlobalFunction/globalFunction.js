@@ -372,7 +372,10 @@ export function checkViewSidebar(
 ) {
   const account = localStorage.getItem("account");
   // Return true immediately if user is a company
-  if (JSON.parse(account)?.usertype == 'Company' || JSON.parse(account)?.user_role.roles.name == 'Super Admin') return true;
+  if (JSON.parse(account)?.usertype == 'Company' || JSON.parse(account)?.user_role?.roles?.name === "Super Admin") return true;
+
+  console.log(JSON.parse(account)?.user_role.roles.name);
+
 
   // Return false immediately if no permissions exist
   if (!permissions) return false;
