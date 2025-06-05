@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
-import { backToTop, generalDeleteFunction, generalGetFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ActionType } from '../../../Redux/reduxActionType';
 import ThreeDotedLoader from '../../../Loader/ThreeDotedLoader';
 import PromptFunctionPopup from '../../../CommonComponents/PromptFunctionPopup';
@@ -16,6 +16,9 @@ import CircularLoader from '../../../Loader/CircularLoader';
 
 function Leads() {
     const dispatch = useDispatch();
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
+
     const [loading, setLoading] = useState(false)
     const [refreshState, setRefreshState] = useState(0)
     const [leadsList, setLeadsList] = useState();
@@ -26,6 +29,7 @@ function Leads() {
     const { confirm, ModalComponent } = PromptFunctionPopup();
     const [leadEditPopup, setLeadEditPopup] = useState(false);
     const [leadEditData, setLeadEditData] = useState();
+    const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
     // Get All Lead Files
     const getLead = async () => {
@@ -48,7 +52,7 @@ function Leads() {
     }
     useEffect(() => {
         getLead()
-    }, [pageNumber, itemsPerPage, searchQuery, refreshState])
+    }, [pageNumber, itemsPerPage, debouncedSearchTerm, refreshState])
 
 
     // Download Lead File
@@ -141,16 +145,23 @@ function Leads() {
                                                         <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
-                                                <button
+                                                {checkViewSidebar(
+                                                    "Lead",
+                                                    slugPermissions,
+                                                    account?.sectionPermissions,
+                                                    account?.permissions,
+                                                    "add"
+                                                ) && <button
                                                     type="button"
                                                     className="panelButton"
                                                     onClick={() => navigate('/lead-add')}
                                                 >
-                                                    <span className="text">Add</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-plus"></i>
-                                                    </span>
-                                                </button>
+                                                        <span className="text">Add</span>
+                                                        <span className="icon">
+                                                            <i className="fa-solid fa-plus"></i>
+                                                        </span>
+                                                    </button>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -169,64 +180,97 @@ function Leads() {
                                                 </select>
                                                 <label>entries</label>
                                             </div>
-                                            <div className="searchBox position-relative">
-                                                <label>Search:</label>
-                                                <input
-                                                    type="search"
-                                                    name="Search"
-                                                    className="formItem"
-                                                    value={searchQuery}
-                                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                                />
-                                            </div>
+                                            {checkViewSidebar(
+                                                "Lead",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "search"
+                                            ) && <div className="searchBox position-relative">
+                                                    <label>Search:</label>
+                                                    <input
+                                                        type="search"
+                                                        name="Search"
+                                                        className="formItem"
+                                                        value={searchQuery}
+                                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                                    />
+                                                </div>}
                                         </div>
                                         <div className="tableContainer">
-                                            {loading ? <ThreeDotedLoader /> :
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Id</th>
-                                                            <th>Lead Name</th>
-                                                            <th>Lead Description</th>
-                                                            <th>Status</th>
-                                                            <th>Rows</th>
-                                                            <th style={{ textAlign: "center" }}>Download</th>
-                                                            <th style={{ textAlign: "center" }}>Edit</th>
-                                                            <th style={{ textAlign: "center" }}>Delete</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            leadsList?.data?.map((data, index) => {
-                                                                return (
-                                                                    <tr key={data.id}>
-                                                                        <td>{index + 1}</td>
-                                                                        <td>{data?.name}</td>
-                                                                        <td>{data?.description}</td>
-                                                                        <td>{data?.status}</td>
-                                                                        <td>{data?.lead_rows_count}</td>
-                                                                        <td>
-                                                                            <button className='tableButton mx-auto' onClick={() => downloadImage(data.file_url, `${data.description}`)}>
-                                                                                <i class="fa-regular fa-download"></i>
-                                                                            </button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button className="tableButton edit mx-auto" onClick={() => handleEditConfig(data)}>
-                                                                                <i className="fa-solid fa-pen"></i>
-                                                                            </button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button className="tableButton delete mx-auto" onClick={() => handleDeleteConfig(data.id)}>
-                                                                                <i className="fa-solid fa-trash"></i>
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>
-                                                                )
-                                                            })
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            }
+                                            {checkViewSidebar(
+                                                "Lead",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "read"
+                                            ) ?
+                                                loading ? <ThreeDotedLoader /> :
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Id</th>
+                                                                <th>Lead Name</th>
+                                                                <th>Lead Description</th>
+                                                                <th>Status</th>
+                                                                <th>Rows</th>
+                                                                <th style={{ textAlign: "center" }}>View</th>
+                                                                <th style={{ textAlign: "center" }}>Download</th>
+                                                                {checkViewSidebar("Lead", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th style={{ textAlign: "center" }}>Edit</th>}
+                                                                {checkViewSidebar("Lead", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th style={{ textAlign: "center" }}>Delete</th>}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                leadsList?.data?.map((data, index) => {
+                                                                    return (
+                                                                        <tr key={data.id}>
+                                                                            <td>{index + 1}</td>
+                                                                            <td>{data?.name}</td>
+                                                                            <td>{data?.description}</td>
+                                                                            <td style={{ textTransform: "capitalize" }}>{data?.status}</td>
+                                                                            <td>{data?.lead_rows_count}</td>
+                                                                            <td>
+                                                                                <button className="tableButton edit mx-auto" onClick={() => navigate('/lead-view/', { state: data })}>
+                                                                                    <i className="fa-solid fa-eye"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button className='tableButton mx-auto' onClick={() => downloadImage(data.file_url, `${data.description}`)}>
+                                                                                    <i class="fa-regular fa-download"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            {checkViewSidebar(
+                                                                                "Lead",
+                                                                                slugPermissions,
+                                                                                account?.sectionPermissions,
+                                                                                account?.permissions,
+                                                                                "edit"
+                                                                            ) && <td>
+                                                                                    <button className="tableButton edit mx-auto" onClick={() => handleEditConfig(data)}>
+                                                                                        <i className="fa-solid fa-pen"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            }
+                                                                            {checkViewSidebar(
+                                                                                "Lead",
+                                                                                slugPermissions,
+                                                                                account?.sectionPermissions,
+                                                                                account?.permissions,
+                                                                                "delete"
+                                                                            ) && <td>
+                                                                                    <button className="tableButton delete mx-auto" onClick={() => handleDeleteConfig(data.id)}>
+                                                                                        <i className="fa-solid fa-trash"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            }
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                : ""}
                                         </div>
                                         <div className="tableHeader mb-3">
                                             <PaginationComponent
@@ -279,7 +323,7 @@ export function LeadEditPopup({ leadData, setLeadEditPopup, setRefreshState }) {
         getData()
     }, [])
 
-    // Handle WhatsApp Config Setup
+    // Handle Lead File Edit
     const handleFormSubmit = handleSubmit(async (data) => {
         setLoading(true);
         const payload = { ...data };
