@@ -78,6 +78,12 @@ function FportalCampaignCreate() {
     },
   ]);
 
+  const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
+  const [selectedBuyers, setSelectedBuyers] = useState([]);
+  const [bulkAddBuyersList, setBulkAddBuyersList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectAll, setSelectAll] = useState(false);
+
 
   const [campaignId, setCampaignId] = useState('');
   const [selectedDids, setSelectedDids] = useState([]);
@@ -238,7 +244,7 @@ function FportalCampaignCreate() {
     value: item?.id,
     label: `${item?.name} - ${item?.phone_code}${item?.phone_number}`
   }))
-  
+
   const allTrunkOptios = allTrunk?.map((item) => ({
     value: item?.id,
     label: item?.description
@@ -263,16 +269,16 @@ function FportalCampaignCreate() {
   }
 
   const convertTimeToDateTime = (timeStr, dateStr = '2025-06-02', timeOffsetHours = -7) => {
-  const [hours, minutes] = timeStr.split(':').map(Number);
-  const date = new Date(dateStr);
-  date.setHours(hours);
-  date.setMinutes(minutes);
-  date.setSeconds(0);
-  date.setHours(date.getHours() + timeOffsetHours);
-  const pad = (n) => String(n).padStart(2, '0');
-  const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-  return formatted;
-}
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const date = new Date(dateStr);
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    date.setSeconds(0);
+    date.setHours(date.getHours() + timeOffsetHours);
+    const pad = (n) => String(n).padStart(2, '0');
+    const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    return formatted;
+  }
 
 
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -281,7 +287,7 @@ function FportalCampaignCreate() {
     setLoading(true);
     const payload = {
       ...data,
-      buyers: selectedItemForBuyer?.map((val, key) => ({ id: val, priority: key + 1 })),
+      buyers: bulkAddBuyersList,
       dids: selectedItems,
       active_hours: isActiveHour ? "1" : "0",
       start_date: startDate,
@@ -294,7 +300,7 @@ function FportalCampaignCreate() {
         start_time: convertTimeToDateTime(item?.start_time),
         status: item?.status
       }))
-    };  
+    };
     const apiData = await generalPostFunction("/fcampaign/store", payload);
     if (apiData?.status) {
       setLoading(false);
@@ -304,6 +310,83 @@ function FportalCampaignCreate() {
       setLoading(false);
     }
   });
+
+  const handleCheckboxChange = (item) => {
+    setSelectedBuyers((prevSelected) => {
+      if (
+        prevSelected.some(
+          (buyer) => buyer.id == item.id
+        )
+      ) {
+        // If the item is already in the array, remove it
+        return prevSelected.filter(
+          (buyer) => buyer.id != item.id
+        );
+      } else {
+        // Otherwise, add the item
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      allBuyers.forEach((item) => {
+        if (
+          !selectedBuyers.some(
+            (buyer) => buyer.id == item.id
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      allBuyers.filter((item) => bulkAddBuyersList.every(buyer => buyer.id !== item.id)).forEach((item) => {
+        if (
+          selectedBuyers.some(
+            (buyer) => buyer.id == item.id
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
+
+  const handleBulkAddBuyersList = () => {
+    if (selectedBuyers && selectedBuyers.length > 0) {
+      const arr = selectedBuyers.map((item) => ({
+        id: item?.id,
+        name: item?.name,
+        priority: item?.priority,
+        monthly_call_limit: item?.monthly_call_limit,
+        daily_call_limit: item?.daily_call_limit,
+        live_call_limit: item?.live_call_limit,
+        total_send_call: item?.total_send_call
+      }))
+      setBulkAddBuyersList(arr);
+      setSelectAll(false)
+    }
+  }
+
+  const deleteItemFromBulk = (id) => {
+    const updatedArr = bulkAddBuyersList.filter((item) => item.id !== id);
+    setBulkAddBuyersList(updatedArr);
+
+    const updatedBuyerSelect = () =>
+      selectedBuyers.map((buyer) => {
+        if (id === buyer.id) {
+          const arr = selectedBuyers.filter((item) => item.id != id);
+          setSelectedBuyers(arr);
+        }
+      });
+    updatedBuyerSelect();
+  }
 
   return (
     <main className="mainContent">
@@ -897,84 +980,8 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Monthly Call Limit
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="number"
-                                className="formItem"
-                                {...register("monthly_call_limit", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.monthly_call_limit && (
-                                <ErrorMessage text={errors.monthly_call_limit.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Daily Call Limit
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="number"
-                                className="formItem"
-                                {...register("daily_call_limit", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.daily_call_limit && (
-                                <ErrorMessage text={errors.daily_call_limit.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Live Call Limit
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="number"
-                                className="formItem"
-                                {...register("live_call_limit", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.live_call_limit && (
-                                <ErrorMessage text={errors.live_call_limit.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Total Send Call
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="number"
-                                className="formItem"
-                                {...register("total_send_call", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.total_send_call && (
-                                <ErrorMessage text={errors.total_send_call.message} />
-                              )}
-                            </div>
-                          </div>
 
-                          <div className="formRow">
+                          {/* <div className="formRow">
                             <div className='formLabel'>
                               <label>
                                 Buyer
@@ -993,7 +1000,7 @@ function FportalCampaignCreate() {
                                 styles={customStyles}
                               />
                             </div>
-                          </div>
+                          </div> */}
                           <div className="formRow">
                             <div className='formLabel'>
                               <label>
@@ -1090,7 +1097,7 @@ function FportalCampaignCreate() {
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
                                         <input type="checkbox"
-                                          onChange={(e) => {                              
+                                          onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
                                             ));
@@ -1360,6 +1367,159 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           }
+
+                          <div className="col-12" style={{ borderTop: '1px solid var(--border-color)' }}>
+                            <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
+                              <div className="content">
+                                <h4>List of Buyers</h4>
+                                <p>You can see the list of agents in this ring group.</p>
+                              </div>
+                              <div className="buttonGroup">
+                                <button
+                                  type="button"
+                                  className="panelButton"
+                                  onClick={() => {
+                                    if (allBuyers.length !== bulkAddBuyersList.length)
+                                      setBulkAddPopUp(true);
+                                    else toast.warn("All agent selected");
+                                  }}
+                                >
+                                  <span className="text">Add</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-plus"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                            {bulkAddBuyersList && bulkAddBuyersList.length > 0 ? bulkAddBuyersList.map((buyer, index) => {
+                              return (
+                                <div className="row">
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Name
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={buyer.name}
+                                        disabled={true}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Priority
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <select
+                                        className="formItem"
+                                        defaultValue={index + 1}
+                                        onChange={(e) => {
+                                          setBulkAddBuyersList(prevState => prevState.map(item =>
+                                            item.id == buyer.id ? { ...item, priority: e.target.value } : item
+                                          ));
+                                        }}
+                                      >
+                                        {allBuyers.length > 0 && allBuyers.map((buyer, index) => (
+                                          <option value={index + 1}>{index + 1}</option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Monthly Call Limit
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        onChange={(e) => {
+                                          setBulkAddBuyersList(prevState => prevState.map(item =>
+                                            item.id == buyer.id ? { ...item, monthly_call_limit: e.target.value } : item
+                                          ));
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Daily Call Limit
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        onChange={(e) => {
+                                          setBulkAddBuyersList(prevState => prevState.map(item =>
+                                            item.id == buyer.id ? { ...item, daily_call_limit: e.target.value } : item
+                                          ));
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Live Call Limit
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        onChange={(e) => {
+                                          setBulkAddBuyersList(prevState => prevState.map(item =>
+                                            item.id == buyer.id ? { ...item, live_call_limit: e.target.value } : item
+                                          ));
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Total Send Call
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        onChange={(e) => {
+                                          setBulkAddBuyersList(prevState => prevState.map(item =>
+                                            item.id == buyer.id ? { ...item, total_send_call: e.target.value } : item
+                                          ));
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  {bulkAddBuyersList.length === 1 ? (
+                                    ""
+                                  ) : (
+                                    <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
+                                      <button
+                                        type="button"
+                                        onClick={() => deleteItemFromBulk(buyer.id)}
+                                        className="tableButton delete"
+                                      >
+                                        <i className="fa-solid fa-trash"></i>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            }) : ""}
+                          </div>
                         </form>
                       </div>
                     </div>
@@ -1370,6 +1530,130 @@ function FportalCampaignCreate() {
           </div>
         </div>
       </section>
+      {bulkAddPopUp &&
+        <div className="backdropContact">
+          <div className="addNewContactPopup w-auto">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add Buyers to the selected Campaign</h5>
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                  // value={searchQuery}
+                  // onChange={handleSearchChange}
+                  />
+                  <button
+                    className="tableButton popupIcon_btn ms-2"
+                    onClick={() => navigate("/buyer-add")}
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll}
+                            checked={selectAll ? true : false}
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allBuyers
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          // Sort: matching items come first
+                          return bMatches - aMatches;
+                        }).filter((item) => bulkAddBuyersList.every(buyer => buyer.id !== item.id))
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.phone_number}</td>
+                              <td>{item.city}</td>
+                              <td>{item.country_code}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)}
+                                  checked={selectedBuyers.some(
+                                    (buyer) => buyer.id === item.id
+                                  )}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkAddBuyersList(bulkAddBuyersList);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </main>
   );
 }
