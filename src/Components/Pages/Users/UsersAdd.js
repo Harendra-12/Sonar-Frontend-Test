@@ -1001,6 +1001,7 @@ const UsersAdd = () => {
                             loading={loading}
                             setLoading={setLoading}
                             setUserPermissionBridge={setUserPermissionBridge}
+                            isUserFilter={true}
                           />
                         </div>
                       </div>
