@@ -19,7 +19,7 @@ function Navbar() {
   const userType = account?.usertype;
   const isCustomerAdmin =
     account?.email == accountDetails?.email ||
-    account?.user_role?.roles?.name === "All access with upcoming fetaure";
+    account?.user_role?.roles?.name === "Super Admin";
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
