@@ -38,7 +38,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     // fetching api to get all user data
     useEffect(() => {
         async function getAllUser() {
-            const res = await generalGetFunction("/agents?usages=pbx&allagents");
+            const res = await generalGetFunction(`/agents?usages=pbx&allagents${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
             const groupData = await generalGetFunction("/groups/all")
             const roleData = await generalGetFunction("/role/all")
             if (res.status) {

@@ -281,7 +281,7 @@ function GlobalCalls() {
   // Getting all user details
   useEffect(() => {
     async function getData() {
-      const apiData = await generalGetFunction(`/user/all`);
+      const apiData = await generalGetFunction(`/user/all${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
       if (apiData?.status) {
         dispatch({
           type: "SET_ALLUSER",

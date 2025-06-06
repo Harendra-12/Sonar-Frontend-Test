@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
+  checkViewSidebar,
   fileUploadFunction,
   generalGetFunction,
   generalPutFunction,
@@ -29,6 +30,7 @@ function UserProfile() {
   const [profilePicPopup, setProfilePicPopup] = useState(false);
   const [newImage, setNewImage] = useState();
   const [profileImage, setProfileImage] = useState(null);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Setting all the previous value for the user
   useEffect(() => {
@@ -91,9 +93,11 @@ function UserProfile() {
         // domain_id: domainId,
         timezone_id: selectedTimezone,
         // status: account.status,
-        // role_id: account?.user_role?.role_id,
+        role_id: account?.user_role?.role_id,
         // account_id: account.account_id,
-        permissions: account.permissions,
+        // permissions: account.permissions,
+        // sectionPermissions: account.sectionPermissions,
+        // tablePermissions: account.tablePermissions,
         extension_id: account.extension.id,
         // usages: account.usages,
         alias: inputAlias,
@@ -223,14 +227,22 @@ function UserProfile() {
                                         <span className="text">Back</span>
                                         <span className="icon"><i className="fa-solid fa-caret-left" /></span>
                                       </button>
-                                      <button onClick={handleSave} type="button" class={`ms-2 btn btn-success-light btn-wave new_buttonStyle`}
-                                        style={{ maxWidth: 'none' }}
-                                      >
-                                        <span>Update</span> <i
-                                          className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
-                                            }`}
-                                        ></i>
-                                      </button>
+                                      {checkViewSidebar(
+                                        "User",
+                                        slugPermissions,
+                                        account?.sectionPermissions,
+                                        account?.permissions,
+                                        "edit"
+                                      ) &&
+                                        <button onClick={handleSave} type="button" class={`ms-2 btn btn-success-light btn-wave new_buttonStyle`}
+                                          style={{ maxWidth: 'none' }}
+                                        >
+                                          <span>Update</span> <i
+                                            className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
+                                              }`}
+                                          ></i>
+                                        </button>
+                                      }
                                     </div>
                                     {/* <div className="buttonGroup ">
                                         <button

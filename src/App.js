@@ -188,12 +188,14 @@ import ElasticTrunk from "./Components/Pages/CallTracker/ElasticTrunk";
 import ElasticTrunkEdit from "./Components/Pages/CallTracker/ElasticTrunkEdit";
 import ElasticTrunkAdd from "./Components/Pages/CallTracker/ElasticTrunkAdd";
 import FportalCampaignEdit from "./Components/Pages/CallTracker/FportalCampaignEdit";
+import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
 import AllAgent from "./Components/Pages/Ai/AllAgent";
 import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 import AiPhoneNumber from "./Components/Pages/Ai/AiPhoneNumber";
 import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
+import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -223,11 +225,12 @@ function App() {
   const account = useSelector((state) => state?.account);
   const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
-  const { sendMessage } = Socket();
+  // const { sendMessage } = Socket();
+  const { sendMessage } = GoMessageSocket()
   GoSocket();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
-  }, [Socket]);
+  }, [GoMessageSocket]);
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{
@@ -348,6 +351,17 @@ function App() {
               "browse"
             ) ?
               <ActiveCallsPage /> :
+              <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/custom-dashboard" element={
+            checkViewSidebar(
+              "CustomDashboard",
+              slugPermissions,
+              account?.sectionPermissions,
+              account?.permissions,
+              "browse"
+            ) ?
+              <CustomDashboardPage /> :
               <Navigate to="/dashboard" replace />
           } />
           <Route
@@ -599,17 +613,7 @@ function App() {
               )
             }
           />
-          <Route path="/users-profile" element={
-            checkViewSidebar(
-              "User",
-              slugPermissions,
-              account?.sectionPermissions,
-              account?.permissions,
-              "read"
-            ) ?
-              <UserProfile /> :
-              <Navigate to="/dashboard" replace />
-          } />
+          <Route path="/users-profile" element={<UserProfile />} />
           <Route
             path="/users-edit"
             element={
@@ -829,12 +833,16 @@ function App() {
 
           {/* --------------- ai path start */}
 
-               <Route path="/ai-all-agent" element={<AllAgent />} />
-               <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
-               <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
+               {/* <Route path="/ai-all-agent" element={<AllAgent />} /> */}
+               {/* <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} /> */}
+               {/* <Route path="/ai-phone-number" element={<AiPhoneNumber />} /> */}
                <Route path="/ai-call-history" element={<CallHistory />} />
                <Route path="/ai-billing" element={<Billing />} />
                <Route path="/ai-batch-call" element={<AiBatchCall />} />
+
+          <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
+          <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}
@@ -1454,13 +1462,13 @@ function App() {
               <Leads /> :
               <Navigate to="/dashboard" replace />
           } />
-          <Route path="/lead-edit" element={
+          <Route path="/lead-view" element={
             checkViewSidebar(
               "Lead",
               slugPermissions,
               account?.sectionPermissions,
               account?.permissions,
-              "edit"
+              "read"
             ) ?
               <LeadEdit /> :
               <Navigate to="/dashboard" replace />

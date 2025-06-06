@@ -624,9 +624,10 @@ form.tangoNavs .nav-tabs {
     background-color: var(--bg-badge-secondary);
     border: 1px solid var(--bg-badge-secondary-border);
 }
+
 .badge-purple {
     background-color: var(--badge-purple-bg);
-    color: var( --badge-purple-text) !important;
+    color: var(--badge-purple-text) !important;
 }
 
 .badge-soft-success {
@@ -717,38 +718,59 @@ form.tangoNavs .nav-tabs {
     height: 25px;
 } */
 
-.widthFit{
+.widthFit {
     width: fit-content;
 }
 
-.userPermission__contentBox .itemWrapper  {
+.userPermission__contentBox .itemWrapper {
     padding: 5px 0 !important;
 }
+
 .userPermission__contentBox .heading {
-    border: 1px solid var(--me-border1) !important;
+    /* border: 1px solid var(--me-border1) !important; */
+    border: 1px solid var(--border-color) !important;
     border-radius: 8px;
     padding: 10px !important;
 }
+
 .userPermission__contentBox .accordion-collapse .card {
- margin-bottom: 0;
-}
-.userPermission__contentBox .permission_accordionBody {
-    background-color: #ffffff !important;
     margin-bottom: 0;
-   
 }
-.userPermission__contentBox td[colspan="7"]{
-    background-color: #dce5ff !important;
+
+.userPermission__contentBox .permission_accordionBody {
+    /* background-color: #ffffff !important; */
+    margin-bottom: 0;
+
+}
+
+.userPermission__contentBox td[colspan="7"] {
+    background-color: #dce5ff;
+}
+
+body.dark .userPermission__contentBox td[colspan="7"] {
+    background-color: var(--bg-color);
 }
 
 .userPermission__contentBox .permission_accordionBody .accordion-button {
     background-color: transparent !important;
-       border: none !important;
+    border: none !important;
 }
+
+.userPermission__contentBox .permission_accordionBody .accordion-button>* {
+    color: var(--immortalBlack);
+    font-size: 0.875rem;
+}
+
 .userPermission__contentBox .permission_accordionBody .accordion-collapse.collapse.show {
-     padding: 10px !important;
-       border-top: 1px solid var(--me-border1) !important;
+    /* padding: 10px !important; */
+    border-top: 1px solid var(--me-border1) !important;
 }
-.permission_accordionBody .accordion-button:not(.collapsed){
+
+.permission_accordionBody .accordion-button:not(.collapsed) {
     border: 0 !important;
+}
+
+.userPermission__contentBox .permission_accordionBody .card-body label {
+    color: var(--immortalBlack);
+    font-size: 0.75rem;
 }

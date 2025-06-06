@@ -95,6 +95,7 @@ var socketSendMessage = null;
 var campaignDetails = [];
 var recipient_to_remove_notification = null;
 var allLeadList = []
+var allLeadFileListt = []
 
 const initialState = {
   account,
@@ -189,7 +190,8 @@ const initialState = {
   socketSendMessage,
   campaignDetails,
   recipient_to_remove_notification,
-  allLeadList
+  allLeadList,
+  allLeadFileListt
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -449,6 +451,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, recipient_to_remove_notification: action?.recipient }
     case ActionType?.SET_ALL_LEADS_LIST:
       return { ...state, allLeadList: action.payload };
+    case "SET_ALL_LEADS_FILE_LIST":
+      return { ...state, allLeadFileList: action.payload };
     default:
       return state;
   }

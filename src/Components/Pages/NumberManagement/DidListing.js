@@ -75,15 +75,15 @@ function DidListing({ page }) {
     setRefreshState(true);
     if (didAll?.data) {
       setLoading(true);
-      if (page === "number") {
-        setDid(didAll?.data);
-      } else if (page === "pbx") {
-        setDid(didAll?.data?.filter((item) => item.usages === "pbx"));
-      } else if (page === "dialer") {
-        setDid(didAll?.data?.filter((item) => item.usages === "dialer"));
-      } else if (page === "tracker") {
-        setDid(didAll?.data?.filter((item) => item?.usages === "tracker"))
-      }
+      // if (page == "number") {
+      //   setDid(didAll?.data);
+      // } else if (page == "pbx") {
+      //   setDid(didAll?.data?.filter((item) => item.usages == "pbx"));
+      // } else if (page == "dialer") {
+      //   setDid(didAll?.data?.filter((item) => item.usages == "dialer"));
+      // } else if (page == "tracker") {
+      //   setDid(didAll?.data?.filter((item) => item?.usages == "tracker"))
+      // }
       const shouldLoad = true;
       getData(shouldLoad);
     } else {
@@ -140,16 +140,18 @@ function DidListing({ page }) {
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
-      if (page === "number") {
-        setDid(apiData.data?.data);
-        setDidWithPagination(apiData?.data);
-      } else if (page === "pbx") {
-        setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
-        setDidWithPagination(apiData?.data);
-      } else if (page === "dialer") {
-        setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
-        setDidWithPagination(apiData?.data);
-      }
+      // if (page === "number") {
+      //   setDid(apiData.data?.data);
+      //   setDidWithPagination(apiData?.data);
+      // } else if (page === "pbx") {
+      //   setDid(apiData?.data?.data?.filter((item) => item.usages === "pbx"));
+      //   setDidWithPagination(apiData?.data);
+      // } else if (page === "dialer") {
+      //   setDid(apiData?.data?.data.filter((item) => item.usages === "dialer"));
+      //   setDidWithPagination(apiData?.data);
+      // }
+      setDid(apiData.data?.data);
+      setDidWithPagination(apiData?.data);
       dispatch({
         type: "SET_DIDALL",
         didAll: apiData.data || [],
@@ -346,6 +348,7 @@ function DidListing({ page }) {
                         {checkViewSidebar(
                           "DidConfigure",
                           slugPermissions,
+                          account?.sectionPermissions,
                           account?.permissions,
                           "add"
                         ) && (
@@ -554,9 +557,11 @@ function DidListing({ page }) {
                           <thead>
                             <tr>
                               <th>DID</th>
-                              <th>E911</th>
-                              <th>Cname</th>
-                              <th>SMS</th>
+                              {page !== "tracker" && page !== "dialer" ? <>
+                                <th>E911</th>
+                                <th>Cname</th>
+                                <th>SMS</th>
+                              </> : ""}
                               {page === "pbx" ? (
                                 <>
                                   <th>Tag</th>
@@ -573,36 +578,38 @@ function DidListing({ page }) {
                               ) : (
                                 ""
                               )}
-                              {checkViewSidebar(
-                                "DidDetail",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "edit"
-                              ) &&
-                                <th style={{ textAlign: "center" }}>
-                                  WhatsApp DID
-                                </th>
-                              }
-                              {checkViewSidebar(
-                                "DidDetail",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "edit"
-                              ) &&
-                                <th style={{ textAlign: "center" }}>E-fax DID</th>
-                              }
-                              {
-                                checkViewSidebar(
+                              {page !== "tracker" && page !== "dialer" ? <>
+                                {checkViewSidebar(
                                   "DidDetail",
                                   slugPermissions,
                                   account?.sectionPermissions,
                                   account?.permissions,
                                   "edit"
                                 ) &&
-                                <th style={{ textAlign: "center" }}>SMS DID</th>
-                              }
+                                  <th style={{ textAlign: "center" }}>
+                                    WhatsApp DID
+                                  </th>
+                                }
+                                {checkViewSidebar(
+                                  "DidDetail",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) &&
+                                  <th style={{ textAlign: "center" }}>E-fax DID</th>
+                                }
+                                {
+                                  checkViewSidebar(
+                                    "DidDetail",
+                                    slugPermissions,
+                                    account?.sectionPermissions,
+                                    account?.permissions,
+                                    "edit"
+                                  ) &&
+                                  <th style={{ textAlign: "center" }}>SMS DID</th>
+                                }
+                              </> : ""}
                               {page === "pbx" ? (
                                 <>
                                   <th style={{ textAlign: "center" }}>
@@ -612,6 +619,7 @@ function DidListing({ page }) {
                               ) : (
                                 ""
                               )}
+                              {page === "tracker" && <th>Source</th>}
                               {checkViewSidebar(
                                 "DidDetail",
                                 slugPermissions,
@@ -645,15 +653,17 @@ function DidListing({ page }) {
                                       <td style={{ cursor: "default" }}>
                                         {item.did}
                                       </td>
-                                      <td style={{ cursor: "default" }}>
-                                        {item?.e911}
-                                      </td>
-                                      <td style={{ cursor: "default" }}>
-                                        {item?.cnam}
-                                      </td>
-                                      <td style={{ cursor: "default" }}>
-                                        {item?.sms}
-                                      </td>
+                                      {page !== "tracker" && page !== "dialer" ? <>
+                                        <td style={{ cursor: "default" }}>
+                                          {item?.e911}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {item?.cnam}
+                                        </td>
+                                        <td style={{ cursor: "default" }}>
+                                          {item?.sms}
+                                        </td>
+                                      </> : ""}
                                       {page === "pbx" ? (
                                         <>
                                           <td>{item?.configuration?.tag}</td>
@@ -693,240 +703,242 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      {checkViewSidebar(
-                                        "DidDetail",
-                                        slugPermissions,
-                                        account?.sectionPermissions,
-                                        account?.permissions,
-                                        "edit"
-                                      ) &&
-                                        <td
-                                          style={{
-                                            cursor: "default",
-                                            width: "152px",
-                                          }}
-                                        >
-                                          <Tippy
-                                            content={
-                                              item.default_whatsapp === 1
-                                                ? "This DID is set as default for WhatsApp"
-                                                : item.is_secondary_whatsapp === 1
-                                                  ? "This DID is set as secondary for WhatsApp"
-                                                  : "Set this DID default for WhatsApp"
-                                            }
+                                      {page !== "tracker" && page !== "dialer" ? <>
+                                        {checkViewSidebar(
+                                          "DidDetail",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) &&
+                                          <td
+                                            style={{
+                                              cursor: "default",
+                                              width: "152px",
+                                            }}
                                           >
-                                            <div className="dropdown w-100">
-                                              <button
-                                                data-bs-toggle="dropdown"
-                                                className={
-                                                  item.default_whatsapp === 1
-                                                    ? "tableButton whatsapp mx-auto"
-                                                    : item.is_secondary_whatsapp ===
-                                                      1
-                                                      ? "tableButton warning mx-auto"
-                                                      : "tableButton whatsapp empty mx-auto"
-                                                }
-                                                style={{ cursor: "pointer" }}
-                                              >
-                                                <i className="fa-brands fa-whatsapp"></i>
-                                              </button>
-                                              <ul className="dropdown-menu actionBtnDropdowns">
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.default_whatsapp ===
-                                                        0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "default_whatsapp"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
-                                                    Default
-                                                  </button>
-                                                </li>
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.is_secondary_whatsapp ===
-                                                        0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "is_secondary_whatsapp"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-code-merge me-2"></i>{" "}
-                                                    Alternate
-                                                  </button>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </Tippy>
-                                        </td>
-                                      }
-                                      {checkViewSidebar(
-                                        "DidDetail",
-                                        slugPermissions,
-                                        account?.sectionPermissions,
-                                        account?.permissions,
-                                        "edit"
-                                      ) &&
-                                        <td
-                                          style={{
-                                            cursor: "default",
-                                            width: "139px",
-                                          }}
-                                        >
-                                          <Tippy
-                                            content={
-                                              item.default_eFax === 1
-                                                ? "This DID is set as default for E-fax"
-                                                : item.is_secondary_eFax === 1
-                                                  ? "This DID is set as secondary for E-fax"
-                                                  : "Set this DID default for E-fax"
-                                            }
+                                            <Tippy
+                                              content={
+                                                item.default_whatsapp === 1
+                                                  ? "This DID is set as default for WhatsApp"
+                                                  : item.is_secondary_whatsapp === 1
+                                                    ? "This DID is set as secondary for WhatsApp"
+                                                    : "Set this DID default for WhatsApp"
+                                              }
+                                            >
+                                              <div className="dropdown w-100">
+                                                <button
+                                                  data-bs-toggle="dropdown"
+                                                  className={
+                                                    item.default_whatsapp === 1
+                                                      ? "tableButton whatsapp mx-auto"
+                                                      : item.is_secondary_whatsapp ===
+                                                        1
+                                                        ? "tableButton warning mx-auto"
+                                                        : "tableButton whatsapp empty mx-auto"
+                                                  }
+                                                  style={{ cursor: "pointer" }}
+                                                >
+                                                  <i className="fa-brands fa-whatsapp"></i>
+                                                </button>
+                                                <ul className="dropdown-menu actionBtnDropdowns">
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.default_whatsapp ===
+                                                          0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "default_whatsapp"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      Default
+                                                    </button>
+                                                  </li>
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.is_secondary_whatsapp ===
+                                                          0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "is_secondary_whatsapp"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      Alternate
+                                                    </button>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </Tippy>
+                                          </td>
+                                        }
+                                        {checkViewSidebar(
+                                          "DidDetail",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) &&
+                                          <td
+                                            style={{
+                                              cursor: "default",
+                                              width: "139px",
+                                            }}
                                           >
-                                            <div className="dropdown w-100">
-                                              <button
-                                                data-bs-toggle="dropdown"
-                                                className={
-                                                  item.default_eFax === 1
-                                                    ? "tableButton fax mx-auto"
-                                                    : item.is_secondary_eFax === 1
-                                                      ? "tableButton warning mx-auto"
-                                                      : "tableButton fax empty mx-auto"
-                                                }
-                                                style={{ cursor: "pointer" }}
-                                              >
-                                                <i className="fa-solid fa-fax"></i>
-                                              </button>
-                                              <ul className="dropdown-menu actionBtnDropdowns">
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.default_eFax === 0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "default_eFax"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
-                                                    Default
-                                                  </button>
-                                                </li>
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.is_secondary_eFax ===
-                                                        0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "is_secondary_eFax"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-code-merge me-2"></i>{" "}
-                                                    Alternate
-                                                  </button>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </Tippy>
-                                        </td>
-                                      }
-                                      {checkViewSidebar(
-                                        "DidDetail",
-                                        slugPermissions,
-                                        account?.sectionPermissions,
-                                        account?.permissions,
-                                        "edit"
-                                      ) &&
-                                        <td style={{ cursor: "default" }}>
-                                          <Tippy
-                                            content={
-                                              item.default_sms === 1
-                                                ? "This DID is set as default for SMS"
-                                                : item.is_secondary_sms === 1
-                                                  ? "This DID is set as secondary for SMS"
-                                                  : "Set this DID default for SMS"
-                                            }
-                                          >
-                                            <div className="dropdown w-100">
-                                              <button
-                                                data-bs-toggle="dropdown"
-                                                className={
-                                                  item.default_sms === 1
-                                                    ? "tableButton sms mx-auto"
-                                                    : item.is_secondary_sms === 1
-                                                      ? "tableButton warning  mx-auto"
-                                                      : "tableButton sms empty mx-auto"
-                                                }
-                                                style={{ cursor: "pointer" }}
-                                              >
-                                                <i className="fa-solid fa-comment-sms"></i>
-                                              </button>
-                                              <ul className="dropdown-menu actionBtnDropdowns">
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.default_sms === 0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "default_sms"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
-                                                    Default
-                                                  </button>
-                                                </li>
-                                                <li className="dropdown-item">
-                                                  <button
-                                                    className="clearButton text-align-start"
-                                                    onClick={() => {
-                                                      if (
-                                                        item.is_secondary_sms ===
-                                                        0
-                                                      ) {
-                                                        handleClickDefault(
-                                                          item.id,
-                                                          "is_secondary_sms"
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    <i class="fa-solid fa-code-merge me-2"></i>{" "}
-                                                    Alternate
-                                                  </button>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </Tippy>
-                                        </td>
-                                      }
+                                            <Tippy
+                                              content={
+                                                item.default_eFax === 1
+                                                  ? "This DID is set as default for E-fax"
+                                                  : item.is_secondary_eFax === 1
+                                                    ? "This DID is set as secondary for E-fax"
+                                                    : "Set this DID default for E-fax"
+                                              }
+                                            >
+                                              <div className="dropdown w-100">
+                                                <button
+                                                  data-bs-toggle="dropdown"
+                                                  className={
+                                                    item.default_eFax === 1
+                                                      ? "tableButton fax mx-auto"
+                                                      : item.is_secondary_eFax === 1
+                                                        ? "tableButton warning mx-auto"
+                                                        : "tableButton fax empty mx-auto"
+                                                  }
+                                                  style={{ cursor: "pointer" }}
+                                                >
+                                                  <i className="fa-solid fa-fax"></i>
+                                                </button>
+                                                <ul className="dropdown-menu actionBtnDropdowns">
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.default_eFax === 0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "default_eFax"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      Default
+                                                    </button>
+                                                  </li>
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.is_secondary_eFax ===
+                                                          0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "is_secondary_eFax"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      Alternate
+                                                    </button>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </Tippy>
+                                          </td>
+                                        }
+                                        {checkViewSidebar(
+                                          "DidDetail",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) &&
+                                          <td style={{ cursor: "default" }}>
+                                            <Tippy
+                                              content={
+                                                item.default_sms === 1
+                                                  ? "This DID is set as default for SMS"
+                                                  : item.is_secondary_sms === 1
+                                                    ? "This DID is set as secondary for SMS"
+                                                    : "Set this DID default for SMS"
+                                              }
+                                            >
+                                              <div className="dropdown w-100">
+                                                <button
+                                                  data-bs-toggle="dropdown"
+                                                  className={
+                                                    item.default_sms === 1
+                                                      ? "tableButton sms mx-auto"
+                                                      : item.is_secondary_sms === 1
+                                                        ? "tableButton warning  mx-auto"
+                                                        : "tableButton sms empty mx-auto"
+                                                  }
+                                                  style={{ cursor: "pointer" }}
+                                                >
+                                                  <i className="fa-solid fa-comment-sms"></i>
+                                                </button>
+                                                <ul className="dropdown-menu actionBtnDropdowns">
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.default_sms === 0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "default_sms"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      Default
+                                                    </button>
+                                                  </li>
+                                                  <li className="dropdown-item">
+                                                    <button
+                                                      className="clearButton text-align-start"
+                                                      onClick={() => {
+                                                        if (
+                                                          item.is_secondary_sms ===
+                                                          0
+                                                        ) {
+                                                          handleClickDefault(
+                                                            item.id,
+                                                            "is_secondary_sms"
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      Alternate
+                                                    </button>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </Tippy>
+                                          </td>
+                                        }
+                                      </> : ""}
                                       {page === "pbx" ? (
                                         <>
                                           <td style={{ cursor: "default" }}>
@@ -960,6 +972,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
+                                      {page === "tracker" && <td>N/A</td>}
                                       {checkViewSidebar(
                                         "DidDetail",
                                         slugPermissions,
@@ -979,7 +992,7 @@ function DidListing({ page }) {
                                         account?.permissions,
                                         "browse"
                                       ) ?
-                                        < td className="text-center">
+                                        <td className="text-center">
                                           <div className="dropdown">
                                             <button
                                               className={`tableButton`}
@@ -991,7 +1004,7 @@ function DidListing({ page }) {
                                               <i className="fa-solid fa-ellipsis-vertical" />
                                             </button>
                                             <ul className="dropdown-menu actionBtnDropdowns">
-                                              {page === "pbx" ? (
+                                              {page === "pbx" || page === "tracker" || page === "dialer" ? (
                                                 <>
                                                   {checkViewSidebar(
                                                     "DidConfigure",

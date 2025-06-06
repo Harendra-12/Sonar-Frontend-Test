@@ -101,7 +101,7 @@ export default function GroupsList() {
 
   const handleAgentClick = async (item) => {
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item?.user?.name}`);
+      const apiData = await generalGetFunction(`/agents?search=${item?.user?.name}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         navigate(`/agents-edit?id=${userData.id}`, {

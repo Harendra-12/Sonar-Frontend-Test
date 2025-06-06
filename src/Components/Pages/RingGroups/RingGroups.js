@@ -196,7 +196,7 @@ const RingGroups = () => {
   const handleAgentClick = async (item) => {
     setPageLoading(true);
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item.username}`);
+      const apiData = await generalGetFunction(`/agents?search=${item.username}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         setPageLoading(false);

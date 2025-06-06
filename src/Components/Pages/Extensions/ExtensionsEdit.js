@@ -435,7 +435,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       );
       if (apiData.status) {
         toast.success(apiData.message);
-        await generalGetFunction(`/user/all`);
+        await generalGetFunction(`/user/all${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
         // navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
