@@ -58,7 +58,7 @@ table tbody tr:nth-child(even) {
     /* background-color: var(--table-even-bg); */
 }
 .table>:not(caption)>*>*{
-      background-color: var(--table-odd-color) !important;
+      /* background-color: var(--table-odd-color) !important; */
        color: var(--form-label ) !important;
        border-bottom: 1px solid var(--me-border1) !important; 
 }

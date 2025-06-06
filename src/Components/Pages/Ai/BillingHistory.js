@@ -4,7 +4,7 @@ const BillingHistory = () => {
     return (
         <>
             <div className="tableContainer" >
-                <table class="table">
+                <table>
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -29,6 +29,27 @@ const BillingHistory = () => {
                         </tr>
 
                         <tr class="collapse " id="collapseSubDetails1">
+                            <td className='first_td_padding2'>Voice Engine</td>
+                            <td>$0.21</td>
+                            <td>3 minutes</td>
+                            <td>Pending</td>
+                        </tr>
+
+                        <tr data-bs-toggle="collapse" data-bs-target="#collapseMonth2" aria-expanded="false" aria-controls="collapseMonth2">
+                            <td><i class="fa fa-angle-down rotate-icon me-2"></i> 2025-06</td>
+                            <td>$0.00</td>
+                            <td>Payment Pending</td>
+                            <td>Paid</td>
+                        </tr>
+
+                        <tr class="collapse " id="collapseMonth2" data-bs-toggle="collapse" data-bs-target="#collapseSubDetails2" aria-expanded="false" aria-controls="collapseSubDetails2">
+                            <td className='first_td_padding'><i class="fa fa-angle-down rotate-icon me-2"></i>Jun 1 - Jun 30</td>
+                            <td>$0.00</td>
+                            <td>Payment</td>
+                            <td>Ongoing</td>
+                        </tr>
+
+                        <tr class="collapse " id="collapseSubDetails2">
                             <td className='first_td_padding2'>Voice Engine</td>
                             <td>$0.21</td>
                             <td>3 minutes</td>

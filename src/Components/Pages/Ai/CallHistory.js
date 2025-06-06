@@ -224,7 +224,7 @@ const CallHistory = () => {
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button> */}
 
                 <div class="offcanvas offcanvas-end w-30" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-header">
+                    <div class="offcanvas-header" style={{borderBlockEnd: '1px solid var(--me-border1)'}}>
                         <div>
                             <h5 class="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
                             <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>See all the details of this Call History</p>

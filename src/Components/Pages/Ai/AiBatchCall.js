@@ -41,7 +41,7 @@ const AiBatchCall = () => {
                                                     <p>You can manage yours agents here</p>
                                                 </div>
                                                 <div className="buttonGroup">
-                                                    <button effect="ripple" className="panelButton " >
+                                                    <button effect="ripple" className="panelButton xlWidth" >
                                                         <span className="text">Create a batch call</span>
                                                         <span className="icon">
                                                             <i className="fa-solid fa-plus"></i>
