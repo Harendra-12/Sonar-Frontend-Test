@@ -2185,9 +2185,9 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                       {/* here we are showing recent group message */}
-                                      <h5>
+                                      <h5 className="f-s-14 text-gray">
                                         {/* here showing last send message below of contact name */}
-                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <>{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</>}
+                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <span className="text-info fw-normal f-s-14">{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</span>}
                                         : {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>

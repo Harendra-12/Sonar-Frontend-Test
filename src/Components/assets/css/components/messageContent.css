@@ -1293,7 +1293,7 @@
 }
 
 .f-s-14 {
-    font-size: 0.875rem;
+    font-size: 0.875rem !important;
 }
 
 .chat_doc p {
