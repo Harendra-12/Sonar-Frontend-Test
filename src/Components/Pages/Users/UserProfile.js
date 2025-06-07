@@ -234,13 +234,19 @@ function UserProfile() {
                                         account?.permissions,
                                         "edit"
                                       ) &&
-                                        <button onClick={handleSave} type="button" class={`ms-2 btn btn-success-light btn-wave new_buttonStyle`}
+                      //                   <button
+                      //   type="button"
+                      //   effect="ripple"
+                      //   className="panelButton"
+                      //   onClick={handleSubmit}
+                      // >
+                      //   <span className="text">Save</span>
+                      //   <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
+                      // </button>
+                                        <button onClick={handleSave}  effect="ripple" type="button" class={`ms-2 panelButton`}
                                           style={{ maxWidth: 'none' }}
                                         >
-                                          <span>Update</span> <i
-                                            className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
-                                              }`}
-                                          ></i>
+                                         <span className="text">Save</span>    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                         </button>
                                       }
                                     </div>
