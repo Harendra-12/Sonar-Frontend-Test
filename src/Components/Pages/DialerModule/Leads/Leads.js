@@ -45,6 +45,11 @@ function Leads() {
                 })
                 setLeadsList(res?.data);
             }
+
+            const getCampaign = await generalGetFunction("/campaign/all")
+            if (getCampaign?.status) {
+                setCampaign(getCampaign.data.data)
+            }
         } catch (err) {
             console.log(err)
         } finally {
@@ -55,22 +60,6 @@ function Leads() {
     useEffect(() => {
         getLead()
     }, [pageNumber, itemsPerPage, debouncedSearchTerm, leadDataRefresh])
-
-    const getCampaignData = async () => {
-        setLoading(true);
-        const getCampaign = await generalGetFunction("/campaign/all")
-        if (getCampaign?.status) {
-            setCampaign(getCampaign.data.data)
-            setLoading(false);
-        } else {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        getCampaignData();
-    }, [leadDataRefresh]);
-
 
     // Download Lead File
     const downloadImage = async (imageUrl, fileName) => {
@@ -296,43 +285,50 @@ function Leads() {
                                                                             <td>{data?.description}</td>
                                                                             <td style={{ textTransform: "capitalize" }}>{data?.status}</td>
                                                                             <td>
-                                                                                {data?.campaignlead?.length > 0 ?
+                                                                                {/* {data?.campaignlead?.length > 0 ?
                                                                                     <Tippy content={
-                                                                                        <ul className="dropdown-menu light d-block position-static">
-                                                                                            <li className="col-12">
-                                                                                                <div className="dropdown-item fw-bold disabled">Campaigns</div>
-                                                                                            </li>
-                                                                                            <div style={{ columnCount: 1 }}>
-                                                                                                {campaign?.map((camp, index) => {
-                                                                                                    const isChecked = data.campaignlead.some(campId => campId.campaign_id === camp.id)
-                                                                                                    return (
-                                                                                                        <li key={camp.id}>
-                                                                                                            <div className="dropdown-item d-flex">
-                                                                                                                <div class="my-auto position-relative mx-1">
-                                                                                                                    <div class="cl-toggle-switch">
-                                                                                                                        <label class="cl-switch">
-                                                                                                                            <input type="checkbox"
-                                                                                                                                id="showAllCheck"
-                                                                                                                                checked={isChecked}
-                                                                                                                                onChange={() =>
-                                                                                                                                    isChecked ? removeLeadFileFromCampaign(data.campaignlead.find(campId => campId.campaign_id === camp.id).id) :
-                                                                                                                                        assignLeadFileToCampaign(data.id, camp.id)
-                                                                                                                                }
-                                                                                                                            />
-                                                                                                                            <span></span>
-                                                                                                                        </label>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div className='ms-2'>{camp?.title}</div>
-                                                                                                            </div>
-                                                                                                        </li>
-                                                                                                    )
-                                                                                                })}
-                                                                                            </div>
-                                                                                        </ul>
+                                                                                        
                                                                                     } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
                                                                                         <span className='formItem'>Assigned to {data?.campaignlead?.length} Campaign(s)</span>
-                                                                                    </Tippy> : <span className='formItem'>Assign to Campaign</span>}
+                                                                                    </Tippy> : <span className='formItem'>Assign to Campaign</span>} */}
+
+                                                                                <div className='dropdown'>
+                                                                                    {campaign.length > 0 ? <button className='formItem' type="button" data-bs-toggle="dropdown" aria-expanded="true" data-bs-auto-close="outside">
+                                                                                        Assign to Campaign
+                                                                                    </button> : "No Campaigns Available"}
+                                                                                    <ul className="dropdown-menu light">
+                                                                                        <li className="col-12">
+                                                                                            <div className="dropdown-item fw-bold disabled">Campaigns</div>
+                                                                                        </li>
+                                                                                        <div style={{ columnCount: 1 }}>
+                                                                                            {campaign?.map((camp, index) => {
+                                                                                                const isChecked = data.campaignlead.some(campId => campId.campaign_id === camp.id)
+                                                                                                return (
+                                                                                                    <li key={camp.id}>
+                                                                                                        <div className="dropdown-item d-flex">
+                                                                                                            <div class="my-auto position-relative mx-1">
+                                                                                                                <div class="cl-toggle-switch">
+                                                                                                                    <label class="cl-switch">
+                                                                                                                        <input type="checkbox"
+                                                                                                                            id="showAllCheck"
+                                                                                                                            checked={isChecked}
+                                                                                                                            onChange={() =>
+                                                                                                                                isChecked ? removeLeadFileFromCampaign(data.campaignlead.find(campId => campId.campaign_id === camp.id).id) :
+                                                                                                                                    assignLeadFileToCampaign(data.id, camp.id)
+                                                                                                                            }
+                                                                                                                        />
+                                                                                                                        <span></span>
+                                                                                                                    </label>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className='ms-2'>{camp?.title}</div>
+                                                                                                        </div>
+                                                                                                    </li>
+                                                                                                )
+                                                                                            })}
+                                                                                        </div>
+                                                                                    </ul>
+                                                                                </div>
                                                                             </td>
                                                                             <td>{data?.lead_rows_count}</td>
                                                                             <td>
