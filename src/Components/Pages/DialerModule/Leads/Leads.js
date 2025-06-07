@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
-import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionType } from '../../../Redux/reduxActionType';
@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { requiredValidator } from '../../../validations/validation';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import CircularLoader from '../../../Loader/CircularLoader';
+import Tippy from '@tippyjs/react';
 
 function Leads() {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function Leads() {
     const [leadEditPopup, setLeadEditPopup] = useState(false);
     const [leadEditData, setLeadEditData] = useState();
     const debouncedSearchTerm = useDebounce(searchQuery, 1000);
+    const [campaign, setCampaign] = useState([]);
 
     // Get All Lead Files
     const getLead = async () => {
@@ -53,6 +55,21 @@ function Leads() {
     useEffect(() => {
         getLead()
     }, [pageNumber, itemsPerPage, debouncedSearchTerm, refreshState])
+
+    const getCampaignData = async () => {
+        setLoading(true);
+        const getCampaign = await generalGetFunction("/campaign/all")
+        if (getCampaign?.status) {
+            setCampaign(getCampaign.data.data)
+            setLoading(false);
+        } else {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getCampaignData();
+    }, [refreshState]);
 
 
     // Download Lead File
@@ -101,6 +118,42 @@ function Leads() {
     const handleEditConfig = (data) => {
         setLeadEditPopup(true);
         setLeadEditData(data);
+    }
+
+    const assignLeadFileToCampaign = async (leadId, CampaignId) => {
+        if (leadId, CampaignId) {
+            try {
+                const payload = { "lead_files_id": leadId, "campaign_id": CampaignId };
+                const response = await generalPostFunction(`/lead-file/assign`, payload);
+
+                if (response.status) {
+                    toast.success(response.message);
+                    setRefreshState(refreshState + 1);
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (err) {
+                toast.error(err.response.message);
+            }
+        }
+    }
+
+    const removeLeadFileFromCampaign = async (id) => {
+        if (id) {
+            try {
+                const payload = { "id": id };
+                const response = await generalPostFunction(`/lead-file/remove`, payload);
+
+                if (response.status) {
+                    toast.success(response.message);
+                    setRefreshState(refreshState + 1);
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (err) {
+                toast.error(err.response.message);
+            }
+        }
     }
 
     return (
@@ -213,6 +266,7 @@ function Leads() {
                                                                 <th>Lead Name</th>
                                                                 <th>Lead Description</th>
                                                                 <th>Status</th>
+                                                                <th>Campaign</th>
                                                                 <th>Rows</th>
                                                                 <th style={{ textAlign: "center" }}>View</th>
                                                                 <th style={{ textAlign: "center" }}>Download</th>
@@ -229,6 +283,45 @@ function Leads() {
                                                                             <td>{data?.name}</td>
                                                                             <td>{data?.description}</td>
                                                                             <td style={{ textTransform: "capitalize" }}>{data?.status}</td>
+                                                                            <td>
+                                                                                {data?.campaignlead?.length > 0 ?
+                                                                                    <Tippy content={
+                                                                                        <ul className="dropdown-menu light d-block position-static">
+                                                                                            <li className="col-12">
+                                                                                                <div className="dropdown-item fw-bold disabled">Campaigns</div>
+                                                                                            </li>
+                                                                                            <div style={{ columnCount: 1 }}>
+                                                                                                {campaign?.map((camp, index) => {
+                                                                                                    const isChecked = data.campaignlead.some(campId => campId.campaign_id === camp.id)
+                                                                                                    return (
+                                                                                                        <li key={camp.id}>
+                                                                                                            <div className="dropdown-item d-flex">
+                                                                                                                <div class="my-auto position-relative mx-1">
+                                                                                                                    <div class="cl-toggle-switch">
+                                                                                                                        <label class="cl-switch">
+                                                                                                                            <input type="checkbox"
+                                                                                                                                id="showAllCheck"
+                                                                                                                                checked={isChecked}
+                                                                                                                                onChange={() =>
+                                                                                                                                    isChecked ? removeLeadFileFromCampaign(data.campaignlead.find(campId => campId.campaign_id === camp.id).id) :
+                                                                                                                                        assignLeadFileToCampaign(data.id, camp.id)
+                                                                                                                                }
+                                                                                                                            />
+                                                                                                                            <span></span>
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div className='ms-2'>{camp?.title}</div>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                    )
+                                                                                                })}
+                                                                                            </div>
+                                                                                        </ul>
+                                                                                    } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                                                        <span className='formItem'>Assigned to {data?.campaignlead?.length} Campaign(s)</span>
+                                                                                    </Tippy> : <span className='formItem'>Assign to Campaign</span>}
+                                                                            </td>
                                                                             <td>{data?.lead_rows_count}</td>
                                                                             <td>
                                                                                 <button className="tableButton edit mx-auto" onClick={() => navigate('/lead-view/', { state: data })}>

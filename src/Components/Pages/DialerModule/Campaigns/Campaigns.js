@@ -4,7 +4,7 @@ import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 import { followCursor } from 'tippy.js';
 import { useNavigate } from 'react-router-dom'
-import { checkViewSidebar, generalDeleteFunction, generalGetFunction } from '../../../GlobalFunction/globalFunction'
+import { checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
@@ -406,17 +406,17 @@ function Campaigns() {
                                                               <div className="dropdown-item d-flex align-items-center" >
                                                                 <span className="avatar-container">
                                                                   {
-                                                                    item.profile_picture ?
+                                                                    item?.profile_picture ?
                                                                       <img
                                                                         alt="profile"
-                                                                        src={item.profile_picture}
+                                                                        src={item?.profile_picture}
                                                                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
                                                                       /> : <i className="fa-light fa-user"></i>}
                                                                 </span>
                                                                 <span className="ms-2">{item?.username}</span>
                                                                 <span
                                                                   className={
-                                                                    onlineUsers.includes(item.extension)
+                                                                    onlineUsers?.includes(item?.extension)
                                                                       ? "extensionStatus online ms-2"
                                                                       : "extensionStatus ms-2"
                                                                   }
@@ -429,12 +429,12 @@ function Campaigns() {
                                                     } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }} followCursor={true} plugins={[followCursor]}>
                                                       <div className="hover-dropdown">
                                                         <div className="avatar-container">
-                                                          {item.agents?.slice(0, 4).map((agent, index) => {
+                                                          {item?.agents?.slice(0, 4).map((agent, index) => {
                                                             return (
-                                                              <Tippy key={index} content={agent.username}>
-                                                                {agent.profile_picture ? (
+                                                              <Tippy key={index} content={agent?.username}>
+                                                                {agent?.profile_picture ? (
                                                                   <img
-                                                                    src={agent.profile_picture}
+                                                                    src={agent?.profile_picture}
                                                                     onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
                                                                   />
                                                                 ) : (
@@ -443,65 +443,42 @@ function Campaigns() {
                                                               </Tippy>
                                                             )
                                                           })}
-                                                          {item.agents?.length > 4 && <span>+2</span>}
+                                                          {item?.agents?.length > 4 && <span>+2</span>}
                                                         </div>
                                                       </div>
                                                     </Tippy>
-
                                                   </div>
                                                 }
                                               </td>
                                               <td>
-                                                <Tippy content={
-                                                  <ul className="dropdown-menu light d-block">
+                                                {item?.lead_files?.length > 0 ? <Tippy content={
+                                                  <ul className="dropdown-menu light d-block position-static">
                                                     <li className="col-12">
                                                       <div className="dropdown-item fw-bold disabled">Leads</div>
                                                     </li>
                                                     <div style={{ columnCount: 1 }}>
-                                                      <li>
-                                                        <div className="dropdown-item d-flex">
-                                                          <div class="my-auto position-relative mx-1">
-                                                            <div class="cl-toggle-switch">
-                                                              <label class="cl-switch">
-                                                                <input type="checkbox" id="showAllCheck" />
-                                                                <span></span>
-                                                              </label>
+                                                      {item?.lead_files?.map((lead, index) => {
+                                                        return (
+                                                          <li key={lead.id}>
+                                                            <div className="dropdown-item d-flex">
+                                                              {/* <div class="my-auto position-relative mx-1">
+                                                                <div class="cl-toggle-switch">
+                                                                  <label class="cl-switch">
+                                                                    <input type="checkbox" id="showAllCheck" />
+                                                                    <span></span>
+                                                                  </label>
+                                                                </div>
+                                                              </div> */}
+                                                              <div className='ms-2'>{lead?.name}</div>
                                                             </div>
-                                                          </div>
-                                                          <div className='ms-2'>Lead Name</div>
-                                                        </div>
-                                                      </li>
-                                                      <li>
-                                                        <div className="dropdown-item d-flex">
-                                                          <div class="my-auto position-relative mx-1">
-                                                            <div class="cl-toggle-switch">
-                                                              <label class="cl-switch">
-                                                                <input type="checkbox" id="showAllCheck" />
-                                                                <span></span>
-                                                              </label>
-                                                            </div>
-                                                          </div>
-                                                          <div className='ms-2'>Lead Name</div>
-                                                        </div>
-                                                      </li>
-                                                      <li>
-                                                        <div className="dropdown-item d-flex">
-                                                          <div class="my-auto position-relative mx-1">
-                                                            <div class="cl-toggle-switch">
-                                                              <label class="cl-switch">
-                                                                <input type="checkbox" id="showAllCheck" />
-                                                                <span></span>
-                                                              </label>
-                                                            </div>
-                                                          </div>
-                                                          <div className='ms-2'>Lead Name</div>
-                                                        </div>
-                                                      </li>
+                                                          </li>
+                                                        )
+                                                      })}
                                                     </div>
                                                   </ul>
                                                 } allowHTML={true} interactive={true}>
-                                                  {item.leads ? <span>{item.leads?.length} Records</span> : 'N/A'}
-                                                </Tippy>
+                                                  <span>{item?.lead_files?.length} File(s)</span>
+                                                </Tippy> : "No Files"}
                                               </td>
                                               {(checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") || checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete")) ? <td>
                                                 <div className="dropdown">
