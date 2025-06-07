@@ -192,6 +192,9 @@ import GoMessageSocket from "./Components/GlobalFunction/GoMessageSocket";
 import AllAgent from "./Components/Pages/Ai/AllAgent";
 import AiKnowledgeBase from "./Components/Pages/Ai/AiKnowledgeBase";
 import AiPhoneNumber from "./Components/Pages/Ai/AiPhoneNumber";
+import CallHistory from "./Components/Pages/Ai/CallHistory";
+import Billing from "./Components/Pages/Ai/Billing";
+import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 
 // Unlock this if want push notification
@@ -829,6 +832,13 @@ function App() {
           {/* Sofia path end */}
 
           {/* --------------- ai path start */}
+
+               {/* <Route path="/ai-all-agent" element={<AllAgent />} /> */}
+               {/* <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} /> */}
+               {/* <Route path="/ai-phone-number" element={<AiPhoneNumber />} /> */}
+               <Route path="/ai-call-history" element={<CallHistory />} />
+               <Route path="/ai-billing" element={<Billing />} />
+               <Route path="/ai-batch-call" element={<AiBatchCall />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />

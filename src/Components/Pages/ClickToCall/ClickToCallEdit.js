@@ -148,7 +148,7 @@ function ClickToCallEdit() {
             const parsedData = {
                 destination: number
             }
-            const apiData = await generalPostFunction("/freeswitch/click-to-call", parsedData)
+            const apiData = await generalPostFunction(`/freeswitch/click-to-call-internal?id=${value}`, parsedData)
             if (apiData.status) {
                 toast.success(apiData.message)
             }
