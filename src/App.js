@@ -833,12 +833,12 @@ function App() {
 
           {/* --------------- ai path start */}
 
-               {/* <Route path="/ai-all-agent" element={<AllAgent />} /> */}
-               {/* <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} /> */}
-               {/* <Route path="/ai-phone-number" element={<AiPhoneNumber />} /> */}
-               <Route path="/ai-call-history" element={<CallHistory />} />
-               <Route path="/ai-billing" element={<Billing />} />
-               <Route path="/ai-batch-call" element={<AiBatchCall />} />
+          {/* <Route path="/ai-all-agent" element={<AllAgent />} /> */}
+          {/* <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} /> */}
+          {/* <Route path="/ai-phone-number" element={<AiPhoneNumber />} /> */}
+          <Route path="/ai-call-history" element={<CallHistory />} />
+          <Route path="/ai-billing" element={<Billing />} />
+          <Route path="/ai-batch-call" element={<AiBatchCall />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />

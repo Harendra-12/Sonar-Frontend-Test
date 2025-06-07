@@ -103,7 +103,7 @@ const Extensions = () => {
     }
     if (account && account.account_id) {
       const apiData = await generalGetFunction(
-        `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
       );
       if (apiData?.status) {
         // setLoading(false);

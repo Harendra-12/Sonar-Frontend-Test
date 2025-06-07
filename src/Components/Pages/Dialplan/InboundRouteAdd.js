@@ -32,7 +32,7 @@ function InboundRouteAdd() {
         `/ringgroup?account=${account.account_id}`
       );
       const extensionData = await generalGetFunction(
-        `/extension/search?account=${account.account_id}`
+        `/extension/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
       );
       if (extensionData?.status) {
         setExtension(extensionData.data);
