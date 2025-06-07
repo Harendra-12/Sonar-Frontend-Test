@@ -359,8 +359,8 @@ function CampaignEditNEW() {
       status: "Active",
       ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
       user_id: selectedAgent,
-      date_range_start: `${watch().date_range_start.split("T")[0]} ${watch().date_range_start.split("T")[1]}:00`,
-      date_range_end: `${watch().date_range_end.split("T")[0]} ${watch().date_range_end.split("T")[1]}:00`,
+      start_state: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
+      end_date: `${watch().end_date.split("T")[0]} ${watch().end_date.split("T")[1]}:00`,
     };
     const apiData = await generalPutFunction(
       `/campaign/update/${value}`,
@@ -850,7 +850,7 @@ function CampaignEditNEW() {
                                           <input
                                             type="datetime-local"
                                             className="formItem"
-                                            {...register("date_range_start", { ...requiredValidator })}
+                                            {...register("start_date", { ...requiredValidator })}
                                           />
                                         </div>
                                         {/* <div className='col-6'>
@@ -871,7 +871,7 @@ function CampaignEditNEW() {
                                           <input
                                             type="datetime-local"
                                             className="formItem"
-                                            {...register("date_range_end", { ...requiredValidator })}
+                                            {...register("end_date", { ...requiredValidator })}
                                           />
                                         </div>
                                         {/* <div className='col-6'>

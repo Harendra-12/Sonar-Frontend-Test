@@ -372,7 +372,10 @@ export function checkViewSidebar(
 ) {
   const account = localStorage.getItem("account");
   // Return true immediately if user is a company
-  if (JSON.parse(account)?.usertype == 'Company') return true;
+  if (JSON.parse(account)?.usertype == 'Company' || JSON.parse(account)?.user_role?.roles?.name === "Super Admin") return true;
+
+  console.log(JSON.parse(account)?.user_role.roles.name);
+
 
   // Return false immediately if no permissions exist
   if (!permissions) return false;
@@ -381,20 +384,16 @@ export function checkViewSidebar(
     const modulePermissions = permissions[moduleName];
     if (Array.isArray(modulePermissions)) {
       for (const item of modulePermissions) {
-        // Check if item belongs to the module section or current section
-        if (!sectionPermissions?.includes(action == "section" ? item.section_id : item.id)) continue;
-
-        if (sectionPermissions?.includes(action == "section" ? item.section_id : item.id)) {
-          return true;
-        }
+        // Check if item belongs to the current section
+        if (!sectionPermissions?.includes(item.id)) continue;
 
         // If no action specified, check if model matches
-        if (!action && item.model === slug) {
+        if (!action && item.model === slug[1] && item.module_section === slug[0]) {
           return true;
         }
 
         // If action specified, check user permissions
-        if (action && action !== "section") {
+        if (action) {
           for (const subItem of item.permissions) {
             if (
               subItem.model == slug &&
@@ -408,8 +407,32 @@ export function checkViewSidebar(
       }
     }
   }
+  return false;
+}
+
+export function checkModulePerm(slug, permissions, section) {
+  const account = localStorage.getItem("account");
+  // Return true immediately if user is a company
+  if (JSON.parse(account)?.usertype == 'Company') return true;
+
+  // Return false immediately if no permissions exist
+  if (!permissions) return false;
+
+  for (const moduleName in permissions) {
+    const modulePermissions = permissions[moduleName];
+    if (moduleName !== slug) continue;
+    if (Array.isArray(modulePermissions)) {
+      for (const item of modulePermissions) {
+        // Check if item belongs to the module section or current section
+        if (section?.includes(item.section_id)) {
+          return true
+        }
+      }
+    }
+  }
 
   return false;
+
 }
 
 export function featureUnderdevelopment() {

@@ -166,7 +166,7 @@ function Agents({ type }) {
 
   // Getting token from online user by checking with extension
   function getToken(extension) {
-    const user = logonUser.find((user) => user?.extension?.extension === extension);
+    const user = logonUser?.find((user) => user?.extension?.extension === extension);
 
     return user?.usertokens?.length > 0 ? user?.usertokens : null;
   }

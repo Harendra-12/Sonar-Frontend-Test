@@ -5,6 +5,7 @@ import "../assets/css/style.css";
 import { Link, useLocation } from "react-router-dom";
 import {
   backToTop,
+  checkModulePerm,
   featureUnderdevelopment,
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
@@ -18,7 +19,7 @@ function Navbar() {
   const userType = account?.usertype;
   const isCustomerAdmin =
     account?.email == accountDetails?.email ||
-    account?.user_role?.roles?.name === "All access with upcoming fetaure";
+    account?.user_role?.roles?.name === "Super Admin";
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
@@ -99,12 +100,10 @@ function Navbar() {
                     </NavLink>
                   </li>
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Accounts",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -189,7 +188,7 @@ function Navbar() {
                               </NavLink>
                             </li>
                             {checkViewSidebar(
-                              "User",
+                              ["Accounts", "User"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -218,7 +217,7 @@ function Navbar() {
                             ) : null}
 
                             {checkViewSidebar(
-                              "Extension",
+                              ["Accounts", "Extension"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -247,7 +246,7 @@ function Navbar() {
                             ) : null}
 
                             {checkViewSidebar(
-                              "Role",
+                              ["Accounts", "Role"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -268,12 +267,12 @@ function Navbar() {
                               (item) => item?.addon_id == 7
                             ) ?
                               (checkViewSidebar(
-                                "AccessControl",
+                                ["Accounts", "AccessControl"],
                                 permissions,
                                 account?.sectionPermissions,
                                 account?.permissions,
                               ) || checkViewSidebar(
-                                "AccessControlNode",
+                                ["Accounts", "AccessControlNode"],
                                 permissions,
                                 account?.sectionPermissions,
                                 account?.permissions,
@@ -302,7 +301,7 @@ function Navbar() {
                               ) : ""
                             }
                             {checkViewSidebar(
-                              "Group",
+                              ["Accounts", "Group"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -364,12 +363,10 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Number Management",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -412,7 +409,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "DidDetail",
+                              ["Number Management", "DidDetail"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -428,7 +425,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "Port",
+                              ["Number Management", "Port"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -455,7 +452,7 @@ function Navbar() {
                             ) : null}
 
                             {checkViewSidebar(
-                              "DidConfigure",
+                              ["Number Management", "DidConfigure"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -478,12 +475,10 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "PBX",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -512,6 +507,7 @@ function Navbar() {
                             "/call-dashboard",
                             "/active-calls",
                             "/voicemail-report",
+                            "/custom-dashboard"
                           ])
                             ? "true"
                             : "false"
@@ -546,6 +542,7 @@ function Navbar() {
                           "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
+                          "/custom-dashboard"
                         ])
                           ? "show"
                           : ""
@@ -555,7 +552,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "phoneDashboard",
+                              ["PBX", "phoneDashboard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -567,7 +564,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "ActiveCall",
+                              ["PBX", "ActiveCall"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -578,8 +575,8 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
-                              {checkViewSidebar(
-                              "CustomDashboard",
+                            {checkViewSidebar(
+                              ["PBX", "CustomDashboard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -591,7 +588,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "DidConfigure",
+                              ["PBX", "DidConfigure"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -621,7 +618,7 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                             {checkViewSidebar(
-                              "User",
+                              ["PBX", "User"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -648,7 +645,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "Ringgroup",
+                              ["PBX", "Ringgroup"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -675,7 +672,7 @@ function Navbar() {
                               </li>
                             ) : null}
                             {checkViewSidebar(
-                              "CallCenterQueue",
+                              ["PBX", "CallCenterQueue"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -703,7 +700,7 @@ function Navbar() {
                             ) : null}
 
                             {checkViewSidebar(
-                              "Spam",
+                              ["PBX", "Spam"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -728,7 +725,7 @@ function Navbar() {
                                 </li>
                               )}
                             {checkViewSidebar(
-                              "VoicemailRecording",
+                              ["PBX", "VoicemailRecording"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -745,12 +742,10 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Dialer",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -762,6 +757,7 @@ function Navbar() {
                             "/leads",
                             "/lead-add",
                             "/lead-edit",
+                            "/lead-view",
                             "/campaigns",
                             "/agents-dialer",
                             "/call-desposition",
@@ -788,6 +784,7 @@ function Navbar() {
                           "/leads",
                           "/lead-add",
                           "/lead-edit",
+                          "/lead-view",
                           "/campaigns",
                           "/agents-dialer",
                           "/call-desposition",
@@ -805,7 +802,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "Dashboard",
+                              ["Dialer", "Dashboard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -831,7 +828,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Campaign",
+                              ["Dialer", "Campaign"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -858,7 +855,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Lead",
+                              ["Dialer", "Lead"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -869,7 +866,7 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                      ["/lead-add", "/lead-edit"].some((path) =>
+                                      ["/lead-add", "/lead-edit", "/lead-view"].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
                                       ? "nav-link active"
@@ -881,7 +878,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "User",
+                              ["Dialer", "User"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -907,7 +904,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Campaign",
+                              ["Dialer", "Campaign"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -922,7 +919,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Disposition",
+                              ["Dialer", "Disposition"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -945,7 +942,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "DidDetail",
+                              ["Dialer", "DidDetail"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1175,12 +1172,10 @@ function Navbar() {
                         </li>
                       } */}
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Interactive Voice Response",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1400,12 +1395,10 @@ function Navbar() {
                     </li>
                   )}
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Meeting Rooms",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1432,12 +1425,10 @@ function Navbar() {
                   {accountDetails?.add_on_subscription.find(
                     (item) => item?.addon_id == 2
                   ) ?
-                    checkViewSidebar(
+                    checkModulePerm(
                       "Clicktocall",
                       permissions,
                       account?.sections,
-                      account?.permissions,
-                      "section"
                     ) &&
                     <li className="dashboard ">
                       <NavLink
@@ -1508,12 +1499,10 @@ function Navbar() {
                     </div>
                   </li>
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Reports",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -1556,7 +1545,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "ChannelHangupComplete",
+                              ["Reports", "ChannelHangupComplete"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1572,7 +1561,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "VoicemailRecording",
+                              ["Reports", "VoicemailRecording"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1632,7 +1621,7 @@ function Navbar() {
                               </NavLink>
                             </li> */}
                             {checkViewSidebar(
-                              "CallCenterQueue",
+                              ["Reports", "CallCenterQueue"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1654,7 +1643,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Ringgroup",
+                              ["Reports", "Ringgroup"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1718,12 +1707,10 @@ function Navbar() {
                     </li>
                   }
 
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Billings",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -1772,13 +1759,13 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "CardDetail",
+                              ["Billings", "CardDetail"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
                             ) &&
                               checkViewSidebar(
-                                "BillingAddress",
+                                ["Billings", "BillingAddress"],
                                 permissions,
                                 account?.sectionPermissions,
                                 account?.permissions,
@@ -1826,7 +1813,7 @@ function Navbar() {
                           ) : null} */}
 
                             {checkViewSidebar(
-                              "Ratecard",
+                              ["Billings", "Ratecard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1858,12 +1845,12 @@ function Navbar() {
                             </NavLink>
                           </li> */}
                             {checkViewSidebar(
-                              "WalletTransaction",
+                              ["Billings", "WalletTransaction"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
                             ) && checkViewSidebar(
-                              "Payment",
+                              ["Billings", "Payment"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1885,7 +1872,7 @@ function Navbar() {
                               )
                             }
                             {checkViewSidebar(
-                              "ChannelHangupComplete",
+                              ["Billings", "ChannelHangupComplete"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1909,7 +1896,7 @@ function Navbar() {
                             }
 
                             {checkViewSidebar(
-                              "Dashboard",
+                              ["Billings", "Dashboard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1923,7 +1910,7 @@ function Navbar() {
                               </li>
                             }
                             {checkViewSidebar(
-                              "Package",
+                              ["Billings", "Package"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -1939,12 +1926,10 @@ function Navbar() {
                       </div>
                     </li>
                   }
-                  {checkViewSidebar(
+                  {checkModulePerm(
                     "Settings",
                     permissions,
                     account?.sections,
-                    account?.permissions,
-                    "section"
                   ) &&
                     <li className="">
                       <button
@@ -2004,7 +1989,7 @@ function Navbar() {
                               </Link>
                             </li> */}
                             {checkViewSidebar(
-                              "Sound",
+                              ["Settings", "Sound"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -2034,7 +2019,7 @@ function Navbar() {
                               </NavLink>
                             </li> */}
                             {checkViewSidebar(
-                              "MailSetting",
+                              ["Settings", "MailSetting"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,
@@ -2061,7 +2046,7 @@ function Navbar() {
                               </li>
                             ) : null}
                             {checkViewSidebar(
-                              "Usage",
+                              ["Settings", "Usage"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions,

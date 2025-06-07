@@ -1452,13 +1452,13 @@ function App() {
               <Leads /> :
               <Navigate to="/dashboard" replace />
           } />
-          <Route path="/lead-edit" element={
+          <Route path="/lead-view" element={
             checkViewSidebar(
               "Lead",
               slugPermissions,
               account?.sectionPermissions,
               account?.permissions,
-              "edit"
+              "read"
             ) ?
               <LeadEdit /> :
               <Navigate to="/dashboard" replace />

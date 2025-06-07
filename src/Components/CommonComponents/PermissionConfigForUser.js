@@ -6,6 +6,7 @@ import SkeletonTableLoader from '../Loader/SkeletonTableLoader';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { set } from 'react-hook-form';
+import Tippy from '@tippyjs/react';
 
 /**
  * PermissionConfigForUser is a React component that manages the configuration
@@ -202,7 +203,7 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setUserPermissionBridge }) {
+export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
@@ -219,30 +220,74 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
     // Fetch all Permission Data
     setPermissionData(allPermissions);
 
-    // Initialize with empty permissions for the selected role
-    setRolePermissions(prev => ({
-      ...prev,
-      role_id: selectedRole || [],
-      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
-      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
-      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
-    }));
-  }, [selectedRole, allRoleList]);
-
-  useEffect(() => {
-    if (setUserPermissionBridge) {
-      setUserPermissionBridge(rolePermissions);
+    // Initialize with permissions for the selected role
+    if (isUserFilter && selectedRole == existingUserData?.user_role?.role_id) {
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: existingUserData?.permissions || [],
+        tablePermissions: existingUserData?.tablePermissions || [],
+        sectionPermissions: existingUserData?.sectionPermissions || []
+      }));
+    } else {
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+        tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+        sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+      }));
     }
-  }, [rolePermissions]);
+  }, [selectedRole, allRoleList, existingUserData]);
 
   const resetPermissionToInitialState = () => {
-    setRolePermissions(prev => ({
-      role_id: selectedRole || [],
-      permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
-      tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
-      sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
-    }));
+    // Initialize with permissions for the selected role
+    if (isUserFilter && selectedRole == existingUserData?.user_role?.role_id) {
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: existingUserData?.permissions || [],
+        tablePermissions: existingUserData?.tablePermissions || [],
+        sectionPermissions: existingUserData?.sectionPermissions || []
+      }));
+    } else {
+      setRolePermissions(prev => ({
+        ...prev,
+        role_id: selectedRole || [],
+        permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+        tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+        sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+      }));
+    }
   }
+
+  // To update UserPermissions (Specially Edit)
+  useEffect(() => {
+    if (setUserPermissionBridge) {
+      function getRemovedPermissions(original, modified) {
+        return {
+          role_id: selectedRole,
+          permissions: (original.permissions || []).filter(x => !(modified.permissions || []).includes(x)),
+          tablePermissions: (original.tablePermissions || []).filter(x => !(modified.tablePermissions || []).includes(x)),
+          sectionPermissions: (original.sectionPermissions || []).filter(x => !(modified.sectionPermissions || []).includes(x))
+        };
+      }
+      let originalArr = {
+        role_id: selectedRole || [],
+        permissions: allRoleList?.find((role) => role.id == selectedRole)?.permissions || [],
+        tablePermissions: allRoleList?.find((role) => role.id == selectedRole)?.tablePermissions || [],
+        sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
+      };
+      setUserPermissionBridge(getRemovedPermissions(originalArr, rolePermissions));
+    }
+  }, [rolePermissions])
+
+  // Instantly update rolePermissionBridge
+  useEffect(() => {
+    if (setRolePermissionBridge) {
+      setRolePermissionBridge(rolePermissions);
+    }
+  }, [rolePermissions]);
 
   const toggleRowExpand = (permission, section, model, type, bool) => {
     if (!account.sectionPermissions.includes(section) || !account.permissions.includes(permission)) {
@@ -475,14 +520,35 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
   return (
     <div className={`col-xl-12 ${standalone ? 'col-xxl-8' : ''} userPermission__contentBox`}>
       {Object.entries(permissionData).map(([sectionName, models]) => {
-        // Filter models based on permission
-        const filteredModels = models.filter((model) => {
-          return account.sectionPermissions.includes(model.id)
+        const roleObj = allRoleList?.find((role) => role.id == selectedRole);
+        const isSuperAdmin = account?.usertype === 'Company' || account?.usertype === 'SupreAdmin';
+
+        // First filter models by section permissions
+        const sectionFilteredModels = models.filter(model => {
+          return isUserFilter
+            ? roleObj?.sectionPermissions?.includes(model.id) && roleObj?.sections?.includes(model.section_id)
+            : account?.sectionPermissions?.includes(model.id) && account?.sections?.includes(model.section_id);
         });
-        // Skip if no model IDs are in account.sections
-        if (!models.some(m => account.sections.includes(m.section_id))) {
-          return null;
-        }
+
+        // Then filter each model's table_records by table permissions
+        const filteredModels = sectionFilteredModels.map(model => {
+          const filteredTableRecords = isSuperAdmin
+            ? model.table_records // Return all records for SuperAdmin
+            : model.table_records?.filter(record => {
+              return isUserFilter
+                ? roleObj?.tablePermissions?.includes(record.id)
+                : account?.tablePermissions?.includes(record.id);
+            }) || [];
+
+          // Return a new model object with filtered table records
+          return {
+            ...model,
+            table_records: filteredTableRecords
+          };
+        }).filter(model => model.table_records.length > 0); // Remove models with no permitted table records
+
+        if (filteredModels.length === 0) return null;
+
         return (
           <div key={sectionName} className='permissionsConfigWrapper'>
             <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
@@ -502,9 +568,11 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
               {expandedSections[sectionName] && (
                 <>
                   <div className='d-flex ms-2'>
-                    <div onClick={resetPermissionToInitialState}>
-                      <i className='fa-solid fa-trash' />
-                    </div>
+                    <Tippy content="Reset permissions to initial state">
+                      <div onClick={resetPermissionToInitialState}>
+                        <i className='fa-solid fa-arrows-rotate' />
+                      </div>
+                    </Tippy>
                     <div className="my-auto position-relative ms-3 me-1 d-flex">
                       <span className='me-2'>Master: </span>
                       <div class="cl-toggle-switch">

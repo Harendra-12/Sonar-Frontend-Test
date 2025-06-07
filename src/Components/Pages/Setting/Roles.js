@@ -47,10 +47,11 @@ function Roles() {
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
   const [newAddedRoleId, setNewAddedRoleId] = useState(null);
-  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
+  const [rolePermissionBridge, setRolePermissionBridge] = useState([]);
   const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate();
   const inputRefs = useRef([]);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Getting roles and permission data from redux by trigger its api calling by changing its refresh value
   useEffect(() => {
@@ -199,15 +200,15 @@ function Roles() {
     const parsedData = isNewRole
       ? {
         role_id: newAddedRoleId,
-        sectionPermissions: userPermissionBridge.sectionPermissions,
-        permissions: userPermissionBridge.permissions,
-        tablePermissions: userPermissionBridge.tablePermissions,
+        sectionPermissions: rolePermissionBridge.sectionPermissions,
+        permissions: rolePermissionBridge.permissions,
+        tablePermissions: rolePermissionBridge.tablePermissions,
       }
       : {
         role_id: selectedRoleId,
-        sectionPermissions: userPermissionBridge.sectionPermissions,
-        permissions: userPermissionBridge.permissions,
-        tablePermissions: userPermissionBridge.tablePermissions,
+        sectionPermissions: rolePermissionBridge.sectionPermissions,
+        permissions: rolePermissionBridge.permissions,
+        tablePermissions: rolePermissionBridge.tablePermissions,
       };
     try {
       const apiData = await generalPostFunction(
@@ -414,37 +415,24 @@ function Roles() {
                           permissions,
                           account?.sectionPermissions,
                           account?.permissions, "add"
-                        ) ? (
-                          <button
-                            onClick={() => {
-                              setAddRole(true);
-                              setAddRolePopup(true);
-                              setEditClick(false);
-                              setAddSelectedRoleId("");
-                            }}
-                            type="button"
-                            effect="ripple"
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            effect="ripple"
-                            className="panelButton "
-                            disabled
-                            style={{ cursor: "not-allowed" }}
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                        ) && (
+                            <button
+                              onClick={() => {
+                                setAddRole(true);
+                                setAddRolePopup(true);
+                                setEditClick(false);
+                                setAddSelectedRoleId("");
+                              }}
+                              type="button"
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -799,7 +787,13 @@ function Roles() {
                           </div>
                           {selectedIsDefault === 1 ? (
                             <></>
-                          ) : (
+                          ) : checkViewSidebar(
+                            "Role",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "edit"
+                          ) ? (
                             <>
                               {" "}
                               <div className="col-auto text-end">
@@ -816,7 +810,7 @@ function Roles() {
                                 </button>
                               </div>
                             </>
-                          )}
+                          ) : ""}
                         </div>
                         {selectedRole == "Agent" && <span>
                           This will apper only for agents (Agents will only
@@ -829,7 +823,8 @@ function Roles() {
                           allPermissions={permissions}
                           loading={loading}
                           setLoading={setLoading}
-                          setUserPermissionBridge={setUserPermissionBridge}
+                          setRolePermissionBridge={setRolePermissionBridge}
+                          isUserFilter={false}
                         />
                       </div>
                     )}
@@ -959,7 +954,7 @@ function Roles() {
         )}
         {/* set permissions of new role */}
         {submitPopup ? (
-          <div className="addNewContactPopup profileDetailsHolder">
+          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '600px' }}>
             <div className="row">
               <div className="col-12 heading mb-0">
                 <i className="fa-light fa-user-plus" />
@@ -1111,7 +1106,7 @@ function Roles() {
                         allPermissions={permissions}
                         loading={loading}
                         setLoading={setLoading}
-                        setUserPermissionBridge={setUserPermissionBridge}
+                        setRolePermissionBridge={setRolePermissionBridge}
                       />
                     </div>
                   )}

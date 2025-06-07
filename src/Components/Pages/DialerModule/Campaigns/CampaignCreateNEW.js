@@ -166,7 +166,7 @@ function CampaignCreateNEW() {
       ...data,
       business_numbers: selectedItems,
       account_id: account.account_id,
-      status: "Active",
+      status: "Scheduled",
       user_id: selectedAgent,
       ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
       start_date: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
