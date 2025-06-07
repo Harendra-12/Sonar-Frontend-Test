@@ -2168,7 +2168,7 @@ function Messages({
                                     </div>
                                     <div className="ms-3 flex-grow-1">
                                       <p>
-                                        {item.group_name} {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <>{" "}(<>{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</>)</>}
+                                        {item.group_name}
                                         <span className=" text-end mb-0">
                                           <p className="timeAgo">
                                             {item?.last_message_data?.created_at
@@ -2187,7 +2187,8 @@ function Messages({
                                       {/* here we are showing recent group message */}
                                       <h5>
                                         {/* here showing last send message below of contact name */}
-                                        {item?.last_message_data?.message_text}
+                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <>{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</>}
+                                        : {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
                                   </div>{" "}
