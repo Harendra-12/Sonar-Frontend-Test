@@ -614,7 +614,9 @@ input[type=number] {
     display: flex;
     align-items: center;
     margin-top: 2px;
-    width: max-content;
+    /* width: max-content; */
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .contactTags span {
@@ -660,6 +662,36 @@ input[type=number] {
     background-color: #ddb8ea;
     color: #9300ff !important;
 }
+
+
+.contactTags span[data-id="5"] {
+    background-color: #ffa3e0;
+    color: #b40096 !important;
+}
+
+.contactTags span[data-id="6"] {
+    background-color: #fdffa2;
+    color: #a09004 !important;
+}
+
+.contactTags span[data-id="7"] {
+    background-color: #c7a0fa;
+    color: #53187e !important;
+}
+.contactTags span[data-id="8"] {
+    background-color: #fdeacd;
+    color: #f7a659 !important;
+}
+
+.contactTags span[data-id="9"] {
+    background-color: #b8eadcb0;
+    color: #247662 !important;
+}
+.contactTags span[data-id="10"] {
+    background-color: #ddb8ea;
+    color: #9300ff !important;
+}
+
 
 .contactTags span[data-id="none"] {
     background-color: #c1c1c1;
@@ -2603,4 +2635,9 @@ input[type=number] {
     width: 100px;
     height: 100px;
     margin: auto;
+}
+
+.viewAllTagBtn {
+    background-color: #005eff !important;
+    color: #ffff !important;
 }

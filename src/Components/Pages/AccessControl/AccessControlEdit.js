@@ -113,11 +113,11 @@ export default function AccessControlEdit() {
                   </div>
                 </div>
                 <div className="col-12 ">
-                  <h4 className='text-orange'>Warning!</h4>
-                  <p>
+                  <h4 className='text-orange text-center'>Warning!</h4>
+                  <p className='text-center'>
                     Are you sure you want to delete this access control?
                   </p>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-center gap-2 mt-3">
 
                     <button
                       disabled={loading}
