@@ -662,10 +662,10 @@ function CampaignCreate() {
                                       ...requiredValidator,
                                     })}
                                   >
-                                    <option value="Inbound">Inbound</option>
+                                    {/* <option value="Inbound">Inbound</option> */}
                                     <option value="Outbound">Outbound</option>
-                                    <option value="pbx">PBX</option>
-                                    <option value="dialer">Dialer</option>
+                                    {/* <option value="pbx">PBX</option> */}
+                                    {/* <option value="dialer">Dialer</option> */}
                                   </select>
                                 </div>
                               </div>

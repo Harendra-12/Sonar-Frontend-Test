@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
-import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionType } from '../../../Redux/reduxActionType';
@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { requiredValidator } from '../../../validations/validation';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import CircularLoader from '../../../Loader/CircularLoader';
+import Tippy from '@tippyjs/react';
 
 function Leads() {
     const dispatch = useDispatch();
@@ -20,8 +21,8 @@ function Leads() {
     const slugPermissions = useSelector((state) => state?.permissions);
 
     const [loading, setLoading] = useState(false)
-    const [refreshState, setRefreshState] = useState(0)
     const [leadsList, setLeadsList] = useState();
+    const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [pageNumber, setPageNumber] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +31,7 @@ function Leads() {
     const [leadEditPopup, setLeadEditPopup] = useState(false);
     const [leadEditData, setLeadEditData] = useState();
     const debouncedSearchTerm = useDebounce(searchQuery, 1000);
+    const [campaign, setCampaign] = useState([]);
 
     // Get All Lead Files
     const getLead = async () => {
@@ -39,9 +41,14 @@ function Leads() {
             if (res?.status) {
                 dispatch({
                     type: "SET_ALL_LEADS_FILE_LIST",
-                    payload: res.data
+                    allLeadFileList: res.data
                 })
                 setLeadsList(res?.data);
+            }
+
+            const getCampaign = await generalGetFunction("/campaign/all")
+            if (getCampaign?.status) {
+                setCampaign(getCampaign.data.data)
             }
         } catch (err) {
             console.log(err)
@@ -52,8 +59,7 @@ function Leads() {
     }
     useEffect(() => {
         getLead()
-    }, [pageNumber, itemsPerPage, debouncedSearchTerm, refreshState])
-
+    }, [pageNumber, itemsPerPage, debouncedSearchTerm, leadDataRefresh])
 
     // Download Lead File
     const downloadImage = async (imageUrl, fileName) => {
@@ -89,7 +95,10 @@ function Leads() {
                 if (apiCall.status) {
                     setLoading(false);
                     toast.success("Lead File Deleted Successfully.");
-                    setRefreshState(refreshState + 1);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        leadDataRefresh: leadDataRefresh + 1
+                    })
                 }
             } catch (err) {
                 console.log(err);
@@ -101,6 +110,48 @@ function Leads() {
     const handleEditConfig = (data) => {
         setLeadEditPopup(true);
         setLeadEditData(data);
+    }
+
+    const assignLeadFileToCampaign = async (leadId, CampaignId) => {
+        if (leadId, CampaignId) {
+            try {
+                const payload = { "lead_files_id": leadId, "campaign_id": CampaignId };
+                const response = await generalPostFunction(`/lead-file/assign`, payload);
+
+                if (response.status) {
+                    toast.success(response.message);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        leadDataRefresh: leadDataRefresh + 1
+                    })
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (err) {
+                toast.error(err.response.message);
+            }
+        }
+    }
+
+    const removeLeadFileFromCampaign = async (id) => {
+        if (id) {
+            try {
+                const payload = { "id": id };
+                const response = await generalPostFunction(`/lead-file/remove`, payload);
+
+                if (response.status) {
+                    toast.success(response.message);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        leadDataRefresh: leadDataRefresh + 1
+                    })
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (err) {
+                toast.error(err.response.message);
+            }
+        }
     }
 
     return (
@@ -118,7 +169,10 @@ function Leads() {
                                                 <h4>Leads {" "}
                                                     <button
                                                         className="clearButton"
-                                                        onClick={() => setRefreshState(refreshState + 1)}
+                                                        onClick={() => dispatch({
+                                                            type: "SET_LEADS_REFRESH",
+                                                            leadDataRefresh: leadDataRefresh + 1
+                                                        })}
                                                         disabled={loading}
                                                     >
                                                         <i
@@ -213,6 +267,7 @@ function Leads() {
                                                                 <th>Lead Name</th>
                                                                 <th>Lead Description</th>
                                                                 <th>Status</th>
+                                                                <th>Campaign</th>
                                                                 <th>Rows</th>
                                                                 <th style={{ textAlign: "center" }}>View</th>
                                                                 <th style={{ textAlign: "center" }}>Download</th>
@@ -229,6 +284,52 @@ function Leads() {
                                                                             <td>{data?.name}</td>
                                                                             <td>{data?.description}</td>
                                                                             <td style={{ textTransform: "capitalize" }}>{data?.status}</td>
+                                                                            <td>
+                                                                                {/* {data?.campaignlead?.length > 0 ?
+                                                                                    <Tippy content={
+                                                                                        
+                                                                                    } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                                                        <span className='formItem'>Assigned to {data?.campaignlead?.length} Campaign(s)</span>
+                                                                                    </Tippy> : <span className='formItem'>Assign to Campaign</span>} */}
+
+                                                                                <div className='dropdown'>
+                                                                                    {campaign.length > 0 ? <button className='formItem' type="button" data-bs-toggle="dropdown" aria-expanded="true" data-bs-auto-close="outside">
+                                                                                        Assign to Campaign
+                                                                                    </button> : "No Campaigns Available"}
+                                                                                    <ul className="dropdown-menu light">
+                                                                                        <li className="col-12">
+                                                                                            <div className="dropdown-item fw-bold disabled">Campaigns</div>
+                                                                                        </li>
+                                                                                        <div style={{ columnCount: 1 }}>
+                                                                                            {campaign?.map((camp, index) => {
+                                                                                                const isChecked = data.campaignlead.some(campId => campId.campaign_id === camp.id)
+                                                                                                return (
+                                                                                                    <li key={camp.id}>
+                                                                                                        <div className="dropdown-item d-flex">
+                                                                                                            <div class="my-auto position-relative mx-1">
+                                                                                                                <div class="cl-toggle-switch">
+                                                                                                                    <label class="cl-switch">
+                                                                                                                        <input type="checkbox"
+                                                                                                                            id="showAllCheck"
+                                                                                                                            checked={isChecked}
+                                                                                                                            onChange={() =>
+                                                                                                                                isChecked ? removeLeadFileFromCampaign(data.campaignlead.find(campId => campId.campaign_id === camp.id).id) :
+                                                                                                                                    assignLeadFileToCampaign(data.id, camp.id)
+                                                                                                                            }
+                                                                                                                        />
+                                                                                                                        <span></span>
+                                                                                                                    </label>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className='ms-2'>{camp?.title}</div>
+                                                                                                        </div>
+                                                                                                    </li>
+                                                                                                )
+                                                                                            })}
+                                                                                        </div>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </td>
                                                                             <td>{data?.lead_rows_count}</td>
                                                                             <td>
                                                                                 <button className="tableButton edit mx-auto" onClick={() => navigate('/lead-view/', { state: data })}>
@@ -275,7 +376,7 @@ function Leads() {
                                         <div className="tableHeader mb-3">
                                             <PaginationComponent
                                                 pageNumber={(e) => setPageNumber(e)}
-                                                totalPage={leadsList?.total}
+                                                totalPage={leadsList?.last_page}
                                                 from={leadsList?.from}
                                                 to={leadsList?.to}
                                                 total={leadsList?.total}
@@ -290,7 +391,7 @@ function Leads() {
             </section>
 
             {leadEditPopup && (
-                <LeadEditPopup leadData={leadEditData} setLeadEditPopup={setLeadEditPopup} setRefreshState={setRefreshState} />
+                <LeadEditPopup leadData={leadEditData} setLeadEditPopup={setLeadEditPopup} />
             )}
 
             <ModalComponent task={"delete"} reference={"Lead File"} />
@@ -300,9 +401,11 @@ function Leads() {
 
 export default Leads
 
-export function LeadEditPopup({ leadData, setLeadEditPopup, setRefreshState }) {
+export function LeadEditPopup({ leadData, setLeadEditPopup }) {
     const { register, formState: { errors }, reset, handleSubmit } = useForm();
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
 
     useEffect(() => {
         async function getData() {
@@ -332,7 +435,10 @@ export function LeadEditPopup({ leadData, setLeadEditPopup, setRefreshState }) {
             setLoading(false);
             toast.success(apiData.message);
             setLeadEditPopup(false);
-            setRefreshState((prev) => prev + 1);
+            dispatch({
+                type: "SET_LEADS_REFRESH",
+                leadDataRefresh: leadDataRefresh + 1
+            })
         } else {
             setLoading(false);
             toast.error(apiData.message);
