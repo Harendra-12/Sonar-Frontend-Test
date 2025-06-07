@@ -376,7 +376,7 @@ function Leads() {
                                         <div className="tableHeader mb-3">
                                             <PaginationComponent
                                                 pageNumber={(e) => setPageNumber(e)}
-                                                totalPage={leadsList?.total}
+                                                totalPage={leadsList?.last_page}
                                                 from={leadsList?.from}
                                                 to={leadsList?.to}
                                                 total={leadsList?.total}

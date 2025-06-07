@@ -273,7 +273,7 @@ function LeadEdit() {
                                         <div className="tableHeader mb-3">
                                             <PaginationComponent
                                                 pageNumber={(e) => setPageNumber(e)}
-                                                totalPage={leadDetails?.total}
+                                                totalPage={leadDetails?.last_page}
                                                 from={leadDetails?.from}
                                                 to={leadDetails?.to}
                                                 total={leadDetails?.total}
