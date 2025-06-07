@@ -1642,8 +1642,8 @@ const RingGroupEdit = () => {
                 <h5>Edit People to the selected Queue</h5>
               </div>
               <div>
-                <div className="d-flex justify-content-between mb-2">
-                  <h5
+                <div className="d-flex justify-content-between mb-2 align-items-center">
+                  <h5 className="me-2"
                     style={{
                       color: "var(--color-subtext)",
                       fontSize: 14,
@@ -1653,7 +1653,7 @@ const RingGroupEdit = () => {
                   >
                     Affected user:{" "}
                   </h5>
-                  <div className="searchBoxWrapper">
+                  <div className="searchBoxWrapper flex-fill">
                     <input
                       className="searchBar formItem"
                       type="text"

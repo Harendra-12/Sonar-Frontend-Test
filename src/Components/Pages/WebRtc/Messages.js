@@ -2031,19 +2031,19 @@ function Messages({
                                         {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
-                                      <div className="contactTags">
+                                      <div className="contactTags ">
                                         {item.tags
                                           ?.slice(0, 2)
                                           ?.map((tag, key) => {
                                             return (
-                                              <span data-id={key}>
+                                              <span data-id={key} className="ellipsisText">
                                                 {tag.tag?.[0]?.name}
                                               </span>
                                             );
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <Tippy
+                                          <Tippy 
                                             content={
                                               <ul
                                                 className="contactTags"
@@ -2056,11 +2056,11 @@ function Messages({
                                                 }}
                                               >
                                                 {item.tags?.map((tag, key) => (
-                                                  <li>
+                                                  // <li>
                                                     <span data-id={key}>
                                                       {tag.tag?.[0]?.name}
                                                     </span>
-                                                  </li>
+                                                  // </li>
                                                 ))}
                                               </ul>
                                             }
@@ -2185,9 +2185,9 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                       {/* here we are showing recent group message */}
-                                      <h5>
+                                      <h5 className="f-s-14 text-gray">
                                         {/* here showing last send message below of contact name */}
-                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <>{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</>}
+                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <span className="text-info fw-normal f-s-14">{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</span>}
                                         : {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
@@ -2816,21 +2816,81 @@ function Messages({
                                   <CircularLoader />
                                 </div>
                               )}
+                              {/* {contact
+                                .find((contact) => contact.id == recipient?.[1])
+
+                                ?.tags?.slice(0, 8).map((item, key) => {
+
+
+                                  return (
+                                    <>
+                                      <span
+                                        data-id={key}
+                                        onClick={() =>
+                                          handleUnassignTask(item?.id)
+                                        }
+                                        className="removableTag ellipsisText"
+                                      >
+                                        {item.tag?.[0]?.name}
+                                      </span>
+
+                                    </>
+                                  );
+                                } 
+                                )} */}
+
                               {contact
                                 .find((contact) => contact.id == recipient?.[1])
-                                ?.tags?.map((item, key) => {
-                                  return (
-                                    <span
-                                      data-id={key}
-                                      onClick={() =>
-                                        handleUnassignTask(item?.id)
-                                      }
-                                      className="removableTag"
+                                ?.tags?.slice(0, 10)
+                                .map((item, key) => (
+                                  <span
+                                    key={key}
+                                    data-id={key}
+                                    onClick={() => handleUnassignTask(item?.id)}
+                                    className="removableTag ellipsisText"
+                                  >
+                                    {item.tag?.[0]?.name}
+                                  </span>
+                                ))}
+
+                              {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 2 && (
+                                <Tippy  trigger="click"
+                                  content={
+                                    <ul
+                                      className="contactTags"
+                                      style={{
+                                        listStyle: "none",
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        maxWidth: "300px",
+                                        gap: "5px",
+                                        zIndex: "99999"
+                                      }}
                                     >
-                                      {item.tag?.[0]?.name}
-                                    </span>
-                                  );
-                                })}
+                                      {contact
+                                        .find((contact) => contact.id == recipient?.[1])
+                                        // ?.tags?.slice(2)
+                                        ?.tags?.map((tag, key) => (
+                                          // <li key={key}  data-id={key}>
+                                            <span  key={key}  data-id={key}>{tag.tag?.[0]?.name}</span>
+                                          // </li>
+                                        ))}
+                                    </ul>
+                                  }
+                                  allowHTML={true}
+                                >
+                                  <span className="viewAllTagBtn">
+                                   View All +
+                                    {
+                                      contact.find((contact) => contact.id == recipient?.[1])?.tags
+                                        ?.length - 2
+                                    }
+                                  </span>
+                                </Tippy>
+                              )}
+
+
+
                               {/* <span data-id="1">Work</span> */}
                               {selectedChat === "groupChat" ? (
                                 ""

@@ -795,10 +795,10 @@ function FportalCampaignCreate() {
                   {/* previous code ==================== end here */}
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "10px 20px 0" }}
+                    style={{ overflow: "auto", padding: "10px 20px" }}
                   >
-                    <div className="tableContainer">
-                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                    <div className="row">
+                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{  padding: '0 30px' }}>
                         <form className="row mb-0">
                           <div className="formRow">
                             <div className='formLabel'>
