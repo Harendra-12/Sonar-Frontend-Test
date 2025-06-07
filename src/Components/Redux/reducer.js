@@ -96,6 +96,7 @@ var campaignDetails = [];
 var recipient_to_remove_notification = null;
 var allLeadList = []
 var allLeadFileListt = []
+var leadDataRefresh = 0
 
 const initialState = {
   account,
@@ -191,7 +192,8 @@ const initialState = {
   campaignDetails,
   recipient_to_remove_notification,
   allLeadList,
-  allLeadFileListt
+  allLeadFileListt,
+  leadDataRefresh
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -453,6 +455,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, allLeadList: action.payload };
     case "SET_ALL_LEADS_FILE_LIST":
       return { ...state, allLeadFileList: action.payload };
+    case "SET_LEADS_REFRESH":
+      return { ...state, leadDataRefresh: action.payload };
     default:
       return state;
   }

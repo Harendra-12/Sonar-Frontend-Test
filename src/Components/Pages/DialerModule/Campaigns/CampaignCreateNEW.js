@@ -7,13 +7,14 @@ import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../../Loader/CircularLoader';
 import Select from "react-select";
 
 
 function CampaignCreateNEW() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [stepSelector, setStepSelector] = useState(1);
   const [leadsEditState, setLeadsEditState] = useState();
@@ -96,6 +97,9 @@ function CampaignCreateNEW() {
 
   const [addLeadInternalToggle, setAddLeadInternalToggle] = useState(false);
   const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+
+  const allLeadFileList = useSelector(state => state.allLeadFileList);
+  const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
 
 
   const {
@@ -359,6 +363,15 @@ function CampaignCreateNEW() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (allLeadFileList.data.length === 0) {
+      dispatch({
+        type: "SET_LEADS_REFRESH",
+        payload: leadDataRefresh + 1
+      })
+    }
+  }, [])
 
   return (
     <main className="mainContent">
@@ -1778,6 +1791,7 @@ function CampaignCreateNEW() {
                                                 </tr>
                                               </thead>
                                               <tbody>
+
                                                 <tr>
                                                   <td>1</td>
                                                   <td>test</td>

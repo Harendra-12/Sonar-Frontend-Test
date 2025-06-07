@@ -21,8 +21,8 @@ function Leads() {
     const slugPermissions = useSelector((state) => state?.permissions);
 
     const [loading, setLoading] = useState(false)
-    const [refreshState, setRefreshState] = useState(0)
     const [leadsList, setLeadsList] = useState();
+    const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [pageNumber, setPageNumber] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
@@ -54,7 +54,7 @@ function Leads() {
     }
     useEffect(() => {
         getLead()
-    }, [pageNumber, itemsPerPage, debouncedSearchTerm, refreshState])
+    }, [pageNumber, itemsPerPage, debouncedSearchTerm, leadDataRefresh])
 
     const getCampaignData = async () => {
         setLoading(true);
@@ -69,7 +69,7 @@ function Leads() {
 
     useEffect(() => {
         getCampaignData();
-    }, [refreshState]);
+    }, [leadDataRefresh]);
 
 
     // Download Lead File
@@ -106,7 +106,10 @@ function Leads() {
                 if (apiCall.status) {
                     setLoading(false);
                     toast.success("Lead File Deleted Successfully.");
-                    setRefreshState(refreshState + 1);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        payload: leadDataRefresh + 1
+                    })
                 }
             } catch (err) {
                 console.log(err);
@@ -128,7 +131,10 @@ function Leads() {
 
                 if (response.status) {
                     toast.success(response.message);
-                    setRefreshState(refreshState + 1);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        payload: leadDataRefresh + 1
+                    })
                 } else {
                     toast.error(response.message);
                 }
@@ -146,7 +152,10 @@ function Leads() {
 
                 if (response.status) {
                     toast.success(response.message);
-                    setRefreshState(refreshState + 1);
+                    dispatch({
+                        type: "SET_LEADS_REFRESH",
+                        payload: leadDataRefresh + 1
+                    })
                 } else {
                     toast.error(response.message);
                 }
@@ -171,7 +180,10 @@ function Leads() {
                                                 <h4>Leads {" "}
                                                     <button
                                                         className="clearButton"
-                                                        onClick={() => setRefreshState(refreshState + 1)}
+                                                        onClick={() => dispatch({
+                                                            type: "SET_LEADS_REFRESH",
+                                                            payload: leadDataRefresh + 1
+                                                        })}
                                                         disabled={loading}
                                                     >
                                                         <i
@@ -383,7 +395,7 @@ function Leads() {
             </section>
 
             {leadEditPopup && (
-                <LeadEditPopup leadData={leadEditData} setLeadEditPopup={setLeadEditPopup} setRefreshState={setRefreshState} />
+                <LeadEditPopup leadData={leadEditData} setLeadEditPopup={setLeadEditPopup} />
             )}
 
             <ModalComponent task={"delete"} reference={"Lead File"} />
@@ -393,9 +405,11 @@ function Leads() {
 
 export default Leads
 
-export function LeadEditPopup({ leadData, setLeadEditPopup, setRefreshState }) {
+export function LeadEditPopup({ leadData, setLeadEditPopup }) {
     const { register, formState: { errors }, reset, handleSubmit } = useForm();
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
 
     useEffect(() => {
         async function getData() {
@@ -425,7 +439,10 @@ export function LeadEditPopup({ leadData, setLeadEditPopup, setRefreshState }) {
             setLoading(false);
             toast.success(apiData.message);
             setLeadEditPopup(false);
-            setRefreshState((prev) => prev + 1);
+            dispatch({
+                type: "SET_LEADS_REFRESH",
+                payload: leadDataRefresh + 1
+            })
         } else {
             setLoading(false);
             toast.error(apiData.message);
