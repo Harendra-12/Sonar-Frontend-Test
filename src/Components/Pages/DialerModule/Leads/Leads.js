@@ -41,7 +41,7 @@ function Leads() {
             if (res?.status) {
                 dispatch({
                     type: "SET_ALL_LEADS_FILE_LIST",
-                    payload: res.data
+                    allLeadFileList: res.data
                 })
                 setLeadsList(res?.data);
             }
@@ -97,7 +97,7 @@ function Leads() {
                     toast.success("Lead File Deleted Successfully.");
                     dispatch({
                         type: "SET_LEADS_REFRESH",
-                        payload: leadDataRefresh + 1
+                        leadDataRefresh: leadDataRefresh + 1
                     })
                 }
             } catch (err) {
@@ -122,7 +122,7 @@ function Leads() {
                     toast.success(response.message);
                     dispatch({
                         type: "SET_LEADS_REFRESH",
-                        payload: leadDataRefresh + 1
+                        leadDataRefresh: leadDataRefresh + 1
                     })
                 } else {
                     toast.error(response.message);
@@ -143,7 +143,7 @@ function Leads() {
                     toast.success(response.message);
                     dispatch({
                         type: "SET_LEADS_REFRESH",
-                        payload: leadDataRefresh + 1
+                        leadDataRefresh: leadDataRefresh + 1
                     })
                 } else {
                     toast.error(response.message);
@@ -171,7 +171,7 @@ function Leads() {
                                                         className="clearButton"
                                                         onClick={() => dispatch({
                                                             type: "SET_LEADS_REFRESH",
-                                                            payload: leadDataRefresh + 1
+                                                            leadDataRefresh: leadDataRefresh + 1
                                                         })}
                                                         disabled={loading}
                                                     >
@@ -437,7 +437,7 @@ export function LeadEditPopup({ leadData, setLeadEditPopup }) {
             setLeadEditPopup(false);
             dispatch({
                 type: "SET_LEADS_REFRESH",
-                payload: leadDataRefresh + 1
+                leadDataRefresh: leadDataRefresh + 1
             })
         } else {
             setLoading(false);

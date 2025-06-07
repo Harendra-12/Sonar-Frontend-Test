@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../../Loader/CircularLoader';
 import Select from "react-select";
+import EmptyPrompt from '../../../Loader/EmptyPrompt'
 
 
 function CampaignCreateNEW() {
@@ -34,7 +35,7 @@ function CampaignCreateNEW() {
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
   const [timeZone, setTimeZone] = useState([]);
-  const [specificLeads, setSpecificLeads] = useState()
+  const [specificLeads, setSpecificLeads] = useState();
 
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
@@ -99,7 +100,9 @@ function CampaignCreateNEW() {
   const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
 
   const allLeadFileList = useSelector(state => state.allLeadFileList);
-  const leadDataRefresh = useSelector((state) => state.leadDataRefresh);
+  const [leadSearchQuery, setLeadSearchQuery] = useState("");
+  const debouncedLeadSearchTerm = useDebounce(leadSearchQuery, 1000);
+  const [leadSelectionArr, setLeadSelectionArr] = useState([]);
 
 
   const {
@@ -364,14 +367,105 @@ function CampaignCreateNEW() {
     }
   };
 
-  useEffect(() => {
-    if (allLeadFileList.data.length === 0) {
-      dispatch({
-        type: "SET_LEADS_REFRESH",
-        payload: leadDataRefresh + 1
-      })
+  // Get All Lead File List
+  const getAllLeads = async () => {
+    setLoading(true);
+    try {
+      const res = await generalGetFunction(`/lead-file/all?search=${leadSearchQuery}`);
+      if (res?.status) {
+        dispatch({
+          type: "SET_ALL_LEADS_FILE_LIST",
+          allLeadFileList: res.data
+        })
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false);
     }
-  }, [])
+
+  }
+
+  useEffect(() => {
+    getAllLeads();
+  }, [debouncedLeadSearchTerm])
+
+  // Assign a Lead File to a Campaign
+  const assignLeadFileToCampaign = async (leadId) => {
+    if (!campaignId) {
+      toast.error("Please complete Step 1!");
+      return;
+    }
+    if (leadId) {
+      try {
+        const payload = { "lead_files_id": leadId, "campaign_id": campaignId };
+        const response = await generalPostFunction(`/lead-file/assign`, payload);
+        if (response.status) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      } catch (err) {
+        toast.error(err.response.message);
+      } finally {
+        getAllLeads();
+      }
+    }
+  }
+
+  // Remove the Lead File from an assigned Campaign
+  const removeLeadFileFromCampaign = async (id) => {
+    if (id) {
+      try {
+        const payload = { "id": id };
+        const response = await generalPostFunction(`/lead-file/remove`, payload);
+
+        if (response.status) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      } catch (err) {
+        toast.error(err.response.message);
+      } finally {
+        getAllLeads();
+      }
+    }
+  }
+
+  // Assign Lead Files Multiple at a Time
+  // const handleLeadFilesSelection = () => {
+  //   if (leadSelectionArr.length > 0) {
+  //     leadSelectionArr.forEach((leadId) => {
+  //       assignLeadFileToCampaign(leadId);
+  //     });
+  //   }
+  //   setAddLeadInternalToggle(!addLeadInternalToggle)
+  // }
+
+
+  const downloadImage = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
+  };
 
   return (
     <main className="mainContent">
@@ -526,10 +620,10 @@ function CampaignCreateNEW() {
                                 <select defaultValue={"Inbound"} className="formItem" {...register("campaign_type", {
                                   ...requiredValidator,
                                 })}>
-                                  <option value="Inbound">Inbound</option>
+                                  {/* <option value="Inbound">Inbound</option> */}
                                   <option value="Outbound">Outbound</option>
-                                  <option value="pbx">PBX</option>
-                                  <option value="dialer">Dialer</option>
+                                  {/* <option value="pbx">PBX</option> */}
+                                  {/* <option value="dialer">Dialer</option> */}
                                 </select>
                               </div>
                             </div>
@@ -1641,13 +1735,13 @@ function CampaignCreateNEW() {
                                       <span className="text">Add</span>
                                       <span className='icon'><i class="fa-solid fa-plus"></i></span>
                                     </button>
-                                    <button
+                                    {/* <button
                                       className="panelButton edit"
                                       onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                     >
                                       <span className="text">Import</span>
                                       <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
-                                    </button>
+                                    </button> */}
                                   </div>
                                 </div>
                                 {addNewCsvToggle && (
@@ -1768,11 +1862,11 @@ function CampaignCreateNEW() {
                                               type="text"
                                               className="formItem"
                                               placeholder="Search"
-                                              name="name"
-                                              defaultValue=""
+                                              value={leadSearchQuery}
+                                              onChange={(e) => setLeadSearchQuery(e.target.value)}
                                             />
-                                            <button className="tableButton popupIcon_btn ms-2">
-                                              <i className="fa-solid fa-user-plus" />
+                                            <button className="tableButton popupIcon_btn ms-2" onClick={() => navigate('/lead-add')}>
+                                              <i className="fa-solid fa-plus" />
                                             </button>
                                           </div>
                                         </div>
@@ -1784,94 +1878,57 @@ function CampaignCreateNEW() {
                                             <table>
                                               <thead>
                                                 <tr>
-                                                  <th>S.No</th>
+                                                  <th>#</th>
                                                   <th>Name</th>
-                                                  <th>Qty</th>
-                                                  <th><input type="checkbox" /></th>
+                                                  <th>Description</th>
+                                                  <th>Rows</th>
+                                                  <th>
+                                                    {/* <input
+                                                      type="checkbox"
+                                                      checked={leadSelectionArr.length === allLeadFileList.data.length}
+                                                      onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                          setLeadSelectionArr(allLeadFileList.data.map((lead) => lead.id));
+                                                        } else {
+                                                          setLeadSelectionArr([]);
+                                                        }
+                                                      }}
+                                                    /> */}
+                                                  </th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-
-                                                <tr>
-                                                  <td>1</td>
-                                                  <td>test</td>
-                                                  <td>1000</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>2</td>
-                                                  <td>ravi raj</td>
-                                                  <td>1007</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>3</td>
-                                                  <td>riddhee</td>
-                                                  <td>1001</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>4</td>
-                                                  <td>pratima</td>
-                                                  <td>1002</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>5</td>
-                                                  <td>biplab</td>
-                                                  <td>1003</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>6</td>
-                                                  <td>tushar</td>
-                                                  <td>1004</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>7</td>
-                                                  <td>solman</td>
-                                                  <td>1005</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>8</td>
-                                                  <td>sanchit</td>
-                                                  <td>1010</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>9</td>
-                                                  <td>damini</td>
-                                                  <td>1011</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>10</td>
-                                                  <td>rishabh</td>
-                                                  <td>1012</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
+                                                {allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.map((lead, index) => (
+                                                  <tr>
+                                                    <td>{index + 1}</td>
+                                                    <td>{lead?.name}</td>
+                                                    <td>{lead?.description}</td>
+                                                    <td>{lead?.lead_rows_count}</td>
+                                                    <td>
+                                                      {/* <input
+                                                        type="checkbox"
+                                                        checked={leadSelectionArr.includes(lead.id)}
+                                                        onChange={() =>
+                                                          setLeadSelectionArr((prev) => {
+                                                            if (prev.includes(lead.id)) {
+                                                              return prev.filter((id) => id !== lead.id);
+                                                            } else {
+                                                              return [...prev, lead.id];
+                                                            }
+                                                          })
+                                                        }
+                                                      /> */}
+                                                      {lead.campaignlead.some(campId => campId.campaign_id == campaignId) ?
+                                                        <button className='tableButton delete' onClick={() => removeLeadFileFromCampaign(lead.campaignlead.find(campId => campId.campaign_id === campaignId).id)}>
+                                                          <i className="fa-solid fa-xmark" />
+                                                        </button> :
+                                                        <button className='tableButton edit' onClick={() => assignLeadFileToCampaign(lead.id)}>
+                                                          <i className="fa-solid fa-plus" />
+                                                        </button>
+                                                      }
+                                                    </td>
+                                                  </tr>
+                                                )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}
                                               </tbody>
                                             </table>
                                           </div>
@@ -1884,12 +1941,12 @@ function CampaignCreateNEW() {
                                                 <i className="fa-light fa-xmark" />
                                               </span>
                                             </button>
-                                            <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                                            {/* <button className="panelButton" onClick={() => setAddLeadInternalToggle(false)}>
                                               <span className="text">Done</span>
                                               <span className="icon">
                                                 <i className="fa-solid fa-check" />
                                               </span>
-                                            </button>
+                                            </button> */}
                                           </div>
                                         </div>
                                       </div>
@@ -1902,15 +1959,15 @@ function CampaignCreateNEW() {
                                     <table>
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>Number</th>
-                                          <th>Country Code</th>
-                                          <th>Address</th>
-                                          <th>Edit</th>
+                                          <th>#</th>
+                                          <th>Lead Name</th>
+                                          <th>Lead Description</th>
+                                          <th>Rows</th>
+                                          <th>Download</th>
                                         </tr>
                                       </thead>
                                       <tbody className="">
-                                        {
+                                        {/* {
                                           specificLeads?.map((item) => {
                                             return (
                                               <tr>
@@ -1932,6 +1989,21 @@ function CampaignCreateNEW() {
                                               </tr>
                                             )
                                           })
+                                        } */}
+                                        {
+                                          allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.filter((lead) => lead.campaignlead.campaign_id == campaignId).map((lead, index) => (
+                                            <tr>
+                                              <td>{index + 1}</td>
+                                              <td>{lead?.name}</td>
+                                              <td>{lead?.description}</td>
+                                              <td>{lead?.lead_rows_count}</td>
+                                              <td>
+                                                <button className="tableButton" onClick={() => downloadImage(lead.file_url, `${lead.description}`)}>
+                                                  <i className="fa-solid fa-download" />
+                                                </button>
+                                              </td>
+                                            </tr>
+                                          )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
                                         }
                                       </tbody>
                                     </table>
