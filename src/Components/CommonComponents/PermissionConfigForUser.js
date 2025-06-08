@@ -467,6 +467,21 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         ...prev,
         [sectionName]: !prev[sectionName]
       }));
+    } else {
+      // Collapse the Section and deselect all the permissions
+      models.forEach(model => {
+        handleMasterToggle(
+          model.id,
+          model.module_section,
+          model.permissions,
+          model.table_records,
+          false
+        );
+      });
+      setExpandedSections(prev => ({
+        ...prev,
+        [sectionName]: !prev[sectionName]
+      }));
     }
   };
 
