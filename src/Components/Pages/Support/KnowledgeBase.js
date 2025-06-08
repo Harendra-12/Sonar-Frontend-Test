@@ -7,7 +7,7 @@ function KnowledgeBase() {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Knowledge Base" />
+                        <Header title="Support" />
                     </div>
                 </div>
                 <div className='container-fluid'>

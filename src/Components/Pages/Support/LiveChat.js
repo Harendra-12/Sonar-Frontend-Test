@@ -65,7 +65,7 @@ function LiveChat() {
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0">
-          <Header title="Live Chat" />
+          <Header title="Support" />
         </div>
 
         <div className="container-fluid mt-4">
