@@ -314,6 +314,7 @@ function DialerCdrReport() {
                               <th>Agent Name</th>
                               <th>Extension</th>
                               <th>Campaign Name</th>
+                              <th>Campaign Type</th>
                               <th>Customer Name</th>
                               <th>Customer Number</th>
                               <th>Duration</th>
@@ -338,6 +339,7 @@ function DialerCdrReport() {
                                     <td>{item?.agent || 'N/A'}</td>
                                     <td>{item?.extension || 'N/A'}</td>
                                     <td>{item?.campaign_title || 'N/A'}</td>
+                                    <td style={{ textTransform: 'capitalize' }}>{item?.camp_type || 'N/A'}</td>
                                     <td>{item?.customer || 'N/A'}</td>
                                     <td>{item?.phone_number || 'N/A'}</td>
                                     <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
