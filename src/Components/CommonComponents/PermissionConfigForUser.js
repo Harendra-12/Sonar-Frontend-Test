@@ -467,6 +467,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         [sectionName]: !prev[sectionName]
       }));
     } else {
+      // TODO : UNCOMMENT IT
       // Collapse the Section and deselect all the permissions
       // models.forEach(model => {
       //   handleMasterToggle(
@@ -561,7 +562,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
             ...model,
             table_records: filteredTableRecords
           };
-        }).filter(model => model.table_records.length > 0); // Remove models with no permitted table records
+        }).filter(model => model.table_records.length > 0); // Remove models with no permitted table records TODO: REMOVE IT
 
         if (filteredModels.length === 0) return null;
 
