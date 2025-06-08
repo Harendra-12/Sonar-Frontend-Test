@@ -13,26 +13,35 @@ function FportalCampaign() {
   const navigate = useNavigate();
 
   const [allFCampaigns, setAllFCampaigns] = useState([]);
+  const [CampaignDetailsData, setCampaignDetailsData] = useState()
   const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
+   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
-  const getAllCampaigns = async () => {
+  const getAllCampaigns = async (shouldRefresh) => {
+    if(shouldRefresh)
     setLoading(true);
-    const response = await generalGetFunction('fcampaign/all');
+    const response = await generalGetFunction(`fcampaign/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
     if (response.status) {
-      setAllFCampaigns(response.data);
+      setAllFCampaigns(response.data?.data);
+      setCampaignDetailsData(response?.data)
       setLoading(false);
+      setRefreshState(false)
     } else {
       toast.error(response.message);
       setLoading(false);
+      setRefreshState(false)
     }
   };
 
   // Initial data fetch
   useEffect(() => {
-    getAllCampaigns();
+    setRefreshState(true)
+    const shouldRefresh = true
+    getAllCampaigns(shouldRefresh)
   }, [itemsPerPage, searchValue])
 
   // Handle Edit Buyer
@@ -47,20 +56,31 @@ function FportalCampaign() {
     const userConfirmed = await confirm();
     if (userConfirmed) {
       setLoading(true);
+      setRefreshState(true)
       try {
         const apiCall = await generalDeleteFunction(`/fcampaign/${id}`);
         if (apiCall.status) {
           setLoading(false);
+          setRefreshState(false)
           toast.success("Campaign Deleted Successfully.");
-          getAllCampaigns();
+          const shouldRefresh = true
+          getAllCampaigns(shouldRefresh)
         }
       } catch (err) {
         console.log(err);
+        setRefreshState(false)
         setLoading(false);
       } finally {
+        setRefreshState(false)
         setLoading(false);
       }
     }
+  }
+
+  const getRefresh = () => {
+    setRefreshState(true)
+    const shouldRefresh = false
+    getAllCampaigns(shouldRefresh)
   }
   return (
     <main className="mainContent">
@@ -74,7 +94,11 @@ function FportalCampaign() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Forwarding portal</h4>
+                        <h4>Forwarding portal
+                          <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
+                            <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} />
+                          </button>
+                        </h4>
                         <p>You can see all list of Forwarding portal</p>
                       </div>
                       <div className="buttonGroup">
@@ -101,7 +125,7 @@ function FportalCampaign() {
                     className="col-12"
                     style={{ overflow: "auto", padding: "25px 20px 0px" }}
                   >
-                    {/* <div className="tableHeader">
+                    <div className="tableHeader">
                         <div className="showEntries">
                           <label>Show</label>
                           <select
@@ -117,7 +141,7 @@ function FportalCampaign() {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox position-relative">
+                        {/* <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
                             type="text"
@@ -127,8 +151,8 @@ function FportalCampaign() {
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}
                           />
-                        </div>
-                      </div> */}
+                        </div> */}
+                      </div>
                     <div className="tableContainer">
                       <table>
                         <thead>
@@ -145,9 +169,9 @@ function FportalCampaign() {
                         </thead>
                         <tbody>
                           {loading ?
-                          //  <SkeletonTableLoader col={8} row={15} />
+                            //  <SkeletonTableLoader col={8} row={15} />
                             <ThreeDotedLoader />
-                           :
+                            :
                             allFCampaigns && allFCampaigns.length > 0 ?
                               allFCampaigns.map((campaign, index) => (
                                 <tr key={index}>
@@ -312,11 +336,11 @@ function FportalCampaign() {
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent
-                      // pageNumber={(e) => setPageNumber(e)}
-                      // totalPage={ringGroup.last_page}
-                      // from={ringGroup.from}
-                      // to={ringGroup.to}
-                      // total={ringGroup.total}
+                      pageNumber={(e) => setPageNumber(e)}
+                      totalPage={CampaignDetailsData?.last_page}
+                      from={CampaignDetailsData?.from}
+                      to={CampaignDetailsData?.to}
+                      total={CampaignDetailsData?.total}
                       />
                     </div>
                   </div>
