@@ -1005,7 +1005,7 @@ function CampaignEditNEW() {
                                   )}
                                 </div>
                               </div>
-                              {watch().active_hours &&
+                              {watch().active_hours == true &&
                                 <div className="formRow d-block">
                                   <div className="formLabel">
                                     <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
