@@ -1031,7 +1031,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               loading={loading}
                               setLoading={setLoading}
                               setUserPermissionBridge={setUserPermissionBridge}
-                              existingUserData={locationState}
+                              existingUserData={locationState}  // Get User Data from API instead of Location State
                               isUserFilter={true}
                             />
                           </div>
