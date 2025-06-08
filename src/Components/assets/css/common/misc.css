@@ -618,6 +618,9 @@ input[type=number] {
     flex-wrap: wrap;
     gap: 5px;
 }
+.contactTags.mwMaxContent{
+     width: max-content;
+}
 
 .contactTags span {
     border-radius: 50px;

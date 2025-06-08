@@ -362,7 +362,7 @@
     z-index: 5;
     /* margin-inline: 15px; */
     border-radius: 12px;
-    background: transparent;
+    background: var(--me-body-bg2);
 }
 
 .status_code {

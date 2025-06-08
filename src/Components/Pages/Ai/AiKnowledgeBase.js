@@ -50,7 +50,7 @@ const AiKnowledgeBase = () => {
                     </div>
                     <div className='col-12'>
                       <div className='row p-3'>
-                        <div className='col-xxl-4 col-xl-5 col-lg-5 '>
+                        <div className='col-xxl-4 col-xl-5 col-lg-12 '>
                           <div className='KnowledgeLeftinfo'>
                             <div className='info_header'>
                               <h5 className='mb-0'>Uploaded files</h5>
@@ -92,7 +92,7 @@ const AiKnowledgeBase = () => {
                             </div>
                           </div>
                         </div>
-                        <div className='col-xxl-8 col-xl-7 col-lg-7 '>
+                        <div className='col-xxl-8 col-xl-7 col-lg-12 '>
                           <div class="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                               <div className="heading">
@@ -212,7 +212,7 @@ const AiKnowledgeBase = () => {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div
-                    className="card px-0 col-5 shadow-none"
+                    className="card px-0 col-5 shadow-none w50" 
                     style={{
                       border: "1px solid var(--border-color)",
                     }}

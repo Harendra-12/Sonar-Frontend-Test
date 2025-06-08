@@ -140,12 +140,12 @@ function PermissionConfigForUser() {
                     <div className='col-12' style={{ padding: '25px 23px' }}>
                       <div className="row mb-0">
                         <div className="formRow col-xl-3 col-lg-12">
-                          <div className='formLabel'>
+                          <div className='formLabel me-3'>
                             <label>
                               Select Class Type
                             </label>
                           </div>
-                          <div className='row'>
+                          <div className='row me-auto'>
                             <div className='col-xl-12 col-lg-12'>
                               <div className='row'>
                                 <div className='col-6'>
@@ -724,10 +724,12 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                     <div className="card">
                                                       <div className="card-body">
                                                         {filteredColumnRecords.map(record => (
-                                                          <div key={record.id} className="d-flex justify-content-between">
-                                                            <label className="text-capitalize" style={{ whiteSpace: 'break-spaces' }}>
-                                                              {column.replace(/_/g, ' ')}
-                                                            </label>
+                                                          <div key={record.id} className="d-flex justify-content-between gap-2">
+                                                            <div className='scroll_text'>
+                                                              <label className="text-capitalize">
+                                                                {column.replace(/_/g, ' ')}
+                                                              </label>
+                                                            </div>
                                                             <div className="cl-toggle-switch">
                                                               <label className="cl-switch">
                                                                 <input
