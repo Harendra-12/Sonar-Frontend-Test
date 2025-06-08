@@ -461,7 +461,6 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
 
   const toggleSection = (sectionName, models) => {
     const permissionMatch = models.some(m => rolePermissions.sectionPermissions.includes(m.id));
-
     if (!permissionMatch) {
       setExpandedSections(prev => ({
         ...prev,
@@ -469,19 +468,21 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
       }));
     } else {
       // Collapse the Section and deselect all the permissions
-      models.forEach(model => {
-        handleMasterToggle(
-          model.id,
-          model.module_section,
-          model.permissions,
-          model.table_records,
-          false
-        );
-      });
-      setExpandedSections(prev => ({
-        ...prev,
-        [sectionName]: !prev[sectionName]
-      }));
+      // models.forEach(model => {
+      //   handleMasterToggle(
+      //     model.id,
+      //     model.module_section,
+      //     model.permissions,
+      //     model.table_records,
+      //     false
+      //   );
+      // });
+      // setTimeout(() => {
+      //   setExpandedSections(prev => ({
+      //     ...prev,
+      //     [sectionName]: false
+      //   }));
+      // }, 500)
     }
   };
 
