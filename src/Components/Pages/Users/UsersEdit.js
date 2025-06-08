@@ -76,6 +76,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     reset,
     setValue,
   } = useForm();
+  const [userData, setUserData] = useState([]);
 
   // If login then Getting dataa of permission timezone and role and setting fordata using reset function of useForm hook on initial load of page else navigate to login page
   useEffect(() => {
@@ -169,6 +170,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         }
         if (account.id) {
           getData();
+          getUserData();
         } else {
           navigate("/");
         }
@@ -316,13 +318,13 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       payload
     );
     if (addUser.status) {
-      setLoading(false);
       setPopUp(false);
       toast.success(addUser.message);
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
+      getUserData();
 
       // navigate(-1); // Navigate back to the previous page
     } else {
@@ -405,6 +407,22 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     }
     return inputValue;
   };
+
+  const getUserData = async () => {
+    if (locationState.id) {
+      try {
+        const response = await generalGetFunction(`user/${locationState.id}`);
+        if (response.status) {
+          setUserData(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error(err?.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
   return (
     <>
       <style>
@@ -1031,7 +1049,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               loading={loading}
                               setLoading={setLoading}
                               setUserPermissionBridge={setUserPermissionBridge}
-                              existingUserData={locationState}  // Get User Data from API instead of Location State
+                              existingUserData={userData}
                               isUserFilter={true}
                             />
                           </div>
