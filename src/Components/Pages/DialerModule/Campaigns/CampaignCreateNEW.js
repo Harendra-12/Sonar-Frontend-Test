@@ -131,7 +131,7 @@ function CampaignCreateNEW() {
       }
     }
     async function getAgentData() {
-      const getAgents = await generalGetFunction(`agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`)
+      const getAgents = await generalGetFunction(`agents?usages=${'dialer' || 'both'}&row_per_page=${agentPerPage}&search=${agentSearch}`)
       if (getAgents?.status) {
         setAgents(getAgents.data)
       }
