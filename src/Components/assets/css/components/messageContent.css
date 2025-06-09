@@ -1622,3 +1622,9 @@
 .webrtc_newMessageUi .messageOverlay.groupChat .messageList {
     height: calc(100vh - 319px);
 }
+.activeCallTabMinWidth .nav-link {
+    min-width: 65px;
+}
+.activeCallTabMinWidth .nav-link span {
+   margin-left: 0;
+}
