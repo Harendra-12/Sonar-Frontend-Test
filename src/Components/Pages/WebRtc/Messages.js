@@ -1471,7 +1471,7 @@ function Messages({
         ] || []),
         {
           from: recipient?.[2] == "singleChat" ? recipient?.[1] : account?.id,
-          body: messageContent, // Show appropriate text in the message history
+          body: messageContent,
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
@@ -1494,6 +1494,7 @@ function Messages({
       }
       newGroups[contactIndex].last_message_data.message_text = last_message;
       newGroups[contactIndex].last_message_data.created_at = time;
+      newGroups[contactIndex].last_message_data.user_id = userDetails.id;
       newGroups?.splice(contactIndex, 1);
       newGroups.unshift(groups[contactIndex]);
       setGroups(newGroups);
@@ -1538,6 +1539,7 @@ function Messages({
           const newGroups = [...groups];
           newGroups[contactIndex].last_message_data.message_text = body;
           newGroups[contactIndex].last_message_data.created_at = time;
+          newGroups[contactIndex].last_message_data.user_id = from;
           newGroups?.splice(contactIndex, 1);
           newGroups.unshift(groups[contactIndex]);
           setGroups(newGroups);
@@ -2186,7 +2188,7 @@ function Messages({
                                         </div> */}
                                       {/* here we are showing recent group message */}
                                       <h5 className="f-s-14 text-gray">
-                                        {/* here showing last send message below of contact name */}
+                                        {/* here showing last send message below of contact name for group*/}
                                         {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <span className="text-info fw-normal f-s-14">{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</span>}
                                         : {item?.last_message_data?.message_text}
                                       </h5>
@@ -3228,7 +3230,6 @@ function Messages({
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
-                          {console.log("Recipient", recipient)}
                           {recipient?.[0] ? (
                             <>
                               {allMessage?.[
