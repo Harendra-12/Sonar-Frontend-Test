@@ -368,7 +368,7 @@ function CampaignEditNEW() {
     const timer = setTimeout(async () => {
       const getAgentData = async () => {
         const getAgents = await generalGetFunction(
-          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`
+          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
 
         if (getAgents?.status) {
@@ -2750,7 +2750,7 @@ function CampaignEditNEW() {
                                             }
                                           )} */}
                                           {
-                                            allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.filter((lead) => lead.campaignlead.some((camp) => camp.campaign_id == value)).map((lead, index) => (
+                                            allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.filter((lead) => lead.campaignlead.some((camp) => camp.campaign_id == value)).map((lead, index) => (
                                               <tr>
                                                 <td>{index + 1}</td>
                                                 <td>{lead?.name}</td>

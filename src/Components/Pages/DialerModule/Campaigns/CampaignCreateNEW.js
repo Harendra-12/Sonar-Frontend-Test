@@ -131,7 +131,7 @@ function CampaignCreateNEW() {
       }
     }
     async function getAgentData() {
-      const getAgents = await generalGetFunction(`agents?usages=${'dialer' || 'both'}&row_per_page=${agentPerPage}&search=${agentSearch}`)
+      const getAgents = await generalGetFunction(`agents?usages=${'dialer' || 'both'}&row_per_page=${agentPerPage}&search=${agentSearch}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`)
       if (getAgents?.status) {
         setAgents(getAgents.data)
       }
@@ -1937,7 +1937,7 @@ function CampaignCreateNEW() {
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                {allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.map((lead, index) => (
+                                                {allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.map((lead, index) => (
                                                   <tr>
                                                     <td>{index + 1}</td>
                                                     <td>{lead?.name}</td>
@@ -2030,7 +2030,7 @@ function CampaignCreateNEW() {
                                           })
                                         } */}
                                         {
-                                          allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.filter((lead) => lead.campaignlead.campaign_id == campaignId).map((lead, index) => (
+                                          allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.filter((lead) => lead.campaignlead.campaign_id == campaignId).map((lead, index) => (
                                             <tr>
                                               <td>{index + 1}</td>
                                               <td>{lead?.name}</td>

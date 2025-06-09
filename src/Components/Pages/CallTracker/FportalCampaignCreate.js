@@ -5,9 +5,10 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction, generalPostFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 import { requiredValidator } from "../../validations/validation";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 function FportalCampaignCreate() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function FportalCampaignCreate() {
   const [isStatus, setIsStatus] = useState(false);
   const [allBuyers, setAllBuyers] = useState([]);
   const [allTrunk, setAllTrunk] = useState([])
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
       name: 'Sunday',
@@ -83,6 +86,7 @@ function FportalCampaignCreate() {
   const [bulkAddBuyersList, setBulkAddBuyersList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectAll, setSelectAll] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
 
   const [campaignId, setCampaignId] = useState('');
@@ -216,7 +220,7 @@ function FportalCampaignCreate() {
   }
 
   const getAllBuyers = async () => {
-    const res = await generalGetFunction("buyer/all");
+    const res = await generalGetFunction(`buyer/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
     if (res?.status) {
       setAllBuyers(res?.data?.data)
     }
@@ -234,6 +238,10 @@ function FportalCampaignCreate() {
     getAllBuyers()
     getElasticTrunk()
   }, [])
+
+  useEffect(() => {
+    getAllBuyers()
+  }, [itemsPerPage, debouncedSearchTerm])
 
   const allDidOptions = did.map((item) => ({
     value: item.id,
@@ -798,7 +806,7 @@ function FportalCampaignCreate() {
                     style={{ overflow: "auto", padding: "10px 20px" }}
                   >
                     <div className="row">
-                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{  padding: '0 30px' }}>
+                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{ padding: '0 30px' }}>
                         <form className="row mb-0">
                           <div className="formRow">
                             <div className='formLabel'>
@@ -1418,13 +1426,14 @@ function FportalCampaignCreate() {
                                     <div className='col-12'>
                                       <select
                                         className="formItem"
-                                        defaultValue={index + 1}
+                                        defaultValue={-1}
                                         onChange={(e) => {
                                           setBulkAddBuyersList(prevState => prevState.map(item =>
                                             item.id == buyer.id ? { ...item, priority: e.target.value } : item
                                           ));
                                         }}
                                       >
+                                        <option value={-1}>None</option>
                                         {allBuyers.length > 0 && allBuyers.map((buyer, index) => (
                                           <option value={index + 1}>{index + 1}</option>
                                         ))}
@@ -1539,14 +1548,31 @@ function FportalCampaignCreate() {
                 <h5>Add Buyers to the selected Campaign</h5>
               </div>
               <div className="col-xl-12">
+                <div className="tableHeader">
+                  <div className="showEntries">
+                    <label>Show</label>
+                    <select
+                      className="formItem"
+                      value={itemsPerPage}
+                      onChange={(e) => {
+                        setItemsPerPage(e.target.value);
+                      }}
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={30}>30</option>
+                    </select>
+                    <label>entries</label>
+                  </div>
+                </div>
                 <div className="col-12 d-flex justify-content-between align-items-center">
                   <input
                     type="text"
                     className="formItem"
                     placeholder="Search"
                     name="name"
-                  // value={searchQuery}
-                  // onChange={handleSearchChange}
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event?.target?.value)}
                   />
                   <button
                     className="tableButton popupIcon_btn ms-2"
@@ -1620,6 +1646,15 @@ function FportalCampaignCreate() {
                         })}
                     </tbody>
                   </table>
+                </div>
+                <div className="tableHeader mb-3">
+                  <PaginationComponent
+                    pageNumber={(e) => setPageNumber(e)}
+                    totalPage={allBuyers?.last_page}
+                    from={allBuyers?.from}
+                    to={allBuyers?.to}
+                    total={allBuyers?.total}
+                  />
                 </div>
               </div>
               <div className="col-xl-12 mt-2">
