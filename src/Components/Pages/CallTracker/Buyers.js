@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
-import { generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { generalDeleteFunction, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -17,9 +17,9 @@ function Buyers() {
   const [refreshState, setRefreshState] = useState(false)
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllBuyers = async (shouldLoad) => {
     if (shouldLoad)
@@ -42,7 +42,7 @@ function Buyers() {
     setRefreshState(true);
     const shouldLoad = true
     getAllBuyers(shouldLoad);
-  }, [itemsPerPage, searchValue])
+  }, [itemsPerPage, debouncedSearchTerm])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
@@ -135,7 +135,7 @@ function Buyers() {
                           </select>
                           <label>entries</label>
                         </div>
-                        {/* <div className="searchBox position-relative">
+                        <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
                             type="text"
@@ -145,7 +145,7 @@ function Buyers() {
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}
                           />
-                        </div> */}
+                        </div>
                       </div>
                       <div className="tableContainer">
                         <table>

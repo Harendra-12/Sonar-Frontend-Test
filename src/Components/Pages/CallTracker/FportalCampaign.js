@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { backToTop, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalDeleteFunction, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
@@ -16,14 +16,15 @@ function FportalCampaign() {
   const [CampaignDetailsData, setCampaignDetailsData] = useState()
   const [loading, setLoading] = useState(false);
   const [refreshState, setRefreshState] = useState(false)
-   const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllCampaigns = async (shouldRefresh) => {
-    if(shouldRefresh)
-    setLoading(true);
+    if (shouldRefresh)
+      setLoading(true);
     const response = await generalGetFunction(`fcampaign/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
     if (response.status) {
       setAllFCampaigns(response.data?.data);
@@ -42,7 +43,7 @@ function FportalCampaign() {
     setRefreshState(true)
     const shouldRefresh = true
     getAllCampaigns(shouldRefresh)
-  }, [itemsPerPage, searchValue])
+  }, [itemsPerPage, debouncedSearchTerm])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
@@ -126,33 +127,33 @@ function FportalCampaign() {
                     style={{ overflow: "auto", padding: "25px 20px 0px" }}
                   >
                     <div className="tableHeader">
-                        <div className="showEntries">
-                          <label>Show</label>
-                          <select
-                            className="formItem"
-                            value={itemsPerPage}
-                            onChange={(e) => {
-                              setItemsPerPage(e.target.value);
-                            }}
-                          >
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={30}>30</option>
-                          </select>
-                          <label>entries</label>
-                        </div>
-                        {/* <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="text"
-                            name="Search"
-                            placeholder="Search"
-                            value={searchValue}
-                            className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
-                          />
-                        </div> */}
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select
+                          className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => {
+                            setItemsPerPage(e.target.value);
+                          }}
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                        </select>
+                        <label>entries</label>
                       </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="text"
+                          name="Search"
+                          placeholder="Search"
+                          value={searchValue}
+                          className="formItem"
+                          onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                      </div>
+                    </div>
                     <div className="tableContainer">
                       <table>
                         <thead>
@@ -336,11 +337,11 @@ function FportalCampaign() {
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent
-                      pageNumber={(e) => setPageNumber(e)}
-                      totalPage={CampaignDetailsData?.last_page}
-                      from={CampaignDetailsData?.from}
-                      to={CampaignDetailsData?.to}
-                      total={CampaignDetailsData?.total}
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={CampaignDetailsData?.last_page}
+                        from={CampaignDetailsData?.from}
+                        to={CampaignDetailsData?.to}
+                        total={CampaignDetailsData?.total}
                       />
                     </div>
                   </div>

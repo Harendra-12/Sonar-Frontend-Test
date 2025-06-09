@@ -3,7 +3,7 @@ import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import { useNavigate } from 'react-router-dom'
 import Header from '../../CommonComponents/Header'
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
-import { generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { generalDeleteFunction, generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
@@ -14,14 +14,16 @@ function ElasticTrunk() {
   const [allTrunk, setAllTrunk] = useState([]);
   const [loading, setLoading] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
+   const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllTrunk = async () => {
     setLoading(true);
-    const response = await generalGetFunction('fportaltrunk/all');
+    const response = await generalGetFunction(`fportaltrunk/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
     if (response.status) {
-      setAllTrunk(response?.data?.data);
+      setAllTrunk(response?.data);
       setLoading(false);
     } else {
       toast.error(response.message);
@@ -32,7 +34,7 @@ function ElasticTrunk() {
   // Initial data fetch
   useEffect(() => {
     getAllTrunk();
-  }, [itemsPerPage, searchValue])
+  }, [itemsPerPage, debouncedSearchTerm])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
@@ -95,7 +97,7 @@ function ElasticTrunk() {
                     <div className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
-                      {/* <div className="tableHeader">
+                      <div className="tableHeader">
                         <div className="showEntries">
                           <label>Show</label>
                           <select
@@ -122,7 +124,7 @@ function ElasticTrunk() {
                             onChange={(e) => setSearchValue(e.target.value)}
                           />
                         </div>
-                      </div> */}
+                      </div>
                       <div className="tableContainer">
                         <table>
                           <thead>
@@ -137,12 +139,12 @@ function ElasticTrunk() {
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ? 
-                            // <SkeletonTableLoader col={7} row={15} /> 
+                            {loading ?
+                              // <SkeletonTableLoader col={7} row={15} /> 
                               <ThreeDotedLoader />
-                            :
-                              allTrunk && allTrunk.length > 0 ?
-                                allTrunk.map((trunk, index) => (
+                              :
+                              allTrunk?.data && allTrunk?.data.length > 0 ?
+                                allTrunk?.data.map((trunk, index) => (
                                   <tr key={index}>
                                     <td>{trunk.description}</td>
                                     <td>{trunk.channels}</td>
@@ -160,11 +162,11 @@ function ElasticTrunk() {
 
                       <div className="tableHeader mb-3">
                         <PaginationComponent
-                        // pageNumber={(e) => setPageNumber(e)}
-                        // totalPage={ringGroup.last_page}
-                        // from={ringGroup.from}
-                        // to={ringGroup.to}
-                        // total={ringGroup.total}
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={allTrunk?.last_page}
+                          from={allTrunk?.from}
+                          to={allTrunk?.to}
+                          total={allTrunk?.total}
                         />
                       </div>
                     </div>
