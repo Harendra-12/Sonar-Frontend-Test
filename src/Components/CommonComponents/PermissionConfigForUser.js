@@ -140,12 +140,12 @@ function PermissionConfigForUser() {
                     <div className='col-12' style={{ padding: '25px 23px' }}>
                       <div className="row mb-0">
                         <div className="formRow col-xl-3 col-lg-12">
-                          <div className='formLabel'>
+                          <div className='formLabel me-3'>
                             <label>
                               Select Class Type
                             </label>
                           </div>
-                          <div className='row'>
+                          <div className='row me-auto'>
                             <div className='col-xl-12 col-lg-12'>
                               <div className='row'>
                                 <div className='col-6'>
@@ -330,6 +330,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 savedPermissions.push(newArr);
               }
               setExpandedSections(prev => ({ ...prev, [moduleName]: true }))
+            } else {
+              setExpandedSections(prev => ({ ...prev, [moduleName]: false }))
             }
           }
         }
@@ -468,21 +470,21 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
       }));
     } else {
       // Collapse the Section and deselect all the permissions
-      // models.forEach(model => {
-      //   handleMasterToggle(
-      //     model.id,
-      //     model.module_section,
-      //     model.permissions,
-      //     model.table_records,
-      //     false
-      //   );
-      // });
-      // setTimeout(() => {
-      //   setExpandedSections(prev => ({
-      //     ...prev,
-      //     [sectionName]: false
-      //   }));
-      // }, 500)
+      models.forEach(model => {
+        handleMasterToggle(
+          model.id,
+          model.module_section,
+          model.permissions,
+          model.table_records,
+          false
+        );
+      });
+      setTimeout(() => {
+        setExpandedSections(prev => ({
+          ...prev,
+          [sectionName]: false
+        }));
+      }, 500)
     }
   };
 
@@ -556,12 +558,23 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 : account?.tablePermissions?.includes(record.id);
             }) || [];
 
+          const filteredPermissions = isSuperAdmin
+            ? model.permissions // Return all permissions for SuperAdmin
+            : model.permissions?.filter(permission => {
+              return isUserFilter
+                ? roleObj?.permissions?.includes(permission.id)
+                : account?.permissions?.includes(permission.id);
+            }) || [];
+
           // Return a new model object with filtered table records
           return {
             ...model,
-            table_records: filteredTableRecords
+            table_records: filteredTableRecords,
+            permissions: filteredPermissions
+
           };
-        }).filter(model => model.table_records.length > 0); // Remove models with no permitted table records
+        })
+        // .filter(model => model.table_records.length > 0); // Remove models with no permitted table records
 
         if (filteredModels.length === 0) return null;
 
@@ -644,6 +657,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                         const allModelPermissionsChecked = model.permissions.every(
                           p => rolePermissions.permissions.includes(p.id)
                         );
+                        const allActions = ["browse", "read", "edit", "add", "delete", "search"];
+
 
                         return (
                           <React.Fragment key={model.id}>
@@ -661,39 +676,49 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                   {model.slug}
                                 </div>
                               </td>
-                              {model.permissions.map(permission => (
-                                <td key={permission.id}>
-                                  <div className="my-auto position-relative mx-1">
-                                    <div class="cl-toggle-switch">
-                                      <label class="cl-switch">
-                                        <input
-                                          type="checkbox"
-                                          checked={rolePermissions.sectionPermissions.includes(model.id) && rolePermissions.permissions.includes(permission.id)}
-                                          onChange={(e) => {
-                                            handlePermissionToggle(
-                                              permission.id,
-                                              model.id,
-                                              model.module_section,
-                                              e.target.checked
-                                            );
-                                            if (permission.action === "read" || permission.action === "edit") {
-                                              const type = permission.action === "read" ? "view" : "edit";
-                                              if (e.target.checked) {
-                                                toggleRowExpand(permission.id, model.id, model.model, type, true);
-                                              } else {
-                                                toggleRowExpand(permission.id, model.id, model.model, type, false);
-                                                // Untoggle all column permissions for this type
-                                                toggleAllColumnPermissions(model, false, type);
+                              {allActions.map(action => {
+                                const permission = model.permissions.find(p => p.action === action);
+
+                                if (permission) {
+                                  return (
+                                    <td key={permission.id}>
+                                      <div className="my-auto position-relative mx-1">
+                                        <div className="cl-toggle-switch">
+                                          <label className="cl-switch">
+                                            <input
+                                              type="checkbox"
+                                              checked={
+                                                rolePermissions.sectionPermissions.includes(model.id) &&
+                                                rolePermissions.permissions.includes(permission.id)
                                               }
-                                            }
-                                          }}
-                                        />
-                                        <span></span>
-                                      </label>
-                                    </div>
-                                  </div>
-                                </td>
-                              ))}
+                                              onChange={(e) => {
+                                                handlePermissionToggle(
+                                                  permission.id,
+                                                  model.id,
+                                                  model.module_section,
+                                                  e.target.checked
+                                                );
+                                                if (permission.action === "read" || permission.action === "edit") {
+                                                  const type = permission.action === "read" ? "view" : "edit";
+                                                  if (e.target.checked) {
+                                                    toggleRowExpand(permission.id, model.id, model.model, type, true);
+                                                  } else {
+                                                    toggleRowExpand(permission.id, model.id, model.model, type, false);
+                                                    toggleAllColumnPermissions(model, false, type);
+                                                  }
+                                                }
+                                              }}
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  );
+                                } else {
+                                  return <td id={`empty-${action}`}></td>;
+                                }
+                              })}
                             </tr>
                             {model.table_records.length > 0 &&
                               expandedRows
@@ -740,10 +765,12 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                     <div className="card">
                                                       <div className="card-body">
                                                         {filteredColumnRecords.map(record => (
-                                                          <div key={record.id} className="d-flex justify-content-between">
-                                                            <label className="text-capitalize" style={{ whiteSpace: 'break-spaces' }}>
-                                                              {column.replace(/_/g, ' ')}
-                                                            </label>
+                                                          <div key={record.id} className="d-flex justify-content-between gap-2">
+                                                            <div className='scroll_text'>
+                                                              <label className="text-capitalize">
+                                                                {column.replace(/_/g, ' ')}
+                                                              </label>
+                                                            </div>
                                                             <div className="cl-toggle-switch">
                                                               <label className="cl-switch">
                                                                 <input

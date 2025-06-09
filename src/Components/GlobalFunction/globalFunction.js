@@ -546,6 +546,17 @@ export function formatTime(seconds) {
   return `${hours}:${minutes}:${secs}`;
 }
 
+export function formatTimeInHHMMSS(time) {
+  const [hours, minutes] = time.split(':');
+  const dateObj = new Date();
+  dateObj.setHours(parseInt(hours));
+  dateObj.setMinutes(parseInt(minutes));
+  dateObj.setSeconds(0);
+  dateObj.setMilliseconds(0);
+
+  return dateObj.toTimeString().slice(0, 8);
+}
+
 export const useDebounce = (value, delay) => {
   const afterTrimVal = value.trim();
   const [debouncedValue, setDebouncedValue] = useState(afterTrimVal);
