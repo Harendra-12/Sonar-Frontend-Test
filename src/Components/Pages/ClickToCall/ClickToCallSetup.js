@@ -784,7 +784,7 @@ function ClickToCallSetup() {
                                 </div>
                               </div>
                               <div className="col-xxl-5 col-xl-5 col-lg-6 col-sm-12">
-                                <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color|| "#f30000" }}>
+                                <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color || "#f30000" }}>
                                   <div className="clickToCallButton">
                                     <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
                                       <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
@@ -843,7 +843,7 @@ function ClickToCallSetup() {
 
                                           </div>
                                           <div>
-                                            <button type="button" onClick={handleSubmits}>Call Now!</button>
+                                            <button type="button" onClick={handleSubmits} disabled={true}>Call Now!</button>
                                           </div>
                                         </div> : ""}
                                       </div>

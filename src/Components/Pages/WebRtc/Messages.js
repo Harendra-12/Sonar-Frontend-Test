@@ -2841,7 +2841,7 @@ function Messages({
 
                               {contact
                                 .find((contact) => contact.id == recipient?.[1])
-                                ?.tags?.slice(0, 10)
+                                ?.tags?.slice(0, 8)
                                 .map((item, key) => (
                                   <span
                                     key={key}
@@ -2853,7 +2853,7 @@ function Messages({
                                   </span>
                                 ))}
 
-                              {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 2 && (
+                              {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 8 && (
                                 <Tippy  trigger="click"
                                   content={
                                     <ul
@@ -2883,7 +2883,7 @@ function Messages({
                                    View All +
                                     {
                                       contact.find((contact) => contact.id == recipient?.[1])?.tags
-                                        ?.length - 2
+                                        ?.length - 8
                                     }
                                   </span>
                                 </Tippy>

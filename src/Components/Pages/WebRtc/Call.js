@@ -402,7 +402,7 @@ function Call({
                     </div>
                     {item["variable_billsec"] > 0 && (
                       <div className={`col-12 mx-auto mt-2`}>
-                        <div className="contactTags">
+                        <div className="contactTags mwMaxContent">
                           <span data-id="2" className="duration">
                             Duration: {formatTime(item["variable_billsec"])}
                           </span>
@@ -449,7 +449,7 @@ function Call({
                     </div>
                     {item["variable_billsec"] > 0 && (
                       <div className={`col-12 mx-auto mt-2`}>
-                        <div className="contactTags">
+                        <div className="contactTags mwMaxContent">
                           <span data-id="2" className="duration">
                             Duration: {formatTime(item["variable_billsec"])}
                           </span>
@@ -467,7 +467,7 @@ function Call({
                 <div
                   className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
                 >
-                  <div className="contactTags">
+                  <div className="contactTags mwMaxContent">
                     <span data-id="2" className="duration">
                       Duration: {formatTime(item["variable_billsec"])}
                     </span>

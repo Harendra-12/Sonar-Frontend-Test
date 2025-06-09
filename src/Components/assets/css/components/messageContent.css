@@ -28,8 +28,12 @@
     background-color: var(--ui-accent);
     font-size: 0.68rem;
     color: #fff;
-    padding: 4px 8px;
+    padding: 4px 7px;
     margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 12px;
 }
 
 .mainContentApp .nav-link:hover {
@@ -69,7 +73,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
 }
 
 .messageOverlay .contactHeader h4 {
