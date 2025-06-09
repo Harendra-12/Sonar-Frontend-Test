@@ -1469,33 +1469,34 @@ function CampaignEditNEW() {
                                 </div>
                               </div>
                               <div className="mainContentApp m-0 bg-transparent mt-3">
-                                <div className="row">
+                                <div className="row AvailableAgents">
                                   <div className="col-xl-6" style={{ borderRight: '1px solid var(--border-color)' }}>
                                     {unmatchIdAgent?.map((item, index) => {
                                       return (
                                         <div
-                                          className="callListItem"
+                                          className={`callListItem ${selectedAgent.includes(item.id)  ? "selected"
+                                              : ""}`}
                                           key={index}
                                           onClick={() =>
                                             toggleSelectAgents(item.id)
                                           }
                                         >
                                           <div className="row align-items-center px-2">
-                                            <div className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
+                                            <div className={`checkbox-placeholder me-1 d-flex justify-content-center align-items-center ${selectedAgent.includes(item.id)
                                               ? "selected"
-                                              : ""
+                                              : "selectedNone"
                                               }`}
                                               style={{
-                                                width: "20px",
-                                                height: "20px",
-                                                border: "1px solid #ccc",
+                                                width: "16px",
+                                                height: "16px",
                                                 borderRadius: "3px",
+                                                padding: '0'
                                               }}
                                             >
                                               {selectedAgent.includes(
                                                 item.id
                                               ) && (
-                                                  <i className="fa-solid fa-check text-success"></i>
+                                                  <i className="fa-solid fa-check text-white fs-12"></i>
                                                 )}
                                             </div>
                                             <div className="col d-flex ps-0">
