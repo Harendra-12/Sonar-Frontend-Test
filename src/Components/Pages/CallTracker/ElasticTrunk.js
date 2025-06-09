@@ -21,7 +21,7 @@ function ElasticTrunk() {
     setLoading(true);
     const response = await generalGetFunction('fportaltrunk/all');
     if (response.status) {
-      setAllTrunk(response.data);
+      setAllTrunk(response?.data?.data);
       setLoading(false);
     } else {
       toast.error(response.message);
