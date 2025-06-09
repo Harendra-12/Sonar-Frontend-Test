@@ -937,7 +937,7 @@ function Navbar() {
                                       : "nav-link"
                                   }
                                 >
-                                  <div className="itemTitle">Desposition</div>
+                                  <div className="itemTitle">Disposition</div>
                                 </NavLink>
                               </li>
                             }

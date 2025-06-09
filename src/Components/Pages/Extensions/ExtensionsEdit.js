@@ -100,7 +100,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
 
     if (value) {
       async function getData() {
-        const apiData = await generalGetFunction(`/extension/${value}`);
+        const apiData = await generalGetFunction(`/extension/${value}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
         if (apiData?.status) {
           setLoading(false);
           const resetInfo = {

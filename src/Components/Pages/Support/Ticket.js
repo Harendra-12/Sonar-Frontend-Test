@@ -17,6 +17,8 @@ import CircularLoader from '../../Loader/CircularLoader';
 function Ticket() {
   const navigate = useNavigate();
   const [createTicketPopup, setCreateTicketPopup] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState();
+  const [viewTicketPopup, setViewTicketPopup] = useState(false);
   const [refreshState, setRefreshState] = useState(false);
   const [allTickets, setAllTickets] = useState([]);
   const [allClosedTickets, setAllClosedTickets] = useState([]);
@@ -93,7 +95,7 @@ function Ticket() {
         <section className="campaignPage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Dialer" />
+              <Header title="Support" />
               <div className='overviewTableWrapper'>
                 <div className='overviewTableChild'>
                   <div className='d-flex flex-wrap'>
@@ -210,7 +212,8 @@ function Ticket() {
                                       <th>Subject</th>
                                       <th>Username</th>
                                       <th>Status</th>
-                                      <th className='text-center'>View Message</th>
+                                      <th className='text-center'>View Ticket</th>
+                                      <th className='text-center'>Chat</th>
                                       <th className='text-center'>Close Ticket</th>
                                     </tr>
                                   </thead>
@@ -233,11 +236,21 @@ function Ticket() {
                                             <div className=''>
                                               <button
                                                 className="tableButton edit mx-auto"
+                                                onClick={() => { setViewTicketPopup(true); setSelectedTicket(item) }}
+                                              >
+                                                <i className="fa-regular fa-eye"></i>
+                                              </button>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <div className=''>
+                                              <button
+                                                className="tableButton mx-auto"
                                                 onClick={() => navigate('/live-chat', {
                                                   state: item.id,
                                                 })}
                                               >
-                                                <i className="fa-regular fa-eye"></i>
+                                                <i className="fa-regular fa-robot"></i>
                                               </button>
                                             </div>
                                           </td>
@@ -312,7 +325,8 @@ function Ticket() {
                                     <th>Subject</th>
                                     <th>Username</th>
                                     <th>Status</th>
-                                    <th className='text-center'>View Message</th>
+                                    <th className='text-center'>View Ticket</th>
+                                    <th className='text-center'>Chat</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -330,14 +344,28 @@ function Ticket() {
                                             <label className={`tableLabel ${item.status == 'open' ? 'success' : 'fail'}`} style={{ textTransform: 'capitalize' }}>{item.status}</label>
                                           </div>
                                         </td>
-                                        <td><div className=''>
-                                          <button
-                                            className="tableButton edit mx-auto"
-                                            onClick={() => featureUnderdevelopment()}
-                                          >
-                                            <i className="fa-regular fa-eye"></i>
-                                          </button>
-                                        </div></td>
+                                        <td>
+                                          <div className=''>
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() => { setViewTicketPopup(true); setSelectedTicket(item) }}
+                                            >
+                                              <i className="fa-regular fa-eye"></i>
+                                            </button>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div className=''>
+                                            <button
+                                              className="tableButton mx-auto"
+                                              onClick={() => navigate('/live-chat', {
+                                                state: item.id,
+                                              })}
+                                            >
+                                              <i className="fa-regular fa-robot"></i>
+                                            </button>
+                                          </div>
+                                        </td>
                                       </tr>
                                     )
                                   }) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}
@@ -359,6 +387,7 @@ function Ticket() {
                     </div>
 
                     {createTicketPopup && <CreateTicketPopup setPopup={setCreateTicketPopup} setLoading={setLoading} refresh={refreshApiCall} loading={loading} />}
+                    {viewTicketPopup && <ViewTicketPopup setPopup={setViewTicketPopup} loading={loading} setLoading={setLoading} ticketData={selectedTicket} setTicketData={setSelectedTicket} />}
                   </div>
                 </div>
               </div>
@@ -396,7 +425,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
       <div className="addNewContactPopup p-3">
         <div className="row">
           <div className="col-12 heading border-0 bg-transparent mb-0">
-            <i className="fa-light fa-user-plus" />
+            <i className="fa-solid fa-shield-plus" />
             <h5>Create Ticket</h5>
           </div>
           <div className="col-xl-12">
@@ -488,6 +517,125 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                 <span className="text">Done</span>
                 <span className="icon">
                   <i className="fa-solid fa-check" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, setTicketData }) {
+  const { register, formState: { errors }, reset } = useForm();
+
+  useEffect(() => {
+    if (ticketData) {
+      reset(ticketData);
+      setLoading(false);
+    }
+  }, [ticketData]);
+
+  const handleClosePoup = () => {
+    setPopup(false);
+    setTicketData();
+    reset();
+  }
+
+  return (
+    <div className="backdropContact">
+      {loading && <CircularLoader />}
+      <div className="addNewContactPopup p-3">
+        <div className="row">
+          <div className="col-12 heading border-0 bg-transparent mb-0">
+            <i className="fa-solid fa-shield" />
+            <h5>View Ticket</h5>
+          </div>
+          <div className="col-xl-12">
+            <div
+              className="tableContainer0"
+              style={{ maxHeight: "calc(100vh - 100px)" }}>
+              <div className='from-group'>
+                <div className="formLabel">
+                  <label for="">Title</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    disabled={true}
+                    {...register("title")}
+                  />
+                  {errors.title && (
+                    <ErrorMessage text={errors.title.message} />
+                  )}
+                </div>
+              </div>
+              <div className='from-group'>
+                <div className="formLabel">
+                  <label for="">Department</label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    disabled={true}
+                    {...register("department")}
+                  />
+                  {errors.department && (
+                    <ErrorMessage text={errors.department.message} />
+                  )}
+                </div>
+              </div>
+              <div className='from-group'>
+                <div className="formLabel">
+                  <label for="">Query Type: </label>
+                </div>
+                <div className="col-12">
+                  <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    disabled={true}
+                    {...register("query_type")}
+                  />
+                  {errors.query_type && (
+                    <ErrorMessage text={errors.query_type.message} />
+                  )}
+                </div>
+              </div>
+              <div className='from-group'>
+                <div className="formLabel">
+                  <label for="">Message</label>
+                </div>
+                <div className="col-12">
+                  <textarea
+                    type="text"
+                    name="extension"
+                    className="formItem h-auto"
+                    rows={2}
+                    disabled={true}
+                    {...register("description")}
+                  />
+                  {errors.description && (
+                    <ErrorMessage text={errors.description.message} />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-12 mt-4">
+            <div className="d-flex justify-content-between">
+              <button
+                className="panelButton gray ms-0"
+                onClick={handleClosePoup}
+              >
+                <span className="text">Close</span>
+                <span className="icon">
+                  <i className="fa-solid fa-caret-left" />
                 </span>
               </button>
             </div>

@@ -12,26 +12,36 @@ import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 function Buyers() {
   const navigate = useNavigate();
   const [allBuyers, setAllBuyers] = useState([]);
+  const [buyersDetailsData, setBuyersDetailsData] = useState()
   const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
+  const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
-  const getAllBuyers = async () => {
-    setLoading(true);
-    const response = await generalGetFunction('buyer/all');
+  const getAllBuyers = async (shouldLoad) => {
+    if (shouldLoad)
+      setLoading(true);
+    const response = await generalGetFunction(`buyer/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
     if (response.status) {
-      setAllBuyers(response.data);
+      setAllBuyers(response?.data?.data);
+      setBuyersDetailsData(response?.data);
       setLoading(false);
+      setRefreshState(false)
     } else {
       toast.error(response.message);
       setLoading(false);
+      setRefreshState(false)
     }
   };
 
   // Initial data fetch
   useEffect(() => {
-    getAllBuyers();
+    setRefreshState(true);
+    const shouldLoad = true
+    getAllBuyers(shouldLoad);
   }, [itemsPerPage, searchValue])
 
   // Handle Edit Buyer
@@ -51,7 +61,9 @@ function Buyers() {
         if (apiCall.status) {
           setLoading(false);
           toast.success("Buyer Deleted Successfully.");
-          getAllBuyers();
+          setRefreshState(true)
+          const shouldLoad = true
+          getAllBuyers(shouldLoad);
         }
       } catch (err) {
         console.log(err);
@@ -60,6 +72,11 @@ function Buyers() {
     }
   }
 
+  const getRefresh = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getAllBuyers(shouldLoad)
+  }
   return (
     <>
       <main className="mainContent">
@@ -74,7 +91,8 @@ function Buyers() {
                       <div className="heading">
                         <div className="content">
                           <h4> All Buyers
-                            <button class="clearButton" onClick={getAllBuyers}><i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? 'fa-spin' : ''}`} /></button>
+                            <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
+                              <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
                           </h4>
                           <p>You can see all list of all buyers</p>
                         </div>
@@ -101,7 +119,7 @@ function Buyers() {
                       className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
-                      {/* <div className="tableHeader">
+                      <div className="tableHeader">
                         <div className="showEntries">
                           <label>Show</label>
                           <select
@@ -117,7 +135,7 @@ function Buyers() {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox position-relative">
+                        {/* <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
                             type="text"
@@ -127,8 +145,8 @@ function Buyers() {
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}
                           />
-                        </div>
-                      </div> */}
+                        </div> */}
+                      </div>
                       <div className="tableContainer">
                         <table>
                           <thead>
@@ -149,10 +167,10 @@ function Buyers() {
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ? 
-                            // <SkeletonTableLoader col={13} row={15} />
+                            {loading ?
+                              // <SkeletonTableLoader col={13} row={15} />
                               <ThreeDotedLoader />
-                             :
+                              :
                               allBuyers && allBuyers.length > 0 ?
                                 allBuyers.map((buyer, index) => (
                                   <tr key={index}>
@@ -176,15 +194,15 @@ function Buyers() {
                         </table>
                       </div>
 
-                      {/* <div className="tableHeader mb-3">
+                      <div className="tableHeader mb-3">
                         <PaginationComponent
-                        pageNumber={(e) => setPageNumber(e)}
-                        totalPage={ringGroup.last_page}
-                        from={ringGroup.from}
-                        to={ringGroup.to}
-                        total={ringGroup.total}
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={buyersDetailsData?.last_page}
+                          from={buyersDetailsData?.from}
+                          to={buyersDetailsData?.to}
+                          total={buyersDetailsData?.total}
                         />
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                 </div>

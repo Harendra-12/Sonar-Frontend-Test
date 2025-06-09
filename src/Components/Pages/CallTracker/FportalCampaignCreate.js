@@ -211,21 +211,21 @@ function FportalCampaignCreate() {
   const getDidData = async () => {
     const getDid = await generalGetFunction("did/all?all-dids")
     if (getDid?.status) {
-      setDid(getDid.data.filter((item) => item.usages === "dialer"))
+      setDid(getDid.data.filter((item) => item.usages === "tracker"))
     }
   }
 
   const getAllBuyers = async () => {
     const res = await generalGetFunction("buyer/all");
     if (res?.status) {
-      setAllBuyers(res?.data)
+      setAllBuyers(res?.data?.data)
     }
   }
 
   const getElasticTrunk = async () => {
     const res = await generalGetFunction("/fportaltrunk/all");
     if (res?.status) {
-      setAllTrunk(res?.data)
+      setAllTrunk(res?.data?.data)
     }
   }
 

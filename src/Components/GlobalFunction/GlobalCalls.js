@@ -208,7 +208,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/search?account=${account?.account_id}`
+        `/extension/search?account=${account?.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
       );
       if (apiData?.status) {
         dispatch({
@@ -227,7 +227,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/search?account=${account?.account_id}`
+        `/extension/search?account=${account?.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
       );
       if (apiData?.status) {
         dispatch({

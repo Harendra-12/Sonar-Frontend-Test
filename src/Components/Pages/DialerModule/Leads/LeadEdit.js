@@ -306,7 +306,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
     // Set the initial state for the form
     useEffect(() => {
         if (leadData) {
-            reset({ ...leadData, country_code: leadData.country_code.replace("+", "") });
+            reset(leadData);
         }
     }, [])
 
@@ -344,7 +344,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                     <select
                                         className="formItem "
                                         defaultValue={""}
-                                    // {...register("title", { ...requiredValidator })}
+                                        {...register("title")}
                                     >
                                         <option value="Mr">Mr</option>
                                         <option value="Mrs">Mrs</option>
@@ -381,7 +381,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("middle_initial", { ...requiredValidator })}
+                                        {...register("middle_initial")}
                                     />
                                     {errors.middle_initial && (
                                         <ErrorMessage text={errors.middle_initial.message} />
@@ -412,7 +412,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                     <select
                                         className="formItem "
                                         defaultValue={""}
-                                    // {...register("gender", { ...requiredValidator })}
+                                        {...register("gender")}
                                     >
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
@@ -448,7 +448,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("alt_phone", { ...requiredValidator })}
+                                        {...register("alt_phone")}
                                     />
                                     {errors.alt_phone && (
                                         <ErrorMessage text={errors.alt_phone.message} />
@@ -464,7 +464,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="email"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("email", { ...requiredValidator, ...emailValidator })}
+                                        {...register("email", { ...emailValidator })}
                                     />
                                     {errors.email && (
                                         <ErrorMessage text={errors.email.message} />
@@ -480,7 +480,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="date"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("date_of_birth", { ...requiredValidator })}
+                                        {...register("date_of_birth")}
                                     />
                                     {errors.date_of_birth && (
                                         <ErrorMessage text={errors.date_of_birth.message} />
@@ -497,7 +497,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("address1", { ...requiredValidator })}
+                                        {...register("address1")}
                                     />
                                     {errors.address1 && (
                                         <ErrorMessage text={errors.address1.message} />
@@ -513,7 +513,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("address2", { ...requiredValidator })}
+                                        {...register("address2")}
                                     />
                                     {errors.address2 && (
                                         <ErrorMessage text={errors.address2.message} />
@@ -529,7 +529,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("city", { ...requiredValidator })}
+                                        {...register("city")}
                                     />
                                     {errors.city && (
                                         <ErrorMessage text={errors.city.message} />
@@ -545,7 +545,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("state", { ...requiredValidator })}
+                                        {...register("state")}
                                     />
                                     {errors.state && (
                                         <ErrorMessage text={errors.state.message} />
@@ -561,7 +561,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("province", { ...requiredValidator })}
+                                        {...register("province")}
                                     />
                                     {errors.province && (
                                         <ErrorMessage text={errors.province.message} />
@@ -601,7 +601,7 @@ export function LeadRowEditPopup({ leadData, setPopUp, setRefreshState, countryC
                                         type="number"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("postal_code", { ...requiredValidator })}
+                                        {...register("postal_code")}
                                     />
                                     {errors.postal_code && (
                                         <ErrorMessage text={errors.postal_code.message} />
@@ -712,7 +712,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("middle_initial", { ...requiredValidator })}
+                                        {...register("middle_initial")}
                                     />
                                     {errors.middle_initial && (
                                         <ErrorMessage text={errors.middle_initial.message} />
@@ -728,7 +728,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("last_name", { ...requiredValidator })}
+                                        {...register("last_name")}
                                     />
                                     {errors.last_name && (
                                         <ErrorMessage text={errors.last_name.message} />
@@ -779,7 +779,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("alt_phone", { ...requiredValidator })}
+                                        {...register("alt_phone")}
                                     />
                                     {errors.alt_phone && (
                                         <ErrorMessage text={errors.alt_phone.message} />
@@ -795,7 +795,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="email"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("email", { ...requiredValidator, ...emailValidator })}
+                                        {...register("email", { ...emailValidator })}
                                     />
                                     {errors.email && (
                                         <ErrorMessage text={errors.email.message} />
@@ -811,7 +811,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="date"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("date_of_birth", { ...requiredValidator })}
+                                        {...register("date_of_birth")}
                                     />
                                     {errors.date_of_birth && (
                                         <ErrorMessage text={errors.date_of_birth.message} />
@@ -828,7 +828,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("address1", { ...requiredValidator })}
+                                        {...register("address1")}
                                     />
                                     {errors.address1 && (
                                         <ErrorMessage text={errors.address1.message} />
@@ -844,7 +844,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("address2", { ...requiredValidator })}
+                                        {...register("address2")}
                                     />
                                     {errors.address2 && (
                                         <ErrorMessage text={errors.address2.message} />
@@ -860,7 +860,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("city", { ...requiredValidator })}
+                                        {...register("city")}
                                     />
                                     {errors.city && (
                                         <ErrorMessage text={errors.city.message} />
@@ -876,7 +876,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("state", { ...requiredValidator })}
+                                        {...register("state")}
                                     />
                                     {errors.state && (
                                         <ErrorMessage text={errors.state.message} />
@@ -892,7 +892,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="text"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("province", { ...requiredValidator })}
+                                        {...register("province")}
                                     />
                                     {errors.province && (
                                         <ErrorMessage text={errors.province.message} />
@@ -932,7 +932,7 @@ export function LeadRowAddPopup({ setPopUp, setRefreshState, countryCode }) {
                                         type="number"
                                         className="formItem"
                                         defaultValue={""}
-                                    // {...register("postal_code", { ...requiredValidator })}
+                                        {...register("postal_code")}
                                     />
                                     {errors.postal_code && (
                                         <ErrorMessage text={errors.postal_code.message} />

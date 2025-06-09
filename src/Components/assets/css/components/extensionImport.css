@@ -774,10 +774,16 @@ body.dark .userPermission__contentBox td[colspan="7"] {
     color: var(--immortalBlack);
     font-size: 0.75rem;
 }
-.scroll_text{
+
+.scroll_text {
     width: 150px;
     overflow: auto;
 }
-.scroll_text label{
+
+.scroll_text label {
     white-space: unset !important;
+}
+
+input[type="time"]:invalid {
+    border: 1px solid red;
 }
