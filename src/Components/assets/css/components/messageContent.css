@@ -1628,3 +1628,20 @@
 .activeCallTabMinWidth .nav-link span {
    margin-left: 0;
 }
+.addNewContactPopup .MuiPagination-ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: unset;
+    overflow-y: unset;
+    border: unset;
+}
+.addNewContactPopup .MuiPagination-ul li{
+    width: unset;
+    padding-bottom: unset;
+    font-size: unset;
+    background: unset;
+    border-radius: unset;
+    padding: unset;
+    margin-block: unset;
+}
