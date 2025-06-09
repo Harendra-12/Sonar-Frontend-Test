@@ -368,7 +368,7 @@ function CampaignEditNEW() {
     const timer = setTimeout(async () => {
       const getAgentData = async () => {
         const getAgents = await generalGetFunction(
-          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`
+          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
 
         if (getAgents?.status) {
