@@ -2750,7 +2750,7 @@ function CampaignEditNEW() {
                                             }
                                           )} */}
                                           {
-                                            allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.filter((lead) => lead.campaignlead.some((camp) => camp.campaign_id == value)).map((lead, index) => (
+                                            allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.filter((lead) => lead.campaignlead.some((camp) => camp.campaign_id == value)).map((lead, index) => (
                                               <tr>
                                                 <td>{index + 1}</td>
                                                 <td>{lead?.name}</td>
