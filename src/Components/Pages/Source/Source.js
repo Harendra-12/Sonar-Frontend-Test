@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import Header from "../../CommonComponents/Header";
 
-function Source() {
+const Source = () => {
+  const [refreshState, setRefreshState] = useState(false)
+
+  const getAllTrunk = () => {
+  }
   return (
     <>
       <main className="mainContent">
@@ -16,7 +20,7 @@ function Source() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Source</h4>
+                          <h4>Source <button class="clearButton" onClick={getAllTrunk}><i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button></h4>
                           <p>You can see all list of Source groups</p>
                         </div>
                         <div className="buttonGroup">
