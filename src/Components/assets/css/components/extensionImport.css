@@ -774,3 +774,7 @@ body.dark .userPermission__contentBox td[colspan="7"] {
     color: var(--immortalBlack);
     font-size: 0.75rem;
 }
+
+input[type="time"]:invalid {
+    border: 1px solid red;
+}

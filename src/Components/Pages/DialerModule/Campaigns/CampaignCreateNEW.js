@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, formatTimeInHHMMSS, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
@@ -167,7 +167,7 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one agent");
       return
     }
-    if (watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
       toast.error("Start Time cannot be earlier than current time");
       return
     }
@@ -184,9 +184,9 @@ function CampaignCreateNEW() {
       account_id: account.account_id,
       status: "Scheduled",
       user_id: selectedAgent,
-      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
-      start_date: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
-      end_date: `${watch().end_date.split("T")[0]} ${watch().end_date.split("T")[1]}:00`,
+      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })) } : {}),
+      start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
+      end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`,
     };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
@@ -808,15 +808,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Sunday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Sunday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -853,15 +857,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Monday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Monday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Monday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Monday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -898,15 +906,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -943,15 +955,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -988,15 +1004,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Thursday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Thursday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -1033,15 +1053,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Friday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Friday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Friday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Friday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
@@ -1078,15 +1102,19 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Saturday' ? { ...day, start_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
                                         <div className="item">
                                           <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time}
                                             onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Saturday' ? { ...day, end_time: `${e.target.value}:00` } : day
+                                                day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
                                               ));
                                             }} />
                                         </div>
