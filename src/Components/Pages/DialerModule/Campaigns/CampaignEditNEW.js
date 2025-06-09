@@ -359,6 +359,19 @@ function CampaignEditNEW() {
       toast.error("Please select at least one did");
       return;
     }
+    if (selectedAgent.length === 0) {
+      toast.error("Please select at least one agent");
+      return
+    }
+    if (watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("Start Time cannot be earlier than current time");
+      return
+    }
+    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("End Time cannot be earlier than current time");
+      return
+    }
+
     setLoading(true);
     const payload = {
       ...data,
@@ -367,7 +380,7 @@ function CampaignEditNEW() {
       status: "Active",
       ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true) } : {}),
       user_id: selectedAgent,
-      start_state: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
+      start_date: `${watch().start_date.split("T")[0]} ${watch().start_date.split("T")[1]}:00`,
       end_date: `${watch().end_date.split("T")[0]} ${watch().end_date.split("T")[1]}:00`,
     };
     const apiData = await generalPutFunction(
@@ -955,6 +968,7 @@ function CampaignEditNEW() {
                                             type="datetime-local"
                                             className="formItem"
                                             {...register("start_date", { ...requiredValidator })}
+                                            min={new Date().toISOString().slice(0, 16)}
                                           />
                                         </div>
                                         {/* <div className='col-6'>
@@ -976,6 +990,7 @@ function CampaignEditNEW() {
                                             type="datetime-local"
                                             className="formItem"
                                             {...register("end_date", { ...requiredValidator })}
+                                            min={watch().start_date}
                                           />
                                         </div>
                                         {/* <div className='col-6'>
@@ -1039,7 +1054,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1054,7 +1069,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1084,7 +1099,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1099,7 +1114,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1129,7 +1144,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1144,7 +1159,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1174,7 +1189,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1189,7 +1204,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1219,7 +1234,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1234,7 +1249,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1264,7 +1279,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1279,7 +1294,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                       <div className="col-12">
@@ -1309,7 +1324,7 @@ function CampaignEditNEW() {
                                                 ));
                                               }} />
                                           </div>
-                                          <div className="item">
+                                          {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1324,7 +1339,7 @@ function CampaignEditNEW() {
                                               </div>
                                             </div>
                                             <label className="ms-1">Full day</label>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1403,7 +1418,7 @@ function CampaignEditNEW() {
                                                   <i className="fa-solid fa-check text-success"></i>
                                                 )}
                                             </div>
-                                            <div className="col-xl-5 col-xxl-5 col-lg-5 d-flex ps-0">
+                                            <div className="col d-flex ps-0">
                                               <div className="profileHolder">
                                                 <i className="fa-light fa-user fs-5" />
                                               </div>
@@ -2555,7 +2570,7 @@ function CampaignEditNEW() {
                                                   </tr>
                                                 </thead>
                                                 <tbody>
-                                                  {allLeadFileList && allLeadFileList.data.length > 0 ? allLeadFileList.data.map((lead, index) => (
+                                                  {allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.map((lead, index) => (
                                                     <tr>
                                                       <td>{index + 1}</td>
                                                       <td>{lead?.name}</td>

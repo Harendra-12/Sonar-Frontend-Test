@@ -167,6 +167,15 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one agent");
       return
     }
+    if (watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("Start Time cannot be earlier than current time");
+      return
+    }
+    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("End Time cannot be earlier than current time");
+      return
+    }
+
     const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)
     setLoading(true);
     const payload = {
@@ -725,6 +734,7 @@ function CampaignCreateNEW() {
                                           type="datetime-local"
                                           className="formItem"
                                           {...register("start_date", { ...requiredValidator })}
+                                          min={new Date().toISOString().slice(0, 16)}
                                         />
                                       </div>
                                       {/* <div className='col-6'>
@@ -746,6 +756,7 @@ function CampaignCreateNEW() {
                                           type="datetime-local"
                                           className="formItem"
                                           {...register("end_date", { ...requiredValidator })}
+                                          min={watch().start_date}
                                         />
                                       </div>
                                       {/* <div className='col-6'>
@@ -797,7 +808,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Sunday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -805,11 +816,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Sunday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -824,7 +835,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -842,7 +853,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Monday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -850,11 +861,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Monday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -869,7 +880,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -887,7 +898,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -895,11 +906,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -914,7 +925,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -932,7 +943,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -940,11 +951,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -959,7 +970,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -977,7 +988,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Thursday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -985,11 +996,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Thursday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -1004,7 +1015,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -1022,7 +1033,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Friday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -1030,11 +1041,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Friday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -1049,7 +1060,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                     <div className="col-12">
@@ -1067,7 +1078,7 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                                day.recurring_day === 'Saturday' ? { ...day, start_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
@@ -1075,11 +1086,11 @@ function CampaignCreateNEW() {
                                           <input type="time" className="formItem"
                                             onChange={(e) => {
                                               setSchedulerInfo(prevState => prevState.map(day =>
-                                                day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                                day.recurring_day === 'Saturday' ? { ...day, end_time: `${e.target.value}:00` } : day
                                               ));
                                             }} />
                                         </div>
-                                        <div className="item">
+                                        {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
                                             <div class="cl-toggle-switch">
                                               <label class="cl-switch">
@@ -1094,7 +1105,7 @@ function CampaignCreateNEW() {
                                             </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </div>
@@ -1150,7 +1161,7 @@ function CampaignCreateNEW() {
                                           <i className="fa-solid fa-check text-success"></i>
                                         )}
                                       </div>
-                                      <div className="col-xl-7 col-xxl-7 col-lg-7 d-flex ps-0">
+                                      <div className="col d-flex ps-0">
                                         <div className="profileHolder">
                                           {item?.profile_picture ?
                                             <img
