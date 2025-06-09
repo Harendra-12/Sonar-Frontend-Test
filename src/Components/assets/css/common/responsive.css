@@ -26,6 +26,7 @@
     .mainContentApp .contactListItem h5 {
         max-width: 200px;
     }
+
     .numberActive_box p {
         font-size: 10px !important;
     }
@@ -399,9 +400,10 @@
     }
 
     .formRow.col-xl-3 {
-    width: unset;
-    /* margin-right: 70px; */
-}
+        width: unset;
+        /* margin-right: 70px; */
+    }
+
     /* .formRow.col-xl-3 {
         width: inherit !important;
         margin-right: 0px;
@@ -476,6 +478,7 @@
 
     }
 
+ 
     #sidenNavApp {
         width: 100%;
         height: 54px;
@@ -542,6 +545,10 @@
     .filePanelActive {
         height: calc(100vh - 276px);
     }
+       .w50 {
+        max-width: 90% !important;
+    }
+
 }
 
 @media (max-width: 767px) {
@@ -566,7 +573,8 @@
     .left_listClose {
         display: block;
     }
-    .tangoNavs.store__nav .nav-tabs{
+
+    .tangoNavs.store__nav .nav-tabs {
         flex-direction: column-reverse;
     }
 }
@@ -580,6 +588,6 @@
         flex-wrap: wrap;
     } */
     .overviewTableWrapper .heading {
-       flex-wrap: wrap;
+        flex-wrap: wrap;
     }
 }

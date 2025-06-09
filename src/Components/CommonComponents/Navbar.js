@@ -840,8 +840,7 @@ function Navbar() {
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/campaigns-add",
-                                        "/campaigns-edit",
+                                        "/campaign-edit",
                                         "/campaign-create",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)

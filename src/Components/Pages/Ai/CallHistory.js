@@ -81,7 +81,7 @@ const CallHistory = () => {
                                             style={{ overflow: "auto", padding: "10px 20px 0" }}
                                         >
                                             <div className="tableHeader">
-                                                <div className='d-flex justify-content-start gap-2'>
+                                                <div className='d-flex justify-content-start gap-2 flex-wrap mb-2'>
                                                     <div className="showEntries">
                                                         <label>Show</label>
                                                         <select
@@ -150,7 +150,7 @@ const CallHistory = () => {
                                                 </div>
 
 
-                                                <div className="searchBox position-relative">
+                                                <div className="searchBox position-relative mb-2">
                                                     <label>Search:</label>
                                                     <input
                                                         type="search"
