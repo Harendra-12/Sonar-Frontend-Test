@@ -73,7 +73,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
       console.log("🚦 Transport state changed:", state);
     };
 
-    userAgent.transport.stateChange.addListener(handleTransportStateChange);
+    // userAgent.transport.stateChange.addListener(handleTransportStateChange);
 
     return () => {
       userAgent.transport.stateChange.removeListener(handleTransportStateChange);

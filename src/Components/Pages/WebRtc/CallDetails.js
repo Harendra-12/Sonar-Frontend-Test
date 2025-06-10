@@ -255,7 +255,7 @@ function CallDetails({
             >
               <i className="fa-regular fa-phone" />
             </button>
-            {isVideoOn && (
+            {/* {isVideoOn && (
               <button
                 className="clearButton2 xl"
                 effect="ripple"
@@ -263,7 +263,7 @@ function CallDetails({
               >
                 <i className="fa-regular fa-video" />
               </button>
-            )}
+            )} */}
             <div className="dropdown">
               <button
                 className="clearButton2 xl"
