@@ -1171,22 +1171,22 @@ function CampaignCreateNEW() {
                                 />
                               </div>
                             </div>
-                            <div className='mainContentApp m-0 bg-transparent mt-3'>
+                            <div className='mainContentApp m-0 bg-transparent mt-3 AvailableAgents px-3'>
                               {agents?.data?.map((item, index) => {
                                 return (
-                                  <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
+                                  <div className={`callListItem  ${selectedAgent.includes(item.id) ? "selected" : ""}`} key={index} onClick={() => toggleSelectAgents(item.id)}>
                                     <div className="row align-items-center px-2">
                                       <div
-                                        className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(index) ? "selected" : ""}`}
+                                        className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(item.id) ? "selected" : "selectedNone"}`}
                                         style={{
-                                          width: "20px",
-                                          height: "26px",
-                                          border: "1px solid #ccc",
-                                          borderRadius: "3px",
+                                            width: "16px",
+                                                height: "16px",
+                                                borderRadius: "3px",
+                                                padding: '0'
                                         }}
                                       >
                                         {selectedAgent.includes(item.id) && (
-                                          <i className="fa-solid fa-check text-success"></i>
+                                          <i className="fa-solid fa-check text-white fs-12"></i>
                                         )}
                                       </div>
                                       <div className="col d-flex ps-0">

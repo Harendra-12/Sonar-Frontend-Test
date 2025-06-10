@@ -15,7 +15,7 @@ import AllActiveAgentStatus from "./AllActiveAgentStatus";
 function PhoneDashboard() {
   const navigate = useNavigate();
   // const [extensionList, setExtensionList] = useState(0);
-  const [userList, setUserList] = useState(0);
+  const [userList, setUserList] = useState([]);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const activeCall = useSelector((state) => state.activeCall);
@@ -78,7 +78,7 @@ function PhoneDashboard() {
       //   setExtensionList(apiData.data.length);
       // }
       if (userApi?.status) {
-        setUserList(userApi.data.length);
+        setUserList(userApi.data);
       }
     }
     dispatch({
@@ -545,13 +545,11 @@ function PhoneDashboard() {
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>{(userList) || 0}</h5>
+                          <h5>{(userList.length) || 0}</h5>
                           <p>
-                            {(allUser.data &&
-                              allUser.data.filter(
+                            {(userList &&
+                              userList.filter(
                                 (user) =>
-                                  user.extension !== null &&
-                                  user.extension.extension !== null &&
                                   onlineUser.includes(
                                     user?.id
                                   )

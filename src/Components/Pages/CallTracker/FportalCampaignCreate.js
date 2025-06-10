@@ -805,185 +805,203 @@ function FportalCampaignCreate() {
                     style={{ overflow: "auto", padding: "10px 20px" }}
                   >
                     <div className="row">
-                      <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{ padding: '0 30px' }}>
+                      <div className="col-12" style={{ padding: '0 30px' }}>
                         <form className="row mb-0">
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Campaign Name
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="text"
-                                className="formItem"
-                                {...register("campaign_name", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.campaign_name && (
-                                <ErrorMessage text={errors.campaign_name.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Source
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="text"
-                                className="formItem"
-                                {...register("source", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.source && (
-                                <ErrorMessage text={errors.source.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Agent Name
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="text"
-                                className="formItem"
-                                {...register("agent_name", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.agent_name && (
-                                <ErrorMessage text={errors.agent_name.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Originate Timeout
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <input
-                                type="number"
-                                className="formItem"
-                                defaultValue={60}
-                                {...register("originate_timeout", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.originate_timeout && (
-                                <ErrorMessage text={errors.originate_timeout.message} />
-                              )}
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Status
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
-                                  <input type="checkbox"
-                                    checked={isStatus}
-                                    id="showAllCheck"
-                                    onChange={() => setIsStatus(prev => !prev)}
-                                  />
-                                  <span></span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Forward Type
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <select defaultValue={"pstn"} className='formItem'
-                                {...register("forward_type", {
-                                  ...requiredValidator,
-                                })}
-                              >
-                                <option value="pstn">PSTN</option>
-                                <option value="trunk">Trunk</option>
-                              </select>
-                              {errors.forward_type && (
-                                <ErrorMessage text={errors.forward_type.message} />
-                              )}
-                            </div>
-                          </div>
-                          {
-                            watch()?.forward_type === "trunk" &&
+                          <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Trunk
+                                  Campaign Name
                                 </label>
                               </div>
                               <div className='col-6'>
-                                <select
-                                  className='formItem'
-                                  {...register("trunk_id", {
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("campaign_name", {
                                     ...requiredValidator,
                                   })}
-                                >
-                                  {allTrunkOptios?.map((data) => (
-                                    <>
-                                      <option value={data?.value}>{data?.label}</option>
-                                    </>
-
-
-                                  ))}
-                                </select>
-                                {errors.trunk_id && (
-                                  <ErrorMessage text={errors.trunk_id.message} />
+                                />
+                                {errors.campaign_name && (
+                                  <ErrorMessage text={errors.campaign_name.message} />
                                 )}
                               </div>
                             </div>
-                          }
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Start Date
-                              </label>
+                          </div>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Source
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("source", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {errors.source && (
+                                  <ErrorMessage text={errors.source.message} />
+                                )}
+                              </div>
                             </div>
-                            <div className='col-6'>
-                              <div className='row gx-2'>
-                                <div className='col-12'>
-                                  <input
-                                    type="datetime-local"
-                                    className="formItem"
-                                    {...register("start_date", { ...requiredValidator })}
-                                  />
+                          </div>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Agent Name
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("agent_name", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {errors.agent_name && (
+                                  <ErrorMessage text={errors.agent_name.message} />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Originate Timeout
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <input
+                                  type="number"
+                                  className="formItem"
+                                  defaultValue={60}
+                                  {...register("originate_timeout", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {errors.originate_timeout && (
+                                  <ErrorMessage text={errors.originate_timeout.message} />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Status
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <div class="cl-toggle-switch">
+                                  <label class="cl-switch">
+                                    <input type="checkbox"
+                                      checked={isStatus}
+                                      id="showAllCheck"
+                                      onChange={() => setIsStatus(prev => !prev)}
+                                    />
+                                    <span></span>
+                                  </label>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                End Date
-                              </label>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Forward Type
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <select defaultValue={"pstn"} className='formItem'
+                                  {...register("forward_type", {
+                                    ...requiredValidator,
+                                  })}
+                                >
+                                  <option value="pstn">PSTN</option>
+                                  <option value="trunk">Trunk</option>
+                                </select>
+                                {errors.forward_type && (
+                                  <ErrorMessage text={errors.forward_type.message} />
+                                )}
+                              </div>
                             </div>
-                            <div className='col-6'>
-                              <div className='row gx-2'>
-                                <div className='col-12'>
-                                  <input
-                                    type="datetime-local"
-                                    className="formItem"
-                                    {...register("end_date", { ...requiredValidator })}
-                                  />
+                          </div>
+                          {
+                            watch()?.forward_type === "trunk" &&
+                            <div className="col-6">
+                              <div className="formRow">
+                                <div className='formLabel'>
+                                  <label>
+                                    Trunk
+                                  </label>
+                                </div>
+                                <div className='col-6'>
+                                  <select
+                                    className='formItem'
+                                    {...register("trunk_id", {
+                                      ...requiredValidator,
+                                    })}
+                                  >
+                                    {allTrunkOptios?.map((data) => (
+                                      <>
+                                        <option value={data?.value}>{data?.label}</option>
+                                      </>
+
+
+                                    ))}
+                                  </select>
+                                  {errors.trunk_id && (
+                                    <ErrorMessage text={errors.trunk_id.message} />
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          }
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Start Date
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <div className='row gx-2'>
+                                  <div className='col-12'>
+                                    <input
+                                      type="datetime-local"
+                                      className="formItem"
+                                      {...register("start_date", { ...requiredValidator })}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  End Date
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <div className='row gx-2'>
+                                  <div className='col-12'>
+                                    <input
+                                      type="datetime-local"
+                                      className="formItem"
+                                      {...register("end_date", { ...requiredValidator })}
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1009,42 +1027,46 @@ function FportalCampaignCreate() {
                               />
                             </div>
                           </div> */}
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Did
-                              </label>
-                            </div>
-                            <div className='col-6'>
-                              <Select
-                                onChange={(selectedOptions) => {
-                                  const values = (selectedOptions || []).map((option) => option.value)
-                                  toggleSelect(values)
-                                }}
-                                value={allDidOptions.filter(option => selectedItems.includes(option.value))}
-                                isMulti
-                                options={allDidOptions}
-                                isSearchable
-                                styles={customStyles}
-                              />
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Did
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <Select
+                                  onChange={(selectedOptions) => {
+                                    const values = (selectedOptions || []).map((option) => option.value)
+                                    toggleSelect(values)
+                                  }}
+                                  value={allDidOptions.filter(option => selectedItems.includes(option.value))}
+                                  isMulti
+                                  options={allDidOptions}
+                                  isSearchable
+                                  styles={customStyles}
+                                />
+                              </div>
                             </div>
                           </div>
-                          <div className="formRow">
-                            <div className='formLabel'>
-                              <label>
-                                Active Hours
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
-                                  <input type="checkbox"
-                                    checked={isActiveHour}
-                                    id="showAllCheck"
-                                    onChange={() => setIsActiveHour(prev => !prev)}
-                                  />
-                                  <span></span>
+                          <div className="col-6">
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Active Hours
                                 </label>
+                              </div>
+                              <div className="col-6">
+                                <div class="cl-toggle-switch">
+                                  <label class="cl-switch">
+                                    <input type="checkbox"
+                                      checked={isActiveHour}
+                                      id="showAllCheck"
+                                      onChange={() => setIsActiveHour(prev => !prev)}
+                                    />
+                                    <span></span>
+                                  </label>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -1376,7 +1398,7 @@ function FportalCampaignCreate() {
                             </div>
                           }
 
-                          <div className="col-12" style={{ borderTop: '1px solid var(--border-color)' }}>
+                          <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
                             <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
                               <div className="content">
                                 <h4>List of Buyers</h4>
@@ -1535,6 +1557,7 @@ function FportalCampaignCreate() {
                         </form>
                       </div>
                     </div>
+                      
                   </div>
                 </div>
               </div>
@@ -1660,6 +1683,7 @@ function FportalCampaignCreate() {
                   />
                 </div>
               </div>
+              
               <div className="col-xl-12 mt-2">
                 <div className="d-flex justify-content-between">
                   <button

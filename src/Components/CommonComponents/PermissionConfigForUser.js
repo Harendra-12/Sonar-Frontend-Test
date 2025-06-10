@@ -321,17 +321,17 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
     const savedPermissions = [];
     for (const moduleName in permissionData) {
       const modulePermissions = permissionData[moduleName];
+      const isExpanded = modulePermissions.some((perm) => rolePermissions.sectionPermissions.includes(perm.id));
+      // Expand / Collapse a Section depending on the permissions it has
+      setExpandedSections(prev => ({ ...prev, [moduleName]: isExpanded }))
       if (Array.isArray(modulePermissions)) {
         for (const item of modulePermissions) {
-          for (const subItem of item.permissions) {
-            if (rolePermissions.sectionPermissions.includes(item.id)) {
+          if (rolePermissions.sectionPermissions.includes(item.id)) {
+            for (const subItem of item.permissions) {
               if (rolePermissions.permissions.includes(subItem.id) && (subItem.action == "read" || subItem.action == "edit") && savedPermissions.findIndex(item => item.id == subItem.id) == -1) {
                 const newArr = { ...subItem, section: item.id, type: subItem.action == "read" ? "view" : "edit" };
                 savedPermissions.push(newArr);
               }
-              setExpandedSections(prev => ({ ...prev, [moduleName]: true }))
-            } else {
-              setExpandedSections(prev => ({ ...prev, [moduleName]: false }))
             }
           }
         }

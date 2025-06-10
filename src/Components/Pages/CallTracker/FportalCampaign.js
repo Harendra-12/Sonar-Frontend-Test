@@ -350,7 +350,7 @@ function FportalCampaign() {
             </div>
           </div>
         </div>
-        <ModalComponent task={"delete"} reference={"Trunk"} />
+        <ModalComponent task={"delete"} reference={"Campaign"} />
       </section>
     </main>
 

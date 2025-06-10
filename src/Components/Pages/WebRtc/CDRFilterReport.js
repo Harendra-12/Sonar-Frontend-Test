@@ -111,6 +111,7 @@ function CdrFilterReport({ page }) {
   const [columnOriginalSequence, setColumnOriginalSequence] = useState([]);
   const [selectedColumn, setSelectedColumn] = useState("");
   const [advanceSearch, setAdvanceSearch] = useState();
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -367,6 +368,7 @@ function CdrFilterReport({ page }) {
       const apiData = await generalGetFunction(finalUrl);
       if (apiData?.response?.status == 403) {
         toast.error("You don't have permission to access this page.");
+        setNoPermissionToRead(true);
       } else if (apiData?.status === true) {
         const filteredData = apiData?.data?.data?.map((item) =>
           filterObjectKeys(item, [...apiData.filteredKeys, "id"])
@@ -1699,7 +1701,7 @@ function CdrFilterReport({ page }) {
                                     account?.sectionPermissions,
                                     account?.permissions,
                                     "read"
-                                  ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                  ) || noPermissionToRead ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
                                     cdr?.data?.map((item, index) => {
                                       const isBlocked = callBlock?.some(
                                         (block) => {

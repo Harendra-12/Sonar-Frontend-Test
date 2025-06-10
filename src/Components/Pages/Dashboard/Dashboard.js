@@ -962,7 +962,8 @@ const Dashboard = () => {
                                   </svg>
                                   <div className='circularProgressContent'>
                                     <div className="data-number">
-                                      <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList?.length}</span>
+                                      <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList.filter((user) => user.extension !== null &&
+                                        user.extension.extension !== null)?.length}</span>
                                     </div>
                                     <p>Total Online Agents</p>
                                   </div>

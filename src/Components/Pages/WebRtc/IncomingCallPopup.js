@@ -344,14 +344,14 @@ function IncomingCallPopup({
               >
                 <i className="fa-duotone fa-phone"></i>
               </button>
-              {isVideoOn && (
+              {/* {isVideoOn && (
                 <button
                   className="callButton"
                   onClick={() => handleAnswerCall("video")}
                 >
                   <i className="fa-duotone fa-video"></i>
                 </button>
-              )}
+              )} */}
               <button className="callButton hangup" onClick={decline}>
                 <i className="fa-duotone fa-phone-hangup"></i>
               </button>
@@ -464,7 +464,7 @@ function IncomingCallPopup({
               <button className="callButton hangup" onClick={decline}>
                 <i className="fa-solid fa-phone-hangup"></i>
               </button>
-              {isVideoOn && (
+              {/* {isVideoOn && (
                 <button
                   className="callButton"
                   onClick={() => handleAnswerCall("video")}
@@ -474,7 +474,7 @@ function IncomingCallPopup({
                     style={{ color: "#ff9b00" }}
                   ></i>
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

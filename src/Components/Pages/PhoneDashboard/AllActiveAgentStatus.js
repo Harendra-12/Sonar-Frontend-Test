@@ -192,7 +192,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                     aria-labelledby="nav-online-tab"
                                                     tabIndex={0}
                                                 >
-                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { width: '425px' } : undefined}>
+                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { minWidth: '425px' } : undefined}>
                                                         <table>
                                                             <thead>
                                                                 <tr>
@@ -281,7 +281,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                     aria-labelledby="nav-offline-tab"
                                                     tabIndex={0}
                                                 >
-                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { width: '425px' } : undefined}>
+                                                    <div className="tableContainer mt-0" style={isActiveCallsPage ? { minWidth: '425px' } : undefined}>
                                                         <table>
                                                             <thead>
                                                                 <tr>
