@@ -609,7 +609,7 @@ const AiPhoneNumber = () => {
           </div>
         }
 
-        {/* 
+        
         {deletePopup && (
           <div className="popup">
             <div className="container h-100">
@@ -651,7 +651,7 @@ const AiPhoneNumber = () => {
               </div>
             </div>
           </div>
-        )} */}
+        )}
 
 
       </main >
