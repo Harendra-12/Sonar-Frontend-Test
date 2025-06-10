@@ -798,7 +798,6 @@ function Messages({
 
     }
   }, [incomingMessage]);
-  console.log("contact", contact);
 
   // ===========================================================
   // if (userAgent) {
@@ -1983,6 +1982,7 @@ function Messages({
                                         profile_picture,]
                                     })
                                     setManageGroupChat(false);
+                                    setAllMessage([])
                                   }}
                                   className="w-100 "
                                 >
@@ -2045,7 +2045,7 @@ function Messages({
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <Tippy 
+                                          <Tippy
                                             content={
                                               <ul
                                                 className="contactTags"
@@ -2059,9 +2059,9 @@ function Messages({
                                               >
                                                 {item.tags?.map((tag, key) => (
                                                   // <li>
-                                                    <span data-id={key}>
-                                                      {tag.tag?.[0]?.name}
-                                                    </span>
+                                                  <span data-id={key}>
+                                                    {tag.tag?.[0]?.name}
+                                                  </span>
                                                   // </li>
                                                 ))}
                                               </ul>
@@ -2149,6 +2149,7 @@ function Messages({
                                       setIsAdmin(user.is_admin);
                                     }
                                   });
+                                  setAllMessage([])
                                 }}
                               >
                                 <div className="w-100">
@@ -2189,8 +2190,11 @@ function Messages({
                                       {/* here we are showing recent group message */}
                                       <h5 className="f-s-14 text-gray">
                                         {/* here showing last send message below of contact name for group*/}
-                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <span className="text-info fw-normal f-s-14">{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</span>}
-                                        : {item?.last_message_data?.message_text}
+                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name &&
+                                          <span className="text-info fw-normal f-s-14">
+                                            {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}
+                                          </span>}
+                                        {item?.last_message_data?.message_text && ":"} {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
                                   </div>{" "}
@@ -2856,7 +2860,7 @@ function Messages({
                                 ))}
 
                               {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 8 && (
-                                <Tippy  trigger="click"
+                                <Tippy trigger="click"
                                   content={
                                     <ul
                                       className="contactTags"
@@ -2874,7 +2878,7 @@ function Messages({
                                         // ?.tags?.slice(2)
                                         ?.tags?.map((tag, key) => (
                                           // <li key={key}  data-id={key}>
-                                            <span  key={key}  data-id={key}>{tag.tag?.[0]?.name}</span>
+                                          <span key={key} data-id={key}>{tag.tag?.[0]?.name}</span>
                                           // </li>
                                         ))}
                                     </ul>
@@ -2882,7 +2886,7 @@ function Messages({
                                   allowHTML={true}
                                 >
                                   <span className="viewAllTagBtn">
-                                   View All +
+                                    View All +
                                     {
                                       contact.find((contact) => contact.id == recipient?.[1])?.tags
                                         ?.length - 8
