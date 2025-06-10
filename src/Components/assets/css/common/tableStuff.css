@@ -496,15 +496,15 @@ table td.incoming::after {
 
 /* Hover, Focus */
 .cl-switch:hover>input {
-    opacity: 0.04;
+    opacity: 0.0;
 }
 
 .cl-switch>input:focus {
-    opacity: 0.12;
+    opacity: 0.0;
 }
 
 .cl-switch:hover>input:focus {
-    opacity: 0.16;
+    opacity: 0.0;
 }
 
 /* Active */

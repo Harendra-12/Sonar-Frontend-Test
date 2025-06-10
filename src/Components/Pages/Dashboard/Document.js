@@ -343,8 +343,8 @@ function Document({
                 <div className="statusMessage">
                   <div className={`statusWrapper ${checkDocumentStatus(account.details).includes("approved") ? "success" : "pending"}`}>
                     <div className="mx-2">
-                      <h5>
-                        <i className={`fa-regular fa-${checkDocumentStatus(account.details).includes("approved") ? "check" : "clock"} me-1`}></i>{" "}
+                      <h5 className="text-dark">
+                        <i className={`text-dark fa-regular fa-${checkDocumentStatus(account.details).includes("approved") ? "check" : "clock"} me-1`}></i>{" "}
                         {checkDocumentStatus(account.details)}
                       </h5>
                     </div>
@@ -385,7 +385,7 @@ function Document({
                                       <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
                                       {item.document.name}
                                     </b>
-                                    : <span style={{ color: '#959595' }}>{item.description}</span>
+                                    : <span style={{ color: 'var(--color-subtext)' }}>{item.description}</span>
                                   </div>{" "}
                                   {uploadDocument[key] ? (
                                     <div className="col-2 clearButton fw-bold float-end text-end">
@@ -691,7 +691,7 @@ function Document({
                                               setOpenNumber(key);
                                             }}
                                           >
-                                            <div className="iconWrapper">
+                                            <div className="clearButton2">
                                               <i className="fa-solid fa-ellipsis"></i>
                                             </div>
                                           </div>

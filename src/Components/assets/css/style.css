@@ -271,8 +271,9 @@
   --knowledge-leftinfo: #f9f9f9;
   --bg_1: #dbedff;
   --bg-form1: #0c54a117;
---muted-text-color: rgb(143, 140, 140);
-   --filter: invert(1) grayscale(0) brightness(0);
+  --muted-text-color: rgb(143, 140, 140);
+  --filter: invert(1) grayscale(0) brightness(0);
+  --batch_bg: #f5f7fa;
 
 }
 
@@ -435,7 +436,8 @@
   --knowledge-leftinfo: #242832;
   --bg_1: #3f4750;
   --bg-form1: #00000030;
-   --filter: invert(1) grayscale(100%) brightness(200%);
+  --filter: invert(1) grayscale(100%) brightness(200%);
+  --batch_bg: #2d3a4f69;
 
 }
 

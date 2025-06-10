@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import Select from 'react-select';
+import { requiredValidator } from '../../validations/validation';
 
 const AiBatchCall = () => {
     const [refreshState, setRefreshState] = useState(false)
-     const [isClearable, setIsClearable] = useState(true);
-  const [isSearchable, setIsSearchable] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRtl, setIsRtl] = useState(false);
-    
+    const [isClearable, setIsClearable] = useState(true);
+    const [isSearchable, setIsSearchable] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRtl, setIsRtl] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("");
+
 
     const handleRefreshBtnClicked = () => {
         setRefreshState(true)
@@ -66,26 +68,6 @@ const AiBatchCall = () => {
                 </section>
             </main>
 
-
-            {/* <div class="offcanvas offcanvas-end w-30" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header" style={{ borderBlockEnd: '1px solid var(--me-border1)' }}>
-                    <div>
-                        <h5 class="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
-                        <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>See all the details of this Call History</p>
-                    </div>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body p-3">
-                    <div className='heading'>
-                        <h5 class="offcanvas-title" id="offcanvasRightLabel">06/03/2025 14:40 web_call</h5>
-                        <button className=' bg-transparent border-0 text-danger'><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                    <div className="content">
-
-                    </div>
-                </div>
-            </div> */}
-
             <div class="offcanvas offcanvas-end batchCallCanvas" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header">
                     <button type="button" class="aitable_button bg-transparent" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -128,7 +110,7 @@ const AiBatchCall = () => {
                                     isRtl={isRtl}
                                     isSearchable={isSearchable}
                                     name="color"
-                                    // options={colourOptions}
+                                // options={colourOptions}
                                 />
                             </div>
                         </div>
@@ -137,39 +119,82 @@ const AiBatchCall = () => {
                                 <label> Upload Recipients</label>
                             </div>
                             <div className="col-12">
-                               <button type="button" class="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
+                                <button type="button" class="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
                             </div>
                         </div>
                         <div className="formRow flex-column align-items-start">
-                           
                             <div className="col-12">
-                                  <div className="popup-border text-center p-2">
-                              <input
-                                type="file"
-                                className="form-control-file d-none"
-                                id="fileInput"
-                                accept=".csv"
-                              />
-                              <label
-                                htmlFor="fileInput"
-                                className="d-block"
-                              >
-                                <div className="test-user text-center">
-                                  <i
-                                    className="fa-solid fa-cloud-arrow-up"
-                                    style={{ fontSize: 30 }}
-                                  />
-                                  <p className="mb-0 mt-2 text-center">
-                                 Choose a csv or drag & drop it here.
-                                  </p>
-                                  <span className='text2'>
-                                   Up to 50 MB
-                                  </span>
+                                <div className="popup-border text-center p-2">
+                                    <input
+                                        type="file"
+                                        className="form-control-file d-none"
+                                        id="fileInput"
+                                        accept=".csv"
+                                    />
+                                    <label
+                                        htmlFor="fileInput"
+                                        className="d-block"
+                                    >
+                                        <div className="test-user text-center">
+                                            <i
+                                                className="fa-solid fa-cloud-arrow-up"
+                                                style={{ fontSize: 30 }}
+                                            />
+                                            <p className="mb-0 mt-2 text-center">
+                                                Choose a csv or drag & drop it here.
+                                            </p>
+                                            <span className='text2'>
+                                                Up to 50 MB
+                                            </span>
+                                        </div>
+                                    </label>
+
                                 </div>
-                              </label>
-                            
                             </div>
+                        </div>
+                        <div className="formLabel">
+                            <label> When to send the calls</label>
+                        </div>
+                        <div className='row radio-input'>
+                            <div className='col-6'>
+                                <label class="label radioLabel">
+                                    <p class="text">Send Now</p>
+                                    <input type="radio" id="value-2" name="value-radio" value="value-2" />
+                                </label>
                             </div>
+                            <div className='col-6'>
+                                <label class="label radioLabel">
+                                    <p class="text">Schedule</p>
+                                    <input type="radio" id="value-2" name="value-radio" value="schedule"
+                                        onChange={(e) => setSelectedOption(e.target.value)} />
+                                </label>
+                            </div>
+                            {selectedOption === "schedule" && (
+                                <div className="row openFormBox">
+                                    <div className="col-12">
+                                        <div className="formRow p-0">
+                                            <input
+                                                type="datetime-local"
+                                                className="formItem"
+                                            // {...register("start_date", { ...requiredValidator })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isDisabled={false}
+                                            isLoading={false}
+                                            isClearable={true}
+                                            isRtl={false}
+                                            isSearchable={true}
+                                            name="color"
+                                        // options={colourOptions}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

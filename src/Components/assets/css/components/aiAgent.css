@@ -363,7 +363,7 @@
 }
 
 .batchCallCanvas .offcanvas-body .right_body {
-    background: #f5f7fa;
+    background: var(--batch_bg);
     width: 100%;
 }
 
@@ -385,23 +385,123 @@
     justify-content: center;
     align-items: center;
 }
+
 .batchCallCanvas .test-user {
     padding: 24px 50px;
 }
+
 .batchCallCanvas .test-user {
     color: var(--black);
 }
+
 .batchCallCanvas .popup-border p {
     font-size: 0.875rem;
     text-align: left;
 }
+
 .batchCallCanvas p {
     font-weight: 600;
 }
- .batchCallCanvas span.text2 {
+
+.batchCallCanvas span.text2 {
     font-size: 0.75rem;
     color: var(--muted-text-color);
 }
+
 .batchCallCanvas .popup-border:hover {
     border-color: var(--ui-accent);
+}
+
+/* ================== radio check */
+
+/* From Uiverse.io by Na3ar-17 */
+/* .radio-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} */
+
+/* .radio-input * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+} */
+
+.radio-input .radioLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--me-border1);
+    cursor: pointer;
+    position: relative;
+}
+
+.radio-input .radioLabel:hover {
+    transition: all 0.2s ease;
+    border-color: var(--ui-accent);
+}
+
+.radio-input .radioLabel:has(input:checked) {
+    border-color: var(--ui-accent);
+}
+
+/* .openFormBox{
+    display: none;
+}
+.radio-input .radioLabel:has(input:checked) >*.openFormBox {
+  display: block;
+} */
+.radio-input .radioLabel .text {
+    color: var(--immortalBlack);
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.radio-input .radioLabel input[type="radio"] {
+    background-color: #d2d2f3;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-input .radioLabel input[type="radio"]:checked {
+    background-color: #435dd8;
+    -webkit-animation: puls 0.7s forwards;
+    animation: pulse 0.7s forwards;
+}
+
+.radio-input .radioLabel input[type="radio"]:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background-color: #fff;
+    transform: scale(0);
+}
+
+.radio-input .radioLabel input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
 }

@@ -19,6 +19,9 @@
     box-shadow: rgba(134, 144, 165, 0.212) 0 0 10px;
     border-radius: 15px;
 }
+.profileView .baseDetails.wrpDetails__box {
+    box-shadow: none;
+}
 
 .profilenames {
 
@@ -135,6 +138,7 @@
     font-weight: 500;
     font-size: 1rem;
     font-family: 'Open Sans';
+    color: var(--immortalBlack);
 }
 
 .profileView .profileDetailsHolder .header {
@@ -185,7 +189,7 @@
     justify-content: space-between;
     width: 100%;
     position: absolute;
-    top: -20px;
+    top: -30px;
 }
 
 .progressStepWrapper .stepWrapper.success .step {
@@ -205,7 +209,7 @@
 }
 
 .progressStepWrapper .stepWrapper.success label {
-    color: #000 !important;
+    color: var(--immortalBlack) !important;
 }
 
 .progressStepWrapper .stepWrapper {
