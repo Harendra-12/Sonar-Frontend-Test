@@ -302,3 +302,106 @@
      background-color: #34364d;
      color: #ffffff !important;
      } */
+
+.addExportBtnListing {
+    background-color: #00ab2b;
+    border-left: 1px solid #ffffff75 !important;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+}
+
+.panelButton.exportGroupBtn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.listingDorp .dropdown-menu.show {
+    min-width: 450px;
+    background: var(--ele-color2);
+}
+
+.dropdownHerder {
+    padding-inline: 20px;
+    border-bottom: 1px solid var(--me-border1);
+    margin-bottom: 10px;
+}
+
+.dropdownHerder h6 {
+    color: var(--form-label);
+}
+
+.dropdownHerder p {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-subtext);
+}
+
+.listingDorp .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--me-border1);
+}
+
+.text_success {
+    color: rgb(0 197 106);
+}
+
+.batchCallCanvas {
+    width: calc(100vw - 250px) !important;
+}
+
+.batchCallCanvas .offcanvas-body {
+    display: flex;
+}
+
+.batchCallCanvas .offcanvas-body .right_body {
+    background: #f5f7fa;
+    width: 100%;
+}
+
+.batchCallCanvas .offcanvas-body .left_body {
+    max-width: 400px;
+    width: 100%;
+    padding-inline: 15px;
+}
+
+.batchCallCanvas .popup-border {
+    border: 2px dotted var(--border-color);
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.batchCallCanvas .popup-border {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.batchCallCanvas .test-user {
+    padding: 24px 50px;
+}
+.batchCallCanvas .test-user {
+    color: var(--black);
+}
+.batchCallCanvas .popup-border p {
+    font-size: 0.875rem;
+    text-align: left;
+}
+.batchCallCanvas p {
+    font-weight: 600;
+}
+ .batchCallCanvas span.text2 {
+    font-size: 0.75rem;
+    color: var(--muted-text-color);
+}
+.batchCallCanvas .popup-border:hover {
+    border-color: var(--ui-accent);
+}
