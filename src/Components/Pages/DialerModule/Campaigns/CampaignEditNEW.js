@@ -3162,70 +3162,221 @@ export function LeadFileEditPopup({ setPopup, leadFile, campaignId, setCircularL
               />
             </div>
           </div>
-          <div className="col-xl-12 mt-3">
-            <div
-              className="tableContainer mt-0"
-              style={{ maxHeight: "calc(-400px + 100vh)" }}
-            >
-              {loading ? <ThreeDotedLoader /> :
-                <table>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Country code</th>
-                      <th>Phone Number</th>
-                      <th>Email</th>
-                      <th>Address</th>
-                      <th>City</th>
-                      <th>State</th>
-                      <th>Zip Code</th>
-                      <th>Gender</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allLeadData && allLeadData?.data?.length > 0 ? allLeadData?.data?.map((item, index) => {
-                      return (
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.first_name}</td>
-                          <td>{item.last_name}</td>
-                          <td>{item.country_code}</td>
-                          <td>{item.phone_number}</td>
-                          <td>{item.email}</td>
-                          <td>{item.address1}</td>
-                          <td>{item.city}</td>
-                          <td>{item.state}</td>
-                          <td>{item.postal_code}</td>
-                          <td>{item.gender == "M" ? "Male" : item.gender == "F" ? "Female" : "Other"}</td>
-                          <td>
-                            <input
-                              type="checkbox"
-                              checked={leadSelectionArr.includes(item.id)}
-                              onChange={() =>
-                                setLeadSelectionArr((prev) => {
-                                  if (prev.includes(item.id)) {
-                                    return prev.filter((id) => id !== item.id);
-                                  } else {
-                                    return [...prev, item.id];
-                                  }
-                                })
-                              }
-                            />
-                          </td>
-                        </tr>
-                      )
-                    }) : ""}
-                  </tbody>
-                </table>
-              }
+
+
+          {/* ============================ table tab */}
+
+          <nav className="tangoNavs historyNav">
+            <div className="nav nav-tabs" id="nav-tab" role="tablist">
+              <button
+                className="nav-link active"
+                id="nav-user-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-user"
+                type="button"
+                role="tab"
+                aria-controls="nav-user"
+                aria-selected="true"
+              >
+                All
+              </button>
+              <button
+                className="nav-link"
+                id="nav-exten-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-exten"
+                type="button"
+                role="tab"
+                aria-controls="nav-exten"
+                aria-selected="false"
+              >
+                Disable
+              </button>
+
             </div>
+          </nav>
+
+          <div
+            className="tab-content"
+            id="nav-tabContent"
+            style={{
+              border: "none",
+            }}
+          >
+
+
+            <div
+              className="tab-pane fade show active"
+              id="nav-user"
+              role="tabpanel"
+              aria-labelledby="nav-user-tab"
+              tabindex="0" >
+
+              <div className="mt-3">
+                <div className="tableContainer mt-0" style={{ maxHeight: "calc(-400px + 100vh)" }} >
+                  {loading ? <ThreeDotedLoader /> :
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Country code</th>
+                          <th>Phone Number</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>City</th>
+                          <th>State</th>
+                          <th>Zip Code</th>
+                          <th>Gender</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allLeadData && allLeadData?.data?.length > 0 ? allLeadData?.data?.map((item, index) => {
+                          return (
+                            <tr>
+                              <td>{index + 1}</td>
+                              <td>{item.first_name}</td>
+                              <td>{item.last_name}</td>
+                              <td>{item.country_code}</td>
+                              <td>{item.phone_number}</td>
+                              <td>{item.email}</td>
+                              <td>{item.address1}</td>
+                              <td>{item.city}</td>
+                              <td>{item.state}</td>
+                              <td>{item.postal_code}</td>
+                              <td>{item.gender == "M" ? "Male" : item.gender == "F" ? "Female" : "Other"}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={leadSelectionArr.includes(item.id)}
+                                  onChange={() =>
+                                    setLeadSelectionArr((prev) => {
+                                      if (prev.includes(item.id)) {
+                                        return prev.filter((id) => id !== item.id);
+                                      } else {
+                                        return [...prev, item.id];
+                                      }
+                                    })
+                                  }
+                                />
+                              </td>
+                            </tr>
+                          )
+                        }) : ""}
+                      </tbody>
+                    </table>
+                  }
+                </div>
+                  <div className="d-flex justify-content-end gap-2">
+                  <button className="panelButton gray " onClick={() => setPopup(false)}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark" />
+                    </span>
+                  </button>
+                  <button className="panelButton delete " onClick={handleLeadBlock}>
+                    <span className="text">Disable</span>
+                    <span className="icon">
+                      <i className="fa-light fa-octagon-exclamation" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="tab-pane fade"
+              id="nav-exten"
+              role="tabpanel"
+              aria-labelledby="nav-exten-tab"
+              tabindex="0">
+
+              <div className="mt-3">
+                <div className="tableContainer mt-0" style={{ maxHeight: "calc(-400px + 100vh)" }} >
+                  {loading ? <ThreeDotedLoader /> :
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Country code</th>
+                          <th>Phone Number</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>City</th>
+                          <th>State</th>
+                          <th>Zip Code</th>
+                          <th>Gender</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allLeadData && allLeadData?.data?.length > 0 ? allLeadData?.data?.map((item, index) => {
+                          return (
+                            <tr>
+                              <td>{index + 1}</td>
+                              <td>{item.first_name}</td>
+                              <td>{item.last_name}</td>
+                              <td>{item.country_code}</td>
+                              <td>{item.phone_number}</td>
+                              <td>{item.email}</td>
+                              <td>{item.address1}</td>
+                              <td>{item.city}</td>
+                              <td>{item.state}</td>
+                              <td>{item.postal_code}</td>
+                              <td>{item.gender == "M" ? "Male" : item.gender == "F" ? "Female" : "Other"}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={leadSelectionArr.includes(item.id)}
+                                  onChange={() =>
+                                    setLeadSelectionArr((prev) => {
+                                      if (prev.includes(item.id)) {
+                                        return prev.filter((id) => id !== item.id);
+                                      } else {
+                                        return [...prev, item.id];
+                                      }
+                                    })
+                                  }
+                                />
+                              </td>
+                            </tr>
+                          )
+                        }) : ""}
+                      </tbody>
+                    </table>
+                  }
+                </div>
+                <div className="d-flex justify-content-end gap-2">
+                  <button className="panelButton gray " onClick={() => setPopup(false)}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark" />
+                    </span>
+                  </button>
+                  <button className="panelButton delete " onClick={handleLeadBlock}>
+                    <span className="text">Disable</span>
+                    <span className="icon">
+                      <i className="fa-light fa-octagon-exclamation" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div className="col-xl-12 mt-2">
-            <div className="d-flex justify-content-between">
-              <button className="panelButton gray ms-0" onClick={() => setPopup(false)}>
+
+
+
+
+
+
+
+          {/* <div className="col-xl-12 border-top mt-2 pt-3">
+            <div className="  d-flex justify-content-end">
+              <button className="panelButton gray " onClick={() => setPopup(false)}>
                 <span className="text">Close</span>
                 <span className="icon">
                   <i className="fa-light fa-xmark" />
@@ -3238,7 +3389,7 @@ export function LeadFileEditPopup({ setPopup, leadFile, campaignId, setCircularL
                 </span>
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
