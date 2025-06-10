@@ -161,8 +161,8 @@ function FportalCampaignEdit() {
         priority: -1,
         monthly_call_limit: item?.monthly_call_limit ?? 0,
         daily_call_limit: item?.daily_call_limit ?? 0,
-        live_call_limit: item?.live_call_limit ?? 0,
-        total_send_call: item?.total_send_call ?? 0
+        live_call_limit: item?.live_call_limit ?? 1,
+        // total_send_call: item?.total_send_call ?? 0
       }))
       setBulkAddBuyersList((prev) => [...prev, ...arr]);
       setSelectedBuyers([])
@@ -241,7 +241,7 @@ function FportalCampaignEdit() {
         monthly_call_limit: item?.monthly_call_limit,
         daily_call_limit: item?.daily_call_limit,
         live_call_limit: item?.live_call_limit,
-        total_send_call: item?.total_send_call
+        // total_send_call: item?.total_send_call
       }))
       setBulkAddBuyersList(arr);
 
@@ -1530,7 +1530,7 @@ function FportalCampaignEdit() {
                                       />
                                     </div>
                                   </div>
-                                  <div className="formRow col">
+                                  {/* <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
                                         Total Sent Call
@@ -1552,7 +1552,7 @@ function FportalCampaignEdit() {
                                         }}
                                       />
                                     </div>
-                                  </div>
+                                  </div> */}
                                   {bulkAddBuyersList.length === 1 ? (
                                     ""
                                   ) : (

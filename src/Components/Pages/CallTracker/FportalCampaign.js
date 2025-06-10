@@ -163,7 +163,7 @@ function FportalCampaign() {
                             <th>Phone Code</th>
                             <th>PSTN No.</th>
                             <th>Agent</th>
-                            <th>Progress</th>
+                            {/* <th>Progress</th> */}
                             <th>Edit</th>
                             <th>Delete</th>
                           </tr>
@@ -190,7 +190,7 @@ function FportalCampaign() {
                                   <td>{campaign.country_prefix}</td>
                                   <td>{campaign.pstn_number}</td>
                                   <td>{campaign.agent_name}</td>
-                                  <td className="">
+                                  {/* <td className="">
                                     <div
                                       className="specialProgressWrap"
                                       style={{ cursor: "pointer" }}
@@ -212,7 +212,7 @@ function FportalCampaign() {
                                       <div className="specialProgressText">
                                         <p>0.00%</p>
                                         <span>0 of 1000</span>
-                                      </div>
+                                      </div> */}
                                       {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
@@ -325,8 +325,8 @@ function FportalCampaign() {
                                   </li>
                                 </ul>
                               </div> */}
-                                    </div>
-                                  </td>
+                                    {/* </div>
+                                  </td> */}
                                   <td><button className="tableButton edit" onClick={() => handleConfigEdit(campaign.id)}><i className='fa-solid fa-pen' /></button></td>
                                   <td><button className="tableButton delete" onClick={() => handleDeleteConfig(campaign.id)}><i className='fa-solid fa-trash' /></button></td>
                                 </tr>
