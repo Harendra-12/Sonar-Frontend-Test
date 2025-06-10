@@ -340,7 +340,7 @@ function Dialpad({
                     <i className="fa-thin fa-phone" />
                   </button>
                 </div>
-                {isVideoOn ? (
+                {/* {isVideoOn ? (
                   <div onClick={() => onSubmit("video")} className="ms-3">
                     <button className="callButton">
                       <i className="fa-thin fa-video" />
@@ -348,7 +348,7 @@ function Dialpad({
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             </div>
           </div>

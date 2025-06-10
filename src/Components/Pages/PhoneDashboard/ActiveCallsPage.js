@@ -263,8 +263,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
     const resetResizeContent = () => {
         if (leftPanel.current && rightPanel.current) {
-            leftPanel.current.resize(50);
-            rightPanel.current.resize(50);
+            leftPanel.current.resize(45);
+            rightPanel.current.resize(55);
         }
     }
 
@@ -301,7 +301,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <PanelGroup autoSaveId="example" direction="horizontal">
-                                        <Panel className='leftPanel' defaultSize={50} collapsible={true} minSize={25} ref={leftPanel}>
+                                        <Panel className='leftPanel' defaultSize={45} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
@@ -411,7 +411,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 </button>
                                             </Tippy>
                                         </PanelResizeHandle>
-                                        <Panel className='rightPanel' defaultSize={50} collapsible={true} minSize={25} ref={rightPanel}>
+                                        <Panel className='rightPanel' defaultSize={55} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className='activeCallsAgentWrapper position-relative'>
                                                 <div className='d-flex'>
                                                     <Tippy content="Minimize this window">
@@ -454,7 +454,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                         <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
                                                     </div>
                                                 </nav> */}
-                                                                            <div className="tab-content mt-3" id="nav-tabContent" style={{ paddingTop: '35px' }}>
+                                                                            <div className="tab-content mt-3" id="nav-tabContent" style={{ paddingTop: '55px' }}>
                                                                                 <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabindex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>

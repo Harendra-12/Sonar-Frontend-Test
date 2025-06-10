@@ -53,7 +53,9 @@ function Members({
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
 
   useEffect(() => {
-    setCurentCallRoom(incomingCall.filter((item) => item?.room_id === roomName));
+    setCurentCallRoom(
+      incomingCall.filter((item) => item?.room_id === roomName)
+    );
   }, [incomingCall]);
   // Function to check if any user added in room and if added then update its value in incomingCall
   useEffect(() => {
@@ -129,30 +131,43 @@ function Members({
   // After disconnect this function will trigger to send socket data to other user about call state\
   useEffect(() => {
     const handleRoomDisconnect = () => {
-      console.log("currentCallRoom", incomingCall.filter((item) => item?.room_id === roomName),incomingCall);
+      console.log(
+        "currentCallRoom",
+        incomingCall.filter((item) => item?.room_id === roomName),
+        incomingCall
+      );
 
-      if (incomingCall.filter((item) => item?.room_id === roomName)[0]?.isOtherMember) {
+      if (
+        incomingCall.filter((item) => item?.room_id === roomName)[0]
+          ?.isOtherMember
+      ) {
         socketSendMessage({
           action: "peercall",
-          chat_call_id: incomingCall.filter((item) => item?.room_id === roomName)[0].id,
+          chat_call_id: incomingCall.filter(
+            (item) => item?.room_id === roomName
+          )?.[0]?.id,
           hangup_cause: "success",
           room_id: roomName,
           duration: 120,
           status: "ended",
         });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+        setCalling(false); // Update parent state if needed
       } else {
         socketSendMessage({
           action: "peercall",
-          chat_call_id: incomingCall.filter((item) => item?.room_id === roomName)[0].id,
+          chat_call_id: incomingCall.filter(
+            (item) => item?.room_id === roomName
+          )?.[0]?.id,
           hangup_cause: "originator_cancel",
           room_id: roomName,
           duration: 0,
           status: "ended",
         });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+        setCalling(false); // Update parent state if needed
       }
     };
 
@@ -162,7 +177,7 @@ function Members({
     return () => {
       room.off("disconnected", handleRoomDisconnect);
     };
-  }, [room,incomingCall]);
+  }, [room, incomingCall]);
 
   // Function to disconnect user when found condition to be true
   const handleDisconnect = async () => {
@@ -171,7 +186,6 @@ function Members({
       dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
       setCalling(false); // Update parent state if needed
       await room.disconnect();
-      
     } catch (error) {
       console.error("Failed to disconnect from room:", error);
     }

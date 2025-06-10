@@ -46,7 +46,11 @@ function Campaigns() {
 
   async function startCampaign(id) {
     generalGetFunction(`/campaign/start/${id}`).then((res) => {
-      toast.success(res.message);
+      if (res.status) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.response.data.error);
+      }
     }).catch((err) => {
       toast.error(err.response.data.message)
     })
@@ -277,103 +281,105 @@ function Campaigns() {
                                                   : "N/A"}
                                               </td>
                                               <td className="">
-                                                <Tippy content={
-                                                  <div className="specialProgressWrapDetails">
-                                                    <div className="d-flex align-items-center justify-content-start mb-1">
-                                                      <p
-                                                        style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
-                                                      >
-                                                        LEADS IN TOTAL
-                                                      </p>
-                                                      <span className="test-demos ms-2">{item?.total_leads || 0}</span>
+                                                <Tippy
+                                                  content={
+                                                    <div className="specialProgressWrapDetails">
+                                                      <div className="d-flex align-items-center justify-content-start mb-1">
+                                                        <p
+                                                          style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
+                                                        >
+                                                          LEADS IN TOTAL
+                                                        </p>
+                                                        <span className="test-demos ms-2">{item?.total_leads || 0}</span>
+                                                      </div>
+                                                      <ul>
+                                                        <li>
+                                                          <p
+                                                            style={{
+                                                              color: "rgb(92, 92, 92)",
+                                                              fontSize: 12,
+                                                              fontWeight: 400
+                                                            }}
+                                                            className="p-0 m-0"
+                                                          >
+                                                            Successful Records
+                                                          </p>
+                                                          <div className="specialProgressWrap">
+                                                            <div className="specialProgress">
+                                                              <div className='segment success'
+                                                                style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                              >
+                                                              </div>
+                                                              <div className='segment pending'
+                                                                style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                              >
+                                                              </div>
+                                                            </div>
+                                                            <div className="specialProgressText">
+                                                              <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                              <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0}</span>
+                                                            </div>
+                                                          </div>
+                                                        </li>
+                                                        <li>
+                                                          <p
+                                                            style={{
+                                                              color: "rgb(92, 92, 92)",
+                                                              fontSize: 12,
+                                                              fontWeight: 400
+                                                            }}
+                                                            className="p-0 m-0"
+                                                          >
+                                                            Failed records
+                                                          </p>
+                                                          <div className="specialProgressWrap">
+                                                            <div className="specialProgress">
+                                                              <div className='segment fail'
+                                                                style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                              >
+                                                              </div>
+                                                              <div className='segment pending'
+                                                                style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}>
+                                                              </div>
+                                                            </div>
+                                                            <div className="specialProgressText">
+                                                              <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                              <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0}</span>
+                                                            </div>
+                                                          </div>
+                                                        </li>
+                                                        <li>
+                                                          <p
+                                                            style={{
+                                                              color: "rgb(92, 92, 92)",
+                                                              fontSize: 12,
+                                                              fontWeight: 400
+                                                            }}
+                                                            className="p-0 m-0"
+                                                          >
+                                                            Untouched records
+                                                          </p>
+                                                          <div className="specialProgressWrap">
+                                                            <div className="specialProgress">
+                                                              <div className='segment success'
+                                                                style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                              >
+                                                              </div>
+                                                              <div className='segment pending'
+                                                                style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                              >
+                                                              </div>
+                                                            </div>
+                                                            <div className="specialProgressText">
+                                                              <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                              <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0}</span>
+                                                            </div>
+                                                          </div>
+                                                        </li>
+                                                      </ul>
                                                     </div>
-                                                    <ul>
-                                                      <li>
-                                                        <p
-                                                          style={{
-                                                            color: "rgb(92, 92, 92)",
-                                                            fontSize: 12,
-                                                            fontWeight: 400
-                                                          }}
-                                                          className="p-0 m-0"
-                                                        >
-                                                          Successful Records
-                                                        </p>
-                                                        <div className="specialProgressWrap">
-                                                          <div className="specialProgress">
-                                                            <div className='segment success'
-                                                              style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
-                                                            >
-                                                            </div>
-                                                            <div className='segment pending'
-                                                              style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
-                                                            >
-                                                            </div>
-                                                          </div>
-                                                          <div className="specialProgressText">
-                                                            <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
-                                                            <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.complete_records : item?.complete_records || 0}</span>
-                                                          </div>
-                                                        </div>
-                                                      </li>
-                                                      <li>
-                                                        <p
-                                                          style={{
-                                                            color: "rgb(92, 92, 92)",
-                                                            fontSize: 12,
-                                                            fontWeight: 400
-                                                          }}
-                                                          className="p-0 m-0"
-                                                        >
-                                                          Failed records
-                                                        </p>
-                                                        <div className="specialProgressWrap">
-                                                          <div className="specialProgress">
-                                                            <div className='segment fail'
-                                                              style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
-                                                            >
-                                                            </div>
-                                                            <div className='segment pending'
-                                                              style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}>
-                                                            </div>
-                                                          </div>
-                                                          <div className="specialProgressText">
-                                                            <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
-                                                            <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.failed_records : item?.failed_records || 0}</span>
-                                                          </div>
-                                                        </div>
-                                                      </li>
-                                                      <li>
-                                                        <p
-                                                          style={{
-                                                            color: "rgb(92, 92, 92)",
-                                                            fontSize: 12,
-                                                            fontWeight: 400
-                                                          }}
-                                                          className="p-0 m-0"
-                                                        >
-                                                          Untouched records
-                                                        </p>
-                                                        <div className="specialProgressWrap">
-                                                          <div className="specialProgress">
-                                                            <div className='segment success'
-                                                              style={{ width: `${((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
-                                                            >
-                                                            </div>
-                                                            <div className='segment pending'
-                                                              style={{ width: `${parseFloat(item?.total_leads) === 0 ? "100" : (100 - (parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
-                                                            >
-                                                            </div>
-                                                          </div>
-                                                          <div className="specialProgressText">
-                                                            <p>{parseFloat(item?.total_leads) === 0 ? "0.00" : ((parseFloat(campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
-                                                            <span>{campaignSocketData?.isCampaignLive ? campaignSocketData.untouched_leads : item?.untouched_leads || 0}</span>
-                                                          </div>
-                                                        </div>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
-                                                } allowHTML={true}>
+                                                  }
+                                                  allowHTML={true}>
                                                   <div
                                                     className="specialProgressWrap"
                                                     style={{ cursor: "pointer" }}

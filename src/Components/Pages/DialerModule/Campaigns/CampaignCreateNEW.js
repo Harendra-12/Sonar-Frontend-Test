@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../../Loader/CircularLoader';
 import Select from "react-select";
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
+import ThreeDotedLoader from '../../../Loader/ThreeDotedLoader';
 
 
 function CampaignCreateNEW() {
@@ -103,6 +104,8 @@ function CampaignCreateNEW() {
   const [leadSearchQuery, setLeadSearchQuery] = useState("");
   const debouncedLeadSearchTerm = useDebounce(leadSearchQuery, 1000);
   const [leadSelectionArr, setLeadSelectionArr] = useState([]);
+  const [leadFileEditPopup, setLeadFileEditPopup] = useState(false);
+  const [selectedLeadFile, setSelectedLeadFile] = useState([]);
 
 
   const {
@@ -1179,10 +1182,10 @@ function CampaignCreateNEW() {
                                       <div
                                         className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(item.id) ? "selected" : "selectedNone"}`}
                                         style={{
-                                            width: "16px",
-                                                height: "16px",
-                                                borderRadius: "3px",
-                                                padding: '0'
+                                          width: "16px",
+                                          height: "16px",
+                                          borderRadius: "3px",
+                                          padding: '0'
                                         }}
                                       >
                                         {selectedAgent.includes(item.id) && (
@@ -2048,6 +2051,9 @@ function CampaignCreateNEW() {
                                     </table>
                                   </div>
                                 </div>
+                                {leadFileEditPopup &&
+                                  <LeadFileEditPopup setPopup={setLeadFileEditPopup} leadFile={selectedLeadFile} />
+                                }
                               </div>
                             </div>
                           </div>
@@ -2422,3 +2428,132 @@ export const customStyles = {
     color: "var(--form-input-text)",
   }),
 };
+
+export function LeadFileEditPopup({ setPopup, leadFile }) {
+  const [leadSearchQuery, setLeadSearchQuery] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [allLeadData, setAllLeadData] = useState([]);
+  const debouncedSearchTerm = useDebounce(leadSearchQuery, 1000);
+  const [loading, setLoading] = useState(true);
+  const [leadSelectionArr, setLeadSelectionArr] = useState([]);
+
+  const getLeadData = async () => {
+    setLoading(true);
+    try {
+      const response = await generalGetFunction(`/lead-row/all?lead_files_id=${leadFile.id}&page=${pageNumber}&row_per_page=${itemsPerPage}&search=${leadSearchQuery}`);
+      if (response.status) {
+        setAllLeadData(response.data);
+      }
+    } catch (err) {
+      toast.err(err.response.message || err.response.error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getLeadData();
+  }, [debouncedSearchTerm, pageNumber, itemsPerPage])
+
+  return (
+    <div className="backdropContact">
+      <div className="addNewContactPopup w-auto">
+        <div className="row">
+          <div className="col-12 heading border-0 mb-0">
+            <i className="fa-light fa-octagon-exclamation" />
+            <h5>Disable Leads from the selected Lead File</h5>
+          </div>
+          <div className="col-xl-12">
+            <div className="col-12 d-flex justify-content-between align-items-center">
+              <input
+                type="text"
+                className="formItem"
+                placeholder="Search"
+                value={leadSearchQuery}
+                onChange={(e) => setLeadSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col-xl-12 mt-3">
+            <div
+              className="tableContainer mt-0"
+              style={{ maxHeight: "calc(-400px + 100vh)" }}
+            >
+              {loading ? <ThreeDotedLoader /> :
+                <table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Country code</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Address</th>
+                      <th>City</th>
+                      <th>State</th>
+                      <th>Zip Code</th>
+                      <th>Gender</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allLeadData && allLeadData?.data?.length > 0 ? allLeadData?.data?.map((item, index) => {
+                      return (
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{item.first_name}</td>
+                          <td>{item.last_name}</td>
+                          <td>{item.country_code}</td>
+                          <td>{item.phone_number}</td>
+                          <td>{item.email}</td>
+                          <td>{item.address1}</td>
+                          <td>{item.city}</td>
+                          <td>{item.state}</td>
+                          <td>{item.postal_code}</td>
+                          <td>{item.gender == "M" ? "Male" : item.gender == "F" ? "Female" : "Other"}</td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked={leadSelectionArr.includes(item.id)}
+                              onChange={() =>
+                                setLeadSelectionArr((prev) => {
+                                  if (prev.includes(item.id)) {
+                                    return prev.filter((id) => id !== item.id);
+                                  } else {
+                                    return [...prev, item.id];
+                                  }
+                                })
+                              }
+                            />
+                          </td>
+                        </tr>
+                      )
+                    }) : ""}
+                  </tbody>
+                </table>
+              }
+            </div>
+          </div>
+          <div className="col-xl-12 mt-2">
+            <div className="d-flex justify-content-between">
+              <button className="panelButton gray ms-0" onClick={() => setPopup(false)}>
+                <span className="text">Close</span>
+                <span className="icon">
+                  <i className="fa-light fa-xmark" />
+                </span>
+              </button>
+              <button className="panelButton delete ms-0">
+                <span className="text">Disable</span>
+                <span className="icon">
+                  <i className="fa-light fa-octagon-exclamation" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -209,6 +209,7 @@ const WebrtcWrapper = () => {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
     refVideoRemote: null,
+    autoStop:false,
     refAudioRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {

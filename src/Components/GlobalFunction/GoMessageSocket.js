@@ -77,57 +77,58 @@ const GoMessageSocket = () => {
                     const { key, result, current_time } = message;
 
                     switch (key) {
-                        case "CallState":
-                            dispatch({ type: "SET_CALLSTATE", callState: result });
-                            break;
-                        case "ChannelHangupComplete":
-                            dispatch({
-                                type: "SET_CHANNELHANGUP",
-                                channelHangupComplete: result,
-                            });
-                            if (Number(result.account_id) === Number(account.account_id)) {
-                                dispatch({ type: "SET_BALANCE", balance: message.balance });
-                            }
-                            break;
-                        case "Conference":
-                            dispatch({ type: "SET_CONFERENCE", conference: result });
-                            break;
+                        // case "CallState":
+                        //     dispatch({ type: "SET_CALLSTATE", callState: result });
+                        //     break;
+                        // case "ChannelHangupComplete":
+                        //     dispatch({
+                        //         type: "SET_CHANNELHANGUP",
+                        //         channelHangupComplete: result,
+                        //     });
+                        //     if (Number(result.account_id) === Number(account.account_id)) {
+                        //         dispatch({ type: "SET_BALANCE", balance: message.balance });
+                        //     }
+                        //     break;
+                        // case "Conference":
+                        //     dispatch({ type: "SET_CONFERENCE", conference: result });
+                        //     break;
+                        // case "screenShare":
+                        //     dispatch({
+                        //         type: "SET_CONFERENCESCREENSHARESTATUS",
+                        //         conferenceScreenShareStatus: result,
+                        //     });
+                        //     break;
+                        // case "conferenceMessage":
+                        //     if (result["room_id"] == RoomID) {
+                        //         dispatch({
+                        //             type: "SET_CONFERENCEMESSAGE",
+                        //             conferenceMessage: result,
+                        //         });
+                        //     }
+                        //     break;
+                        // case "progressive":
+                        //     dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
+                        //     break;
+                        // case "clientCall":
+                        //     dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
+                        //     break;
+                        // case "callUpdate":
+                        //     dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
+                        // case "activeDialer":
+                        //     dispatch({ type: "SET_CAMPAIGN_DETAILS", campaignDetails: result });
+                        //     break;
+
                         case "logout_warning":
                             dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
                             break;
-                        case "screenShare":
-                            dispatch({
-                                type: "SET_CONFERENCESCREENSHARESTATUS",
-                                conferenceScreenShareStatus: result,
-                            });
-                            break;
                         case "broadcastGroupMessage":
                             dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
-                            break;
-                        case "conferenceMessage":
-                            if (result["room_id"] == RoomID) {
-                                dispatch({
-                                    type: "SET_CONFERENCEMESSAGE",
-                                    conferenceMessage: result,
-                                });
-                            }
                             break;
                         case "clientMsg":
                             dispatch({
                                 type: "SET_INCOMING_MESSAGE",
                                 incomingMessage: result,
                             });
-                            break;
-                        case "progressive":
-                            dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
-                            break;
-                        case "clientCall":
-                            dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
-                            break;
-                        case "callUpdate":
-                            dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
-                        case "activeDialer":
-                            dispatch({ type: "SET_CAMPAIGN_DETAILS", campaignDetails: result });
                             break;
                         default:
                             break;
