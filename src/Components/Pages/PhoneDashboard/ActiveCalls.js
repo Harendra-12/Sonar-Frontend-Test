@@ -166,43 +166,55 @@ function ActiveCalls({ isWebrtc, filter }) {
     return `${h}:${m}:${s}`;
   };
 
-  const [updatedData, setUpdatedData] = useState([]);
+  // const [updatedData, setUpdatedData] = useState([]);
   const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
   const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+  const [_, forceUpdate] = useState(0); // Forces re-render
 
+  // Initialize timers when calls change
   useEffect(() => {
-    filterCalls.forEach((item) => {
-      if (!startTimestampsRef.current.has(item.uuid)) {
-        startTimestampsRef.current.set(item.uuid, Date.now());
-        initialDurationsRef.current.set(
-          item.uuid,
-          convertDurationToSeconds(item.duration)
-        ); // Store initial duration
-      }
+    startTimestampsRef.current = new Map();
+    initialDurationsRef.current = new Map();
+
+    filterCalls.forEach((call) => {
+      startTimestampsRef.current.set(call.uuid, Date.now());
+      initialDurationsRef.current.set(
+        call.uuid,
+        convertDurationToSeconds(call.duration)
+      );
     });
 
-    const interval = setInterval(() => {
-      setUpdatedData((prevData) => {
-        return filterCalls.map((item) => {
-          const startTimestamp = startTimestampsRef.current.get(item.uuid);
-          const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
-          const initialDuration =
-            initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
-
-          // Calculate the correct updated duration without double adding
-          const newDuration = initialDuration + elapsedTime;
-
-          // Keep other properties unchanged except realTimeDuration
-          return {
-            ...item,
-            realTimeDuration: formatTime(newDuration),
-          };
-        });
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
+    forceUpdate((prev) => prev + 1); // Trigger first update
   }, [filterCalls]);
+
+  // Animation frame loop for live updates
+  useEffect(() => {
+    let animationFrameId;
+
+    const update = () => {
+      forceUpdate((prev) => prev + 1);
+      animationFrameId = requestAnimationFrame(update);
+    };
+
+    animationFrameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  // Compute live durations
+  const updatedData = filterCalls.map((call) => {
+    const startTime = startTimestampsRef.current.get(call.uuid);
+    const initialDuration = initialDurationsRef.current.get(call.uuid) || 0;
+
+    if (!startTime) return call;
+
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const totalDuration = initialDuration + elapsedSeconds;
+
+    return {
+      ...call,
+      realTimeDuration: formatTime(totalDuration),
+    };
+  });
 
   // Custom Select FOR Active Call ACTIONS LIKE BARGE / INTERCEPT / ETC
   const allOptions = [
@@ -237,18 +249,18 @@ function ActiveCalls({ isWebrtc, filter }) {
     },
     ...(isCustomerAdmin
       ? [
-          {
-            value: "eavesdrop",
-            label: (
-              <div className="d-flex py-2 align-items-center">
-                <button className="tableButton me-2 ms-0 edit">
-                  <i className="fa-regular fa-head-side-headphones" />
-                </button>
-                Eavesdrop
-              </div>
-            ),
-          },
-        ]
+        {
+          value: "eavesdrop",
+          label: (
+            <div className="d-flex py-2 align-items-center">
+              <button className="tableButton me-2 ms-0 edit">
+                <i className="fa-regular fa-head-side-headphones" />
+              </button>
+              Eavesdrop
+            </div>
+          ),
+        },
+      ]
       : []),
     {
       value: "whisper-bleg",
@@ -280,18 +292,18 @@ function ActiveCalls({ isWebrtc, filter }) {
     },
     ...(isCustomerAdmin || account.user_role?.roles?.name === "Manager" || account.user_role?.roles?.name === "Admin"
       ? [
-          {
-            value: "kill-call",
-            label: (
-              <div className="d-flex py-2 align-items-center">
-                <button className="tableButton delete me-2 ms-0">
-                  <i className="fa-solid fa-phone-slash" />
-                </button>
-                Hang Up
-              </div>
-            ),
-          },
-        ]
+        {
+          value: "kill-call",
+          label: (
+            <div className="d-flex py-2 align-items-center">
+              <button className="tableButton delete me-2 ms-0">
+                <i className="fa-solid fa-phone-slash" />
+              </button>
+              Hang Up
+            </div>
+          ),
+        },
+      ]
       : []),
   ];
 
@@ -328,19 +340,19 @@ function ActiveCalls({ isWebrtc, filter }) {
                           ? "#f8d7da"
                           : !isWebrtc &&
                             item?.application_state === "callcenter"
-                          ? "#d1e7dd"
-                          : !isWebrtc && item?.direction === "inbound"
-                          ? "#fff3cd"
-                          : "",
+                            ? "#d1e7dd"
+                            : !isWebrtc && item?.direction === "inbound"
+                              ? "#fff3cd"
+                              : "",
                     }}
                   >
                     <td
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -351,9 +363,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -364,9 +376,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -377,9 +389,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -390,9 +402,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -403,9 +415,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -420,9 +432,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                           textTransform: "capitalize",
                           color:
                             !isWebrtc &&
-                            (item?.application_state === "ringgroup" ||
-                              item?.application_state === "callcenter" ||
-                              item?.direction === "inbound")
+                              (item?.application_state === "ringgroup" ||
+                                item?.application_state === "callcenter" ||
+                                item?.direction === "inbound")
                               ? "#000"
                               : "",
                         }}
@@ -434,9 +446,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                       style={{
                         color:
                           !isWebrtc &&
-                          (item?.application_state === "ringgroup" ||
-                            item?.application_state === "callcenter" ||
-                            item?.direction === "inbound")
+                            (item?.application_state === "ringgroup" ||
+                              item?.application_state === "callcenter" ||
+                              item?.direction === "inbound")
                             ? "#000"
                             : "",
                       }}
@@ -514,13 +526,13 @@ function ActiveCalls({ isWebrtc, filter }) {
                           options={
                             item.direction === "inbound"
                               ? allOptions.filter(
-                                  (opt) => opt.value !== "whisper-bleg"
-                                )
+                                (opt) => opt.value !== "whisper-bleg"
+                              )
                               : item.direction === "outbound"
-                              ? allOptions.filter(
+                                ? allOptions.filter(
                                   (opt) => opt.value !== "whisper-aleg"
                                 )
-                              : allOptions
+                                : allOptions
                           }
                           isSearchable
                           styles={customStyles}

@@ -263,8 +263,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
     const resetResizeContent = () => {
         if (leftPanel.current && rightPanel.current) {
-            leftPanel.current.resize(50);
-            rightPanel.current.resize(50);
+            leftPanel.current.resize(49);
+            rightPanel.current.resize(51);
         }
     }
 
@@ -301,7 +301,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <PanelGroup autoSaveId="example" direction="horizontal">
-                                        <Panel className='leftPanel' defaultSize={50} collapsible={true} minSize={25} ref={leftPanel}>
+                                        <Panel className='leftPanel' defaultSize={49} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
@@ -411,7 +411,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 </button>
                                             </Tippy>
                                         </PanelResizeHandle>
-                                        <Panel className='rightPanel' defaultSize={50} collapsible={true} minSize={25} ref={rightPanel}>
+                                        <Panel className='rightPanel' defaultSize={51} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className='activeCallsAgentWrapper position-relative'>
                                                 <div className='d-flex'>
                                                     <Tippy content="Minimize this window">
