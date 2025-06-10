@@ -104,6 +104,7 @@
     border-radius: 5px;
     transition: all 0.4s ease-in-out;
     color: var(--color-subtext);
+    font-size: 0.813rem;
 }
 
 .aitable_button:hover {
@@ -504,4 +505,21 @@
     100% {
         box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     }
+}
+.noTableData{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px);
+    /* overflow: auto; */
+}
+.details_header{
+    min-height: 50px;
+}
+.details_header p{
+    color: var(--immortalBlack);
+}
+.noTableData p{
+    color: var(--color-subtext);
+    font-weight: 400;
 }

@@ -78,9 +78,50 @@ const AiBatchCall = () => {
                         <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>Batch call cost $0.005 per dial</p>
                     </div>
                 </div>
-                <div class="offcanvas-body">
-                    <div className='right_body'>
-                        SofiaAddSetting
+                <div class="offcanvas-body p-0">
+                    <div className='right_body p-3'>
+                        <div className='details_header'>
+                            <p>Recipients</p>
+                        </div>
+                        {/* <div className='noTableData'>
+                            <p className=' '>Please upload recipients first</p>
+                        </div> */}
+                        <div className="tableContainer">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Phone Number</th>
+                                        <th>Dynamic Variable1</th>
+                                        <th>Dynamic Variable2</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody className="">
+                                    <>
+                                        <tr>
+                                            <td> 1</td>
+                                            <td>+918016000000</td>
+                                            <td>value1 (optional)</td>
+                                            <td>value2 (optional)</td>
+                                        </tr>
+                                        <tr>
+                                            <td> 1</td>
+                                            <td>+918016000000</td>
+                                            <td>value1 (optional)</td>
+                                            <td>value2 (optional)</td>
+                                        </tr>
+                                        <tr>
+                                            <td> 1</td>
+                                            <td>+918016000000</td>
+                                            <td>value1 (optional)</td>
+                                            <td>value2 (optional)</td>
+                                        </tr>
+                                     
+                                    </>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div className='left_body'>
                         <div className="formRow flex-column align-items-start">
@@ -114,11 +155,11 @@ const AiBatchCall = () => {
                                 />
                             </div>
                         </div>
-                        <div className="formRow flex-column align-items-start">
+                        <div className="formRow align-items-start" style={{ minHeight: "unset" }}>
                             <div className="formLabel">
                                 <label> Upload Recipients</label>
                             </div>
-                            <div className="col-12">
+                            <div className="col-auto">
                                 <button type="button" class="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
                             </div>
                         </div>
@@ -152,49 +193,81 @@ const AiBatchCall = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="formLabel">
+                        <div className="formLabel px-2">
                             <label> When to send the calls</label>
                         </div>
-                        <div className='row radio-input'>
-                            <div className='col-6'>
-                                <label class="label radioLabel">
-                                    <p class="text">Send Now</p>
-                                    <input type="radio" id="value-2" name="value-radio" value="value-2" />
+                        <div className="row radio-input px-2">
+                            <div className="col-6">
+                                <label className="label radioLabel">
+                                    <p className="text">Send Now</p>
+                                    <input
+                                        type="radio"
+                                        id="send-now"
+                                        name="value-radio"
+                                        value="send-now"
+                                        onChange={(e) => setSelectedOption(e.target.value)}
+                                        checked={selectedOption === "send-now"}
+                                    />
                                 </label>
                             </div>
-                            <div className='col-6'>
-                                <label class="label radioLabel">
-                                    <p class="text">Schedule</p>
-                                    <input type="radio" id="value-2" name="value-radio" value="schedule"
-                                        onChange={(e) => setSelectedOption(e.target.value)} />
+                            <div className="col-6">
+                                <label className="label radioLabel">
+                                    <p className="text">Schedule</p>
+                                    <input
+                                        type="radio"
+                                        id="schedule"
+                                        name="value-radio"
+                                        value="schedule"
+                                        onChange={(e) => setSelectedOption(e.target.value)}
+                                        checked={selectedOption === "schedule"}
+                                    />
                                 </label>
                             </div>
-                            {selectedOption === "schedule" && (
-                                <div className="row openFormBox">
-                                    <div className="col-12">
-                                        <div className="formRow p-0">
-                                            <input
-                                                type="datetime-local"
-                                                className="formItem"
-                                            // {...register("start_date", { ...requiredValidator })}
+                            <div className='col-12'>
+                                {selectedOption === "schedule" && (
+                                    <div className="row openFormBox mt-2">
+                                        <div className="col-12 mb-1">
+                                            <div className="formRow p-0">
+                                                <input
+                                                    type="datetime-local"
+                                                    className="formItem"
+                                                    name="start_date"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-12">
+                                            <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isDisabled={false}
+                                                isLoading={false}
+                                                isClearable={true}
+                                                isRtl={false}
+                                                isSearchable={true}
+                                                name="color"
+                                            // options={colourOptions}
                                             />
                                         </div>
                                     </div>
-                                    <div className="col-12">
-                                        <Select
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            isDisabled={false}
-                                            isLoading={false}
-                                            isClearable={true}
-                                            isRtl={false}
-                                            isSearchable={true}
-                                            name="color"
-                                        // options={colourOptions}
-                                        />
-                                    </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
+                        </div>
+                        <div className="formRow flex-column align-items-start">
+                            <div className="formLabel w-100" style={{ maxWidth: "100%" }}>
+                                <label> Estimated Time to complete calls</label>
+                            </div>
+                            <div className="col-12">
+                                <input
+                                    type="text"
+                                    className="formItem"
+                                    placeholder='Please add recipients first'
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                        <div className='d-flex justify-content-end gap-2 py-2 px-2'>
+                            <button className="panelButton static gray"> <span className="text">Save as a draft</span></button>
+                            <button className="panelButton static "> <span className="text">Send</span></button>
                         </div>
                     </div>
                 </div>
