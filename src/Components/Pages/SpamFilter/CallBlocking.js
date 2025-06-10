@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -14,6 +15,7 @@ import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const CallBlocking = () => {
   const [callBlock, setCallBlock] = useState();
@@ -29,7 +31,9 @@ const CallBlocking = () => {
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+
 
   const getRingGroupDashboardData = async (shouldLoad) => {
     if (account && account.id) {
@@ -149,17 +153,24 @@ const CallBlocking = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <div
-                          // to="/ring-groups-add"
-                          effect="ripple"
-                          className="panelButton"
-                          onClick={() => navigate("/call-blocking-add")}
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-plus"></i>
-                          </span>
-                        </div>
+                        {checkViewSidebar(
+                          "Spam",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "add"
+                        ) &&
+                          <div
+                            effect="ripple"
+                            className="panelButton"
+                            onClick={() => navigate("/call-blocking-add")}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>
@@ -184,65 +195,91 @@ const CallBlocking = () => {
                         <label>entries</label>
                       </div>
 
-                      <div className="searchBox">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          className="formItem"
-                          value={searchValue}
-                          onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                      </div>
+                      {checkViewSidebar(
+                        "Spam",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "search"
+                      ) &&
+                        <div className="searchBox">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            className="formItem"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                          />
+                        </div>
+                      }
                     </div>
                     <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Type</th>
-                            <th>Number</th>
-                            <th>Remove</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {loading ? (
-                            <SkeletonTableLoader col={3} row={15} />
-                          ) : (
-                            <>
-                              {callBlock &&
-                                callBlock.data?.map((item, index) => {
-                                  return (
-                                    <tr key={index}>
-                                      <td>{item.type}</td>
-                                      <td>{item.number}</td>
-                                      <td>
-                                        <button
-                                          className="tableButton delete"
-                                          onClick={() => {
-                                            // handleDelete(item.id)
-                                            setDeletePopup(true);
-                                            setDeleteId(item.id);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-trash"></i>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              {callBlock && callBlock.length === 0 ? (
-                                <td colSpan={99}>
-                                  <EmptyPrompt
-                                    name="Call Blocking"
-                                    link="call-blocking"
-                                  />
-                                </td>
-                              ) : (
-                                ""
+                      {loading ? (
+                        // <SkeletonTableLoader col={3} row={15} />
+                        <ThreeDotedLoader />
+                      ) :
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Type</th>
+                              <th>Number</th>
+                              {checkViewSidebar("Spam", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Remove</th>}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {!checkViewSidebar(
+                              "callBlocking",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? <tr><td colSpan={99}>You dont have any permission</td></tr>
+                              : (
+                                <>
+                                  {callBlock &&
+                                    callBlock.data?.map((item, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td>{item.type}</td>
+                                          <td>{item.number}</td>
+                                          {checkViewSidebar(
+                                            "Spam",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "delete"
+                                          ) &&
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  // handleDelete(item.id)
+                                                  setDeletePopup(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </button>
+                                            </td>
+                                          }
+                                        </tr>
+                                      );
+                                    })}
+                                  {callBlock && callBlock.length === 0 ? (
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Call Blocking"
+                                        link="call-blocking"
+                                      />
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
                               )}
-                            </>
-                          )}
-                        </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {callBlock && callBlock?.data?.length > 0 ? (

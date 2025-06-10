@@ -58,7 +58,10 @@
 }
 
 .clearButton2.danger {
-  color: red
+  color: #ff0000
+}
+.panelButton.danger {
+    background-color: #ff0000;
 }
 
 .panelButtonOLD {
@@ -133,7 +136,7 @@
 
 .panelButton .text {
   transform: translateX(10px);
-  color: white;
+  color: white ;
   font-weight: 500;
   font-size: 0.875rem;
 }
@@ -147,7 +150,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #fff !important;
   font-size: 1rem;
 }
 

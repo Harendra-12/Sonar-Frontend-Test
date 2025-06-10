@@ -25,7 +25,8 @@ function EmptyPrompt(props) {
                 <div className='imgWrapper loader' style={{
                     width: props.small
                         ? '80px' : '150px', height: props.small ? '80px' : '150px', width: props.bell
-                            ? '50px' : '', height: props.bell ? '50px' : ''
+                            ? '50px' : '', height: props.bell ? '50px' : '',
+                    transform: 'none', position: 'static'
                 }}>
                     <img src={require(`../assets/images/empty-box.png`)} alt="Empty" />
                 </div>

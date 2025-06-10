@@ -45,7 +45,7 @@ function DestinationAdd() {
         //   `/domain/search?account=${account.account_id}`
         // );
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}`
+          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
         // if (domain.status) {
         //   setDomains(

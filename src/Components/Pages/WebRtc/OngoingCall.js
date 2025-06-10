@@ -44,6 +44,7 @@ function OngoingCall({
   const callProgressDestination = useSelector((state) => state.callProgressDestination);
   const [showTranferableList, setShowTranferableList] = useState(false);
   const [showActiveSessions, setShowActiveSessions] = useState(false);
+  const activeCall = useSelector((state) => state.activeCall);
   const {
     isMuted,
     hangup,
@@ -64,6 +65,8 @@ function OngoingCall({
     info: "",
     type: ""
   });
+
+  const tippyRef = useRef();
 
   // Listen for parking a call
   useEffect(() => {
@@ -563,7 +566,7 @@ function OngoingCall({
   }, [attendShow, hideDialpad])
 
   useEffect(() => {
-    if (callProgressDestination.length < 11) {
+    if (callProgressDestination.length < 5) {
       const filteredExtension = accountDetails?.extensions?.filter((acc) => acc.extension == callProgressDestination);
       const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
       setCallExtraInfo({
@@ -571,13 +574,16 @@ function OngoingCall({
         type: "user",
       });
     } else {
-      const didTag = didAll.filter((item) => item.did == session?.incomingInviteRequest?.message?.headers?.["X-Did-Num"]?.[0]?.raw);
+     const isNumberPresent = activeCall.find((item)=>(item.cid_num == callProgressDestination || item.did_tag == callProgressDestination));
       setCallExtraInfo({
-        info: didTag?.[0]?.configuration?.tag || callProgressDestination,
+        info: isNumberPresent?.did_tag || callProgressDestination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll])
+  }, [accountDetails, didAll,activeCall])
+
+
+
 
   return (
     <>
@@ -776,7 +782,61 @@ function OngoingCall({
                       <i className="fa-solid fa-grid" />
                     </button>
                   </Tippy>
-                  <Tippy content="Attendant Transfer">
+
+
+                  <Tippy
+                    trigger="click"
+                    interactive={true}
+                    placement="bottom"
+                    onCreate={instance => (tippyRef.current = instance)}
+                    // allowHTML={true}
+                      maxWidth="fit-content"
+                      className="margeCall"
+                      content={
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Tippy content="Attendant Transfer">
+                          <button
+                            className={` ${showTranferableList ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                            onClick={() => {
+                              setShowTranferableList(true);
+                              setDialpadShow(true);
+                              setAttendShow(false);
+                              setShowActiveSessions(false);
+                              setShowParkList(false);
+                              tippyRef.current?.hide();
+                            }}
+                          >
+                            <i className="fa fa-exchange" aria-hidden="true"></i>
+                          </button>
+                        </Tippy>
+                        <Tippy content="Blind Transfer">
+                          <button
+                            className={` ${attendShow ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                            onClick={() => {
+                              setAttendShow(!attendShow);
+                              setShowTranferableList(false);
+                              setShowActiveSessions(false);
+                              setShowParkList(false);
+                              tippyRef.current?.hide();
+                            }}
+                          >
+                            <i className="fa-solid fa-phone-arrow-up-right" />
+                          </button>
+                        </Tippy>
+                      </div>
+                    }
+                // content="Attendant Transfer" 
+                  >
+                    <button
+                      className={` ${showTranferableList ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                    >
+                      <i className="fa-solid fa-code-merge" aria-hidden="true"></i>
+                    </button>
+                  </Tippy>
+
+
+
+                  {/* <Tippy content="Attendant Transfer">
                     <button
                       className={` ${showTranferableList
                         ? "appPanelButtonCaller active"
@@ -785,7 +845,6 @@ function OngoingCall({
                       effect="ripple"
                       onClick={() => { setShowTranferableList(true); setDialpadShow(true); setAttendShow(false); setShowActiveSessions(false); setShowParkList(false); }}
                     >
-                      {/* <i className="fa-solid fa-user-plus" /> */}
                       <i className="fa fa-exchange" aria-hidden="true"></i>
                     </button>
                   </Tippy>
@@ -805,7 +864,7 @@ function OngoingCall({
                     >
                       <i className="fa-solid fa-phone-arrow-up-right" />
                     </button>
-                  </Tippy>
+                  </Tippy> */}
                   <Tippy content="Park Call">
                     <button
                       className={` ${showParkList

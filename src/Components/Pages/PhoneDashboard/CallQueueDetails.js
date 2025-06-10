@@ -18,6 +18,7 @@ const CallQueueDetails = () => {
   const [activeCallData, setActiveCallData] = useState([]);
   const allCallDetails = useSelector((state) => state.allCallDetails);
   const [loading, setLoading] = useState(false);
+  const account = useSelector((state) => state.account);
   // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -71,7 +72,7 @@ const CallQueueDetails = () => {
   const handleAgentClick = async (item) => {
     setLoading(true);
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item.username}`);
+      const apiData = await generalGetFunction(`/agents?search=${item.username}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         setLoading(false);
@@ -237,17 +238,17 @@ const CallQueueDetails = () => {
                                   (item, index) => (
                                     <li key={index}>
                                       <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
-                                          <span className="avatar-container">
-                                            {
-                                              item.profile_picture ?
-                                                <img
-                                                  alt="profile"
-                                                  src={item.profile_picture}
-                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                /> : <i className="fa-light fa-user"></i>}
-                                          </span>
-                                          <span className="ms-2">{item?.username}</span>
-                                        </div>
+                                        <span className="avatar-container">
+                                          {
+                                            item.profile_picture ?
+                                              <img
+                                                alt="profile"
+                                                src={item.profile_picture}
+                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                              /> : <i className="fa-light fa-user"></i>}
+                                        </span>
+                                        <span className="ms-2">{item?.username}</span>
+                                      </div>
                                     </li>
                                   )
                                 )}
@@ -267,8 +268,8 @@ const CallQueueDetails = () => {
                                 <div className="avatar-container">
                                   {call.agents?.slice(0, 4).map((item, index) => {
                                     return (
-                                      <Tippy 
-                                        key={index} 
+                                      <Tippy
+                                        key={index}
                                         content={item?.username}
                                       >
                                         {item?.profile_picture ? (

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 const BillingCardAndWallet = () => {
     const [loading, setLoading] = useState(false);
@@ -15,6 +16,8 @@ const BillingCardAndWallet = () => {
     const allCardTransactions = useSelector((state) => state.allCardTransactions);
     const allWaletTransactions = useSelector((state) => state.allWaletTransactions);
     const dispatch = useDispatch();
+    const account = useSelector((state) => state?.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
 
     useEffect(() => {
         if (!allCardTransactions && !allWaletTransactions) {
@@ -170,92 +173,106 @@ const BillingCardAndWallet = () => {
                                             style={{ overflow: "auto", padding: "10px 20px 0" }}
                                         >
                                             <div className="tableContainer">
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Transaction ID</th>
-                                                            <th>Transaction Type</th>
-                                                            <th>Amount</th>
-                                                            <th>Wallet Balance</th>
-                                                            <th>Date</th>
-                                                            <th>Time</th>
-                                                            <th>Description</th>
-                                                            <th className='text-center'>Download</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {loading ? <SkeletonTableLoader row={10} col={8} /> :
-                                                            allCardTransactions && allCardTransactions?.data?.length > 0 ?
-                                                                allCardTransactions.data.map((item, index) => {
-                                                                    const walletChange = allWaletTransactions?.data?.filter((transac) => transac.payment_gateway_transaction_id === item.transaction_id);
+                                                {loading ?
+                                                    //    <SkeletonTableLoader row={10} col={8} /> 
+                                                    <ThreeDotedLoader />
+                                                    : <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Transaction ID</th>
+                                                                <th>Transaction Type</th>
+                                                                <th>Amount</th>
+                                                                <th>Wallet Balance</th>
+                                                                <th>Date</th>
+                                                                <th>Time</th>
+                                                                <th>Description</th>
+                                                                <th className='text-center'>Download</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {!checkViewSidebar(
+                                                                "WalletTransaction",
+                                                                slugPermissions,
+                                                                account?.permissions,
+                                                                "read"
+                                                            ) && !checkViewSidebar(
+                                                                "Payment",
+                                                                slugPermissions,
+                                                                account?.permissions,
+                                                                "read"
+                                                            ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                                                allCardTransactions && allCardTransactions?.data?.length > 0 ?
+                                                                    allCardTransactions.data.map((item, index) => {
+                                                                        const walletChange = allWaletTransactions?.data?.filter((transac) => transac.payment_gateway_transaction_id === item.transaction_id);
 
-                                                                    const getWalletTransac = () => {
-                                                                        if (walletChange?.length > 0) {
-                                                                            return {
-                                                                                amount: walletChange[0]?.amount,
-                                                                                type: walletChange[0]?.transaction_type,
-                                                                                prevBalance: walletChange[0]?.previous_balance
+                                                                        const getWalletTransac = () => {
+                                                                            if (walletChange?.length > 0) {
+                                                                                return {
+                                                                                    amount: walletChange[0]?.amount,
+                                                                                    type: walletChange[0]?.transaction_type,
+                                                                                    prevBalance: walletChange[0]?.previous_balance
+                                                                                }
                                                                             }
                                                                         }
-                                                                    }
-                                                                    const walletTransac = getWalletTransac();
+                                                                        const walletTransac = getWalletTransac();
 
-                                                                    const maskCard = () => {
-                                                                        const cardNumber = item.payment_details.card_number;
-                                                                        const last4 = cardNumber.slice(-4);
-                                                                        const masked = last4.padStart(cardNumber.length, '*');
-                                                                        return masked;
-                                                                    }
+                                                                        const maskCard = () => {
+                                                                            const cardNumber = item.payment_details.card_number;
+                                                                            const last4 = cardNumber.slice(-4);
+                                                                            const masked = last4.padStart(cardNumber.length, '*');
+                                                                            return masked;
+                                                                        }
 
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <td>{item?.transaction_id}</td>
-                                                                            <td>
-                                                                                <button class="badge badge-subtle badge-border border-0">
-                                                                                    <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
-                                                                                    <div className='card_info'>
-                                                                                        <ul>
-                                                                                            <li className='mb-1 '><span className=' text-muted0 '>Card Name : </span>{item?.payment_details?.fullname}</li>
-                                                                                            <li className=''><span className=' text-muted0 '>Card Number : </span>{item?.payment_details?.card_number ? maskCard(item?.payment_details?.card_number) : ""}</li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </button>
-                                                                            </td>
-                                                                            <td>
-                                                                                {walletTransac ?
-                                                                                    <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}${walletTransac?.amount}</span> :
-                                                                                    `$${item?.amount_total}`
-                                                                                }
-                                                                            </td>
-                                                                            <td>
-                                                                                {walletTransac &&
-                                                                                    <span className='badge-subtle bg-transparent' style={{ color: 'var(--table-text)', fontSize: '0.875rem' }}>
-                                                                                        ${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}
+                                                                        return (
+                                                                            <tr key={index}>
+                                                                                <td>{item?.transaction_id}</td>
+                                                                                <td>
+                                                                                    <button class="badge badge-subtle badge-border border-0">
+                                                                                        <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
                                                                                         <div className='card_info'>
-                                                                                            <ul style={{ fontSize: '0.625rem', fontWeight: 600 }}>
-                                                                                                <li className='mb-1'><span className=' text-muted0 d-inline-block' style={{ width: '85px' }}>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
-                                                                                                <li><span className=' text-muted0 d-inline-block' style={{ width: '85px' }}>Updated balance: </span>${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}</li>
+                                                                                            <ul>
+                                                                                                <li className='mb-1 '><span className=' text-muted0 '>Card Name : </span>{item?.payment_details?.fullname}</li>
+                                                                                                <li className=''><span className=' text-muted0 '>Card Number : </span>{item?.payment_details?.card_number ? maskCard(item?.payment_details?.card_number) : ""}</li>
                                                                                             </ul>
                                                                                         </div>
-                                                                                    </span>
-                                                                                }
-                                                                            </td>
-                                                                            <td>{item?.transaction_date.split(" ")[0]}</td>
-                                                                            <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
-                                                                            <td>{item?.description}</td>
-                                                                            <td className='text-center'>
-                                                                                <button className='tableButton mx-auto' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
-                                                                                    <i class="fa-regular fa-download"></i>
-                                                                                </button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    )
-                                                                }) : <tr>
-                                                                    <td colSpan={99}><EmptyPrompt generic={true} /></td>
-                                                                </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
+                                                                                    </button>
+                                                                                </td>
+                                                                                <td>
+                                                                                    {walletTransac ?
+                                                                                        <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}${walletTransac?.amount}</span> :
+                                                                                        `$${item?.amount_total}`
+                                                                                    }
+                                                                                </td>
+                                                                                <td>
+                                                                                    {walletTransac &&
+                                                                                        <span className='badge-subtle bg-transparent' style={{ color: 'var(--table-text)', fontSize: '0.875rem' }}>
+                                                                                            ${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}
+                                                                                            <div className='card_info'>
+                                                                                                <ul style={{ fontSize: '0.625rem', fontWeight: 600 }}>
+                                                                                                    <li className='mb-1'><span className=' text-muted0 d-inline-block' style={{ width: '85px' }}>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
+                                                                                                    <li><span className=' text-muted0 d-inline-block' style={{ width: '85px' }}>Updated balance: </span>${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}</li>
+                                                                                                </ul>
+                                                                                            </div>
+                                                                                        </span>
+                                                                                    }
+                                                                                </td>
+                                                                                <td>{item?.transaction_date.split(" ")[0]}</td>
+                                                                                <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
+                                                                                <td>{item?.description}</td>
+                                                                                <td className='text-center'>
+                                                                                    <button className='tableButton mx-auto' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
+                                                                                        <i class="fa-regular fa-download"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        )
+                                                                    }) : <tr>
+                                                                        <td colSpan={99}><EmptyPrompt generic={true} /></td>
+                                                                    </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
                                             </div>
                                             <div className="tableHeader mb-3">
                                                 {allCardTransactions && allCardTransactions.data.length > 0 ? (

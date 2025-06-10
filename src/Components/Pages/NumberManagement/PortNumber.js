@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function PortNumber() {
   const navigate = useNavigate();
@@ -181,32 +182,22 @@ function PortNumber() {
                           {checkViewSidebar(
                             "Port",
                             slugPermissions,
-                            account?.permissions, "add"
-                          ) ? (
-                            <Link
-                              to="/port-number-add"
-                              onClick={backToTop}
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </Link>
-                          ) : (
-                            <button
-                              effect="ripple"
-                              className="panelButton "
-                              disabled
-                              style={{ cursor: "not-allowed" }}
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "add"
+                          ) && (
+                              <Link
+                                to="/port-number-add"
+                                onClick={backToTop}
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -222,48 +213,56 @@ function PortNumber() {
                           </select>
                           <label>entries</label>
                         </div>
-                        <div className="searchBox">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            className="formItem"
-                            onChange={() => featureUnderdevelopment()}
-                          />
-                        </div>
+                        {checkViewSidebar(
+                          "Port",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "search"
+                        ) &&
+                          <div className="searchBox">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              className="formItem"
+                              onChange={() => featureUnderdevelopment()}
+                            />
+                          </div>
+                        }
                       </div>
                       <div className="tableContainer">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Id</th>
-                              <th>Name</th>
-                              <th>Company Name</th>
-                              <th>Billing Address</th>
-                              <th>Pin</th>
-                              <th>Carrier</th>
-                              <th>Account no.</th>
-                              <th>Phone no.</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {noPermissionToRead ? (
+                        {loading ?
+                          (
+                            // <SkeletonTableLoader col={10} row={15} />
+                            <ThreeDotedLoader />
+                          )
+                          : <table>
+                            <thead>
                               <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td> No Permission</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Company Name</th>
+                                <th>Billing Address</th>
+                                <th>Pin</th>
+                                <th>Carrier</th>
+                                <th>Account no.</th>
+                                <th>Phone no.</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                               </tr>
-                            ) : loading ?
-                              (<SkeletonTableLoader col={10} row={15} />)
-                              : (
+                            </thead>
+                            <tbody>
+                              {noPermissionToRead || !checkViewSidebar(
+                                "Port",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
+                                <tr>
+                                  <td colSpan={99}>No Permission</td>
+                                </tr>
+                              ) : (
                                 <>
                                   {portData.length > 0 &&
                                     portData.map((item) => {
@@ -373,8 +372,9 @@ function PortNumber() {
                                   )}
                                 </>
                               )}
-                          </tbody>
-                        </table>
+                            </tbody>
+                          </table>
+                        }
                       </div>
                     </div>
                   </div>

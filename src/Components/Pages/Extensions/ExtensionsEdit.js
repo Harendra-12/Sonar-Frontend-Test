@@ -89,7 +89,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       async function getDomain() {
         setMusicRefresh(musicRefresh + 1);
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}`
+          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
         if (apidataUser?.status) {
           setUsers(apidataUser.data);
@@ -100,7 +100,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
 
     if (value) {
       async function getData() {
-        const apiData = await generalGetFunction(`/extension/${value}`);
+        const apiData = await generalGetFunction(`/extension/${value}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
         if (apiData?.status) {
           setLoading(false);
           const resetInfo = {
@@ -435,7 +435,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       );
       if (apiData.status) {
         toast.success(apiData.message);
-        await generalGetFunction(`/user/all`);
+        await generalGetFunction(`/user/all${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
         // navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
@@ -1388,7 +1388,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       : "col-3 pe-2 ms-auto"
                                   }
                                 >
-                                   {watch().onbusy != "disabled" && (
+                                  {watch().onbusy != "disabled" && (
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         Type
@@ -1419,67 +1419,67 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   ""
                                 ) : (
                                   <>
-                                  {watch("onbusy") !== "pstn" && (
-                                    <div className="col-3">
-                                      {watch().onbusy && watch().onbusy?.length !== 0 &&
-                                        <>
-                                          <div className="formLabel">
-                                            <label className="formItemDesc">
-                                              Extension
-                                            </label>
-                                          </div>
-                                          <ActionList
-                                            category={watch().onbusy}
-                                            title={null}
-                                            label={null}
-                                            getDropdownValue={actionForOnBusy}
-                                            value={watch().onbusyTo}
-                                            {...register(
-                                              "onbusyTo"
-                                            )}
+                                    {watch("onbusy") !== "pstn" && (
+                                      <div className="col-3">
+                                        {watch().onbusy && watch().onbusy?.length !== 0 &&
+                                          <>
+                                            <div className="formLabel">
+                                              <label className="formItemDesc">
+                                                Extension
+                                              </label>
+                                            </div>
+                                            <ActionList
+                                              category={watch().onbusy}
+                                              title={null}
+                                              label={null}
+                                              getDropdownValue={actionForOnBusy}
+                                              value={watch().onbusyTo}
+                                              {...register(
+                                                "onbusyTo"
+                                              )}
+                                            />
+                                          </>
+                                        }
+                                        {errors.onbusyTo && (
+                                          <ErrorMessage
+                                            text={errors.onbusyTo.message}
                                           />
-                                        </>
-                                      }
-                                      {errors.onbusyTo && (
-                                        <ErrorMessage
-                                          text={errors.onbusyTo.message}
-                                        />
-                                      )}
-                                    </div>
-                                  )}
-                                  {watch("onbusy") === "pstn" && (
-                                    <div className="col-3">
-                                      <div className="formLabel">
-                                        <label className="formItemDesc">
-                                          PSTN
-                                        </label>
+                                        )}
                                       </div>
-                                      <input
-                                        type="number"
-                                        name="onbusyTo"
-                                        className="formItem"
-                                        {...register("onbusyTo", {
-                                          required: "PSTN is required",
-                                          pattern: {
-                                            value: /^[0-9]*$/,
-                                            message: "Only digits are allowed",
-                                          },
-                                          minLength: {
-                                            value: 10,
-                                            message: "Must be at least 10 digits",
-                                          },
+                                    )}
+                                    {watch("onbusy") === "pstn" && (
+                                      <div className="col-3">
+                                        <div className="formLabel">
+                                          <label className="formItemDesc">
+                                            PSTN
+                                          </label>
+                                        </div>
+                                        <input
+                                          type="number"
+                                          name="onbusyTo"
+                                          className="formItem"
+                                          {...register("onbusyTo", {
+                                            required: "PSTN is required",
+                                            pattern: {
+                                              value: /^[0-9]*$/,
+                                              message: "Only digits are allowed",
+                                            },
+                                            minLength: {
+                                              value: 10,
+                                              message: "Must be at least 10 digits",
+                                            },
 
-                                          ...noSpecialCharactersValidator,
-                                        })}
-                                      />
-                                      {errors.onbusyTo && (
-                                        <ErrorMessage
-                                          text={errors.onbusyTo.message}
+                                            ...noSpecialCharactersValidator,
+                                          })}
                                         />
-                                      )}
-                                    </div>
-                                  )}
-                                </>
+                                        {errors.onbusyTo && (
+                                          <ErrorMessage
+                                            text={errors.onbusyTo.message}
+                                          />
+                                        )}
+                                      </div>
+                                    )}
+                                  </>
                                 )}
                               </div>
                               <div className="formRow col-xl-3">

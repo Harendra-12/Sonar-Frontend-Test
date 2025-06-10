@@ -24,7 +24,7 @@ import { Rnd } from "react-rnd";
 import ConferenceConfig from "./Conference/ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
@@ -93,6 +93,7 @@ const WebrtcWrapper = () => {
   const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callCurrentPage, setCallCurrentPage] = useState(1);
+  const [isChatLoadedForNextPage, setIsChatLoadedForNextPage] = useState(false)
   const [callstartDate, setCallStartDate] = useState("");
   const [callendDate, setCallEndDate] = useState("");
   const [callsearchQuery, setCallSearchQuery] = useState("");
@@ -120,6 +121,7 @@ const WebrtcWrapper = () => {
   const gainNodeRef = useRef(null);
   const analyserRef = useRef(null);
   const audio = new Audio(ringtone);
+   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -338,6 +340,8 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
+      // setCallLoading(true);
+      if(hangupRefresh == 0)
       setIsCallLoading(true)
       if (callCurrentPage === 1) {
         // setCallLoading(true);
@@ -345,10 +349,10 @@ const WebrtcWrapper = () => {
         setIsCallLoading(false);
       }
       const basePaths = {
-        all: "/call-details-phone",
-        incoming: "/cdr/inbound",
-        outgoing: "/cdr/outbound",
-        missed: "/cdr/missed",
+        all: "/call-details-phone?",
+        incoming: "/call-details-phone?inbound",
+        outgoing: "/call-details-phone?outbound",
+        missed: "/call-details-phone?missed",
       };
       const basePath = basePaths[callclickStatus] || "";
       if (basePath) {
@@ -356,7 +360,7 @@ const WebrtcWrapper = () => {
           callfilterBy === "date" || callstartDate == "" || callendDate == ""
             ? `date=${callstartDate}`
             : `date_range=${callstartDate},${callendDate}`;
-        const url = `${basePath}?page=1&${dateParam}&search=${callsearchQuery}`;
+        const url = `${basePath}&page=1&${dateParam}&search=${callsearchQuery}`;
         const apiData = await generalGetFunction(url);
 
         if (apiData.status) {
@@ -376,23 +380,25 @@ const WebrtcWrapper = () => {
   }, [
     callstartDate,
     callendDate,
-    callsearchQuery,
+    debouncedSearchTerm,
     callclickStatus,
     refreshCalls,
   ]);
 
   useEffect(() => {
     async function fetchData() {
+      setIsCallLoading(true)
       if (callCurrentPage === 1) {
-        setCallLoading(true);
-      } else {
+        // setCallLoading(true);
         setIsCallLoading(false);
+      } else {
+        setIsCallLoading(true);
       }
-      const basePaths = {
-        all: "/call-details-phone",
-        incoming: "/cdr/inbound",
-        outgoing: "/cdr/outbound",
-        missed: "/cdr/missed",
+     const basePaths = {
+        all: "/call-details-phone?",
+        incoming: "/call-details-phone?inbound",
+        outgoing: "/call-details-phone?outbound",
+        missed: "/call-details-phone?missed",
       };
       const basePath = basePaths[callclickStatus] || "";
       if (basePath) {
@@ -400,7 +406,7 @@ const WebrtcWrapper = () => {
           callfilterBy === "date" || callstartDate == "" || callendDate == ""
             ? `date=${callstartDate}`
             : `date_range=${callstartDate},${callendDate}`;
-        const url = `${basePath}?page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
+        const url = `${basePath}&page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
         const apiData = await generalGetFunction(url);
 
         if (apiData.status) {
@@ -531,6 +537,7 @@ const WebrtcWrapper = () => {
             endDate={callendDate}
             searchQuery={callsearchQuery}
             clickStatus={callclickStatus}
+            setCallClickStatus={setCallClickStatus}
             refreshCalls={refreshCalls}
             allApiData={callallApiData}
             data={calldata}
@@ -544,6 +551,8 @@ const WebrtcWrapper = () => {
             setIsCallLoading={setIsCallLoading}
             loading={callloading}
             isCallLoading={isCallLoading}
+            isChatLoadedForNextPage={isChatLoadedForNextPage}
+            setIsChatLoadedForNextPage={setIsChatLoadedForNextPage}
           />
         )}
         {activePage === "all-contacts" && (

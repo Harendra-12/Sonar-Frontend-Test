@@ -258,7 +258,7 @@ function CampaignCreate() {
     const timer = setTimeout(async () => {
       const getAgentData = async () => {
         const getAgents = await generalGetFunction(
-          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`
+          `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
         );
 
         if (getAgents?.status) {
@@ -662,10 +662,10 @@ function CampaignCreate() {
                                       ...requiredValidator,
                                     })}
                                   >
-                                    <option value="Inbound">Inbound</option>
+                                    {/* <option value="Inbound">Inbound</option> */}
                                     <option value="Outbound">Outbound</option>
-                                    <option value="pbx">PBX</option>
-                                    <option value="dialer">Dialer</option>
+                                    {/* <option value="pbx">PBX</option> */}
+                                    {/* <option value="dialer">Dialer</option> */}
                                   </select>
                                 </div>
                               </div>

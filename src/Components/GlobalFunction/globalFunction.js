@@ -60,7 +60,7 @@ export async function generalGetFunction(endpoint) {
   // if(!token){
   //   return({
   //     status: false,
-      
+
   //   })
   // }
   handleDispatch({
@@ -331,36 +331,105 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
+// export function checkViewSidebar(
+//   slug,
+//   permissions,
+//   userPermissions,
+//   action = undefined
+// ) {
+//   const allPermission = [];
+//   for (let key in permissions) {
+//     if (Array.isArray(permissions[key])) {
+//       permissions[key].forEach((item) => {
+//         if (userPermissions?.includes(item.id)) {
+//           allPermission.push({
+//             id: item?.id,
+//             action: item?.action,
+//             model: item?.model,
+//           });
+//         }
+//       });
+//     }
+//   }
+//   if (!action) {
+//     const actionPresent = allPermission.find((item) => item.model === slug);
+//     if (actionPresent) return true;
+//   } else if (action) {
+//     const actionPresent = allPermission.find(
+//       (item) => item.model === slug && item.action === action
+//     );
+//     if (actionPresent) return true;
+//   }
+//   return false;
+// }
+
 export function checkViewSidebar(
   slug,
   permissions,
+  sectionPermissions,
   userPermissions,
   action = undefined
 ) {
-  const allPermission = [];
-  for (let key in permissions) {
-    if (Array.isArray(permissions[key])) {
-      permissions[key].forEach((item) => {
-        if (userPermissions?.includes(item.id)) {
-          allPermission.push({
-            id: item?.id,
-            action: item?.action,
-            model: item?.model,
-          });
+  const account = localStorage.getItem("account");
+  // Return true immediately if user is a company
+  if (JSON.parse(account)?.usertype == 'Company' || JSON.parse(account)?.user_role?.roles?.name === "Super Admin") return true;
+
+  // Return false immediately if no permissions exist
+  if (!permissions) return false;
+
+  for (const moduleName in permissions) {
+    const modulePermissions = permissions[moduleName];
+    if (Array.isArray(modulePermissions)) {
+      for (const item of modulePermissions) {
+        // Check if item belongs to the current section
+        if (!sectionPermissions?.includes(item.id)) continue;
+
+        // If no action specified, check if model matches
+        if (!action && item.model === slug[1] && item.module_section === slug[0]) {
+          return true;
         }
-      });
+
+        // If action specified, check user permissions
+        if (action) {
+          for (const subItem of item.permissions) {
+            if (
+              subItem.model == slug &&
+              subItem.action == action &&
+              userPermissions?.includes(subItem.id)
+            ) {
+              return true;
+            }
+          }
+        }
+      }
     }
   }
-  if (!action) {
-    const actionPresent = allPermission.find((item) => item.model === slug);
-    if (actionPresent) return true;
-  } else if (action) {
-    const actionPresent = allPermission.find(
-      (item) => item.model === slug && item.action === action
-    );
-    if (actionPresent) return true;
-  }
   return false;
+}
+
+export function checkModulePerm(slug, permissions, section) {
+  const account = localStorage.getItem("account");
+  // Return true immediately if user is a company
+  if (JSON.parse(account)?.usertype == 'Company') return true;
+
+  // Return false immediately if no permissions exist
+  if (!permissions) return false;
+
+  for (const moduleName in permissions) {
+    const modulePermissions = permissions[moduleName];
+    if (moduleName !== slug) continue;
+    if (Array.isArray(modulePermissions)) {
+      for (const item of modulePermissions) {
+        // Check if item belongs to the module section or current section
+        if (section?.includes(item.section_id)) {
+          return true
+        }
+      }
+    }
+  }
+
+  return false;
+
 }
 
 export function featureUnderdevelopment() {
@@ -475,6 +544,17 @@ export function formatTime(seconds) {
     .padStart(2, "0");
   const secs = (seconds % 60).toString().padStart(2, "0");
   return `${hours}:${minutes}:${secs}`;
+}
+
+export function formatTimeInHHMMSS(time) {
+  const [hours, minutes] = time.split(':');
+  const dateObj = new Date();
+  dateObj.setHours(parseInt(hours));
+  dateObj.setMinutes(parseInt(minutes));
+  dateObj.setSeconds(0);
+  dateObj.setMilliseconds(0);
+
+  return dateObj.toTimeString().slice(0, 8);
 }
 
 export const useDebounce = (value, delay) => {

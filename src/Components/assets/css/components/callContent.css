@@ -181,6 +181,15 @@
     color: #ababab;
 }
 
+.callhistory-date {
+    font-size: 0.75rem !important;
+    margin: 0px 0 5px;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #ababab !important;
+    margin-right: 10px !important;
+}
+
 .mainContentApp .contactListItem span {
     font-size: 1.0625rem;
     margin: 0;
@@ -799,7 +808,7 @@
 
 .mainContentApp .webrtc_newMessageUi .tab-content .callList {
     overflow: hidden auto;
-    height: calc(100vh - 270px);
+    height: calc(100vh - 207px);
 }
 
 /* .newMessageWrapper {
@@ -927,7 +936,8 @@
     border-radius: 8px;
     padding: 10px !important;
 }
-.dropdown-menu.settingDropDown{
+
+.dropdown-menu.settingDropDown {
     position: absolute;
     inset: 0px auto auto 0px;
     margin: 0px;
@@ -993,4 +1003,12 @@ h2.titleName {
 
 .basic-container input[type="checkbox"]:checked+label {
     color: #6366f1;
+}
+.mainContentApp .webrtc_newMessageUi .tab-content .callList.AllCall__list {
+    overflow: hidden auto;
+    height: calc(100vh - 357px);
+}
+.mainContentApp .webrtc_newMessageUi .tab-content .callList.voicemailCallList {
+    overflow: hidden auto;
+    height: calc(100vh - 242px);
 }

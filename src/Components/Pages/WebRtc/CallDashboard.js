@@ -44,7 +44,7 @@ function CallDashboard() {
 
   // Search All Users
   async function getData() {
-    const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`);
+    const userApi = await generalGetFunction(`/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
     if (userApi?.status) {
       setAllUser(userApi.data);
     }
@@ -223,7 +223,9 @@ function CallDashboard() {
                 </div>
               </div> */}
               <ActiveCallsPage isParentWebRtc={true} />
-              <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+
+              {/* Ex Parked Calls (Now merged into ActiveCallsPage) */}
+              {/* <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
                 <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)} className="callDashParkedCallsBtn">
                   <i className={`fa-solid fa-chevron-${isParkedCallsOpen ? "right" : "left"}`} />
                 </button>
@@ -247,7 +249,6 @@ function CallDashboard() {
                             <button className="nav-link" id="nav-parked-tab" data-bs-toggle="tab" data-bs-target="#nav-parked" type="button" role="tab">
                               Parked
                             </button>
-
                           </div>
                         </nav>
                         <div className="tab-content" id="nav-tabContent">
@@ -486,7 +487,7 @@ function CallDashboard() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

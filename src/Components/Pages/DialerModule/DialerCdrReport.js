@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import { backToTop, checkViewSidebar, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { useSelector } from "react-redux";
 
 function DialerCdrReport() {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ function DialerCdrReport() {
   const [loading, setLoading] = useState(false);
   const [refreshState, setRefreshState] = useState(false);
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
+  const account = useSelector((state) => state.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   async function getAllData(shouldLoad) {
     if (shouldLoad) setLoading(true);
@@ -133,16 +137,23 @@ function DialerCdrReport() {
                         </select>
                         <label>entries</label>
                       </div>
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          name="Search"
-                          value={searchQuery}
-                          className="formItem"
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                      </div>
+                      {checkViewSidebar(
+                        "Campaign",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "search"
+                      ) && <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            value={searchQuery}
+                            className="formItem"
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                          />
+                        </div>
+                      }
                     </div>
                     {/* <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
@@ -292,49 +303,62 @@ function DialerCdrReport() {
                       </div>
                     </div> */}
                     <div className="tableContainer mt-3">
-                      <table>
-                        <thead>
-                          <tr style={{ whiteSpace: "nowrap" }}>
-                            <th>#</th>
-                            <th>Agent Name</th>
-                            <th>Extension</th>
-                            <th>Campaign Name</th>
-                            <th>Customer Name</th>
-                            <th>Customer Number</th>
-                            <th>Duration</th>
-                            <th>Disposition</th>
-                            <th>Hangup Cause</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {loading ? <SkeletonTableLoader row={15} col={11} /> :
-                            filteredData && filteredData?.data?.length > 0 ? (
-                              filteredData?.data?.map((item, index) => (
-                                <tr key={index}>
-                                  <td>{index + 1}</td>
-                                  <td>{item?.agent || 'N/A'}</td>
-                                  <td>{item?.extension || 'N/A'}</td>
-                                  <td>{item?.campaign_title || 'N/A'}</td>
-                                  <td>{item?.customer || 'N/A'}</td>
-                                  <td>{item?.phone_number || 'N/A'}</td>
-                                  <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
-                                  <td style={{ textTransform: 'capitalize' }}>{item.ext_dispo?.replace(/_/g, ' ') || 'N/A'}</td>
-                                  <td>{item?.hangup_cause || 'N/A'}</td>
-                                  <td>{item.created_at ? item?.created_at?.split(" ")[0] : 'N/A'}</td>
-                                  <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
+                      {loading ?
+                        // <SkeletonTableLoader row={15} col={11} />
+                        <ThreeDotedLoader />
+                        :
+                        <table>
+                          <thead>
+                            <tr style={{ whiteSpace: "nowrap" }}>
+                              <th>#</th>
+                              <th>Agent Name</th>
+                              <th>Extension</th>
+                              <th>Campaign Name</th>
+                              <th>Campaign Type</th>
+                              <th>Customer Name</th>
+                              <th>Customer Number</th>
+                              <th>Duration</th>
+                              <th>Disposition</th>
+                              <th>Hangup Cause</th>
+                              <th>Date</th>
+                              <th>Time</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {!checkViewSidebar(
+                              "Campaign",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? <tr><td colSpan={99}>You dont have any permission</td></tr> :
+                              filteredData && filteredData?.data?.length > 0 ? (
+                                filteredData?.data?.map((item, index) => (
+                                  <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item?.agent || 'N/A'}</td>
+                                    <td>{item?.extension || 'N/A'}</td>
+                                    <td>{item?.campaign_title || 'N/A'}</td>
+                                    <td style={{ textTransform: 'capitalize' }}>{item?.camp_type || 'N/A'}</td>
+                                    <td>{item?.customer || 'N/A'}</td>
+                                    <td>{item?.phone_number || 'N/A'}</td>
+                                    <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
+                                    <td style={{ textTransform: 'capitalize' }}>{item.ext_dispo?.replace(/_/g, ' ') || 'N/A'}</td>
+                                    <td>{item?.hangup_cause || 'N/A'}</td>
+                                    <td>{item.created_at ? item?.created_at?.split(" ")[0] : 'N/A'}</td>
+                                    <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
+                                  </tr>
+                                ))
+                              ) : (
+                                <tr>
+                                  <td colSpan={99} className="text-center">
+                                    <EmptyPrompt generic={true} />
+                                  </td>
                                 </tr>
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan={99} className="text-center">
-                                  <EmptyPrompt generic={true} />
-                                </td>
-                              </tr>
-                            )}
-                        </tbody>
-                      </table>
+                              )}
+                          </tbody>
+                        </table>
+                      }
                     </div>
                     <div className="tableHeader mb-3">
                       {filteredData && filteredData?.data?.length > 0 ? (

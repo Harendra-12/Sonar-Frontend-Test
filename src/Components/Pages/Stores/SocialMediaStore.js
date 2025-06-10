@@ -165,7 +165,7 @@ function SocialMediaStore({ refreshData }) {
                                     const configuredItem = allConfigData?.find(config => config.addon_id === item.addon.id);
 
                                     return (
-                                        <div className='col-3' key={index}>
+                                        <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12' key={index}>
                                             <div className='product-cart'>
                                                 <div className="product-image">
                                                     <img
@@ -223,7 +223,7 @@ function SocialMediaStore({ refreshData }) {
                             allAddons
                                 .filter((item) => !accountDetails.add_on_subscription.some((addon) => addon.addon.id === item.id))
                                 .map((item, index) => (
-                                    <div className='col-3'>
+                                    <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                                         <div className="product-cart">
                                             <div className="product-image">
                                                 <img
@@ -266,7 +266,7 @@ function SocialMediaStore({ refreshData }) {
                             <>
                                 {skeletonLoading ?
                                     <>
-                                        <div className='col-3'>
+                                        <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                                             <div className={`product-cart`}>
                                                 <div className="product-image skeleton" ></div>
                                                 <div className='content_width'>
@@ -285,7 +285,7 @@ function SocialMediaStore({ refreshData }) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-3'>
+                                        <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                                             <div className={`product-cart`}>
                                                 <div className="product-image skeleton" ></div>
                                                 <div className='content_width'>
@@ -304,7 +304,7 @@ function SocialMediaStore({ refreshData }) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-3'>
+                                        <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                                             <div className={`product-cart`}>
                                                 <div className="product-image skeleton" ></div>
                                                 <div className='content_width'>

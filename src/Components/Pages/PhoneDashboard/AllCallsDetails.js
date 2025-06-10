@@ -16,9 +16,9 @@ function AllCallsDetails() {
     <>
       {callDetails ? (
         <div className="accordion dashboard" id="accordionPanelsStayOpenExample">
-          <div className="row gy-3 gx-xxl-3 gx-lg-2">
+          <div className="row ">
             <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-              <div className="accordion-item itemWrapper a h-auto">
+              <div className="accordion-item itemWrapper mt-0 a h-auto">
                 <h2 className="accordion-header ">
                   <button
                     className="accordion-button collapsed"
@@ -230,7 +230,7 @@ function AllCallsDetails() {
               </div>
             </div>
             <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-              <div className="accordion-item itemWrapper a h-auto">
+              <div className="accordion-item itemWrapper mt-0 a h-auto">
                 <h2 className="accordion-header">
                   <button
                     className="accordion-button collapsed"
@@ -456,7 +456,7 @@ function AllCallsDetails() {
               </div>
             </div>
             <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-              <div className="accordion-item itemWrapper a h-auto">
+              <div className="accordion-item itemWrapper mt-0 a h-auto">
                 <h2 className="accordion-header">
                   <button
                     className="accordion-button collapsed"
@@ -597,7 +597,7 @@ function AllCallsDetails() {
               </div>
             </div>
             <div className="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-              <div className="accordion-item itemWrapper a h-auto">
+              <div className="accordion-item mt-0 itemWrapper a h-auto">
                 <h2 className="accordion-header">
                   <button
                     className="accordion-button collapsed"

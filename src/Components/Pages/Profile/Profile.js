@@ -45,7 +45,7 @@ const Profile = () => {
           type: "SET_ALLUSERREFRESH",
           allUserRefresh: allUserRefresh + 1,
         });
-      } 
+      }
     }
   }, [allUser]);
 
@@ -124,8 +124,8 @@ const Profile = () => {
       account_id: acount.account_id,
       user: acount.id,
       ...(preassignedExtension ? { forceUpdate: true } : { forceUpdate: true }),
-      forward: account?.extension?account?.extension?.forward:"disabled",
-      forward_to: account?.extension?account?.extension?.forward_to:null,
+      forward: account?.extension ? account?.extension?.forward : "disabled",
+      forward_to: account?.extension ? account?.extension?.forward_to : null,
       timezone_id: selectedTimeZone,
     };
     setPopup(false);
@@ -153,9 +153,9 @@ const Profile = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     generalGetFunction("/cdr?page=1&row_per_page=20")
-  },[])
+  }, [])
 
   return (
     <main className="mainContent">
@@ -433,7 +433,7 @@ const Profile = () => {
                                   className="panelButton ms-auto"
                                   style={{ height: "34px" }}
                                   onClick={() => handleUpdateExtension()}
-                                  // effect="ripple"
+                                // effect="ripple"
                                 >
                                   <span className="text">Save</span>
                                   <span className="icon">

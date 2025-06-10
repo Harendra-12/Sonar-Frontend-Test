@@ -181,7 +181,7 @@
   --listing-color2: #106edc;
   --avatar-border: #dce7ff;
   --border-light-subtle: #e0e0e0;
-  --shadow-gray: rgba(99, 99, 99, 0.388);
+  --shadow-gray: rgba(99, 99, 99, 0.09);
   --hover-bg: #fff;
   --billing-icon: #1e00ff;
   --billing-icon2: #0c0c10;
@@ -221,23 +221,13 @@
   --table-edit-text: #287f71;
   --table-edit-bg: #d4e5e3;
 
---table-delete-bg: #fbd6db;
---table-delete-text: #ec344c;
---config-bg: #fff;
---badge-purple-text: #9300ff;
---badge-purple-bg: #ddb8ea54;
---link: #00b0ff;
---icon-btn-hover: #e7e7e7;
-
---primary01: #845adf1a;
---primary-color01: #845adf;
---pink-rgb-bg: #e791bc1a;
---pink-rgb-text: #e791bc;
---secondary-rgb-bg: rgba(35, 183, 229, 0.102);
---secondary-rgb-text: rgb(35, 183, 229);
---default-border: #dbdbdb;
-
---shadow01: rgba(169, 169, 169, .15);
+  --table-delete-bg: #fbd6db;
+  --table-delete-text: #ec344c;
+  --config-bg: #fff;
+  --badge-purple-text: #9300ff;
+  --badge-purple-bg: #ddb8ea54;
+  --link: #00b0ff;
+  --icon-btn-hover: #e7e7e7;
 
   --primary01: #845adf1a;
   --primary-color01: #845adf;
@@ -245,16 +235,51 @@
   --pink-rgb-text: #e791bc;
   --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
   --secondary-rgb-text: rgb(35, 183, 229);
+  --default-border: #dbdbdb;
+
+  --shadow01: rgba(169, 169, 169, .15);
+
+  /* --primary01: #845adf1a;
+  --primary-color01: #845adf;
+  --pink-rgb-bg: #e791bc1a;
+  --pink-rgb-text: #e791bc;
+  --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
+  --secondary-rgb-text: rgb(35, 183, 229); */
   --track-range-color: #93939324;
 
   /* ---- new added */
-   --success-bg-rgb:rgba(38, 191, 148, 0.102);
-   --success-text-rgb:#26bf94;
+  --success-bg-rgb: rgba(38, 191, 148, 0.102);
+  --success-text-rgb: #26bf94;
+
+  /* ----------------- ai dashboard */
+
+  --light-bg: #f7f8f9;
+  --list-bg: #fff;
+  --text-gray: #52526c;
+  --gradient-bg1: linear-gradient(90deg, rgb(181 177 255 / 68%) 0%, rgb(230 230 255) 35%, rgb(233 210 255 / 14%) 100%);
+  --gradient-bg2: linear-gradient(90deg, rgb(96 186 221 / 28%) 0%, rgb(115 239 166 / 17%) 50%, rgb(233 255 201 / 41%) 100%);
+  --gradient-bg3: linear-gradient(90deg, rgb(255 178 178 / 29%) 0%, rgb(181 167 21 / 11%) 50%, rgb(255 104 0 / 18%) 100%);
+
+  --active-call-shadow: rgb(213 213 213 / 27%) 0 0 10px;
+  --active-number-bg: #ffffff2b;
+  --balance-box-bg: linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
+  --border20: #e5e5e5;
+  --loader-bg: #ffffff17;
+  --svg-color: #e1e1e1;
+  --tab-active: #62a7f82e;
+  --active-text: #2c2c2c;
+  --knowledge-leftinfo: #f9f9f9;
+  --bg_1: #dbedff;
+  --bg-form1: #0c54a117;
+
+   --filter: invert(1) grayscale(0) brightness(0);
 
 }
 
 :root.dark {
   --nav-color: #171717;
+  --active-text: #cfcfcf;
+  --tab-active: #4060852e;
   /* --ui-accent: #141718; */
   /* --bg-color: #212121; */
   --bg-color: #1d1e22;
@@ -391,6 +416,26 @@
 
   --shadow01: rgba(40, 40, 40, .15);
   --track-range-color: rgba(255, 255, 255, 0.1);
+
+  /* ---- ai dashboard */
+
+  --light-bg: #151e26;
+  --list-bg: #121934;
+  --text-gray: #f9f9f9;
+  --gradient-bg1: linear-gradient(90deg, rgb(13 0 255 / 52%) 0%, rgb(77 77 255) 35%, rgb(204 176 231 / 86%) 100%);
+  --gradient-bg2: linear-gradient(90deg, rgb(130 220 255 / 88%) 0%, rgb(0 255 105 / 53%) 50%, rgb(151 255 0 / 55%) 100%);
+  --gradient-bg3: linear-gradient(90deg, rgb(255 108 108 / 78%) 0%, rgb(255 233 0 / 66%) 50%, rgb(255 132 47 / 72%) 100%);
+  --active-call-shadow: rgb(0 0 0 / 27%) 0 0 10px;
+  --active-number-bg: #1d2c4f2b;
+  --balance-box-bg: linear-gradient(90deg, rgb(29 32 87 / 55%) 0%, rgb(157 132 255 / 13%) 50%, rgb(49 28 71 / 72%) 100%);
+  --border20: #3f3c3c;
+  --loader-bg: #1a1b3717;
+  --svg-color: #525252;
+  --knowledge-leftinfo: #242832;
+  --bg_1: #3f4750;
+  --bg-form1: #00000030;
+   --filter: invert(1) grayscale(100%) brightness(200%);
+
 }
 
 :root.green {
@@ -399,11 +444,9 @@
   /* Dark Mode */
   /* --nav-color: #141718; */
   /* --nav-color: #292a3a; */
-  --nav-color: linear-gradient(
-    180deg,
-    rgba(225, 229, 237, 1) 0%,
-    rgba(214, 214, 214, 1) 100%
-  );
+  --nav-color: linear-gradient(180deg,
+      rgba(225, 229, 237, 1) 0%,
+      rgba(214, 214, 214, 1) 100%);
   --button-dark: #2d3864;
   --div-color: #161c31;
   --caller-color: #0a0d16;

@@ -107,17 +107,17 @@ export default function AccessControlEdit() {
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
-                <div className="col-2 px-0">
+                <div className="col-12 ">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
+                <div className="col-12 ">
+                  <h4 className='text-orange text-center'>Warning!</h4>
+                  <p className='text-center'>
                     Are you sure you want to delete this access control?
                   </p>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-center gap-2 mt-3">
 
                     <button
                       disabled={loading}

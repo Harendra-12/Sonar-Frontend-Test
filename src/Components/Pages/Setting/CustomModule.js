@@ -6,6 +6,7 @@ import Header from '../../CommonComponents/Header';
 import CustomDashboardManage from './CustomDashboardManage';
 import { useSelector } from 'react-redux';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function CustomModule() {
     const account = useSelector((state) => state.account);
@@ -87,40 +88,46 @@ function CustomModule() {
                                                 <span className="text">Back</span>
                                                 <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                             </button>
-                                            <button
-                                                onClick={() => {
-                                                    setAddNewMod(true); setSelectedModule(""); setPopup(true)
-                                                }}
-                                                type="button"
-                                                effect="ripple"
-                                                className="panelButton"
-                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "add"))}
-                                            >
-                                                <span className="text">Add</span>
-                                                <span className="icon"><i className="fa-solid fa-plus"></i></span>
-                                            </button>
+                                            {checkViewSidebar(
+                                                "Usage",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "add"
+                                            ) &&
+                                                <button
+                                                    onClick={() => {
+                                                        setAddNewMod(true); setSelectedModule(""); setPopup(true)
+                                                    }}
+                                                    type="button"
+                                                    effect="ripple"
+                                                    className="panelButton"
+                                                >
+                                                    <span className="text">Add</span>
+                                                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
+                                                </button>
+                                            }
                                         </div>
                                     </div>
                                 </div>
                                 <div className='col-12' style={{ overflow: 'auto', padding: '10px 20px 0px' }}>
                                     <div className='tableContainer'>
-                                        <table>
-                                            <thead>
-                                                <th>Module Name</th>
-                                                <th>Category Name</th>
-                                                <th>Category</th>
-                                                <th>Tag</th>
-                                                <th>Active</th>
-                                                <th>Ringing</th>
-                                                <th>Missed</th>
-                                                <th>Total</th>
-                                                {
-                                                    checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
-                                                        <th>Edit</th> : ""
-                                                }
-                                            </thead>
-                                            <tbody>
-                                                {loading ? <SkeletonTableLoader col={9} row={10} /> :
+                                        {loading ?
+                                            // <SkeletonTableLoader col={9} row={10} />
+                                            <ThreeDotedLoader />
+                                            : <table>
+                                                <thead>
+                                                    <th>Module Name</th>
+                                                    <th>Category Name</th>
+                                                    <th>Category</th>
+                                                    <th>Tag</th>
+                                                    <th>Active</th>
+                                                    <th>Ringing</th>
+                                                    <th>Missed</th>
+                                                    <th>Total</th>
+                                                    {checkViewSidebar("Usage", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                                                </thead>
+                                                <tbody>
                                                     <>
                                                         {
                                                             customModule?.map((item, index) => {
@@ -142,9 +149,10 @@ function CustomModule() {
                                                                 )
                                                             })
                                                         }
-                                                    </>}
-                                            </tbody>
-                                        </table>
+                                                    </>
+                                                </tbody>
+                                            </table>
+                                        }
                                     </div>
                                 </div>
                             </div>

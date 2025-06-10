@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 
 const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
@@ -35,12 +36,16 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const accountDetailsRefresh = useSelector(
     (state) => state.accountDetailsRefresh
   );
+  const permissions = useSelector((state) => state.permissions);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
   const [defaultPermission, setDefaultPermission] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
+  const [userPermissionBridge, setUserPermissionBridge] = useState([]);
+  const [editPermission, setEditPermission] = useState(false);
+
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   // const [filterExtensions, setFilterExtensions] = useState();
@@ -71,6 +76,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     reset,
     setValue,
   } = useForm();
+  const [userData, setUserData] = useState([]);
 
   // If login then Getting dataa of permission timezone and role and setting fordata using reset function of useForm hook on initial load of page else navigate to login page
   useEffect(() => {
@@ -150,7 +156,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
             if (!isCustomerAdmin) {
               setSelectedPermission(newData.permissions);
               if (newData?.user_role) {
-                setSelectedRole(newData?.user_role["roles"]?.name);
+                setSelectedRole(newData?.user_role.role_id);
               }
             }
 
@@ -164,6 +170,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         }
         if (account.id) {
           getData();
+          getUserData();
         } else {
           navigate("/");
         }
@@ -296,7 +303,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       status,
       role_id,
       account_id: account.account_id,
-      permissions: selectedPermission,
+      // permissions: selectedPermission,
+      sectionPermissions: userPermissionBridge.sectionPermissions,
+      permissions: userPermissionBridge.permissions,
+      tablePermissions: userPermissionBridge.tablePermissions,
       extension_id: selectedSearch.value,
       usages: data.usages,
       alias: data.alias,
@@ -308,13 +318,13 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       payload
     );
     if (addUser.status) {
-      setLoading(false);
       setPopUp(false);
       toast.success(addUser.message);
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
+      getUserData();
 
       // navigate(-1); // Navigate back to the previous page
     } else {
@@ -397,6 +407,22 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     }
     return inputValue;
   };
+
+  const getUserData = async () => {
+    if (locationState.id) {
+      try {
+        const response = await generalGetFunction(`user/${locationState.id}`);
+        if (response.status) {
+          setUserData(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error(err?.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
   return (
     <>
       <style>
@@ -730,7 +756,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     );
 
                                     setValue("role_id", e.target.value);
-                                    setSelectedRole(roleName.name);
+                                    setSelectedRole(e.target.value);
                                     setSelectedPermission(
                                       e.target.value === ""
                                         ? ""
@@ -927,9 +953,11 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           className="col-xl-6"
                           style={{
                             borderLeft: "1px solid var(--border-color)",
+                            // height: "500px",
+                            // overflow: 'auto'
                           }}
                         >
-                          <div className="profileView p-0">
+                          {/* <div className="profileView p-0">
                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                               <div className="col-xl-12">
                                 <div className="headerCommon d-flex align-items-center">
@@ -1011,6 +1039,19 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   )}
                               </div>
                             </div>
+                          </div> */}
+                          <div className="permissionListWrapper">
+                            <PermissionConfigTable
+                              standalone={false}
+                              allRoleList={role}
+                              selectedRole={selectedRole}
+                              allPermissions={permissions}
+                              loading={loading}
+                              setLoading={setLoading}
+                              setUserPermissionBridge={setUserPermissionBridge}
+                              existingUserData={userData}
+                              isUserFilter={true}
+                            />
                           </div>
                         </div>
                       )}

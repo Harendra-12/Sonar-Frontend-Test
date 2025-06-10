@@ -1,47 +1,88 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
+import { emailValidator, lengthValidator, numberValidator, requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import PhoneInput, { getCountryCallingCode, parsePhoneNumber } from "react-phone-number-input";
 
 const BuyerAdd = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [countryCode, setCountryCode] = useState();
+
+
+  const { watch, register, formState: { errors }, reset, handleSubmit, setValue } = useForm();
+
+  // Handle Buyer Add
+  const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+
+    const phoneNumber = parsePhoneNumber(data.phone_number);
+    const parsedNumber = phoneNumber?.nationalNumber;
+    const parsedAltNumber = parsePhoneNumber(data.alt_phone)?.nationalNumber;
+
+    const payload = { ...data, phone_number: parsedNumber || data.phone_number, alt_phone: parsedAltNumber || data.alt_phone, phone_code: phoneNumber?.countryCallingCode };
+
+    const apiData = await generalPostFunction("/buyer/store", payload);
+    if (apiData?.status) {
+      setLoading(false);
+      reset();
+      navigate('/buyers');
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+    }
+  });
+
+  // Fetch all countries
+  const fetchAllCountry = async () => {
+    setLoading(true);
+    if (!countryCode) {
+      try {
+        const apiData = await generalGetFunction("/available-countries");
+        if (apiData?.status) {
+          setCountryCode(apiData.data);
+          setLoading(false);
+          setTimeout(() => setValue("country_code", "US"), 100)
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchAllCountry();
+  }, [])
+
   return (
     <>
       <main className="mainContent">
         <section id="phonePage">
+          {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
           <div className="container-fluid">
             <div className="row">
-              <Header title="Forwarding portal" />
+              <Header title="Add buyer" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Forwarding portal Add</h4>
-                          <p>Manage the Forwarding portal</p>
+                          <h4>Add Buyer</h4>
+                          <p>Add buyers</p>
                         </div>
                         <div className="buttonGroup">
-                          <div className="d-flex align-items-center">
-                            <div className="formLabel py-0 me-2">
-                              <label for="selectFormRow">Enabled</label>
-                            </div>
-                            <div className="my-auto position-relative mx-1">
-                              {/* <label className="switch">
-                                <input type="checkbox" id="showAllCheck" />
-                                <span className="slider round" />
-                              </label> */}
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
-                                  <input
-                                    type="checkbox" id="showAllCheck"
-
-                                  />
-                                  <span></span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
                           <button
                             effect="ripple"
                             className="panelButton gray"
@@ -55,7 +96,7 @@ const BuyerAdd = () => {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          <button type="button" className="panelButton">
+                          <button type="button" className="panelButton" onClick={handleFormSubmit}>
                             <span className="text">Save</span>
                             <span className="icon">
                               <i className="fa-solid fa-floppy-disk"></i>
@@ -69,138 +110,221 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Forwarding Portal Name{" "}
-                              <span className="text-danger">*</span>
+                              Buyer Name <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a name.
                             </label>
                           </div>
                           <div className="col-6">
-                            <input type="text" className="formItem" />
+                            <input type="text"
+                              className="formItem"
+                              {...register("name", { ...requiredValidator, })}
+                            />
+                            {errors.name && (
+                              <ErrorMessage text={errors.name.message} />
+                            )}
                           </div>
                         </div>
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label>Active hours</label>
-                            <label htmlFor="data" className="formItemDesc">
-                              select time
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <select
-                              className="formItem"
-                              // {...register("strategy")}
-                              id="selectFormRow"
-                            >
-                              <option value="enterprise">60 min</option>
-                              <option value="sequence">30 min</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>Forwarding Portal Type</label>
-                            <label htmlFor="data" className="formItemDesc">
-                              who seeks after it and wants to have it, simply
-                              because it is pain
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <select
-                              className="formItem"
-                              // {...register("strategy")}
-                              id="selectFormRow"
-                            >
-                              <option value="enterprise">Outbound</option>
-                              <option value="sequence">Trunk</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>Status</label>
-                            <label htmlFor="data" className="formItemDesc">
-                              There is no one who loves pain itself,
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input type="text" className="formItem" />
-                          </div>
-                        </div>
-
-                        <div className=" col-xl-6">
-                          <div>
-                            <label>Call schedule</label>
-                            <span className="text-danger">*</span>
-                          </div>
-                          <div className="formRow  justify-content-start">
-                            <div className="formLabel me-4">
-                              <div className="formLabel">
-                                <label>Start Days : </label>
-                                <input type="text" className="formItem" />
-                              </div>
-                              <div className="formLabel">
-                                <label className="">End Day : </label>
-                                <input type="text" className="formItem" />
-                              </div>
-                            </div>
-                            <div className="formLabel">
-                              <div className="">
-                                <div className="formLabel">
-                                  <label>Start time : </label>
-                                  <input type="text" className="formItem" />
-                                </div>
-                                <div className="formLabel">
-                                  <label className="">End Time : </label>
-                                  <input type="text" className="formItem" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>Active hours</label>
-                            <span className="text-danger">*</span>
-                            <div className="d-flex align-items-center justify-content-between mt-3">
-                              <div>
-                                <input type="radio" className="me-2" />
-                                <label>Active hours</label>
-                              </div>
-                              <div>
-                                <input type="radio" className="ms-3" />
-                                <label className="ms-1">Set time</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            {" "}
-                            <div className="formLabel">
-                              <label>Status</label>
+                            <label>
+                              Phone number{" "}
                               <span className="text-danger">*</span>
-                              <div className="d-flex align-items-center">
-                                <div className="formLabel py-0 me-2">
-                                  <label for="selectFormRow">Enabled</label>
-                                </div>
-                                <div className="my-auto position-relative mx-1">
-                                  {/* <label className="switch">
-                                    <input type="checkbox" id="showAllCheck" />
-                                    <span className="slider round" />
-                                  </label> */}
-                                   <div class="cl-toggle-switch">
-                                <label class="cl-switch">
-                                  <input
-                                    type="checkbox" id="showAllCheck"
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a phone number.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text"
+                              className="formItem d-none"
+                              {...register("phone_number", { ...requiredValidator })}
+                            />
+                            <PhoneInput
+                              defaultCountry="US"
+                              placeholder="Enter phone number"
+                              limitMaxLength={true}
+                              value={watch("phone_number")}
+                              onChange={(value) => setValue("phone_number", value)}
+                            />
+                            {errors.phone_number && (
+                              <ErrorMessage text={errors.phone_number.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Alternate Phone number{" "}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a alt phone number.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text"
+                              className="formItem d-none"
+                              {...register("alt_phone", { ...requiredValidator })}
+                            />
+                            <PhoneInput
+                              defaultCountry="US"
+                              placeholder="Enter alt phone number"
+                              limitMaxLength={true}
+                              value={watch("alt_phone")}
+                              onChange={(value) => setValue("alt_phone", value)}
+                            />
+                            {errors.alt_phone && (
+                              <ErrorMessage text={errors.alt_phone.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Email <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a Email id .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input type="text"
+                              className="formItem"
+                              {...register("email", {
+                                ...requiredValidator,
+                                ...emailValidator,
+                              })}
+                            />
+                            {errors.email && (
+                              <ErrorMessage text={errors.email.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Address <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a address .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              {...register("address", { ...requiredValidator, })}
+                            />
+                            {errors.address && (
+                              <ErrorMessage text={errors.address.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              City <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a City .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              {...register("city", { ...requiredValidator, })}
+                            />
+                            {errors.city && (
+                              <ErrorMessage text={errors.city.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              State <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a State .
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              {...register("state", { ...requiredValidator, })}
+                            />
+                            {errors.state && (
+                              <ErrorMessage text={errors.state.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Province <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a province.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              {...register("province", { ...requiredValidator, })}
+                            />
+                            {errors.province && (
+                              <ErrorMessage text={errors.province.message} />
+                            )}
+                          </div>
+                        </div>
 
-                                  />
-                                  <span></span>
-                                </label>
-                              </div>
-                                </div>
-                              </div>
-                            </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Postal code <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a postal code
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              {...register("postal_code", { ...requiredValidator, })}
+                            />
+                            {errors.postal_code && (
+                              <ErrorMessage text={errors.postal_code.message} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>
+                              Country Code <span className="text-danger">*</span>
+                            </label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Enter a country code
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select {...register("country_code", { ...requiredValidator, })} className="formItem">
+                              <option value="">Select Country Code</option>
+                              {countryCode && countryCode.map((country, index) => (
+                                <option key={index} value={country.country_code}>
+                                  {country.country} ({country.country_code})
+                                </option>
+                              ))}
+                            </select>
+                            {errors.country_code && (
+                              <ErrorMessage text={errors.country_code.message} />
+                            )}
                           </div>
                         </div>
                       </form>

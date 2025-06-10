@@ -38,7 +38,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     // fetching api to get all user data
     useEffect(() => {
         async function getAllUser() {
-            const res = await generalGetFunction("/agents?usages=pbx&allagents");
+            const res = await generalGetFunction(`/agents?usages=pbx&allagents${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
             const groupData = await generalGetFunction("/groups/all")
             const roleData = await generalGetFunction("/role/all")
             if (res.status) {
@@ -381,14 +381,13 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                                                        {!addNewMod &&
-                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}
-                                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete"))}
-                                                            >
+                                                        {checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete") ?
+                                                            !addNewMod &&
+                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}>
                                                                 <span className="text" >Delete</span>
                                                                 <span className="icon"><i className="fa-solid fa-trash"></i></span>
                                                             </button>
-                                                        }
+                                                            : ""}
                                                         <button type='button' className="panelButton ms-auto" onClick={() => { addNewMod ? addNewCustomFilter() : updateCustomFilter() }}>
                                                             <span className="text" >{addNewCustomFilter ? "Save" : "Update"}</span>
                                                             <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>

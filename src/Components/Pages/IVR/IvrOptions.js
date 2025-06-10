@@ -6,6 +6,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -15,6 +16,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { useSelector } from "react-redux";
 
 function IvrOptions() {
   const navigate = useNavigate();
@@ -33,6 +35,8 @@ function IvrOptions() {
   const [refresh, setRefresh] = useState(0);
   const [pstnval, setPstnval] = useState();
   const [editPstnval, setEditPstnval] = useState();
+  const account = useSelector((state) => state?.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   useEffect(() => {
     async function getData() {
@@ -191,283 +195,304 @@ function IvrOptions() {
                 </div>
               </div>
               <div className="col-12" style={{ padding: '25px 23px' }}>
-                <form>
-                  {options?.map((item, index) => {
-                    return (
-                      <div className="col-12 formRow justify-content-start">
-                        <div
-                          className="formLabel pe-2"
-                          style={
-                            index === 0
-                              ? { marginTop: 32, width: 30 }
-                              : { width: 30 }
-                          }
-                        >
-                          <label>{index + 1}.</label>
-                        </div>
-                        <div className="col-3 pe-2">
-                          {index === 0 ? (
-                            <div className="formLabel">
-                              <label htmlFor="">Option Key</label>
+                {checkViewSidebar(
+                  "IvrOptions",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "read") &&
+                  <form>
+                    {options?.map((item, index) => {
+                      return (
+                        <div className="col-12 formRow justify-content-start">
+                          <div
+                            className="formLabel pe-2"
+                            style={
+                              index === 0
+                                ? { marginTop: 32, width: 30 }
+                                : { width: 30 }
+                            }
+                          >
+                            <label>{index + 1}.</label>
+                          </div>
+                          <div className="col-3 pe-2">
+                            {index === 0 ? (
+                              <div className="formLabel">
+                                <label htmlFor="">Option Key</label>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <div className="position-relative">
+                              <select
+                                disabled={editId === item.id ? false : true}
+                                type="text"
+                                name="destination"
+                                value={editId === item.id ? editKey : item.option_key}
+                                onChange={(e) => {
+                                  if (editId === item.id) {
+                                    setEditKey(e.target.value);
+                                  }
+                                }}
+                                className="formItem"
+                                placeholder="Destination"
+                              >
+                                <option value="">Choose Option key</option>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => editId === item.id ? !options.find(opt => opt.option_key == option) : true).map(option => (
+                                  <option key={option} value={option}>{option}</option>
+                                ))}
+                                <option value={item.option_key}>{item.option_key}</option>
+                              </select>
                             </div>
-                          ) : (
-                            ""
-                          )}
-                          <div className="position-relative">
+                          </div>
+                          <div className="col-3 pe-2">
+                            {index === 0 ? (
+                              <div className="formLabel">
+                                <label htmlFor="">Action type</label>
+                              </div>
+                            ) : (
+                              ""
+                            )}
                             <select
                               disabled={editId === item.id ? false : true}
-                              type="text"
-                              name="destination"
-                              value={editId === item.id ? editKey : item.option_key}
-                              onChange={(e) => {
-                                if (editId === item.id) {
-                                  setEditKey(e.target.value);
-                                }
-                              }}
-                              className="formItem"
-                              placeholder="Destination"
-                            >
-                              <option value="">Choose Option key</option>
-                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => editId === item.id ? !options.find(opt => opt.option_key == option) : true).map(option => (
-                                <option key={option} value={option}>{option}</option>
-                              ))}
-                              <option value={item.option_key}>{item.option_key}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-3 pe-2">
-                          {index === 0 ? (
-                            <div className="formLabel">
-                              <label htmlFor="">Action type</label>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                          <select
-                            disabled={editId === item.id ? false : true}
-                            className="formItem me-0"
-                            style={{ width: "100%" }}
-                            name="delay"
-                            id="selectFormRow"
-                            value={
-                              editId === item.id
-                                ? editAction_name
-                                : item.action_name
-                            }
-                            onChange={(e) => {
-                              if (editId === item.id) {
-                                setEditAction_name(e.target.value);
-                                setEditAction_id();
-                                if (e.target.value === "hangup") {
-                                  setEditAction_id(["hangup", "hangup"]);
-                                }
-                                if (e.target.value === "backtoivr") {
-                                  setEditAction_id(["backtoivr", "backtoivr"]);
-                                }
-                                if (e.target.value === "pstn") {
-                                  setEditAction_id(["pstn", "pstn"]);
-                                }
-                              }
-                            }}
-                          >
-                            <option value={"extension"}>Extension</option>
-                            <option value={"ringgroup"}>Ring Group</option>
-                            <option value={"queue"}>Call Center</option>
-                            <option value="ivr">IVR</option>
-                            <option value={"hangup"}>Hangup</option>
-                            <option value={"backtoivr"}>Back to IVR</option>
-                            <option value={"pstn"}>PSTN</option>
-                          </select>
-                        </div>
-                        {item.action_name === "pstn" ||
-                          (editId === item.id && editAction_name === "pstn") ? (
-                          <div className="col-3 pe-2">
-                            <PhoneInput
-                              // disabled={
-                              //   editId === item.id
-                              //     ? editAction_name === "hangup" ||
-                              //       editAction_name === "backtoivr"
-                              //       ? true
-                              //       : false
-                              //     : true
-                              // }
-                               defaultCountry="IN"
-                              placeholder="Enter phone number"
-                              limitMaxLength={true}
-                              value={item.action_id}
-                              onChange={setEditPstnval}
-                            />
-                          </div>
-                        ) : (
-                          <div className="col-3 pe-2">
-                            <ActionList
-                              title={index == 0 ? "Action" : null}
-                              isDisabled={
-                                editId === item.id
-                                  ? editAction_name === "hangup" ||
-                                    editAction_name === "backtoivr"
-                                    ? true
-                                    : false
-                                  : true
-                              }
-                              category={
-                                editId === item.id
-                                  ? editAction_name === "ringgroup"
-                                    ? "ring group"
-                                    : editAction_name === "queue"
-                                      ? "call center"
-                                      : editAction_name
-                                  : item.action_name === "ringgroup"
-                                    ? "ring group"
-                                    : item.action_name === "queue"
-                                      ? "call center"
-                                      : item.action_name
-                              }
-                              label={null}
-                              getDropdownValue={setEditAction_id}
+                              className="formItem me-0"
+                              style={{ width: "100%" }}
+                              name="delay"
+                              id="selectFormRow"
                               value={
                                 editId === item.id
-                                  ? editAction_id?.[0]
-                                  : item.action_id
+                                  ? editAction_name
+                                  : item.action_name
                               }
-                            />
+                              onChange={(e) => {
+                                if (editId === item.id) {
+                                  setEditAction_name(e.target.value);
+                                  setEditAction_id();
+                                  if (e.target.value === "hangup") {
+                                    setEditAction_id(["hangup", "hangup"]);
+                                  }
+                                  if (e.target.value === "backtoivr") {
+                                    setEditAction_id(["backtoivr", "backtoivr"]);
+                                  }
+                                  if (e.target.value === "pstn") {
+                                    setEditAction_id(["pstn", "pstn"]);
+                                  }
+                                }
+                              }}
+                            >
+                              <option value={"extension"}>Extension</option>
+                              <option value={"ringgroup"}>Ring Group</option>
+                              <option value={"queue"}>Call Center</option>
+                              <option value="ivr">IVR</option>
+                              <option value={"hangup"}>Hangup</option>
+                              <option value={"backtoivr"}>Back to IVR</option>
+                              <option value={"pstn"}>PSTN</option>
+                            </select>
                           </div>
-                        )}
-                        <div className={index === 0 ? "col-auto mt-auto me-2 h-100" : "col-auto me-2 h-100"}>
-                          <button
-                            type="button"
-                            onClick={() => deleteOption(item.id)}
-                            className="tableButton delete"
-                          >
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                        </div>
+                          {item.action_name === "pstn" ||
+                            (editId === item.id && editAction_name === "pstn") ? (
+                            <div className="col-3 pe-2">
+                              <PhoneInput
+                                // disabled={
+                                //   editId === item.id
+                                //     ? editAction_name === "hangup" ||
+                                //       editAction_name === "backtoivr"
+                                //       ? true
+                                //       : false
+                                //     : true
+                                // }
+                                defaultCountry="IN"
+                                placeholder="Enter phone number"
+                                limitMaxLength={true}
+                                value={item.action_id}
+                                onChange={setEditPstnval}
+                              />
+                            </div>
+                          ) : (
+                            <div className="col-3 pe-2">
+                              <ActionList
+                                title={index == 0 ? "Action" : null}
+                                isDisabled={
+                                  editId === item.id
+                                    ? editAction_name === "hangup" ||
+                                      editAction_name === "backtoivr"
+                                      ? true
+                                      : false
+                                    : true
+                                }
+                                category={
+                                  editId === item.id
+                                    ? editAction_name === "ringgroup"
+                                      ? "ring group"
+                                      : editAction_name === "queue"
+                                        ? "call center"
+                                        : editAction_name
+                                    : item.action_name === "ringgroup"
+                                      ? "ring group"
+                                      : item.action_name === "queue"
+                                        ? "call center"
+                                        : item.action_name
+                                }
+                                label={null}
+                                getDropdownValue={setEditAction_id}
+                                value={
+                                  editId === item.id
+                                    ? editAction_id?.[0]
+                                    : item.action_id
+                                }
+                              />
+                            </div>
+                          )}
+                          {checkViewSidebar(
+                            "IvrOptions",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "delete") &&
+                            <div className={index === 0 ? "col-auto mt-auto me-2 h-100" : "col-auto me-2 h-100"}>
+                              <button
+                                type="button"
+                                onClick={() => deleteOption(item.id)}
+                                className="tableButton delete"
+                              >
+                                <i className="fa-solid fa-trash"></i>
+                              </button>
+                            </div>
+                          }
 
-                        <div className={index === 0 ? "col-auto mt-auto" : "col-auto"}>
-                          <button
-                            onClick={() => {
-                              if (editId === item.id) {
-                                editOption(item.id);
-                              } else {
-                                setEditId(item.id);
-                                setEditAction_id([
-                                  item.action_id,
-                                  item.action_name,
-                                ]);
-                                setEditAction_name(item.action_name);
-                                setEditKey(item.option_key);
-                              }
+                          <div className={index === 0 ? "col-auto mt-auto" : "col-auto"}>
+                            <button
+                              onClick={() => {
+                                if (editId === item.id) {
+                                  editOption(item.id);
+                                } else {
+                                  setEditId(item.id);
+                                  setEditAction_id([
+                                    item.action_id,
+                                    item.action_name,
+                                  ]);
+                                  setEditAction_name(item.action_name);
+                                  setEditKey(item.option_key);
+                                }
+                              }}
+                              className={`panelButton mb-auto ${editId === item.id ? "" : "gray"}`}
+                              effect="ripple"
+                              type="button"
+                            >
+                              <span className="text">{editId === item.id ? "Save" : "Update"}</span>
+                              <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
+                            </button>
+                          </div>
+                          {/* {index === 0 ? <div className="col-12 mb-2"></div> : ""} */}
+                        </div>
+                      );
+                    })}
+                    <div className="col-12 formRow justify-content-start">
+                      <div className="formLabel pe-2" style={{ width: 30 }}>
+                        <label>{options.length + 1}.</label>
+                      </div>
+                      <div className="col-3 pe-2">
+                        <div className="position-relative">
+                          <select
+                            type="text"
+                            name="destination"
+                            value={key}
+                            onChange={(e) => {
+                              setKey(e.target.value);
                             }}
-                            className={`panelButton mb-auto ${editId === item.id ? "" : "gray"}`}
+                            className="formItem"
+                            placeholder="Destination"
+                          >
+                            <option value="">Choose Option key</option>
+
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => !options.find(opt => opt.option_key == option)).map(option => (
+                              <option key={option} value={option}>{option}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-3 pe-2">
+                        <select
+                          className="formItem me-0"
+                          style={{ width: "100%" }}
+                          name="delay"
+                          id="selectFormRow"
+                          value={action_name}
+                          onChange={(e) => {
+                            setAction_type(e.target.value);
+                            setAction_id();
+                            if (e.target.value === "hangup") {
+                              setAction_id(["hangup", "hangup"]);
+                            }
+                            if (e.target.value === "backtoivr") {
+                              setAction_id(["backtoivr", "backtoivr"]);
+                            }
+                            if (e.target.value === "pstn") {
+                              setAction_id(["pstn", "pstn"]);
+                            }
+                          }}
+                        >
+                          <option value={"extension"}>Extension</option>
+                          <option value={"ringgroup"}>Ring Group</option>
+                          <option value={"queue"}>Call Center</option>
+                          <option value="ivr">IVR</option>
+                          <option value={"hangup"}>Hangup</option>
+                          <option value={"backtoivr"}>Back to IVR</option>
+                          <option value={"pstn"}>PSTN</option>
+                        </select>
+                      </div>
+                      {action_name === "pstn" ? (
+                        <div className="col-3 pe-2">
+                          <PhoneInput
+                            placeholder="Enter phone number"
+                            limitMaxLength={true}
+                            value={pstnval}
+                            onChange={setPstnval}
+                          />
+                        </div>
+                      ) : (
+                        <div className="col-3 pe-2">
+                          <ActionList
+                            title={null}
+                            isDisabled={
+                              action_name === "hangup" || action_name === "backtoivr"
+                                ? true
+                                : false
+                            }
+                            category={
+                              action_name === "ringgroup"
+                                ? "ring group"
+                                : action_name === "queue"
+                                  ? "call center"
+                                  : action_name
+                            }
+                            label={null}
+                            getDropdownValue={setAction_id}
+                            value={action_id?.[0]}
+                          />
+                        </div>
+                      )}
+                      {checkViewSidebar(
+                        "IvrOptions",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "add") &&
+                        <div className="col-auto">
+                          <button
+                            onClick={() => handleSubmit()}
+                            className="panelButton mb-auto"
                             effect="ripple"
                             type="button"
                           >
-                            <span className="text">{editId === item.id ? "Save" : "Update"}</span>
-                            <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
+                            <span className="text">Add</span>
+                            <span className="icon"><i className="fa-solid fa-plus"></i></span>
                           </button>
                         </div>
-                        {/* {index === 0 ? <div className="col-12 mb-2"></div> : ""} */}
-                      </div>
-                    );
-                  })}
-                  <div className="col-12 formRow justify-content-start">
-                    <div className="formLabel pe-2" style={{ width: 30 }}>
-                      <label>{options.length + 1}.</label>
+                      }
                     </div>
-                    <div className="col-3 pe-2">
-                      <div className="position-relative">
-                        <select
-                          type="text"
-                          name="destination"
-                          value={key}
-                          onChange={(e) => {
-                            setKey(e.target.value);
-                          }}
-                          className="formItem"
-                          placeholder="Destination"
-                        >
-                          <option value="">Choose Option key</option>
-
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].filter(option => !options.find(opt => opt.option_key == option)).map(option => (
-                            <option key={option} value={option}>{option}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-3 pe-2">
-                      <select
-                        className="formItem me-0"
-                        style={{ width: "100%" }}
-                        name="delay"
-                        id="selectFormRow"
-                        value={action_name}
-                        onChange={(e) => {
-                          setAction_type(e.target.value);
-                          setAction_id();
-                          if (e.target.value === "hangup") {
-                            setAction_id(["hangup", "hangup"]);
-                          }
-                          if (e.target.value === "backtoivr") {
-                            setAction_id(["backtoivr", "backtoivr"]);
-                          }
-                          if (e.target.value === "pstn") {
-                            setAction_id(["pstn", "pstn"]);
-                          }
-                        }}
-                      >
-                        <option value={"extension"}>Extension</option>
-                        <option value={"ringgroup"}>Ring Group</option>
-                        <option value={"queue"}>Call Center</option>
-                        <option value="ivr">IVR</option>
-                        <option value={"hangup"}>Hangup</option>
-                        <option value={"backtoivr"}>Back to IVR</option>
-                        <option value={"pstn"}>PSTN</option>
-                      </select>
-                    </div>
-                    {action_name === "pstn" ? (
-                      <div className="col-3 pe-2">
-                        <PhoneInput
-                          placeholder="Enter phone number"
-                          limitMaxLength={true}
-                          value={pstnval}
-                          onChange={setPstnval}
-                        />
-                      </div>
-                    ) : (
-                      <div className="col-3 pe-2">
-                        <ActionList
-                          title={null}
-                          isDisabled={
-                            action_name === "hangup" || action_name === "backtoivr"
-                              ? true
-                              : false
-                          }
-                          category={
-                            action_name === "ringgroup"
-                              ? "ring group"
-                              : action_name === "queue"
-                                ? "call center"
-                                : action_name
-                          }
-                          label={null}
-                          getDropdownValue={setAction_id}
-                          value={action_id?.[0]}
-                        />
-                      </div>
-                    )}
-                    <div className="col-auto">
-                      <button
-                        onClick={() => handleSubmit()}
-                        className="panelButton mb-auto"
-                        effect="ripple"
-                        type="button"
-                      >
-                        <span className="text">Add</span>
-                        <span className="icon"><i className="fa-solid fa-plus"></i></span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                  </form>
+                }
               </div>
             </div>
           </div>

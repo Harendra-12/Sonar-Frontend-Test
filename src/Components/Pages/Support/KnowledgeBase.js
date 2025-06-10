@@ -7,7 +7,7 @@ function KnowledgeBase() {
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Knowledge Base" />
+                        <Header title="Support" />
                     </div>
                 </div>
                 <div className='container-fluid'>
@@ -47,7 +47,7 @@ function KnowledgeBase() {
                                             </div> */}
                                     </div>
                                     <div className="col-12"
-                                        style={{ overflow: "auto", padding: "25px 20px 0", }} >
+                                        style={{ overflow: "auto", padding: "25px 20px", }} >
 
                                         <div className=' mt-5  align-items-center justify-content-center'>
                                             <div className="content Additional-font text-center">
@@ -57,7 +57,7 @@ function KnowledgeBase() {
                                             </div>
                                             <div>
                                                 <div className='row mt-5'>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-between ">
                                                             <div className="heading ">
@@ -71,7 +71,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper  hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
@@ -85,7 +85,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper  hover-shadow a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading">
@@ -99,7 +99,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
@@ -113,7 +113,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
@@ -126,7 +126,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper  hover-shadow a bg-none d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
@@ -151,7 +151,7 @@ function KnowledgeBase() {
                                             </div>
                                             <div>
                                                 <div className='row mt-3'>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-between ">
                                                             <div className="heading ">
@@ -170,7 +170,7 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
+                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">

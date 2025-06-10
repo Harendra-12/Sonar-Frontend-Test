@@ -1,28 +1,103 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
+import { generalDeleteFunction, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
+import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function Buyers() {
   const navigate = useNavigate();
+  const [allBuyers, setAllBuyers] = useState([]);
+  const [buyersDetailsData, setBuyersDetailsData] = useState()
+  const [loading, setLoading] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
+  const [pageNumber, setPageNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
+  const { confirm, ModalComponent } = PromptFunctionPopup();
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
+
+  const getAllBuyers = async (shouldLoad) => {
+    if (shouldLoad)
+      setLoading(true);
+    const response = await generalGetFunction(`buyer/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
+    if (response.status) {
+      setAllBuyers(response?.data?.data);
+      setBuyersDetailsData(response?.data);
+      setLoading(false);
+      setRefreshState(false)
+    } else {
+      toast.error(response.message);
+      setLoading(false);
+      setRefreshState(false)
+    }
+  };
+
+  // Initial data fetch
+  useEffect(() => {
+    setRefreshState(true);
+    const shouldLoad = true
+    getAllBuyers(shouldLoad);
+  }, [itemsPerPage, debouncedSearchTerm])
+
+  // Handle Edit Buyer
+  const handleConfigEdit = async (id) => {
+    if (id) {
+      navigate('/buyer-edit', { state: { id: id } });
+    }
+  }
+
+  // Handle Delete Buyer
+  const handleDeleteConfig = async (id) => {
+    const userConfirmed = await confirm();
+    if (userConfirmed) {
+      setLoading(true);
+      try {
+        const apiCall = await generalDeleteFunction(`/buyer/${id}`);
+        if (apiCall.status) {
+          setLoading(false);
+          toast.success("Buyer Deleted Successfully.");
+          setRefreshState(true)
+          const shouldLoad = true
+          getAllBuyers(shouldLoad);
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    }
+  }
+
+  const getRefresh = () => {
+    setRefreshState(true)
+    const shouldLoad = false;
+    getAllBuyers(shouldLoad)
+  }
   return (
     <>
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
-              <Header title="Forwarding portal" />
+              <Header title="Buyers" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Forwarding portal</h4>
-                          <p>You can see all list of Forwarding portal</p>
+                          <h4> All Buyers
+                            <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
+                              <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
+                          </h4>
+                          <p>You can see all list of all buyers</p>
                         </div>
                         <div className="buttonGroup">
-                          <button effect="ripple" className="panelButton gray">
+                          <button className="panelButton gray">
                             <span className="text">Back</span>
                             <span className="icon">
                               <i className="fa-solid fa-caret-left"></i>
@@ -30,7 +105,6 @@ function Buyers() {
                           </button>
                           <button
                             onClick={() => navigate("/buyer-add")}
-                            effect="ripple"
                             className="panelButton"
                           >
                             <span className="text">Add</span>
@@ -41,7 +115,8 @@ function Buyers() {
                         </div>
                       </div>
                     </div>
-                    <div  className="col-12"
+                    <div
+                      className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       <div className="tableHeader">
@@ -49,10 +124,10 @@ function Buyers() {
                           <label>Show</label>
                           <select
                             className="formItem"
-                            // value={itemsPerPage}
-                            // onChange={(e) => {
-                            //     setItemsPerPage(e.target.value);
-                            // }}
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                              setItemsPerPage(e.target.value);
+                            }}
                           >
                             <option value={10}>10</option>
                             <option value={20}>20</option>
@@ -66,9 +141,9 @@ function Buyers() {
                             type="text"
                             name="Search"
                             placeholder="Search"
-                            // value={searchValue}
+                            value={searchValue}
                             className="formItem"
-                            // onChange={(e) => setSearchValue(e.target.value)}
+                            onChange={(e) => setSearchValue(e.target.value)}
                           />
                         </div>
                       </div>
@@ -76,87 +151,56 @@ function Buyers() {
                         <table>
                           <thead>
                             <tr>
-                              <th>Fportal name</th>
-                              <th>Type</th>
-                              <th>Active hours</th>
-                              <th>Start time </th>
-                              <th>End time</th>
-                              <th>Start Day</th>
-                              <th>End Day day</th>
-                              <th>Status</th>
+                              <th>Buyer name</th>
+                              <th>Phone Code</th>
+                              <th>Phone Number</th>
+                              <th>Alt Phone Number</th>
+                              <th>Email</th>
+                              <th>Address</th>
+                              <th>City</th>
+                              <th>State</th>
+                              <th>Province</th>
+                              <th>Postal code</th>
+                              <th>Country code</th>
                               <th>Edit</th>
                               <th>Delete</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Rishabh maurya01</td>
-                              <td>Outbound</td>
-                              <td>60 min</td>
-                              <td>09:30pm </td>
-                              <td>10:30am</td>
-
-                              <td>24/03/2025</td>
-                              <td>05/04/2025</td>
-                              <td>
-                                <div className="my-auto position-relative mx-1">
-                                  {/* <label className="switch">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            // checked={
-                                                                            //     item.status == "active"
-                                                                            // }
-                                                                            // onClick={(e) => {
-                                                                            //     setSelectedRingGroup(item);
-                                                                            //     setPopUp(true);
-                                                                            // }}
-                                                                            // {...register("status")}
-                                                                            id="showAllCheck"
-                                                                        />
-                                                                        <span className="slider round" />
-                                                                    </label> */}
-                                  <div class="cl-toggle-switch">
-                                    <label class="cl-switch">
-                                      <input
-                                        type="checkbox"
-                                        id="showAllCheck"
-                                      />
-                                      <span></span>
-                                    </label>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <button
-                                  className="tableButton edit"
-                                  onClick={() => navigate(`/buyer-edit`)}
-                                >
-                                  <i className="fa-solid fa-pencil" />
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  className="tableButton delete"
-                                  // onClick={() => {
-                                  //     setPopUp(true);
-                                  //     setDeleteId(item.id);
-                                  // }}
-                                >
-                                  <i className="fa-solid fa-trash" />
-                                </button>
-                              </td>
-                            </tr>
+                            {loading ?
+                              // <SkeletonTableLoader col={13} row={15} />
+                              <ThreeDotedLoader />
+                              :
+                              allBuyers && allBuyers.length > 0 ?
+                                allBuyers.map((buyer, index) => (
+                                  <tr key={index}>
+                                    <td>{buyer.name}</td>
+                                    <td>{buyer.phone_code}</td>
+                                    <td>{buyer.phone_number}</td>
+                                    <td>{buyer.alt_phone}</td>
+                                    <td>{buyer.email}</td>
+                                    <td>{buyer.address}</td>
+                                    <td>{buyer.city}</td>
+                                    <td>{buyer.state}</td>
+                                    <td>{buyer.province}</td>
+                                    <td>{buyer.postal_code}</td>
+                                    <td>{buyer.country_code}</td>
+                                    <td><button className="tableButton edit" onClick={() => handleConfigEdit(buyer.id)}><i className='fa-solid fa-pen' /></button></td>
+                                    <td><button className="tableButton delete" onClick={() => handleDeleteConfig(buyer.id)}><i className='fa-solid fa-trash' /></button></td>
+                                  </tr>
+                                )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
+                            }
                           </tbody>
                         </table>
                       </div>
 
                       <div className="tableHeader mb-3">
                         <PaginationComponent
-                        // pageNumber={(e) => setPageNumber(e)}
-                        // totalPage={ringGroup.last_page}
-                        // from={ringGroup.from}
-                        // to={ringGroup.to}
-                        // total={ringGroup.total}
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={buyersDetailsData?.last_page}
+                          from={buyersDetailsData?.from}
+                          to={buyersDetailsData?.to}
+                          total={buyersDetailsData?.total}
                         />
                       </div>
                     </div>
@@ -165,6 +209,7 @@ function Buyers() {
               </div>
             </div>
           </div>
+          <ModalComponent task={"delete"} reference={"Buyer"} />
         </section>
       </main>
     </>

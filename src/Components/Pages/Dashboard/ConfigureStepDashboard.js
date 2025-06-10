@@ -40,7 +40,7 @@ function ConfigureStepDashboard({ account2 }) {
         quantity: "1",
         npa: Number(npx),
         companyId: account.account_id,
-        country:"US"
+        country: "US"
       };
       const apiData = await generalPostFunction("/search-number", parsedData);
       if (apiData.status) {
@@ -127,120 +127,120 @@ function ConfigureStepDashboard({ account2 }) {
 
   return (
     <div>
-     <div className="container">
-     <div className="row">
-        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-        <div className="profileView">
-        <div className="profileDetailsHolder shadow-none position-relative">
-          <div className="contentFinal">
-            <h2>
-              Congratulations<span>!</span>
-            </h2>
-            <p>
-              You are at the final step of getting access to <b>Angel PBX</b>,
-              please <span>configure your account</span> to proceed further.
-            </p>
-
-            {account2.company_status === "5" ? (
-              ""
-            ) : (
-              <div className="col-xl-2 col-lg-3 col-md-4 mx-auto">
-                <button
-                  className="payNow"
-                  // onClick={configureAccount}
-                  onClick={() => setConfigure(true)}
-                >
-                  Configure Now{" "}
-                  <i className="ms-1 fa-duotone fa-circle-arrow-right"></i>
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="row">
-            <div className="col-md-6"></div>
-            <div className="col-md-6"></div>
-
-      
-          {configure ? (
-            
-            <div className="configProgressWrapper">
-              <ul>
-                <li>
-                  <p className="text-center">
-                    Please write first 3 digits of the number which you want in
-                    DID.
+      <div className="container">
+        <div className="row">
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+            <div className="profileView">
+              <div className="profileDetailsHolder shadow-none position-relative">
+                <div className="contentFinal">
+                  <h2>
+                    Congratulations<span>!</span>
+                  </h2>
+                  <p>
+                    You are at the final step of getting access to <b>Angel PBX</b>,
+                    please <span>configure your account</span> to proceed further.
                   </p>
-                </li>
-                <li>
-                  <div className="coolinput">
-                    <div className="coolSearch">
-                      <label for="input" className="text">
-                        NPX:
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Write here..."
-                        name="input"
-                        className="input"
-                        onChange={(e) => setNpx(e.target.value)}
-                        maxLength={3}
-                        value={npx}
-                      />
-                    </div>
-                    <button
-                      onClick={() => {
-                        searchDid();
-                        setDid("");
-                      }}
-                    >
-                      <i className="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-              {searchingDid || did !== "" ? (
-                <ul className="borderMan" style={{ height: "fit-content" }}>
-                  {did === "" ? (
-                    <li>
-                      <div
-                        className={
-                          didSearch === ""
-                            ? "configProgress pending "
-                            : didSearch === true
-                            ? "configProgress"
-                            : "configProgress success"
-                        }
-                      >
-                        {didSearch === "" ? (
-                          <i className="fa-duotone fa-check"></i>
-                        ) : didSearch === true ? (
-                          <CircularProgress
-                            size="35px"
-                            sx={{ color: green[500] }}
-                          />
-                        ) : (
-                          <i className="fa-duotone fa-check"></i>
-                        )}
-                      </div>
-                      <div className="configProgressText">
-                        <p>Searching for available DID</p>
-                      </div>
-                    </li>
+
+                  {account2.company_status === "5" ? (
+                    ""
                   ) : (
-                    <li>
-                      {did === "No DID found with the given NPX" ? (
-                        <div className="configProgressText did">
-                          <p>{did}</p>
-                        </div>
-                      ) : (
-                        <div className="configProgressText did">
-                          <p>
-                            Your DID is: <span>{did}</span>
+                    <div className="col-xl-2 col-lg-3 col-md-4 mx-auto">
+                      <button
+                        className="payNow"
+                        // onClick={configureAccount}
+                        onClick={() => setConfigure(true)}
+                      >
+                        Configure Now{" "}
+                        <i className="ms-1 fa-duotone fa-circle-arrow-right"></i>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6"></div>
+                  <div className="col-md-6"></div>
+
+
+                  {configure ? (
+
+                    <div className="configProgressWrapper">
+                      <ul>
+                        <li>
+                          <p className="text-center">
+                            Please write first 3 digits of the number which you want in
+                            DID.
                           </p>
-                          <button onClick={takeDid}>
-                            <i className="fa-solid fa-check"></i>
-                            {/* {false ? <div className="selectDidOpt">
+                        </li>
+                        <li>
+                          <div className="coolinput">
+                            <div className="coolSearch">
+                              <label for="input" className="text">
+                                NPX:
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Write here..."
+                                name="input"
+                                className="input"
+                                onChange={(e) => setNpx(e.target.value)}
+                                maxLength={3}
+                                value={npx}
+                              />
+                            </div>
+                            <button
+                              onClick={() => {
+                                searchDid();
+                                setDid("");
+                              }}
+                            >
+                              <i className="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                      {searchingDid || did !== "" ? (
+                        <ul className="borderMan" style={{ height: "fit-content" }}>
+                          {did === "" ? (
+                            <li>
+                              <div
+                                className={
+                                  didSearch === ""
+                                    ? "configProgress pending "
+                                    : didSearch === true
+                                      ? "configProgress"
+                                      : "configProgress success"
+                                }
+                              >
+                                {didSearch === "" ? (
+                                  <i className="fa-duotone fa-check"></i>
+                                ) : didSearch === true ? (
+                                  <CircularProgress
+                                    size="35px"
+                                    sx={{ color: green[500] }}
+                                  />
+                                ) : (
+                                  <i className="fa-duotone fa-check"></i>
+                                )}
+                              </div>
+                              <div className="configProgressText">
+                                <p>Searching for available DID</p>
+                              </div>
+                            </li>
+                          ) : (
+                            <li>
+                              {did === "No DID found with the given NPX" ? (
+                                <div className="configProgressText did">
+                                  <p>{did}</p>
+                                </div>
+                              ) : (
+                                <div className="configProgressText did">
+                                  <p>
+                                    Your DID is: <span>{did}</span>
+                                  </p>
+                                  <button onClick={takeDid}>
+                                    <i className="fa-solid fa-check"></i>
+                                    {/* {false ? <div className="selectDidOpt">
                           <div className="d-flex">
                             <input type="checkbox" defaultChecked={'checked'} /> <span>Voice</span>
                           </div>
@@ -254,72 +254,72 @@ function ConfigureStepDashboard({ account2 }) {
                             <input type="checkbox" /> <span>e911</span>
                           </div>
                         </div> : ""} */}
-                          </button>
-                          <button
-                            className="shuffle"
-                            onClick={() => {
-                              searchDid();
-                              setDid("");
-                            }}
-                          >
-                            <i className="fa-solid fa-rotate-reverse"></i>
-                          </button>
-                        </div>
-                      )}
-                    </li>
-                  )}
-                  {purchingDid && did !== "" && (
-                    <li>
-                      <div className={"configProgress"}>
-                        {configuredPurchase === true ? (
-                          <i className="fad fa-check-circle text-success"></i>
-                        ) : (
-                          <CircularProgress
-                            size="35px"
-                            sx={{ color: green[500] }}
-                          />
-                        )}
-                      </div>
-                      <div className="configProgressText">
-                        <p>Purchasing Did</p>
-                      </div>
-                    </li>
-                  )}
-                  {configuringExtension && did !== "" && (
-                    <li>
-                      <div className={"configProgress"}>
-                        {configuredExtension === true ? (
-                          <i className="fad fa-check-circle text-success"></i>
-                        ) : (
-                          <CircularProgress
-                            size="35px"
-                            sx={{ color: green[500] }}
-                          />
-                        )}
-                      </div>
-                      <div className="configProgressText">
-                        <p>Configuring Extensions ({availableUsers})</p>
-                      </div>
-                    </li>
-                  )}
-                  {configuringRole && did !== "" && (
-                    <li>
-                      <div className={"configProgress"}>
-                        {configuredRole === true ? (
-                          <i className="fad fa-check-circle text-success"></i>
-                        ) : (
-                          <CircularProgress
-                            size="35px"
-                            sx={{ color: green[500] }}
-                          />
-                        )}
-                      </div>
-                      <div className="configProgressText">
-                        <p>Configuring Roles</p>
-                      </div>
-                    </li>
-                  )}
-                  {/* <li>
+                                  </button>
+                                  <button
+                                    className="shuffle"
+                                    onClick={() => {
+                                      searchDid();
+                                      setDid("");
+                                    }}
+                                  >
+                                    <i className="fa-solid fa-rotate-reverse"></i>
+                                  </button>
+                                </div>
+                              )}
+                            </li>
+                          )}
+                          {purchingDid && did !== "" && (
+                            <li>
+                              <div className={"configProgress"}>
+                                {configuredPurchase === true ? (
+                                  <i className="fad fa-check-circle text-success"></i>
+                                ) : (
+                                  <CircularProgress
+                                    size="35px"
+                                    sx={{ color: green[500] }}
+                                  />
+                                )}
+                              </div>
+                              <div className="configProgressText">
+                                <p>Purchasing Did</p>
+                              </div>
+                            </li>
+                          )}
+                          {configuringExtension && did !== "" && (
+                            <li>
+                              <div className={"configProgress"}>
+                                {configuredExtension === true ? (
+                                  <i className="fad fa-check-circle text-success"></i>
+                                ) : (
+                                  <CircularProgress
+                                    size="35px"
+                                    sx={{ color: green[500] }}
+                                  />
+                                )}
+                              </div>
+                              <div className="configProgressText">
+                                <p>Configuring Extensions...</p>
+                              </div>
+                            </li>
+                          )}
+                          {configuringRole && did !== "" && (
+                            <li>
+                              <div className={"configProgress"}>
+                                {configuredRole === true ? (
+                                  <i className="fad fa-check-circle text-success"></i>
+                                ) : (
+                                  <CircularProgress
+                                    size="35px"
+                                    sx={{ color: green[500] }}
+                                  />
+                                )}
+                              </div>
+                              <div className="configProgressText">
+                                <p>Configuring Roles</p>
+                              </div>
+                            </li>
+                          )}
+                          {/* <li>
                         <div className={acquiringDid==="" ? 'configProgress pending ' : acquiringDid===true? "configProgress": "configProgress success"}>
                             {acquiringDid===""  ? <i className="fa-duotone fa-check"></i> : acquiringDid===true ?<CircularProgress size="35px" sx={{ color: green[500], }} />: <i className="fa-duotone fa-check"></i>}
                         </div>
@@ -327,7 +327,7 @@ function ConfigureStepDashboard({ account2 }) {
                             <p>Acquiring your DID</p>
                         </div>
                     </li> */}
-                  {/* <li>
+                          {/* <li>
                   <div
                     className={
                       purchingDid === ""
@@ -352,37 +352,37 @@ function ConfigureStepDashboard({ account2 }) {
                     <p>Purching your DID</p>
                   </div>
                 </li> */}
-                </ul>
-              ) : (
-                ""
-              )}
-            </div>
+                        </ul>
+                      ) : (
+                        ""
+                      )}
+                    </div>
 
-          ) : (
-            ""
-          )}
-          {purchaseComplete ? (
-            <div className="contentFinal">
-              <p>Your did configured successfully </p>
-              <p>
-                Further configuration is under process, you will notified
-                whenever it is done!{" "}
-              </p>
-              <p>
-                Further support you can reach us at pbx@gmail.com or call us at
-                0000000000
-              </p>
-            </div>
-          ) : (
-            ""
-          )}
+                  ) : (
+                    ""
+                  )}
+                  {purchaseComplete ? (
+                    <div className="contentFinal">
+                      <p>Your did configured successfully </p>
+                      <p>
+                        Further configuration is under process, you will notified
+                        whenever it is done!{" "}
+                      </p>
+                      <p>
+                        Further support you can reach us at pbx@gmail.com or call us at
+                        0000000000
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
-</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-        </div>
-      </div>
-     </div>
       <ToastContainer
         position="bottom-right"
         autoClose={3000}

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
-import { backToTop, featureUnderdevelopment, generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, featureUnderdevelopment, generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import { set } from 'date-fns';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import { use } from 'react';
+import { useSelector } from 'react-redux';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 
 function RateCardView() {
     const navigate = useNavigate();
@@ -17,6 +19,8 @@ function RateCardView() {
     const [rateCardList, setRateCardList] = useState([]);
     const [loading, setLoading] = useState(false);
     const debouncedSearchTerm = useDebounce(userInput, 1000);
+    const account = useSelector((state) => state?.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
 
     const getRateCard = async (shouldLoad) => {
         if (shouldLoad) setLoading(true);
@@ -127,16 +131,22 @@ function RateCardView() {
                                                 </select>
                                                 <label>entries</label>
                                             </div>
-                                            <div className="searchBox position-relative">
-                                                <label>Search:</label>
-                                                <input
-                                                    type="search"
-                                                    name="Search"
-                                                    className="formItem"
-                                                    value={userInput}
-                                                    onChange={(e) => setuserInput(e.target.value)}
-                                                />
-                                            </div>
+                                            {checkViewSidebar(
+                                                "Ratecard",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "search"
+                                            ) && <div className="searchBox position-relative">
+                                                    <label>Search:</label>
+                                                    <input
+                                                        type="search"
+                                                        name="Search"
+                                                        className="formItem"
+                                                        value={userInput}
+                                                        onChange={(e) => setuserInput(e.target.value)}
+                                                    />
+                                                </div>}
                                         </div>
                                         <nav className='tangoNavs mt-2'>
                                             <div className='nav nav-tabs' id="nav-tab" role="tablist">
@@ -151,49 +161,60 @@ function RateCardView() {
                                         <div className='tab-content' id="nav-tabContent">
                                             <div className='tab-pane fade show active' id="nav-in" role="tabpanel">
                                                 <div className="tableContainer">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Source</th>
-                                                                <th>Destination</th>
-                                                                {/* <th>Vendor Name</th> */}
-                                                                <th>Country</th>
-                                                                <th>Selling Billing Block</th>
-                                                                {/* <th>Outbound Rate</th> */}
-                                                                <th>Inbound Rate</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {loading ?
-                                                                <SkeletonTableLoader col={6} row={15} /> : (
-                                                                    <>
-                                                                        {rateCardList && rateCardList?.data?.length === 0 ? (
-                                                                            <tr>
-                                                                                <td colSpan={99}>
-                                                                                    <EmptyPrompt name="Rate Card" />
-                                                                                </td>
-                                                                            </tr>
-                                                                        ) : (
-                                                                            rateCardList?.data?.map((item, index) => {
-                                                                                return (
-                                                                                    <tr>
-                                                                                        <td>{index + 1}</td>
-                                                                                        <td>{item.src}</td>
-                                                                                        <td>{item.dest}</td>
-                                                                                        {/* <td>{item.vendor_name}</td> */}
-                                                                                        <td>{item.country}</td>
-                                                                                        <td>{item.selling_billing_block}</td>
-                                                                                        {/* <td>{item.out_rate}</td> */}
-                                                                                        <td>${item.in_rate}</td>
-                                                                                    </tr>
-                                                                                )
-                                                                            })
-                                                                        )}
-                                                                    </>
-                                                                )}
-                                                        </tbody>
-                                                    </table>
+                                                    {loading ?
+                                                        // <SkeletonTableLoader col={6} row={15} />
+                                                        <ThreeDotedLoader />
+                                                        :
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Source</th>
+                                                                    <th>Destination</th>
+                                                                    {/* <th>Vendor Name</th> */}
+                                                                    <th>Country</th>
+                                                                    <th>Selling Billing Block</th>
+                                                                    {/* <th>Outbound Rate</th> */}
+                                                                    <th>Inbound Rate</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {!checkViewSidebar(
+                                                                    "Ratecard",
+                                                                    slugPermissions,
+                                                                    account?.sectionPermissions,
+                                                                    account?.permissions,
+                                                                    "read"
+                                                                ) ? <tr> <td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                                                                    (
+                                                                        <>
+                                                                            {rateCardList && rateCardList?.data?.length === 0 ? (
+                                                                                <tr>
+                                                                                    <td colSpan={99}>
+                                                                                        <EmptyPrompt name="Rate Card" />
+                                                                                    </td>
+                                                                                </tr>
+                                                                            ) : (
+                                                                                rateCardList?.data?.map((item, index) => {
+                                                                                    return (
+                                                                                        <tr>
+                                                                                            <td>{index + 1}</td>
+                                                                                            <td>{item.src}</td>
+                                                                                            <td>{item.dest}</td>
+                                                                                            {/* <td>{item.vendor_name}</td> */}
+                                                                                            <td>{item.country}</td>
+                                                                                            <td>{item.selling_billing_block}</td>
+                                                                                            {/* <td>{item.out_rate}</td> */}
+                                                                                            <td>${item.in_rate}</td>
+                                                                                        </tr>
+                                                                                    )
+                                                                                })
+                                                                            )}
+                                                                        </>
+                                                                    )}
+                                                            </tbody>
+                                                        </table>
+                                                    }
                                                 </div>
                                             </div>
                                             <div className='tab-pane fade' id="nav-out" role="tabpanel">

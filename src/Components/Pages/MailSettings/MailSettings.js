@@ -12,9 +12,11 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const MailSettings = ({ style }) => {
+  const navigate = useNavigate();
   const slugPermissions = useSelector((state) => state?.permissions);
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState([]);
@@ -130,7 +132,7 @@ const MailSettings = ({ style }) => {
                               effect="ripple"
                               className="panelButton gray"
                               onClick={() => {
-                                Navigate(-1);
+                                navigate(-1);
                                 backToTop();
                               }}
                             >
@@ -144,33 +146,23 @@ const MailSettings = ({ style }) => {
                                 {checkViewSidebar(
                                   "MailSetting",
                                   slugPermissions,
-                                  account?.permissions, "add"
-                                ) ? (
-                                  <button
-                                    effect="ripple"
-                                    className="panelButton"
-                                    onClick={() => {
-                                      setMailSettingAddToggle(true);
-                                    }}
-                                  >
-                                    <span className="text">Add</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-plus"></i>
-                                    </span>
-                                  </button>
-                                ) : (
-                                  <button
-                                    effect="ripple"
-                                    className="panelButton"
-                                    disabled
-                                    style={{ cursor: "not-allowed" }}
-                                  >
-                                    <span className="text">Add</span>
-                                    <span className="icon">
-                                      <i className="fa-solid fa-plus"></i>
-                                    </span>
-                                  </button>
-                                )}
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "add"
+                                ) && (
+                                    <button
+                                      effect="ripple"
+                                      className="panelButton"
+                                      onClick={() => {
+                                        setMailSettingAddToggle(true);
+                                      }}
+                                    >
+                                      <span className="text">Add</span>
+                                      <span className="icon">
+                                        <i className="fa-solid fa-plus"></i>
+                                      </span>
+                                    </button>
+                                  )}
                               </>
                             )}
                           </div>
@@ -178,110 +170,104 @@ const MailSettings = ({ style }) => {
                       </div>
                       <div
                         className="col-12"
-                        style={{ overflow: "auto", padding: "10px 20px 0" }}
+                        style={{ overflow: "auto", padding: "10px 10px" }}
                       >
                         <div className="mx-2 tableContainer">
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Mail Driver</th>
-                                <th>Username</th>
-                                <th>Host</th>
-                                <th>Mail From</th>
-                                <th>Mail From Name</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {noPermission ? (
+                          {loading ? (
+                            <ThreeDotedLoader />
+                          ) :
+                            <table>
+                              <thead>
                                 <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>No Permission</td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
+                                  <th>Mail Driver</th>
+                                  <th>Username</th>
+                                  <th>Host</th>
+                                  <th>Mail From</th>
+                                  <th>Mail From Name</th>
+                                  {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                                  {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
                                 </tr>
-                              ) : (
-                                <>
-                                  {loading ? (
-                                    <tr>
-                                      <td colSpan={99}>
-                                        <ContentLoader />
-                                      </td>
-                                    </tr>
-                                  ) : (
-                                    <>
-                                      {mailSettings &&
-                                        mailSettings.map((data, index) => (
-                                          <tr key={index}>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_driver}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_username}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_host}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_from_address}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {data.mail_from_name}
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              {" "}
-                                              <button
-                                                className="tableButton edit"
-                                                // onClick={() =>
-                                                //   navigate(
-                                                //     // `/mail-settings-edit?id=${data.id}`
-                                                //     `/mail-settings-edit`,
-                                                //     {
-                                                //       state: data.id,
-                                                //     }
-                                                //   )
-                                                // }
-                                                onClick={() =>
-                                                  handleEditMailSettings(
-                                                    data.id
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil"></i>
-                                              </button>
-                                            </td>
-                                            <td style={{ cursor: "default" }}>
-                                              <button
-                                                className="tableButton delete"
-                                                onClick={() => {
-                                                  setOpenPopup(true);
-                                                  setDeleteSetingsId(data.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </button>
-                                            </td>
-                                          </tr>
-                                        ))}
+                              </thead>
+                              <tbody>
+                                {noPermission || !checkViewSidebar(
+                                  "MailSetting",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
+                                  <tr>
+                                    <td colSpan={99} className="text-center">You dont have any permission</td>
+                                  </tr>
+                                ) : (
+                                  <>
+                                    {mailSettings &&
+                                      mailSettings.map((data, index) => (
+                                        <tr key={index}>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_driver}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_username}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_host}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_from_address}
+                                          </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {data.mail_from_name}
+                                          </td>
+                                          {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <td style={{ cursor: "default" }}>
+                                            {" "}
+                                            <button
+                                              className="tableButton edit"
+                                              // onClick={() =>
+                                              //   navigate(
+                                              //     // `/mail-settings-edit?id=${data.id}`
+                                              //     `/mail-settings-edit`,
+                                              //     {
+                                              //       state: data.id,
+                                              //     }
+                                              //   )
+                                              // }
+                                              onClick={() =>
+                                                handleEditMailSettings(
+                                                  data.id
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>}
+                                          {checkViewSidebar("MailSetting", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td style={{ cursor: "default" }}>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                setOpenPopup(true);
+                                                setDeleteSetingsId(data.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                          </td>}
+                                        </tr>
+                                      ))}
 
-                                      {mailSettings.length === 0 && (
-                                        <td colSpan={99}>
-                                          <EmptyPrompt
-                                            name="Mail Settings"
-                                            link="mail-settings-add"
-                                          />
-                                        </td>
-                                      )}
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </tbody>
-                          </table>
+                                    {mailSettings.length === 0 && (
+                                      <td colSpan={99}>
+                                        <EmptyPrompt
+                                          name="Mail Settings"
+                                          link="mail-settings-add"
+                                        />
+                                      </td>
+                                    )}
+                                  </>
+                                )}
+                              </tbody>
+                            </table>
+                          }
                         </div>
                       </div>
                     </div>

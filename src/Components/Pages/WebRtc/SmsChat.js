@@ -137,9 +137,9 @@ function SmsChat({ setLoading, loading, did }) {
                 <div className="col-12">
                   <div className="tab-content">
                     <div className="callList">
-                      {/* <div className="dateHeader">
+                      <div className="dateHeader">
                     <p className="fw-semibold">Today</p>
-                  </div> */}
+                  </div>
                       {allSmsLogs?.map((item, index) => {
                         return (
                           <>

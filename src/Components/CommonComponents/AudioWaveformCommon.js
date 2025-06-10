@@ -15,7 +15,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
     const [duration, setDuration] = useState("0:00");
 
     const [transcribeLink, setTranscribeLink] = useState();
-    const [size, setSize] = useState({ width: 'auto', height: 450 });
+    const [size, setSize] = useState({ width: 'auto', height: 'auto' });
     const [position, setPosition] = useState({ x: 550, y: -200 });
 
     const hover = Hover.create({
@@ -126,7 +126,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                 <div className="text-danger my-2">{error}</div>
             ) : (
                 <>
-                    <div className="col-xxl-6 col-lg-12">
+                    <div className="col-xxl-6 col-lg-12 mb-2">
                         <div
                             ref={waveformRef}
                             style={{
@@ -222,7 +222,7 @@ const AudioWaveformCommon = ({ audioUrl, peaksData }) => {
                                 setPosition(position);
                             }}
                             minWidth={"300px"}
-                            maxWidth={"500px"}
+                            maxWidth={"600px"}
                             maxHeight={"450px"}
                             style={{ position: "fixed", zIndex: '999' }}
                             dragHandleClassName="drag-handle"

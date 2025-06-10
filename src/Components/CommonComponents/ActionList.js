@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import { generalGetFunction } from "../GlobalFunction/globalFunction";
 
 /**
  * A form component for selecting an action from a list of options.
@@ -40,11 +41,12 @@ const ActionList = ({
   const [callCenter, setCallCenter] = useState([]);
   const [aiAgents, setAiAgents] = useState([]);
 
-  const [ivr, setIvr] = useState([]); 
+  const [ivr, setIvr] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const state = useSelector((data) => data);
   const allUserRefresh = state.allUserRefresh;
   const allUser = state?.allUser?.data;
+  const account = state?.account
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
@@ -55,6 +57,7 @@ const ActionList = ({
   const ivrArr = useSelector((state) => state.ivr);
   const aiAgentsArr = useSelector((state) => state.aiAgents);
   const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
+  const [allUserList, setAllUserList] = useState([])
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -144,13 +147,13 @@ const ActionList = ({
   const allOptions = [
     {
       label: "Extension",
-      options: extension.map((item) =>{
-        const userName = allUser?.find((data) => data?.id == item?.user)?.username || "N/A"
-        return({
-        value: [item.extension, "extension"],
-        label: `${item.extension} - ${userName}`,
-      })
-      } ),
+      options: extension.map((item) => {
+        const userName = allUserList?.find((data) => data?.id == item?.user)?.username || "N/A"
+        return ({
+          value: [item.extension, "extension"],
+          label: `${item.extension} - ${userName}`,
+        })
+      }),
     },
     {
       label: "Ring Group",
@@ -203,12 +206,22 @@ const ActionList = ({
     allOptionsRef.current = allOptions;
   }, [allOptions]);
 
+  const getAllUser = async () => {
+    const userApi = await generalGetFunction(
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+    );
+    if (userApi?.status) {
+      setAllUserList(userApi.data);
+    }
+  }
+
   useEffect(() => {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }, [])
+    dispatch({
+      type: "SET_ALLUSERREFRESH",
+      allUserRefresh: allUserRefresh + 1,
+    });
+    getAllUser()
+  }, [])
 
   // useEffect(() => {
   //   // Set default value if provided

@@ -207,6 +207,9 @@ const DidConfig = () => {
     } else {
       data.forward_to = "";
     }
+    if(data.forward === "disabled") {
+      delete data.forward_to;
+    }
     delete data.forward_action;
     delete data.did_id;
     const payload = { ...data, did_id: locationData.id };
@@ -406,7 +409,7 @@ const DidConfig = () => {
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Forward DID</label>
+                            <label htmlFor="">Direct Forward</label>
                             <label htmlFor="data" className="formItemDesc">
                               Want to forword DID.
                             </label>

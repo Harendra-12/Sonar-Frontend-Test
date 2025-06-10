@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, formatTimeInHHMMSS, generalGetFunction, generalPostFunction, generalPutFunction, useDebounce } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../../Loader/CircularLoader';
 import Select from "react-select";
+import EmptyPrompt from '../../../Loader/EmptyPrompt'
 
 
 function CampaignCreateNEW() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [stepSelector, setStepSelector] = useState(1);
+  const [leadsEditState, setLeadsEditState] = useState();
+  const [popUp, setPopUp] = useState(false);
   const [did, setDid] = useState([]);
   const [agents, setAgents] = useState([]);
   const [pageNumber, setPageNumber] = useState(1)
@@ -30,9 +34,75 @@ function CampaignCreateNEW() {
   const [fileName, setFileName] = useState("");
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
+  const [timeZone, setTimeZone] = useState([]);
+  const [specificLeads, setSpecificLeads] = useState();
+
+  const [schedulerInfo, setSchedulerInfo] = useState([
+    {
+      name: 'Sunday',
+      recurring_day: 'Sunday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Monday',
+      recurring_day: 'Monday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Tuesday',
+      recurring_day: 'Tuesday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Wednesday',
+      recurring_day: 'Wednesday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Thursday',
+      recurring_day: 'Thursday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Friday',
+      recurring_day: 'Friday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+    {
+      name: 'Saturday',
+      recurring_day: 'Saturday',
+      status: false,
+      start_time: '',
+      end_time: '',
+      full_day: false,
+    },
+  ]);
 
   const [addLeadInternalToggle, setAddLeadInternalToggle] = useState(false);
   const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+
+  const allLeadFileList = useSelector(state => state.allLeadFileList);
+  const [leadSearchQuery, setLeadSearchQuery] = useState("");
+  const debouncedLeadSearchTerm = useDebounce(leadSearchQuery, 1000);
+  const [leadSelectionArr, setLeadSelectionArr] = useState([]);
 
 
   const {
@@ -50,7 +120,7 @@ function CampaignCreateNEW() {
         setAllDisposition(apiData.data)
       }
     }
-    getData()
+    getData();
   }, [])
   // Getting did and agents for dialer and set its value
   useEffect(() => {
@@ -61,7 +131,7 @@ function CampaignCreateNEW() {
       }
     }
     async function getAgentData() {
-      const getAgents = await generalGetFunction(`agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`)
+      const getAgents = await generalGetFunction(`agents?usages=${'dialer' || 'both'}&row_per_page=${agentPerPage}&search=${agentSearch}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`)
       if (getAgents?.status) {
         setAgents(getAgents.data)
       }
@@ -71,6 +141,21 @@ function CampaignCreateNEW() {
     }
     getAgentData()
   }, [agentPerPage, agentSearch])
+
+  // Get timezone data
+  useEffect(() => {
+    async function getTimeZoneData() {
+      const apiData = await generalGetFunction(`/timezone/all`)
+      if (apiData?.status) {
+        setTimeZone(
+          apiData.data.map((item) => {
+            return [item.id, item.name];
+          })
+        );
+      }
+    }
+    getTimeZoneData();
+  }, [])
 
   // Step one form submit to create campaign
   const handleFormSubmitStepOne = handleSubmit(async (data) => {
@@ -82,23 +167,41 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one agent");
       return
     }
+    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("Start Time cannot be earlier than current time");
+      return
+    }
+    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+      toast.error("End Time cannot be earlier than current time");
+      return
+    }
 
+    const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)
     setLoading(true);
-    const payload = { ...data, business_numbers: selectedItems, account_id: account.account_id, status: "Active" };
+    const payload = {
+      ...data,
+      business_numbers: selectedItems,
+      account_id: account.account_id,
+      status: "Scheduled",
+      user_id: selectedAgent,
+      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })) } : {}),
+      start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
+      end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`,
+    };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
-      // setLoading(false);
+      setLoading(false);
       toast.success(apiData.message);
       setCampaignId(apiData.data.id);
-      // setCompletedStep(1);
-      // setStepSelector(2);
+      setCompletedStep(1);
+      setStepSelector(2);
 
       // Check if Agent Store Step is Completed, then Move to Step 2
-      const agentStoreStep = await handleFormSubmitStepThree(apiData.data.id);
-      if (agentStoreStep) {
-        setCompletedStep(1);
-        setStepSelector(2);
-      }
+      // const agentStoreStep = await handleFormSubmitStepThree(apiData.data.id);
+      // if (agentStoreStep) {
+      //   setCompletedStep(1);
+      //   setStepSelector(2);
+      // }
 
     } else {
       setLoading(false);
@@ -133,23 +236,29 @@ function CampaignCreateNEW() {
 
   // Step three form submit for adding agents
   async function handleFormSubmitStepThree(id) {
-    if (selectedAgent.length === 0) {
-      toast.error("Please select at least one agent");
-      return
-    }
-    setLoading(true);
-    const payload = { campaign_id: campaignId || id, user_id: selectedAgent, status: "active" };
-    const apiData = await generalPostFunction("/campaign-agent/store", payload);
-    if (apiData?.status) {
-      // setCompletedStep(3)
-      // setStepSelector(4)
-      setLoading(false);
-      toast.success(apiData.message);
-      return true;
-    } else {
-      setLoading(false);
-      toast.error(apiData?.message || apiData?.error);
-    }
+    navigate(-1)
+    // if (selectedAgent.length === 0) {
+    //   toast.error("Please select at least one agent");
+    //   return
+    // }
+    // setLoading(true);
+    // const payload = { campaign_id: campaignId || id, user_id: selectedAgent, status: "active" };
+    // const apiData = await generalPostFunction("/campaign-agent/store", payload);
+    // if (apiData?.status) {
+    //   // setCompletedStep(3)
+    //   // setStepSelector(4)
+    //   setLoading(false);
+    //   toast.success(apiData.message);
+    //   return true;
+    // } else {
+    //   setLoading(false);
+    //   toast.error(apiData?.message || apiData?.error);
+    // }
+  }
+
+  const handleFinishStep = () => {
+    navigate(-1)
+    // setCompletedStep(4)
   }
 
   // Step four form submit for adding leads
@@ -166,9 +275,11 @@ function CampaignCreateNEW() {
         parsedData.append("campaign_id", campaignId);
         const apiData = await fileUploadFunction("/campaign-lead/store", parsedData);
         if (apiData.status) {
-          navigate(-1)
+          const res = await generalGetFunction(`/campaign/show/${campaignId}`);
+
+          setSpecificLeads(res?.data?.leads)
           setLoading(false);
-          setCompletedStep(4)
+          setAddNewCsvToggle(false)
           setNewFile();
           toast.success(apiData.message);
         } else {
@@ -238,6 +349,133 @@ function CampaignCreateNEW() {
     value: item.id,
     label: item.did,
   }))
+
+  const updateLead = (updatedLead) => {
+    setSpecificLeads(prevLeads =>
+      prevLeads.map(lead =>
+        lead.id === updatedLead.id ? { ...lead, ...updatedLead } : lead
+      )
+    );
+  };
+
+  const handleUpdateLeads = async () => {
+    const payload = { ...leadsEditState };
+    setLoading(true);
+    const apiData = await generalPutFunction(
+      `/campaign-lead/update/${leadsEditState.id}`,
+      payload
+    );
+    if (apiData?.status) {
+      console.log('apidata', apiData)
+      updateLead(apiData?.data)
+      setLoading(false);
+      toast.success(apiData.message);
+      setPopUp(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  // Get All Lead File List
+  const getAllLeads = async () => {
+    setLoading(true);
+    try {
+      const res = await generalGetFunction(`/lead-file/all?search=${leadSearchQuery}`);
+      if (res?.status) {
+        dispatch({
+          type: "SET_ALL_LEADS_FILE_LIST",
+          allLeadFileList: res.data
+        })
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false);
+    }
+
+  }
+
+  useEffect(() => {
+    getAllLeads();
+  }, [debouncedLeadSearchTerm])
+
+  // Assign a Lead File to a Campaign
+  const assignLeadFileToCampaign = async (leadId) => {
+    if (!campaignId) {
+      toast.error("Please complete Step 1!");
+      return;
+    }
+    if (leadId) {
+      try {
+        const payload = { "lead_files_id": leadId, "campaign_id": campaignId };
+        const response = await generalPostFunction(`/lead-file/assign`, payload);
+        if (response.status) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      } catch (err) {
+        toast.error(err.response.message);
+      } finally {
+        getAllLeads();
+      }
+    }
+  }
+
+  // Remove the Lead File from an assigned Campaign
+  const removeLeadFileFromCampaign = async (id) => {
+    if (id) {
+      try {
+        const payload = { "id": id };
+        const response = await generalPostFunction(`/lead-file/remove`, payload);
+
+        if (response.status) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      } catch (err) {
+        toast.error(err.response.message);
+      } finally {
+        getAllLeads();
+      }
+    }
+  }
+
+  // Assign Lead Files Multiple at a Time
+  // const handleLeadFilesSelection = () => {
+  //   if (leadSelectionArr.length > 0) {
+  //     leadSelectionArr.forEach((leadId) => {
+  //       assignLeadFileToCampaign(leadId);
+  //     });
+  //   }
+  //   setAddLeadInternalToggle(!addLeadInternalToggle)
+  // }
+
+
+  const downloadImage = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
+  };
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -294,7 +532,7 @@ function CampaignCreateNEW() {
                             } else if (completedStep === 2) {
                               handleFormSubmitStepThree();
                             } else if (completedStep === 3) {
-                              handleFormSubmitStepFour();
+                              handleFinishStep();
                             }
                           }}
                         >
@@ -309,7 +547,7 @@ function CampaignCreateNEW() {
 
                   <div className="col-12" style={{ padding: '25px 23px' }}>
                     <div className="row">
-                      <div className="col-xl-2 col-3">
+                      <div className="col-xxl-2 col-lg-3 col-md-12 col-12">
                         <div className='someTempDialerDesign'>
                           <ul>
                             <li className={stepSelector === 1 && 'active'} onClick={() => setStepSelector(1)}>
@@ -360,7 +598,7 @@ function CampaignCreateNEW() {
                         </div>
                       </div>
                       {stepSelector === 1 && <>
-                        <div className="col-xl-8 col-9" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className="col-xl-8 col-lg-9 col-md-12 col-12" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <form className="row mb-0">
                             <div className="formRow">
                               <div className='formLabel'>
@@ -391,10 +629,10 @@ function CampaignCreateNEW() {
                                 <select defaultValue={"Inbound"} className="formItem" {...register("campaign_type", {
                                   ...requiredValidator,
                                 })}>
-                                  <option value="Inbound">Inbound</option>
+                                  {/* <option value="Inbound">Inbound</option> */}
                                   <option value="Outbound">Outbound</option>
-                                  <option value="pbx">PBX</option>
-                                  <option value="dialer">Dialer</option>
+                                  {/* <option value="pbx">PBX</option> */}
+                                  {/* <option value="dialer">Dialer</option> */}
                                 </select>
                               </div>
                             </div>
@@ -438,20 +676,46 @@ function CampaignCreateNEW() {
                                 )}
                               </div>
                             </div>
+                            <div className="formRow align-items-start">
+                              <div className="formLabel">
+                                <label>Rechain</label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  {...register("rechain", { ...requiredValidator })}
+                                  defaultValue={"1"}
+                                >
+                                  <option value="1">Enabled</option>
+                                  <option value="0">Disabled</option>
+                                </select>
+                                {errors.rechain && (
+                                  <ErrorMessage
+                                    text={
+                                      errors.rechain.message
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
                             <div className="formRow">
                               <div className="formLabel">
                                 <label>Target Timezone</label>
                               </div>
                               <div className="col-6">
-                                <select
-                                  className="formItem"
-                                >
-                                  <option value="1">Asia/Kolkata</option>
-                                  <option value="2">Pacific/California</option>
+                                <select className="formItem" {...register("timezone", { ...requiredValidator })}>
+                                  <option value="">Select Timezone</option>
+                                  {timeZone && timeZone.length > 0 ? (
+                                    timeZone.map((item, index) => (
+                                      <option key={index} value={item[0]}>
+                                        {item[1]}
+                                      </option>
+                                    ))
+                                  ) : ""}
                                 </select>
-                                {/* {errors.title && (
-                                    <ErrorMessage text={errors.title.message} />
-                                  )} */}
+                                {errors.timezone && (
+                                  <ErrorMessage text={errors.timezone.message} />
+                                )}
                               </div>
                             </div>
                             <div className="formRow">
@@ -465,18 +729,21 @@ function CampaignCreateNEW() {
                                       <label>From Date / Time</label>
                                     </div>
                                     <div className='row gx-2'>
-                                      <div className='col-6'>
+                                      <div className='col-12'>
                                         <input
-                                          type="date"
+                                          type="datetime-local"
                                           className="formItem"
+                                          {...register("start_date", { ...requiredValidator })}
+                                          min={new Date().toISOString().slice(0, 16)}
                                         />
                                       </div>
-                                      <div className='col-6'>
+                                      {/* <div className='col-6'>
                                         <input
                                           type="time"
                                           className="formItem"
+                                          {...register("start_time", { ...requiredValidator })}
                                         />
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                   <div className="col-6 ps-2">
@@ -484,207 +751,395 @@ function CampaignCreateNEW() {
                                       <label>To Date / Time</label>
                                     </div>
                                     <div className='row gx-2'>
-                                      <div className='col-6'>
+                                      <div className='col-12'>
                                         <input
-                                          type="date"
+                                          type="datetime-local"
                                           className="formItem"
+                                          {...register("end_date", { ...requiredValidator })}
+                                          min={watch().start_date}
                                         />
                                       </div>
-                                      <div className='col-6'>
+                                      {/* <div className='col-6'>
                                         <input
                                           type="time"
                                           className="formItem"
+                                          {...register("end_time", { ...requiredValidator })}
                                         />
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div className="formRow d-block">
+                            <div className="formRow">
                               <div className="formLabel">
-                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                <label>Active Hours</label>
                               </div>
-                              <div style={{ width: 'fit-content', marginTop: '10px' }}>
-                                <div className="timeTableWrapper col-auto">
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Sunday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                              <div className="col-6">
+                                <select className="formItem" {...register("active_hours", { ...requiredValidator })}>
+                                  <option value="">Select Option</option>
+                                  <option value="1">True</option>
+                                  <option value="0">False</option>
+                                </select>
+                                {errors.active_hours && (
+                                  <ErrorMessage text={errors.active_hours.message} />
+                                )}
+                              </div>
+                            </div>
+                            {watch().active_hours == true &&
+                              <div className="formRow d-block">
+                                <div className="formLabel">
+                                  <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                </div>
+                                <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                  <div className="timeTableWrapper col-auto">
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Sunday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Monday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Monday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Monday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Monday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Monday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Tuesday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Tuesday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Wednesday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Wednesday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Thursday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Thursday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Friday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Friday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Friday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Friday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Friday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-12">
-                                    <div className="wrapper mb-0">
-                                      <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox" />
-                                        <label className="ms-2 fw-bold">Saturday</label>
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <input type="time" className="formItem" />
-                                      </div>
-                                      <div className="item">
-                                        <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span></span>
-                                            </label>
-                                          </div>
+                                    <div className="col-12">
+                                      <div className="wrapper mb-0">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
+                                              ));
+                                            }} />
+                                          <label className="ms-2 fw-bold">Saturday</label>
                                         </div>
-                                        <label className="ms-1">Full day</label>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            onChange={(e) => {
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem"
+                                            min={schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time}
+                                            onChange={(e) => {
+                                              if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time) {
+                                                toast.error('End time should be greater than start time');
+                                              }
+                                              setSchedulerInfo(prevState => prevState.map(day =>
+                                                day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                              ));
+                                            }} />
+                                        </div>
+                                        {/* <div className="item">
+                                          <div className="my-auto position-relative mx-1">
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck"
+                                                  onChange={(e) => {
+                                                    setSchedulerInfo(prevState => prevState.map(day =>
+                                                      day.recurring_day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
+                                                    ));
+                                                  }} />
+                                                <span></span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            }
                           </form>
                           <div
                             className="itemWrapper a p-0 mt-2 h-auto"
@@ -716,25 +1171,25 @@ function CampaignCreateNEW() {
                                 />
                               </div>
                             </div>
-                            <div className='mainContentApp m-0 bg-transparent mt-3'>
+                            <div className='mainContentApp m-0 bg-transparent mt-3 AvailableAgents px-3'>
                               {agents?.data?.map((item, index) => {
                                 return (
-                                  <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
+                                  <div className={`callListItem  ${selectedAgent.includes(item.id) ? "selected" : ""}`} key={index} onClick={() => toggleSelectAgents(item.id)}>
                                     <div className="row align-items-center px-2">
                                       <div
-                                        className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(index) ? "selected" : ""}`}
+                                        className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(item.id) ? "selected" : "selectedNone"}`}
                                         style={{
-                                          width: "20px",
-                                          height: "26px",
-                                          border: "1px solid #ccc",
-                                          borderRadius: "3px",
+                                            width: "16px",
+                                                height: "16px",
+                                                borderRadius: "3px",
+                                                padding: '0'
                                         }}
                                       >
                                         {selectedAgent.includes(item.id) && (
-                                          <i className="fa-solid fa-check text-success"></i>
+                                          <i className="fa-solid fa-check text-white fs-12"></i>
                                         )}
                                       </div>
-                                      <div className="col-xl-7 col-xxl-7 col-lg-7 d-flex ps-0">
+                                      <div className="col d-flex ps-0">
                                         <div className="profileHolder">
                                           {item?.profile_picture ?
                                             <img
@@ -919,27 +1374,6 @@ function CampaignCreateNEW() {
                                 })} />
                                 {errors.max_attempts_per_record && (
                                   <ErrorMessage text={errors.max_attempts_per_record.message} />
-                                )}
-                              </div>
-                            </div>
-                            <div className="formRow col-xl-6">
-                              <div className="formLabel">
-                                <label>Rechain</label>
-                              </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem"
-                                  {...register("rechain", { ...requiredValidator })}
-                                >
-                                  <option value="1">Enabled</option>
-                                  <option value="0">Disabled</option>
-                                </select>
-                                {errors.rechain && (
-                                  <ErrorMessage
-                                    text={
-                                      errors.rechain.message
-                                    }
-                                  />
                                 )}
                               </div>
                             </div>
@@ -1340,13 +1774,13 @@ function CampaignCreateNEW() {
                                       <span className="text">Add</span>
                                       <span className='icon'><i class="fa-solid fa-plus"></i></span>
                                     </button>
-                                    <button
+                                    {/* <button
                                       className="panelButton edit"
                                       onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                     >
                                       <span className="text">Import</span>
                                       <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
-                                    </button>
+                                    </button> */}
                                   </div>
                                 </div>
                                 {addNewCsvToggle && (
@@ -1416,6 +1850,36 @@ function CampaignCreateNEW() {
                                                 </p>
                                               )}
                                             </div>
+                                            {/* <button
+                                              onClick={() => handleFormSubmitStepFour()}
+                                            >Submit File</button> */}
+                                          </div>
+                                          <div className="card-footer">
+                                            <div className="d-flex justify-content-between">
+                                              <button
+                                                className="panelButton m-0"
+                                                // onClick={handleNewImage}
+                                                // disabled={!newImage}
+                                                onClick={() => handleFormSubmitStepFour()}
+                                              >
+                                                <span className="text">Confirm</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-check"></i>
+                                                </span>
+                                              </button>
+                                              <button
+                                                className="panelButton gray"
+                                                onClick={() => {
+                                                  setAddNewCsvToggle(false);
+                                                  // setNewImage(null);
+                                                }}
+                                              >
+                                                <span className="text">Cancel</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-xmark"></i>
+                                                </span>
+                                              </button>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
@@ -1437,11 +1901,11 @@ function CampaignCreateNEW() {
                                               type="text"
                                               className="formItem"
                                               placeholder="Search"
-                                              name="name"
-                                              defaultValue=""
+                                              value={leadSearchQuery}
+                                              onChange={(e) => setLeadSearchQuery(e.target.value)}
                                             />
-                                            <button className="tableButton popupIcon_btn ms-2">
-                                              <i className="fa-solid fa-user-plus" />
+                                            <button className="tableButton popupIcon_btn ms-2" onClick={() => navigate('/lead-add')}>
+                                              <i className="fa-solid fa-plus" />
                                             </button>
                                           </div>
                                         </div>
@@ -1453,93 +1917,57 @@ function CampaignCreateNEW() {
                                             <table>
                                               <thead>
                                                 <tr>
-                                                  <th>S.No</th>
+                                                  <th>#</th>
                                                   <th>Name</th>
-                                                  <th>Qty</th>
-                                                  <th><input type="checkbox" /></th>
+                                                  <th>Description</th>
+                                                  <th>Rows</th>
+                                                  <th>
+                                                    {/* <input
+                                                      type="checkbox"
+                                                      checked={leadSelectionArr.length === allLeadFileList.data.length}
+                                                      onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                          setLeadSelectionArr(allLeadFileList.data.map((lead) => lead.id));
+                                                        } else {
+                                                          setLeadSelectionArr([]);
+                                                        }
+                                                      }}
+                                                    /> */}
+                                                  </th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr>
-                                                  <td>1</td>
-                                                  <td>test</td>
-                                                  <td>1000</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>2</td>
-                                                  <td>ravi raj</td>
-                                                  <td>1007</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>3</td>
-                                                  <td>riddhee</td>
-                                                  <td>1001</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>4</td>
-                                                  <td>pratima</td>
-                                                  <td>1002</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>5</td>
-                                                  <td>biplab</td>
-                                                  <td>1003</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>6</td>
-                                                  <td>tushar</td>
-                                                  <td>1004</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>7</td>
-                                                  <td>solman</td>
-                                                  <td>1005</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>8</td>
-                                                  <td>sanchit</td>
-                                                  <td>1010</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>9</td>
-                                                  <td>damini</td>
-                                                  <td>1011</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>10</td>
-                                                  <td>rishabh</td>
-                                                  <td>1012</td>
-                                                  <td>
-                                                    <input type="checkbox" />
-                                                  </td>
-                                                </tr>
+                                                {allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.map((lead, index) => (
+                                                  <tr>
+                                                    <td>{index + 1}</td>
+                                                    <td>{lead?.name}</td>
+                                                    <td>{lead?.description}</td>
+                                                    <td>{lead?.lead_rows_count}</td>
+                                                    <td>
+                                                      {/* <input
+                                                        type="checkbox"
+                                                        checked={leadSelectionArr.includes(lead.id)}
+                                                        onChange={() =>
+                                                          setLeadSelectionArr((prev) => {
+                                                            if (prev.includes(lead.id)) {
+                                                              return prev.filter((id) => id !== lead.id);
+                                                            } else {
+                                                              return [...prev, lead.id];
+                                                            }
+                                                          })
+                                                        }
+                                                      /> */}
+                                                      {lead.campaignlead.some(campId => campId.campaign_id == campaignId) ?
+                                                        <button className='tableButton delete' onClick={() => removeLeadFileFromCampaign(lead.campaignlead.find(campId => campId.campaign_id === campaignId).id)}>
+                                                          <i className="fa-solid fa-xmark" />
+                                                        </button> :
+                                                        <button className='tableButton edit' onClick={() => assignLeadFileToCampaign(lead.id)}>
+                                                          <i className="fa-solid fa-plus" />
+                                                        </button>
+                                                      }
+                                                    </td>
+                                                  </tr>
+                                                )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}
                                               </tbody>
                                             </table>
                                           </div>
@@ -1552,12 +1980,12 @@ function CampaignCreateNEW() {
                                                 <i className="fa-light fa-xmark" />
                                               </span>
                                             </button>
-                                            <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                                            {/* <button className="panelButton" onClick={() => setAddLeadInternalToggle(false)}>
                                               <span className="text">Done</span>
                                               <span className="icon">
                                                 <i className="fa-solid fa-check" />
                                               </span>
-                                            </button>
+                                            </button> */}
                                           </div>
                                         </div>
                                       </div>
@@ -1570,25 +1998,52 @@ function CampaignCreateNEW() {
                                     <table>
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>Number</th>
-                                          <th>Country Code</th>
-                                          <th>Address</th>
-                                          <th>Edit</th>
+                                          <th>#</th>
+                                          <th>Lead Name</th>
+                                          <th>Lead Description</th>
+                                          <th>Rows</th>
+                                          <th>Download</th>
                                         </tr>
                                       </thead>
                                       <tbody className="">
-                                        <tr>
-                                          <td>Test</td>
-                                          <td>123456789</td>
-                                          <td>1</td>
-                                          <td>Test test etsetestse</td>
-                                          <td>
-                                            <button className="tableButton edit">
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>
-                                        </tr>
+                                        {/* {
+                                          specificLeads?.map((item) => {
+                                            return (
+                                              <tr>
+                                                <td>{item?.first_name}{" "}{item?.last_name}</td>
+                                                <td>{item?.phone_code}{" "}{item?.phone_number}</td>
+                                                <td>{item?.country_code}</td>
+                                                <td>{item?.address1}</td>
+                                                <td>
+                                                  <button
+                                                    className="tableButton edit"
+                                                    onClick={() => {
+                                                      setLeadsEditState(item);
+                                                      setPopUp(true);
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-pencil"></i>
+                                                  </button>
+                                                </td>
+                                              </tr>
+                                            )
+                                          })
+                                        } */}
+                                        {
+                                          allLeadFileList && allLeadFileList?.data?.length > 0 ? allLeadFileList?.data?.filter((lead) => lead.campaignlead.campaign_id == campaignId).map((lead, index) => (
+                                            <tr>
+                                              <td>{index + 1}</td>
+                                              <td>{lead?.name}</td>
+                                              <td>{lead?.description}</td>
+                                              <td>{lead?.lead_rows_count}</td>
+                                              <td>
+                                                <button className="tableButton" onClick={() => downloadImage(lead.file_url, `${lead.description}`)}>
+                                                  <i className="fa-solid fa-download" />
+                                                </button>
+                                              </td>
+                                            </tr>
+                                          )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
+                                        }
                                       </tbody>
                                     </table>
                                   </div>
@@ -1659,6 +2114,233 @@ function CampaignCreateNEW() {
             </div>
           </div>
         </div>
+        {popUp ? (
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading mb-0">
+                  <i className="fa-light fa-circle-exclamation"></i>
+                  <h5>Lead Edit</h5>
+                </div>
+                <div className="col-12" style={{ padding: "0px 0px 10px" }}>
+                  <form className="mb-0 d-flex flex-wrap">
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>First Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.first_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              first_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Last Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.last_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              last_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Phone Number</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_number}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_number: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 1</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address1}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address1: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 2</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address2}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address2: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>City</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.city}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              city: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>State</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.state}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              state: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Country code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Zip Code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.postal_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              postal_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Gender</label>
+                      </div>
+                      <div className="col-12">
+                        <select
+                          name=""
+                          id=""
+                          className="formItem "
+                          value={leadsEditState.gender}
+                          onChange={(e) =>
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              gender: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="M">Male</option>
+                          <option value="F">Female</option>
+                          <option value="O">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => handleUpdateLeads()}
+                  >
+                    <span className="text">Confirm</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton gray m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    <span className="text">Cancel</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </section>
       {loading && <CircularLoader />}
     </main>

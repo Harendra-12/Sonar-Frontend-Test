@@ -5,23 +5,25 @@ import { formatTimeWithAMPM } from '../../GlobalFunction/globalFunction';
 import { set } from 'react-hook-form';
 
 function NotificationBellApp() {
+    const state = useSelector((state) => state)
+    const recipient_to_remove_notification = state?.recipient_to_remove_notification;
     const incomingMessage = useSelector((state) => state.incomingMessage);
+    const groupMessage = state.groupMessage;
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
     const [allNotification, setAllNotification] = useState([]);
-
     const prevMessageIdRef = useRef(null);
     const deletedMessageIdsRef = useRef(new Set());
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (incomingMessage) {
-            const currentMessageId = incomingMessage.id;
+            const currentMessageId = incomingMessage.uuid;
             if (currentMessageId !== prevMessageIdRef.current) {
                 if (!deletedNotificationId?.has(currentMessageId)) {
                     setIncomingMessageList((prevList) => {
-                        const exists = prevList.some(msg => msg.id === incomingMessage.id);
+                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
                         if (!exists) {
                             return [...prevList, incomingMessage];
                         }
@@ -29,7 +31,7 @@ function NotificationBellApp() {
                     });
 
                     setAllNotification((prevList) => {
-                        const exists = prevList.some(msg => msg.id === incomingMessage.id);
+                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
                         if (!exists) {
                             return [...prevList, incomingMessage];
                         }
@@ -41,11 +43,50 @@ function NotificationBellApp() {
         }
     }, [incomingMessage]);
 
+    useEffect(() => {
+        if (Object?.keys(groupMessage)?.length > 0) {
+            const currentMessageId = groupMessage.uuid;
+            if (currentMessageId !== prevMessageIdRef.current) {
+                if (!deletedNotificationId?.has(currentMessageId)) {
+                    setAllNotification((prevList) => {
+                        const exists = prevList?.some(msg => msg.uuid === groupMessage.uuid);
+                        if (!exists) {
+                            return [...prevList, groupMessage];
+                        }
+                        return prevList;
+                    });
+                }
+                prevMessageIdRef.current = currentMessageId;
+            }
+        }
+    }, [groupMessage]);
+
+
+    useEffect(() => {
+        if (recipient_to_remove_notification !== null) {
+            if (recipient_to_remove_notification[2] !== "groupChat") {
+                setAllNotification(prevNotifications =>
+                    prevNotifications?.filter(msg =>
+                        msg.message_group_id !== undefined || msg.sender_id !== recipient_to_remove_notification[1]
+                    )
+                );
+
+            } else {
+                setAllNotification(prevNotifications =>
+                    prevNotifications?.filter(msg =>
+                        msg?.group_name !== recipient_to_remove_notification[0]
+                    )
+                );
+            }
+
+        }
+    }, [recipient_to_remove_notification])
+
     const removeNotification = (item) => {
         if (item.message_text) {
             const updatedNotifications = allNotification.filter(msg => msg.uuid !== item.uuid);
             setAllNotification(updatedNotifications);
-            deletedMessageIdsRef.current.add(item.id);
+            deletedMessageIdsRef.current.add(item.uuid);
             dispatch({ type: 'SET_DELETEDNOTIFFID', deletedNotificationId: new Set(deletedMessageIdsRef.current) });
         }
     };
@@ -63,8 +104,7 @@ function NotificationBellApp() {
     //         }
     //     }
     // }, [locationState.state, contact, allAgents]);
-
-
+    console.log('all noification', allNotification)
     return (
         <div class="dropdown notification_dropdown">
             <button
@@ -73,7 +113,7 @@ function NotificationBellApp() {
                 data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
             >
                 <i className="fa-regular fa-bell" />
-                <span class="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">{allNotification.length || 0}</span>
+                <span class="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">{allNotification?.length || 0}</span>
             </button>
             <div className="dropdown-menu" style={{ minWidth: "300px" }}>
                 <div class="p-2 header">
@@ -83,8 +123,8 @@ function NotificationBellApp() {
                     </div>
                 </div>
                 <ul>
-                    {allNotification && allNotification.length > 0 ?
-                        allNotification.slice(0,5).map((item, index) => (
+                    {allNotification && allNotification?.length > 0 ?
+                        allNotification?.slice(0, 5).map((item, index) => (
                             <li class="dropdown-item">
                                 <div class="d-flex align-items-start">
                                     {item.message_text ? (
@@ -97,8 +137,17 @@ function NotificationBellApp() {
                                             <div class="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>
                                                     <p class="mb-0 d-flex">
-                                                        <strong>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}</strong>&nbsp;
-                                                        <span className='text-success'>sent</span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                        {item?.group_name ?
+                                                            <>
+                                                                <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}<>)</></strong>&nbsp;
+                                                                <span className='text-success'>sent</span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                            </> :
+                                                            <>
+                                                                <strong>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}</strong>&nbsp;
+                                                                <span className='text-success'>sent</span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                            </>
+                                                        }
+
                                                     </p>
                                                     <span class="text_gray fw-normal fs-12 ">{item.updated_at.split("T")[0]} - {new Date(item.updated_at).toLocaleTimeString()}</span>
                                                 </div>

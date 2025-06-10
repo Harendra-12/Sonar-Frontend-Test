@@ -18,6 +18,7 @@ const RingGroup = () => {
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
   const allCallDetails = useSelector((state) => state.allCallDetails);
+  const account = useSelector((state) => state.account);
 
   const [loading, setLoading] = useState(false);
 
@@ -74,7 +75,7 @@ const RingGroup = () => {
   const handleAgentClick = async (item) => {
     setLoading(true);
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item.username}`);
+      const apiData = await generalGetFunction(`/agents?search=${item.username}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         setLoading(false);
@@ -88,7 +89,7 @@ const RingGroup = () => {
   return (
     <>
       {loading && <CircularLoader />}
-      <div className="overviewTableWrapper px-0 pt-0" id="rGroupAccordion">
+      <div className="overviewTableWrapper p-0" id="rGroupAccordion">
         <div className="overviewTableChild">
           <div className="d-flex flex-wrap">
             <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">

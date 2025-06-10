@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import CircularLoader from "../../Loader/CircularLoader";
+import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -46,9 +47,11 @@ function Roles() {
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
   const [newAddedRoleId, setNewAddedRoleId] = useState(null);
+  const [rolePermissionBridge, setRolePermissionBridge] = useState([]);
   const [refreshState, setRefreshState] = useState(false)
   const navigate = useNavigate();
   const inputRefs = useRef([]);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Getting roles and permission data from redux by trigger its api calling by changing its refresh value
   useEffect(() => {
@@ -197,11 +200,15 @@ function Roles() {
     const parsedData = isNewRole
       ? {
         role_id: newAddedRoleId,
-        permissions: addNewRolePermissions,
+        sectionPermissions: rolePermissionBridge.sectionPermissions,
+        permissions: rolePermissionBridge.permissions,
+        tablePermissions: rolePermissionBridge.tablePermissions,
       }
       : {
         role_id: selectedRoleId,
-        permissions: selectedPermission,
+        sectionPermissions: rolePermissionBridge.sectionPermissions,
+        permissions: rolePermissionBridge.permissions,
+        tablePermissions: rolePermissionBridge.tablePermissions,
       };
     try {
       const apiData = await generalPostFunction(
@@ -406,38 +413,26 @@ function Roles() {
                         {checkViewSidebar(
                           "Role",
                           permissions,
+                          account?.sectionPermissions,
                           account?.permissions, "add"
-                        ) ? (
-                          <button
-                            onClick={() => {
-                              setAddRole(true);
-                              setAddRolePopup(true);
-                              setEditClick(false);
-                              setAddSelectedRoleId("");
-                            }}
-                            type="button"
-                            effect="ripple"
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            effect="ripple"
-                            className="panelButton "
-                            disabled
-                            style={{ cursor: "not-allowed" }}
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                        ) && (
+                            <button
+                              onClick={() => {
+                                setAddRole(true);
+                                setAddRolePopup(true);
+                                setEditClick(false);
+                                setAddSelectedRoleId("");
+                              }}
+                              type="button"
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -582,7 +577,7 @@ function Roles() {
                     </div>
                     {selectedRoleId && (
                       <div className="col-xl-8 pe-xl-0">
-                        <div className="profileView p-0 pb-2 ">
+                        {/* <div className="profileView p-0 pb-2 ">
                           <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                             <div
                               className="col-xl-12"
@@ -776,7 +771,61 @@ function Roles() {
                               </div>
                             )}
                           </div>
+                        </div> */}
+                        <div className="headerCommon d-flex justify-content-between align-items-center pe-0">
+                          <div className="col">
+                            Permissions for{" "}
+                            <span
+                              style={{
+                                color: "var(--ui-accent)",
+                                fontWeight: 600,
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {selectedRole}
+                            </span>
+                          </div>
+                          {selectedIsDefault === 1 ? (
+                            <></>
+                          ) : checkViewSidebar(
+                            "Role",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "edit"
+                          ) ? (
+                            <>
+                              {" "}
+                              <div className="col-auto text-end">
+                                <button
+                                  className="panelButton ms-auto"
+                                  onClick={() =>
+                                    handlePermissionSave(false)
+                                  }
+                                >
+                                  <span className="text">Confirm</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-check"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            </>
+                          ) : ""}
                         </div>
+                        {selectedRole == "Agent" && <span>
+                          This will apper only for agents (Agents will only
+                          access webrtc)
+                        </span>}
+                        <PermissionConfigTable
+                          standalone={false}
+                          allRoleList={role}
+                          selectedRole={selectedRoleId}
+                          allPermissions={permissions}
+                          loading={loading}
+                          setLoading={setLoading}
+                          setRolePermissionBridge={setRolePermissionBridge}
+                          isUserFilter={false}
+                        />
                       </div>
                     )}
                   </div>
@@ -905,21 +954,21 @@ function Roles() {
         )}
         {/* set permissions of new role */}
         {submitPopup ? (
-          <div className="addNewContactPopup profileDetailsHolder">
+          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '600px' }}>
             <div className="row">
               <div className="col-12 heading mb-0">
                 <i className="fa-light fa-user-plus" />
                 <h5>Select Permissions for this Role</h5>
               </div>
               <div>
-                <div className="accordion permissionListWrapper ">
-                  {selectedRole === "Agent" ? (
+                <div>
+                  {selectedRole == "Agent" ? (
                     <div className="d-flex flex-column">
                       <span>
                         This will apper only for agents (Agents will only
                         access webrtc)
                       </span>
-                      <div className="accordion permissionListWrapper ">
+                      {/* <div className="accordion permissionListWrapper ">
                         {filteredPermission &&
                           Object.keys(filteredPermission).map(
                             (item, key) => (
@@ -986,11 +1035,11 @@ function Roles() {
                               </div>
                             )
                           )}
-                      </div>
+                      </div> */}
                     </div>
                   ) : (
-                    <div className="accordion permissionListWrapper h-auto">
-                      {filteredPermission &&
+                    <div className="permissionListWrapper">
+                      {/* {filteredPermission &&
                         Object.keys(filteredPermission).map((item, key) => (
                           <div className="accordion-item" key={key}>
                             <h2
@@ -1049,7 +1098,16 @@ function Roles() {
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ))} */}
+                      <PermissionConfigTable
+                        standalone={false}
+                        allRoleList={role}
+                        selectedRole={addSelectedRoleId}
+                        allPermissions={permissions}
+                        loading={loading}
+                        setLoading={setLoading}
+                        setRolePermissionBridge={setRolePermissionBridge}
+                      />
                     </div>
                   )}
                 </div>
@@ -1090,14 +1148,14 @@ function Roles() {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xxl-4 col-xl-5 col-md-5">
-                    <div className="col-2 px-0">
+                    <div className="col-12 mb-2">
                       <div className="iconWrapper">
                         <i className="fa-duotone fa-circle-exclamation"></i>
                       </div>
                     </div>
-                    <div className="col-10 ps-0">
-                      <div >
-                        <h4>
+                    <div className="col-12">
+                      <div className="mb-2">
+                        <h4 className="text-center text-orange">
                           Please type the name of new role below
                         </h4>
                       </div>
@@ -1119,7 +1177,7 @@ function Roles() {
                           }}
                         ></input>
                       </div>
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-center gap-2 mt-3">
                         <button
                           className="panelButton m-0"
                           onClick={() => {

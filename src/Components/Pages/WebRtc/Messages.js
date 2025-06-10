@@ -18,7 +18,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
@@ -44,6 +44,7 @@ import MessageProfileDetails from "./components/MessageProfileDetails";
 import ChatsCalls from "./components/ChatsCalls";
 import axios from "axios";
 import { set } from "date-fns";
+import { ActionType } from "../../Redux/reduxActionType";
 
 function Messages({
   setSelectedModule,
@@ -56,10 +57,10 @@ function Messages({
   setCalling,
   setToUser,
   setMeetingPage,
-  recipient,
-  setRecipient,
-  selectedChat,
-  setSelectedChat,
+  // recipient,
+  // setRecipient,
+  // selectedChat,
+  // setSelectedChat,
   // formatRelativeTime,
   // formatRelativeTime, accountDetails, onlineUser
 }) {
@@ -80,6 +81,8 @@ function Messages({
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
   const [contact, setContact] = useState([]);
+  const [recipient, setRecipient] = useState([]);
+  const [selectedChat, setSelectedChat] = useState("singleChat");
   const [chatHistory, setChatHistory] = useState([]);
   const [loadMore, setLoadMore] = useState(1);
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
@@ -128,6 +131,8 @@ function Messages({
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
+  const location = useLocation();
+  const pathSegments = location.pathname;
   const [selectFileExtension, setSelectFileExtension] = useState(null);
   const thisAudioRef = useRef(null);
   // const [currentPlaying, setCurrentPlaying] = useState("");
@@ -138,8 +143,8 @@ function Messages({
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
-  const [autoReply,setAutoReply] = useState(false);
-  const [aiProcessing,setAiProcessing]=useState(false);
+  const [autoReply, setAutoReply] = useState(false);
+  const [aiProcessing, setAiProcessing] = useState(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -248,7 +253,7 @@ function Messages({
     };
   }, [allMessage, recipient]);
 
-  const getData = async (shouldLoad) => {
+  const getContactAndAllTagData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const apiData = await generalGetFunction(`/message/contacts`);
     const tagData = await generalGetFunction("/tags/all");
@@ -303,7 +308,7 @@ function Messages({
   useEffect(() => {
     setMessageRefresh(true);
     const shouldLoad = true;
-    getData(shouldLoad);
+    getContactAndAllTagData(shouldLoad);
   }, [allAgents?.length == 0]);
 
   // useEffect(() => {
@@ -368,9 +373,9 @@ function Messages({
   useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
-        recipient[2] === "singleChat"
-          ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
-          : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
+        recipient?.[2] === "singleChat"
+          ? `/message/all?receiver_id=${recipient?.[1]}&page=${pageNumb}`
+          : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
       );
 
       apiData?.data?.data?.map((item) => {
@@ -379,7 +384,7 @@ function Messages({
         );
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
             {
               from: item.user_id,
               body: item?.message_text,
@@ -390,28 +395,28 @@ function Messages({
               message_type: item.message_type,
             },
             ...(prevState[
-              recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+              recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
             ] || []),
           ],
         }));
       });
       if (apiData?.status) {
         const newChatHistory = { ...chatHistory };
-        newChatHistory[recipient[0]] = {
+        newChatHistory[recipient?.[0]] = {
           total: apiData.data.total,
           pageNumber: apiData.data.current_page,
         };
         setChatHistory(newChatHistory);
       }
     }
-    if (recipient.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(recipient[0])) {
+    if (recipient?.length > 0 && allAgents?.length > 0) {
+      if (Object.keys(chatHistory).includes(recipient?.[0])) {
         if (
-          chatHistory[recipient[0]]?.total &&
-          chatHistory[recipient[0]].pageNumber * 40 <
-          chatHistory[recipient[0]].total
+          chatHistory[recipient?.[0]]?.total &&
+          chatHistory[recipient?.[0]].pageNumber * 40 <
+          chatHistory[recipient?.[0]].total
         ) {
-          getData(chatHistory[recipient[0]].pageNumber + 1);
+          getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
           console.log("from first");
         }
@@ -485,7 +490,7 @@ function Messages({
     socketSendMessage({
       sharedMessage: messageContent,
       from: account?.id,
-      to: recipient[1],
+      to: recipient?.[1],
       key: "peerchat",
       action: "peerchat",
       type: messageType,
@@ -496,9 +501,9 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id);
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+      [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
         ...(prevState[
-          recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+          recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
         ] || []),
         {
           from: userDetails.id,
@@ -513,7 +518,7 @@ function Messages({
     }));
     // Update contact last message
     const contactIndex = contact.findIndex(
-      (contact) => contact.id === recipient[1]
+      (contact) => contact.id === recipient?.[1]
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
@@ -532,10 +537,10 @@ function Messages({
     setActiveTab("all");
 
     const extensionExists = contact.some(
-      (contact) => contact.extension === recipient[0]
+      (contact) => contact.extension === recipient?.[0]
     );
     const agentDetails = agents.find(
-      (agent) => agent.extension.extension === recipient[0]
+      (agent) => agent.id === recipient?.[1]
     );
 
     if (!extensionExists) {
@@ -544,7 +549,7 @@ function Messages({
         email: agentDetails.email,
         id: agentDetails.id,
         extension_id: agentDetails.extension_id,
-        extension: recipient[0],
+        extension: recipient?.[0],
         last_message_data: {
           message_text: messageInput,
           created_at: time,
@@ -563,7 +568,7 @@ function Messages({
   //     return;
   //   }
   //   if (isSIPReady) {
-  //     const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
+  //     const targetURI = `sip:${recipient?.[0]}@${account.domain.domain_name}`;
   //     const userAgent = sipProvider?.sessionManager?.userAgent;
 
   //     const target = UserAgent.makeURI(targetURI);
@@ -584,14 +589,14 @@ function Messages({
   //         setIsFreeSwitchMessage(true);
   //         setAllMessage((prevState) => ({
   //           ...prevState,
-  //           [recipient[0]]: [
-  //             ...(prevState[recipient[0]] || []),
+  //           [recipient?.[0]]: [
+  //             ...(prevState[recipient?.[0]] || []),
   //             { from: extension, body: messageInput || selectedUrl, time },
   //           ],
   //         }));
   //         // Update contact last message
   //         const contactIndex = contact.findIndex(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         if (contactIndex !== -1) {
   //           const newContact = [...contact];
@@ -602,10 +607,10 @@ function Messages({
   //         setActiveTab("all");
 
   //         const extensionExists = contact.some(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         const agentDetails = agents.find(
-  //           (agent) => agent.extension.extension === recipient[0]
+  //           (agent) => agent.extension.extension === recipient?.[0]
   //         );
 
   //         if (!extensionExists) {
@@ -614,7 +619,7 @@ function Messages({
   //             email: agentDetails.email,
   //             id: agentDetails.id,
   //             extension_id: agentDetails.extension_id,
-  //             extension: recipient[0],
+  //             extension: recipient?.[0],
   //             last_message_data: {
   //               message_text: messageInput,
   //               created_at: time,
@@ -645,26 +650,33 @@ function Messages({
 
   useEffect(() => {
     if (incomingMessage) {
+      console.log("incomingMessage", incomingMessage);
+
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       console.log("from", from, "body", recipient);
-      if(from === recipient[1] && autoReply){
+      if (from === recipient?.[1] && autoReply) {
         setAiProcessing(true);
         setMessageInput("Generating Ai response...");
-        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply",{message:body,user_id:account.id}).then((res)=>{
-          if(res.data.statusCode === 200){
+        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
+          console.log("Response", res);
+
+          if (res.data) {
             setMessageInput(res.data.reply);
             setAiProcessing(false);
           }
-        }).catch((err)=>{
+        }).catch((err) => {
+
           console.log(err);
           setMessageInput("");
         })
       }
-      
+
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
+      console.log("agentDetails", agentDetails);
+
       const time = formatDateTime(new Date());
 
       const contactIndex = contact.findIndex(
@@ -752,7 +764,7 @@ function Messages({
 
         // Play music when message is received
 
-        if (recipient[0] !== from) {
+        if (recipient?.[0] !== from) {
           setUnreadMessage((prevState) => ({
             ...prevState,
             [from]: (prevState[from] || 0) + 1,
@@ -762,7 +774,7 @@ function Messages({
 
         // Update contact last message
         const contactIndex = contact.findIndex(
-          (contact) => contact.extension === recipient[0]
+          (contact) => contact.extension === recipient?.[0]
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
@@ -771,8 +783,23 @@ function Messages({
           setContact(newContact);
         }
       }
+
+      if (recipient?.length > 0) {
+        setUnreadMessage((prevState) => {
+          const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+            prevState;
+          return newState;
+        });
+        dispatch({
+          type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+          recipient: [...recipient]
+        })
+      }
+
     }
   }, [incomingMessage]);
+  console.log("contact", contact);
+
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -792,7 +819,7 @@ function Messages({
   //       const time = formatDateTime(new Date());
 
   //       const contactIndex = contact.findIndex(
-  //         (contact) => contact.extension === recipient[0]
+  //         (contact) => contact.extension === recipient?.[0]
   //       );
   //       if (contactIndex !== -1) {
   //         const newContact = [...contact];
@@ -872,7 +899,7 @@ function Messages({
 
   //         // Play music when message is received
 
-  //         if (recipient[0] !== from) {
+  //         if (recipient?.[0] !== from) {
   //           setUnreadMessage((prevState) => ({
   //             ...prevState,
   //             [from]: (prevState[from] || 0) + 1,
@@ -882,7 +909,7 @@ function Messages({
 
   //         // Update contact last message
   //         const contactIndex = contact.findIndex(
-  //           (contact) => contact.extension === recipient[0]
+  //           (contact) => contact.extension === recipient?.[0]
   //         );
   //         if (contactIndex !== -1) {
   //           const newContact = [...contact];
@@ -902,6 +929,7 @@ function Messages({
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [allMessage]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (messageListRef.current) {
@@ -918,36 +946,11 @@ function Messages({
   }, []);
 
   useEffect(() => {
-    // const tag = allTags?.filter((tag) =>
-    //   contact?.every((contactItem) =>
-    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
-    //   )
-    // );
-    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
-    const tag = allTags?.filter((tag) =>
-      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
-    );
-
-    const filteredTag = tag?.filter((data) =>
-      data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
-    );
-
-    if (userTag?.length) {
-      setFilteredTags(filteredTag);
-    } else {
-      const filterTag = allTags?.filter((data) =>
-        data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
-      );
-      setFilteredTags(filterTag);
-    }
-  }, [allTags, contact, tagFilterInput, recipient]);
-
-  useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
       if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
-        setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
+        setAllAgents(apiData.data);
         // setGroupSelecedAgents((prevSelected) => {
         //   return [...apiData.data.filter((item) => item.email === account.email)];
         // }
@@ -956,8 +959,9 @@ function Messages({
     }
     getData();
   }, []);
+
   useEffect(() => {
-    if (loginUser.length > 0) {
+    if (loginUser?.length > 0) {
       const updatedOnlineUsers = loginUser
         .map((item) => {
           const findUser = agents.find((agent) => agent.id === item.id);
@@ -1096,6 +1100,107 @@ function Messages({
     }
   }
 
+
+
+  // Filter out the user from selcted group
+  useEffect(() => {
+    // ===========
+    const getGroups = async () => {
+      setLoading(true);
+      const apiData = await generalGetFunction(`/chatgroups/all`);
+      if (apiData?.status) {
+        const filteredData = apiData?.data?.sort((a, b) => {
+          const dateA = a?.last_message_data?.created_at
+            ? new Date(a.last_message_data.created_at)
+            : null;
+          const dateB = b?.last_message_data?.created_at
+            ? new Date(b.last_message_data.created_at)
+            : null;
+          if (!a.last_message_data || !dateA) return 1;
+          if (!b.last_message_data || !dateB) return -1;
+
+          return dateB - dateA;
+        });
+        const updatedFilteredData = filteredData?.map((data) => ({
+          ...data,
+          last_message_data: {
+            ...data?.last_message_data,
+            message_text:
+              checkMessageType(data?.last_message_data?.message_text) ===
+                "text/plain"
+                ? data?.last_message_data?.message_text
+                : checkMessageType(data?.last_message_data?.message_text),
+          },
+        }));
+        setGroups(updatedFilteredData);
+        const isGroupSelected = apiData.data.find(
+          (group) => group.id == recipient?.[1]
+        );
+        if (isGroupSelected) {
+          const profile_img = allAgents?.find(
+            (data) => data?.id == isGroupSelected?.id
+          )?.profile_picture;
+          setRecipient([
+            isGroupSelected.group_name,
+            isGroupSelected.id,
+            "groupChat",
+            isGroupSelected?.group_name,
+            isGroupSelected?.email,
+            profile_img,
+          ]);
+          setSelectedChat("groupChat");
+          setGroupNameEdit(isGroupSelected.group_name);
+          setSelectedgroupUsers(isGroupSelected.message_groupusers);
+          isGroupSelected.message_groupusers.map((user) => {
+            if (user.user_id === account.id) {
+              setIsAdmin(user.is_admin);
+            }
+          });
+        }
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    };
+    getGroups();
+  }, [groupRefresh]);
+
+  // ============================= Tag Related Stuff ======= start here
+  useEffect(() => {
+    // const tag = allTags?.filter((tag) =>
+    //   contact?.every((contactItem) =>
+    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
+    //   )
+    // );
+    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
+    const defaultTag = allTags?.filter((data) => data?.default == 1)
+
+    const tag = defaultTag?.filter((tag) =>
+      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+    );
+    const filteredTag = tag?.filter((data) =>
+      data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
+    );
+
+    if (tagFilterInput) {
+      if (userTag?.length) {
+        const tag = allTags?.filter((tag) =>
+          userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+        );
+
+        const filteredTag = tag?.filter((data) =>
+          data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase())
+        );
+        setFilteredTags(filteredTag);
+      } else {
+        setFilteredTags(filteredTag);
+      }
+    } else {
+      setFilteredTags(filteredTag)
+    }
+
+  }, [allTags, contact, tagFilterInput, recipient]);
+
   // Add new Tag
   async function handleNewTag() {
     if (newTag.length === 0) {
@@ -1151,68 +1256,41 @@ function Messages({
     }
   }
 
-  // Filter out the user from selcted group
-  useEffect(() => {
-    // ===========
-    const getGroups = async () => {
-      setLoading(true);
-      const apiData = await generalGetFunction(`/chatgroups/all`);
-      if (apiData?.status) {
-        const filteredData = apiData?.data?.sort((a, b) => {
-          const dateA = a?.last_message_data?.created_at
-            ? new Date(a.last_message_data.created_at)
-            : null;
-          const dateB = b?.last_message_data?.created_at
-            ? new Date(b.last_message_data.created_at)
-            : null;
-          if (!a.last_message_data || !dateA) return 1;
-          if (!b.last_message_data || !dateB) return -1;
-
-          return dateB - dateA;
-        });
-        const updatedFilteredData = filteredData?.map((data) => ({
-          ...data,
-          last_message_data: {
-            ...data?.last_message_data,
-            message_text:
-              checkMessageType(data?.last_message_data?.message_text) ===
-                "text/plain"
-                ? data?.last_message_data?.message_text
-                : checkMessageType(data?.last_message_data?.message_text),
-          },
-        }));
-        setGroups(updatedFilteredData);
-        const isGroupSelected = apiData.data.find(
-          (group) => group.id == recipient[1]
-        );
-        if (isGroupSelected) {
-          const profile_img = allAgents?.find(
-            (data) => data?.id == isGroupSelected?.id
-          )?.profile_picture;
-          setRecipient([
-            isGroupSelected.group_name,
-            isGroupSelected.id,
-            "groupChat",
-            isGroupSelected?.group_name,
-            isGroupSelected?.email,
-            profile_img,
-          ]);
-          setSelectedChat("groupChat");
-          setGroupNameEdit(isGroupSelected.group_name);
-          setSelectedgroupUsers(isGroupSelected.message_groupusers);
-          isGroupSelected.message_groupusers.map((user) => {
-            if (user.user_id === account.id) {
-              setIsAdmin(user.is_admin);
-            }
-          });
-        }
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
+  // Handle assign task
+  async function handleAssignTask(tagId, userId) {
+    setLoading(true);
+    const parsedData = {
+      tag_id: tagId,
+      user_id: userId,
     };
-    getGroups();
-  }, [groupRefresh]);
+    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
+    if (apiData.status) {
+      setContactRefresh(contactRefresh + 1);
+      const shouldLoad = true;
+      getContactAndAllTagData(shouldLoad)
+      // setLoading(false);
+      toast.success("Tag assigned successfully");
+      // setIsAssignmentClicked(true);
+    } else {
+      setLoading(false);
+    }
+  }
+
+  // Handle unassign task
+  async function handleUnassignTask(tagId) {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
+    if (apiData.status) {
+      setContactRefresh(contactRefresh + 1);
+      const shouldLoad = true;
+      getContactAndAllTagData(shouldLoad)
+      // setLoading(false);
+      toast.success("Tag unassigned successfully");
+      // setIsAssignmentClicked(true);
+    } else {
+      setLoading(false);
+    }
+  }
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -1228,38 +1306,7 @@ function Messages({
       setLoading(false);
     }
   }
-
-  // Handle assign task
-  async function handleAssignTask(tagId, userId) {
-    setLoading(true);
-    const parsedData = {
-      tag_id: tagId,
-      user_id: userId,
-    };
-    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      setLoading(false);
-      toast.success("Tag assigned successfully");
-      setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
-
-  // Handle unassign task
-  async function handleUnassignTask(tagId) {
-    setLoading(true);
-    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      setLoading(false);
-      toast.success("Tag unassigned successfully");
-      setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
+  // ============================= Tag Related Stuff ======= end here
 
   const filteredUsers = allAgents.filter(
     (user) =>
@@ -1341,7 +1388,7 @@ function Messages({
     };
     setNewGroupLoader(true);
     const apiData = await generalPutFunction(
-      `/chatgroups/update/${recipient[1]}`,
+      `/chatgroups/update/${recipient?.[1]}`,
       parsedData
     );
     if (apiData.status) {
@@ -1356,7 +1403,7 @@ function Messages({
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
     const payLoad = {
-      message_group_id: recipient[1],
+      message_group_id: recipient?.[1],
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     setNewGroupLoader(true);
@@ -1401,13 +1448,14 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
+    if (messageContent === '') return;
     const messageType = checkMessageType(messageContent);
     socketSendMessage({
       action: "broadcastGroupMessage",
       user_id: account.id,
       sharedMessage: messageContent,
-      group_id: recipient[1],
-      group_name: recipient[0],
+      group_id: recipient?.[1],
+      group_name: recipient?.[0],
       user_name: account.name,
       user_extension: account.extension.extension,
       message_type: messageType,
@@ -1417,13 +1465,13 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id);
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+      [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
         ...(prevState[
-          recipient[2] == "singleChat" ? recipient[1] : recipient[0]
+          recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
         ] || []),
         {
-          from: recipient[2] == "singleChat" ? recipient[1] : account?.id,
-          body: messageContent, // Show appropriate text in the message history
+          from: recipient?.[2] == "singleChat" ? recipient?.[1] : account?.id,
+          body: messageContent,
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
@@ -1434,7 +1482,7 @@ function Messages({
     }));
 
     const contactIndex = groups.findIndex(
-      (contact) => contact?.group_name === recipient[0]
+      (contact) => contact?.group_name === recipient?.[0]
     );
     if (contactIndex !== -1) {
       const newGroups = [...groups];
@@ -1446,6 +1494,7 @@ function Messages({
       }
       newGroups[contactIndex].last_message_data.message_text = last_message;
       newGroups[contactIndex].last_message_data.created_at = time;
+      newGroups[contactIndex].last_message_data.user_id = userDetails.id;
       newGroups?.splice(contactIndex, 1);
       newGroups.unshift(groups[contactIndex]);
       setGroups(newGroups);
@@ -1464,7 +1513,7 @@ function Messages({
         require("../../assets/music/message-notification.mp3")
       );
       const from = groupMessage?.user_id;
-      const body = groupMessage?.sharedMessage;
+      const body = groupMessage?.message_text;
       setIsFreeSwitchMessage(true);
       const time = formatDateTime(new Date());
       setAllMessage((prevState) => ({
@@ -1490,6 +1539,7 @@ function Messages({
           const newGroups = [...groups];
           newGroups[contactIndex].last_message_data.message_text = body;
           newGroups[contactIndex].last_message_data.created_at = time;
+          newGroups[contactIndex].last_message_data.user_id = from;
           newGroups?.splice(contactIndex, 1);
           newGroups.unshift(groups[contactIndex]);
           setGroups(newGroups);
@@ -1503,7 +1553,21 @@ function Messages({
         audio.play();
       }
     }
+
+    if (recipient?.length > 0) {
+      setUnreadMessage((prevState) => {
+        const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+          prevState;
+        return newState;
+      });
+      dispatch({
+        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+        recipient: [...recipient]
+      })
+    }
+
   }, [groupMessage]);
+
 
   // Handle logic to make any user admin or remove any user from admin
   async function manageAdmin(id, groupId, userId, isAdmin) {
@@ -1606,11 +1670,16 @@ function Messages({
 
   const handleRefresh = () => {
     const shouldLoad = false;
-    getData(shouldLoad);
+    getContactAndAllTagData(shouldLoad);
     setMessageRefresh(true);
   };
   return (
     <>
+      <style>
+        {`#sidenNav{
+        display:none;
+      }`}
+      </style>
       {addNewTagPopUp && (
         <div className="backdropContact">
           <div className="addNewContactPopup">
@@ -1671,18 +1740,22 @@ function Messages({
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
       )}
       <main
-        className="mainContentApp "
+        className="mainContentApp"
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
               ? "250px"
               : "0",
+          marginLeft:
+            pathSegments === "/messages"
+              ? "0px"
+              : "210px",
         }}
       >
         <section>
           <div className="w-100 p-0">
             <HeaderApp
-              title={"Messages"}
+              title={pathSegments === "/messages" ? account?.name : "Messages"}
               loading={messageRefresh}
               setLoading={setMessageRefresh}
               refreshApi={handleRefresh}
@@ -1690,8 +1763,7 @@ function Messages({
           </div>
           <div className="container-fluid ">
             <div className="row webrtc_newMessageUi">
-              <div
-                className="col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
+              <div className="col-12 col-xl-3 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
                 style={
                   {
                     // height: "100%",
@@ -1877,7 +1949,7 @@ function Messages({
                                     : ""
                                 }
                                 className={
-                                  recipient[1] === item?.id
+                                  recipient?.[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -1888,7 +1960,7 @@ function Messages({
                                       (data) => data?.id == item?.id
                                     )?.profile_picture;
                                     setRecipient([
-                                      item?.extension,
+                                      item?.id,
                                       item.id,
                                       "singleChat",
                                       item?.name,
@@ -1901,6 +1973,15 @@ function Messages({
                                         prevState;
                                       return newState;
                                     });
+                                    dispatch({
+                                      type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                                      recipient: [item?.extension,
+                                      item.id,
+                                        "singleChat",
+                                      item?.name,
+                                      item?.email,
+                                        profile_picture,]
+                                    })
                                     setManageGroupChat(false);
                                   }}
                                   className="w-100 "
@@ -1952,19 +2033,19 @@ function Messages({
                                         {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
-                                      <div className="contactTags">
+                                      <div className="contactTags ">
                                         {item.tags
                                           ?.slice(0, 2)
                                           ?.map((tag, key) => {
                                             return (
-                                              <span data-id={key}>
+                                              <span data-id={key} className="ellipsisText">
                                                 {tag.tag?.[0]?.name}
                                               </span>
                                             );
                                           })}
 
                                         {item.tags?.length > 2 && (
-                                          <Tippy
+                                          <Tippy 
                                             content={
                                               <ul
                                                 className="contactTags"
@@ -1977,11 +2058,11 @@ function Messages({
                                                 }}
                                               >
                                                 {item.tags?.map((tag, key) => (
-                                                  <li>
+                                                  // <li>
                                                     <span data-id={key}>
                                                       {tag.tag?.[0]?.name}
                                                     </span>
-                                                  </li>
+                                                  // </li>
                                                 ))}
                                               </ul>
                                             }
@@ -2022,7 +2103,7 @@ function Messages({
                             return (
                               <div
                                 className={
-                                  recipient[1] === item.id
+                                  recipient?.[1] === item.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2053,6 +2134,16 @@ function Messages({
                                     } = prevState;
                                     return newState;
                                   });
+                                  dispatch({
+                                    type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                                    recipient: [
+                                      item.group_name,
+                                      item.id,
+                                      "groupChat",
+                                      item?.group_name,
+                                      item?.email,
+                                      null,]
+                                  })
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -2096,9 +2187,10 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                       {/* here we are showing recent group message */}
-                                      <h5>
-                                        {/* here showing last send message below of contact name */}
-                                        {item?.last_message_data?.message_text}
+                                      <h5 className="f-s-14 text-gray">
+                                        {/* here showing last send message below of contact name for group*/}
+                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name && <span className="text-info fw-normal f-s-14">{allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}</span>}
+                                        : {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
                                   </div>{" "}
@@ -2132,7 +2224,7 @@ function Messages({
                               <div
                                 data-bell=""
                                 className={
-                                  recipient[0] === item?.extension.extension
+                                  recipient?.[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2143,7 +2235,7 @@ function Messages({
                                       (data) => data?.id == item?.id
                                     )?.profile_picture;
                                     setRecipient([
-                                      item?.extension.extension,
+                                      item?.id,
                                       item.id,
                                       "singleChat",
                                       item?.name,
@@ -2179,7 +2271,7 @@ function Messages({
                                     </div>
                                     <div className="ms-3">
                                       <p>{item?.username}</p>
-                                      <h5>{item?.extension.extension}</h5>
+                                      {/* <h5>{item?.extension.extension}</h5> */}
                                     </div>
                                   </div>
                                 </div>
@@ -2522,7 +2614,7 @@ function Messages({
                             return (
                               <div
                                 className={
-                                  recipient[1] === item.id
+                                  recipient?.[1] === item.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -2543,6 +2635,7 @@ function Messages({
                                     item?.email,
                                     profile_picture,
                                   ]);
+
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
                                   setSelectedgroupUsers(
@@ -2555,6 +2648,16 @@ function Messages({
                                     } = prevState;
                                     return newState;
                                   });
+                                  dispatch({
+                                    type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                                    recipient: [
+                                      item.group_name,
+                                      item.id,
+                                      "groupChat",
+                                      item?.group_name,
+                                      item?.email,
+                                      profile_picture,]
+                                  })
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
@@ -2661,8 +2764,7 @@ function Messages({
                 </div>
                 {/* </div> */}
               </div>
-              <div
-                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
+              <div className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
@@ -2671,15 +2773,15 @@ function Messages({
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
                   <div className="col h-100 me-2" id="messagingBlock">
-                    <div className="messageOverlay h-100">
-                      {recipient[0] ? (
+                    <div className={`messageOverlay h-100 ${recipient[2]}`}>
+                      {recipient?.[0] ? (
                         <div className="contactHeader">
                           <div>
                             <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                              {recipient[5] != null ? (
+                              {recipient?.[5] != null ? (
                                 <div className="profileHolder">
                                   <img
-                                    src={recipient[5]}
+                                    src={recipient?.[5]}
                                     alt="profile"
                                     onError={(e) =>
                                       (e.target.src = require("../../assets/images/placeholder-image.webp"))
@@ -2701,36 +2803,96 @@ function Messages({
                               <h4 className="">
                                 {/* {
                                 contact?.find(
-                                  (contact) => contact.extension == recipient[0]
+                                  (contact) => contact.extension == recipient?.[0]
                                 )?.name
                               }{" "}-
                               {" "} */}
 
-                                {recipient[3]}
+                                {recipient?.[3]}
                               </h4>
                             </div>
-                            {/* <h4>{recipient[0]}</h4> */}
+                            {/* <h4>{recipient?.[0]}</h4> */}
                             <div className="contactTags">
                               {loading && (
                                 <div colSpan={99}>
                                   <CircularLoader />
                                 </div>
                               )}
-                              {contact
-                                .find((contact) => contact.id == recipient[1])
-                                ?.tags?.map((item, key) => {
+                              {/* {contact
+                                .find((contact) => contact.id == recipient?.[1])
+
+                                ?.tags?.slice(0, 8).map((item, key) => {
+
+
                                   return (
-                                    <span
-                                      data-id={key}
-                                      onClick={() =>
-                                        handleUnassignTask(item?.id)
-                                      }
-                                      className="removableTag"
-                                    >
-                                      {item.tag?.[0]?.name}
-                                    </span>
+                                    <>
+                                      <span
+                                        data-id={key}
+                                        onClick={() =>
+                                          handleUnassignTask(item?.id)
+                                        }
+                                        className="removableTag ellipsisText"
+                                      >
+                                        {item.tag?.[0]?.name}
+                                      </span>
+
+                                    </>
                                   );
-                                })}
+                                } 
+                                )} */}
+
+                              {contact
+                                .find((contact) => contact.id == recipient?.[1])
+                                ?.tags?.slice(0, 8)
+                                .map((item, key) => (
+                                  <span
+                                    key={key}
+                                    data-id={key}
+                                    onClick={() => handleUnassignTask(item?.id)}
+                                    className="removableTag ellipsisText"
+                                  >
+                                    {item.tag?.[0]?.name}
+                                  </span>
+                                ))}
+
+                              {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 8 && (
+                                <Tippy  trigger="click"
+                                  content={
+                                    <ul
+                                      className="contactTags"
+                                      style={{
+                                        listStyle: "none",
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        maxWidth: "300px",
+                                        gap: "5px",
+                                        zIndex: "99999"
+                                      }}
+                                    >
+                                      {contact
+                                        .find((contact) => contact.id == recipient?.[1])
+                                        // ?.tags?.slice(2)
+                                        ?.tags?.map((tag, key) => (
+                                          // <li key={key}  data-id={key}>
+                                            <span  key={key}  data-id={key}>{tag.tag?.[0]?.name}</span>
+                                          // </li>
+                                        ))}
+                                    </ul>
+                                  }
+                                  allowHTML={true}
+                                >
+                                  <span className="viewAllTagBtn">
+                                   View All +
+                                    {
+                                      contact.find((contact) => contact.id == recipient?.[1])?.tags
+                                        ?.length - 8
+                                    }
+                                  </span>
+                                </Tippy>
+                              )}
+
+
+
                               {/* <span data-id="1">Work</span> */}
                               {selectedChat === "groupChat" ? (
                                 ""
@@ -2784,7 +2946,7 @@ function Messages({
                                             onClick={() =>
                                               handleAssignTask(
                                                 item?.id,
-                                                recipient[1]
+                                                recipient?.[1]
                                               )
                                             }
                                           // className="removableTag"
@@ -2840,7 +3002,7 @@ function Messages({
                                                     onClick={() =>
                                                       handleAssignTask(
                                                         item?.id,
-                                                        recipient[1]
+                                                        recipient?.[1]
                                                       )
                                                     }
                                                   ><i className="fa-regular fa-check" /></button>
@@ -2882,7 +3044,7 @@ function Messages({
                                             //   onClick={() =>
                                             //     handleAssignTask(
                                             //       item.id,
-                                            //       recipient[0]
+                                            //       recipient?.[0]
                                             //     )
                                             //   }
                                             // >
@@ -2907,7 +3069,7 @@ function Messages({
                           <select className="ovalSelect">
                             <option>
                               {agents.map((item) => {
-                                if (item.extension.extension === recipient[0]) {
+                                if (item.extension.extension === recipient?.[0]) {
                                   return item.username;
                                 }
                               })}
@@ -2918,10 +3080,10 @@ function Messages({
                               ""
                             ) : (
                               <button
-                                // onClick={() => onSubmit("audio", recipient[0])}
+                                // onClick={() => onSubmit("audio", recipient?.[0])}
                                 onClick={() => {
                                   setMeetingPage("message");
-                                  setToUser(recipient[1]);
+                                  setToUser(recipient?.[1]);
                                   setCalling(true);
                                   dispatch({
                                     type: "SET_INTERNALCALLACTION",
@@ -2930,8 +3092,8 @@ function Messages({
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
-                                    to: recipient[1],
-                                    room_id: `${account.id}-${recipient[1]}`,
+                                    to: recipient?.[1],
+                                    room_id: `${account.id}-${recipient?.[1]}`,
                                     call_type: "audio",
                                   });
                                 }}
@@ -2943,10 +3105,10 @@ function Messages({
                             )}
                             {isVideoOn ? (
                               <button
-                                // onClick={() => onSubmit("video", recipient[0])}
+                                // onClick={() => onSubmit("video", recipient?.[0])}
                                 onClick={() => {
                                   setMeetingPage("message");
-                                  setToUser(recipient[1]);
+                                  setToUser(recipient?.[1]);
                                   setCalling(true);
                                   dispatch({
                                     type: "SET_INTERNALCALLACTION",
@@ -2955,8 +3117,8 @@ function Messages({
                                   socketSendMessage({
                                     action: "peercall",
                                     from: account.id,
-                                    to: recipient[1],
-                                    room_id: `${account.id}-${recipient[1]}`,
+                                    to: recipient?.[1],
+                                    room_id: `${account.id}-${recipient?.[1]}`,
                                     call_type: "video",
                                   });
                                 }}
@@ -3029,14 +3191,14 @@ function Messages({
 
                                 {selectedChat === "groupChat" &&
                                   groups?.find(
-                                    (group) => group.group_name == recipient[0]
+                                    (group) => group.group_name == recipient?.[0]
                                   )?.created_by == account?.id ? (
                                   <li>
                                     <div
                                       className="dropdown-item text-danger"
                                       href="#"
                                       onClick={() =>
-                                        handleDeleteGroup(recipient[1])
+                                        handleDeleteGroup(recipient?.[1])
                                       }
                                     >
                                       Delete this group
@@ -3068,12 +3230,12 @@ function Messages({
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
-                          {recipient[0] ? (
+                          {recipient?.[0] ? (
                             <>
                               {allMessage?.[
                                 selectedChat === "groupChat"
-                                  ? recipient[0]
-                                  : recipient[1]
+                                  ? recipient?.[0]
+                                  : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                 const todayDate = new Date()
@@ -3113,7 +3275,7 @@ function Messages({
                                     {(
                                       selectedChat === "groupChat"
                                         ? item.from === account?.id
-                                        : item.from !== recipient[1]
+                                        : item.from !== recipient?.[1]
                                     ) ? (
                                       <div className="messageItem sender">
                                         <div className="second">
@@ -3227,7 +3389,7 @@ function Messages({
                             </div>
                           )}
                         </div>
-                        {recipient[0] ? (
+                        {recipient?.[0] ? (
                           <div className="messageInput textarea_inputTab">
                             {emojiOpen && (
                               <div
@@ -3320,7 +3482,7 @@ function Messages({
                                 </div>
                               </nav>
                             </div>
-                            <div className="d-flex w-100">
+                            <div className="d-flex w-100 flex_wrap575">
                               <div
                                 className="tab-content textSms me-2"
                                 id="nav-tabContent"
@@ -3339,17 +3501,43 @@ function Messages({
                                   <div className="w-100">
                                     <textarea
                                       type="text"
-                                      rows={1}
+                                      rows={2}
                                       name=""
                                       className="formItem "
                                       placeholder="Please enter your message"
                                       value={messageInput}
-                                      onChange={(e) =>
-                                        setMessageInput(e.target.value)
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+
+                                        if (value.trim() === '') {
+                                          setMessageInput('');
+                                          return;
+                                        }
+
+                                        if (wordCount <= 250) {
+                                          setMessageInput(value);
+                                        } else {
+                                          toast.warn("Text is too long!")
+                                        }
+                                        // setUnreadMessage((prevState) => {
+                                        //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+                                        //     prevState;
+                                        //   return newState;
+                                        // });
                                       }
+                                      }
+                                      // onClick={() => {
+                                      //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
+                                      //   setUnreadMessage((prevState) => {
+                                      //     const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+                                      //       prevState;
+                                      //     return newState;
+                                      //   });
+                                      // }}
                                       onKeyDown={(e) => {
                                         if (e.key === "Enter") {
-                                          if (recipient[2] === "groupChat") {
+                                          if (recipient?.[2] === "groupChat") {
                                             sendGroupMessage();
                                           } else {
                                             sendSingleMessage();
@@ -3377,16 +3565,16 @@ function Messages({
                                 </div>
                               </div>
 
-                              <div className=" d-flex justify-content-between align-items-start gap-2">
-                                <div className="d-flex gap-1">
-                                  <Tippy  content="Auto Reply with AI">
-                                  <button
-                                    className={`clearButton2 eraser ${autoReply?"active":""}`}
-                                    onClick={() => setAutoReply(!autoReply)}
-                                  >
-                                    <i class="fa-solid fa-message-bot"></i>
-                                  </button>
-                                    
+                              <div className=" d-flex justify-content-between align-items-center gap-2">
+                                <div className="d-flex gap-1 align-items-center">
+                                  <Tippy content="Auto Reply with AI">
+                                    <button
+                                      className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
+                                      onClick={() => setAutoReply(!autoReply)}
+                                    >
+                                      <i class="fa-solid fa-message-bot"></i>
+                                    </button>
+
                                   </Tippy>
                                   <button
                                     className="clearButton2 gallery"
@@ -3418,7 +3606,7 @@ function Messages({
                                     effect="ripple"
                                     className="clearColorButton dark"
                                     onClick={() => {
-                                      if (recipient[2] === "groupChat") {
+                                      if (recipient?.[2] === "groupChat") {
                                         sendGroupMessage();
                                       } else {
                                         sendSingleMessage();
@@ -3453,7 +3641,7 @@ function Messages({
                   {/* <Panel className='rightPanel' defaultSize={30} collapsible={true} minSize={25} ref={rightPanel}> */}
                   {manageGroupChat ? (
                     <div
-                      className="h-100"
+                      className="h-100 "
                       style={{
                         width: "30%",
                         transition: "all 0.4s ease-in-out",
@@ -3740,7 +3928,7 @@ function Messages({
                                             <i className="fa-light fa-user" />
                                           )}
                                         </div>
-                                        <div className="my-auto ms-2 ms-xl-3">
+                                        <div className="my-auto ms-2 ms-xl-3 ">
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
@@ -3833,12 +4021,12 @@ function Messages({
                     </div>
                   ) : (
                     <div
-                      className={`h-100`}
+                      className={`h-100 messageSlideBox`}
                       style={{
                         width:
                           isActiveAgentsOpen &&
                             recipient &&
-                            recipient.length > 0
+                            recipient?.length > 0
                             ? "30%"
                             : "0%",
                         transition: "all 0.4s ease-in-out",
@@ -3851,47 +4039,48 @@ function Messages({
                           transform:
                             isActiveAgentsOpen &&
                               recipient &&
-                              recipient.length > 0
+                              recipient?.length > 0
                               ? "translate(3%, 0%)"
                               : "translate(100%, 0%)",
                         }}
                       >
-                        <button
-                          onClick={() =>
-                            setIsActiveAgentsOpen(!isActiveAgentsOpen)
-                          }
-                          className="callDashParkedCallsBtn"
-                          style={{
-                            left:
-                              isActiveAgentsOpen &&
+                        {recipient && recipient?.length > 0 ?
+                          <button
+                            onClick={() =>
+                              setIsActiveAgentsOpen(!isActiveAgentsOpen)
+                            }
+                            className="callDashParkedCallsBtn"
+                            style={{
+                              left:
+                                isActiveAgentsOpen &&
+                                  recipient &&
+                                  recipient?.length > 0
+                                  ? "-15px"
+                                  : "-5px",
+                              transition: "all 0.4s ease-in-out",
+                            }}
+                          >
+                            <i
+                              className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
                                 recipient &&
-                                recipient.length > 0
-                                ? "-15px"
-                                : "-5px",
-                            transition: "all 0.4s ease-in-out",
-                          }}
-                        >
-                          <i
-                            className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
-                              recipient &&
-                              recipient.length > 0
-                              ? "right"
-                              : "left"
-                              }`}
-                          />
-                        </button>
+                                recipient?.length > 0
+                                ? "right"
+                                : "left"
+                                }`}
+                            />
+                          </button> : ""}
                         <div
                           className=" h-100"
                         // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
-                          {recipient && recipient.length > 0 ? (
+                          {recipient && recipient?.length > 0 ? (
                             <MessageProfileDetails
                               recipient={recipient}
                               messages={
-                                recipient[2] === "groupChat"
-                                  ? allMessage?.[recipient[3]]
-                                  : allMessage?.[recipient[1]]
+                                recipient?.[2] === "groupChat"
+                                  ? allMessage?.[recipient?.[3]]
+                                  : allMessage?.[recipient?.[1]]
                               }
                               selectedChat={selectedChat}
                             />
@@ -3913,15 +4102,15 @@ function Messages({
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xl-4">
-                    <div className="col-2 px-0">
+                    <div className="col-12">
                       <div className="iconWrapper">
                         <i className="fa-duotone fa-triangle-exclamation"></i>
                       </div>
                     </div>
-                    <div className="col-10 ps-0">
-                      <h4>Warning!</h4>
-                      <p>Are you sure you want to leave from this group?</p>
-                      <div className="mt-2 d-flex justify-content-between">
+                    <div className="col-12 ">
+                      <h4 className="text-orange text-center">Warning!</h4>
+                      <p className="text-center">Are you sure you want to leave from this group?</p>
+                      <div className="mt-2 d-flex justify-content-center gap-2">
                         <button
                           disabled={loading}
                           className="panelButton m-0"
