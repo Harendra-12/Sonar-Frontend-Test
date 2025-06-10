@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -28,6 +29,7 @@ function CallBlockingAdd() {
     watch,
   } = useForm();
   const account = useSelector((state) => state.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
   const [pageNumber, setPageNumber] = useState(1);
   const [callDirection, setCallDirection] = useState("");
   const [callDestination, setCallDestination] = useState("");
@@ -44,6 +46,7 @@ function CallBlockingAdd() {
   const [selectedExtensionType, setSelectedExtensionType] = useState([]);
   const [filterBy, setFilterBy] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
 
   const [endDate, setEndDate] = useState("");
   const actionListValue = (value) => {
@@ -143,10 +146,10 @@ function CallBlockingAdd() {
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}`,
       {
-        callDirection,
+        "Call-Direction[]": callDirection,
         start_date: startDate,
         end_date: endDate,
-        destination: callDestination,
+        variable_sip_to_user: callDestination,
         application_state: "pstn",
       }
     );
@@ -161,6 +164,9 @@ function CallBlockingAdd() {
         } else {
           setLoading(false);
           setContentLoader(false);
+          if (apiData?.response?.status == 403) {
+            setNoPermissionToRead(true);
+          }
         }
       } else {
         setLoading(false);
@@ -256,6 +262,17 @@ function CallBlockingAdd() {
 
     // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
   };
+
+  const callDirectionOptions = [
+    {
+      value: "inbound",
+      label: "Inbound Calls",
+    },
+    {
+      value: "outbound",
+      label: "Outbound Calls",
+    },
+  ];
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -579,7 +596,7 @@ function CallBlockingAdd() {
                     </select>
                   </div>
                   <div className="showEntries align-items-end">
-                    <div className="formRow border-0 pb-0">
+                    <div className="formRow border-0 pb-0 pe-0">
                       <label className="formLabel text-start mb-0 w-100">
                         Call Destination
                       </label>
@@ -595,7 +612,46 @@ function CallBlockingAdd() {
                         onChange={handleCallDestinationChange}
                       />
                     </div>
-                    <div className="formRow border-0 pb-0">
+                    <div className="formRow border-0 flex-column pb-0 pe-0">
+                      <label className="formLabel text-start m-0 w-100">
+                        Call Direction
+                      </label>
+                      <div className="dropdown">
+                        <button
+                          className="formItem"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          data-bs-auto-close="outside"
+                          style={{ width: "160px" }}
+                        >
+                          Choose Filters
+                        </button>
+                        <ul className="dropdown-menu">
+                          {callDirectionOptions?.map((option) => (
+                            <li key={option.value}>
+                              <div className="dropdown-item" href="#">
+                                <input
+                                  type="checkbox"
+                                  checked={callDirection?.includes(option?.value)}
+                                  onChange={() => {
+                                    setCallDirection((prev) =>
+                                      prev.includes(option.value)
+                                        ? prev.filter((val) => val !== option.value)
+                                        : [...prev, option.value]
+                                    );
+                                    setPageNumber(1);
+                                  }}
+                                />
+                                <span className="text-dark ms-2">
+                                  {option.label}
+                                </span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    {/* <div className="formRow border-0 pb-0">
                       <label className="formLabel text-start mb-0 w-100">
                         Call Direction
                       </label>
@@ -606,7 +662,6 @@ function CallBlockingAdd() {
                           setPageNumber(1);
                         }}
                         value={callDirection}
-                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                       >
                         <option value={""}>All Calls</option>
                         <option value={"inbound"}>Inbound Calls</option>
@@ -614,22 +669,10 @@ function CallBlockingAdd() {
                         <option value={"missed"}>Missed Calls</option>
                         <option value={"internal"}>Internal Calls</option>
                       </select>
-                    </div>
-                    <select
-                      className="formItem"
-                      style={{ width: "max-content" }}
-                    >
-                      <option value={10}>All</option>
-                    </select>
-                    <select
-                      className="formItem"
-                      style={{ width: "max-content" }}
-                    >
-                      <option value={10}>Reject</option>
-                    </select>
+                    </div> */}
                     <button
                       effect="ripple"
-                      className="panelButton delete ms-0"
+                      className="panelButton delete"
                       style={{ height: "34px" }}
                     >
                       <span className="text">Block</span>
@@ -652,36 +695,44 @@ function CallBlockingAdd() {
                       </tr>
                     </thead>
                     <tbody>
-                      {loading ? (
-                        <SkeletonTableLoader col={6} row={5} />
-                      ) : (
-                        cdr?.data?.map((item, index) => {
-                          return (
-                            <tr key={index}>
-                              <td className="d-flex align-items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                //   onClick={() => {}}
-                                ></input>
-                                {item["Call-Direction"]}
-                              </td>
-                              <td>{item["Caller-Caller-ID-Number"]}</td>
-                              <td>{item["Caller-Callee-ID-Number"]}</td>
-                              <td>
-                                {" "}
-                                {item["variable_start_stamp"].split(" ")[0]}
-                              </td>
-                              <td>
-                                {" "}
-                                {item["variable_start_stamp"].split(" ")[1]}
-                              </td>
-                              <td>
-                                {secondsToHHMMSS(item["variable_billsec"])}
-                              </td>
-                            </tr>
-                          );
-                        })
-                      )}
+                      {!checkViewSidebar(
+                        "ChannelHangupComplete",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read"
+                      ) || noPermissionToRead
+                        ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
+                        loading ? (
+                          <SkeletonTableLoader col={6} row={5} />
+                        ) : (
+                          cdr?.data?.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td className="d-flex align-items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                  //   onClick={() => {}}
+                                  ></input>
+                                  {item["Call-Direction"]}
+                                </td>
+                                <td>{item["Caller-Caller-ID-Number"]}</td>
+                                <td>{item["Caller-Callee-ID-Number"]}</td>
+                                <td>
+                                  {" "}
+                                  {item["variable_start_stamp"].split(" ")[0]}
+                                </td>
+                                <td>
+                                  {" "}
+                                  {item["variable_start_stamp"].split(" ")[1]}
+                                </td>
+                                <td>
+                                  {secondsToHHMMSS(item["variable_billsec"])}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
                       {/* <tr>
                         <td>Queue Name</td>
                         <td>Extension</td>
