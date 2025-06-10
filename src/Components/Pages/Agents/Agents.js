@@ -90,18 +90,15 @@ function Agents({ type }) {
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const apiData = await generalGetFunction(
-      `/agents?usages=${type}&row_per_page=${entriesPerPage}${
-        onlineFilter === "all" ? `page=${pageNumber}` : ""
-      }&search=${userInput}${
-        onlineFilter == "all"
-          ? ""
-          : onlineFilter == "online"
+      `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""
+      }&search=${userInput}${onlineFilter == "all"
+        ? ""
+        : onlineFilter == "online"
           ? "&online"
           : "&offline"
-      }${
-        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-          ? "&section=Accounts"
-          : ""
+      }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+        ? "&section=Accounts"
+        : ""
       }`
     );
     if (apiData?.status) {
@@ -124,19 +121,62 @@ function Agents({ type }) {
   }, [entriesPerPage, pageNumber, type, debouncedSearchTerm, onlineFilter]);
 
   // Handle Agent Logout Function
+  // const handleAgentLogout = async (token, useId) => {
+  //   setIsAgentLogoutPopup(false);
+  //   if (agentLogOutToken) {
+  //     setLoading(true);
+  //     try {
+  //       const logOut = await generalGetFunctionWithToken(
+  //         `${baseName}/logout?all`,
+  //         agentLogOutToken
+  //       );
+  //       if (logOut?.status) {
+  //         toast.success(logOut?.message);
+  //         setLoading(false);
+  //         getData();
+  //         socketSendMessage({
+  //           action: "logout_warning",
+  //           user_id: logoutUSerId,
+  //         });
+  //       } else {
+  //         if (logOut?.message === "Token expired") {
+  //           const expireLogout = await generalPostFunctionWithToken(
+  //             `${baseName}/logout-expired-token`,
+  //             { all: agentLogOutToken, token: agentLogOutToken }
+  //           );
+  //           if (expireLogout?.status) {
+  //             toast.success(logOut?.message);
+  //             setLoading(false);
+  //             getData();
+  //             socketSendMessage({
+  //               action: "logout_warning",
+  //               user_id: logoutUSerId,
+  //             });
+  //           } else {
+  //             setLoading(false);
+  //             toast.error("Something went wrong. Please try again.");
+  //           }
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //       toast.error(err);
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
   const handleAgentLogout = async (token, useId) => {
     setIsAgentLogoutPopup(false);
     if (agentLogOutToken) {
-      // const userConfirmed = await confirm();
-      // if (userConfirmed) {
       setLoading(true);
       try {
-        const logOut = await generalGetFunctionWithToken(
-          `${baseName}/logout?all`,
-          agentLogOutToken
+        const expireLogout = await generalPostFunctionWithToken(
+          `${baseName}/logout-expired-token`,
+          { all: agentLogOutToken, token: agentLogOutToken }
         );
-        if (logOut?.status) {
-          toast.success(logOut?.message);
+        if (expireLogout?.status) {
+          toast.success(expireLogout?.message);
           setLoading(false);
           getData();
           socketSendMessage({
@@ -144,31 +184,14 @@ function Agents({ type }) {
             user_id: logoutUSerId,
           });
         } else {
-          if (logOut?.message === "Token expired") {
-            const expireLogout = await generalPostFunctionWithToken(
-              `${baseName}/logout-expired-token`,
-              { all: agentLogOutToken, token: agentLogOutToken }
-            );
-            if (expireLogout?.status) {
-              toast.success(logOut?.message);
-              setLoading(false);
-              getData();
-              socketSendMessage({
-                action: "logout_warning",
-                user_id: logoutUSerId,
-              });
-            } else {
-              setLoading(false);
-              toast.error("Something went wrong. Please try again.");
-            }
-          }
+          setLoading(false);
+          toast.error("Something went wrong. Please try again.");
         }
       } catch (err) {
         console.log(err);
         toast.error(err);
         setLoading(false);
       }
-      // }
     }
   };
 
@@ -196,7 +219,7 @@ function Agents({ type }) {
 
   // Getting token from online user by checking with extension
   function getToken(extension) {
-      // console.log("User:", extension,logonUser);
+    // console.log("User:", extension,logonUser);
     const user = logonUser?.find(
       (user) => user?.extension?.extension === extension
     );
@@ -265,19 +288,19 @@ function Agents({ type }) {
                           account?.permissions,
                           "add"
                         ) && (
-                          <button
-                            onClick={() => {
-                              navigate("/agents-pbx-add");
-                              backToTop();
-                            }}
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                            <button
+                              onClick={() => {
+                                navigate("/agents-pbx-add");
+                                backToTop();
+                              }}
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -307,17 +330,17 @@ function Agents({ type }) {
                         account?.permissions,
                         "search"
                       ) && (
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            className="formItem"
-                            value={userInput}
-                            onChange={(e) => setuserInput(e?.target?.value)}
-                          />
-                        </div>
-                      )}
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              name="Search"
+                              className="formItem"
+                              value={userInput}
+                              onChange={(e) => setuserInput(e?.target?.value)}
+                            />
+                          </div>
+                        )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
@@ -368,13 +391,13 @@ function Agents({ type }) {
                           <tbody className="">
                             <>
                               {noPermissionToRead ||
-                              checkViewSidebar(
-                                "User",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                                checkViewSidebar(
+                                  "User",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
                                 agents?.data?.length === 0 ? (
                                   <tr>
                                     <td colSpan={99}>
@@ -412,12 +435,12 @@ function Agents({ type }) {
                                           {item.extension.record === "A"
                                             ? "All"
                                             : item.extension.record === "L"
-                                            ? "Local"
-                                            : item.extension.record === "I"
-                                            ? "Inbound"
-                                            : item.extension.record === "O"
-                                            ? "Outbound"
-                                            : "Disabled"}
+                                              ? "Local"
+                                              : item.extension.record === "I"
+                                                ? "Inbound"
+                                                : item.extension.record === "O"
+                                                  ? "Outbound"
+                                                  : "Disabled"}
                                         </td>
                                         <td>
                                           <span
@@ -431,51 +454,51 @@ function Agents({ type }) {
                                           ></span>
                                         </td>
                                         {
-                                        getToken(item.extension.extension) &&
-                                        onlineUsers.includes(
-                                          item.extension.extension
-                                        ) ? (
-                                          <td>
-                                            <button
-                                              className="tableButton delete mx-auto"
-                                              onClick={() => {
-                                                setIsAgentLogoutPopup(true);
-                                                setLogoutUserId(item.id);
-                                                setAgentLogOutToken(
-                                                  getToken(
-                                                    item.extension.extension
-                                                  )[0].token
-                                                );
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-power-off"></i>
-                                            </button>
-                                          </td>
-                                        ) : (
-                                          <td></td>
-                                        )}
+                                          getToken(item.extension.extension) &&
+                                            onlineUsers.includes(
+                                              item.extension.extension
+                                            ) ? (
+                                            <td>
+                                              <button
+                                                className="tableButton delete mx-auto"
+                                                onClick={() => {
+                                                  setIsAgentLogoutPopup(true);
+                                                  setLogoutUserId(item.id);
+                                                  setAgentLogOutToken(
+                                                    getToken(
+                                                      item.extension.extension
+                                                    )[0].token
+                                                  );
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-power-off"></i>
+                                              </button>
+                                            </td>
+                                          ) : (
+                                            <td></td>
+                                          )}
                                         {checkViewSidebar(
                                           "CallCenterAgent",
                                           slugPermissions,
                                           account?.permissions,
                                           "edit"
                                         ) && (
-                                          <td>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() => {
-                                                navigate(
-                                                  `/agents-edit?id=${item.id}`,
-                                                  {
-                                                    state: item,
-                                                  }
-                                                );
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>
-                                        )}
+                                            <td>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() => {
+                                                  navigate(
+                                                    `/agents-edit?id=${item.id}`,
+                                                    {
+                                                      state: item,
+                                                    }
+                                                  );
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>
+                                          )}
                                         {/* <td>
                             account?.permissions,"edit")&& <td>
                             <button
