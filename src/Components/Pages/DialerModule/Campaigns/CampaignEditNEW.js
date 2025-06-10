@@ -127,8 +127,6 @@ function CampaignEditNEW() {
     },
   ]);
 
-  console.log(schedulerInfo);
-
 
   const allLeadFileList = useSelector(state => state.allLeadFileList);
   const [leadSearchQuery, setLeadSearchQuery] = useState("");
@@ -600,7 +598,6 @@ function CampaignEditNEW() {
 
   // Function to handle rechain checkbox change
   function handleDispositionRechainChange(id) {
-    console.log("id", id);
 
     setSelectedDisposition((prevSelected) => prevSelected.filter((item) => item.id === id).length > 0 ? prevSelected.map((item) => {
       if (item.id === id) {
@@ -1474,8 +1471,8 @@ function CampaignEditNEW() {
                                     {unmatchIdAgent?.map((item, index) => {
                                       return (
                                         <div
-                                          className={`callListItem ${selectedAgent.includes(item.id)  ? "selected"
-                                              : ""}`}
+                                          className={`callListItem ${selectedAgent.includes(item.id) ? "selected"
+                                            : ""}`}
                                           key={index}
                                           onClick={() =>
                                             toggleSelectAgents(item.id)
