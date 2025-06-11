@@ -30,6 +30,8 @@ function IvrEdit() {
     handleSubmit,
     reset,
     setValue,
+    setError,
+    watch,
   } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -87,6 +89,13 @@ function IvrEdit() {
   }, []);
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    if (Number(data.min_digit) > Number(data.max_digit)) {
+      setError("min_digit", {
+        type: "manual",
+        message: "Min digit should be less than or equal to max digit",
+      });
+      return;
+    }
     setLoading(true);
     const apiData = await generalPutFunction(`/ivr-master/update/${id}`, data);
     if (apiData.status) {
@@ -548,7 +557,7 @@ function IvrEdit() {
                     })}
                   /> */}
                         {errors.min_digit && (
-                          <ErrorMessage text={errors.min_digit} />
+                          <ErrorMessage text={errors.min_digit.message} />
                         )}
                       </div>
                     </div>

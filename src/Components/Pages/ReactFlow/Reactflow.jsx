@@ -59,10 +59,15 @@ const Reactflow = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.state?.id;
+  const flowName = location.state?.name;
   const [loading, setLoading] = useState(false);
   const [initialFlowData, setInitialFlowData] = useState(null);
   const [buttonType, setButtonType] = useState("Save");
   const [initialFlowDataRefresher, setInitialFlowDataRefresher] = useState(0);
+  const [initialDigitsLimit, setInitialDigitsLimit] = useState({
+    max_digit: null,
+    min_digit: null,
+  });
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -73,6 +78,16 @@ const Reactflow = () => {
       const apiData = await generalGetFunction(
         `/ivrnode/all?ivr_master_id=${id}`
       );
+      if (
+        apiData.status &&
+        apiData?.data?.max_digit &&
+        apiData?.data?.min_digit
+      ) {
+        setInitialDigitsLimit({
+          max_digit: apiData?.data?.max_digit,
+          min_digit: apiData?.data?.min_digit,
+        });
+      }
 
       if (
         apiData.status &&
@@ -206,6 +221,8 @@ const Reactflow = () => {
           data: {
             ...node.data,
             main_id: node.main_id,
+            // set default value, mainly use on the pressdigits node.
+            initialDigitsLimit: initialDigitsLimit,
             setInitialFlowDataRefresher: () =>
               setInitialFlowDataRefresher(initialFlowDataRefresher + 1),
             onUpdate: (updatedData) => handleNodeUpdate(node.id, updatedData),
@@ -252,8 +269,9 @@ const Reactflow = () => {
     const apiData = await generalPostFunction("/ivrnode/store", payload);
     if (apiData.status) {
       setLoading(false);
-      navigate("/ivr");
-      backToTop();
+      toast.success(apiData?.message || "IVR created successfully.");
+      // navigate("/ivr");
+      // backToTop();
     } else {
       setLoading(false);
     }
@@ -272,6 +290,19 @@ const Reactflow = () => {
       )}
       <main className="mainContent">
         <div className="flowMain">
+          <div>
+            <h2
+              style={{
+                color: "white",
+                fontSize: "20px",
+                marginLeft: "10px",
+                paddingTop: "5px",
+              }}
+            >
+              Options for IVR:{" "}
+              <span style={{ color: "var(--ui-accent)" }}>{flowName}</span>
+            </h2>
+          </div>
           <ReactFlow
             className="reactFlowCanvas"
             nodes={nodesWithHandlers}
@@ -282,7 +313,7 @@ const Reactflow = () => {
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             connectOnClick={true}
-            style={{ height: "100vh" }}
+            style={{ height: "100vh", maxHeight: "95%" }}
             defaultEdgeOptions={{
               type: "customEdge",
               animated: true,
