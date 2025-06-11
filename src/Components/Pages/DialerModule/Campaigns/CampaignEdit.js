@@ -134,9 +134,9 @@ function CampaignCreate() {
           firstStep: true,
           secondStep: dialer != null,
           thirdStep: agents.length !== 0,
-          fourthStep: cmpleads.length > 0,
+          fourthStep: cmpleads?.length > 0,
         });
-        if (cmpleads.lead_files.length > 0) {
+        if (cmpleads?.length > 0) {
           setCompletedStep(4);
         }
       }
