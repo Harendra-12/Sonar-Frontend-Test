@@ -332,7 +332,7 @@ function Leads() {
                                                                             </td>
                                                                             <td>{data?.lead_rows_count}</td>
                                                                             <td>
-                                                                                <button className="tableButton edit mx-auto" onClick={() => navigate('/lead-view/', { state: data })}>
+                                                                                <button className="tableButton edit mx-auto" onClick={() => navigate('/lead-view', { state: data })}>
                                                                                     <i className="fa-solid fa-eye"></i>
                                                                                 </button>
                                                                             </td>

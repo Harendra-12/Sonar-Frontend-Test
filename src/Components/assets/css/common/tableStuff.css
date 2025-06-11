@@ -14,7 +14,7 @@ table th {
     background-color: var(--table-head) !important;
     white-space: nowrap;
     width: 200px;
-    color: var(--form-label ) !important;
+    color: var(--form-label) !important;
 }
 
 table thead tr {
@@ -57,10 +57,11 @@ table tbody tr:nth-child(even) {
     background-color: var(--table-odd-color) !important;
     /* background-color: var(--table-even-bg); */
 }
-.table>:not(caption)>*>*{
-      /* background-color: var(--table-odd-color) !important; */
-       color: var(--form-label ) !important;
-       border-bottom: 1px solid var(--me-border1) !important; 
+
+.table>:not(caption)>*>* {
+    /* background-color: var(--table-odd-color) !important; */
+    color: var(--form-label) !important;
+    border-bottom: 1px solid var(--me-border1) !important;
 }
 
 table tr td:first-child {
@@ -496,15 +497,15 @@ table td.incoming::after {
 
 /* Hover, Focus */
 .cl-switch:hover>input {
-    opacity: 0.04;
+    opacity: 0.0;
 }
 
 .cl-switch>input:focus {
-    opacity: 0.12;
+    opacity: 0.0;
 }
 
 .cl-switch:hover>input:focus {
-    opacity: 0.16;
+    opacity: 0.0;
 }
 
 /* Active */

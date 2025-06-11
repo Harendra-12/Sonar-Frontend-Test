@@ -104,6 +104,7 @@
     border-radius: 5px;
     transition: all 0.4s ease-in-out;
     color: var(--color-subtext);
+    font-size: 0.813rem;
 }
 
 .aitable_button:hover {
@@ -302,3 +303,235 @@
      background-color: #34364d;
      color: #ffffff !important;
      } */
+
+.addExportBtnListing {
+    background-color: #00ab2b;
+    border-left: 1px solid #ffffff75 !important;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 0;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+}
+
+.panelButton.exportGroupBtn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.listingDorp .dropdown-menu.show {
+    min-width: 450px;
+    background: var(--ele-color2);
+}
+
+.dropdownHerder {
+    padding-inline: 20px;
+    border-bottom: 1px solid var(--me-border1);
+    margin-bottom: 10px;
+}
+
+.dropdownHerder h6 {
+    color: var(--form-label);
+}
+
+.dropdownHerder p {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-subtext);
+}
+
+.listingDorp .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--me-border1);
+}
+
+.text_success {
+    color: rgb(0 197 106);
+}
+
+.batchCallCanvas {
+    width: calc(100vw - 250px) !important;
+}
+
+.batchCallCanvas .offcanvas-body {
+    display: flex;
+}
+
+.batchCallCanvas .offcanvas-body .right_body {
+    background: var(--batch_bg);
+    width: 100%;
+}
+
+.batchCallCanvas .offcanvas-body .left_body {
+    max-width: 420px;
+    width: 100%;
+    padding-inline: 15px;
+}
+
+.batchCallCanvas .popup-border {
+    border: 2px dotted var(--border-color);
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.batchCallCanvas .popup-border {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.batchCallCanvas .test-user {
+    padding: 24px 50px;
+}
+
+.batchCallCanvas .test-user {
+    color: var(--black);
+}
+
+.batchCallCanvas .popup-border p {
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.batchCallCanvas p {
+    font-weight: 600;
+}
+
+.batchCallCanvas span.text2 {
+    font-size: 0.75rem;
+    color: var(--muted-text-color);
+}
+
+.batchCallCanvas .popup-border:hover {
+    border-color: var(--ui-accent);
+}
+
+/* ================== radio check */
+
+/* From Uiverse.io by Na3ar-17 */
+/* .radio-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} */
+
+/* .radio-input * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+} */
+
+.radio-input .radioLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--me-border1);
+    cursor: pointer;
+    position: relative;
+}
+
+.radio-input .radioLabel:hover {
+    transition: all 0.2s ease;
+    border-color: var(--ui-accent);
+}
+
+.radio-input .radioLabel:has(input:checked) {
+    border-color: var(--ui-accent);
+}
+
+/* .openFormBox{
+    display: none;
+}
+.radio-input .radioLabel:has(input:checked) >*.openFormBox {
+  display: block;
+} */
+.radio-input .radioLabel .text {
+    color: var(--immortalBlack);
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.radio-input .radioLabel input[type="radio"] {
+    background-color: #d2d2f3;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-input .radioLabel input[type="radio"]:checked {
+    background-color: #435dd8;
+    -webkit-animation: puls 0.7s forwards;
+    animation: pulse 0.7s forwards;
+}
+
+.radio-input .radioLabel input[type="radio"]:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background-color: #fff;
+    transform: scale(0);
+}
+
+.radio-input .radioLabel input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+.noTableData{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px);
+    /* overflow: auto; */
+}
+.details_header{
+    min-height: 50px;
+}
+.details_header p{
+    color: var(--immortalBlack);
+}
+.noTableData p{
+    color: var(--color-subtext);
+    font-weight: 400;
+}
+.fileDetails h6{
+  color: var(--immortalBlack);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.fileDetails p{
+  color: var(--color-subtext);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-bottom: 0;
+}

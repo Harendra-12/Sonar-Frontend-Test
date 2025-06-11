@@ -478,7 +478,7 @@
 
     }
 
- 
+
     #sidenNavApp {
         width: 100%;
         height: 54px;
@@ -545,10 +545,14 @@
     .filePanelActive {
         height: calc(100vh - 276px);
     }
-       .w50 {
+
+    .w50 {
         max-width: 90% !important;
     }
 
+    .batchCallCanvas {
+        width: 100% !important;
+    }
 }
 
 @media (max-width: 767px) {
