@@ -81,6 +81,7 @@ function Messages({
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
   const extension = account?.extension?.extension || "";
   const [contact, setContact] = useState([]);
+  const [originalContact, setOriginalContact] = useState([]);
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
   const [chatHistory, setChatHistory] = useState([]);
@@ -90,6 +91,7 @@ function Messages({
   const [activeTab, setActiveTab] = useState("all");
   // const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
+  const [originalOnlineUser, setOriginalOnlineUser] = useState([])
   const [unreadMessage, setUnreadMessage] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [addNewTag, setAddNewTag] = useState(false);
@@ -107,8 +109,11 @@ function Messages({
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [originalGroupsList, setOriginalGroupsList] = useState([])
   const [groupRefresh, setGroupRefresh] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchValueForMessage, setSearchValueForMessage] = useState("")
+  const [searchValueForGroup, setSearchValueForGroup] = useState("")
   const [allAgents, setAllAgents] = useState([]);
   const [agent, setAgent] = useState([]);
   const [groupname, setGroupName] = useState("");
@@ -143,6 +148,7 @@ function Messages({
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
+  const [origInalinternalCallHistory, setOriginalInternalCallHistory] = useState([])
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
 
@@ -163,9 +169,10 @@ function Messages({
     }
   };
   const handleEmojiClick = (emojiData) => {
-    setMessageInput((prevMessage) => {
-      return prevMessage + emojiData.emoji;
-    });
+    setMessageInput((prev) => ({
+      ...prev,
+      [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji
+    }));
   };
   const {
     formState: { errors },
@@ -277,6 +284,7 @@ function Messages({
       }));
 
       setContact(updatedFilteredData);
+      setOriginalContact(updatedFilteredData)
       // ENABLE THIS TO SELECT CHAT ON PAGE LOAD
       // if (!extensionFromCdrMessage) {
       //   const profile_img = allAgents?.find(
@@ -477,14 +485,14 @@ function Messages({
     }
   };
   function sendSingleMessage(selectedUrl) {
-    if (!selectedUrl && messageInput.trim() === "") {
+    if (!selectedUrl && messageInput[recipient[0]].trim() === "") {
       return;
     }
     let messageContent;
     if (selectedUrl) {
       messageContent = selectedUrl;
     } else {
-      messageContent = messageInput.trim();
+      messageContent = messageInput[recipient[0]].trim();
     }
     const messageType = checkMessageType(messageContent);
     socketSendMessage({
@@ -507,7 +515,7 @@ function Messages({
         ] || []),
         {
           from: userDetails.id,
-          body: selectedUrl ? selectedUrl : messageInput,
+          body: selectedUrl ? selectedUrl : messageInput[recipient[0]],
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
@@ -526,13 +534,14 @@ function Messages({
       if (selectedFile) {
         lastMessage = selectedFile?.type;
       } else {
-        lastMessage = messageInput;
+        lastMessage = messageInput[recipient[0]];
       }
       newContact[contactIndex].last_message_data.message_text = lastMessage;
       newContact[contactIndex].last_message_data.created_at = time;
       newContact?.splice(contactIndex, 1);
       newContact.unshift(contact[contactIndex]);
       setContact(newContact);
+      setOriginalContact(newContact)
     }
     setActiveTab("all");
 
@@ -551,7 +560,7 @@ function Messages({
         extension_id: agentDetails.extension_id,
         extension: recipient?.[0],
         last_message_data: {
-          message_text: messageInput,
+          message_text: messageInput[recipient[0]],
           created_at: time,
         },
       });
@@ -654,15 +663,21 @@ function Messages({
 
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
-      console.log("from", from, "body", recipient);
+
       if (from === recipient?.[1] && autoReply) {
         setAiProcessing(true);
-        setMessageInput("Generating Ai response...");
+        setMessageInput((prev) => ({
+          ...prev,
+          [recipient[0]]: "Generating Ai response..."
+        }));
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
           console.log("Response", res);
 
           if (res.data) {
-            setMessageInput(res.data.reply);
+            setMessageInput((prev) => ({
+              ...prev,
+              [recipient[0]]: res.data.reply
+            }));
             setAiProcessing(false);
           }
         }).catch((err) => {
@@ -687,6 +702,7 @@ function Messages({
         newContact[contactIndex].last_message_data.message_text = body;
         newContact[contactIndex].last_message_data.created_at = time;
         setContact(newContact);
+        setOriginalContact(newContact)
       }
       if (!extensionExists) {
         contact.unshift({
@@ -706,6 +722,7 @@ function Messages({
         newContact[index].last_message_data.message_text = body;
         newContact[index].last_message_data.created_at = time;
         setContact(newContact);
+        setOriginalContact(newContact)
       }
       // Check Content-Type for the incoming message
       const contentType = incomingMessage?.message_type;
@@ -781,6 +798,7 @@ function Messages({
           newContact[contactIndex].last_message_data.message_text = body;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
+          setOriginalContact(newContact);
         }
       }
 
@@ -967,10 +985,13 @@ function Messages({
           return findUser;
         })
         .filter((user) => user !== undefined);
-
-      setOnlineUser(updatedOnlineUsers);
+      if (updatedOnlineUsers?.length !== originalOnlineUser?.length) {
+        setOnlineUser(updatedOnlineUsers);
+        setOriginalOnlineUser(updatedOnlineUsers)
+      }
     } else {
       setOnlineUser([]);
+      setOriginalOnlineUser([])
     }
   }, [loginUser]);
 
@@ -1132,6 +1153,7 @@ function Messages({
           },
         }));
         setGroups(updatedFilteredData);
+        setOriginalGroupsList(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
           (group) => group.id == recipient?.[1]
         );
@@ -1445,7 +1467,7 @@ function Messages({
     if (selectedUrl) {
       messageContent = selectedUrl;
     } else {
-      messageContent = messageInput.trim();
+      messageContent = messageInput[recipient[0]].trim();
     }
     if (messageContent === '') return;
     const messageType = checkMessageType(messageContent);
@@ -1489,7 +1511,7 @@ function Messages({
       if (selectedUrl) {
         last_message = messageType;
       } else {
-        last_message = messageInput;
+        last_message = messageInput[recipient[0]];
       }
       newGroups[contactIndex].last_message_data.message_text = last_message;
       newGroups[contactIndex].last_message_data.created_at = time;
@@ -1497,6 +1519,7 @@ function Messages({
       newGroups?.splice(contactIndex, 1);
       newGroups.unshift(groups[contactIndex]);
       setGroups(newGroups);
+      setOriginalGroupsList(newGroups)
     }
     setActiveTab("all");
 
@@ -1542,6 +1565,7 @@ function Messages({
           newGroups?.splice(contactIndex, 1);
           newGroups.unshift(groups[contactIndex]);
           setGroups(newGroups);
+          setOriginalGroupsList(newGroups)
         }
         setActiveTab("all");
         setUnreadMessage((prevState) => ({
@@ -1655,6 +1679,7 @@ function Messages({
       if (response.status) {
         const sortedArr = response.data.data
         setInternalCallHistory(sortedArr);
+        setOriginalInternalCallHistory(sortedArr)
       }
     } catch (err) {
       console.log(err);
@@ -1672,6 +1697,49 @@ function Messages({
     getContactAndAllTagData(shouldLoad);
     setMessageRefresh(true);
   };
+
+  const handleGroupSearchChange = (event) => {
+    setSearchValueForGroup(event?.target?.value)
+    const filteredGroup = originalGroupsList?.filter((item) => item?.group_name?.toLowerCase()?.includes(event?.target?.value?.toLowerCase()))
+    setGroups(filteredGroup)
+  }
+
+  const handleMessageSearchChange = (event) => {
+    setSearchValueForMessage(event?.target?.value);
+    if (activeTab == "all") {
+      const filteredContact = originalContact?.filter((item) => item?.name?.toLowerCase().includes(event?.target?.value?.toLowerCase()));
+      setContact(filteredContact)
+    }
+
+    if (activeTab == "online") {
+      const filteredOnlineUser = originalOnlineUser?.filter((item) => item?.name?.toLowerCase()?.includes(event?.target?.value))
+      setOnlineUser(filteredOnlineUser)
+    }
+
+    if (activeTab === "group") {
+      const filteredGroup = originalGroupsList?.filter((item) => item?.group_name?.toLowerCase()?.includes(event?.target?.value?.toLowerCase()))
+      setGroups(filteredGroup)
+    }
+
+    if (activeTab === "call") {
+      const filteredCallHistory = origInalinternalCallHistory?.filter((item) =>
+        item?.receiver?.name?.toLowerCase()?.includes(event?.target?.value) ||
+        item?.sender?.name?.toLowerCase()?.includes(event?.target?.value)
+      )
+      setInternalCallHistory(filteredCallHistory)
+    }
+  }
+
+  const hanldeTabLinkClick = (tab) => {
+    setActiveTab(tab)
+    setSearchValueForMessage("")
+    setSearchValueForGroup("")
+    setGroups(originalGroupsList)
+    setContact(originalContact)
+    setOnlineUser(originalOnlineUser)
+    setInternalCallHistory(origInalinternalCallHistory)
+  }
+  
   return (
     <>
       <style>
@@ -1811,7 +1879,7 @@ function Messages({
                           activeTab === "all" ? "tabLink active" : "tabLink"
                         }
                         data-category="all"
-                        onClick={() => setActiveTab("all")}
+                        onClick={() => hanldeTabLinkClick("all")}
                       >
                         <i className="fa-regular fa-circle-dot "></i>
                         <span> All</span>
@@ -1830,7 +1898,7 @@ function Messages({
                         )}
                       </button>
                       <button
-                        onClick={() => setActiveTab("online")}
+                        onClick={() => hanldeTabLinkClick("online")}
                         className={
                           activeTab === "online" ? "tabLink active" : "tabLink"
                         }
@@ -1851,7 +1919,7 @@ function Messages({
                         Tags
                       </button> */}
                       <button
-                        onClick={() => setActiveTab("group")}
+                        onClick={() => hanldeTabLinkClick("group")}
                         className={
                           activeTab === "group" ? "tabLink active" : "tabLink"
                         }
@@ -1862,7 +1930,7 @@ function Messages({
                         <span>Group</span>
                       </button>
                       <button
-                        onClick={() => setActiveTab("call")}
+                        onClick={() => hanldeTabLinkClick("call")}
                         className={
                           activeTab === "call" ? "tabLink active" : "tabLink"
                         }
@@ -1881,6 +1949,19 @@ function Messages({
                       </button> */}
                     </div>
                   </nav>
+                  {
+                    activeTab !== "all" &&
+                    <input
+                      type="search"
+                      name="Search"
+                      id="headerSearch"
+                      className="searchStyle"
+                      placeholder="Search"
+                      value={searchValueForMessage}
+                      onChange={(event) => handleMessageSearchChange(event)}
+                    />
+                  }
+
                   {activeTab === "all" ? (
                     <div className="tab-content">
                       {/* <AgentSearch
@@ -1931,6 +2012,16 @@ function Messages({
                           >
                             Chats <i className="fa-solid fa-chevron-down"></i>
                           </h5>
+
+                          <input
+                            type="search"
+                            name="Search"
+                            id="headerSearch"
+                            className="searchStyle"
+                            placeholder="Search"
+                            value={searchValueForMessage}
+                            onChange={(event) => handleMessageSearchChange(event)}
+                          />
                         </div>
                         <div
                           className="collapse show"
@@ -2093,6 +2184,15 @@ function Messages({
                             Group Chat{" "}
                             <i className="fa-solid fa-chevron-down"></i>
                           </h5>
+                          <input
+                            type="search"
+                            name="Search"
+                            id="headerSearch"
+                            className="searchStyle"
+                            placeholder="Search"
+                            value={searchValueForGroup}
+                            onChange={(event) => handleGroupSearchChange(event)}
+                          />
                         </div>
                         <div
                           className="collapse show"
@@ -3509,18 +3609,26 @@ function Messages({
                                       name=""
                                       className="formItem "
                                       placeholder="Please enter your message"
-                                      value={messageInput}
+                                      value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
+                                        { console.log("reciepent", recipient) }
                                         const value = e.target.value;
                                         const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
 
                                         if (value.trim() === '') {
-                                          setMessageInput('');
+                                          setMessageInput((prev) => {
+                                            const updated = { ...prev };
+                                            delete updated[recipient[0]];
+                                            return updated;
+                                          });
                                           return;
                                         }
 
                                         if (wordCount <= 250) {
-                                          setMessageInput(value);
+                                          setMessageInput((prev) => ({
+                                            ...prev,
+                                            [recipient[0]]: value,
+                                          }));
                                         } else {
                                           toast.warn("Text is too long!")
                                         }
