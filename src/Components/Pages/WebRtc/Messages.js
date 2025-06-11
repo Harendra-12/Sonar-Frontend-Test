@@ -1739,7 +1739,7 @@ function Messages({
     setOnlineUser(originalOnlineUser)
     setInternalCallHistory(origInalinternalCallHistory)
   }
-  
+
   return (
     <>
       <style>
@@ -4195,6 +4195,11 @@ function Messages({
                                   : allMessage?.[recipient?.[1]]
                               }
                               selectedChat={selectedChat}
+                              setMeetingPage={setMeetingPage}
+                              setToUser={setToUser}
+                              setCalling={setCalling}
+                              socketSendMessage={socketSendMessage}
+                              account={account}
                             />
                           ) : (
                             ""
