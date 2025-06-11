@@ -584,16 +584,18 @@ input[type=number] {
     top: 0.5rem;
     margin: 0 0 0 7px;
     padding: 0 3px;
-    background: #fff;
+    background: var(--ele-color);
     width: fit-content;
 }
+
 
 .coolinput input[type=text].input {
     padding: 11px 10px;
     font-size: 1.125rem;
     border: 2px #818CF8 solid;
     border-radius: 5px;
-    background: #fff;
+    background: var(--ele-color);
+    color: var(--sub-text);
 }
 
 .coolinput input[type=text].input:focus {

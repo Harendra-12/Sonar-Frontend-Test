@@ -12,7 +12,7 @@
 .profileView .profileDetailsHolder .contentFinal p {
     font-family: Roboto;
     font-size: 1.125rem;
-    color: #454545;
+    color: var(--color-subtext);
 }
 
 .profileView .profileDetailsHolder .contentFinal span {

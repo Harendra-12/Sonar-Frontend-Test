@@ -108,7 +108,7 @@
   --active-calls-sidePanel-width: 250px;
   --ele-color: #fff;
   --ele-color3: #fff;
-  --ele-color2: var(--ele-color2);
+  --ele-color2: #fff;
   --form-label: #2a2a2a;
   --form-input-text: #2a2a2a;
   --formHeadingBloc: #fafafa;
@@ -271,8 +271,9 @@
   --knowledge-leftinfo: #f9f9f9;
   --bg_1: #dbedff;
   --bg-form1: #0c54a117;
-
-   --filter: invert(1) grayscale(0) brightness(0);
+  --muted-text-color: rgb(143, 140, 140);
+  --filter: invert(1) grayscale(0) brightness(0);
+  --batch_bg: #f5f7fa;
 
 }
 
@@ -282,6 +283,7 @@
   --tab-active: #4060852e;
   /* --ui-accent: #141718; */
   /* --bg-color: #212121; */
+  --muted-text-color: rgb(143, 140, 140);
   --bg-color: #1d1e22;
   /* --ele-color: #141718; */
   --ele-color: #303138;
@@ -434,7 +436,8 @@
   --knowledge-leftinfo: #242832;
   --bg_1: #3f4750;
   --bg-form1: #00000030;
-   --filter: invert(1) grayscale(100%) brightness(200%);
+  --filter: invert(1) grayscale(100%) brightness(200%);
+  --batch_bg: #2d3a4f69;
 
 }
 

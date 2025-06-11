@@ -150,7 +150,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                     <div className="tab-pane fade show active" id="nav-agent" role="tabpanel" tabindex="0">
                                         <div className="col-12">
                                             <nav className="tangoNavs">
-                                                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <div className="nav nav-tabs" id="nav-tab" role="tablist" style={!isParentWebRtc ? { height: '65px' } : undefined}>
                                                     <button
                                                         className="nav-link active"
                                                         id="nav-online-tab"

@@ -1060,7 +1060,7 @@
 
 
 .mainContentApp .webrtc_newMessageUi .contactListItem span {
-    font-size: .0625rem;
+    font-size: .715rem !important;
     color: #0027ff;
 }
 

@@ -46,7 +46,11 @@ function Campaigns() {
 
   async function startCampaign(id) {
     generalGetFunction(`/campaign/start/${id}`).then((res) => {
-      toast.success(res.message);
+      if (res.status) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.response.data.error);
+      }
     }).catch((err) => {
       toast.error(err.response.data.message)
     })

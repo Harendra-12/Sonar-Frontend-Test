@@ -107,6 +107,7 @@ const AllAgent = () => {
                                                         <tr>
                                                             <th>Agent Name</th>
                                                             <th>Agent Type</th>
+                                                            <th>Phone</th>
                                                             <th>Language</th>
                                                             <th>Voice</th>
                                                             <th></th>
@@ -132,6 +133,7 @@ const AllAgent = () => {
                                                                     </div>
                                                                 </td>
                                                                 <td>conversation flow</td>
+                                                                <td>14844731350</td>
                                                                 <td>en-US</td>
                                                                 <td>abc</td>
                                                                 <td>
@@ -198,6 +200,7 @@ const AllAgent = () => {
                                                                     </div>
                                                                 </td>
                                                                 <td>conversation flow</td>
+                                                                 <td>14844731350</td>
                                                                 <td>en-US</td>
                                                                 <td>abc</td>
                                                                 <td>
@@ -264,6 +267,7 @@ const AllAgent = () => {
                                                                     </div>
                                                                 </td>
                                                                 <td>conversation flow</td>
+                                                                 <td>14844731350</td>
                                                                 <td>en-US</td>
                                                                 <td>abc</td>
                                                                 <td>
@@ -332,6 +336,7 @@ const AllAgent = () => {
                                                                     </div>
                                                                 </td>
                                                                 <td>conversation flow</td>
+                                                                 <td>14844731350</td>
                                                                 <td>en-US</td>
                                                                 <td>abc</td>
                                                                 <td>

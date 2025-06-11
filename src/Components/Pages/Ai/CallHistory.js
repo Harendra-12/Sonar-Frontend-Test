@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
 import Tippy from '@tippyjs/react';
 import Transcription from './Transcription';
 import Data from './Data';
 import DetailLogs from './DetailLogs';
+import PaginationComponent from '../../CommonComponents/PaginationComponent';
+import { Link } from 'react-router-dom';
 
 const CallHistory = () => {
 
@@ -12,8 +14,19 @@ const CallHistory = () => {
     const [addUploadAgentToggle, setAddUploadAgentToggle] = useState(false);
     const [deletePopup, setDeletePopup] = useState(false);
     const [idCopy, setIdCopy] = useState(false)
+    const [startDate, setStartDate] = useState("");
     const [startDateFlag, setStartDateFlag] = useState("");
     const [endDateFlag, setEndDateFlag] = useState("");
+    const [pageNumber, setPageNumber] = useState(1);
+    const [allBuyers, setAllBuyers] = useState([]);
+    const [filteredKeys, setFilteredKeys] = useState([]);
+    const [filterBy, setFilterBy] = useState("date");
+    const [createdAt, setCreatedAt] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [createExportToggle, setCreateExportToggle] = useState(false);
+
+
+
     const [timeFlag, setTimeFlag] = useState({
         startTime: "",
         endTime: "",
@@ -23,13 +36,78 @@ const CallHistory = () => {
         endTime: "",
     });
 
-
-
     const handleRefreshBtnClicked = () => {
         setRefreshState(true)
         // const shouldLoad = false
         // getData(shouldLoad);
     }
+
+    useEffect(() => {
+        if (
+            filterBy === "7_days" ||
+            filterBy === "1_month" ||
+            filterBy === "3_month"
+        ) {
+            // featureUnderdevelopment();
+            getDateRange(filterBy);
+        }
+    }, [filterBy]);
+
+    useEffect(() => {
+        if (filterBy === "date" && startDateFlag !== "") {
+            setCreatedAt(startDateFlag);
+            setStartDate("");
+            setEndDate("");
+        } else if (
+            filterBy === "date_range" &&
+            endDateFlag !== "" &&
+            startDateFlag !== ""
+        ) {
+            setStartDate(startDateFlag);
+            setEndDate(endDateFlag);
+            setCreatedAt("");
+        }
+    }, [startDateFlag, endDateFlag, filterBy]);
+
+
+    const getDateRange = (period) => {
+        const currentDate = new Date();
+        const formattedCurrentDate = formatDate(currentDate);
+
+        let startDate = new Date();
+
+        switch (period) {
+            case "7_days":
+                startDate.setDate(currentDate.getDate() - 7);
+                break;
+
+            case "1_month":
+                startDate.setMonth(currentDate.getMonth() - 1);
+                break;
+
+            case "3_month":
+                startDate.setMonth(currentDate.getMonth() - 3);
+                break;
+
+            default:
+                throw new Error(
+                    "Invalid period. Use 'last7days', 'last1month', or 'last3months'."
+                );
+        }
+
+        const formattedStartDate = formatDate(startDate);
+        setStartDate(formattedStartDate);
+
+        setEndDate(formattedCurrentDate);
+
+        // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
+    };
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
 
     return (
         <>
@@ -62,17 +140,41 @@ const CallHistory = () => {
                                                     <p>This is where you can view the call history </p>
                                                 </div>
                                                 <div className="buttonGroup">
-
-
-
-                                                    <button className="panelButton edit" onClick={() => {
-                                                        setAddUploadAgentToggle(true);
-                                                    }}>
+                                                    <button className="panelButton static edit exportGroupBtn" >
                                                         <span className="text">Export</span>
-                                                        <span className="icon">
+                                                        {/* <span className="icon">
                                                             <i class="fa-solid fa-file-export"></i>
-                                                        </span>
+                                                        </span> */}
                                                     </button>
+                                                    <div class="dropdown listingDorp">
+                                                        <button class="addExportBtnListing dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fa-solid fa-clock-rotate-left"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <div className='dropdownHerder'>
+                                                                <h6>Export Records</h6>
+                                                                <p>The CSVs will be kept for one week. Please download after export.</p>
+                                                            </div>
+                                                            <li><Link class="dropdown-item" to="#">
+                                                                <div>
+                                                                    <p className='mb-0'>Retell-history(2025-06-10).csv</p>
+                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                </div>
+                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button>
+                                                            </Link></li>
+                                                            <li><Link class="dropdown-item" to="#"><div>
+                                                                    <p className='mb-0'>Retell-history(2025-06-10).csv</p>
+                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                </div>
+                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
+                                                            <li><Link class="dropdown-item" to="#"><div>
+                                                                    <p className='mb-0'>Retell-history(2025-06-10).csv</p>
+                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                </div>
+                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
+                                                        </ul>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -80,8 +182,8 @@ const CallHistory = () => {
                                             className="col-12"
                                             style={{ overflow: "auto", padding: "10px 20px 0" }}
                                         >
-                                            <div className="tableHeader">
-                                                <div className='d-flex justify-content-start gap-2 flex-wrap mb-2'>
+                                            <div className="tableHeader flex-column align-items-start">
+                                                <div className='d-flex justify-content-between w-100 gap-2 flex-wrap mb-2'>
                                                     <div className="showEntries">
                                                         <label>Show</label>
                                                         <select
@@ -95,70 +197,117 @@ const CallHistory = () => {
                                                         </select>
                                                         <label>entries</label>
                                                     </div>
-                                                    <div className="formRow border-0">
-                                                        <div className="d-flex w-100">
-                                                            <input
-                                                                type="date"
-                                                                className="formItem"
-                                                                max={
-                                                                    new Date()?.toISOString()?.split("T")[0]
-                                                                }
-                                                                value={endDateFlag}
-                                                                onChange={(e) => {
-                                                                    setEndDateFlag(e.target.value);
-                                                                    // setPageNumber(1);
-                                                                }}
-                                                                min={startDateFlag} // Prevent selecting an end date before the start date
-                                                            />
-                                                            <input
-                                                                type="time"
-                                                                className="formItem ms-2"
-                                                                value={timeFlag.endTime}
-                                                                onChange={(e) => {
-                                                                    setTimeFlag((prev) => ({
-                                                                        ...prev,
-                                                                        endTime: `${e.target.value}:00`,
-                                                                    }));
-                                                                    // setPageNumber(1);
-                                                                }}
-                                                            />
+                                                    <div className="searchBox position-relative mb-2">
+                                                        <label>Search:</label>
+                                                        <input
+                                                            type="search"
+                                                            name="Search"
+                                                            className="formItem"
+                                                        // value={userInput}
+                                                        // onChange={(e) => setuserInput(e?.target?.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='d-flex justify-content-between w-100 gap-2 flex-wrap mb-2'>
+
+                                                    <div className="formRow border-0 p-0 gap-2">
+                                                        <div className="d-flex justify-content-start flex-wrap gap-2">
+                                                            {/* {filteredKeys.includes("variable_start_stamp") && ( 
+                                                                <> */}
+
+                                                            <div className="formRow border-0 p-0 gap-2">
+                                                                <label className="formLabel text-start mb-0 w-100">
+                                                                    Date Filter
+                                                                </label>
+                                                                <select
+                                                                    className="formItem"
+                                                                    value={filterBy}
+                                                                    onChange={(e) => {
+                                                                        setFilterBy(e.target.value);
+                                                                        setStartDateFlag("");
+                                                                        setEndDateFlag("");
+                                                                    }}
+                                                                >
+                                                                    <option value={"date"}>Single Date</option>
+                                                                    <option value={"date_range"}>Date Range</option>
+                                                                    <option value={"7_days"}>Last 7 Days</option>
+                                                                    <option value={"1_month"}>Last 1 Month</option>
+                                                                    <option value={"3_month"}>Last 3 Months</option>
+                                                                </select>
+                                                            </div>
+
+                                                            {/* {filterBy === "date_range" && (
+                                                                        <> */}
+                                                            <div className="formRow border-0 p-0 gap-2">
+                                                                <label className="formLabel text-start mb-0 w-100">
+                                                                    From
+                                                                </label>
+                                                                <div className="d-flex w-100">
+                                                                    <input
+                                                                        type="date"
+                                                                        className="formItem"
+                                                                        max={
+                                                                            new Date()?.toISOString()?.split("T")[0]
+                                                                        }
+                                                                        value={startDateFlag}
+                                                                        onChange={(e) => {
+                                                                            setStartDateFlag(e.target.value);
+                                                                            setPageNumber(1);
+                                                                        }}
+                                                                    />
+
+                                                                </div>
+                                                            </div>
+                                                            <div className="formRow border-0 p-0 gap-2">
+                                                                <label className="formLabel text-start mb-0 w-100">
+                                                                    To
+                                                                </label>
+                                                                <div className="d-flex w-100">
+                                                                    <input
+                                                                        type="date"
+                                                                        className="formItem"
+                                                                        max={
+                                                                            new Date()?.toISOString()?.split("T")[0]
+                                                                        }
+                                                                        value={endDateFlag}
+                                                                        onChange={(e) => {
+                                                                            setEndDateFlag(e.target.value);
+                                                                            setPageNumber(1);
+                                                                        }}
+                                                                        min={startDateFlag} // Prevent selecting an end date before the start date
+                                                                    />
+
+                                                                </div>
+                                                            </div>
+                                                            {/* </>
+                                                                     )} 
+                                                                 </> 
+                                                            )}  */}
                                                         </div>
                                                     </div>
-                                                    <div class="btn-group align-items-center">
-                                                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa-regular fa-filter me-2"></i> Filter
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                    <div className='formRow gap-2 align-items-end p-0'>
+                                                        <div class="btn-group align-items-center ">
+                                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fa-regular fa-filter me-2"></i> Filter
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
 
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="btn-group align-items-center ">
+                                                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fa-regular fa-gear me-2"></i> Customize Fields
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                    <div class="btn-group align-items-center">
-                                                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa-regular fa-gear me-2"></i> Customize Fields
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-
-                                                        </ul>
-                                                    </div>
-
-                                                </div>
-
-
-                                                <div className="searchBox position-relative mb-2">
-                                                    <label>Search:</label>
-                                                    <input
-                                                        type="search"
-                                                        name="Search"
-                                                        className="formItem"
-                                                    // value={userInput}
-                                                    // onChange={(e) => setuserInput(e?.target?.value)}
-                                                    />
                                                 </div>
                                             </div>
                                             <div className="tableContainer">
@@ -211,7 +360,15 @@ const CallHistory = () => {
                                                     </tbody>
                                                 </table>
                                             </div>
-
+                                            <div className="tableHeader mb-3">
+                                                <PaginationComponent
+                                                    pageNumber={(e) => setPageNumber(e)}
+                                                    totalPage={allBuyers?.last_page}
+                                                    from={allBuyers?.from}
+                                                    to={allBuyers?.to}
+                                                    total={allBuyers?.total}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -220,11 +377,10 @@ const CallHistory = () => {
                     </div>
                 </section>
 
-                {/* 
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button> */}
+
 
                 <div class="offcanvas offcanvas-end w-30" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-header" style={{borderBlockEnd: '1px solid var(--me-border1)'}}>
+                    <div class="offcanvas-header" style={{ borderBlockEnd: '1px solid var(--me-border1)' }}>
                         <div>
                             <h5 class="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
                             <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>See all the details of this Call History</p>
@@ -234,7 +390,7 @@ const CallHistory = () => {
                     <div class="offcanvas-body p-3">
                         <div className='heading'>
                             <h5 class="offcanvas-title" id="offcanvasRightLabel">06/03/2025 14:40 web_call</h5>
-                            <button className=' bg-transparent border-0 text-danger'><i class="fa-solid fa-trash"></i></button>
+                            <button className=' bg-transparent border-0 text-danger' onClick={setDeletePopup}><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <div className="content">
                             <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Agent:</strong> <span className='fs-12'> Patient Screening (from template)(age...875)</span>
@@ -429,8 +585,51 @@ const CallHistory = () => {
                         </div>
                     </div>
                 </div>
-
             </main>
+
+                    {deletePopup && (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-12">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-circle-exclamation text-danger"></i>
+                    </div>
+                  </div>
+                  <div className="col-12">
+                    <h4 className="text-center text-danger">Confirmation!</h4>
+                    <p className="text-center">Are you sure! You want to delete this DID</p>
+
+                    <div className="d-flex justify-content-center gap-2 mt-4">
+                      <button
+                        className="panelButton m-0"
+
+                      >
+                        <span className="text">Delete</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setDeletePopup(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         </>
     )
 }

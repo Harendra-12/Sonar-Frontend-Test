@@ -20,12 +20,10 @@ const BillingCardAndWallet = () => {
     const slugPermissions = useSelector((state) => state?.permissions);
 
     useEffect(() => {
-        if (!allCardTransactions && !allWaletTransactions) {
-            setRefreshState(true);
-            const shouldLoad = true
-            getAllPaymentsData(shouldLoad);
-            getWalletTransacData(shouldLoad);
-        }
+        setRefreshState(true);
+        const shouldLoad = true
+        getAllPaymentsData(shouldLoad);
+        getWalletTransacData(shouldLoad);
     }, [pageNumber]);
 
     // Get All Payment Logs
@@ -274,6 +272,7 @@ const BillingCardAndWallet = () => {
                                                     </table>
                                                 }
                                             </div>
+                                            {console.log(pageNumber)}
                                             <div className="tableHeader mb-3">
                                                 {allCardTransactions && allCardTransactions.data.length > 0 ? (
                                                     <PaginationComponent

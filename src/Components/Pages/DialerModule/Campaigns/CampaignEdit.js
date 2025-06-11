@@ -128,15 +128,15 @@ function CampaignCreate() {
       const getDid = await generalGetFunction(`/campaign/show/${value}`);
 
       if (getDid?.status) {
-        const { dialer, agents, leads } = getDid.data;
+        const { dialer, agents, cmpleads } = getDid.data;
         setSelectedDisposition(getDid.data.disposition.map((item) => { return ({ id: item.disposition_id, rechain: item.rechain }) }));
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
           thirdStep: agents.length !== 0,
-          fourthStep: leads.length > 0,
+          fourthStep: cmpleads?.length > 0,
         });
-        if (leads.length > 0) {
+        if (cmpleads?.length > 0) {
           setCompletedStep(4);
         }
       }

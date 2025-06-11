@@ -77,7 +77,7 @@ function TempDashboard() {
       }
       .formItem{
         margin: 0px 5px 0px 0px;
-        color: #000;
+
       }
       .formLabel{
         padding: 0px 0px 5px;
@@ -152,7 +152,7 @@ function TempDashboard() {
               <div className="profileView" style={{ padding: "10px 30px" }}>
                 <div className="profileDetailsHolder position-relative">
                   <div
-                    className="baseDetails row align-items-center mt-3"
+                    className="baseDetails wrpDetails__box row align-items-center mt-3"
                     style={{ padding: "30px 10px 55px" }}
                   >
                     <div className="col-xl-8  col-lg-8 col-md-8 col-sm-10 px-0 mx-auto position-relative">
