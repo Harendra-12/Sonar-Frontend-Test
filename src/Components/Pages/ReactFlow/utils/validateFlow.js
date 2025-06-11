@@ -43,7 +43,8 @@ export const validatePressDigitsConnections = (flowData) => {
           (typeof subNode.value === "string" && subNode.value.trim() === "")
         ) {
           toast.error(
-            `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
+            // `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
+            `Make sure to fill all the fields in the press digis.`
           );
           errors.push(
             `❌ Subnode '${handleId}' (ID ${subNode.id}) has an empty value.`
@@ -55,7 +56,8 @@ export const validatePressDigitsConnections = (flowData) => {
         // Check 2: must be connected
         if (!targetId) {
           toast.error(
-            `❌ Subnode '${handleId}' is not connected to any target node.`
+            `Make sure all options are connected to a target node.`
+            // `❌ Subnode '${handleId}' is not connected to any target node.`
           );
           errors.push(
             `❌ Subnode '${handleId}' is not connected to any target node.`
@@ -67,7 +69,8 @@ export const validatePressDigitsConnections = (flowData) => {
         // Check 3: target must exist
         if (targetId && !nodeMap[targetId]) {
           toast.error(
-            `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
+            `All connections must be connected to a valid target node.`
+            // `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
           );
           errors.push(
             `❌ Subnode '${handleId}' connects to unknown target '${targetId}'`
@@ -84,11 +87,12 @@ export const validatePressDigitsConnections = (flowData) => {
   );
 
   if (duplicates.length > 0) {
-    toast.error(
-      `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
-        ", "
-      )}`
-    );
+    toast.error(`❌ Duplicate connections found.`);
+    // toast.error(
+    //   `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
+    //     ", "
+    //   )}`
+    // );
     errors.push(
       `❌ Duplicate connections found to: ${[...new Set(duplicates)].join(
         ", "
@@ -123,7 +127,8 @@ export const validateAllNodeConnections = (flowData) => {
   nodes.forEach((node) => {
     if (!connectedNodeIds.has(node.id)) {
       toast.error(
-        `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`
+        `Node is not connected to any other node.`
+        // `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`
       );
       errors.push(
         `❌ Node '${node.id}' (${node.type}) is not connected to any other node.`

@@ -14,7 +14,6 @@ function FportalCampaignCreate() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedItemForBuyer, setSelectedItemForBuyer] = useState([])
   const [did, setDid] = useState([]);
   const [isActiveHour, setIsActiveHour] = useState(false);
   const [isStatus, setIsStatus] = useState(false);
@@ -372,16 +371,16 @@ function FportalCampaignCreate() {
         id: item?.id,
         name: item?.name,
         priority: item?.priority,
-        monthly_call_limit: item?.monthly_call_limit,
-        daily_call_limit: item?.daily_call_limit,
-        live_call_limit: item?.live_call_limit,
-        total_send_call: item?.total_send_call
+        monthly_call_limit: item?.monthly_call_limit ?? 0,
+        daily_call_limit: item?.daily_call_limit ?? 0,
+        live_call_limit: item?.live_call_limit ?? 1,
+        total_send_call: item?.total_send_call ?? 0
       }))
       setBulkAddBuyersList(arr);
       setSelectAll(false)
     }
   }
-
+  console.log('aaaaaaaaaa', bulkAddBuyersList)
   const deleteItemFromBulk = (id) => {
     const updatedArr = bulkAddBuyersList.filter((item) => item.id !== id);
     setBulkAddBuyersList(updatedArr);
@@ -882,6 +881,7 @@ function FportalCampaignCreate() {
                                 <input
                                   type="number"
                                   className="formItem"
+                                  defaultValue={60}
                                   {...register("originate_timeout", {
                                     ...requiredValidator,
                                   })}
@@ -1472,6 +1472,7 @@ function FportalCampaignCreate() {
                                       <input
                                         type="number"
                                         className="formItem"
+                                        value={buyer?.monthly_call_limit}
                                         onChange={(e) => {
                                           setBulkAddBuyersList(prevState => prevState.map(item =>
                                             item.id == buyer.id ? { ...item, monthly_call_limit: e.target.value } : item
@@ -1490,6 +1491,7 @@ function FportalCampaignCreate() {
                                       <input
                                         type="number"
                                         className="formItem"
+                                        value={buyer?.daily_call_limit}
                                         onChange={(e) => {
                                           setBulkAddBuyersList(prevState => prevState.map(item =>
                                             item.id == buyer.id ? { ...item, daily_call_limit: e.target.value } : item
@@ -1508,6 +1510,7 @@ function FportalCampaignCreate() {
                                       <input
                                         type="number"
                                         className="formItem"
+                                        value={buyer?.live_call_limit}
                                         onChange={(e) => {
                                           setBulkAddBuyersList(prevState => prevState.map(item =>
                                             item.id == buyer.id ? { ...item, live_call_limit: e.target.value } : item
@@ -1516,7 +1519,7 @@ function FportalCampaignCreate() {
                                       />
                                     </div>
                                   </div>
-                                  <div className="formRow col">
+                                  {/* <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
                                         Total Send Call
@@ -1533,7 +1536,7 @@ function FportalCampaignCreate() {
                                         }}
                                       />
                                     </div>
-                                  </div>
+                                  </div> */}
                                   {bulkAddBuyersList.length === 1 ? (
                                     ""
                                   ) : (
