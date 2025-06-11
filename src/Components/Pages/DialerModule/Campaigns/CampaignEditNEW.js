@@ -2777,7 +2777,7 @@ function CampaignEditNEW() {
                                   </div>
 
                                   {leadFileEditPopup &&
-                                    <LeadFileEditPopup setPopup={setLeadFileEditPopup} leadFile={selectedLeadFile} />
+                                    <LeadFileEditPopup setPopup={setLeadFileEditPopup} leadFile={selectedLeadFile} campaignId={value} setCircularLoading={setLoading} />
                                   }
                                 </div>
                               </div>
@@ -3101,7 +3101,7 @@ export const customStyles = {
   }),
 };
 
-export function LeadFileEditPopup({ setPopup, leadFile }) {
+export function LeadFileEditPopup({ setPopup, leadFile, campaignId, setCircularLoading }) {
   const [leadSearchQuery, setLeadSearchQuery] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -3127,6 +3127,21 @@ export function LeadFileEditPopup({ setPopup, leadFile }) {
   useEffect(() => {
     getLeadData();
   }, [debouncedSearchTerm, pageNumber, itemsPerPage])
+
+  const handleLeadBlock = async () => {
+    setCircularLoading(true);
+    const payload = { "lead_rows_id": leadSelectionArr, "campaign_id": campaignId };
+    try {
+      const response = await generalPostFunction(`/campaign-lead-block/store`, payload);
+      if (response.status) {
+        toast.success(response.message);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setCircularLoading(false);
+    }
+  }
 
   return (
     <div className="backdropContact">
@@ -3216,7 +3231,7 @@ export function LeadFileEditPopup({ setPopup, leadFile }) {
                   <i className="fa-light fa-xmark" />
                 </span>
               </button>
-              <button className="panelButton delete ms-0">
+              <button className="panelButton delete ms-0" onClick={handleLeadBlock}>
                 <span className="text">Disable</span>
                 <span className="icon">
                   <i className="fa-light fa-octagon-exclamation" />
