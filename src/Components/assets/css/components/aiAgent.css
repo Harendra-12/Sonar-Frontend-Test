@@ -369,7 +369,7 @@
 }
 
 .batchCallCanvas .offcanvas-body .left_body {
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
     padding-inline: 15px;
 }
@@ -522,4 +522,16 @@
 .noTableData p{
     color: var(--color-subtext);
     font-weight: 400;
+}
+.fileDetails h6{
+  color: var(--immortalBlack);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.fileDetails p{
+  color: var(--color-subtext);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-bottom: 0;
 }

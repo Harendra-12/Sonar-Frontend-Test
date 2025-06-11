@@ -73,7 +73,7 @@ const AiBatchCall = () => {
                     <button type="button" class="aitable_button bg-transparent" data-bs-dismiss="offcanvas" aria-label="Close">
                         <i class="fa-solid fa-angle-left"></i>
                     </button>
-                    <div>
+                    <div className='col-3 ps-4'>
                         <h5 class="offcanvas-title" id="offcanvasRightLabel">Create a batch call</h5>
                         <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>Batch call cost $0.005 per dial</p>
                     </div>
@@ -81,7 +81,7 @@ const AiBatchCall = () => {
                 <div class="offcanvas-body p-0">
                     <div className='right_body p-3'>
                         <div className='details_header'>
-                            <p>Recipients</p>
+                            <p className='mb-0'>Recipients</p>
                         </div>
                         {/* <div className='noTableData'>
                             <p className=' '>Please upload recipients first</p>
@@ -117,7 +117,7 @@ const AiBatchCall = () => {
                                             <td>value1 (optional)</td>
                                             <td>value2 (optional)</td>
                                         </tr>
-                                     
+
                                     </>
                                 </tbody>
                             </table>
@@ -161,6 +161,18 @@ const AiBatchCall = () => {
                             </div>
                             <div className="col-auto">
                                 <button type="button" class="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
+                            </div>
+                        </div>
+                        <div className="col-auto px-2">
+                            <div className="aitable_button bg-transparent py-1 px-2 d-flex justify-content-between align-items-center">
+                                <div className='d-flex justify-content-start align-items-center gap-2'>
+                                    <i className="fa-solid fa-file-csv fs-4"></i>
+                                    <div className='fileDetails'>
+                                        <h6>recipients.csv</h6>
+                                        <p>2 Recipients</p>
+                                    </div>
+                                </div>
+                                <button className='aitable_button text-danger border-danger bg-danger-subtle'><i class="fa-regular fa-trash-can"></i></button>
                             </div>
                         </div>
                         <div className="formRow flex-column align-items-start">
@@ -263,6 +275,9 @@ const AiBatchCall = () => {
                                     placeholder='Please add recipients first'
                                     disabled
                                 />
+                            </div>
+                             <div className="formLabel w-100" style={{ maxWidth: "100%" }}>
+                                <label> Want to speed up the time? <span className='text-primary fs-12'>+ </span><span className='text-primary fs-12'>Purchase more concurrency</span> </label>
                             </div>
                         </div>
                         <div className='d-flex justify-content-end gap-2 py-2 px-2'>

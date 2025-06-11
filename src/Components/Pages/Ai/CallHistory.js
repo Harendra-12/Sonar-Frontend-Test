@@ -140,13 +140,11 @@ const CallHistory = () => {
                                                     <p>This is where you can view the call history </p>
                                                 </div>
                                                 <div className="buttonGroup">
-                                                    <button className="panelButton edit exportGroupBtn"
-
-                                                    >
+                                                    <button className="panelButton static edit exportGroupBtn" >
                                                         <span className="text">Export</span>
-                                                        <span className="icon">
+                                                        {/* <span className="icon">
                                                             <i class="fa-solid fa-file-export"></i>
-                                                        </span>
+                                                        </span> */}
                                                     </button>
                                                     <div class="dropdown listingDorp">
                                                         <button class="addExportBtnListing dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -286,7 +284,6 @@ const CallHistory = () => {
                                                                  </> 
                                                             )}  */}
                                                         </div>
-
                                                     </div>
                                                     <div className='formRow gap-2 align-items-end p-0'>
                                                         <div class="btn-group align-items-center ">
@@ -393,7 +390,7 @@ const CallHistory = () => {
                     <div class="offcanvas-body p-3">
                         <div className='heading'>
                             <h5 class="offcanvas-title" id="offcanvasRightLabel">06/03/2025 14:40 web_call</h5>
-                            <button className=' bg-transparent border-0 text-danger'><i class="fa-solid fa-trash"></i></button>
+                            <button className=' bg-transparent border-0 text-danger' onClick={setDeletePopup}><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <div className="content">
                             <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Agent:</strong> <span className='fs-12'> Patient Screening (from template)(age...875)</span>
@@ -588,11 +585,51 @@ const CallHistory = () => {
                         </div>
                     </div>
                 </div>
-
-               
-
-
             </main>
+
+                    {deletePopup && (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-12">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-circle-exclamation text-danger"></i>
+                    </div>
+                  </div>
+                  <div className="col-12">
+                    <h4 className="text-center text-danger">Confirmation!</h4>
+                    <p className="text-center">Are you sure! You want to delete this DID</p>
+
+                    <div className="d-flex justify-content-center gap-2 mt-4">
+                      <button
+                        className="panelButton m-0"
+
+                      >
+                        <span className="text">Delete</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setDeletePopup(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         </>
     )
 }

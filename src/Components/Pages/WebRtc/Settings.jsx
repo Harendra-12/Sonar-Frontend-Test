@@ -29,7 +29,9 @@ const Settings = (
                 </div>
                 <div className="mt-3">
                     <div className="mb-2">
+                        <div className='formLabel'>
                         <label>Speaker:</label>
+                        </div>
                         <input
                             type="range"
                             min="0"
@@ -40,7 +42,9 @@ const Settings = (
                         />
                     </div>
                     <div className="mb-2">
+                         <div className='formLabel '>
                         <label>Ring Device:</label>
+                         </div>
                         <SoundSettings
                             audio={audio}
                             setVolume={setVolume}
@@ -53,7 +57,9 @@ const Settings = (
                         />
                     </div>
                     <div className="mb-2">
+                         <div className='formLabel '>
                         <label>Microphone:</label>
+                         </div>
                         <input
                             type="range"
                             min="0"
@@ -68,15 +74,15 @@ const Settings = (
                         <div class="basic-container mt-3">
                             <div>
                                 <input type="checkbox" id="basic1" onChange={() => featureUnderdevelopment()} />
-                                <label for="basic1">Auto Gain Control</label>
+                                <label for="basic1" style={{color: 'var(--color-subtext)'}}>Auto Gain Control</label>
                             </div>
                             <div>
                                 <input type="checkbox" id="basic2" onChange={() => featureUnderdevelopment()} />
-                                <label for="basic2">Echo Cancellation</label>
+                                <label for="basic2" style={{color: 'var(--color-subtext)'}}>Echo Cancellation</label>
                             </div>
                             <div>
                                 <input type="checkbox" id="basic3" onChange={() => audioRef.current?.pause()} />
-                                <label for="basic3">Stop Ringtone</label>
+                                <label for="basic3" style={{color: 'var(--color-subtext)'}}>Stop Ringtone</label>
                             </div>
                         </div>
                     </div>
