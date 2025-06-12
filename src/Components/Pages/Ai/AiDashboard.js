@@ -568,7 +568,7 @@ const AiDashboard = () => {
                                                     <div className="heading h-auto">
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center w-100">
                                                             <div className="col-10">
-                                                                <h5>Extensions</h5>
+                                                                <h5>Total Ai Agents</h5>
                                                                 {/* <p>7 October, 2024</p> */}
                                                             </div>
                                                             <div
@@ -591,7 +591,7 @@ const AiDashboard = () => {
                                                                     Assigned /{" "}
                                                                     {(extension.length - assignedExtension.length) ||
                                                                         0}{" "} */}
-                                                                    Available
+                                                                    Total Agents
                                                                 </p>
                                                             </div>
 
@@ -629,7 +629,7 @@ const AiDashboard = () => {
                                                                 <p>
                                                                     {/* {activeCall.length > 0 ? activeCall
                                                                         .filter((item) => item.application_state === "callcenter" && (item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length : 0}{" "} */}
-                                                                    Active Calls
+                                                                    Total Number
 
                                                                 </p>
                                                             </div>
@@ -648,7 +648,7 @@ const AiDashboard = () => {
                                                     <div className="heading h-auto">
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center w-100">
                                                             <div className="col-10">
-                                                                <h5>Ring Group</h5>
+                                                                <h5>Squared</h5>
                                                                 {/* <p>7 October, 2024</p> */}
                                                             </div>
                                                             <div
@@ -673,7 +673,7 @@ const AiDashboard = () => {
                                                                                 data["variable_DIALSTATUS"] !== "SUCCESS"
                                                                         ).length) ||
                                                                         0}{" "} */}
-                                                                    Calls Missed
+                                                                    Squared
                                                                 </p>
                                                             </div>
 
@@ -702,8 +702,8 @@ const AiDashboard = () => {
 
                                                         </div>
                                                     </div>
-                                                    <div className='d-flex flex-wrap justify-content-between mt-1 activeCallsAgentWrapper position-relative'>
-                                                        <div className="tableContainer mt-0" >
+                                                    <div className=''>
+                                                        <div className="tableContainer mt-0" style={{    height: 'calc(100vh - 569px)'}}>
                                                             <table>
                                                                 <thead>
                                                                     <tr>
