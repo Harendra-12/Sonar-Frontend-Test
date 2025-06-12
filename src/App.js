@@ -197,6 +197,7 @@ import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 import CDRTracker from "./Components/Pages/CallTracker/CDRTracker";
+import AllUser from "./Components/Pages/Ai/AllUser";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -227,7 +228,7 @@ function App() {
   const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
   // const { sendMessage } = Socket();
-  Socket();
+  // Socket();
   const { sendMessage } = GoMessageSocket()
   GoSocket();
   useEffect(() => {
@@ -843,6 +844,7 @@ function App() {
           <Route path="/ai-batch-call" element={<AiBatchCall />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
