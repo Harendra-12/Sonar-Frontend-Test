@@ -1709,14 +1709,14 @@ function CdrFilterReport({ page }) {
                                             item["Call-Direction"] === "inbound"
                                           ) {
                                             return (
-                                              item["Caller-Caller-ID-Number"] ===
+                                              item["variable_sip_from_user"] ===
                                               block.number
                                             );
                                           } else if (
                                             item["Call-Direction"] === "outbound"
                                           ) {
                                             return (
-                                              item["Caller-Callee-ID-Number"] ===
+                                              item["variable_sip_to_user"] ===
                                               block.number
                                             );
                                           }
@@ -1896,7 +1896,7 @@ function CdrFilterReport({ page }) {
                                                   return <td>${item[key]}</td>;
                                                 } else {
                                                   return (
-                                                    <td key={key}>{item[key]}</td>
+                                                    <td key={key} id={key}>{item[key]}</td>
                                                   );
                                                 }
                                               }
@@ -1929,13 +1929,13 @@ function CdrFilterReport({ page }) {
                                                                 "Call-Direction"
                                                               ] === "inbound"
                                                                 ? item[
-                                                                "Caller-Caller-ID-Number"
+                                                                "variable_sip_from_user"
                                                                 ]
                                                                 : item[
                                                                   "Call-Direction"
                                                                 ] === "outbound"
                                                                   ? item[
-                                                                  "Caller-Callee-ID-Number"
+                                                                  "variable_sip_to_user"
                                                                   ]
                                                                   : "N/A"
                                                             );
