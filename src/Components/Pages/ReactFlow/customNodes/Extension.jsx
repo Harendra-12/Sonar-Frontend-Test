@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
 import { useDispatch, useSelector } from "react-redux";
-import { generalDeleteFunction } from "../../../GlobalFunction/globalFunction";
+import {
+  generalDeleteFunction,
+  generalGetFunction,
+} from "../../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 const Extension = ({ id, data }) => {
@@ -13,6 +16,27 @@ const Extension = ({ id, data }) => {
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const extensionArr = useSelector((state) => state.extension);
   const [isReadonly, setIsreadonly] = useState(false);
+
+  const account = useSelector((state) => state.account);
+  const [allUserList, setAllUserList] = useState([]);
+
+  const getAllUser = async () => {
+    const userApi = await generalGetFunction(
+      `/user/search?account=${account.account_id}${
+        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
+      }`
+    );
+    if (userApi?.status) {
+      setAllUserList(userApi.data);
+    }
+  };
+
+  useEffect(() => {
+    // Show only those extensions which are assign to a user
+    getAllUser();
+  }, []);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -80,7 +104,11 @@ const Extension = ({ id, data }) => {
             />
             <i
               className="fa-solid fa-pen-to-square ms-3"
-              style={{ cursor: "pointer", opacity: '0.75', fontSize: 'initial' }}
+              style={{
+                cursor: "pointer",
+                opacity: "0.75",
+                fontSize: "initial",
+              }}
               onClick={() => setIsreadonly(!isReadonly)}
             />
           </div>
@@ -92,11 +120,27 @@ const Extension = ({ id, data }) => {
           </button>
         </div>
         <p className="title">{data.description}</p>
-        <div style={{ backgroundColor: '#212529', borderRadius: '10px', padding: '8px' }}>
+        <div
+          style={{
+            backgroundColor: "#212529",
+            borderRadius: "10px",
+            padding: "8px",
+          }}
+        >
           {extension.length < 1 && <p>No extension found</p>}
           {extension.length > 0 && (
             <div className="d-flex flex-column">
-              <label htmlFor="extension" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Extension:</label>{" "}
+              <label
+                htmlFor="extension"
+                style={{
+                  fontSize: "0.875rem",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                  marginBottom: "5px",
+                }}
+              >
+                Choose a Extension:
+              </label>{" "}
               <select
                 name="extension"
                 id="extension"
@@ -107,7 +151,19 @@ const Extension = ({ id, data }) => {
                 <option value="" disabled selected>
                   Select Extension
                 </option>
-                {extension.map((value, index) => (
+                {allUserList.length > 0 &&
+                  allUserList
+                    .filter((user) => user.extension)
+                    .map((value, index) => (
+                      <option
+                        value={value.extension?.extension}
+                        key={index}
+                        data-extension={value.extension?.extension}
+                      >
+                        {value.name} - {value.extension?.extension}
+                      </option>
+                    ))}
+                {/* {extension.map((value, index) => (
                   <option
                     value={value.extension}
                     key={index}
@@ -115,7 +171,7 @@ const Extension = ({ id, data }) => {
                   >
                     {value.extension}
                   </option>
-                ))}
+                ))} */}
               </select>
             </div>
           )}

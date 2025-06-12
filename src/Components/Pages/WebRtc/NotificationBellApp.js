@@ -104,7 +104,7 @@ function NotificationBellApp() {
     //         }
     //     }
     // }, [locationState.state, contact, allAgents]);
-    console.log('all noification', allNotification)
+    
     return (
         <div class="dropdown notification_dropdown">
             <button
@@ -140,11 +140,11 @@ function NotificationBellApp() {
                                                         {item?.group_name ?
                                                             <>
                                                                 <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}<>)</></strong>&nbsp;
-                                                                <span className='text-success'>sent</span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                                <span className='text-success'></span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
                                                             </> :
                                                             <>
                                                                 <strong>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}</strong>&nbsp;
-                                                                <span className='text-success'>sent</span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                                <span className='text-success'></span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
                                                             </>
                                                         }
 

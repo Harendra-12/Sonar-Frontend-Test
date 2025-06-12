@@ -1,12 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import CustomHandle from "../CustomHandle";
 import { Position, useReactFlow } from "@xyflow/react";
+import { number } from "card-validator";
 
 const PressDigits = ({ id, data }) => {
   const [fields, setFields] = useState([]);
   const textAreaRefs = useRef({});
   const [isReadonly, setIsreadonly] = useState(false);
   const { setEdges, getEdges } = useReactFlow();
+  const [availableDigits, setAvailableDigits] = useState([]);
+
+  // check the min and max digits and set the maximum value
+  useEffect(() => {
+    if (
+      data.initialDigitsLimit?.max_digit &&
+      data.initialDigitsLimit?.min_digit &&
+      data.initialDigitsLimit.max_digit >= data.initialDigitsLimit.min_digit
+    ) {
+      let start =
+        data.initialDigitsLimit.min_digit === 1
+          ? 0
+          : Math.pow(10, Number(data.initialDigitsLimit.min_digit) - 1);
+      let end = Math.pow(10, Number(data.initialDigitsLimit.max_digit)) - 1;
+
+      let digitsArray = [];
+      for (let i = start; i <= end; i++) {
+        digitsArray.push(i);
+      }
+
+      setAvailableDigits(digitsArray); // Set state once
+    }
+  }, [data.initialDigitsLimit]);
 
   useEffect(() => {
     if (data.fields && data.fields.length > 0) {
@@ -96,9 +120,7 @@ const PressDigits = ({ id, data }) => {
 
   return (
     <div className="pressDigitsWrapper">
-      <div
-        style={{ display: "flex", alignItems: "center" }}
-      >
+      <div style={{ display: "flex", alignItems: "center" }}>
         <i className="fa-light fa-keyboard" style={{ marginRight: "8px" }} />
         {/* <h3 style={{ margin: 0, fontSize: "16px" }}>{data.label}</h3> */}
         <input
@@ -112,14 +134,12 @@ const PressDigits = ({ id, data }) => {
 
         <i
           className="fa-solid fa-pen-to-square ms-3"
-          style={{ cursor: "pointer", opacity: '0.75' }}
+          style={{ cursor: "pointer", opacity: "0.75" }}
           onClick={() => setIsreadonly(!isReadonly)}
         />
       </div>
 
-      <p className="title">
-        {data.description}
-      </p>
+      <p className="title">{data.description}</p>
 
       <div
         style={{
@@ -135,7 +155,14 @@ const PressDigits = ({ id, data }) => {
             justifyContent: "space-between",
           }}
         >
-          <span style={{ color: "#f8f9fa", fontSize: "14px", fontStyle: "normal", fontWeight: "500" }}>
+          <span
+            style={{
+              color: "#f8f9fa",
+              fontSize: "14px",
+              fontStyle: "normal",
+              fontWeight: "500",
+            }}
+          >
             Input Fields
           </span>
           <button
@@ -227,18 +254,20 @@ const PressDigits = ({ id, data }) => {
               <option value="" disabled>
                 Select a digit
               </option>
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                .filter((digit) => {
-                  return (
-                    field.value === String(digit) || // keep current selection
-                    !fields.some((f) => f.value === String(digit))
-                  );
-                })
-                .map((digit) => (
-                  <option key={digit} value={digit}>
-                    {digit}
-                  </option>
-                ))}
+              {/* {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] */}
+              {availableDigits &&
+                availableDigits
+                  .filter((digit) => {
+                    return (
+                      field.value === String(digit) || // keep current selection
+                      !fields.some((f) => f.value === String(digit))
+                    );
+                  })
+                  .map((digit) => (
+                    <option key={digit} value={digit}>
+                      {digit}
+                    </option>
+                  ))}
             </select>
 
             <CustomHandle

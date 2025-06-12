@@ -3,8 +3,10 @@ import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from 
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
-const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
+const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPage, setToUser, setCalling, socketSendMessage, account }) => {
+  const dispatch = useDispatch()
   // console.log("Messages",messages);
   const [media, setMedia] = useState([]);
   const [allMedia, setAllMedia] = useState([]);
@@ -186,12 +188,30 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
         </div>
         <div className="d-flex justify-content-center align-items-center gap-2">
           {/* {!saveEditToggleGroupNameChange ? ( */}
-          <button className="clearButton2 link f-s-14">
+          <button
+            className="clearButton2 link f-s-14"
+            onClick={() => {
+              setMeetingPage("message");
+              setToUser(recipient?.[1]);
+              setCalling(true);
+              dispatch({
+                type: "SET_INTERNALCALLACTION",
+                internalCallAction: null,
+              });
+              socketSendMessage({
+                action: "peercall",
+                from: account.id,
+                to: recipient?.[1],
+                room_id: `${account.id}-${recipient?.[1]}`,
+                call_type: "audio",
+              });
+            }}
+          >
             <i className="fa-regular fa-phone"></i>
           </button>
-          <button className="clearButton2 link f-s-14">
+          {/* <button className="clearButton2 link f-s-14">
             <i className="fa-regular fa-video"></i>
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="rightPanel pt-3">

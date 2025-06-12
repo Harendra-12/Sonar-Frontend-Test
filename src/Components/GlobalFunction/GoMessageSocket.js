@@ -109,9 +109,9 @@ const GoMessageSocket = () => {
                         // case "progressive":
                         //     dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
                         //     break;
-                        // case "clientCall":
-                        //     dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
-                        //     break;
+                        case "clientCall":
+                            dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
+                            break;
                         // case "callUpdate":
                         //     dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
                         // case "activeDialer":
