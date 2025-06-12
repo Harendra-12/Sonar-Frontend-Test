@@ -1,7 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
+import { generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction'
+import { set } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 function KnowledgeBase() {
+    const [faqData, setFaqData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const debouncedSearch = useDebounce(searchQuery, 1000);
+
+    const getAllFaqData = async () => {
+        try {
+            const response = await generalGetFunction(`/knowledge-base/all${searchQuery ? `?search=${debouncedSearch}` : ''}`);
+            if (response.status) {
+                setFaqData(response?.data);
+            }
+        } catch (err) {
+            toast.error(err.response.message);
+        }
+    }
+
+    useEffect(() => {
+        getAllFaqData();
+    }, [debouncedSearch])
+
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -27,8 +49,10 @@ function KnowledgeBase() {
                                                     <div className="inputWrappers">
                                                         <input
                                                             type="text"
-                                                            placeholder="Search our article "
-                                                            className="formItem form-left" />
+                                                            placeholder="Search our article"
+                                                            className="formItem form-left"
+                                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                                        />
                                                         <i className="fas fa-search searchIcon"></i>
                                                     </div>
                                                     <div className='mt-1 text-center'><p style={{ fontSize: "16px", color: "white", fontWeight: 600 }}>Popular help articles :<span className='para-line'> Privacy FAQs,  How to Install Your Hotjar Tracking Code  </span></p></div>
@@ -46,167 +70,43 @@ function KnowledgeBase() {
                                                 </div>
                                             </div> */}
                                     </div>
-                                    <div className="col-12"
-                                        style={{ overflow: "auto", padding: "25px 20px", }} >
-
-                                        <div className=' mt-5  align-items-center justify-content-center'>
-                                            <div className="content Additional-font text-center">
-                                                <div> <h5 className='p-3 m-0'>Frequently asked questions</h5>
-
-                                                    <p>What’s your deal with controversial topics?</p></div>
-                                            </div>
-                                            <div>
-                                                <div className='row mt-5'>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-between ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center justify-content-start ">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>How do I manage my incoming call settings?</h6>
-
-                                                                </div>
+                                    <div className="col-12" style={{ overflow: "auto", padding: "25px 20px", }} >
+                                        {faqData && faqData.length > 0 ?
+                                            faqData.map((group, index) => {
+                                                return (
+                                                    <div className='mt-5 align-items-center justify-content-center'>
+                                                        <div className="content Additional-font text-center">
+                                                            <div>
+                                                                <h5 className='p-3 m-0'>{group?.group_name}</h5>
+                                                                <p>{group?.group_title}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div className='row mt-5'>
+                                                                {
+                                                                    group.subs.map((item, index) => {
+                                                                        return (
+                                                                            <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
+                                                                                style={{ cursor: "pointer" }}>
+                                                                                <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-between ">
+                                                                                    <div className="heading ">
+                                                                                        <div className="d-flex align-items-center justify-content-start ">
+                                                                                            <div className=" me-3">
+                                                                                                <i className="fa-solid fa-right-to-bracket"></i>
+                                                                                            </div>
+                                                                                            <h6>{item.sub_question}</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper  hover-shadow  a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-start ">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>How do I send fax ?</h6>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper  hover-shadow a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading">
-                                                                <div className="d-flex align-items-center  justify-content-start ">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>How do I setup my deskphone?</h6>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-start ">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>What do I need to do to register my business SMS with TCR?</h6>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-start">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>Why can't I sign in to the Admin Portal or the WebRTC?</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper  hover-shadow a bg-none d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-start ">
-                                                                    <div className=" me-3">
-                                                                        <i className="fa-solid fa-right-to-bracket"></i>
-                                                                    </div>
-                                                                    <h6>How do I create custom call rules for holidays or after hours?</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div className=' mt-5  align-items-center justify-content-center'>
-                                            <div className="content Additional-font d-flex align-items-center justify-content-center">
-                                                <h5>Additional resources</h5>
-                                            </div>
-                                            <div>
-                                                <div className='row mt-3'>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-between ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center justify-content-start ">
-                                                                    <div className="me-3">
-                                                                        <i className="fa-solid fa-computer float-start"></i>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h6>Check System status</h6>
-                                                                        <p>Get RingCentral’s live connectivity updates.</p>
-                                                                    </div>
-
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-6 col-md-6   mb-3"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-start ">
-                                                                    <div className="me-3">
-                                                                        <i className="fa-solid fa-users float-start"></i>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h6>Learn community</h6>
-                                                                        <p>Discuss solutions and ideas with other RingCentral users.</p>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4 mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading">
-                                                                <div className="d-flex align-items-center  justify-content-space-start ">
-                                                                    <div className="me-3">
-                                                                        <i className="fa-solid fa-file-lines float-start"></i>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h6>Explore release notes</h6>
-                                                                        <p>Stay updated with the latest RingCentral updates.</p>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                )
+                                            }) : ""}
                                     </div>
                                 </div>
                             </div>
