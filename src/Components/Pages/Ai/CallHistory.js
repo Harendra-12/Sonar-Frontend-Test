@@ -163,14 +163,14 @@ const CallHistory = () => {
                                                                 <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button>
                                                             </Link></li>
                                                             <li><Link class="dropdown-item" to="#"><div>
-                                                                    <p className='mb-0'>Retell-history(2025-06-10).csv</p>
-                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
-                                                                </div>
+                                                                <p className='mb-0'>Retell-history(2025-06-10).csv</p>
+                                                                <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                            </div>
                                                                 <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
                                                             <li><Link class="dropdown-item" to="#"><div>
-                                                                    <p className='mb-0'>Retell-history(2025-06-10).csv</p>
-                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
-                                                                </div>
+                                                                <p className='mb-0'>Retell-history(2025-06-10).csv</p>
+                                                                <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                            </div>
                                                                 <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
                                                         </ul>
                                                     </div>
@@ -587,48 +587,48 @@ const CallHistory = () => {
                 </div>
             </main>
 
-                    {deletePopup && (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4 col-md-5">
-                  <div className="col-12">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-circle-exclamation text-danger"></i>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <h4 className="text-center text-danger">Confirmation!</h4>
-                    <p className="text-center">Are you sure! You want to delete this DID</p>
+            {deletePopup && (
+                <div className="popup">
+                    <div className="container h-100">
+                        <div className="row h-100 justify-content-center align-items-center">
+                            <div className="row content col-xl-4 col-md-5">
+                                <div className="col-12">
+                                    <div className="iconWrapper">
+                                        <i className="fa-duotone fa-circle-exclamation text-danger"></i>
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <h4 className="text-center text-danger">Confirmation!</h4>
+                                    <p className="text-center">Are you sure! You want to delete this DID</p>
 
-                    <div className="d-flex justify-content-center gap-2 mt-4">
-                      <button
-                        className="panelButton m-0"
+                                    <div className="d-flex justify-content-center gap-2 mt-4">
+                                        <button
+                                            className="panelButton m-0"
 
-                      >
-                        <span className="text">Delete</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                      <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => {
-                          setDeletePopup(false);
-                        }}
-                      >
-                        <span className="text">Cancel</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-xmark"></i>
-                        </span>
-                      </button>
+                                        >
+                                            <span className="text">Delete</span>
+                                            <span className="icon">
+                                                <i className="fa-solid fa-check"></i>
+                                            </span>
+                                        </button>
+                                        <button
+                                            className="panelButton gray m-0 float-end"
+                                            onClick={() => {
+                                                setDeletePopup(false);
+                                            }}
+                                        >
+                                            <span className="text">Cancel</span>
+                                            <span className="icon">
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
+            )}
 
         </>
     )

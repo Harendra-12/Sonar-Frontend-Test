@@ -636,9 +636,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     }}
                                   >
                                     {profileImage ? (
-                                      <i className="fa-solid fa-pen profilePhotoEditIcon"></i>
+                                      <i className="fa-solid fa-pen profilePhotoEditIcon sm"></i>
                                     ) : (
-                                      <i className="fa-solid fa-plus profilePhotoAddIcon"></i>
+                                      <i className="fa-solid fa-plus profilePhotoAddIcon sm"></i>
                                     )}
 
                                     <img

@@ -128,7 +128,6 @@ function KnowledgeBase() {
                     <div className="container h-100">
                         <div className="row h-100 justify-content-center align-items-center">
                             <div className="row content col-xl-4 col-md-5">
-
                                 <div className="col-12 knowledgeDetails">
                                     <div className="itemWrapper ">
                                         <div className="heading ">
@@ -152,7 +151,6 @@ function KnowledgeBase() {
                     </div>
                 </div>
             )}
-
         </>
 
 
