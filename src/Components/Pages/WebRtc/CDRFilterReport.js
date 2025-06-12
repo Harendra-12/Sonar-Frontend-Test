@@ -2348,6 +2348,10 @@ const callTypeOptions = [
     value: "ringgroup",
     label: "Ring Group",
   },
+  {
+    value: "clicktocall",
+    label: "Click To Call",
+  },
 ];
 
 const hangupCauseOptions = [
