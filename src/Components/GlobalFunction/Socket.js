@@ -88,24 +88,24 @@ const Socket = () => {
                 dispatch({ type: "SET_BALANCE", balance: message.balance });
               }
               break;
-            // case "activeCalls":
-            //   dispatch({
-            //     type: "SET_ACTIVECALL",
-            //     activeCall: result
-            //       .filter(
-            //         (item) =>
-            //           item.application_state !== "conference" &&
-            //           item.account_id == account.account_id
-            //       )
-            //       .map((item) => ({ ...item, serverTime: current_time })),
-            //   });
-            //   break;
+            case "activeCalls":
+              dispatch({
+                type: "SET_ACTIVECALL",
+                activeCall: result
+                  .filter(
+                    (item) =>
+                      item.application_state !== "conference" &&
+                      item.account_id == account.account_id
+                  )
+                  .map((item) => ({ ...item, serverTime: current_time })),
+              });
+              break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
-            case "logout_warning":
-              dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
-              break;
+            // case "logout_warning":
+            //   dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
+            //   break;
             case "screenShare":
               dispatch({
                 type: "SET_CONFERENCESCREENSHARESTATUS",
@@ -132,11 +132,11 @@ const Socket = () => {
             case "progressive":
               dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
               break;
-            case "clientCall":
-              dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
-              break;
-            case "callUpdate":
-              dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
+            // case "clientCall":
+            //   dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
+            //   break;
+            // case "callUpdate":
+            //   dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
             case "activeDialer":
               dispatch({ type: "SET_CAMPAIGN_DETAILS", campaignDetails: result });
               break;
