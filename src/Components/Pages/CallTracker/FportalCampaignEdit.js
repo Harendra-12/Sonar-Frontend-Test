@@ -217,7 +217,9 @@ function FportalCampaignEdit() {
     try {
       const getDid = await generalGetFunction("did/all?all-dids");
       if (getDid?.status) {
-        setDid(getDid.data.filter((item) => item.usages === "tracker"));
+        setDid(getDid.data.filter((item) => item.usages === "tracker" && 
+        (item?.fportal_id == null || item?.fportal_id == locationState?.state?.id) 
+));
       }
     } catch (error) {
       console.error("Error fetching DID data:", error);
@@ -244,8 +246,8 @@ function FportalCampaignEdit() {
         // total_send_call: item?.total_send_call
       }))
       setBulkAddBuyersList(arr);
-
       setLoading(false);
+
     } else {
       toast.error(response.message);
       setLoading(false);
@@ -264,8 +266,51 @@ function FportalCampaignEdit() {
     getAllBuyers()
   }, [itemsPerPage, debouncedSearchTerm])
 
+  const convertDateFormat = (dateStr) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const offsetMs = (5 * 60 + 49) * 60 * 1000;
+    const adjustedDate = new Date(date.getTime() + offsetMs);
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const formatted = `${adjustedDate.getFullYear()}-${pad(adjustedDate.getMonth() + 1)}-${pad(adjustedDate.getDate())}T${pad(adjustedDate.getHours())}:${pad(adjustedDate.getMinutes())}`;
+    return formatted;
+  };
+
+  const updateSchedulerInfoFromServer = (serverSchedulerList) => {
+    const updated = schedulerInfo.map(day => {
+      const match = serverSchedulerList.find(
+        item => item.recurring_day === day.recurring_day
+      );
+
+      if (match) {
+        return {
+          ...day,
+          status: true,
+          full_day: match.full_day === "1",
+          start_time: match.start_time || "",
+          end_time: match.end_time || ""
+        };
+      }
+
+      return day;
+    });
+    setSchedulerInfo(updated);
+  };
+
   useEffect(() => {
-    reset(selectedCampaign)
+    if (selectedCampaign) {
+      const updatedCampaign = {
+        ...selectedCampaign,
+        start_date: convertDateFormat(selectedCampaign?.start_date),
+        end_date: convertDateFormat(selectedCampaign?.end_date),
+
+      };
+      setIsActiveHour(selectedCampaign?.active_hours == "1" ? true : false)
+      if (selectedCampaign?.fportal_shedulars?.length > 0)
+        updateSchedulerInfoFromServer(selectedCampaign?.fportal_shedulars)
+      reset(updatedCampaign);
+    }
   }, [selectedCampaign])
 
   const toggleSelect = (values) => {
@@ -330,7 +375,10 @@ function FportalCampaignEdit() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
-  const convertTimeToDateTime = (timeStr, dateStr = '2025-06-02', timeOffsetHours = -7) => {
+  const convertTimeToDateTime = (timeStr, dateStr = '2025-06-02', timeOffsetHours = -7, full_day, isStartDate) => {
+    if (full_day) {
+      return isStartDate ? "00:00:00" : "23:59:59";
+    }
     const [hours, minutes] = timeStr.split(':').map(Number);
     const date = new Date(dateStr);
     date.setHours(hours);
@@ -338,9 +386,9 @@ function FportalCampaignEdit() {
     date.setSeconds(0);
     date.setHours(date.getHours() + timeOffsetHours);
     const pad = (n) => String(n).padStart(2, '0');
-    const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-    return formatted;
-  }
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  };
+
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const startDate = formatDateTime(watch()?.start_date)
@@ -349,6 +397,8 @@ function FportalCampaignEdit() {
     if (data?.forward_type == "pstn") {
       delete data?.trunk_id;
     }
+    debugger
+    delete data?.fportal_shedulars
     const payload = {
       ...data,
       buyers: bulkAddBuyersList.map(item => ({
@@ -359,14 +409,16 @@ function FportalCampaignEdit() {
       active_hours: isActiveHour ? "1" : "0",
       start_date: startDate,
       end_date: endDate,
-      schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
-        end_time: convertTimeToDateTime(item?.end_time),
-        full_day: item?.full_day,
-        name: item?.name,
-        recurring_day: item?.recurring_day,
-        start_time: convertTimeToDateTime(item?.start_time),
-        status: item?.status
-      })),
+      ...(isActiveHour && {
+        schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
+          end_time: convertTimeToDateTime(item?.end_time, "", "", item?.full_day, false),
+          full_day: item?.full_day ? "1" : "0",
+          name: item?.name,
+          recurring_day: item?.recurring_day,
+          start_time: convertTimeToDateTime(item?.start_time, "", "", item?.full_day, true),
+          status: item?.status
+        }))
+      }),
     };
     const apiData = await generalPutFunction(`/fcampaign/${data?.id}`, payload);
     if (apiData?.status) {
@@ -906,7 +958,7 @@ function FportalCampaignEdit() {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6">
+                          {/* <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
@@ -926,7 +978,7 @@ function FportalCampaignEdit() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
@@ -1095,7 +1147,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input
+                                          type="checkbox"
+                                          checked={schedulerInfo.find(day => day.recurring_day === 'Sunday').status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
@@ -1104,7 +1158,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Sunday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Sunday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
@@ -1112,7 +1169,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Sunday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
@@ -1123,7 +1183,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Sunday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Sunday' ? { ...day, full_day: e.target.checked } : day
@@ -1140,7 +1203,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo?.find(day => day.recurring_day === 'Monday')?.status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
@@ -1149,7 +1214,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Monday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Monday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
@@ -1157,7 +1225,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Monday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
@@ -1168,7 +1239,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Monday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Monday' ? { ...day, full_day: e.target.checked } : day
@@ -1185,7 +1259,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo?.find(day => day.recurring_day === 'Tuesday')?.status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
@@ -1194,7 +1270,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Tuesday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Tuesday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
@@ -1202,7 +1281,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Tuesday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
@@ -1213,7 +1295,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Tuesday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Tuesday' ? { ...day, full_day: e.target.checked } : day
@@ -1230,7 +1315,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo.find(day => day.recurring_day === 'Wednesday').status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
@@ -1239,7 +1326,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Wednesday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
@@ -1247,7 +1337,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
@@ -1258,7 +1351,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Wednesday' ? { ...day, full_day: e.target.checked } : day
@@ -1275,7 +1371,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo.find(day => day.recurring_day === 'Thursday').status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
@@ -1284,7 +1382,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Thursday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Thursday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
@@ -1292,7 +1393,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Thursday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
@@ -1303,7 +1407,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Thursday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Thursday' ? { ...day, full_day: e.target.checked } : day
@@ -1320,7 +1427,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo.find(day => day.recurring_day === 'Friday').status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
@@ -1329,7 +1438,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Friday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Friday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
@@ -1337,7 +1449,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Friday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
@@ -1348,7 +1463,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Friday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Friday' ? { ...day, full_day: e.target.checked } : day
@@ -1365,7 +1483,9 @@ function FportalCampaignEdit() {
                                   <div className="col-12">
                                     <div className="wrapper mb-0">
                                       <div className="item" style={{ width: '95px' }}>
-                                        <input type="checkbox"
+                                        <input 
+                                          type="checkbox"
+                                          checked={schedulerInfo.find(day => day.recurring_day === 'Saturday').status}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
@@ -1374,7 +1494,10 @@ function FportalCampaignEdit() {
                                         <label className="ms-2 fw-bold">Saturday</label>
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Saturday')?.start_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
@@ -1382,7 +1505,10 @@ function FportalCampaignEdit() {
                                           }} />
                                       </div>
                                       <div className="item">
-                                        <input type="time" className="formItem"
+                                        <input 
+                                          type="time" 
+                                          className="formItem"
+                                          value={schedulerInfo?.find(day => day.recurring_day === 'Saturday')?.end_time}
                                           onChange={(e) => {
                                             setSchedulerInfo(prevState => prevState.map(day =>
                                               day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
@@ -1393,7 +1519,10 @@ function FportalCampaignEdit() {
                                         <div className="my-auto position-relative mx-1">
                                           <div class="cl-toggle-switch">
                                             <label class="cl-switch">
-                                              <input type="checkbox" id="showAllCheck"
+                                              <input 
+                                                type="checkbox" 
+                                                id="showAllCheck"
+                                                checked={schedulerInfo?.find(day => day.recurring_day === 'Saturday')?.full_day}
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
                                                     day.recurring_day === 'Saturday' ? { ...day, full_day: e.target.checked } : day
@@ -1436,10 +1565,6 @@ function FportalCampaignEdit() {
                               </div>
                             </div>
                             {bulkAddBuyersList && bulkAddBuyersList?.length > 0 ? bulkAddBuyersList?.map((buyer, index) => {
-                              { console.log('-------------------------- 333') }
-                              console.log('bulkAddBuyersList 333', bulkAddBuyersList)
-                              { console.log("buyers 333", buyer) }
-                              { console.log("index 333", index) }
                               return (
                                 <div className="row">
                                   <div className="formRow col">
