@@ -1074,3 +1074,6 @@
 .numberActive_box p{
   font-size: 10px !important;
 }
+.knowledgeDetails .itemWrapper .heading{
+  height: auto;
+}

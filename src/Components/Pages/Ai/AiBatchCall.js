@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import Select from 'react-select';
 import { requiredValidator } from '../../validations/validation';
+import PaginationComponent from '../../CommonComponents/PaginationComponent';
 
 const AiBatchCall = () => {
     const [refreshState, setRefreshState] = useState(false)
@@ -11,6 +12,8 @@ const AiBatchCall = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRtl, setIsRtl] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
+     const [pageNumber, setPageNumber] = useState(1);
+       const [agents, setAgents] = useState([]);
 
 
     const handleRefreshBtnClicked = () => {
@@ -57,6 +60,91 @@ const AiBatchCall = () => {
                                                         </span>
                                                     </button>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div className='col-12' style={{ overflow: "auto", padding: "10px 20px 0" }}>
+                                            <div className="tableHeader">
+                                                <div className="showEntries">
+                                                    <label>Show</label>
+                                                    <select
+                                                        // value={entriesPerPage}
+                                                        // onChange={(e) => setEntriesPerPage(e.target.value)}
+                                                        className="formItem"
+                                                    >
+                                                        <option value={10}>10</option>
+                                                        <option value={20}>20</option>
+                                                        <option value={30}>30</option>
+                                                    </select>
+                                                    <label>entries</label>
+                                                </div>
+
+                                                {/* {checkViewSidebar(
+                                                    "User",
+                                                    slugPermissions,
+                                                    account?.sectionPermissions,
+                                                    account?.permissions,
+                                                    "search"
+                                                ) && ( */}
+                                                <div className="searchBox position-relative">
+                                                    <label>Search:</label>
+                                                    <input
+                                                        type="search"
+                                                        name="Search"
+                                                        className="formItem"
+                                                    // value={userInput}
+                                                    // onChange={(e) => setuserInput(e?.target?.value)}
+                                                    />
+                                                </div>
+                                                {/* )} */}
+                                            </div>
+                                            <div className="tableContainer">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Batch Call Name</th>
+                                                            <th>Status</th>
+                                                            <th>Recipients</th>
+                                                            <th>Sent <span className=' text_muted'>|</span> Pickup <span className=' text_muted'>|</span> Successful</th>
+                                                            <th>Last Sent by</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="">
+                                                        <>
+                                                            <tr>
+                                                                <td> 1</td>
+                                                                <td>+918016000000</td>
+                                                                <td>value1 (optional)</td>
+                                                                <td>value2 (optional)</td>
+                                                                <td>value3 (optional)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 1</td>
+                                                                <td>+918016000000</td>
+                                                                <td>value1 (optional)</td>
+                                                                <td>value2 (optional)</td>
+                                                                <td>value3 (optional)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 1</td>
+                                                                <td>+918016000000</td>
+                                                                <td>value1 (optional)</td>
+                                                                <td>value2 (optional)</td>
+                                                                <td>value3 (optional)</td>
+                                                            </tr>
+
+                                                        </>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="tableHeader mb-3">
+                                                <PaginationComponent
+                                                    pageNumber={(e) => setPageNumber(e)}
+                                                    totalPage={agents.last_page}
+                                                    from={(pageNumber - 1) * agents.per_page + 1}
+                                                    to={agents.to}
+                                                    total={agents.total}
+                                                />
                                             </div>
                                         </div>
 
@@ -276,7 +364,7 @@ const AiBatchCall = () => {
                                     disabled
                                 />
                             </div>
-                             <div className="formLabel w-100" style={{ maxWidth: "100%" }}>
+                            <div className="formLabel w-100" style={{ maxWidth: "100%" }}>
                                 <label> Want to speed up the time? <span className='text-primary fs-12'>+ </span><span className='text-primary fs-12'>Purchase more concurrency</span> </label>
                             </div>
                         </div>
