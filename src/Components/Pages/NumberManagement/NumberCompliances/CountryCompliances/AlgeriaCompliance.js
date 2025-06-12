@@ -83,7 +83,7 @@ function AlgeriaCompliance() {
                                         <div className="basicContent my-0">
                                             <h4>Requirements for Individuals</h4>
                                             <ul>
-                                                <li>
+                                                <li className='listingLi'>
                                                     <div className='row'>
                                                         <div className='col-4'>
                                                             <div className='heading'>
