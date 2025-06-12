@@ -1208,6 +1208,7 @@ function Navbar() {
                           isChildActive([
                             "/all-ai-agent",
                             "/ai-all-agent",
+                            "/all-users",
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
                             "/ai-call-history",
@@ -1231,6 +1232,7 @@ function Navbar() {
                         className={`accordion-collapse collapse ${isChildActive([
                           "/all-ai-agent",
                           "/ai-all-agent",
+                          "/all-users",
                           "/ai-knowledge-base",
                           '/ai-phone-number',
                           '/ai-call-history',
@@ -1306,6 +1308,25 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">All Agents</div>
+                              </NavLink>
+                            </li>
+                             <li className="tabItem ">
+                              <NavLink
+                                to="/all-users"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/all-users",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">All Users</div>
                               </NavLink>
                             </li>
                             <li className="tabItem ">

@@ -196,6 +196,7 @@ import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
+import AllUser from "./Components/Pages/Ai/AllUser";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -842,6 +843,7 @@ function App() {
           <Route path="/ai-batch-call" element={<AiBatchCall />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
