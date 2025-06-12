@@ -196,6 +196,7 @@ import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
+import CDRTracker from "./Components/Pages/CallTracker/CDRTracker";
 import AllUser from "./Components/Pages/Ai/AllUser";
 
 // Unlock this if want push notification
@@ -1548,6 +1549,8 @@ function App() {
 
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
+          <Route path="/cdr-tracker" element={<CDRTracker />} />
+          
           <Route
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}

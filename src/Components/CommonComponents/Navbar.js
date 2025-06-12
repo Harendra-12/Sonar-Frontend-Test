@@ -1030,6 +1030,7 @@ function Navbar() {
                           "/call-forwarding-campaign",
                           "/call-forwarding-campaign-create",
                           "/call-forwarding-campaign-edit",
+                          "/cdr-tracker",
                         ])
                           ? "show"
                           : ""
@@ -1120,6 +1121,25 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">Source</div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/cdr-tracker"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/extensions-add",
+                                      "/extensions-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">CDR Tracker</div>
                               </NavLink>
                             </li>
                             <li className="tabItem ">
