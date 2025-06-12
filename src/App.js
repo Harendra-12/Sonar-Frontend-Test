@@ -196,6 +196,7 @@ import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
+import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1062,6 +1063,11 @@ function App() {
               <DidListingAdd /> :
               <Navigate to="/dashboard" replace />
           } />
+
+          <Route path="/number-compliances" element={<NumberCompliancesHome />}>
+
+          </Route>
+
           {/* Number Management Path End */}
 
           {/* Payment path start */}
