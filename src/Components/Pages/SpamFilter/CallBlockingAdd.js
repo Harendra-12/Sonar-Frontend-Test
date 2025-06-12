@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { requiredValidator } from "../../validations/validation";
 import ActionListMulti from "../../CommonComponents/ActionListMulti";
+import Tippy from "@tippyjs/react";
 
 function CallBlockingAdd() {
   const navigate = useNavigate();
@@ -38,11 +39,13 @@ function CallBlockingAdd() {
   const [type, setType] = useState("");
   const [number, setNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [refresh, setRefresh] = useState(1);
+  const [refresh, setRefresh] = useState(0);
+  const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [debounceCallDestination, setDebounceCallDestination] = useState("");
   const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] =
     useState("");
   const [selectedCdrToBlock, setSelectedCdrToBlock] = useState([]);
+  const [callBlock, setCallBlock] = useState([]);
   const [selectedExtensionType, setSelectedExtensionType] = useState([]);
   const [filterBy, setFilterBy] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -79,31 +82,6 @@ function CallBlockingAdd() {
       }
     }
   });
-  // async function addBlock() {
-  //   if (type === "") {
-  //     toast.error("Please enter type");
-  //   } else if (number === "") {
-  //     toast.error("Please enter number");
-  //   } else if (number < 99999999 || number > 99999999999999) {
-  //     toast.error("Please enter valid number");
-  //   } else {
-  //     setLoading(true);
-  //     const parsedData = {
-  //       type: type,
-  //       number: number,
-  //     };
-  //     const apidata = await generalPostFunction(`/spam/store`, parsedData);
-  //     if (apidata.status) {
-  //       navigate("/call-blocking");
-  //       setLoading(false);
-  //       setType("");
-  //       setNumber("");
-  //       toast.success("Number added to block list");
-  //     } else {
-  //       setLoading(false);
-  //     }
-  //   }
-  // }
   useEffect(() => {
     let timer = setTimeout(() => {
       if (debounceCallDestination.length >= 3) {
@@ -150,7 +128,7 @@ function CallBlockingAdd() {
         start_date: startDate,
         end_date: endDate,
         variable_sip_to_user: callDestination,
-        application_state: "pstn",
+        'application_state[]': "pstn",
       }
     );
 
@@ -200,6 +178,13 @@ function CallBlockingAdd() {
   }, [filterBy]);
   const handleUpdateSelectedCdrToBlock = (item) => {
     setSelectedCdrToBlock([...selectedCdrToBlock, item]);
+  };
+  const handleRemoveSelectedCdrToBlock = (item) => {
+    setSelectedCdrToBlock((prev) =>
+      prev.filter(
+        (val) => val['Caller-Orig-Caller-ID-Name'] !== item['Caller-Orig-Caller-ID-Name']
+      )
+    );
   };
   function secondsToHHMMSS(input) {
     // Parse the input to ensure it's a number
@@ -273,6 +258,45 @@ function CallBlockingAdd() {
       label: "Outbound Calls",
     },
   ];
+
+  // Block multiple numbers
+  const handleMultiBlock = async () => {
+    const payload = selectedCdrToBlock.map((item) => (
+      {
+        type: "DID",
+        number: item['Caller-Orig-Caller-ID-Name'],
+        name: "Multiple Call Blocking",
+        direction: "inbound",
+        action: "reject",
+        block_type: "did"
+      }));
+    const response = await generalPostFunction("/spam/store", payload);
+    if (response.status) {
+      toast.success(response.message);
+      setSelectedCdrToBlock([]);
+      setRefresh(refresh + 1);
+      setCallBlockRefresh(callBlockRefresh + 1);
+    }
+  }
+
+  // Get All blocked Numbers
+  useEffect(() => {
+    const getBlockedNumberData = async () => {
+      if (account && account.id) {
+        const apidata = await generalGetFunction(`/spam/all?all`);
+        if (apidata?.status) {
+          setCallBlock(apidata?.data);
+          setLoading(false);
+        } else {
+          navigate("/");
+        }
+      } else {
+        navigate("/");
+      }
+    };
+    getBlockedNumberData();
+  }, [callBlockRefresh]);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -280,11 +304,6 @@ function CallBlockingAdd() {
           <Header title="Call Blocking" />
         </div>
         <div className="col-xl-12">
-          {/* {loading && loadings && (
-                        <div colSpan={99}>
-                            <CircularLoader />
-                        </div>
-                    )} */}
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
@@ -295,24 +314,6 @@ function CallBlockingAdd() {
                       <p>Configure call blocking</p>
                     </div>
                     <div className="buttonGroup">
-                      <div className="d-flex align-items-center">
-                        <div className="formLabel py-0 me-2">
-                          <label htmlFor="selectFormRow">Enabled</label>
-                        </div>
-                        <div className="my-auto position-relative mx-1">
-                          {/* <label className="switch">
-                            <input type="checkbox" id="showAllCheck" />
-                            <span className="slider round" />
-                          </label> */}
-                          <div class="cl-toggle-switch">
-                            <label class="cl-switch">
-                              <input type="checkbox" id="showAllCheck"
-                              />
-                              <span></span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
                       <button
                         onClick={() => {
                           navigate(-1);
@@ -671,9 +672,9 @@ function CallBlockingAdd() {
                       </select>
                     </div> */}
                     <button
-                      effect="ripple"
                       className="panelButton delete"
                       style={{ height: "34px" }}
+                      onClick={handleMultiBlock}
                     >
                       <span className="text">Block</span>
                       <span className="icon">
@@ -710,13 +711,26 @@ function CallBlockingAdd() {
                             return (
                               <tr key={index}>
                                 <td className="d-flex align-items-center gap-2">
-                                  <input
-                                    type="checkbox"
-                                  //   onClick={() => {}}
-                                  ></input>
+                                  {callBlock?.some((block) => block.number == item['Caller-Orig-Caller-ID-Name']) ?
+                                    <button className="tableButton delete bg-danger text-white">
+                                      <Tippy content={"Blocked"}>
+                                        <i className="fa-solid fa-ban"></i>
+                                      </Tippy>
+                                    </button> :
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedCdrToBlock.some((val) => val['Caller-Orig-Caller-ID-Name'] == item['Caller-Orig-Caller-ID-Name'])}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          handleUpdateSelectedCdrToBlock(item)
+                                        } else {
+                                          handleRemoveSelectedCdrToBlock(item)
+                                        }
+                                      }}
+                                    ></input>}
                                   {item["Call-Direction"]}
                                 </td>
-                                <td>{item["Caller-Caller-ID-Number"]}</td>
+                                <td>{item["Caller-Orig-Caller-ID-Name"]}</td>
                                 <td>{item["Caller-Callee-ID-Number"]}</td>
                                 <td>
                                   {" "}
