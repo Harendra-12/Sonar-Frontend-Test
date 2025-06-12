@@ -1088,65 +1088,10 @@ const RingGroupAdd = () => {
                                   ""
                                 )}
                                 <div className="position-relative">
-                                  <select
-                                    disabled
-                                    type="text"
-                                    name="destination"
-                                    value={item.destination}
-                                    onChange={(e) => {
-                                      const selectedValue = e.target.value;
-                                      if (selectedValue === "addUser") {
-                                        navigate("/users-add");
-                                      } else {
-                                        handleDestinationChange(index, e);
-                                      }
-                                    }}
-                                    className="formItem"
-                                    placeholder="Destination"
-                                  >
-                                    <option value={""} disabled>
-                                      Choose agent
-                                    </option>
-
-                                    {user &&
-                                      user
-                                        .filter((item1) => {
-                                          return (
-                                            item1.extension.extension ==
-                                            destination[index]?.destination ||
-                                            !destination.some(
-                                              (
-                                                destinationItem,
-                                                destinationIndex
-                                              ) =>
-                                                destinationItem.destination ==
-                                                item1.extension.extension &&
-                                                destinationIndex != index
-                                            )
-                                          );
-                                        })
-                                        .map((item) => {
-                                          return (
-                                            <option
-                                              value={item.extension?.extension}
-                                              key={item.id}
-                                            >
-                                              {item.alias
-                                                ? `${item?.alias} - ${item.extension?.extension}`
-                                                : `${item?.name} - ${item.extension?.extension}`}
-                                              {/* {item.name}(
-                                            {item.extension?.extension}) */}
-                                            </option>
-                                          );
-                                        })}
-                                    <option
-                                      value="addUser"
-                                      className="addmusic"
-                                      style={{ cursor: "pointer" }}
-                                    >
-                                      Add User
-                                    </option>
-                                  </select>
+                                  {user && user.filter((user) => user.extension.extension == destination[index].destination)
+                                    .map((filteredUser) => (
+                                      <div className="formItem">{filteredUser.username} - {filteredUser.extension.extension}</div>
+                                    ))}
                                 </div>
                               </div>
                               {watch("strategy") === "sequence" ? (
