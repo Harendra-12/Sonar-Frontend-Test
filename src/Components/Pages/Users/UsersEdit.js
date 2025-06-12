@@ -49,7 +49,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   // const [filterExtensions, setFilterExtensions] = useState();
-  const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
@@ -118,15 +117,20 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   }, [account, navigate]);
 
   // Getting user and extension data to check which extension is not assigned
-  useEffect(() => {
-    if (allUserRefresh > 0) {
-      setUser(allUser.data);
-    } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+  const getAllUser = async () => {
+    const apidataUser = await generalGetFunction(
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+    );
+    if (apidataUser?.status) {
+      setUser(apidataUser.data);
     }
+  }
+
+  useEffect(() => {
+    if (!user) {
+      getAllUser();
+    };
+
     if (extensionAllRefresh > 0) {
       setExtension(extensionAll.data);
     } else {
@@ -135,7 +139,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         extensionAllRefresh: extensionAllRefresh + 1,
       });
     }
-  }, [allUser, extensionAll]);
+  }, [user, extensionAll]);
 
   // Filtering unused extension
   useEffect(() => {
@@ -257,12 +261,12 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     if (addUser.status) {
       setPopUp(false);
       toast.success(addUser.message);
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+      // dispatch({
+      //   type: "SET_ALLUSERREFRESH",
+      //   allUserRefresh: allUserRefresh + 1,
+      // });
+      getAllUser();
       getUserData();
-
       // navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
