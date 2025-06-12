@@ -264,7 +264,7 @@ function CallBlockingAdd() {
     const payload = selectedCdrToBlock.map((item) => (
       {
         type: "DID",
-        number: item['Caller-Orig-Caller-ID-Name'],
+        number: item['variable_sip_from_user'],
         name: "Multiple Call Blocking",
         direction: "inbound",
         action: "reject",
@@ -711,7 +711,7 @@ function CallBlockingAdd() {
                             return (
                               <tr key={index}>
                                 <td className="d-flex align-items-center gap-2">
-                                  {callBlock?.some((block) => block.number == item['Caller-Orig-Caller-ID-Name']) ?
+                                  {callBlock?.some((block) => block.number == item['variable_sip_from_user']) ?
                                     <button className="tableButton delete bg-danger text-white">
                                       <Tippy content={"Blocked"}>
                                         <i className="fa-solid fa-ban"></i>
@@ -719,7 +719,7 @@ function CallBlockingAdd() {
                                     </button> :
                                     <input
                                       type="checkbox"
-                                      checked={selectedCdrToBlock.some((val) => val['Caller-Orig-Caller-ID-Name'] == item['Caller-Orig-Caller-ID-Name'])}
+                                      checked={selectedCdrToBlock.some((val) => val['variable_sip_from_user'] == item['variable_sip_from_user'])}
                                       onChange={(e) => {
                                         if (e.target.checked) {
                                           handleUpdateSelectedCdrToBlock(item)
@@ -730,8 +730,8 @@ function CallBlockingAdd() {
                                     ></input>}
                                   {item["Call-Direction"]}
                                 </td>
-                                <td>{item["Caller-Orig-Caller-ID-Name"]}</td>
-                                <td>{item["Caller-Callee-ID-Number"]}</td>
+                                <td>{item["variable_sip_from_user"]}</td>
+                                <td>{item["variable_sip_to_user"]}</td>
                                 <td>
                                   {" "}
                                   {item["variable_start_stamp"].split(" ")[0]}
