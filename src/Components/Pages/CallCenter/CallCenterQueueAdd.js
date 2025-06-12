@@ -1486,65 +1486,10 @@ function CallCenterQueueAdd() {
                                         </label>
                                       </div>}
                                       <div className="position-relative">
-                                        <select
-                                          disabled
-                                          type="text"
-                                          name="name"
-                                          value={item.name}
-                                          onChange={(e) =>
-                                            handleAgentChange(e, index)
-                                          }
-                                          className="formItem"
-                                          placeholder="Destination"
-                                        >
-                                          <option value="" disabled>
-                                            Choose agent
-                                          </option>
-                                          {user &&
-                                            user
-                                              .filter((userItem) => {
-                                                return (
-                                                  userItem.id ==
-                                                  agent[index]?.name ||
-                                                  !agent.some(
-                                                    (agentItem, agentIndex) =>
-                                                      agentItem.name ==
-                                                      userItem.id &&
-                                                      agentIndex != index
-                                                  )
-                                                );
-                                              })
-                                              .map((userItem) => (
-                                                <option
-                                                  value={userItem.id}
-                                                  key={userItem.id}
-                                                >
-                                                  {/* {userItem.username} -
-                                                {userItem.extension?.extension} */}
-                                                  {/* {userItem.alias
-                                                  ? `${truncateString(
-                                                    userItem?.alias
-                                                  )} - ${userItem.extension
-                                                    ?.extension
-                                                  }`
-                                                  : `${truncateString(
-                                                    userItem?.name
-                                                  )} - ${userItem.extension
-                                                    ?.extension
-                                                  }`} */}
-                                                  {userItem.alias
-                                                    ? `${userItem?.alias} - ${userItem.extension?.extension}`
-                                                    : `${userItem?.name} - ${userItem.extension?.extension}`}
-                                                </option>
-                                              ))}
-                                          <option
-                                            value="addUser"
-                                            className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                            style={{ cursor: "pointer" }}
-                                          >
-                                            Add User
-                                          </option>
-                                        </select>
+                                        {user && user.filter((user) => user.id == agent[index].name)
+                                          .map((filteredUser) => (
+                                            <div className="formItem">{filteredUser.username} - {filteredUser.extension.extension}</div>
+                                          ))}
                                       </div>
                                     </div>
                                     <div

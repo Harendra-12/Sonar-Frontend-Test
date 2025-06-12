@@ -3,26 +3,29 @@ import Header from '../../CommonComponents/Header'
 import { generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction'
 import { set } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
+import { CircularProgress } from '@mui/material';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
+import ContentLoader from '../../Loader/ContentLoader';
 
 function KnowledgeBase() {
+    const [loading, setLoading] = useState(true);
     const [faqData, setFaqData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const debouncedSearch = useDebounce(searchQuery, 1000);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
 
     const getAllFaqData = async () => {
+        setLoading(true);
         try {
             const response = await generalGetFunction(`/knowledge-base/all${searchQuery ? `?search=${debouncedSearch}` : ''}`);
             if (response.status) {
-
-                console.log(response.data);
-
-
                 setFaqData(response?.data);
-
             }
         } catch (err) {
             toast.error(err.response.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -67,15 +70,6 @@ function KnowledgeBase() {
                                                 </div>
                                                 </div>
                                             </div>
-                                            {/* <div className='d-flex align-items-center justify-content-center'>
-                                                    <div className='content-artical'>
-                                                        <p>FEATURED ARTICLE</p>
-                                                        <div className='d-flex align-items-center justify-content-start icon-larges'>
-                                                            <h3>Hotjar Certifications are now live </h3>
-                                                            <i class="fa-solid fa-shield-virus"></i>
-                                                        </div>
-                                                    </div>
-                                                </div> */}
                                         </div>
                                         <div className="col-12" style={{ overflow: "auto", padding: "25px 20px", }} >
                                             {faqData && faqData.length > 0 ?
@@ -113,7 +107,12 @@ function KnowledgeBase() {
                                                             </div>
                                                         </div>
                                                     )
-                                                }) : ""}
+                                                }) : loading ?
+                                                    <div className='mt-5 align-items-center justify-content-center'>
+                                                        <ContentLoader />
+                                                    </div> :
+                                                    <EmptyPrompt generic={true} />
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +132,7 @@ function KnowledgeBase() {
                                         <div className="heading ">
                                             <div className="d-flex align-items-center justify-content-start ">
                                                 <div className=" me-3">
-                                                    <i className="fa-solid fa-right-to-bracket" style={{color :'var(--color2)'}}></i>
+                                                    <i className="fa-solid fa-right-to-bracket" style={{ color: 'var(--color2)' }}></i>
                                                 </div>
                                                 <h6>{selectedQuestion.sub_question}</h6>
                                             </div>
