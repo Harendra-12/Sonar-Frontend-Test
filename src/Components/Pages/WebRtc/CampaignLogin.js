@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import LogOutPopUp from './LogOutPopUp';
-import { featureUnderdevelopment, logout } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, generalGetFunction, generalPutFunction, logout } from '../../GlobalFunction/globalFunction';
 import { useSIPProvider } from 'modify-react-sipjs';
 import DarkModeToggle from '../../CommonComponents/DarkModeToggle';
 import HeaderApp from './HeaderApp';
@@ -13,6 +13,12 @@ function CampaignLogin({ initial }) {
     const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
     const { sessionManager } = useSIPProvider();
     const dispatch = useDispatch();
+    const [refresh, setRefresh] = useState(0);
+    const [assignedCampaigns, setAssignedCampaigns] = useState([]);
+    const account = useSelector((state) => state.account) || {};
+    const Id = account?.id || "";
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isOnBreak, setIsOnBreak] = useState(false);
 
 
     // Function to handle logout
@@ -31,6 +37,35 @@ function CampaignLogin({ initial }) {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const getCampaignData = async () => {
+            setLoading(true);
+            const getCampaign = await generalGetFunction("/campaign/all")
+            if (getCampaign?.status) {
+                const allCampaign = getCampaign.data.data;
+                console.log("allCampaign", allCampaign);
+                const assignedCampaigns = allCampaign.filter((item) => item.agents.some((agent) => agent.user_id === Id) && item.status == "Active");
+                setAssignedCampaigns(assignedCampaigns);
+            } else {
+                setLoading(false);
+            }
+        }
+        getCampaignData();
+    }, [refresh])
+
+    const handleLoginLogout = async (action) => {
+        const parsedData = {
+            status: action,
+        };
+        const apiData = await generalPutFunction(
+            `campaign/agent-update/${Id}`,
+            parsedData
+        );
+        if (apiData.status) {
+            setRefresh(refresh + 1);
+        }
+    }
 
     return (
         <>
@@ -87,23 +122,54 @@ function CampaignLogin({ initial }) {
                                                     <tr>
                                                         <th className="sl">#</th>
                                                         <th>Name</th>
-                                                        <th className="extension">Extension</th>
+                                                        <th>Mode</th>
                                                         <th className="options">Options</th>
                                                         <th className="options">Break-Timer</th>
                                                         <th className="options">Total-Break</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Name</td>
-                                                        <td>5100</td>
-                                                        <td>
-                                                            <label className="tableLabel success" onClick={() => featureUnderdevelopment()}>Login</label>
-                                                        </td>
-                                                        <td>00:00:00</td>
-                                                        <td>00:00:00</td>
-                                                    </tr>
+                                                    {
+                                                        assignedCampaigns && assignedCampaigns.length > 0 ? assignedCampaigns.map((item, index) => (
+                                                            <tr>
+                                                                <td>{index + 1}</td>
+                                                                <td>{item.title}</td>
+                                                                <td>{item.dialer.type}</td>
+                                                                {isLoggedIn ? (
+                                                                    <div className="d-flex gap-2">
+                                                                        <label
+                                                                            className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
+                                                                            onClick={() => {
+                                                                                if (!isOnBreak)
+                                                                                    handleLoginLogout("On Break");
+                                                                                else if (isOnBreak)
+                                                                                    handleLoginLogout("Available");
+                                                                            }}
+                                                                        >
+                                                                            {isOnBreak ? "Resume" : "Break"}
+                                                                        </label>
+                                                                        <label
+                                                                            className="tableLabel fail"
+                                                                            onClick={() =>
+                                                                                handleLoginLogout("Logged Out")
+                                                                            }
+                                                                        >
+                                                                            Logout
+                                                                        </label>
+                                                                    </div>
+                                                                ) : (
+                                                                    <label
+                                                                        className="tableLabel success"
+                                                                        onClick={() =>
+                                                                            handleLoginLogout("Available")
+                                                                        }
+                                                                    >
+                                                                        Login
+                                                                    </label>
+                                                                )}
+                                                            </tr>
+                                                        )) : ""
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
