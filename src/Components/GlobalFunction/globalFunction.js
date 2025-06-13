@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
 const token = localStorage.getItem("token");
-const account = localStorage.getItem("account");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -509,8 +508,9 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
 
 // Function to Convert Date to current TimeZone
 export function convertDateToCurrentTimeZone(dateString) {
+  const account = localStorage.getItem("account");
   try {
-    const timeZone = JSON.parse(account)?.timeZone;
+    const timeZone = JSON.parse(account)?.timezone?.name;
     // Create a Date object from the input string (UTC midnight)
     const date = new Date(dateString + 'T00:00:00Z');
 
@@ -545,8 +545,9 @@ export function convertDateToCurrentTimeZone(dateString) {
 
 // Function to Format Time to AM/PM in Current TimeZone
 export function formatTimeWithAMPM(timeString) {
+  const account = localStorage.getItem("account");
   try {
-    const timeZone = JSON.parse(account)?.timeZone;
+    const timeZone = JSON.parse(account)?.timezone?.name;
 
     // Create a date object with the input time (using today's date)
     const now = new Date();
@@ -578,6 +579,103 @@ export function formatTimeWithAMPM(timeString) {
     console.error("Error formatting time:", error);
     return "Invalid time format";
   }
+}
+// Formate date for time stamp to get time when message arrives
+export function formatRelativeTime(dateString) {
+  const account = localStorage.getItem("account");
+  try {
+    const timeZone = JSON.parse(account)?.timezone?.name;
+    // Parse input date (UTC) and current time
+    const date = new Date(dateString);
+    const now = new Date();
+
+    // Convert both dates to the target timezone for accurate comparison
+    const dateInTz = new Date(date.toLocaleString('en-US', { timeZone }));
+    const nowInTz = new Date(now.toLocaleString('en-US', { timeZone }));
+
+    // Calculate differences in timezone-adjusted time
+    const diffMs = nowInTz - dateInTz;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    // Handle timezone-adjusted relative time
+    if (diffDays >= 1) {
+      if (diffDays === 1) return "Yesterday";
+
+      // Format full date in target timezone
+      return dateInTz.toLocaleDateString('en-US', {
+        timeZone,
+        month: 'short',
+        day: 'numeric',
+        year: diffDays >= 365 ? 'numeric' : undefined
+      });
+    } else if (diffHours >= 1) {
+      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+    } else if (diffMinutes >= 1) {
+      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+    } else {
+      return `${diffSeconds} second${diffSeconds !== 1 ? "s" : ""} ago`;
+    }
+  } catch (error) {
+    console.error("Error formatting time:", error);
+    // Fallback to UTC formatting if timezone fails
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US');
+  }
+}
+
+// Format date to get today date OR YYYY-MM-DD H:M:I in YYYY-MM-DD H:M:I according to timezone 
+export function formatDateTime(dateInput) {
+  // Parse account timezone
+  const account = localStorage.getItem("account");
+  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+
+  // Convert input to Date object if it's a string
+  let date;
+  if (typeof dateInput === 'string') {
+    // Handle both "2025-06-13 13:37:55" and ISO format
+    const isoString = dateInput.includes('T') ? dateInput : dateInput.replace(' ', 'T');
+    date = new Date(isoString);
+    if (isNaN(date.getTime())) {
+      console.error('Invalid date string:', dateInput);
+      return 'Invalid Date';
+    }
+  } else if (dateInput instanceof Date) {
+    date = dateInput;
+  } else {
+    console.error('Invalid date input type:', typeof dateInput);
+    return 'Invalid Date';
+  }
+
+  // Timezone-aware formatting
+  const options = {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  };
+
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const parts = formatter.formatToParts(date);
+
+  // Extract components
+  const getPart = (type) => parts.find(p => p.type === type)?.value || '00';
+
+  return [
+    getPart('year'),
+    getPart('month'),
+    getPart('day'),
+  ].join('-') + ' ' + [
+    getPart('hour'),
+    getPart('minute'),
+    getPart('second')
+  ].join(':');
 }
 
 // Function to format Time Duration

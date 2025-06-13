@@ -4,8 +4,10 @@ import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
+  convertDateToCurrentTimeZone,
   featureUnderdevelopment,
   fileUploadFunction,
+  formatTimeWithAMPM,
   generalGetFunction,
   generalPostFunction,
   generatePreSignedUrl,
@@ -204,7 +206,7 @@ function CallDetails({
       : callDetails?.["variable_sip_from_user"] === extension
         ? callDetails?.["variable_sip_to_user"]
         : callDetails?.["variable_sip_from_user"];
-        
+
   return (
     <>
       <div className="messageOverlay ">
@@ -393,14 +395,10 @@ function CallDetails({
                 <tbody>
                   <tr>
                     <td style={{ color: "#444444" }}>
-                      {formatDate(
-                        callDetails && callDetails.variable_start_stamp
-                      )}
+                      {convertDateToCurrentTimeZone(callDetails && callDetails.variable_start_stamp.split(" ")[0])}
                     </td>
                     <td>
-                      {formatTime(
-                        callDetails && callDetails.variable_start_stamp
-                      )}
+                      {formatTimeWithAMPM(callDetails && callDetails.variable_start_stamp.split(" ")[1])}
                     </td>
                     {!isCustomerAdmin ? (
                       <td
@@ -555,8 +553,8 @@ function CallDetails({
                                   role="button"
                                   aria-expanded="false"
                                 >
-                                  <td>{formatDate(item.variable_start_stamp)}</td>
-                                  <td>{formatTime(item.variable_start_stamp)}</td>
+                                  <td>{convertDateToCurrentTimeZone(item.variable_start_stamp.split(" ")[0])}</td>
+                                  <td>{formatTimeWithAMPM(item.variable_start_stamp.split(" ")[1])}</td>
                                   {/* <td
                           className={`${
                             item["Caller-Callee-ID-Number"] === extension &&
