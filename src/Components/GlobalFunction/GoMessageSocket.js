@@ -75,6 +75,7 @@ const GoMessageSocket = () => {
                 if (typeof parsedData === "string") {
                     const message = JSON.parse(parsedData);
                     const { key, result, current_time } = message;
+                    console.log(key, result, current_time);
 
                     switch (key) {
                         // case "CallState":
@@ -114,11 +115,13 @@ const GoMessageSocket = () => {
                             break;
                         case "peercallUpdate":
                             dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
+                            break;
                         // case "activeDialer":
                         //     dispatch({ type: "SET_CAMPAIGN_DETAILS", campaignDetails: result });
                         //     break;
 
                         case "logout_warning":
+                            console.log("Logout warning received, setting admin logout state.");
                             dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
                             break;
                         case "broadcastGroupMessage":
