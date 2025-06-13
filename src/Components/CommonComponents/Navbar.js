@@ -1249,7 +1249,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             <li className="tabItem ">
-                                  <NavLink
+                              <NavLink
                                 to="/ai-agent-dashboard"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
@@ -1266,9 +1266,9 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Ai Dashboard</div>
                               </NavLink>
-                              
+
                             </li>
-                           
+
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-all-agent"
@@ -2056,7 +2056,7 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
-                            {isCustomerAdmin && (
+                            {/* {isCustomerAdmin && (
                               <li className="tabItem ">
                                 <NavLink
                                   to="/global-permission-config"
@@ -2067,7 +2067,7 @@ function Navbar() {
                                   </div>
                                 </NavLink>
                               </li>
-                            )}
+                            )} */}
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"

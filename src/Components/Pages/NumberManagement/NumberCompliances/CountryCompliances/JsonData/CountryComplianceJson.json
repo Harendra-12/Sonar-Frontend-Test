@@ -5,7 +5,9 @@
             "locale": {
                 "name": "Algeria",
                 "iso_code": "DZ",
-                "region": "Middle East & Africa",
+                "region": "Middle East & Africa"
+            },
+            "numbers_summary": {
                 "national_prefixes": [
                     "+21398"
                 ]
@@ -14,12 +16,11 @@
                 "individuals": {
                     "information_required": [
                         "End-user Name",
-                        "Proof of Identity",
                         "End-user Address (within Algeria)",
                         "Service Usage Description"
                     ],
                     "documentation_required": {
-                        "Proof of Identity": "End-user’s passport or any other form of ID",
+                        "End-user Name": "Proof of Identity",
                         "End-user Address": "No documentation required*",
                         "Service Usage Description": "No documentation required*"
                     },
@@ -33,18 +34,21 @@
                 "businesses": {
                     "information_required": [
                         "End-user Name",
-                        "Proof of Identity",
-                        "End-user Address (within Algeria)",
+                        "End-user Address",
                         "Business Name",
-                        "Business Address (within Algeria)",
+                        "Business Address",
                         "Proof of Business",
                         "Service Usage Description"
                     ],
                     "documentation_required": {
-                        "Proof of Identity": "End-user’s passport or any other form of ID",
+                        "End-user Name": "Proof of Identity",
                         "End-user Address": "No documentation required*",
-                        "Business Registration Document": "Required",
+                        "Business Address": "Proof of Business",
                         "Service Usage Description": "No documentation required*"
+                    },
+                    "acceptable_documentation": {
+                        "End-user Name": "End-user’s passport or any other form of ID",
+                        "Business Address": "Business Registration Document"
                     },
                     "usage_restrictions": [
                         "Service usage must comply with National and International regulations.",
@@ -66,11 +70,17 @@
             "locale": {
                 "name": "Argentina",
                 "iso_code": "AR",
-                "region": "South America",
-                "mobile_country_code": "722",
-                "dialing_code": "+54"
+                "region": "South America"
             },
-            "toll_free_requirements": {
+            "numbers_summary": {
+                "dialing_code": [
+                    "+54"
+                ],
+                "mobile_country_code": [
+                    "+722"
+                ]
+            },
+            "requirements": {
                 "individuals": {
                     "information_required": [
                         "Name",

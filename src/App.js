@@ -1068,7 +1068,7 @@ function App() {
           } />
 
           <Route path="/number-compliances" element={<NumberCompliancesHome />} />
-          <Route path="/number-compliances/dz" element={<AlgeriaCompliance />} />
+          <Route path="/number-compliances/:country" element={<AlgeriaCompliance />} />
 
           {/* Number Management Path End */}
 

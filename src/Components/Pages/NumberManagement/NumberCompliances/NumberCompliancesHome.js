@@ -89,7 +89,6 @@ function NumberCompliancesHome() {
                     </div>
                 </section>
             </main>
-            <Outlet />
         </>
     )
 }
