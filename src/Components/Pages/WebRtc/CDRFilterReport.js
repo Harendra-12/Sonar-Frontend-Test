@@ -8,7 +8,9 @@ import Header from "../../CommonComponents/Header";
 import {
   backToTop,
   checkViewSidebar,
+  convertDateToCurrentTimeZone,
   featureUnderdevelopment,
+  formatTimeWithAMPM,
   generalGetFunction,
   generalPostFunction,
   generatePreSignedUrl,
@@ -240,33 +242,6 @@ function CdrFilterReport({ page }) {
     }
   };
 
-  function formatTimeWithAMPM(timeString) {
-    const [hours, minutes, seconds] = timeString.split(":").map(Number);
-
-    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-      return "Invalid time format";
-    }
-
-    let period = "AM";
-    let formattedHours = hours;
-
-    if (hours >= 12) {
-      period = "PM";
-      if (hours > 12) {
-        formattedHours -= 12;
-      }
-    }
-
-    if (formattedHours === 0) {
-      formattedHours = 12; // Midnight is 12 AM
-    }
-
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
-  }
-
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
     if (/^\d*$/.test(newValue) && newValue.length <= 12) {
@@ -349,7 +324,7 @@ function CdrFilterReport({ page }) {
           key === "variable_start_stamp" &&
           obj.hasOwnProperty("variable_start_stamp")
         ) {
-          filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
+          filteredObj["Date"] = convertDateToCurrentTimeZone(obj["variable_start_stamp"]?.split(" ")[0]);
           filteredObj["Time"] = formatTimeWithAMPM(
             obj["variable_start_stamp"]?.split(" ")[1]
           );

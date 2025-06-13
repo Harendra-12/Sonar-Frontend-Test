@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
 const token = localStorage.getItem("token");
+const account = localStorage.getItem("account");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -506,32 +507,77 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   sessionManager.disconnect();
 }
 
-// Function to Format Time to AM/PM
-export function formatTimeWithAMPM(timeString) {
-  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+// Function to Convert Date to current TimeZone
+export function convertDateToCurrentTimeZone(dateString) {
+  try {
+    const timeZone = JSON.parse(account)?.timeZone;
+    // Create a Date object from the input string (UTC midnight)
+    const date = new Date(dateString + 'T00:00:00Z');
 
-  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+    if (isNaN(date.getTime())) {
+      return "Invalid date format";
+    }
+
+    // Options for formatting
+    const options = {
+      timeZone: timeZone || 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    };
+
+    // Format the date according to the timezone
+    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const parts = formatter.formatToParts(date);
+
+    // Extract year, month, and day from the formatted parts
+    const year = parts.find(p => p.type === 'year').value;
+    const month = parts.find(p => p.type === 'month').value;
+    const day = parts.find(p => p.type === 'day').value;
+
+    // Reconstruct in original format but with timezone-adjusted values
+    return `${year}-${month}-${day}`;
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Invalid date format";
+  }
+}
+
+// Function to Format Time to AM/PM in Current TimeZone
+export function formatTimeWithAMPM(timeString) {
+  try {
+    const timeZone = JSON.parse(account)?.timeZone;
+
+    // Create a date object with the input time (using today's date)
+    const now = new Date();
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    // Set the time components
+    const date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, seconds);
+
+    // Format the time according to the timezone
+    const options = {
+      timeZone: timeZone || 'UTC', // Use provided timezone or default to UTC
+      hour12: true,
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+
+    let formattedTime = date.toLocaleTimeString('en-US', options);
+
+    // Ensure AM/PM is uppercase and format is consistent
+    formattedTime = formattedTime.replace(/(am|pm)/i, match => match.toUpperCase());
+
+    return formattedTime;
+  } catch (error) {
+    console.error("Error formatting time:", error);
     return "Invalid time format";
   }
-
-  let period = 'AM';
-  let formattedHours = hours;
-
-  if (hours >= 12) {
-    period = 'PM';
-    if (hours > 12) {
-      formattedHours -= 12;
-    }
-  }
-
-  if (formattedHours === 0) {
-    formattedHours = 12; // Midnight is 12 AM
-  }
-
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
 }
 
 // Function to format Time Duration
