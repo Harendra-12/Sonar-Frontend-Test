@@ -197,6 +197,7 @@ import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
+import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1064,9 +1065,8 @@ function App() {
               <Navigate to="/dashboard" replace />
           } />
 
-          <Route path="/number-compliances" element={<NumberCompliancesHome />}>
-
-          </Route>
+          <Route path="/number-compliances" element={<NumberCompliancesHome />} />
+          <Route path="/number-compliances/dz" element={<AlgeriaCompliance />} />
 
           {/* Number Management Path End */}
 
