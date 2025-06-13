@@ -42,7 +42,7 @@ function Buyers() {
     setRefreshState(true);
     const shouldLoad = true
     getAllBuyers(shouldLoad);
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber ])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {

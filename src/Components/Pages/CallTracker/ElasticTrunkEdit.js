@@ -18,10 +18,10 @@ const ElasticTrunkEdit = () => {
   // Initial API Call to get Buyer Info
   useEffect(() => {
     async function getData() {
-      if (locationState.state.id) {
+      if (locationState?.state?.id) {
         setLoading(true);
         try {
-          const apiData = await generalGetFunction(`/fportaltrunk/${locationState.state.id}`)
+          const apiData = await generalGetFunction(`/fportaltrunk/${locationState?.state?.id}`)
           if (apiData.status) {
             reset(apiData?.data);
             setLoading(false);
@@ -33,13 +33,13 @@ const ElasticTrunkEdit = () => {
       }
     }
     getData()
-  }, [locationState.state.id]);
+  }, [locationState?.state?.id]);
 
   // Handle Trunk Edit
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data };
-    const apiData = await generalPutFunction(`/fportaltrunk/${locationState.state.id}`, payload);
+    const apiData = await generalPutFunction(`/fportaltrunk/${locationState?.state?.id}`, payload);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);

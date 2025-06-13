@@ -264,7 +264,7 @@ function FportalCampaignEdit() {
 
   useEffect(() => {
     getAllBuyers()
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   const convertDateFormat = (dateStr) => {
     if (!dateStr) return '';
@@ -878,7 +878,7 @@ function FportalCampaignEdit() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Campaign Name
+                                  Campaign Name <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -906,9 +906,7 @@ function FportalCampaignEdit() {
                                 <input
                                   type="text"
                                   className="formItem"
-                                  {...register("source", {
-                                    ...requiredValidator,
-                                  })}
+                                  {...register("source")}
                                 />
                                 {errors.source && (
                                   <ErrorMessage text={errors.source.message} />
@@ -920,7 +918,7 @@ function FportalCampaignEdit() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Agent Name
+                                  Agent Name <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -941,7 +939,7 @@ function FportalCampaignEdit() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Originate Timeout
+                                  Originate Timeout <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -1045,7 +1043,7 @@ function FportalCampaignEdit() {
                                     <input
                                       type="datetime-local"
                                       className="formItem"
-                                      {...register("start_date", { ...requiredValidator })}
+                                      {...register("start_date")}
                                     />
                                   </div>
                                 </div>
@@ -1065,7 +1063,7 @@ function FportalCampaignEdit() {
                                     <input
                                       type="datetime-local"
                                       className="formItem"
-                                      {...register("end_date", { ...requiredValidator })}
+                                      {...register("end_date")}
                                     />
                                   </div>
                                 </div>
@@ -1097,7 +1095,7 @@ function FportalCampaignEdit() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Did
+                                  Did <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -1544,7 +1542,7 @@ function FportalCampaignEdit() {
                           <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
                             <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
                               <div className="content">
-                                <h4>List of Buyers</h4>
+                                <h4>List of Buyers<span className="text-danger">*</span></h4> 
                                 <p>You can see the list of agents in this ring group.</p>
                               </div>
                               <div className="buttonGroup">
@@ -1570,7 +1568,7 @@ function FportalCampaignEdit() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Name
+                                        Name <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>
@@ -1585,7 +1583,7 @@ function FportalCampaignEdit() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Priority
+                                        Priority <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>
@@ -1658,7 +1656,7 @@ function FportalCampaignEdit() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Live Call Limit
+                                        Live Call Limit <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>

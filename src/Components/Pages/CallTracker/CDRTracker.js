@@ -3,27 +3,28 @@ import Header from '../../CommonComponents/Header'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import EmptyPrompt from '../../Loader/EmptyPrompt'
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader'
-import { generalGetFunction } from '../../GlobalFunction/globalFunction'
+import { generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
+import { api_url } from '../../../urls'
 
 const CDRTracker = () => {
     const [refreshState, setRefreshState] = useState();
     const [loading, setLoading] = useState();
-    const [searchValue, setSearchValue] = useState();
     const [allCdrReport, setAllCdrReport] = useState();
 
     // pagination states 
-    const [pageNumber, setPageNumber] = useState();
-    const [itemsPerPage, setItemsPerPage] = useState();
+    const [pageNumber, setPageNumber] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [searchValue, setSearchValue] = useState("");
+    
+    const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
-    const getRefresh = () => {
 
-    }
 
     const getAllCDRReports = async (shouldLoad) => {
         if (shouldLoad)
             setLoading(true);
-        const response = await generalGetFunction(`fportalcdr/all`);
+        const response = await generalGetFunction(api_url?.FPORTAL_ALL_CDR(pageNumber, itemsPerPage, searchValue));
         if (response.status) {
             setAllCdrReport(response?.data);
             setLoading(false);
@@ -34,11 +35,22 @@ const CDRTracker = () => {
             setRefreshState(false)
         }
     };
+
+    // useEffect hooks are start here ----
+
     useEffect(() => {
         setRefreshState(true)
-        const shouldLoad = false;
+        const shouldLoad = true;
         getAllCDRReports(shouldLoad)
-    }, [])
+    }, [debouncedSearchTerm, itemsPerPage, pageNumber])
+
+    // useEffect hooks are end here ----
+
+    const getRefresh = () => {
+        setRefreshState(true)
+        const shouldRefresh = false
+        getAllCDRReports(shouldRefresh)
+    }
 
     return (
         <main className='mainContent'>
@@ -53,7 +65,10 @@ const CDRTracker = () => {
                                         <div className="heading">
                                             <div className="content">
                                                 <h4> All Tracker CDR
-                                                    <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
+                                                    <button 
+                                                        class="clearButton" 
+                                                        onClick={getRefresh} 
+                                                        disabled={refreshState}>
                                                         <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
                                                 </h4>
                                                 <p>You can see all list of all Tracker CDR</p>

@@ -34,7 +34,7 @@ function ElasticTrunk() {
   // Initial data fetch
   useEffect(() => {
     getAllTrunk();
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {

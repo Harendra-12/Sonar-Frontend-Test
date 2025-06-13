@@ -86,23 +86,23 @@ function FportalCampaign() {
 
   const activateFCampaign = async (id) => {
     const response = await generalGetFunction(`fcampaign/start/${id}`);
-    if (response.status) {
+    if (response?.status) {
       toast?.success(response?.message)
       const shouldLoad = false
       getAllCampaigns(shouldLoad)
     } else {
-      toast.error(response.message);
+      // toast.error(response.message);
     }
   }
 
   const inactivateFCampaign = async (id) => {
     const response = await generalGetFunction(`fcampaign/stop/${id}`);
-    if (response.status) {
+    if (response?.status) {
       toast?.success(response?.message)
       const shouldLoad = false
       getAllCampaigns(shouldLoad)
     } else {
-      toast.error(response.message);
+      // toast.error(response.message);
     }
   }
 

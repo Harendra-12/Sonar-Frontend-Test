@@ -100,6 +100,8 @@ export async function generalGetFunction(endpoint) {
         toast.error("Too many attempts. Please wait before trying again.");
       } else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
+      } else if(err?.response?.status == 422){
+        toast.error(err?.response?.data?.message)
       } else {
         return err;
       }
@@ -572,3 +574,23 @@ export const useDebounce = (value, delay) => {
 
   return debouncedValue;
 }
+
+
+export const handleCsvDownload = (data) => {
+    const headers = Object.keys(data[0]);
+    const rows = data.map((obj) =>
+      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+    );
+    const csvContent = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
+    link.download = "sample.csv";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
