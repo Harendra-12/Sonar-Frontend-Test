@@ -20,8 +20,8 @@ function AlgeriaCompliance() {
                             <div className="overviewTableChild0">
                                 <div className="d-flex flex-wrap">
                                     <CountryComplianceHeader item={locationState.state.item} />
-                                    <div className="col-xxl-8 col-12 mx-auto">
-                                        <div className="basicContent">
+                                    <div className="col-xxl-8 col-12 mx-auto compliancesBox mt-5">
+                                        <div className="basicContent my-0">
                                             <div className='heading'>
                                                 Locale Summary
                                             </div>
@@ -60,8 +60,8 @@ function AlgeriaCompliance() {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className="col-xxl-8 col-12 mx-auto">
-                                        <div className="basicContent">
+                                    <div className="col-xxl-8 col-12 mx-auto compliancesBox">
+                                        <div className="basicContent my-0">
                                             <div className='heading'>
                                                 Numbers Summary
                                             </div>
@@ -79,11 +79,11 @@ function AlgeriaCompliance() {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className="col-xxl-8 col-12 mx-auto">
-                                        <div className="basicContent">
+                                    <div className="col-xxl-8 col-12 mx-auto compliancesBox">
+                                        <div className="basicContent my-0">
                                             <h4>Requirements for Individuals</h4>
                                             <ul>
-                                                <li>
+                                                <li className='listingLi'>
                                                     <div className='row'>
                                                         <div className='col-4'>
                                                             <div className='heading'>
@@ -136,22 +136,25 @@ function AlgeriaCompliance() {
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <p>
-                                                Service usage must be in accordance with National and International regulations. In particular, numbers must not be used to display, send or transmit prohibited content.
-                                            </p>
-                                            <p>
-                                                Numbers cannot be disclosed on the Internet or in any public advertising.
-                                            </p>
-                                            <p>
-                                                Callback services are not allowed.
-                                            </p>
+                                            <div className='compDetails'>
+                                                <p>
+                                                    Service usage must be in accordance with National and International regulations. In particular, numbers must not be used to display, send or transmit prohibited content.
+                                                </p>
+                                                <p>
+                                                    Numbers cannot be disclosed on the Internet or in any public advertising.
+                                                </p>
+                                                <p>
+                                                    Callback services are not allowed.
+                                                </p>
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-xxl-8 col-12 mx-auto">
-                                        <div className="basicContent">
+                                    <div className="col-xxl-8 col-12 mx-auto compliancesBox">
+                                        <div className="basicContent my-0">
                                             <h4>Requirements for Businesses</h4>
                                             <ul>
-                                                <li>
+                                                <li className='listingLi'>
                                                     <div className='row'>
                                                         <div className='col-4'>
                                                             <div className='heading'>
@@ -217,16 +220,19 @@ function AlgeriaCompliance() {
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <p>
-                                                Service usage must be in accordance with National and International regulations. In particular, numbers must not be used to display, send or transmit prohibited content.
-                                            </p>
-                                            <p>
-                                                Numbers cannot be disclosed on the Internet or in any public advertising.
-                                            </p>
-                                            <p>
-                                                Callback services are not allowed.
-                                            </p>
-                                            <p>*Although documentation is not required at this time, to avoid urgent escalation we advise you to verify the accuracy of any supplied information, such as collecting or checking documentary proof of the information you have provided. Additional information may be required in the future.</p>
+                                            <div className='compDetails'>
+                                                <p>
+                                                    Service usage must be in accordance with National and International regulations. In particular, numbers must not be used to display, send or transmit prohibited content.
+                                                </p>
+                                                <p>
+                                                    Numbers cannot be disclosed on the Internet or in any public advertising.
+                                                </p>
+                                                <p>
+                                                    Callback services are not allowed.
+                                                </p>
+                                                <p>*Although documentation is not required at this time, to avoid urgent escalation we advise you to verify the accuracy of any supplied information, such as collecting or checking documentary proof of the information you have provided. Additional information may be required in the future.</p>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

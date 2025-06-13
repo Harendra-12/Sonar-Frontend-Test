@@ -7,10 +7,10 @@ const Usage = () => {
     const [endDateFlag, setEndDateFlag] = useState("");
     const [filterBy, setFilterBy] = useState("date");
     const [createdAt, setCreatedAt] = useState("");
-        const [startDate, setStartDate] = useState("");
-            const [endDate, setEndDate] = useState("");
-               const [pageNumber, setPageNumber] = useState(1);
-    
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [pageNumber, setPageNumber] = useState(1);
+
 
 
     const [timeFlag, setTimeFlag] = useState({
