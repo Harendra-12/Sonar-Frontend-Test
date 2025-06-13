@@ -695,9 +695,7 @@ const AiDashboard = () => {
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center">
                                                             <div className='col-auto'>
-                                                                <h5 className="d-flex">Agent Status
-
-                                                                </h5>
+                                                                <h5 className="d-flex mb-3">Ai Agent Status</h5>
                                                             </div>
 
                                                         </div>
