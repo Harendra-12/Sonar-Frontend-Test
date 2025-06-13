@@ -76,59 +76,59 @@ const Socket = () => {
           const { key, result, current_time } = message;
 
           switch (key) {
-            case "CallState":
-              dispatch({ type: "SET_CALLSTATE", callState: result });
-              break;
-            case "ChannelHangupComplete":
-              dispatch({
-                type: "SET_CHANNELHANGUP",
-                channelHangupComplete: result,
-              });
-              if (Number(result.account_id) === Number(account.account_id)) {
-                dispatch({ type: "SET_BALANCE", balance: message.balance });
-              }
-              break;
-            case "activeCalls":
-              dispatch({
-                type: "SET_ACTIVECALL",
-                activeCall: result
-                  .filter(
-                    (item) =>
-                      item.application_state !== "conference" &&
-                      item.account_id == account.account_id
-                  )
-                  .map((item) => ({ ...item, serverTime: current_time })),
-              });
-              break;
-            case "Conference":
-              dispatch({ type: "SET_CONFERENCE", conference: result });
-              break;
+            // case "CallState":
+            //   dispatch({ type: "SET_CALLSTATE", callState: result });
+            //   break;
+            // case "ChannelHangupComplete":
+            //   dispatch({
+            //     type: "SET_CHANNELHANGUP",
+            //     channelHangupComplete: result,
+            //   });
+            //   if (Number(result.account_id) === Number(account.account_id)) {
+            //     dispatch({ type: "SET_BALANCE", balance: message.balance });
+            //   }
+            //   break;
+            // case "activeCalls":
+            //   dispatch({
+            //     type: "SET_ACTIVECALL",
+            //     activeCall: result
+            //       .filter(
+            //         (item) =>
+            //           item.application_state !== "conference" &&
+            //           item.account_id == account.account_id
+            //       )
+            //       .map((item) => ({ ...item, serverTime: current_time })),
+            //   });
+            //   break;
+            // case "Conference":
+            //   dispatch({ type: "SET_CONFERENCE", conference: result });
+            //   break;
             // case "logout_warning":
             //   dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
             //   break;
-            case "screenShare":
-              dispatch({
-                type: "SET_CONFERENCESCREENSHARESTATUS",
-                conferenceScreenShareStatus: result,
-              });
-              break;
-            case "broadcastGroupMessage":
-              dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
-              break;
-            case "conferenceMessage":
-              if (result["room_id"] == RoomID) {
-                dispatch({
-                  type: "SET_CONFERENCEMESSAGE",
-                  conferenceMessage: result,
-                });
-              }
-              break;
-            case "clientMsg":
-              dispatch({
-                type: "SET_INCOMING_MESSAGE",
-                incomingMessage: result,
-              });
-              break;
+            // case "screenShare":
+            //   dispatch({
+            //     type: "SET_CONFERENCESCREENSHARESTATUS",
+            //     conferenceScreenShareStatus: result,
+            //   });
+            //   break;
+            // case "broadcastGroupMessage":
+            //   dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
+            //   break;
+            // case "conferenceMessage":
+            //   if (result["room_id"] == RoomID) {
+            //     dispatch({
+            //       type: "SET_CONFERENCEMESSAGE",
+            //       conferenceMessage: result,
+            //     });
+            //   }
+            //   break;
+            // case "clientMsg":
+            //   dispatch({
+            //     type: "SET_INCOMING_MESSAGE",
+            //     incomingMessage: result,
+            //   });
+            //   break;
             case "progressive":
               dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
               break;
