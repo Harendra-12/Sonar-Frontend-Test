@@ -41,7 +41,6 @@ const UsersAdd = () => {
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   const [filterExtensions, setFilterExtensions] = useState();
-  const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
   const account = useSelector((state) => state.account);
@@ -95,15 +94,20 @@ const UsersAdd = () => {
   }, []);
 
   // Getting user and extension so that we can filter out which extension is not assign
-  useEffect(() => {
-    if (allUserRefresh > 0) {
-      setUser(allUser.data);
-    } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+  const getAllUser = async () => {
+    const apidataUser = await generalGetFunction(
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+    );
+    if (apidataUser?.status) {
+      setUser(apidataUser.data);
     }
+  }
+
+  useEffect(() => {
+    if (!user) {
+      getAllUser();
+    };
+
     if (extensionAllRefresh > 0) {
       setExtension(extensionAll.data);
     } else {
@@ -112,7 +116,7 @@ const UsersAdd = () => {
         extensionAllRefresh: extensionAllRefresh + 1,
       });
     }
-  }, [allUser, extensionAll]);
+  }, [user, extensionAll]);
 
   //Filtering out which extension is not assign
   useEffect(() => {
@@ -244,10 +248,11 @@ const UsersAdd = () => {
       setUserPermissionBridge([]); // Variable Bridge for New Permission 
       toast.success(addUser.message);
       setLoading(false);
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+      // dispatch({
+      //   type: "SET_ALLUSERREFRESH",
+      //   allUserRefresh: allUserRefresh + 1,
+      // });
+      getAllUser();
       dispatch({
         type: "SET_EXTENSIONALLREFRESH",
         extensionAllRefresh: extensionAllRefresh + 1,
@@ -644,9 +649,9 @@ const UsersAdd = () => {
                                   }}
                                 >
                                   {profileImage ? (
-                                    <i className="fa-solid fa-pen profilePhotoEditIcon"></i>
+                                    <i className="fa-solid fa-pen profilePhotoEditIcon sm"></i>
                                   ) : (
-                                    <i className="fa-solid fa-plus profilePhotoAddIcon"></i>
+                                    <i className="fa-solid fa-plus profilePhotoAddIcon sm"></i>
                                   )}
                                   <img
                                     src={

@@ -198,6 +198,9 @@ import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
 import CDRTracker from "./Components/Pages/CallTracker/CDRTracker";
 import AllUser from "./Components/Pages/Ai/AllUser";
+import AiDashboard from "./Components/Pages/Ai/AiDashboard";
+import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
+import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -842,6 +845,7 @@ function App() {
           <Route path="/ai-call-history" element={<CallHistory />} />
           <Route path="/ai-billing" element={<Billing />} />
           <Route path="/ai-batch-call" element={<AiBatchCall />} />
+          <Route path="/ai-agent-dashboard" element={<AiDashboard />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/all-users" element={<AllUser />} />
@@ -1065,6 +1069,10 @@ function App() {
               <DidListingAdd /> :
               <Navigate to="/dashboard" replace />
           } />
+
+          <Route path="/number-compliances" element={<NumberCompliancesHome />} />
+          <Route path="/number-compliances/:country" element={<AlgeriaCompliance />} />
+
           {/* Number Management Path End */}
 
           {/* Payment path start */}

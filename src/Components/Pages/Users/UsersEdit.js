@@ -49,7 +49,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   // const [filterExtensions, setFilterExtensions] = useState();
-  const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
@@ -109,71 +108,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         }
       }
       getDomain();
-      if (locationState) {
-        async function getData() {
-          if (locationState) {
-            let data = locationState;
-            let firstName = "";
-            let lastName = "";
-            const {
-              name,
-              user_role, // Default to an empty object if user_role is null or undefined
-              usertype,
-            } = data;
-            let role_id = "";
-            if (user_role) {
-              role_id = user_role.role_id;
-            } else {
-              role_id = "";
-            }
-            if (usertype == "Company") {
-              setIsCustomerAdmin(true);
-            }
-
-            const separateName = name.split(" ");
-            if (separateName.length == 1) {
-              firstName = separateName[0];
-            } else if (separateName.length == 2) {
-              firstName = separateName[0];
-              lastName = separateName[1];
-            } else {
-              firstName = separateName[0];
-              lastName = separateName.slice(1, separateName.length).join(" ");
-            }
-            const newData = {
-              ...data,
-              ...{
-                firstName: firstName,
-                lastName: lastName,
-                role_id: `${role_id}`,
-              },
-            };
-            setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
-            setSelectedSearch({
-              label: newData?.extension?.extension,
-              value: newData?.extension_id,
-            });
-            if (!isCustomerAdmin) {
-              setSelectedPermission(newData.permissions);
-              if (newData?.user_role) {
-                setSelectedRole(newData?.user_role.role_id);
-              }
-            }
-
-            setProfileImage(newData?.profile_picture);
-            // setNewImage(newData?.profile_picture);
-            delete newData.name;
-            delete newData.user_role;
-            delete newData.permissions;
-            reset(newData);
-          }
-        }
-        if (account.id) {
-          getData();
-          getUserData();
-        } else {
-          navigate("/");
-        }
+      if (account.id) {
+        getUserData();
       } else {
         navigate("/");
       }
@@ -181,15 +117,20 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   }, [account, navigate]);
 
   // Getting user and extension data to check which extension is not assigned
-  useEffect(() => {
-    if (allUserRefresh > 0) {
-      setUser(allUser.data);
-    } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+  const getAllUser = async () => {
+    const apidataUser = await generalGetFunction(
+      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+    );
+    if (apidataUser?.status) {
+      setUser(apidataUser.data);
     }
+  }
+
+  useEffect(() => {
+    if (!user) {
+      getAllUser();
+    };
+
     if (extensionAllRefresh > 0) {
       setExtension(extensionAll.data);
     } else {
@@ -198,16 +139,16 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         extensionAllRefresh: extensionAllRefresh + 1,
       });
     }
-  }, [allUser, extensionAll]);
+  }, [user, extensionAll]);
 
   // Filtering unused extension
   useEffect(() => {
-    if (extension && user && locationState) {
+    if (extension && user && userData) {
       const data = extension.filter((item) => {
         return !user.some((userItem) => {
           return (
             userItem.extension_id === item.id &&
-            userItem.extension_id !== locationState.extension_id
+            userItem.extension_id !== userData.extension_id
           );
         });
       });
@@ -225,7 +166,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
 
       setSearchExtensions([{ value: null, label: "None" }, ...options]);
     }
-  }, [accountDetails, user, locationState, extension]);
+  }, [accountDetails, user, userData, extension]);
 
   // Get the latest data of account
   useEffect(() => {
@@ -320,12 +261,12 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     if (addUser.status) {
       setPopUp(false);
       toast.success(addUser.message);
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+      // dispatch({
+      //   type: "SET_ALLUSERREFRESH",
+      //   allUserRefresh: allUserRefresh + 1,
+      // });
+      getAllUser();
       getUserData();
-
       // navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
@@ -414,6 +355,61 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         const response = await generalGetFunction(`user/${locationState.id}`);
         if (response.status) {
           setUserData(response.data);
+
+          let data = response.data;
+          let firstName = "";
+          let lastName = "";
+          const {
+            name,
+            user_role, // Default to an empty object if user_role is null or undefined
+            usertype,
+          } = data;
+          let role_id = "";
+          if (user_role) {
+            role_id = user_role.role_id;
+          } else {
+            role_id = "";
+          }
+          if (usertype == "Company") {
+            setIsCustomerAdmin(true);
+          }
+
+          const separateName = name.split(" ");
+          if (separateName.length == 1) {
+            firstName = separateName[0];
+          } else if (separateName.length == 2) {
+            firstName = separateName[0];
+            lastName = separateName[1];
+          } else {
+            firstName = separateName[0];
+            lastName = separateName.slice(1, separateName.length).join(" ");
+          }
+          const newData = {
+            ...data,
+            ...{
+              firstName: firstName,
+              lastName: lastName,
+              role_id: `${role_id}`,
+            },
+          };
+          setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
+          setSelectedSearch({
+            label: newData?.extension?.extension,
+            value: newData?.extension_id,
+          });
+          if (!isCustomerAdmin) {
+            setSelectedPermission(newData.permissions);
+            if (newData?.user_role) {
+              setSelectedRole(newData?.user_role.role_id);
+            }
+          }
+
+          setProfileImage(newData?.profile_picture);
+          // setNewImage(newData?.profile_picture);
+          delete newData.name;
+          delete newData.user_role;
+          delete newData.permissions;
+          reset(newData);
         }
       } catch (err) {
         console.log(err);
@@ -636,9 +632,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     }}
                                   >
                                     {profileImage ? (
-                                      <i className="fa-solid fa-pen profilePhotoEditIcon"></i>
+                                      <i className="fa-solid fa-pen profilePhotoEditIcon sm"></i>
                                     ) : (
-                                      <i className="fa-solid fa-plus profilePhotoAddIcon"></i>
+                                      <i className="fa-solid fa-plus profilePhotoAddIcon sm"></i>
                                     )}
 
                                     <img
@@ -914,7 +910,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="col-6">
                               <select
                                 className="formItem"
-                                name="extension_id"
                                 value={watch().usages}
                                 {...register("usages", {
                                   ...requiredValidator,

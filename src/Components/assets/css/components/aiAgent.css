@@ -535,3 +535,50 @@
   font-weight: 400;
   margin-bottom: 0;
 }
+
+
+
+
+
+/* ===================  number-compliances */
+
+
+.compliancesBox{
+    box-shadow: rgba(120, 120, 120, 0.1) -3px 1px 16px;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.compliancesBox .basicContent .heading{
+    background: var(--color2);
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffff;
+}
+
+.compliancesBox .basicContent ul li:nth-child(2n-1).listingLi {
+  background-color: var(--color2) !important;
+}
+.compliancesBox .basicContent ul li:nth-child(2n-1).listingLi .heading {
+  padding: 0;
+  background-color: transparent;
+}
+.compliancesBox .basicContent h4{
+    margin-bottom: 20px;
+}
+.compliancesBox .basicContent ul li{
+    list-style-type: none;
+    padding: 20px;
+}
+.compliancesBox .basicContent ul li:nth-child(2n-1) {
+  background-color: var(--table-odd-color) !important;
+}
+.compliancesBox .basicContent ul li p{
+   margin-bottom: 0;
+}
+.compliancesBox .basicContent .compDetails{
+   margin-bottom: 0;
+   padding: 0;
+   margin-top: 30px;
+}

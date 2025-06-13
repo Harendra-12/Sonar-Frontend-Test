@@ -508,32 +508,176 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   sessionManager.disconnect();
 }
 
-// Function to Format Time to AM/PM
-export function formatTimeWithAMPM(timeString) {
-  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+// Function to Convert Date to current TimeZone
+export function convertDateToCurrentTimeZone(dateString) {
+  const account = localStorage.getItem("account");
+  try {
+    const timeZone = JSON.parse(account)?.timezone?.name;
+    // Create a Date object from the input string (UTC midnight)
+    const date = new Date(dateString + 'T00:00:00Z');
 
-  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+    if (isNaN(date.getTime())) {
+      return "Invalid date format";
+    }
+
+    // Options for formatting
+    const options = {
+      timeZone: timeZone || 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    };
+
+    // Format the date according to the timezone
+    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const parts = formatter.formatToParts(date);
+
+    // Extract year, month, and day from the formatted parts
+    const year = parts.find(p => p.type === 'year').value;
+    const month = parts.find(p => p.type === 'month').value;
+    const day = parts.find(p => p.type === 'day').value;
+
+    // Reconstruct in original format but with timezone-adjusted values
+    return `${year}-${month}-${day}`;
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Invalid date format";
+  }
+}
+
+// Function to Format Time to AM/PM in Current TimeZone
+export function formatTimeWithAMPM(timeString) {
+  const account = localStorage.getItem("account");
+  try {
+    const timeZone = JSON.parse(account)?.timezone?.name;
+
+    // Create a date object with the input time (using today's date)
+    const now = new Date();
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    // Set the time components
+    const date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, seconds);
+
+    // Format the time according to the timezone
+    const options = {
+      timeZone: timeZone || 'UTC', // Use provided timezone or default to UTC
+      hour12: true,
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+
+    let formattedTime = date.toLocaleTimeString('en-US', options);
+
+    // Ensure AM/PM is uppercase and format is consistent
+    formattedTime = formattedTime.replace(/(am|pm)/i, match => match.toUpperCase());
+
+    return formattedTime;
+  } catch (error) {
+    console.error("Error formatting time:", error);
     return "Invalid time format";
   }
+}
+// Formate date for time stamp to get time when message arrives
+export function formatRelativeTime(dateString) {
+  const account = localStorage.getItem("account");
+  try {
+    const timeZone = JSON.parse(account)?.timezone?.name;
+    // Parse input date (UTC) and current time
+    const date = new Date(dateString);
+    const now = new Date();
 
-  let period = 'AM';
-  let formattedHours = hours;
+    // Convert both dates to the target timezone for accurate comparison
+    const dateInTz = new Date(date.toLocaleString('en-US', { timeZone }));
+    const nowInTz = new Date(now.toLocaleString('en-US', { timeZone }));
 
-  if (hours >= 12) {
-    period = 'PM';
-    if (hours > 12) {
-      formattedHours -= 12;
+    // Calculate differences in timezone-adjusted time
+    const diffMs = nowInTz - dateInTz;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    // Handle timezone-adjusted relative time
+    if (diffDays >= 1) {
+      if (diffDays === 1) return "Yesterday";
+
+      // Format full date in target timezone
+      return dateInTz.toLocaleDateString('en-US', {
+        timeZone,
+        month: 'short',
+        day: 'numeric',
+        year: diffDays >= 365 ? 'numeric' : undefined
+      });
+    } else if (diffHours >= 1) {
+      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+    } else if (diffMinutes >= 1) {
+      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+    } else {
+      return `${diffSeconds} second${diffSeconds !== 1 ? "s" : ""} ago`;
     }
+  } catch (error) {
+    console.error("Error formatting time:", error);
+    // Fallback to UTC formatting if timezone fails
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US');
+  }
+}
+
+// Format date to get today date OR YYYY-MM-DD H:M:I in YYYY-MM-DD H:M:I according to timezone 
+export function formatDateTime(dateInput) {
+  // Parse account timezone
+  const account = localStorage.getItem("account");
+  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+
+  // Convert input to Date object if it's a string
+  let date;
+  if (typeof dateInput === 'string') {
+    // Handle both "2025-06-13 13:37:55" and ISO format
+    const isoString = dateInput.includes('T') ? dateInput : dateInput.replace(' ', 'T');
+    date = new Date(isoString);
+    if (isNaN(date.getTime())) {
+      console.error('Invalid date string:', dateInput);
+      return 'Invalid Date';
+    }
+  } else if (dateInput instanceof Date) {
+    date = dateInput;
+  } else {
+    console.error('Invalid date input type:', typeof dateInput);
+    return 'Invalid Date';
   }
 
-  if (formattedHours === 0) {
-    formattedHours = 12; // Midnight is 12 AM
-  }
+  // Timezone-aware formatting
+  const options = {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  };
 
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const parts = formatter.formatToParts(date);
 
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  // Extract components
+  const getPart = (type) => parts.find(p => p.type === type)?.value || '00';
+
+  return [
+    getPart('year'),
+    getPart('month'),
+    getPart('day'),
+  ].join('-') + ' ' + [
+    getPart('hour'),
+    getPart('minute'),
+    getPart('second')
+  ].join(':');
 }
 
 // Function to format Time Duration

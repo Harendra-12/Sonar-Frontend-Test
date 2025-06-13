@@ -10,6 +10,8 @@ import AgentSearch from "./AgentSearch";
 import InitiateCall from "./LivekitConference/InitiateCall";
 import {
   featureUnderdevelopment,
+  formatDateTime,
+  formatRelativeTime,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -343,39 +345,39 @@ function Messages({
   };
 
   // Formate date to get today date same as backend send
-  const formatDateTime = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
+  // const formatDateTime = (date) => {
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const hours = String(date.getHours()).padStart(2, "0");
+  //   const minutes = String(date.getMinutes()).padStart(2, "0");
+  //   const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
+  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  // };
 
   // Formate date for time stamp to get time when message arrives
-  function formatRelativeTime(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
+  // function formatRelativeTime(dateString) {
+  //   const date = new Date(dateString);
+  //   const now = new Date();
 
-    const diffMs = now - date;
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
+  //   const diffMs = now - date;
+  //   const diffSeconds = Math.floor(diffMs / 1000);
+  //   const diffMinutes = Math.floor(diffSeconds / 60);
+  //   const diffHours = Math.floor(diffMinutes / 60);
+  //   const diffDays = Math.floor(diffHours / 24);
 
-    if (diffDays >= 1) {
-      if (diffDays === 1) return "Yesterday";
-      return date.toLocaleDateString(); // Formats as the date for older days
-    } else if (diffHours >= 1) {
-      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-    } else if (diffMinutes >= 1) {
-      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
-    } else {
-      return `${diffSeconds} second${diffSeconds > 1 ? "s" : ""} ago`;
-    }
-  }
+  //   if (diffDays >= 1) {
+  //     if (diffDays === 1) return "Yesterday";
+  //     return date.toLocaleDateString(); // Formats as the date for older days
+  //   } else if (diffHours >= 1) {
+  //     return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+  //   } else if (diffMinutes >= 1) {
+  //     return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+  //   } else {
+  //     return `${diffSeconds} second${diffSeconds > 1 ? "s" : ""} ago`;
+  //   }
+  // }
 
   // Getting messages based on pagination
   useEffect(() => {
@@ -396,7 +398,7 @@ function Messages({
             {
               from: item.user_id,
               body: item?.message_text,
-              time: item.created_at,
+              time: formatDateTime(item.created_at),
               user_id: item.user_id,
               user_name: user_details?.username,
               profile_picture: user_details?.profile_picture,

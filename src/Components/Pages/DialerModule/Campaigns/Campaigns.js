@@ -25,6 +25,7 @@ function Campaigns() {
   const campaignDetails = useSelector((state) => state.campaignDetails);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
+  const [currentLeadData, setCurrentLeadData] = useState({});
 
   const getCampaignData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
@@ -256,18 +257,68 @@ function Campaigns() {
                                             isCampaignLive: campaignDetails.campaign_status ? (campaignDetails.campaign_status === "Aborted" || campaignDetails.campaign_status === "Completed" ? false : true) : false
                                           } : null;
 
+                                        if (campaignDetails?.campaign_id?.toString() === item?.id?.toString() && campaignDetails?.lead) {
+                                          if (!currentLeadData || currentLeadData.id !== campaignDetails.lead.id) {
+                                            setCurrentLeadData(campaignDetails.lead);
+                                          }
+                                        }
+                                        // const currentLeadData = campaignDetails?.campaign_id?.toString() === item?.id?.toString() && campaignDetails?.lead
+                                        // ?
+                                        // {
+                                        //   phone_number: campaignDetails.lead.phone_code + ' ' + campaignDetails.lead.phone_number,
+                                        //   name: campaignDetails?.lead?.title + ' ' + campaignDetails?.lead?.first_name + ' ' + campaignDetails?.lead?.middle_initial + ' ' + campaignDetails?.lead?.last_name,
+                                        //   city: campaignDetails?.lead?.city,
+                                        //   email: campaignDetails?.lead?.email,
+                                        // } : null;
+
                                         return (
                                           <>
                                             <tr key={index}>
                                               <td>
-                                                <div className="d-flex align-items-center justify-content-start ">
-                                                  <div className="phone-call">
-                                                    <i className={`fa-solid fa-${!campaignSocketData?.isCampaignLive || item.status === "Aborted" ? 'stop' : 'play'}`} />
-                                                  </div>
-                                                  <div>
-                                                    <span className="ms-1 text-capitalize">{campaignSocketData?.status?.replace(/_/g, " ") || item.status}</span>
-                                                  </div>
-                                                </div>
+                                                {
+                                                  currentLeadData && Object.keys(currentLeadData).length > 0 ?
+                                                    <Tippy content={
+                                                      <ul className="dropdown-menu-hover">
+                                                        <li>
+                                                          <div className='dropdown-item'>
+                                                            <span>Name: <b>{currentLeadData?.title} {currentLeadData?.first_name} {currentLeadData?.middle_initial} {currentLeadData?.last_name}</b></span>
+                                                          </div>
+                                                        </li>
+                                                        <li>
+                                                          <div className='dropdown-item'>
+                                                            <span>Phone Number: <b>{currentLeadData?.phone_code} {currentLeadData?.phone_number}</b></span>
+                                                          </div>
+                                                        </li>
+                                                        <li>
+                                                          <div className='dropdown-item'>
+                                                            <span>City: <b>{currentLeadData?.city}</b></span>
+                                                          </div>
+                                                        </li>
+                                                        <li>
+                                                          <div className='dropdown-item'>
+                                                            <span>Email: <b>{currentLeadData?.email}</b></span>
+                                                          </div>
+                                                        </li>
+                                                      </ul>
+                                                    } allowHTML={true}>
+                                                      <div className="d-flex align-items-center justify-content-start ">
+                                                        <div className="phone-call">
+                                                          <i className={`fa-solid fa-${!campaignSocketData?.isCampaignLive || item.status === "Aborted" ? 'stop' : 'play'}`} />
+                                                        </div>
+                                                        <div>
+                                                          <span className="ms-1 text-capitalize">{campaignSocketData?.status?.replace(/_/g, " ") || item.status}</span>
+                                                        </div>
+                                                      </div>
+                                                    </Tippy> :
+                                                    <div className="d-flex align-items-center justify-content-start ">
+                                                      <div className="phone-call">
+                                                        <i className={`fa-solid fa-${!campaignSocketData?.isCampaignLive || item.status === "Aborted" ? 'stop' : 'play'}`} />
+                                                      </div>
+                                                      <div>
+                                                        <span className="ms-1 text-capitalize">{campaignSocketData?.status?.replace(/_/g, " ") || item.status}</span>
+                                                      </div>
+                                                    </div>
+                                                }
                                               </td>
                                               <td><b>{item.title}</b></td>
                                               <td style={{ textTransform: 'capitalize' }}>{item?.dialer?.type}</td>

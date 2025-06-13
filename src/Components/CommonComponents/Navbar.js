@@ -1227,6 +1227,7 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/all-ai-agent",
+                            "/ai-dashboard",
                             "/ai-all-agent",
                             "/all-users",
                             "/ai-knowledge-base",
@@ -1250,6 +1251,7 @@ function Navbar() {
                       <div
                         id="collapse14"
                         className={`accordion-collapse collapse ${isChildActive([
+                          "/ai-agent-dashboard",
                           "/all-ai-agent",
                           "/ai-all-agent",
                           "/all-users",
@@ -1269,38 +1271,14 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             <li className="tabItem ">
-                              <Link
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/did-listing-tracker"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                                onClick={() => featureUnderdevelopment()}
-                              >
-                                <div className="itemTitle">Dashboard</div>
-                              </Link>
-                            </li>
-                            {/* <li className="tabItem ">
-                              <Link onClick={() => featureUnderdevelopment()}>
-                                <div className="itemTitle">
-                                  Number Configuration
-                                </div>
-                              </Link>
-                            </li> */}
-
-                            {/* <li className="tabItem ">
                               <NavLink
-                                to="/all-ai-agent"
+                                to="/ai-agent-dashboard"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
                                     [
-                                      "/all-ai-agent",
-                                      "/ai-agent-add",
-                                      "/ai-agent-edit",
+                                      "/ai-agent-dashboard",
+
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -1308,9 +1286,11 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                <div className="itemTitle">Agents</div>
+                                <div className="itemTitle">Ai Dashboard</div>
                               </NavLink>
-                            </li> */}
+
+                            </li>
+
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-all-agent"
@@ -2117,7 +2097,7 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
-                            {isCustomerAdmin && (
+                            {/* {isCustomerAdmin && (
                               <li className="tabItem ">
                                 <NavLink
                                   to="/global-permission-config"
@@ -2128,7 +2108,7 @@ function Navbar() {
                                   </div>
                                 </NavLink>
                               </li>
-                            )}
+                            )} */}
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"

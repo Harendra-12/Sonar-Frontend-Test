@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import { convertDateToCurrentTimeZone, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
@@ -240,7 +240,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                       </div>
                       <div className=" ">
                         <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                        <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                        <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                       </div>
                       <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                         <button>
@@ -263,7 +263,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                     </div>
                     <div className=" ">
                       <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                      <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                      <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                     </div>
                     <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                       <button>
