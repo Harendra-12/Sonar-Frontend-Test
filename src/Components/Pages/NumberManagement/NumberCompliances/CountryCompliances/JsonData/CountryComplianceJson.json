@@ -1,0 +1,1797 @@
+[
+    {
+        "country_code": "DZ",
+        "data": {
+            "locale": {
+                "name": "Algeria",
+                "iso_code": "DZ",
+                "region": "Middle East & Africa",
+                "national_prefixes": [
+                    "+21398"
+                ]
+            },
+            "requirements": {
+                "individuals": {
+                    "information_required": [
+                        "End-user Name",
+                        "Proof of Identity",
+                        "End-user Address (within Algeria)",
+                        "Service Usage Description"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": "End-user’s passport or any other form of ID",
+                        "End-user Address": "No documentation required*",
+                        "Service Usage Description": "No documentation required*"
+                    },
+                    "usage_restrictions": [
+                        "Service usage must comply with National and International regulations.",
+                        "Numbers must not be used to display, send or transmit prohibited content.",
+                        "Numbers cannot be disclosed on the Internet or in public advertising.",
+                        "Callback services are not allowed."
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "End-user Name",
+                        "Proof of Identity",
+                        "End-user Address (within Algeria)",
+                        "Business Name",
+                        "Business Address (within Algeria)",
+                        "Proof of Business",
+                        "Service Usage Description"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": "End-user’s passport or any other form of ID",
+                        "End-user Address": "No documentation required*",
+                        "Business Registration Document": "Required",
+                        "Service Usage Description": "No documentation required*"
+                    },
+                    "usage_restrictions": [
+                        "Service usage must comply with National and International regulations.",
+                        "Numbers must not be used to display, send or transmit prohibited content.",
+                        "Numbers cannot be disclosed on the Internet or in public advertising.",
+                        "Callback services are not allowed."
+                    ]
+                },
+                "notes": [
+                    "*Although documentation is not required at this time, Twilio advises verifying the accuracy of any supplied information, such as collecting or checking documentary proof. Additional information may be required in the future."
+                ]
+            },
+            "legal_notice": "These guidelines are provided to help comply with applicable requirements. They represent Twilio’s current understanding and do not constitute legal advice. Compliance obligations apply to your specific use cases, and guidelines may be updated without notice."
+        }
+    },
+    {
+        "country_code": "AR",
+        "data": {
+            "locale": {
+                "name": "Argentina",
+                "iso_code": "AR",
+                "region": "South America",
+                "mobile_country_code": "722",
+                "dialing_code": "+54"
+            },
+            "toll_free_requirements": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Proof of Identity",
+                        "Business Address (within Argentina)"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government-issued ID",
+                            "Argentina Visa",
+                            "Passport"
+                        ],
+                        "Business Address": [
+                            "Gov’t ID with local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Business Address (within Argentina)"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Commercial register"
+                        ],
+                        "Business Address": [
+                            "Commercial register with local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Twilio's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Twilio and its customers, and do not constitute legal advice. By posting these guidelines, Twilio makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+        }
+    },
+    {
+        "country_code": "AU",
+        "data": {
+            "locale": {
+                "name": "Australia",
+                "iso_code": "AU",
+                "region": "Oceania"
+            },
+            "numbers_summary": {
+                "mobile_prefixes": [
+                    "+614"
+                ],
+                "toll_free_prefixes": [
+                    "+611800"
+                ],
+                "shared_cost_prefixes": [
+                    "+611300"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required",
+                        "Address": "No documentation required"
+                    },
+                    "notes": [
+                        "If the number is from a different charging district, calls may be charged as if you were in that district.",
+                        "Porting to another provider may not be available.",
+                        "Twilio services are intended for business use or for individuals in connection with trade/craft/profession."
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required",
+                        "Business Address": "No documentation required"
+                    },
+                    "notes": [
+                        "If the number is from a different charging district, calls may be charged as if you were in that district.",
+                        "Porting to another provider may not be available.",
+                        "Twilio services are intended for business use or for individuals in connection with trade/craft/profession."
+                    ]
+                }
+            },
+            "mobile_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "Proof of Identity (Government‑issued ID or Passport)",
+                        "Address": "Proof of Address (Gov’t ID, utility bill, tax notice, rent receipt, or title deed)"
+                    },
+                    "notes": [
+                        "Address may be anywhere in the world.",
+                        "Twilio services are intended for business use or for individuals in connection with trade/craft/profession."
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Business ID Number"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "Proof of Identity (commercial registry or equivalent)",
+                        "Business Address": "Proof of Address (commercial registry or equivalent, utility bill, tax notice, rent receipt, or title deed)",
+                        "Business ID Number": "Proof of Business ID (commercial registry or equivalent)"
+                    },
+                    "notes": [
+                        "Business Address may be anywhere in the world."
+                    ]
+                }
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required",
+                        "Address": "No documentation required"
+                    },
+                    "notes": [
+                        "Address may be anywhere in the world.",
+                        "Twilio services are intended for business use or for individuals in connection with trade/craft/profession."
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required",
+                        "Business Address": "No documentation required"
+                    },
+                    "notes": [
+                        "Business Address may be anywhere in the world."
+                    ]
+                }
+            },
+            "legal_notice": "These guidelines are provided to help you comply with applicable requirements [...] do not constitute legal advice. You are expected to abide by all compliance obligations applicable to your use cases, and should check regularly for updates as requirements evolve."
+        }
+    },
+    {
+        "country_code": "AT",
+        "data": {
+            "locale": {
+                "name": "Austria",
+                "iso_code": "AT",
+                "region": "Europe"
+            },
+            "numbers_summary": {
+                "mobile_prefixes": [
+                    "+436"
+                ],
+                "toll_free_prefixes": [
+                    "+43800"
+                ],
+                "national_prefixes": [
+                    "+43720"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Academic Degree (optional, EU/EEA only)"
+                    ],
+                    "documentation_required": {
+                        "Name": [
+                            "Government‑issued ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ],
+                        "Address": [
+                            "Gov’t ID with matching address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Academic Degree": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Name of Authorized Representative"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "Company book excerpt or registration"
+                        ],
+                        "Business Address": [
+                            "Company registration excerpt",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Authorized Representative": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ]
+                    }
+                }
+            },
+            "mobile_national_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Academic Degree (optional)"
+                    ],
+                    "documentation_required": {
+                        "Name": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ],
+                        "Address": [
+                            "Gov’t ID with Austrian address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Academic Degree": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Name of Authorized Representative"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "Company book excerpt or registration"
+                        ],
+                        "Business Address": [
+                            "Company registration excerpt",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Authorized Representative": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ]
+                    }
+                }
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ],
+                        "Address": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Name of Authorized Representative"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "Company book excerpt or registration"
+                        ],
+                        "Business Address": "No documentation required",
+                        "Authorized Representative": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Bank confirmation of identity"
+                        ]
+                    }
+                }
+            },
+            "legal_notice": "Guidelines help you comply with applicable requirements and do not constitute legal advice; obligations vary by use case and may change."
+        }
+    },
+    {
+        "country_code": "BH",
+        "data": {
+            "locale": {
+                "name": "Bahrain",
+                "iso_code": "BH",
+                "region": "Middle East & Africa"
+            },
+            "numbers_summary": {
+                "toll_free_prefixes": [
+                    "+973800"
+                ]
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Executed Letter of Authorization (LOA)"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required",
+                        "Address": "No documentation required",
+                        "LOA": "Executed LOA via provided template"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Business Registration Number",
+                        "Executed LOA"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required",
+                        "Business Address": [
+                            "Business registration document"
+                        ],
+                        "Registration Number": "No documentation required",
+                        "LOA": "Executed LOA via provided template"
+                    }
+                }
+            },
+            "legal_notice": "Guidelines are current understanding, not legal advice; check regularly as requirements may change."
+        }
+    },
+    {
+        "country_code": "BD",
+        "data": {
+            "locale": {
+                "name": "Bangladesh",
+                "iso_code": "BD",
+                "region": "Asia"
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required*",
+                        "Address": [
+                            "Gov’t ID with local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required*",
+                        "Business Address": [
+                            "Commercial register excerpt",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "notes": [
+                "*Although not required at this time, verifying submitted information with documentation is advised to avoid escalations."
+            ],
+            "legal_notice": "Guidelines reflect Twilio’s current understanding and don't represent legal advice; obligations vary by use case and may be updated."
+        }
+    },
+    {
+        "country_code": "BB",
+        "data": {
+            "locale": {
+                "name": "Barbados",
+                "iso_code": "BB",
+                "region": "North America",
+                "dialing_code": "+1246",
+                "mobile_country_code": "342"
+            },
+            "phone_numbers": {
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Letter of Authorization (LOA)"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required*",
+                        "Business Address": [
+                            "Excerpt from commercial register showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "LOA": "Executed Letter of Authorization via provided template"
+                    },
+                    "notes": [
+                        "*Although documentation is not required at this time, to avoid urgent escalation, we advise verifying the accuracy of provided information."
+                    ]
+                }
+            },
+            "sms": {
+                "two_way_supported": false,
+                "number_portability": false,
+                "concatenation_supported": true,
+                "mms_support": "Converted to SMS with embedded URL",
+                "send_to_landline": {
+                    "supported": false,
+                    "error_code": 21614,
+                    "charge": "no charge"
+                },
+                "compliance_note": "Twilio strongly encourages customers to consult qualified legal counsel and follow opt-in, sending time, HELP/STOP, and do‑not‑call best practices."
+            },
+            "legal_notice": "These guidelines are provided to help comply with regulatory requirements and do not constitute legal advice; regulatory obligations may change without notice."
+        }
+    },
+    {
+        "country_code": "BE",
+        "data": {
+            "locale": {
+                "name": "Belgium",
+                "iso_code": "BE",
+                "region": "Europe"
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Proof of Identity",
+                        "Address",
+                        "Identity Document Number",
+                        "Date of Birth"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government-issued ID",
+                            "Passport"
+                        ],
+                        "Proof of Address": [
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Business Address",
+                        "Business Registration Number",
+                        "Belgium VAT Number"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Excerpt from commercial register (extrait BCE)"
+                        ],
+                        "Proof of Address": [
+                            "Commercial register excerpt",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "country_code": "BJ",
+        "data": {
+            "locale": {
+                "name": "Benin",
+                "iso_code": "BJ",
+                "region": "Middle East & Africa"
+            },
+            "mobile_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required*",
+                        "Proof of Address": [
+                            "Gov’t ID with Benin address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required*",
+                        "Business Address": [
+                            "Commercial register excerpt",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "notes": [
+                "*Although not required at this time, verifying submitted information with documentation is advised to avoid escalations."
+            ]
+        }
+    },
+    {
+        "country_code": "BO",
+        "data": {
+            "locale": {
+                "name": "Bolivia",
+                "iso_code": "BO",
+                "region": "South America",
+                "mobile_country_code": "736",
+                "dialing_code": "+591"
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Letter of Authorization (LOA)"
+                    ],
+                    "documentation_required": {
+                        "Name": "No documentation required",
+                        "Address": "No documentation required",
+                        "LOA": "Executed Letter of Authorization"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Letter of Authorization (LOA)"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required",
+                        "Business Address": "No documentation required",
+                        "LOA": "Executed Letter of Authorization"
+                    }
+                },
+                "notes": [
+                    "LOA must be uploaded via Console using Twilio’s provided template."
+                ]
+            },
+            "sms": {
+                "two_way_supported": true,
+                "number_portability": false,
+                "concatenation_supported": true,
+                "mms_handling": "Converted to SMS with embedded URL",
+                "send_to_landline": {
+                    "supported": false,
+                    "error_code": 21614,
+                    "charge": "no charge"
+                },
+                "compliance_note": "Customers should consult legal counsel and follow opt-in, sending-time, HELP/STOP and other best practices."
+            },
+            "voice": {
+                "inbound_caller_id": "Preserves originator’s Caller‑ID from PSTN",
+                "outbound_caller_id": "Preserves sent Caller‑ID to PSTN",
+                "dtmf_support": "Inbound and outbound DTMF over RFC.2833 supported",
+                "emergency_calls": "Not allowed via Twilio",
+                "outbound_requirements": "N/A",
+                "best_practices": "N/A"
+            },
+            "legal_notice": "These guidelines reflect Twilio’s current understanding, do not constitute legal advice, and may change without notice."
+        }
+    },
+    {
+        "country_code": "BA",
+        "data": {
+            "locale": {
+                "name": "Bosnia and Herzegovina",
+                "iso_code": "BA",
+                "region": "Europe",
+                "mobile_country_code": "218",
+                "dialing_code": "+387"
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": "Government-issued ID showing Bosnia and Herzegovina address",
+                        "Address": [
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Name": "No documentation required*",
+                        "Business Address": [
+                            "Excerpt from commercial register",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "notes": [
+                "*Although documentation is not required at this time, verifying accuracy via documentation is advised."
+            ],
+            "sms": {
+                "two_way_supported": false,
+                "number_portability": false,
+                "concatenation_supported": true,
+                "mms_support": "Converted to SMS with embedded URL",
+                "landline_handling": "Sending SMS to landline not supported",
+                "message_length_note": "Concatenation may vary based on character encoding"
+            },
+            "legal_notice": "Guidelines reflect current understanding and do not constitute legal advice; obligations may change without notice."
+        }
+    },
+    {
+        "country_code": "BR",
+        "data": {
+            "locale": {
+                "name": "Brazil",
+                "iso_code": "BR",
+                "region": "South America",
+                "mobile_country_code": "724",
+                "dialing_code": "+55"
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "supported": false,
+                    "note": "Toll-free numbers are not available to individuals."
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "CNPJ",
+                        "Business Address",
+                        "Authorized Representative"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "CNPJ document",
+                            "Commercial register excerpt"
+                        ],
+                        "Business Address": [
+                            "CNPJ or commercial register excerpt showing address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Lease or title deed"
+                        ],
+                        "CNPJ": [
+                            "CNPJ document"
+                        ],
+                        "Authorized Representative": [
+                            "Government-issued ID",
+                            "Articles of Incorporation/By-laws",
+                            "Power of Attorney",
+                            "Corporate registration excerpt"
+                        ]
+                    },
+                    "regulatory_limit": "Each CNPJ may register up to five toll-free numbers per Anatel rules."
+                }
+            },
+            "sms": {
+                "two_way_supported": true,
+                "number_portability": true,
+                "concatenation_supported": true,
+                "message_length": "140 chars per segment for NEXTEL, 160 for other carriers",
+                "mms_support": "Converted to SMS with embedded URL"
+            },
+            "voice": {
+                "outbound_calls": {
+                    "allowed_from_international_and_twilio_numbers": true,
+                    "not_allowed_from_twilio_toll_free": true,
+                    "not_allowed_from_non-twilio_br_numbers": true,
+                    "telemarketer_requirement": "Telemarketers must use 0303 numbers starting June 8, 2022"
+                },
+                "caller_id": {
+                    "inbound": "Preserves originator Caller-ID",
+                    "outbound": "E.164 format (non-guaranteed)"
+                },
+                "dtmf": {
+                    "inbound": true,
+                    "outbound": true,
+                    "format": "RFC2833"
+                },
+                "emergency_calls": false
+            },
+            "porting": {
+                "national_numbers": "Porting can take 5–7 weeks after submission of all required documentation."
+            },
+            "legal_notice": "Guidelines reflect current understanding and do not constitute legal advice; obligations may change without notice."
+        }
+    },
+    {
+        "country_code": "BG",
+        "data": {
+            "locale": {
+                "name": "Bulgaria",
+                "iso_code": "BG",
+                "region": "Europe",
+                "mobile_country_code": "284",
+                "dialing_code": "+359"
+            },
+            "phone_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Unified Citizenship Number (for Bulgarian nationals)",
+                        "Proof of Bulgarian Citizenship (Bulgarian government‑issued ID)",
+                        "Passport Number (for non‑Bulgarian nationals)",
+                        "Proof of Passport",
+                        "Email Address"
+                    ],
+                    "documentation_required": {
+                        "Email Address": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity (excerpt from commercial register)",
+                        "Registered Business Address (may be outside Bulgaria)",
+                        "Unified Identification Code",
+                        "Email Address"
+                    ],
+                    "documentation_required": {
+                        "Registered Business Address": "No documentation required",
+                        "Unified Identification Code": "No documentation required",
+                        "Email Address": "No documentation required"
+                    }
+                }
+            },
+            "sms": {
+                "two_way_supported": false,
+                "number_portability": true,
+                "concatenation_supported": true
+            },
+            "voice": {
+                "dtmf_rfc2833": true,
+                "emergency_calls": false
+            },
+            "legal_notice": "Guidelines reflect Twilio’s current understanding and do not constitute legal advice; compliance obligations apply to your use case and may change."
+        }
+    },
+    {
+        "country_code": "CL",
+        "data": {
+            "locale": {
+                "name": "Chile",
+                "iso_code": "CL",
+                "region": "South America",
+                "mobile_country_code": "730",
+                "dialing_code": "+56"
+            },
+            "phone_numbers": {
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity (excerpt from commercial register)",
+                        "Business Address (must be within Chile)",
+                        "Proof of Chile Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Chile Address": [
+                            "Commercial register excerpt showing Chile address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "usage_restriction": "Numbers are not allowed for calling card services"
+                }
+            },
+            "sms": {
+                "two_way_supported": true,
+                "number_portability": true,
+                "concatenation_supported": true
+            },
+            "voice": {
+                "dtmf_rfc2833": true,
+                "emergency_calls": false
+            },
+            "legal_notice": "Guidelines reflect current understanding and do not constitute legal advice; obligations may change."
+        }
+    },
+    {
+        "country_code": "CO",
+        "data": {
+            "locale": {
+                "name": "Colombia",
+                "iso_code": "CO",
+                "region": "South America"
+            },
+            "phone_numbers": {
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity (business registration)",
+                        "Business Address (may be outside Colombia)",
+                        "Proof of Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Address": [
+                            "Business registration showing address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "legal_notice": "Guidelines reflect current understanding and do not constitute legal advice; obligations may change."
+        }
+    },
+    {
+        "country_code": "CR",
+        "data": {
+            "locale": {
+                "name": "Costa Rica",
+                "iso_code": "CR",
+                "region": "North America",
+                "mobile_country_code": "712",
+                "dialing_code": "+506"
+            },
+            "numbers_summary": {
+                "mobile_prefixes": [
+                    "+5064"
+                ],
+                "toll_free_prefixes": [
+                    "+506800"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": [
+                            "Government-issued ID",
+                            "Costa Rican Visa",
+                            "Passport"
+                        ],
+                        "Address": [
+                            "Gov’t ID with Costa Rican address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Business Registration Number",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Cédula Jurídica"
+                        ],
+                        "Business Registration Number": [
+                            "Cédula Jurídica"
+                        ],
+                        "Business Address": [
+                            "Excerpt from National Registry (Persona Jurídica)"
+                        ]
+                    }
+                }
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "supported": false,
+                    "note": "Not available to individuals"
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Business Registration Number",
+                        "Business Address",
+                        "Letter of Authorization"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Cédula Jurídica or business registration for non-CR companies"
+                        ],
+                        "Business Registration Number": [
+                            "Same as identity"
+                        ],
+                        "Business Address": [
+                            "Excerpt from National Registry or equivalent"
+                        ],
+                        "Letter of Authorization": [
+                            "Executed LOA via template"
+                        ]
+                    },
+                    "restrictions": [
+                        "Not allowed for calling card or callback services"
+                    ]
+                }
+            },
+            "letter_of_authorization": {
+                "required_for_business": true,
+                "notes": [
+                    "Executed LOA must be filled from Twilio template and uploaded via Console"
+                ]
+            },
+            "sms": {
+                "two_way_supported": false,
+                "number_portability": false,
+                "concatenation_supported": false,
+                "mms_support": "Converted to SMS with embedded URL",
+                "send_to_landline": {
+                    "supported": false,
+                    "error_code": 21614,
+                    "charge": "no charge"
+                },
+                "best_practices": [
+                    "Obtain opt‑in consent",
+                    "Send only during daytime unless urgent",
+                    "Support HELP/STOP in local language",
+                    "Avoid do‑not‑call registry numbers"
+                ]
+            },
+            "voice": {
+                "inbound": {
+                    "supported": true,
+                    "caller_id_preserved": true
+                },
+                "outbound": {
+                    "domestic": {
+                        "allowed": true,
+                        "caller_id_format": {
+                            "outbound": "E.164",
+                            "non_guaranteed": true
+                        }
+                    },
+                    "international": {
+                        "allowed": true,
+                        "caller_id_format": "E.164 (non-guaranteed)"
+                    },
+                    "toll_free": {
+                        "allowed": true,
+                        "caller_id_format": "E.164 (non-guaranteed)"
+                    },
+                    "dtmf_rfc2833": true,
+                    "emergency_calls": false
+                }
+            },
+            "legal_notice": "Guidelines reflect current understanding and do not constitute legal advice; requirements may change without notice."
+        }
+    },
+    {
+        "country_code": "HR",
+        "data": {
+            "locale": {
+                "name": "Croatia",
+                "iso_code": "HR",
+                "region": "Europe",
+                "mobile_country_code": "219",
+                "dialing_code": "+385"
+            },
+            "numbers_summary": {
+                "toll_free_prefixes": [
+                    "+385800"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Name": [
+                            "National ID",
+                            "Passport",
+                            "Residence permit"
+                        ],
+                        "Address": [
+                            "Gov’t ID showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Address must be within the local region; PO Boxes are not acceptable"
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Company Registration Number",
+                        "Authorized Representative Name"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "Excerpt from court register"
+                        ],
+                        "Business Address": [
+                            "Court register showing address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Company Registration Number": [
+                            "Excerpt from court register (MBS)"
+                        ],
+                        "Authorized Representative": [
+                            "National ID",
+                            "Passport",
+                            "Residence permit"
+                        ]
+                    },
+                    "notes": [
+                        "Address must be within the local region; PO Boxes are not acceptable"
+                    ]
+                }
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Proof of Identity",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Gov’t ID",
+                            "Passport"
+                        ],
+                        "Address": [
+                            "Gov’t ID with local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Company Registration Number",
+                        "Authorized Representative Name"
+                    ],
+                    "documentation_required": {
+                        "Business Name": [
+                            "Excerpt from court register"
+                        ],
+                        "Business Address": [
+                            "Court register address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Company Registration Number": [
+                            "Court register"
+                        ],
+                        "Authorized Representative": [
+                            "Gov’t ID",
+                            "Passport",
+                            "Residence permit"
+                        ]
+                    }
+                }
+            },
+            "notes": [
+                "You are contracting for telecom services, not buying numbers directly",
+                "Connectivity complies with Croatian electronic communications laws",
+                "Users must comply with local laws; see HAKOM"
+            ],
+            "legal_notice": "Guidelines reflect Twilio’s current understanding and do not constitute legal advice; compliance obligations apply to your use case and may change without notice."
+        }
+    },
+    {
+        "country_code": "CY",
+        "data": {
+            "locale": {
+                "name": "Cyprus",
+                "iso_code": "CY",
+                "region": "Europe"
+            },
+            "local_numbers": {
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Registration Number",
+                        "Business Address",
+                        "Authorized Representative Name"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity (Authorized Representative)": [
+                            "Government-issued ID",
+                            "Passport",
+                            "Residence Permit"
+                        ],
+                        "Proof of Business Registration Number": [
+                            "Business registration document"
+                        ],
+                        "Proof of Local Address": [
+                            "Business registration showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Business address must be within the locality/region of the phone number’s prefix — PO Boxes not accepted.",
+                        "This number type cannot be provisioned to individuals at this time."
+                    ]
+                }
+            },
+            "legal_notice": "These guidelines represent Twilio’s current understanding and do not constitute legal advice; comply with your specific obligations, and check regularly as requirements may change."
+        }
+    },
+    {
+        "country_code": "CZ",
+        "data": {
+            "locale": {
+                "name": "Czech Republic",
+                "iso_code": "CZ",
+                "region": "Europe",
+                "mobile_country_code": "420",
+                "dialing_code": "+420"
+            },
+            "numbers_summary": {
+                "mobile_prefixes": [
+                    "+42073"
+                ],
+                "toll_free_prefixes": [
+                    "+420800"
+                ],
+                "national_prefixes": [
+                    "+420910"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Date of Birth",
+                        "Birth Certificate Code"
+                    ],
+                    "documentation_required": {
+                        "Address": [
+                            "Government‑issued ID showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Address must be within the locality/region of the phone number’s prefix; PO Box not acceptable"
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Registered Business Address (if different)",
+                        "Business ID Number",
+                        "Authorized Representative Name",
+                        "Authorized Representative Address"
+                    ],
+                    "documentation_required": {
+                        "Business Address": [
+                            "Business registration showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Local address must match the number’s prefix region; PO Box not acceptable"
+                    ]
+                }
+            },
+            "mobile_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Proof of Identity",
+                        "Address",
+                        "Date of Birth",
+                        "Birth Certificate Code"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government‑issued ID",
+                            "Passport"
+                        ]
+                    },
+                    "notes": [
+                        "Address may be anywhere in the world"
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Registered Business Address",
+                        "Business ID Number",
+                        "Authorized Representative Name",
+                        "Authorized Representative Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Excerpt from business register"
+                        ],
+                        "Authorized Representative Proof": [
+                            "Government‑issued ID",
+                            "Passport",
+                            "Power of Attorney",
+                            "Director authorization"
+                        ]
+                    },
+                    "notes": [
+                        "Registered business address may be anywhere in the world"
+                    ]
+                }
+            },
+            "national_toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Date of Birth",
+                        "Birth Certificate Code"
+                    ],
+                    "documentation_required": {}
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Registered Business Address",
+                        "Business ID Number",
+                        "Authorized Representative Name",
+                        "Authorized Representative Address"
+                    ],
+                    "documentation_required": {}
+                }
+            },
+            "legal_notice": "Guidelines are provided to help comply with applicable requirements but do not constitute legal advice. Compliance obligations vary by use case and may change without notice."
+        }
+    },
+    {
+        "country_code": "DK",
+        "data": {
+            "locale": {
+                "name": "Denmark",
+                "iso_code": "DK",
+                "region": "Europe",
+                "mobile_country_code": "238",
+                "dialing_code": "+45"
+            },
+            "numbers_summary": {
+                "mobile_prefixes": [
+                    "+4552",
+                    "+4593"
+                ],
+                "toll_free_prefixes": [
+                    "+4580"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address",
+                        "Passport Number"
+                    ],
+                    "documentation_required": {
+                        "Address": [
+                            "Gov’t ID with Danish address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Passport Number": [
+                            "Passport"
+                        ]
+                    },
+                    "notes": [
+                        "Address must be within Denmark"
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Business Registration Number"
+                    ],
+                    "documentation_required": {
+                        "Business Address": [
+                            "Business registration showing Danish address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Business Address must be within Denmark"
+                    ]
+                }
+            },
+            "mobile_and_toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Address": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Business Address": "No documentation required"
+                    }
+                }
+            },
+            "sms": {
+                "two_way_supported": true,
+                "number_portability": true,
+                "concatenation_supported": true,
+                "mms_support": "Converted to SMS with embedded URL",
+                "landline_handling": {
+                    "supported": false,
+                    "error_code": 21614,
+                    "charge": "no charge"
+                },
+                "compliance_note": "Follow opt-in, time‑of‑day, HELP/STOP and do‑not‑call best practices."
+            },
+            "voice": {
+                "inbound_calls": {
+                    "allowed": true,
+                    "caller_id_preserved": true
+                },
+                "outbound_calls": {
+                    "domestic": "Allowed (Caller‑ID +E.164)",
+                    "international": "Allowed (Caller‑ID non‑guaranteed +E.164)",
+                    "toll_free": "Allowed (Caller‑ID non‑guaranteed +E.164)",
+                    "dtmf_rfc2833": true,
+                    "emergency_calls": false
+                },
+                "notes": [
+                    "No restrictions on outbound calls; DTMF RFC2833 supported",
+                    "Emergency calls not allowed via Twilio"
+                ]
+            },
+            "porting": {
+                "portable_types": [
+                    "Local Numbers",
+                    "Toll-Free (+4580)"
+                ],
+                "requirements": [
+                    "Letter of Authorization (LOA) dated within last 90 days",
+                    "Regulatory compliance documentation"
+                ],
+                "process_time": "Up to 4 weeks depending on provider",
+                "regulatory_body": "Danish Energy Agency (ENS)"
+            },
+            "legal_notice": "These guidelines reflect Twilio’s current understanding and do not constitute legal advice; requirements may change without notice."
+        }
+    },
+    {
+        "country_code": "DO",
+        "data": {
+            "locale": {
+                "name": "Dominican Republic",
+                "iso_code": "DO",
+                "region": "North America",
+                "mobile_country_code": "370",
+                "dialing_code": [
+                    "+1809",
+                    "+1829",
+                    "+1849"
+                ]
+            },
+            "local_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government-issued ID"
+                        ],
+                        "Proof of Local Address": [
+                            "Gov’t ID with local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    },
+                    "notes": [
+                        "Address must be within the locality/region; PO Box not acceptable"
+                    ]
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Business registration"
+                        ],
+                        "Proof of Local Address": [
+                            "Business registration showing local address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ]
+                    }
+                }
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government-issued ID"
+                        ],
+                        "Address": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Business registration"
+                        ],
+                        "Address": "No documentation required"
+                    }
+                }
+            },
+            "sms": {
+                "two_way_supported": true,
+                "number_portability": true,
+                "concatenation_supported": true,
+                "mms_support": "Converted to SMS with embedded URL",
+                "send_to_landline": {
+                    "supported": false,
+                    "error_code": 21614,
+                    "charge": "no charge"
+                },
+                "alphanumeric_sender_id": {
+                    "dynamic": "Supported",
+                    "pre_registration": "Not Supported",
+                    "note": "Dynamic Alphanumeric Sender IDs are not fully supported and may be overwritten by operators"
+                },
+                "short_code": {
+                    "supported": true,
+                    "sender_id_preserved": true,
+                    "provisioning_time": "4 weeks",
+                    "note": "Sender IDs may be overwritten with a random shortcode outside the Twilio platform"
+                },
+                "compliance_notes": [
+                    "Get opt‑in consent",
+                    "Send during daytime unless urgent",
+                    "Support HELP/STOP in local language",
+                    "Avoid do‑not‑call registries"
+                ]
+            },
+            "voice": {
+                "inbound": {
+                    "supported": true,
+                    "caller_id_preserved": true
+                },
+                "outbound": {
+                    "domestic": true,
+                    "international": true,
+                    "toll_free": true,
+                    "caller_id_format": {
+                        "domestic": "Local (non‑guaranteed)",
+                        "international": "E.164 (non‑guaranteed)",
+                        "toll_free": "Local (non‑guaranteed)"
+                    },
+                    "dtmf_rfc2833": true,
+                    "emergency_calls": false
+                }
+            },
+            "legal_notice": "These guidelines represent Twilio’s current understanding and do not constitute legal advice; obligations vary and may change without notice."
+        }
+    },
+    {
+        "country_code": "EC",
+        "data": {
+            "locale": {
+                "name": "Ecuador",
+                "iso_code": "EC",
+                "region": "South America",
+                "mobile_country_code": "740",
+                "dialing_code": "+593"
+            },
+            "toll_free_numbers": {
+                "individuals": {
+                    "information_required": [
+                        "Name",
+                        "Proof of Identity",
+                        "Address",
+                        "Date of Birth"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity": [
+                            "Government-issued ID (Ecuadorian citizens)",
+                            "Passport (non‑citizens)"
+                        ],
+                        "Address": [
+                            "Gov’t ID with address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Date of Birth": "No documentation required"
+                    }
+                },
+                "businesses": {
+                    "information_required": [
+                        "Business Name",
+                        "Proof of Identity",
+                        "Business Address",
+                        "Tax Identification Number",
+                        "Name of Authorized Representative"
+                    ],
+                    "documentation_required": {
+                        "Proof of Identity (Business)": [
+                            "Business registration"
+                        ],
+                        "Business Address": [
+                            "Business registration showing address",
+                            "Utility bill",
+                            "Tax notice",
+                            "Rent receipt",
+                            "Title deed"
+                        ],
+                        "Tax ID Number": "No documentation required",
+                        "Authorized Representative ID": [
+                            "National ID",
+                            "Passport",
+                            "Residence Permit"
+                        ]
+                    }
+                }
+            },
+            "sms": {
+                "two_way_supported": false,
+                "number_portability": true,
+                "concatenation_supported": true,
+                "concatenation_note": "Movistar does not support concatenation; limit to 160 chars.",
+                "mms_support": "Converted to SMS with embedded URL",
+                "landline_handling": {
+                    "supported": false,
+                    "error_response": 21614,
+                    "charge": "no charge"
+                }
+            },
+            "voice": {
+                "inbound": {
+                    "supported": true,
+                    "caller_id_preserved": true
+                },
+                "outbound": {
+                    "domestic": {
+                        "allowed": true,
+                        "caller_id_format": "E.164 (non-guaranteed)"
+                    },
+                    "international": {
+                        "allowed": true,
+                        "caller_id_format": "E.164 (non-guaranteed)"
+                    },
+                    "toll_free": {
+                        "allowed": false,
+                        "caller_id_format": null
+                    },
+                    "dtmf_rfc2833": true,
+                    "emergency_calls": false
+                }
+            },
+            "legal_notice": "These guidelines represent Twilio’s current understanding and do not constitute legal advice; obligations may change without notice."
+        }
+    },
+    {
+        "country_code": "EG",
+        "data": {
+            "locale": {
+                "name": "Egypt",
+                "iso_code": "EG",
+                "region": "Middle East & Africa"
+            },
+            "number_type": "Toll-Free",
+            "toll_free_prefixes": [
+                "+20800"
+            ],
+            "requirements": {
+                "individual": {
+                    "information_required": [
+                        "Name",
+                        "Address"
+                    ],
+                    "documentation_required": [
+                        "Letter of Authorization (LOA)"
+                    ],
+                    "acceptable_documentation": {
+                        "Name": "No documentation required",
+                        "Address": "May be anywhere in the world — No documentation required",
+                        "Letter of Authorization": "Executed Letter of Authorization (template to upload)"
+                    }
+                },
+                "business": {
+                    "information_required": [
+                        "Business Name",
+                        "Business Address",
+                        "Business Registration Number"
+                    ],
+                    "documentation_required": [
+                        "Proof of Address",
+                        "Letter of Authorization (LOA)"
+                    ],
+                    "acceptable_documentation": {
+                        "Business Name": "No documentation required",
+                        "Business Address": "May be anywhere in the world — Proof of Address (Business registration)",
+                        "Business Registration Number": "No documentation required",
+                        "Letter of Authorization": "Executed Letter of Authorization (template to upload)"
+                    }
+                }
+            },
+            "notes": [
+                "LOA template available via link",
+                "Guidelines reflect Twilio’s current understanding and are not legal advice",
+                "Information subject to change without notice"
+            ]
+        }
+    }
+]
