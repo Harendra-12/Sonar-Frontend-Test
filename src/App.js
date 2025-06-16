@@ -180,6 +180,7 @@ import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 import GoSocket from "./Components/GlobalFunction/GoSocket";
+import GoSocketActiveCall from "./Components/GlobalFunction/GoSocketActiveCall";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
@@ -234,6 +235,7 @@ function App() {
   Socket();
   const { sendMessage } = GoMessageSocket()
   GoSocket();
+  GoSocketActiveCall();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
   }, [GoMessageSocket]);

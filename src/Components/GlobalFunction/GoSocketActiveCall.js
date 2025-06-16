@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 const GoSocket = () => {
   const dispatch = useDispatch();
   const ip = process.env.REACT_APP_BACKEND_IP;
-  const port = process.env.REACT_APP_GOLANG_SOCKET_PORT;
+  const port = process.env.REACT_APP_GOLANG_ACTIVECALL_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const RoomID = useSelector((state) => state.RoomID);
   const isLogOut = useSelector((state) => state.logout);
@@ -77,16 +77,16 @@ const GoSocket = () => {
           const { key, result, current_time } = message;
 
           switch (key) {
-            case "OnlineExtensions":
-              dispatch({
-                type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
-              break;
-            case "onlineUser":
-              dispatch({ type: "SET_LOGINUSER", loginUser: result });
-              break;
-            case "Balance":
-              dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
-              break;
+            // case "OnlineExtensions":
+            //   dispatch({
+            //     type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
+            //   break;
+            // case "onlineUser":
+            //   dispatch({ type: "SET_LOGINUSER", loginUser: result });
+            //   break;
+            // case "Balance":
+            //   dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
+            //   break;
             // case "CallState":
             //   dispatch({ type: "SET_CALLSTATE", callState: result });
             //   break;
@@ -96,12 +96,12 @@ const GoSocket = () => {
             //     dispatch({ type: "SET_BALANCE", balance: message.balance });
             //   }
             //   break;
-            // case "activeCalls":
-            //   dispatch({
-            //     type: "SET_ACTIVECALL",
-            //     activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
-            //   });
-            //   break;
+            case "activeCalls":
+              dispatch({
+                type: "SET_ACTIVECALL",
+                activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
+              });
+              break;
             // case "Conference":
             //   dispatch({ type: "SET_CONFERENCE", conference: result });
             //   break;
