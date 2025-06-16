@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useNavigate } from 'react-router-dom'
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
-import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, formatDateTime, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
@@ -222,7 +222,7 @@ function Ticket() {
                                       return (
                                         <tr>
                                           <td style={{ width: '20px' }}>{index + 1}</td>
-                                          <td>{item.created_at.split('T')[0]}, {new Date(item.created_at).toLocaleTimeString()}</td>
+                                          <td>{formatDateTime(item?.created_at)}</td>
                                           <td>{item.department}</td>
                                           <td>{item.query_type}</td>
                                           <td>{item.title}</td>
@@ -334,7 +334,7 @@ function Ticket() {
                                     return (
                                       <tr>
                                         <td style={{ width: '20px' }}>{index + 1}</td>
-                                        <td>{item.created_at.split('T')[0]}, {new Date(item.created_at).toLocaleTimeString()}</td>
+                                        <td>{formatDateTime(item?.created_at)}</td>
                                         <td>{item.department}</td>
                                         <td>{item.query_type}</td>
                                         <td>{item.title}</td>

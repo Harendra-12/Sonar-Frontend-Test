@@ -5,7 +5,7 @@ import AllCallsDetails from "./AllCallsDetails";
 import CallQueueDetails from "./CallQueueDetails";
 import RingGroup from "./RingGroupDetails";
 import { useNavigate } from "react-router-dom";
-import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { convertDateToCurrentTimeZone, featureUnderdevelopment, formatDateTime, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
@@ -712,7 +712,8 @@ function PhoneDashboard() {
                           fields={graphData?.totalCallMin?.map((item, index) => {
                             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                             const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
-                            const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                            const convertedTime = formatDateTime(item.start_time);
+                            const time = new Date(convertedTime).getHours().toString().padStart(2, '0') + ":" + new Date(convertedTime).getMinutes().toString().padStart(2, '0');
                             return `${time}`
                           })}
                           percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
@@ -833,7 +834,7 @@ function PhoneDashboard() {
                           label3={"Internal"}
                           label4={"Missed"}
                           type={"line"}
-                          fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
+                          fields={graphData?.numberOfCall?.map((item, index) => convertDateToCurrentTimeZone(item.start_date))}
                           percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
                           colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
                         />}
@@ -967,7 +968,8 @@ function PhoneDashboard() {
                           fields={graphData?.callCostPerHour?.map((item, index) => {
                             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                             const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
-                            const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                            const convertedTime = formatDateTime(item.start_time);
+                            const time = new Date(convertedTime).getHours().toString().padStart(2, '0') + ":" + new Date(convertedTime).getMinutes().toString().padStart(2, '0');
                             return `${time}`
                           })}
                           percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}

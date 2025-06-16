@@ -7,7 +7,7 @@ import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
-import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -35,7 +35,8 @@ const Dashboard = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const didAll = useSelector((state) => state.didAll);
   const [allDID, setAllDID] = useState([]);
-  const [allUserList, setAllUserList] = useState([])
+  const [allUserList, setAllUserList] = useState([]);
+  const [userTimeZone, setUserTimeZone] = useState("");
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
@@ -103,6 +104,7 @@ const Dashboard = () => {
         timeZoneRefresh: timeZoneRefresh + 1,
       });
     }
+    setUserTimeZone(timeZone.filter((item) => item.id === account?.timezone_id)[0]?.name);
   }, [timeZone]);
 
   useEffect(() => {
@@ -546,11 +548,12 @@ const Dashboard = () => {
                               <h5>Timezone</h5>
                               <p>
                                 {" "}
-                                {new Date().getDate()}{" "}
+                                {new Intl.DateTimeFormat('default', { timeZone: userTimeZone || 'UTC', day: '2-digit' }).format(new Date())}{" "}
                                 {new Date().toLocaleString("default", {
                                   month: "long",
+                                  timeZone: userTimeZone || 'UTC'
                                 })}
-                                , {new Date().getFullYear()}
+                                , {new Intl.DateTimeFormat('default', { year: 'numeric', timeZone: userTimeZone || 'UTC' }).format(new Date())}
                               </p>
                             </div>
                             <div className="col-3">
@@ -705,12 +708,7 @@ const Dashboard = () => {
                               <h5>{account?.domain?.domain_name}</h5>
                               <p>
                                 Created at:{" "}
-                                {account?.domain?.created_at?.split("T")[0]},{" "}
-                                {
-                                  account?.domain?.created_at
-                                    ?.split("T")[1]
-                                    ?.split(".")[0]
-                                }
+                                {formatDateTime(account?.domain?.created_at)}
                               </p>
                             </div>
                             {/* <div className="col-3">

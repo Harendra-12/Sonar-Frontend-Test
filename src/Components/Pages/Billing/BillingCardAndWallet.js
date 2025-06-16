@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, checkViewSidebar, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, convertDateToCurrentTimeZone, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
@@ -254,7 +254,7 @@ const BillingCardAndWallet = () => {
                                                                                         </span>
                                                                                     }
                                                                                 </td>
-                                                                                <td>{item?.transaction_date.split(" ")[0]}</td>
+                                                                                <td>{convertDateToCurrentTimeZone(item?.transaction_date.split(" ")[0])}</td>
                                                                                 <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
                                                                                 <td>{item?.description}</td>
                                                                                 <td className='text-center'>
