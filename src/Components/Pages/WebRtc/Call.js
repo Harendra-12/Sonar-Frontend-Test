@@ -306,6 +306,7 @@ function Call({
 
     // Call Type Icon Selector
     const statusIcons = {
+      CANCEL: "fa-solid fa-phone-missed",
       Missed: "fa-solid fa-phone-missed",
       Cancelled: "fa-solid fa-phone-xmark",
       Failed: "fa-solid fa-phone-slash",
@@ -317,7 +318,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
@@ -327,7 +329,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -336,7 +339,8 @@ function Call({
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",

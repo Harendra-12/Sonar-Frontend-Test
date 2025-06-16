@@ -1757,6 +1757,7 @@ function CdrFilterReport({ page }) {
                                                   key === "Call-Direction"
                                                 ) {
                                                   const statusIcons = {
+                                                    CANCEL: "fa-solid fa-phone-missed",
                                                     Missed:
                                                       "fa-solid fa-phone-missed",
                                                     Cancelled:
@@ -1769,44 +1770,32 @@ function CdrFilterReport({ page }) {
                                                   const callIcons = {
                                                     inbound: {
                                                       icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] ||
-                                                        "fa-phone-arrow-down-left",
+                                                        statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
                                                       color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
+                                                        item.variable_DIALSTATUS == "Missed" ||
+                                                          item.variable_DIALSTATUS == "Failed" ||
+                                                          item.variable_DIALSTATUS == "CANCEL"
                                                           ? "var(--funky-boy4)"
                                                           : "var(--funky-boy3)",
                                                       label: "Inbound",
                                                     },
                                                     outbound: {
                                                       icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] ||
-                                                        "fa-phone-arrow-up-right",
+                                                        statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
                                                       color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
+                                                        item.variable_DIALSTATUS == "Missed" ||
+                                                          item.variable_DIALSTATUS == "Failed" ||
+                                                          item.variable_DIALSTATUS == "CANCEL"
                                                           ? "var(--funky-boy4)"
                                                           : "var(--color3)",
                                                       label: "Outbound",
                                                     },
                                                     internal: {
-                                                      icon:
-                                                        statusIcons[
-                                                        item.variable_DIALSTATUS
-                                                        ] || "fa-headset",
+                                                      icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
                                                       color:
-                                                        item.variable_DIALSTATUS ==
-                                                          "Missed" ||
-                                                          item.variable_DIALSTATUS ==
-                                                          "Failed"
+                                                        item.variable_DIALSTATUS == "Missed" ||
+                                                          item.variable_DIALSTATUS == "Failed" ||
+                                                          item.variable_DIALSTATUS == "CANCEL"
                                                           ? "var(--funky-boy4)"
                                                           : "var(--color2)",
                                                       label: "Internal",

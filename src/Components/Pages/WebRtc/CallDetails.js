@@ -14,6 +14,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
+import Tippy from "@tippyjs/react";
 
 function CallDetails({
   clickedCall,
@@ -497,6 +498,7 @@ function CallDetails({
                         <tbody>
                           {callHistory?.map((item) => {
                             const statusIcons = {
+                              CANCEL: "fa-solid fa-phone-missed",
                               Missed: "fa-solid fa-phone-missed",
                               Cancelled: "fa-solid fa-phone-xmark",
                               Failed: "fa-solid fa-phone-slash",
@@ -504,19 +506,23 @@ function CallDetails({
                             };
                             const callIcons = {
                               inbound: {
-                                icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+                                icon:
+                                  statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
                                 color:
-                                  item.variable_DIALSTATUS !==
-                                    "Answered"
+                                  item.variable_DIALSTATUS == "Missed" ||
+                                    item.variable_DIALSTATUS == "Failed" ||
+                                    item.variable_DIALSTATUS == "CANCEL"
                                     ? "var(--funky-boy4)"
                                     : "var(--funky-boy3)",
                                 label: "Inbound",
                               },
                               outbound: {
-                                icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+                                icon:
+                                  statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
                                 color:
-                                  item.variable_DIALSTATUS !==
-                                    "Answered"
+                                  item.variable_DIALSTATUS == "Missed" ||
+                                    item.variable_DIALSTATUS == "Failed" ||
+                                    item.variable_DIALSTATUS == "CANCEL"
                                     ? "var(--funky-boy4)"
                                     : "var(--color3)",
                                 label: "Outbound",
@@ -524,8 +530,9 @@ function CallDetails({
                               internal: {
                                 icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
                                 color:
-                                  item.variable_DIALSTATUS !==
-                                    "Answered"
+                                  item.variable_DIALSTATUS == "Missed" ||
+                                    item.variable_DIALSTATUS == "Failed" ||
+                                    item.variable_DIALSTATUS == "CANCEL"
                                     ? "var(--funky-boy4)"
                                     : "var(--color2)",
                                 label: "Internal",
@@ -587,10 +594,14 @@ function CallDetails({
                         </td> */}
                                   {!isCustomerAdmin ? (
                                     <td>
-                                      <i className={`fa-solid ${getCallTypeIcon().icon} me-2`} style={{ color: getCallTypeIcon().color }}></i>
-                                      <span>
-                                        {getCallTypeIcon().label}
-                                      </span>
+                                      <Tippy content={`${callType?.label} - ${item?.variable_DIALSTATUS}` || "N/A"}>
+                                        <span>
+                                          <i className={`fa-solid ${callType.icon} me-2`} style={{ color: callType.color }}></i>
+                                          <span>
+                                            {callType.label}
+                                          </span>
+                                        </span>
+                                      </Tippy>
                                     </td>
                                   ) : (
                                     <td
@@ -601,14 +612,16 @@ function CallDetails({
                                     //     : ""
                                     //   }`}
                                     >
-                                      <span>
-                                        {item?.["Caller-Callee-ID-Number"]}
-                                        <i className={`fa-solid ${getCallTypeIcon().icon} mx-2`} style={{ color: getCallTypeIcon().color }}></i>
-                                        {/* <span>
-                                            {getCallTypeIcon().label}
+                                      <Tippy content={`${callType?.label} - ${item?.variable_DIALSTATUS}` || "N/A"}>
+                                        <span>
+                                          {item?.["Caller-Callee-ID-Number"]}
+                                          <i className={`fa-solid ${callType.icon} mx-2`} style={{ color: callType.color }}></i>
+                                          {/* <span>
+                                            {callType.label}
                                           </span> */}
-                                        {item?.["Caller-Caller-ID-Number"]}
-                                      </span>
+                                          {item?.["Caller-Caller-ID-Number"]}
+                                        </span>
+                                      </Tippy>
                                     </td>
                                   )}
                                   {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
