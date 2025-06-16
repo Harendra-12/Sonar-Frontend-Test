@@ -44,14 +44,24 @@ function CampaignLogin({ initial }) {
             const getCampaign = await generalGetFunction("/campaign/all")
             if (getCampaign?.status) {
                 const allCampaign = getCampaign.data.data;
-                console.log("allCampaign", allCampaign);
-                const assignedCampaigns = allCampaign.filter((item) => item.agents.some((agent) => agent.user_id === Id) && item.status == "Active");
+                const assignedCampaigns = allCampaign.filter((item) => item.agents.some((agent) => agent.user_id === Id) && item.lead_files !== null);
                 setAssignedCampaigns(assignedCampaigns);
             } else {
                 setLoading(false);
             }
         }
+
+        const getAssignedDialerData = async () => {
+            setLoading(true);
+            const response = await generalGetFunction(`campaign/agent-update/${Id}`)
+            if (response?.status) {
+                console.log("allCampaign", response.data);
+            } else {
+                setLoading(false);
+            }
+        }
         getCampaignData();
+        getAssignedDialerData()
     }, [refresh])
 
     const handleLoginLogout = async (action) => {
@@ -66,6 +76,7 @@ function CampaignLogin({ initial }) {
             setRefresh(refresh + 1);
         }
     }
+
 
     return (
         <>
@@ -104,7 +115,7 @@ function CampaignLogin({ initial }) {
                                             <div className="content">
                                                 <h4>
                                                     Campaigns{" "}
-                                                    <button className="clearButton2" onClick={() => featureUnderdevelopment()}>
+                                                    <button className="clearButton2" onClick={() => setRefresh(refresh + 1)}>
                                                         <i className="fa-regular fa-arrows-rotate fs-5"></i>
                                                     </button>
                                                 </h4>
@@ -135,38 +146,40 @@ function CampaignLogin({ initial }) {
                                                                 <td>{index + 1}</td>
                                                                 <td>{item.title}</td>
                                                                 <td>{item.dialer.type}</td>
-                                                                {isLoggedIn ? (
-                                                                    <div className="d-flex gap-2">
+                                                                <td>
+                                                                    {isLoggedIn ? (
+                                                                        <div className="d-flex gap-2">
+                                                                            <label
+                                                                                className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
+                                                                                onClick={() => {
+                                                                                    if (!isOnBreak)
+                                                                                        handleLoginLogout("On Break");
+                                                                                    else if (isOnBreak)
+                                                                                        handleLoginLogout("Available");
+                                                                                }}
+                                                                            >
+                                                                                {isOnBreak ? "Resume" : "Break"}
+                                                                            </label>
+                                                                            <label
+                                                                                className="tableLabel fail"
+                                                                                onClick={() =>
+                                                                                    handleLoginLogout("Logged Out")
+                                                                                }
+                                                                            >
+                                                                                Logout
+                                                                            </label>
+                                                                        </div>
+                                                                    ) : (
                                                                         <label
-                                                                            className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
-                                                                            onClick={() => {
-                                                                                if (!isOnBreak)
-                                                                                    handleLoginLogout("On Break");
-                                                                                else if (isOnBreak)
-                                                                                    handleLoginLogout("Available");
-                                                                            }}
-                                                                        >
-                                                                            {isOnBreak ? "Resume" : "Break"}
-                                                                        </label>
-                                                                        <label
-                                                                            className="tableLabel fail"
+                                                                            className="tableLabel success"
                                                                             onClick={() =>
-                                                                                handleLoginLogout("Logged Out")
+                                                                                handleLoginLogout("Available")
                                                                             }
                                                                         >
-                                                                            Logout
+                                                                            Login
                                                                         </label>
-                                                                    </div>
-                                                                ) : (
-                                                                    <label
-                                                                        className="tableLabel success"
-                                                                        onClick={() =>
-                                                                            handleLoginLogout("Available")
-                                                                        }
-                                                                    >
-                                                                        Login
-                                                                    </label>
-                                                                )}
+                                                                    )}
+                                                                </td>
                                                             </tr>
                                                         )) : ""
                                                     }
