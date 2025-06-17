@@ -204,7 +204,7 @@ function DeviceProvisioningNew() {
                             id="nav-desk"
                             role="tabpanel"
                             aria-labelledby="nav-desk-tab"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <div className="row col-12 mx-auto mb-0">
                               {allDevices.map((device, index) => {
@@ -317,7 +317,7 @@ function DeviceProvisioningNew() {
                             id="nav-soft"
                             role="tabpanel"
                             aria-labelledby="nav-soft-tab"
-                            tabindex="1"
+                            tabIndex="1"
                           >
                             <div className="row col-12 mx-auto mb-0">
                               <div className="formRow col-xl-6 deviceProvision">
@@ -422,7 +422,7 @@ function DeviceProvisioningNew() {
                     </div>
 
                     {isDeviceChosen === "hard" &&
-                    deviceType === "desktopPhone" ? (
+                      deviceType === "desktopPhone" ? (
                       <div className="col-xl-6">
                         <form>
                           {/* <div className="formRow">

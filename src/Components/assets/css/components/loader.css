@@ -488,7 +488,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: calc(100vw - var(--sideNav-width));
+  width: 100%;
   z-index: 9999;
 }
 

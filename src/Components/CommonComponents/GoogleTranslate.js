@@ -92,15 +92,15 @@ const GoogleTranslate = () => {
 
     <div className="sticky-icon">
       <div id="google_translate_element"></div>
-      <div class="">
-      <i class="fa-solid fa-language"></i>
+      <div className="">
+        <i className="fa-solid fa-language"></i>
       </div>
     </div>
   );
 };
 
-{/* <div class="sticky-icon">
-   <a href="https://www.instagram.com/?hl=en" class="Instagram"><i class="fab fa-instagram"></i> Instagram </a>
+{/* <div className="sticky-icon">
+   <a href="https://www.instagram.com/?hl=en" className="Instagram"><i className="fab fa-instagram"></i> Instagram </a>
      
 </div> */}
 

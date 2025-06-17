@@ -154,7 +154,7 @@ function SocialMediaStore({ refreshData }) {
             <div className="row">
                 <div className="col-md-12">
                     <div className="product-container row gy-3 mb-4">
-                        <h6 class="card_title">Purchased Addons</h6>
+                        <h6 className="card_title">Purchased Addons</h6>
                         {accountDetails && accountDetails.add_on_subscription.length > 0 ?
                             accountDetails.add_on_subscription.filter((item, index, self) =>
                                 index === self.findIndex((t) => (
@@ -216,7 +216,7 @@ function SocialMediaStore({ refreshData }) {
                     </div>
 
                     <div className="product-container row gy-3">
-                        <h6 class="card_title">Available to Purchase</h6>
+                        <h6 className="card_title">Available to Purchase</h6>
 
                         {/* Product 1 */}
                         {allAddons && allAddons.length > 0 ?
@@ -242,7 +242,7 @@ function SocialMediaStore({ refreshData }) {
                                             </div>
                                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                 <div>
-                                                    <span class="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
+                                                    <span className="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
                                                 </div>
                                                 <div>
                                                     <span className="borders-left-small " />
@@ -256,7 +256,7 @@ function SocialMediaStore({ refreshData }) {
 
                                             <button className="checkbox_wrapper" onClick={() => setSelectedAddon(item)}>
                                                 <span className='cartSvg'>
-                                                    <i class="fa-solid fa-cart-shopping"></i>
+                                                    <i className="fa-solid fa-cart-shopping"></i>
                                                 </span>
                                                 <span>Buy Now</span>
                                             </button>
@@ -364,7 +364,7 @@ function SocialMediaStore({ refreshData }) {
                                     <div>
                                         <span className="float-end text-black0 fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br />
 
-                                        <span class="old_price">${parseFloat(selectedAddon.price)}</span>
+                                        <span className="old_price">${parseFloat(selectedAddon.price)}</span>
                                     </div>
                                 </div>
                             </div>

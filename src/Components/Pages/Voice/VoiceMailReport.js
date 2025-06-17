@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import {
   backToTop,
   checkViewSidebar,
+  convertDateToCurrentTimeZone,
   generalGetFunction,
   generatePreSignedUrl,
   useDebounce,
@@ -90,11 +91,6 @@ function VoiceMailReport() {
     const shouldLoad = true;
     getData(shouldLoad);
   }, [pageNumber, rowPerPage, debouncedSearchTerm]);
-
-  function extractDate(dateTimeString) {
-    // Split the string by space and return the first part
-    return dateTimeString.split(" ")[0];
-  }
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true)
@@ -267,7 +263,7 @@ function VoiceMailReport() {
                                           </button>
                                         </td>
                                         <td>{item.duration}</td>
-                                        <td>{extractDate(item.created_at)}</td>
+                                        <td>{convertDateToCurrentTimeZone(item.created_at.split(" ")[0])}</td>
                                       </tr>
                                       {/* {currentPlaying == item["recording_path"] && (
                                   <tr>

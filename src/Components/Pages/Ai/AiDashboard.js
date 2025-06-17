@@ -689,21 +689,19 @@ const AiDashboard = () => {
                                             </div>
 
                                         </div>
-                                          <div className='row'>
+                                        <div className='row'>
                                             <div className=' col-12 mb-3'>
                                                 <div className="itemWrapper mt-0 a">
                                                     <div className='heading h-auto'>
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center">
                                                             <div className='col-auto'>
-                                                                <h5 className="d-flex">Agent Status
-
-                                                                </h5>
+                                                                <h5 className="d-flex mb-3">Ai Agent Status</h5>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                     <div className=''>
-                                                        <div className="tableContainer mt-0" style={{    height: 'calc(100vh - 569px)'}}>
+                                                        <div className="tableContainer mt-0" style={{ height: 'calc(100vh - 569px)' }}>
                                                             <table>
                                                                 <thead>
                                                                     <tr>
@@ -720,7 +718,7 @@ const AiDashboard = () => {
 
                                                                     <tr>
                                                                         <td>
-                                                                            <div class="d-flex align-items-center"><span class="extensionStatus online"></span><span class="ms-1">Online</span></div>
+                                                                            <div className="d-flex align-items-center"><span className="extensionStatus online"></span><span className="ms-1">Online</span></div>
                                                                         </td>
                                                                         <td>
                                                                             <div className="d-flex align-items-center">
@@ -760,7 +758,7 @@ const AiDashboard = () => {
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center">
                                                             <div className='col-auto'>
                                                                 <h5 className="d-flex">Monthly
-                                                                    <div class="my-auto position-relative ms-3">
+                                                                    <div className="my-auto position-relative ms-3">
 
 
                                                                     </div>
@@ -780,7 +778,7 @@ const AiDashboard = () => {
                                                         <div className="d-flex flex-wrap justify-content-between align-items-center">
                                                             <div className='col-auto'>
                                                                 <h5 className="d-flex">Annually
-                                                                    <div class="my-auto position-relative ms-3">
+                                                                    <div className="my-auto position-relative ms-3">
 
 
                                                                     </div>
@@ -798,7 +796,7 @@ const AiDashboard = () => {
 
 
                                         </div>
-                                      
+
                                     </div>
                                 </div>
                             </div>

@@ -306,6 +306,7 @@ function Call({
 
     // Call Type Icon Selector
     const statusIcons = {
+      CANCEL: "fa-solid fa-phone-missed",
       Missed: "fa-solid fa-phone-missed",
       Cancelled: "fa-solid fa-phone-xmark",
       Failed: "fa-solid fa-phone-slash",
@@ -317,7 +318,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
@@ -327,7 +329,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -336,7 +339,8 @@ function Call({
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",
@@ -510,8 +514,6 @@ function Call({
   useEffect(() => {
     if (clickedExtension) {
       const filteredHistory = data.filter((item) => {
-        console.log(item["variable_sip_from_user"], item["variable_sip_to_user"], clickedExtension);
-
         if (!isCustomerAdmin) {
           return (
             (
@@ -915,7 +917,7 @@ function Call({
                           setLoading(true)
                           setIsChatLoadedForNextPage(false)
                         }}>
-                        <i class="fa-solid fa-phone-volume"></i>
+                        <i className="fa-solid fa-phone-volume"></i>
                         <span>All</span>
                       </button>
                       <button
@@ -927,7 +929,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }}
                       >
-                        <i class="fa-solid fa-phone-arrow-down-left"></i>
+                        <i className="fa-solid fa-phone-arrow-down-left"></i>
                         <span>Inbound</span>
                       </button>
                       <button
@@ -939,7 +941,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }}
                       >
-                        <i class="fa-solid fa-phone-arrow-up-right"></i>
+                        <i className="fa-solid fa-phone-arrow-up-right"></i>
                         <span>Outbound</span>
                       </button>
                       <button
@@ -951,7 +953,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }
                         }>
-                        <i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
+                        <i className="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
                     </div>
                   </nav>
                   <div className="tab-content">

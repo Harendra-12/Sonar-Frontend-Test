@@ -74,8 +74,8 @@ const ElasticTrunkEdit = () => {
                         </div>
                         <div className="buttonGroup">
                           <div className="my-auto position-relative mx-1">
-                            <div class="cl-toggle-switch">
-                              <label class="cl-switch">
+                            <div className="cl-toggle-switch">
+                              <label className="cl-switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}

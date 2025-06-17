@@ -306,9 +306,9 @@ function Leads() {
                                                                                                 return (
                                                                                                     <li key={camp.id}>
                                                                                                         <div className="dropdown-item d-flex">
-                                                                                                            <div class="my-auto position-relative mx-1">
-                                                                                                                <div class="cl-toggle-switch">
-                                                                                                                    <label class="cl-switch">
+                                                                                                            <div className="my-auto position-relative mx-1">
+                                                                                                                <div className="cl-toggle-switch">
+                                                                                                                    <label className="cl-switch">
                                                                                                                         <input type="checkbox"
                                                                                                                             id="showAllCheck"
                                                                                                                             checked={isChecked}
@@ -338,7 +338,7 @@ function Leads() {
                                                                             </td>
                                                                             <td>
                                                                                 <button className='tableButton mx-auto' onClick={() => downloadImage(data.file_url, `${data.description}`)}>
-                                                                                    <i class="fa-regular fa-download"></i>
+                                                                                    <i className="fa-regular fa-download"></i>
                                                                                 </button>
                                                                             </td>
                                                                             {checkViewSidebar(
@@ -449,25 +449,25 @@ export function LeadEditPopup({ leadData, setLeadEditPopup }) {
         <>
             {loading && <CircularLoader />}
             <div className='addNewContactPopup'>
-                <button class="clearButton2 xl" style={{ position: "absolute", top: "10px", right: "10px" }} onClick={() => setLeadEditPopup(false)}>
-                    <i class="fa-light fa-xmark"></i>
+                <button className="clearButton2 xl" style={{ position: "absolute", top: "10px", right: "10px" }} onClick={() => setLeadEditPopup(false)}>
+                    <i className="fa-light fa-xmark"></i>
                 </button>
                 <div className='row'>
-                    <div class="col-12 heading mb-0">
-                        <i class="fa-light fa-magnifying-glass"></i>
+                    <div className="col-12 heading mb-0">
+                        <i className="fa-light fa-magnifying-glass"></i>
                         <h5>Lead File Edit</h5>
                     </div>
                     <form>
                         <div className='row'>
                             <div className='formRow'>
-                                <label class="formLabel text-start mb-0 w-100">Title</label>
+                                <label className="formLabel text-start mb-0 w-100">Title</label>
                                 <input className='formItem' defaultValue={""} {...register("name", { ...requiredValidator, })} />
                                 {errors.name && (
                                     <ErrorMessage text={errors.name.message} />
                                 )}
                             </div>
                             <div className='formRow'>
-                                <label class="formLabel text-start mb-0 w-100">Description</label>
+                                <label className="formLabel text-start mb-0 w-100">Description</label>
                                 <input className='formItem' defaultValue={""} {...register("description", { ...requiredValidator, })} />
                                 {errors.description && (
                                     <ErrorMessage text={errors.description.message} />
@@ -475,10 +475,10 @@ export function LeadEditPopup({ leadData, setLeadEditPopup }) {
                             </div>
                         </div>
                     </form>
-                    <div class="col-xl-12 mt-3">
-                        <button class="panelButton mx-auto" onClick={handleFormSubmit}>
-                            <span class="text">Save</span>
-                            <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                    <div className="col-xl-12 mt-3">
+                        <button className="panelButton mx-auto" onClick={handleFormSubmit}>
+                            <span className="text">Save</span>
+                            <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                         </button>
                     </div>
                 </div>

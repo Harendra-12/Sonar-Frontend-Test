@@ -232,6 +232,9 @@ function FportalCampaignEdit() {
         setDid(getDid.data.filter((item) => item.usages === "tracker" &&
           (item?.fportal_id == null || item?.fportal_id == locationState?.state?.id)
         ));
+        setDid(getDid.data.filter((item) => item.usages === "tracker" &&
+          (item?.fportal_id == null || item?.fportal_id == locationState?.state?.id)
+        ));
       }
     } catch (error) {
       console.error("Error fetching DID data:", error);
@@ -1025,8 +1028,8 @@ function FportalCampaignEdit() {
                                 </label>
                               </div>
                               <div className='col-6'>
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
+                                <div className="cl-toggle-switch">
+                                  <label className="cl-switch">
                                     <input type="checkbox"
                                       checked={isStatus}
                                       id="showAllCheck"
@@ -1425,8 +1428,8 @@ function FportalCampaignEdit() {
                                 </label>
                               </div>
                               <div className="col-6">
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
+                                <div className="cl-toggle-switch">
+                                  <label className="cl-switch">
                                     <input type="checkbox"
                                       checked={isActiveHour}
                                       id="showAllCheck"

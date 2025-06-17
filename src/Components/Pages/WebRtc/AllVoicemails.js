@@ -658,7 +658,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-home"
                                   aria-selected="true"
                                 >
-                                  <i class="fa-light fa-circle-info me-1"></i>{" "}
+                                  <i className="fa-light fa-circle-info me-1"></i>{" "}
                                   Info
                                 </button>
                                 <button
@@ -671,7 +671,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-profile"
                                   aria-selected="false"
                                 >
-                                  <i class="fa-light fa-list-ul me-1"></i> Logs
+                                  <i className="fa-light fa-list-ul me-1"></i> Logs
                                 </button>
                               </div>
                             </nav>

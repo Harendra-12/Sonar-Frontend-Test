@@ -80,7 +80,7 @@ function AudioTranscribe({ url, setTranscribeLink }) {
         <div className="audio-container mb-0">
             <div className="transcriptWrap p-0 col-12">
                 <div className='transc_close'>
-                    <button onClick={() => setTranscribeLink()}><i class="fa-solid fa-xmark"></i></button>
+                    <button onClick={() => setTranscribeLink()}><i className="fa-solid fa-xmark"></i></button>
                 </div>
                 <div className="d-flex px-3" style={{ marginBottom: '10px' }}>
                     <input

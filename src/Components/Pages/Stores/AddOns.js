@@ -135,9 +135,9 @@ function AddOns() {
 
                                             </div>
                                             <div className='tableHeader justify-content-end ms-auto mb-2'>
-                                                <div class="searchBox position-relative">
+                                                <div className="searchBox position-relative">
                                                     <label>Search:</label>
-                                                    <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />
+                                                    <input type="search" name="Search" className="formItem" onChange={() => featureUnderdevelopment()} />
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@ function AddOns() {
                                             id="nav-social"
                                             role="tabpanel"
                                             aria-labelledby="nav-social-tab"
-                                            tabindex="0"
+                                            tabIndex="0"
                                         >
                                             <SocialMediaStore refreshData={refreshData} />
                                         </div>
@@ -157,7 +157,7 @@ function AddOns() {
                                             id="nav-exten"
                                             role="tabpanel"
                                             aria-labelledby="nav-exten-tab"
-                                            tabindex="0"
+                                            tabIndex="0"
                                         >
                                             <ExtensionStore />
                                         </div>
@@ -166,7 +166,7 @@ function AddOns() {
                                             id="nav-util"
                                             role="tabpanel"
                                             aria-labelledby="nav-util-tab"
-                                            tabindex="0"
+                                            tabIndex="0"
                                         >
 
                                         </div>

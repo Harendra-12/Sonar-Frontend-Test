@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useNavigate } from 'react-router-dom'
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
-import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, formatDateTime, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
@@ -173,7 +173,7 @@ function Ticket() {
                           id="nav-user"
                           role="tabpanel"
                           aria-labelledby="nav-user-tab"
-                          tabindex="0" >
+                          tabIndex="0" >
 
                           <div
                             className="col-12"
@@ -222,7 +222,7 @@ function Ticket() {
                                       return (
                                         <tr>
                                           <td style={{ width: '20px' }}>{index + 1}</td>
-                                          <td>{item.created_at.split('T')[0]}, {new Date(item.created_at).toLocaleTimeString()}</td>
+                                          <td>{formatDateTime(item?.created_at)}</td>
                                           <td>{item.department}</td>
                                           <td>{item.query_type}</td>
                                           <td>{item.title}</td>
@@ -287,7 +287,7 @@ function Ticket() {
                           id="nav-exten"
                           role="tabpanel"
                           aria-labelledby="nav-exten-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <div
                             className="col-12"
@@ -334,7 +334,7 @@ function Ticket() {
                                     return (
                                       <tr>
                                         <td style={{ width: '20px' }}>{index + 1}</td>
-                                        <td>{item.created_at.split('T')[0]}, {new Date(item.created_at).toLocaleTimeString()}</td>
+                                        <td>{formatDateTime(item?.created_at)}</td>
                                         <td>{item.department}</td>
                                         <td>{item.query_type}</td>
                                         <td>{item.title}</td>
@@ -434,7 +434,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
               style={{ maxHeight: "calc(100vh - 100px)" }}>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Title</label>
+                  <label htmlFor="">Title</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -450,7 +450,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Department</label>
+                  <label htmlFor="">Department</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -466,7 +466,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Query Type: </label>
+                  <label htmlFor="">Query Type: </label>
                 </div>
                 <div className="col-12">
                   <input
@@ -482,7 +482,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Message</label>
+                  <label htmlFor="">Message</label>
                 </div>
                 <div className="col-12">
                   <textarea
@@ -558,7 +558,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
               style={{ maxHeight: "calc(100vh - 100px)" }}>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Title</label>
+                  <label htmlFor="">Title</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -575,7 +575,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Department</label>
+                  <label htmlFor="">Department</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -592,7 +592,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Query Type: </label>
+                  <label htmlFor="">Query Type: </label>
                 </div>
                 <div className="col-12">
                   <input
@@ -609,7 +609,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
               </div>
               <div className='from-group'>
                 <div className="formLabel">
-                  <label for="">Message</label>
+                  <label htmlFor="">Message</label>
                 </div>
                 <div className="col-12">
                   <textarea

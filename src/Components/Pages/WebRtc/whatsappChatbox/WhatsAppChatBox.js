@@ -230,10 +230,10 @@ const WhatsAppChatBox = ({ initial }) => {
               </div>
             </div>
             <>
-              <div class="overviewTableWrapper">
-                <div class="overviewTableChild chartBox">
-                  <div class="d-flex flex-wrap">
-                    <div class="col-lg-5 col-5">
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild chartBox">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-lg-5 col-5">
                       <div className="d-flex chat_sideNav">
                         <div
                           className={`leftBox ${open ? "active" : "hidden"}`}
@@ -242,12 +242,12 @@ const WhatsAppChatBox = ({ initial }) => {
                             <ul>
                               <li className="active">
                                 <button>
-                                  <i class="fa-brands fa-rocketchat"></i>
+                                  <i className="fa-brands fa-rocketchat"></i>
                                 </button>
                               </li>
                               <li>
                                 <button>
-                                  <i class="fa-solid fa-rotate"></i>
+                                  <i className="fa-solid fa-rotate"></i>
                                 </button>
                               </li>
                             </ul>
@@ -257,7 +257,7 @@ const WhatsAppChatBox = ({ initial }) => {
                         <div className=" pb-3 w-100">
                           <div className="d-flex justify-content-start gap-2 align-items-center px-3 py-3 border-bottom">
                             <button className="chat_menu " onClick={handleOpen}>
-                              <i class="fa-solid fa-bars"></i>
+                              <i className="fa-solid fa-bars"></i>
                             </button>
                             <div className="form-group w-100 position-relative ">
                               <input
@@ -266,7 +266,7 @@ const WhatsAppChatBox = ({ initial }) => {
                                 placeholder="Search users, groups or chat"
                                 className="formItem fw-normal searchInput"
                               />
-                              <i class="fas fa-search user_Search"></i>
+                              <i className="fas fa-search user_Search"></i>
                             </div>
                           </div>
                           <div className="user_list">
@@ -297,7 +297,7 @@ const WhatsAppChatBox = ({ initial }) => {
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-7 col-7">
+                    <div className="col-lg-7 col-7">
                       <div className="d-flex flex-column h-100">
                         <div>
                           <div className="chat_head ">
@@ -311,28 +311,28 @@ const WhatsAppChatBox = ({ initial }) => {
                               <p className="mb-0 profile_text">
                                 <span>{activeChat}</span> <br />
                                 <span className="">
-                                  <i class="fa-solid fa-circle un_Read me-1"></i>
+                                  <i className="fa-solid fa-circle un_Read me-1"></i>
                                   Online
                                 </span>
                               </p>
                             </div>
                             <div className="d-flex justify-content-end align-items-center gap-2">
                               <button className="chat_button" disabled>
-                                <i class="fa-solid fa-phone"></i>
+                                <i className="fa-solid fa-phone"></i>
                               </button>
                               <button className="chat_button" disabled>
-                                <i class="fa-solid fa-video"></i>
+                                <i className="fa-solid fa-video"></i>
                               </button>
-                              <div class="search-box ">
+                              <div className="search-box ">
                                 <button
                                   className="btn-search chat_button"
                                   disabled
                                 >
-                                  <i class="fas fa-search"></i>
+                                  <i className="fas fa-search"></i>
                                 </button>
                                 <input
                                   type="text"
-                                  class="input-search"
+                                  className="input-search"
                                   placeholder="Type to Search..."
                                   disabled
                                 />
@@ -341,8 +341,8 @@ const WhatsAppChatBox = ({ initial }) => {
                           </div>
                           {loading ? (
                             <div className="w_loader">
-                              <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                              <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
                               </div>
                             </div>
                           ) : (
@@ -364,11 +364,11 @@ const WhatsAppChatBox = ({ initial }) => {
                                         {formatTimeFromDate(item?.created_at)}
                                         {item?.delivery_status === "read" &&
                                           item?.wp_receiver_id === activeChat ? (
-                                          <i class="fa-solid fa-check-double read ms-2" />
+                                          <i className="fa-solid fa-check-double read ms-2" />
                                         ) : item?.delivery_status === "sent" &&
                                           item?.wp_receiver_id ===
                                           activeChat ? (
-                                          <i class="fa-solid fa-check text-muted ms-2" />
+                                          <i className="fa-solid fa-check text-muted ms-2" />
                                         ) : (
                                           ""
                                         )}
@@ -380,9 +380,9 @@ const WhatsAppChatBox = ({ initial }) => {
                           )}
                         </div>
                         <div className="chat_footer">
-                          <div class="chat-input">
+                          <div className="chat-input">
                             <button className="send_btn me-2 plus ">
-                              <i class="fa-solid fa-plus d-flex justify-content-center align-items-center"></i>
+                              <i className="fa-solid fa-plus d-flex justify-content-center align-items-center"></i>
                             </button>
                             <input
                               type="text"
@@ -399,7 +399,7 @@ const WhatsAppChatBox = ({ initial }) => {
                               disabled={sendingMessage}
                               type="submit"
                             >
-                              <i class="fas fa-paper-plane"></i>
+                              <i className="fas fa-paper-plane"></i>
                             </button>
                           </div>
                         </div>
@@ -593,13 +593,13 @@ const WhatsAppChatBox = ({ initial }) => {
                       </div>
                       <div className="chat-time">09:30AM</div>
                     </div> */}
-                        {/* <div class="chat-item">
+                        {/* <div className="chat-item">
                   <img src="https://spruko.com/demo/rixzo/dist/assets/images/faces/4.jpg" alt="user">
-                  <div class="chat-details">
-                      <div class="chat-name">Natalie Portman</div>
-                      <div class="chat-message">Can't wait to discuss our project...</div>
+                  <div className="chat-details">
+                      <div className="chat-name">Natalie Portman</div>
+                      <div className="chat-message">Can't wait to discuss our project...</div>
                   </div>
-                  <div class="chat-time">09:30AM</div>
+                  <div className="chat-time">09:30AM</div>
               </div> */}
                       </div>
                     </div>
@@ -779,8 +779,8 @@ const WhatsAppChatBox = ({ initial }) => {
 
                         {loading ? (
                           <div className="w_loader">
-                            <div class="spinner-border" role="status">
-                              <span class="visually-hidden">Loading...</span>
+                            <div className="spinner-border" role="status">
+                              <span className="visually-hidden">Loading...</span>
                             </div>
                           </div>
                         ) : (
@@ -814,11 +814,11 @@ const WhatsAppChatBox = ({ initial }) => {
                                           {formatTimeFromDate(item?.created_at)}
                                           {item?.delivery_status === "read" &&
                                             item?.wp_receiver_id === activeChat ? (
-                                            <i class="fa-solid fa-check-double read ms-2" />
+                                            <i className="fa-solid fa-check-double read ms-2" />
                                           ) : item?.delivery_status === "sent" &&
                                             item?.wp_receiver_id ===
                                             activeChat ? (
-                                            <i class="fa-solid fa-check text-muted ms-2" />
+                                            <i className="fa-solid fa-check text-muted ms-2" />
                                           ) : (
                                             ""
                                           )}

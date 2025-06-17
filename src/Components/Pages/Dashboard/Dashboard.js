@@ -7,7 +7,7 @@ import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
-import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -35,7 +35,8 @@ const Dashboard = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const didAll = useSelector((state) => state.didAll);
   const [allDID, setAllDID] = useState([]);
-  const [allUserList, setAllUserList] = useState([])
+  const [allUserList, setAllUserList] = useState([]);
+  const [userTimeZone, setUserTimeZone] = useState("");
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
@@ -103,6 +104,7 @@ const Dashboard = () => {
         timeZoneRefresh: timeZoneRefresh + 1,
       });
     }
+    setUserTimeZone(timeZone.filter((item) => item.id === account?.timezone_id)[0]?.name);
   }, [timeZone]);
 
   useEffect(() => {
@@ -546,11 +548,12 @@ const Dashboard = () => {
                               <h5>Timezone</h5>
                               <p>
                                 {" "}
-                                {new Date().getDate()}{" "}
+                                {new Intl.DateTimeFormat('default', { timeZone: userTimeZone || 'UTC', day: '2-digit' }).format(new Date())}{" "}
                                 {new Date().toLocaleString("default", {
                                   month: "long",
+                                  timeZone: userTimeZone || 'UTC'
                                 })}
-                                , {new Date().getFullYear()}
+                                , {new Intl.DateTimeFormat('default', { year: 'numeric', timeZone: userTimeZone || 'UTC' }).format(new Date())}
                               </p>
                             </div>
                             <div className="col-3">
@@ -576,17 +579,17 @@ const Dashboard = () => {
                                   }
                                 </p>
                                 <div className="d-flex justify-content-center align-items-center">
-                                  <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
-                                  <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
-                                  <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
+                                  <p className="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                  <p className="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                  <p className="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
                                 </div>
                               </div>
                             </div>
                             {/* <div className="col-auto "> */}
                             {/* <div className="digital__clock">
-                                <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
-                                <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
-                                <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
+                                <p className="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                <p className="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                <p className="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
                               </div> */}
 
                             {/* <Clock
@@ -705,12 +708,7 @@ const Dashboard = () => {
                               <h5>{account?.domain?.domain_name}</h5>
                               <p>
                                 Created at:{" "}
-                                {account?.domain?.created_at?.split("T")[0]},{" "}
-                                {
-                                  account?.domain?.created_at
-                                    ?.split("T")[1]
-                                    ?.split(".")[0]
-                                }
+                                {formatDateTime(account?.domain?.created_at)}
                               </p>
                             </div>
                             {/* <div className="col-3">
@@ -926,7 +924,7 @@ const Dashboard = () => {
                               ) : (
                                 <div className="deviceProvision position-relative" style={{ height: '250px' }}>
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                    <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                    <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
                                 </div>
                               )}
@@ -971,7 +969,7 @@ const Dashboard = () => {
                                 : (
                                   <div className="deviceProvision position-relative h-100">
                                     <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                      <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                      <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                     </div>
                                   </div>
                                 )}
@@ -1015,7 +1013,7 @@ const Dashboard = () => {
                               ) : (
                                 <div className="deviceProvision position-relative h-100">
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                    <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                    <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
                                 </div>
                               )}
@@ -1806,9 +1804,9 @@ const Dashboard = () => {
                                   <h5>Call Billed Per Hour</h5>
                                 </div>
                                 <div className="col-auto">
-                                  <ul class="chart_tabs" >
-                                    <li class="nav-item">
-                                      <input class="nav-link" type="radio" name="graphCostFilter"
+                                  <ul className="chart_tabs" >
+                                    <li className="nav-item">
+                                      <input className="nav-link" type="radio" name="graphCostFilter"
                                         value="1"
                                         checked={graphFilter.callCostPerHour.startTime === '1'}
                                         onChange={(e) =>
@@ -1821,10 +1819,10 @@ const Dashboard = () => {
                                           }))
                                         }
                                       />
-                                      <button class="nav-link">1 Hr</button>
+                                      <button className="nav-link">1 Hr</button>
                                     </li>
-                                    <li class="nav-item">
-                                      <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                                    <li className="nav-item">
+                                      <input className="nav-link" type="radio" name="graphCostFilter" value="3"
                                         checked={graphFilter.callCostPerHour.startTime === '3'}
                                         onChange={(e) =>
                                           setGraphFilter((prevGraphData) => ({
@@ -1836,10 +1834,10 @@ const Dashboard = () => {
                                           }))
                                         }
                                       />
-                                      <button class="nav-link">3 Hr</button>
+                                      <button className="nav-link">3 Hr</button>
                                     </li>
-                                    <li class="nav-item">
-                                      <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                                    <li className="nav-item">
+                                      <input className="nav-link" type="radio" name="graphCostFilter" value="6"
                                         checked={graphFilter.callCostPerHour.startTime === '6'}
                                         onChange={(e) =>
                                           setGraphFilter((prevGraphData) => ({
@@ -1851,10 +1849,10 @@ const Dashboard = () => {
                                           }))
                                         }
                                       />
-                                      <button class="nav-link">6 Hr</button>
+                                      <button className="nav-link">6 Hr</button>
                                     </li>
-                                    <li class="nav-item">
-                                      <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                                    <li className="nav-item">
+                                      <input className="nav-link" type="radio" name="graphCostFilter" value="12"
                                         checked={graphFilter.callCostPerHour.startTime === '12'}
                                         onChange={(e) =>
                                           setGraphFilter((prevGraphData) => ({
@@ -1866,10 +1864,10 @@ const Dashboard = () => {
                                           }))
                                         }
                                       />
-                                      <button class="nav-link">12 Hr</button>
+                                      <button className="nav-link">12 Hr</button>
                                     </li>
-                                    <li class="nav-item">
-                                      <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                                    <li className="nav-item">
+                                      <input className="nav-link" type="radio" name="graphCostFilter" value="24"
                                         checked={graphFilter.callCostPerHour.startTime === '24'}
                                         onChange={(e) =>
                                           setGraphFilter((prevGraphData) => ({
@@ -1881,7 +1879,7 @@ const Dashboard = () => {
                                           }))
                                         }
                                       />
-                                      <button class="nav-link">24 Hr</button>
+                                      <button className="nav-link">24 Hr</button>
                                     </li>
                                   </ul>
                                 </div>
@@ -1892,7 +1890,7 @@ const Dashboard = () => {
                                 (
                                   <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
                                     <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                      <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                      <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                     </div>
                                   </div>
                                 ) :

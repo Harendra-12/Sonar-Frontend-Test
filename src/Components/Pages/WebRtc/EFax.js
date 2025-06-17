@@ -225,7 +225,7 @@ function EFax({ did }) {
                         effect="ripple"
                         data-category="all"
                       >
-                        <i class="fa-regular fa-circle-dot me-1"></i>  All
+                        <i className="fa-regular fa-circle-dot me-1"></i>  All
                       </button>
                       <button
                         onClick={() => setClickStatus("file")}
@@ -236,7 +236,7 @@ function EFax({ did }) {
                         effect="ripple"
                         data-category="file"
                       >
-                        <i class="fa-light fa-file me-1"></i> File
+                        <i className="fa-light fa-file me-1"></i> File
                       </button>
                       {/* <button
                         className={"tabLink"}
@@ -717,7 +717,7 @@ function EFax({ did }) {
                                         aria-controls="nav-home"
                                         aria-selected="true"
                                       >
-                                        <i class="fa-light fa-circle-info me-1"></i> Info
+                                        <i className="fa-light fa-circle-info me-1"></i> Info
                                       </button>
                                       <button
                                         className="tabLink"
@@ -729,7 +729,7 @@ function EFax({ did }) {
                                         aria-controls="nav-history"
                                         aria-selected="false"
                                       >
-                                        <i class="fa-light fa-list-ul me-1"></i> Logs
+                                        <i className="fa-light fa-list-ul me-1"></i> Logs
                                       </button>
                                     </div>
                                   </nav>

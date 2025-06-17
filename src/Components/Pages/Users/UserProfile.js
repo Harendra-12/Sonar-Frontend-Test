@@ -243,7 +243,7 @@ function UserProfile() {
                                         //   <span className="text">Save</span>
                                         //   <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                         // </button>
-                                        <button onClick={handleSave} effect="ripple" type="button" class={`ms-2 panelButton`}
+                                        <button onClick={handleSave} effect="ripple" type="button" className={`ms-2 panelButton`}
                                           style={{ maxWidth: 'none' }}
                                         >
                                           <span className="text">Save</span>    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>

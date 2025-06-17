@@ -91,8 +91,8 @@ function Buyers() {
                       <div className="heading">
                         <div className="content">
                           <h4> All Buyers
-                            <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
-                              <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
+                            <button className="clearButton" onClick={getRefresh} disabled={refreshState}>
+                              <i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
                           </h4>
                           <p>You can see all list of all buyers</p>
                         </div>

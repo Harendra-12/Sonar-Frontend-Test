@@ -147,7 +147,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                     </div>
                                 </nav>}
                                 <div className="tab-content" id="nav-tabContent">
-                                    <div className="tab-pane fade show active" id="nav-agent" role="tabpanel" tabindex="0">
+                                    <div className="tab-pane fade show active" id="nav-agent" role="tabpanel" tabIndex="0">
                                         <div className="col-12">
                                             <nav className="tangoNavs">
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist" style={!isParentWebRtc ? { height: '65px' } : undefined}>
@@ -259,7 +259,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                                                     <td style={{ textTransform: 'capitalize' }}>
                                                                                         {callStatus && (
                                                                                             <>
-                                                                                                <i class={`fa-solid fa-${callStatus?.direction === 'internal' ? 'headset' : callStatus?.direction === 'inbound' ? 'phone-arrow-down-left' : callStatus?.direction === 'outbound' ? 'phone-arrow-up-right' : 'phone'} me-1`}
+                                                                                                <i className={`fa-solid fa-${callStatus?.direction === 'internal' ? 'headset' : callStatus?.direction === 'inbound' ? 'phone-arrow-down-left' : callStatus?.direction === 'outbound' ? 'phone-arrow-up-right' : 'phone'} me-1`}
                                                                                                     style={{ color: callStatus?.direction === 'internal' ? 'var(--color2)' : callStatus?.direction === 'inbound' ? 'var(--funky-boy3)' : callStatus?.direction === 'outbound' ? 'var(--color3)' : 'var(--color2)' }}></i>
                                                                                                 {callStatus?.direction}
                                                                                             </>
@@ -329,7 +329,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                             </div>
                                         </div>
                                     </div>
-                                    {isParentWebRtc && <div className="tab-pane fade" id="nav-parked" role="tabpanel" tabindex="0">
+                                    {isParentWebRtc && <div className="tab-pane fade" id="nav-parked" role="tabpanel" tabIndex="0">
                                         <div className="col-12">
                                             <div className="tableContainer mt-0">
                                                 <table>

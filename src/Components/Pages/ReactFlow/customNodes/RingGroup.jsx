@@ -70,7 +70,7 @@ const RingGroup = ({ id, data }) => {
       <div className="press-digits-node" style={{ backgroundColor: "#8063ff" }}>
         <div className="node-header">
           <div className="node-title">
-            <i class="fa-light fa-user-group"></i>
+            <i className="fa-light fa-user-group"></i>
             <input
               type="text"
               value={data.label}
@@ -98,7 +98,7 @@ const RingGroup = ({ id, data }) => {
           {ringGroup.length < 1 && <p>No ringGroup found</p>}
           {ringGroup.length > 0 && (
             <div className="d-flex flex-column">
-              <label for="ringGroup" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Ring Group:</label>{" "}
+              <label htmlFor="ringGroup" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Ring Group:</label>{" "}
               <select
                 name="ringGroup"
                 id="ringGroup"
@@ -131,7 +131,7 @@ const RingGroup = ({ id, data }) => {
         <div className="addNewContactPopup">
           <div className="row">
             <div className="col-12 heading">
-              <i class="fa-solid fa-triangle-exclamation"></i>
+              <i className="fa-solid fa-triangle-exclamation"></i>
               <h5>
                 Are you sure you want to delete this node? This action cannot be
                 reversed.
@@ -153,7 +153,7 @@ const RingGroup = ({ id, data }) => {
                 <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </button>
               </div>

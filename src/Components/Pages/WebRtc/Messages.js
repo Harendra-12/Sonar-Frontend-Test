@@ -1403,6 +1403,10 @@ function Messages({
   }
 
   const handleEditGroupName = async () => {
+    if (groupNameEdit.trim() === '') {
+      toast.error("Group name cannot be empty");
+      return;
+    }
     const parsedData = {
       group_name: groupNameEdit,
       // members: groupSelecedAgents.map((agent) => {
@@ -1760,7 +1764,7 @@ function Messages({
               </div>
               <div className="col-xl-12">
                 <div className="formLabel">
-                  <label for="">Full Name</label>
+                  <label htmlFor="">Full Name</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -1939,7 +1943,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-phone"></i> <span>Calls</span>
+                        <i className="fa-regular fa-phone"></i> <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -2014,7 +2018,14 @@ function Messages({
                           >
                             Chats <i className="fa-solid fa-chevron-down"></i>
                           </h5>
-
+                        </div>
+                        <div
+                          className="collapse show"
+                          id="collapse2"
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
+                        >
                           <input
                             type="search"
                             name="Search"
@@ -2024,14 +2035,6 @@ function Messages({
                             value={searchValueForMessage}
                             onChange={(event) => handleMessageSearchChange(event)}
                           />
-                        </div>
-                        <div
-                          className="collapse show"
-                          id="collapse2"
-                        // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
-                        // }}
-                        >
                           {contact.map((item) => {
                             return (
                               <div
@@ -2186,6 +2189,12 @@ function Messages({
                             Group Chat{" "}
                             <i className="fa-solid fa-chevron-down"></i>
                           </h5>
+                        </div>
+                        <div
+                          className="collapse show"
+                          id="collapse3"
+                        // style={{ borderBottom: "1px solid #ddd" }}
+                        >
                           <input
                             type="search"
                             name="Search"
@@ -2195,12 +2204,6 @@ function Messages({
                             value={searchValueForGroup}
                             onChange={(event) => handleGroupSearchChange(event)}
                           />
-                        </div>
-                        <div
-                          className="collapse show"
-                          id="collapse3"
-                        // style={{ borderBottom: "1px solid #ddd" }}
-                        >
                           {groups.map((item, index) => {
                             return (
                               <div
@@ -2808,7 +2811,7 @@ function Messages({
                                     </div>
                                     <div className=" text-end">
                                       <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                        {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                        {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
                                         <p className="timeAgo">
                                           {item?.last_message_data?.created_at
                                             ? formatRelativeTime(
@@ -2821,7 +2824,7 @@ function Messages({
                                           ""
                                         ) : (
                                           <span className="chat-read-icon readsms ">
-                                            <i class="fa-solid fa-check-double"></i>
+                                            <i className="fa-solid fa-check-double"></i>
                                           </span>
                                         )}
                                       </div>
@@ -3066,7 +3069,7 @@ function Messages({
                                           className="more info"
                                           onClick={() => handleCreateNewTag()}
                                         >
-                                          <i class="fa-regular fa-plus me-1"></i>{" "}
+                                          <i className="fa-regular fa-plus me-1"></i>{" "}
                                           Create New Tag
                                         </button>
                                       )}
@@ -3686,7 +3689,7 @@ function Messages({
                                       className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
                                       onClick={() => setAutoReply(!autoReply)}
                                     >
-                                      <i class="fa-solid fa-message-bot"></i>
+                                      <i className="fa-solid fa-message-bot"></i>
                                     </button>
 
                                   </Tippy>
@@ -3748,7 +3751,7 @@ function Messages({
                         </button>
                       } allowHTML={true} placement="top" interactive={true}>
                         <button className='clearButton2'>
-                          <i class="fa-regular fa-arrows-left-right"></i>
+                          <i className="fa-regular fa-arrows-left-right"></i>
                         </button>
                       </Tippy>
                     </PanelResizeHandle> */}
@@ -3768,46 +3771,72 @@ function Messages({
                           style={{ height: "71px" }}
                         >
                           <div className="col">
-                            <h4 className="my-0">
-                              <input
-                                value={groupNameEdit}
-                                disabled={!saveEditToggleGroupNameChange}
-                                onChange={(e) =>
-                                  setGroupNameEdit(e.target.value)
-                                }
-                                className="border-0 bg-transparent w-100"
-                                style={{ fontSize: "18px", fontWeight: 500 }}
-                              />
+                            <h4 className="my-0" style={{ fontSize: "18px", fontWeight: 500 }}>
+                              {groupNameEdit}
                             </h4>
                           </div>
                           <div className="d-flex my-auto">
-                            {!saveEditToggleGroupNameChange ? (
-                              <button
-                                className="clearButton2 "
-                                onClick={() =>
-                                  setSaveEditToggleGroupNameChange(true)
-                                }
-                              >
-                                <i className="fa-regular fa-pen"></i>
-                              </button>
-                            ) : (
-                              <button
-                                className="clearButton2 "
-                                onClick={() =>
-                                  // setSaveEditToggleGroupNameChange(false)
-                                  handleEditGroupName()
-                                }
-                              >
-                                <i className="fa-regular fa-check"></i>
-                              </button>
-                            )}
+                            <button
+                              className="clearButton2 "
+                              onClick={() =>
+                                setSaveEditToggleGroupNameChange(true)
+                              }
+                            >
+                              <i className="fa-regular fa-pen"></i>
+                            </button>
                           </div>
+                          {
+                            saveEditToggleGroupNameChange &&
+                            <div className="popup">
+                              <div className="container h-100">
+                                <div className="row h-100 justify-content-center align-items-center">
+                                  <div className="row content col-xxl-4 col-xl-5 col-md-5">
+                                    <div className="col-12 mb-2">
+                                      <div className="iconWrapper">
+                                        <i className="fa-duotone fa-circle-exclamation" />
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="mb-2">
+                                        <h4 className="text-center text-orange">
+                                          Please type the new name of the group below
+                                        </h4>
+                                      </div>
+                                      <div className="my-2">
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={groupNameEdit}
+                                          onChange={(e) =>
+                                            setGroupNameEdit(e.target.value)
+                                          }
+                                        />
+                                      </div>
+                                      <div className="d-flex justify-content-center gap-2 mt-3">
+                                        <button className="panelButton m-0" onClick={handleEditGroupName}>
+                                          <span className="text">Confirm</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-check" />
+                                          </span>
+                                        </button>
+                                        <button className="panelButton gray m-0 float-end" onClick={() => { setSaveEditToggleGroupNameChange(false); setGroupNameEdit(recipient?.[3]) }}>
+                                          <span className="text">Cancel</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-xmark" />
+                                          </span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          }
                         </div>
-
                         <div
                           data-bell=""
                           className="contactListItem bg-transparent"
-                          style={{ minHeight: "auto" }}
+                          style={{ minHeight: "auto", borderBottom: '1px solid var(--border-color)' }}
                         >
                           <div className="row justify-content-between">
                             <div
@@ -3869,6 +3898,7 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
+                                    id="headerSearch"
                                     className="formItem searchStyle"
                                     placeholder="Search"
                                     name="name"
@@ -3894,9 +3924,9 @@ function Messages({
                                     <table>
                                       <thead>
                                         <tr>
-                                          <th>S.No</th>
+                                          <th style={{ width: '20px' }}>S.No</th>
                                           <th>Name</th>
-                                          <th>
+                                          <th style={{ width: '20px' }}>
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
@@ -3944,10 +3974,10 @@ function Messages({
                                               )
                                           ) // Exclude agents already in `agent`
                                           .map((item, index) => (
-                                            <tr key={""}>
-                                              <td>{index + 1}.</td>
-                                              <td>{item.name}</td>
-                                              <td>
+                                            <tr key={item.id}>
+                                              <td style={{ width: '20px' }}>{index + 1}.</td>
+                                              <td style={{ whiteSpace: 'break-spaces' }}>{item.name}</td>
+                                              <td style={{ width: '20px' }}>
                                                 <input
                                                   type="checkbox"
                                                   onChange={() =>

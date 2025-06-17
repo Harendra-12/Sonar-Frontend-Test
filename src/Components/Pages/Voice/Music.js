@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   checkViewSidebar,
+  convertDateToCurrentTimeZone,
   featureUnderdevelopment,
   fileUploadFunction,
   generalDeleteFunction,
@@ -391,7 +392,7 @@ function Music() {
                                           <tr>
                                             <td>{item.name}</td>
                                             <td>{item.type}</td>
-                                            <td>{item.created_at.split("T")[0]}</td>
+                                            <td>{convertDateToCurrentTimeZone(item.created_at.split("T")[0])}</td>
                                             <td>
                                               <button
                                                 className="tableButton px-2 mx-0"

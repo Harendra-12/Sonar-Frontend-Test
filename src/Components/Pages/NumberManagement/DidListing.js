@@ -327,7 +327,7 @@ function DidListing({ page }) {
                             disabled={refreshState}
                           >
                             <i
-                              class={`fa-regular fa-arrows-rotate fs-5 
+                              className={`fa-regular fa-arrows-rotate fs-5 
                                 ${refreshState ? "fa-spin" : ""}`}
                             ></i>
                           </button>
@@ -406,11 +406,11 @@ function DidListing({ page }) {
                                 <div className="mt-3 logoutPopup d-flex justify-content-center">
                                   <button
                                     type="button"
-                                    class="btn btn_info"
+                                    className="btn btn_info"
                                     onClick={() => setAddNew(false)}
                                   >
                                     <span>Ok</span>
-                                    <i class="fa-solid fa-power-off "></i>
+                                    <i className="fa-solid fa-power-off "></i>
                                   </button>
                                 </div>
                               </div>
@@ -781,7 +781,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -800,7 +800,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>
@@ -860,7 +860,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -879,7 +879,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>
@@ -934,7 +934,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -953,7 +953,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>

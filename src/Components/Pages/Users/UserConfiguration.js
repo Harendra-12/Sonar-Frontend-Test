@@ -218,7 +218,7 @@ function UserConfiguration() {
                       id="nav-user"
                       role="tabpanel"
                       aria-labelledby="nav-user-tab"
-                      tabindex="0"
+                      tabIndex="0"
                     >
                       <UsersEdit
                         page="marginleftAdjust"
@@ -230,7 +230,7 @@ function UserConfiguration() {
                       id="nav-exten"
                       role="tabpanel"
                       aria-labelledby="nav-exten-tab"
-                      tabindex="0"
+                      tabIndex="0"
                     >
                       <main className="mainContent ms-0">
                         <section id="phonePage">
@@ -321,9 +321,9 @@ function UserConfiguration() {
                                                 <div className="d-flex justify-content-center align-items-center">
                                                   <div
                                                     className={`savedCardWrapper col ${activeUserPermission ===
-                                                        item
-                                                        ? "active"
-                                                        : ""
+                                                      item
+                                                      ? "active"
+                                                      : ""
                                                       }`}
                                                   >
                                                     <div>

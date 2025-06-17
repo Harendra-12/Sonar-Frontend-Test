@@ -341,22 +341,22 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                         </div>
                                                     </nav>
                                                     <div className="tab-content" id="nav-tabContent">
-                                                        <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
+                                                        <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-rgroup" role="tabpanel" aria-labelledby="nav-rgroup-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-rgroup" role="tabpanel" aria-labelledby="nav-rgroup-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-ccenter" role="tabpanel" aria-labelledby="nav-ccenter-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-ccenter" role="tabpanel" aria-labelledby="nav-ccenter-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-did" role="tabpanel" aria-labelledby="nav-did-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-did" role="tabpanel" aria-labelledby="nav-did-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <table>
                                                                     <thead>
@@ -381,17 +381,17 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 </table>
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-internal" role="tabpanel" aria-labelledby="nav-internal-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-internal" role="tabpanel" aria-labelledby="nav-internal-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-inbound" role="tabpanel" aria-labelledby="nav-inbound-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-inbound" role="tabpanel" aria-labelledby="nav-inbound-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
                                                         </div>
-                                                        <div className="tab-pane fade" id="nav-outbound" role="tabpanel" aria-labelledby="nav-outbound-tab" tabindex="0">
+                                                        <div className="tab-pane fade" id="nav-outbound" role="tabpanel" aria-labelledby="nav-outbound-tab" tabIndex="0">
                                                             <div className="tableContainer" style={{ height: '50vh' }}>
                                                                 <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                             </div>
@@ -407,7 +407,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 </button>
                                             } allowHTML={true} placement="top" interactive={true}>
                                                 <button className='clearButton2 z-2'>
-                                                    <i class="fa-light fa-arrows-left-right"></i>
+                                                    <i className="fa-light fa-arrows-left-right"></i>
                                                 </button>
                                             </Tippy>
                                         </PanelResizeHandle>
@@ -416,7 +416,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 <div className='d-flex'>
                                                     <Tippy content="Minimize this window">
                                                         <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                            <i class="fa-light fa-arrows-maximize"></i>
+                                                            <i className="fa-light fa-arrows-maximize"></i>
                                                         </button>
                                                     </Tippy>
                                                     <AllActiveAgentStatus isActiveCallsPage={true} isParentWebRtc={false} />
@@ -455,7 +455,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     </div>
                                                 </nav> */}
                                                                             <div className="tab-content mt-3" id="nav-tabContent" style={{ paddingTop: '55px' }}>
-                                                                                <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabindex="0">
+                                                                                <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -489,7 +489,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-rgroupring" role="tabpanel" aria-labelledby="nav-rgroupring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-rgroupring" role="tabpanel" aria-labelledby="nav-rgroupring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -524,7 +524,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-ccenterring" role="tabpanel" aria-labelledby="nav-ccenterring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-ccenterring" role="tabpanel" aria-labelledby="nav-ccenterring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -558,7 +558,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-didring" role="tabpanel" aria-labelledby="nav-didring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-didring" role="tabpanel" aria-labelledby="nav-didring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -583,7 +583,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-internalring" role="tabpanel" aria-labelledby="nav-internalring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-internalring" role="tabpanel" aria-labelledby="nav-internalring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -619,7 +619,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-inboundring" role="tabpanel" aria-labelledby="nav-inboundring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-inboundring" role="tabpanel" aria-labelledby="nav-inboundring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>
@@ -655,7 +655,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="tab-pane fade" id="nav-outboundring" role="tabpanel" aria-labelledby="nav-outboundring-tab" tabindex="0">
+                                                                                <div className="tab-pane fade" id="nav-outboundring" role="tabpanel" aria-labelledby="nav-outboundring-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>
                                                                                             <thead>

@@ -336,7 +336,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                                     </h4>
                                                                                     <p>Active</p>
                                                                                     {/* <img className=" " src={require('../../assets/images/phone-call.png')} alt='logout' /> */}
-                                                                                    {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
+                                                                                    {/* <p><i className="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : ""
                                                                         }
                                                                         {
@@ -352,7 +352,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                                     </h4>
                                                                                     <p className=''>Ringing</p>
                                                                                     {/* <img className=" " src={require('../../assets/images/phone2.png')} alt='logout' /> */}
-                                                                                    {/* <p><i class="fa-solid fa-phone-volume"></i></p> */}
+                                                                                    {/* <p><i className="fa-solid fa-phone-volume"></i></p> */}
                                                                                 </div> : " "
                                                                         }
                                                                         {
@@ -391,7 +391,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                 <div className='col-xxl-2 col-xl-3'>
                                                     <div className="deviceProvision position-relative h-100">
                                                         <div className="itemWrapper mt-0 a addNew d-flex justify-content-center align-items-center">
-                                                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                                            <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -211,7 +211,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             id="nav-all"
                             role="tabpanel"
                             aria-labelledby="nav-all"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <div className="tableContainer">
                               <table>
@@ -267,7 +267,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             id="nav-gen"
                             role="tabpanel"
                             aria-labelledby="nav-gen-tab"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <form className="col-12 mx-auto">
                               <div className="formRow col-xl-3">
@@ -455,7 +455,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                             id="nav-voicemail"
                             role="tabpanel"
                             aria-labelledby="nav-voicemail-tab"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <div className="loginWrapper2 p-0 h-auto" style={{ position: 'static', transform: 'none', background: 'none', boxShadow: 'none' }}>
                               <div className="row h-100 justify-content-evenly">

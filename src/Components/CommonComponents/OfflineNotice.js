@@ -20,7 +20,7 @@ const OfflineNotice = () => {
 
   return (
     <div className="offline_messages">
-     <i class="fa-solid fa-circle-exclamation me-1"></i>  You are currently offline.
+      <i className="fa-solid fa-circle-exclamation me-1"></i>  You are currently offline.
     </div>
   );
 };

@@ -1461,7 +1461,7 @@ function Navbar() {
                     (item) => item?.addon_id == 2
                   ) ?
                     checkModulePerm(
-                      "Clicktocall",
+                      "Click To Call",
                       permissions,
                       account?.sections,
                     ) &&
@@ -1494,7 +1494,7 @@ function Navbar() {
                       aria-controls="collapse21"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user-robot"></i>
+                        <i className="fa-regular fa-user-robot"></i>
                       </div>
                       <div className="itemTitle">AI Dashboard</div>
                     </button>

@@ -58,7 +58,7 @@ const Pstn = ({ id, data }) => {
       <div className="press-digits-node" style={{ backgroundColor: "#670D2F" }}>
         <div className="node-header">
           <div className="node-title">
-            <i class="fa-light fa-mobile-signal"></i>
+            <i className="fa-light fa-mobile-signal"></i>
             <input
               type="text"
               value={data.label}
@@ -100,7 +100,7 @@ const Pstn = ({ id, data }) => {
         <div className="addNewContactPopup">
           <div className="row">
             <div className="col-12 heading">
-              <i class="fa-solid fa-triangle-exclamation"></i>
+              <i className="fa-solid fa-triangle-exclamation"></i>
               <h5>
                 Are you sure you want to delete this node? This action cannot be
                 reversed.
@@ -122,7 +122,7 @@ const Pstn = ({ id, data }) => {
                 <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </button>
               </div>

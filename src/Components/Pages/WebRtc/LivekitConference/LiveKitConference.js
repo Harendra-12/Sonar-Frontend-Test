@@ -14,7 +14,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
     };
     return (
         <main data-lk-theme="default" className={`messageMeetingWrap ${isMinimize ? 'fullComponent' : 'minimizeComponent'}`}>
-            <button className="minimize me-2" onClick={handleClickMinimize}><i class={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
+            <button className="minimize me-2" onClick={handleClickMinimize}><i className={`${isMinimize ? 'fa-solid fa-minus' : 'fa-regular fa-expand'}`}></i></button>
             {!isMinimize && <div
                 className="inter-call-drag-handle"
                 style={{

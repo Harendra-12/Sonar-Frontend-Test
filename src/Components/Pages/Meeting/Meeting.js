@@ -377,7 +377,7 @@ function Meeting() {
                 {showRecordingsPopup && (
                     <div className="backdropContact">
                         <div className='addNewContactPopup' style={{ width: "500px" }}>
-                            <div class="overviewTableWrapper p-0">
+                            <div className="overviewTableWrapper p-0">
                                 <div className='overviewTableChild border-0 shadow-none'>
                                     <div className='col-xl-12'>
                                         <div className='tableContainer m-0 p-0'>
@@ -460,7 +460,7 @@ function Meeting() {
                                         <div className='formRow'>
                                             <div className='d-flex justify-content-between w-100'>
                                                 <div className="formLabel">
-                                                    <label for="">Share Link</label>
+                                                    <label htmlFor="">Share Link</label>
                                                 </div>
                                                 <div className="formLabel">
                                                     <a className='formItemDesc mt-0'

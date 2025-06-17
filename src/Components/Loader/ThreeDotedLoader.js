@@ -6,12 +6,12 @@ const ThreeDotedLoader = ({ col, row }) => {
         <>
 
             <div className='main_loader'>
-                {/* <div class="three-body">
-                    <div class="three-body__dot"></div>
-                    <div class="three-body__dot"></div>
-                    <div class="three-body__dot"></div>
+                {/* <div className="three-body">
+                    <div className="three-body__dot"></div>
+                    <div className="three-body__dot"></div>
+                    <div className="three-body__dot"></div>
                 </div> */}
-                <div class="Two_loader"></div>
+                <div className="Two_loader"></div>
             </div>
         </>
     )

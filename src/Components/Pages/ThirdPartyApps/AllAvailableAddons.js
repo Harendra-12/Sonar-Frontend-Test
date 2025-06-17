@@ -125,11 +125,11 @@ const AllAvailableAddons = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                <button class="checkbox_wrapper"
+                                                                <button className="checkbox_wrapper"
                                                                     onClick={() => navigate('/whatsapp-config')}
                                                                 >
                                                                     <span className='cartSvg addonsBtn'>
-                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                        <i className="fa-solid fa-pencil"></i>
                                                                     </span>
                                                                     <span>Configure</span>
                                                                 </button>
@@ -156,11 +156,11 @@ const AllAvailableAddons = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                <button class="checkbox_wrapper"
+                                                                <button className="checkbox_wrapper"
                                                                     onClick={() => navigate('/meta-config')}
                                                                 >
                                                                     <span className='cartSvg addonsBtn'>
-                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                        <i className="fa-solid fa-pencil"></i>
                                                                     </span>
                                                                     <span>Configure</span>
                                                                 </button>
@@ -187,11 +187,11 @@ const AllAvailableAddons = () => {
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                <button class="checkbox_wrapper"
+                                                                <button className="checkbox_wrapper"
                                                                     onClick={() => navigate('/meta-config')}
                                                                 >
                                                                     <span className='cartSvg addonsBtn'>
-                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                        <i className="fa-solid fa-pencil"></i>
                                                                     </span>
                                                                     <span>Configure</span>
                                                                 </button>
@@ -220,11 +220,11 @@ const AllAvailableAddons = () => {
                                                             </div>
 
                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                <button class="checkbox_wrapper"
+                                                                <button className="checkbox_wrapper"
                                                                     onClick={() => featureUnderdevelopment()}
                                                                 >
                                                                     <span className='cartSvg addonsBtn'>
-                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                        <i className="fa-solid fa-pencil"></i>
                                                                     </span>
                                                                     <span>Configure</span>
                                                                 </button>
