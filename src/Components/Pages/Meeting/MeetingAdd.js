@@ -244,6 +244,9 @@ function MeetingAdd() {
                             >
                               <i className="fa-solid fa-plus" />
                             </button>
+                            <button className="tableButton delete ms-2">
+                              <i className="fa-solid fa-trash" />
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -342,10 +345,9 @@ function MeetingAdd() {
                                 }).map((user, index) => (
                                   <div className="callListItem" key={index}>
                                     <div className="row align-items-center">
-                                      <div
-                                        className="checkbox-placeholder d-flex justify-content-center align-items-center selectedNone"
-                                        style={{ width: 16, height: 16, borderRadius: 3, padding: 0 }}
-                                      />
+                                      <button className="tableButton delete">
+                                        <i className="fa-solid fa-trash" />
+                                      </button>
                                       <div className="col d-flex ps-2">
                                         <div className="profileHolder">
                                           {user?.profile_picture ?
