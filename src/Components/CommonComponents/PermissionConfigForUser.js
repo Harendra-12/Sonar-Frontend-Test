@@ -328,7 +328,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         for (const item of modulePermissions) {
           if (rolePermissions.sectionPermissions.includes(item.id)) {
             for (const subItem of item.permissions) {
-              if (rolePermissions.permissions.includes(subItem.id) && (subItem.action == "read" || subItem.action == "edit") && savedPermissions.findIndex(item => item.id == subItem.id) == -1) {
+              if (rolePermissions.permissions.includes(subItem.id) && (subItem.action == "read" || subItem.action == "edit") && savedPermissions.findIndex(perm => perm.id == subItem.id && perm.section == item.id) == -1) {
                 const newArr = { ...subItem, section: item.id, type: subItem.action == "read" ? "view" : "edit" };
                 savedPermissions.push(newArr);
               }
@@ -582,7 +582,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
             <div class="accordion-item">
               <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button class="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName}`} aria-expanded="false" aria-controls={sectionName}>
+                <button class="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
                     <div class="cl-toggle-switch">
@@ -640,7 +640,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 )}
               </div>
               {expandedSections[sectionName] && (
-                <div id={sectionName} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
+                <div id={sectionName.replace(/ /g, "")} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
                   <div class="accordion-body">
                     <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
                       <table className="w-100">
