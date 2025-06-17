@@ -151,8 +151,10 @@ function Messages({
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
   const [origInalinternalCallHistory, setOriginalInternalCallHistory] = useState([])
+  const [rawInternalCallHistory, setRawInternalCallHistory] = useState([])
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
+  const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -1681,11 +1683,14 @@ function Messages({
   const getAllInternalCallsHistory = async () => {
     setLoading(true);
     try {
-      const response = await generalGetFunction("/chatcall/calls");
+      const response = await generalGetFunction(`/chatcall/calls?page=${internalCallsPageNumber}`);
       if (response.status) {
-        const sortedArr = response.data.data
+        const sortedArr = response.data.data;
+
         setInternalCallHistory(sortedArr);
-        setOriginalInternalCallHistory(sortedArr)
+        setOriginalInternalCallHistory(sortedArr);
+
+        setRawInternalCallHistory(response.data);
       }
     } catch (err) {
       console.log(err);
@@ -2533,6 +2538,9 @@ function Messages({
                         formatRelativeTime={formatRelativeTime}
                         onlineUser={onlineUser}
                         callHistory={internalCallHistory}
+                        pageNumber={internalCallsPageNumber}
+                        setPageNumber={setInternalCallsPageNumber}
+                        rawData={rawInternalCallHistory}
                       />
                     </div>
                   ) : (

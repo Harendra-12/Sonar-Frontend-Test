@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { formatTimeWithAMPM, generalGetFunction } from '../../../GlobalFunction/globalFunction';
 import EmptyPrompt from '../../../Loader/EmptyPrompt';
 import Tippy from '@tippyjs/react';
 
-const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory }) => {
+const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory, pageNumber, setPageNumber, rawData }) => {
+    const callListRef = useRef(null);
+    const handleScroll = () => {
+        const div = callListRef.current;
+        if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
+            if (rawData.current_page !== rawData?.last_page) {
+                setPageNumber(pageNumber + 1);
+            }
+        }
+    };
 
     return (
         <>
-            <div className="chatCalls_wrap callList">
+            <div className="chatCalls_wrap callList" ref={callListRef} onScroll={handleScroll}>
                 {callHistory && callHistory.length > 0 ?
                     callHistory.map((item, index) => {
                         const alternateUser = (item.room_id.split("-")[0] == account.id) ? item.receiver : item.sender;
@@ -33,6 +42,8 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                                             : item?.sender?.profile_picture || require("../../../assets/images/placeholder-image.webp")
                                                     }
                                                     alt="profile"
+                                                    onError={(e) =>
+                                                        (e.target.src = require("../../../assets/images/placeholder-image.webp"))}
                                                 />
                                             ) : (
                                                 <i className="fa-light fa-user fs-5"></i>
