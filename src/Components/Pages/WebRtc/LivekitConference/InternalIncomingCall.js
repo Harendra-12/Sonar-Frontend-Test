@@ -6,7 +6,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
-  console.log(incomingCall,internalCallAction)
+  // console.log(incomingCall,internalCallAction)
 
   const dispatch = useDispatch();
   function answerCall(item) {
