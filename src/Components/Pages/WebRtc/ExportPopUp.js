@@ -568,21 +568,21 @@ export default function ExportPopUp({
           <h5 className="mb-0 d-flex justify-content-between align-items-center">
             Format Options
           </h5>
-          <div class="form-check mt-2">
+          <div className="form-check mt-2">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
               checked={exportChecked === "CSV"}
             />
-            <label class="formLabel" for="flexRadioDefault1">
+            <label className="formLabel" htmlFor="flexRadioDefault1">
               Export To CSV
             </label>
           </div>
-          <div class="form-check mt-2">
+          <div className="form-check mt-2">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault2"
@@ -593,7 +593,7 @@ export default function ExportPopUp({
                   : setExportChecked("CSV")
               }
             />
-            <label class="formLabel" for="flexRadioDefault2">
+            <label className="formLabel" htmlFor="flexRadioDefault2">
               Send To Mail
             </label>
           </div>

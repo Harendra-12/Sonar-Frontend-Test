@@ -614,7 +614,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           id="nav-gen"
                           role="tabpanel"
                           aria-labelledby="nav-gen-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
                             <div className="formRow col-xl-3">
@@ -943,7 +943,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           id="nav-voicemail"
                           role="tabpanel"
                           aria-labelledby="nav-voicemail-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
                             <div className="formRow col-xl-3">
@@ -1102,7 +1102,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           id="nav-device"
                           role="tabpanel"
                           aria-labelledby="nav-device-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <form className="col-12 mx-auto">
                             <div className="formRow col-xl-3">
@@ -1142,7 +1142,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           id="nav-adv"
                           role="tabpanel"
                           aria-labelledby="nav-adv-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
                             <div className="formRow col-xl-3">
@@ -1363,7 +1363,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           id="nav-call-setting"
                           role="tabpanel"
                           aria-labelledby="nav-call-setting-tab"
-                          tabindex="0"
+                          tabIndex="0"
                         >
                           <div
                             className="col-12"

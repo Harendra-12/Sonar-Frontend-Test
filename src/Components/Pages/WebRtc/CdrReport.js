@@ -737,12 +737,12 @@ function CdrReport({ page }) {
                         <div className="showEntries">
                           <label>Storage</label><label>{storageInformation?.total_size} / {accountStorageInfo} GB</label>
                         </div>
-                        <div class="progress">
+                        <div className="progress">
                           <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
-                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div className="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                           <Tippy content={`Storage Left: ${accountStorageInfo - convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
-                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${((accountStorageInfo - convertToGB(storageInformation?.total_size)) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div className="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${((accountStorageInfo - convertToGB(storageInformation?.total_size)) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                         </div>
                       </div>

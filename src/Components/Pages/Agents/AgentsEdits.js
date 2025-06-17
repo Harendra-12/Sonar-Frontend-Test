@@ -118,7 +118,7 @@ function AgentsEdits() {
                       id="nav-user"
                       role="tabpanel"
                       aria-labelledby="nav-user-tab"
-                      tabindex="0"
+                      tabIndex="0"
                     >
                       <UsersEdit
                         page="marginleftAdjust"
@@ -130,7 +130,7 @@ function AgentsEdits() {
                       id="nav-exten"
                       role="tabpanel"
                       aria-labelledby="nav-exten-tab"
-                      tabindex="0"
+                      tabIndex="0"
                     >
                       <ExtensionsEdit page="agents" extensionData={userData} />
                     </div>
@@ -139,7 +139,7 @@ function AgentsEdits() {
                       id="nav-exten-1"
                       role="tabpanel"
                       aria-labelledby="nav-provision-tab"
-                      tabindex="0"
+                      tabIndex="0"
                     >
                       <AvailableDeviceList
                         header={false}

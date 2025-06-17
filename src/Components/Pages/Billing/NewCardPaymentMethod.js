@@ -722,8 +722,8 @@ function NewCardPaymentMethod({
                                     <span className="slider round"></span>
                                   </label> */}
 
-                                  <div class="cl-toggle-switch">
-                                    <label class="cl-switch">
+                                  <div className="cl-toggle-switch">
+                                    <label className="cl-switch">
                                       <input
                                         type="checkbox"
                                         id="showAllCheck"

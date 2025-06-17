@@ -396,10 +396,10 @@ function CallDetails({
                 <tbody>
                   <tr>
                     <td style={{ color: "#444444" }}>
-                      {convertDateToCurrentTimeZone(callDetails && callDetails.variable_start_stamp.split(" ")[0])}
+                      {callDetails?.variable_start_stamp && convertDateToCurrentTimeZone(callDetails && callDetails.variable_start_stamp.split(" ")[0])}
                     </td>
                     <td>
-                      {formatTimeWithAMPM(callDetails && callDetails.variable_start_stamp.split(" ")[1])}
+                      {callDetails?.variable_start_stamp && formatTimeWithAMPM(callDetails && callDetails.variable_start_stamp.split(" ")[1])}
                     </td>
                     {!isCustomerAdmin ? (
                       <td
@@ -469,7 +469,7 @@ function CallDetails({
             id="nav-profile"
             role="tabpanel"
             aria-labelledby="nav-profile-tab"
-            tabindex="0"
+            tabIndex="0"
           >
             <div className="overviewTableWrapper p-0">
               <div className="overviewTableChild">
@@ -552,16 +552,15 @@ function CallDetails({
                             }
 
                             return (
-                              <>
+                              <React.Fragment key={item.id}>
                                 <tr
-                                  key={item.id}
                                   // data-bs-toggle="collapse"
                                   href={`#voiceMail${item.id}`}
                                   role="button"
                                   aria-expanded="false"
                                 >
-                                  <td>{convertDateToCurrentTimeZone(item.variable_start_stamp.split(" ")[0])}</td>
-                                  <td>{formatTimeWithAMPM(item.variable_start_stamp.split(" ")[1])}</td>
+                                  <td>{item.variable_start_stamp && convertDateToCurrentTimeZone(item.variable_start_stamp.split(" ")[0])}</td>
+                                  <td>{item.variable_start_stamp && formatTimeWithAMPM(item.variable_start_stamp.split(" ")[1])}</td>
                                   {/* <td
                           className={`${
                             item["Caller-Callee-ID-Number"] === extension &&
@@ -777,7 +776,7 @@ function CallDetails({
                                     </tr>
                                     : ""
                                 } */}
-                              </>
+                              </React.Fragment>
                             )
                           }
 

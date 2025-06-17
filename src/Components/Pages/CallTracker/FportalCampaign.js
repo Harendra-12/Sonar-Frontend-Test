@@ -96,8 +96,8 @@ function FportalCampaign() {
                     <div className="heading">
                       <div className="content">
                         <h4>Forwarding portal
-                          <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
-                            <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} />
+                          <button className="clearButton" onClick={getRefresh} disabled={refreshState}>
+                            <i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} />
                           </button>
                         </h4>
                         <p>You can see all list of Forwarding portal</p>
@@ -213,7 +213,7 @@ function FportalCampaign() {
                                         <p>0.00%</p>
                                         <span>0 of 1000</span>
                                       </div> */}
-                                      {/* <div className="specialProgressWrapDetails">
+                                  {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
                                     style={{
@@ -325,7 +325,7 @@ function FportalCampaign() {
                                   </li>
                                 </ul>
                               </div> */}
-                                    {/* </div>
+                                  {/* </div>
                                   </td> */}
                                   <td><button className="tableButton edit" onClick={() => handleConfigEdit(campaign.id)}><i className='fa-solid fa-pen' /></button></td>
                                   <td><button className="tableButton delete" onClick={() => handleDeleteConfig(campaign.id)}><i className='fa-solid fa-trash' /></button></td>

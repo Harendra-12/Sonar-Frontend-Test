@@ -129,9 +129,9 @@ const AllAddons = () => {
                                 </div>
                                 <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
                                     <div className='tableHeader justify-content-end mb-3'>
-                                        <div class="searchBox position-relative">
+                                        <div className="searchBox position-relative">
                                             <label>Search:</label>
-                                            <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />
+                                            <input type="search" name="Search" className="formItem" onChange={() => featureUnderdevelopment()} />
                                         </div>
                                     </div>
                                     <>
@@ -279,12 +279,12 @@ const AllAddons = () => {
                                                         </div>
 
                                                         <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                            <div class="checkbox_wrapper">
-                                                                <input type="checkbox" id="cbx-48" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+                                                            <div className="checkbox_wrapper">
+                                                                <input type="checkbox" id="cbx-48" className="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
 
-                                                                <label for="cbx-48" class="cbx">
+                                                                <label htmlFor="cbx-48" className="cbx">
                                                                     <span className='cartSvg addonsBtn'>
-                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                        <i className="fa-solid fa-pencil"></i>
                                                                     </span>
                                                                     <span>config</span>
                                                                 </label>

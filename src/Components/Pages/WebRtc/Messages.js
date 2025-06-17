@@ -1760,7 +1760,7 @@ function Messages({
               </div>
               <div className="col-xl-12">
                 <div className="formLabel">
-                  <label for="">Full Name</label>
+                  <label htmlFor="">Full Name</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -1939,7 +1939,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-phone"></i> <span>Calls</span>
+                        <i className="fa-regular fa-phone"></i> <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -2808,7 +2808,7 @@ function Messages({
                                     </div>
                                     <div className=" text-end">
                                       <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                        {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                        {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
                                         <p className="timeAgo">
                                           {item?.last_message_data?.created_at
                                             ? formatRelativeTime(
@@ -2821,7 +2821,7 @@ function Messages({
                                           ""
                                         ) : (
                                           <span className="chat-read-icon readsms ">
-                                            <i class="fa-solid fa-check-double"></i>
+                                            <i className="fa-solid fa-check-double"></i>
                                           </span>
                                         )}
                                       </div>
@@ -3066,7 +3066,7 @@ function Messages({
                                           className="more info"
                                           onClick={() => handleCreateNewTag()}
                                         >
-                                          <i class="fa-regular fa-plus me-1"></i>{" "}
+                                          <i className="fa-regular fa-plus me-1"></i>{" "}
                                           Create New Tag
                                         </button>
                                       )}
@@ -3686,7 +3686,7 @@ function Messages({
                                       className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
                                       onClick={() => setAutoReply(!autoReply)}
                                     >
-                                      <i class="fa-solid fa-message-bot"></i>
+                                      <i className="fa-solid fa-message-bot"></i>
                                     </button>
 
                                   </Tippy>
@@ -3748,7 +3748,7 @@ function Messages({
                         </button>
                       } allowHTML={true} placement="top" interactive={true}>
                         <button className='clearButton2'>
-                          <i class="fa-regular fa-arrows-left-right"></i>
+                          <i className="fa-regular fa-arrows-left-right"></i>
                         </button>
                       </Tippy>
                     </PanelResizeHandle> */}

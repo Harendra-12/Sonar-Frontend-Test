@@ -8,7 +8,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
@@ -228,7 +228,7 @@ const ExtensionsAdd = () => {
                         id="nav-gen"
                         role="tabpanel"
                         aria-labelledby="nav-gen-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
@@ -543,7 +543,7 @@ const ExtensionsAdd = () => {
                         id="nav-voicemail"
                         role="tabpanel"
                         aria-labelledby="nav-voicemail-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">
@@ -688,7 +688,7 @@ const ExtensionsAdd = () => {
                         id="nav-adv"
                         role="tabpanel"
                         aria-labelledby="nav-adv-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto">
                           <div className="formRow col-xl-3">

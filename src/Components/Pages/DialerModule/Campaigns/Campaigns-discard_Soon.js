@@ -104,12 +104,12 @@ function Campaigns() {
                                                                 />
                                                                 <span className="slider round" />
                                                             </label> */}
-                                                                <div class="cl-toggle-switch">
-                                                                    <label class="cl-switch">
-                                                                        <input type="checkbox" id="showAllCheck" />
-                                                                        <span></span>
-                                                                    </label>
-                                                                </div>
+                                                            <div className="cl-toggle-switch">
+                                                                <label className="cl-switch">
+                                                                    <input type="checkbox" id="showAllCheck" />
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                         </td>
                                                         <td>
@@ -128,8 +128,8 @@ function Campaigns() {
                                                                     />
                                                                     <span className="slider round" />
                                                                 </label> */}
-                                                                 <div class="cl-toggle-switch">
-                                                                    <label class="cl-switch">
+                                                                <div className="cl-toggle-switch">
+                                                                    <label className="cl-switch">
                                                                         <input type="checkbox" id="showAllCheck" />
                                                                         <span></span>
                                                                     </label>

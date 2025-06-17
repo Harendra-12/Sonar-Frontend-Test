@@ -422,8 +422,8 @@ const Users = () => {
                                               return (
                                                 <td style={{ width: "129px" }}>
                                                   <div className="position-relative d-flex">
-                                                    <div class="cl-toggle-switch ">
-                                                      <label class="cl-switch">
+                                                    <div className="cl-toggle-switch ">
+                                                      <label className="cl-switch">
                                                         <input type="checkbox"
                                                           checked={item.status === "E"}
                                                           onClick={(e) => {

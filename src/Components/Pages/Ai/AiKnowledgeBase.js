@@ -6,7 +6,7 @@ const AiKnowledgeBase = () => {
   const [addKnowledgeBase, setKnowledgeBase] = useState(false)
   const [dataCopy, setDataCopy] = useState(false)
   const [idCopy, setIdCopy] = useState(false)
-      const [deletePopup, setDeletePopup] = useState(false);
+  const [deletePopup, setDeletePopup] = useState(false);
 
 
   const handleRefreshBtnClicked = () => {
@@ -63,28 +63,28 @@ const AiKnowledgeBase = () => {
                               </button>
                             </div>
                             <div className='knowledge__list'>
-                              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                              <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <button className="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                   <p className='mb-0'>
-                                    <i class="fa-duotone fa-solid fa-folder-open me-2"></i> abc
+                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc
                                   </p>
                                   <p className='mb-0'>added on <span> 5/26/2025</span></p>
                                 </button>
-                                <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                <button className="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-duotone fa-solid fa-folder-open me-2"></i> abc2
+                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc2
                                   </p>
                                   <p className='mb-0'>added on <span> 5/26/2025</span></p>
                                 </button>
-                                <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                                <button className="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-duotone fa-solid fa-folder-open me-2"></i> abc3
+                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc3
                                   </p>
                                   <p className='mb-0'>added on <span> 5/26/2025</span></p>
                                 </button>
-                                <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <button className="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-duotone fa-solid fa-folder-open me-2"></i> abc4
+                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc4
                                   </p>
                                   <p className='mb-0'>added on <span> 5/26/2025</span></p>
                                 </button>
@@ -93,8 +93,8 @@ const AiKnowledgeBase = () => {
                           </div>
                         </div>
                         <div className='col-xxl-8 col-xl-7 col-lg-12 '>
-                          <div class="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                          <div className="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
+                            <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                               <div className="heading">
                                 <div className="content">
                                   <h4>abc</h4>
@@ -120,7 +120,7 @@ const AiKnowledgeBase = () => {
                                     <button effect="ripple" className="panelButton edit" onClick={setKnowledgeBase}>
                                       <span className="text">Edit</span>
                                       <span className="icon">
-                                        <i class="fa-solid fa-pen"></i>
+                                        <i className="fa-solid fa-pen"></i>
                                       </span>
                                     </button>
 
@@ -128,7 +128,7 @@ const AiKnowledgeBase = () => {
                                     <button className="panelButton danger" onClick={setDeletePopup}>
                                       <span className="text">Delete</span>
                                       <span className="icon">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i className="fa-solid fa-trash"></i>
                                       </span>
                                     </button>
                                   </div>
@@ -151,7 +151,7 @@ const AiKnowledgeBase = () => {
                                           <td colSpan={12}>
                                             <div className="d-flex align-items-center">
                                               <div className="table__icon">
-                                                <i class="fa-solid fa-file-pdf"></i>
+                                                <i className="fa-solid fa-file-pdf"></i>
                                               </div>
                                               <div className="ms-2 detailsTable">
                                                 <h5 className='mb-0'>google.com</h5>
@@ -171,7 +171,7 @@ const AiKnowledgeBase = () => {
                                                 ></i>
                                               </button>
                                               <button className='aitable_button bg-transparent'>
-                                                <i class="fa-regular fa-arrow-down-to-line"></i>
+                                                <i className="fa-regular fa-arrow-down-to-line"></i>
                                               </button>
                                             </div>
                                           </td>
@@ -185,13 +185,13 @@ const AiKnowledgeBase = () => {
                                 </div>
                               </div>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
                             </div>
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 
                             </div>
-                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                            <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 
                             </div>
                           </div>
@@ -212,7 +212,7 @@ const AiKnowledgeBase = () => {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div
-                    className="card px-0 col-5 shadow-none w50" 
+                    className="card px-0 col-5 shadow-none w50"
                     style={{
                       border: "1px solid var(--border-color)",
                     }}
@@ -236,7 +236,7 @@ const AiKnowledgeBase = () => {
                         </h5>
                         <div className='addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2'>
                           <div className='d-flex align-items-center gap-1'>
-                            <i class="fa-regular fa-file me-2"></i>
+                            <i className="fa-regular fa-file me-2"></i>
                             <h5 className="card-title fs14 border-bootm fw700 mb-0">
                               dummy.pdf
                             </h5>
@@ -247,7 +247,7 @@ const AiKnowledgeBase = () => {
                         </div>
                         <div className='addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2'>
                           <div className='d-flex align-items-center gap-1'>
-                            <i class="fa-regular fa-file me-2"></i>
+                            <i className="fa-regular fa-file me-2"></i>
                             <h5 className="card-title fs14 border-bootm fw700 mb-0">
                               dummy.pdf
                             </h5>
@@ -273,20 +273,20 @@ const AiKnowledgeBase = () => {
                           </div>
                         </div>
                       </form>
-                      <div class="mt-3 baseNav">
-                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="webPAge-tab" data-bs-toggle="pill" data-bs-target="#webPAge" type="button" role="tab" aria-controls="webPAge" aria-selected="true">Web Page</button>
+                      <div className="mt-3 baseNav">
+                        <ul className="nav nav-pills" id="pills-tab" role="tablist">
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link active" id="webPAge-tab" data-bs-toggle="pill" data-bs-target="#webPAge" type="button" role="tab" aria-controls="webPAge" aria-selected="true">Web Page</button>
                           </li>
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="upload-tab" data-bs-toggle="pill" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Upload File</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link" id="upload-tab" data-bs-toggle="pill" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Upload File</button>
                           </li>
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="addText-tab" data-bs-toggle="pill" data-bs-target="#addText" type="button" role="tab" aria-controls="addText" aria-selected="false">Add Text</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link" id="addText-tab" data-bs-toggle="pill" data-bs-target="#addText" type="button" role="tab" aria-controls="addText" aria-selected="false">Add Text</button>
                           </li>
                         </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                          <div class="tab-pane fade show active" id="webPAge" role="tabpanel" aria-labelledby="webPAge-tab">
+                        <div className="tab-content" id="pills-tabContent">
+                          <div className="tab-pane fade show active" id="webPAge" role="tabpanel" aria-labelledby="webPAge-tab">
 
                             <form>
                               <div className="formRow flex-column align-items-start">
@@ -304,7 +304,7 @@ const AiKnowledgeBase = () => {
                               </div>
                             </form>
                           </div>
-                          <div class="tab-pane fade pb-3" id="upload" role="tabpanel" aria-labelledby="upload-tab">
+                          <div className="tab-pane fade pb-3" id="upload" role="tabpanel" aria-labelledby="upload-tab">
                             <h5 className="card-title fs14 border-bootm fw700 mt-3">
                               Upload File
                             </h5>
@@ -343,7 +343,7 @@ const AiKnowledgeBase = () => {
                             </div>
 
                           </div>
-                          <div class="tab-pane fade" id="addText" role="tabpanel" aria-labelledby="addText-tab">
+                          <div className="tab-pane fade" id="addText" role="tabpanel" aria-labelledby="addText-tab">
                             <form>
                               <div className="formRow flex-column align-items-start">
                                 <div className="formLabel">

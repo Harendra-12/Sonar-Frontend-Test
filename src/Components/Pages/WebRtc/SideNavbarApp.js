@@ -380,7 +380,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-brands fa-whatsapp"></i>
+                      <i className="fa-brands fa-whatsapp"></i>
                     </div>
                     <div className="itemTitle">WhatsApp</div>
                   </div>
@@ -396,7 +396,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-solid fa-comment-sms"></i>
+                      <i className="fa-solid fa-comment-sms"></i>
                     </div>
                     <div className="itemTitle">SMS</div>
                   </div>
@@ -410,7 +410,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-solid fa-gear"></i>
+                      <i className="fa-solid fa-gear"></i>
                     </div>
                     <div className="itemTitle">Settings</div>
                   </div>

@@ -315,7 +315,7 @@ const CallBlocking = () => {
               </div>
               <div className="col-xl-12">
                 <div className="formLabel">
-                  <label for="">Type</label>
+                  <label htmlFor="">Type</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -329,7 +329,7 @@ const CallBlocking = () => {
               </div>
               <div className="col-xl-12 mt-3">
                 <div className="formLabel">
-                  <label for="">Number</label>
+                  <label htmlFor="">Number</label>
                 </div>
                 <div className="col-12">
                   <input

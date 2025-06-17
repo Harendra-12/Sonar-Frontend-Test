@@ -97,7 +97,7 @@ const CallCenter = ({ id, data }) => {
           {callCenter.length < 1 && <p>No callCenter found</p>}
           {callCenter.length > 1 && (
             <div className="d-flex flex-column">
-              <label for="callCenter" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Call Center:</label>{" "}
+              <label htmlFor="callCenter" style={{ fontSize: "0.875rem", fontStyle: 'normal', fontWeight: '500', marginBottom: '5px' }}>Choose a Call Center:</label>{" "}
               <select
                 name="callCenter"
                 id="callCenter"
@@ -130,7 +130,7 @@ const CallCenter = ({ id, data }) => {
         <div className="addNewContactPopup">
           <div className="row">
             <div className="col-12 heading">
-              <i class="fa-solid fa-triangle-exclamation"></i>
+              <i className="fa-solid fa-triangle-exclamation"></i>
               <h5>
                 Are you sure you want to delete this node? This action cannot be
                 reversed.
@@ -152,7 +152,7 @@ const CallCenter = ({ id, data }) => {
                 <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </button>
               </div>

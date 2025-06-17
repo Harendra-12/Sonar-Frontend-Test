@@ -175,7 +175,7 @@ function ConfigureStepDashboard({ account2 }) {
                         <li>
                           <div className="coolinput">
                             <div className="coolSearch">
-                              <label for="input" className="text">
+                              <label htmlFor="input" className="text">
                                 NPX:
                               </label>
                               <input

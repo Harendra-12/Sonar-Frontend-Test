@@ -22,10 +22,9 @@ const Extension = ({ id, data }) => {
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}${
-        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-          ? "&section=Accounts"
-          : ""
+      `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+        ? "&section=Accounts"
+        : ""
       }`
     );
     if (userApi?.status) {
@@ -93,7 +92,7 @@ const Extension = ({ id, data }) => {
       >
         <div className="node-header">
           <div className="node-title">
-            <i class="fa-light fa-phone-intercom"></i>
+            <i className="fa-light fa-phone-intercom"></i>
             <input
               type="text"
               value={data.label}
@@ -184,7 +183,7 @@ const Extension = ({ id, data }) => {
         <div className="addNewContactPopup">
           <div className="row">
             <div className="col-12 heading">
-              <i class="fa-solid fa-triangle-exclamation"></i>
+              <i className="fa-solid fa-triangle-exclamation"></i>
               <h5>
                 Are you sure you want to delete this node? This action cannot be
                 reversed.
@@ -206,7 +205,7 @@ const Extension = ({ id, data }) => {
                 <button className="panelButton me-0" onClick={handleDeleteNode}>
                   <span className="text">Delete</span>
                   <span className="icon">
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </button>
               </div>

@@ -372,7 +372,7 @@ const NewGetDid = () => {
                                                                         <div className="d-flex justify-content-between flex-wrap">
                                                                             <div className="checkbox-wrapper-4">
                                                                                 <input className="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
-                                                                                <label className="cbx" for="Voice">
+                                                                                <label className="cbx" htmlFor="Voice">
                                                                                     <span>
                                                                                         <svg width="12px" height="10px">
                                                                                         </svg>
@@ -387,7 +387,7 @@ const NewGetDid = () => {
                                                                             </div>
                                                                             <div className="checkbox-wrapper-4">
                                                                                 <input className="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
-                                                                                <label className="cbx" for="Text">
+                                                                                <label className="cbx" htmlFor="Text">
                                                                                     <span>
                                                                                         <svg width="12px" height="10px">
                                                                                         </svg>
@@ -402,7 +402,7 @@ const NewGetDid = () => {
                                                                             </div>
                                                                             <div className="checkbox-wrapper-4">
                                                                                 <input className="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
-                                                                                <label className="cbx" for="Fax">
+                                                                                <label className="cbx" htmlFor="Fax">
                                                                                     <span>
                                                                                         <svg width="12px" height="10px">
                                                                                         </svg>
@@ -417,7 +417,7 @@ const NewGetDid = () => {
                                                                             </div>
                                                                             <div className="checkbox-wrapper-4">
                                                                                 <input className="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
-                                                                                <label className="cbx" for="Emergency">
+                                                                                <label className="cbx" htmlFor="Emergency">
                                                                                     <span>
                                                                                         <svg width="12px" height="10px">
                                                                                         </svg>
@@ -612,7 +612,7 @@ const NewGetDid = () => {
 
                                                                 <div className="formRow col-auto">
                                                                     <div className="">
-                                                                        <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i></button>
+                                                                        <button className="btn btn-primary" type="submit">Search<i className="fa-regular fa-magnifying-glass ms-2"></i></button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -634,7 +634,7 @@ const NewGetDid = () => {
                                                                                                     return (
                                                                                                         <Tippy content="Voice Call is activated for this DID">
                                                                                                             <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                                <i class="fa-solid fa-phone"></i>
+                                                                                                                <i className="fa-solid fa-phone"></i>
                                                                                                             </button>
                                                                                                         </Tippy>
                                                                                                     )
@@ -642,7 +642,7 @@ const NewGetDid = () => {
                                                                                                     return (
                                                                                                         <Tippy content="SMS is activated for this DID">
                                                                                                             <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                                <i class="fa-regular fa-comments"></i>
+                                                                                                                <i className="fa-regular fa-comments"></i>
                                                                                                             </button>
                                                                                                         </Tippy>
                                                                                                     )
@@ -650,7 +650,7 @@ const NewGetDid = () => {
                                                                                                     return (
                                                                                                         <Tippy content="Fax is activated for this DID">
                                                                                                             <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                                <i class="fa-solid fa-fax"></i>
+                                                                                                                <i className="fa-solid fa-fax"></i>
                                                                                                             </button>
                                                                                                         </Tippy>
                                                                                                     )
@@ -658,7 +658,7 @@ const NewGetDid = () => {
                                                                                                     return (
                                                                                                         <Tippy content="Emergency / e911 is activated for this DID">
                                                                                                             <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                                <i class="fa-regular fa-light-emergency-on"></i>
+                                                                                                                <i className="fa-regular fa-light-emergency-on"></i>
                                                                                                             </button>
                                                                                                         </Tippy>
                                                                                                     )
@@ -681,8 +681,8 @@ const NewGetDid = () => {
                                                                         className='panelButton mx-auto'
                                                                         onClick={() => setPurchaseDidPopup(true)}
                                                                     >
-                                                                        <span class="text">Buy</span>
-                                                                        <span class="icon"><i class="fa-solid fa-arrows-rotate"></i></span>
+                                                                        <span className="text">Buy</span>
+                                                                        <span className="icon"><i className="fa-solid fa-arrows-rotate"></i></span>
                                                                     </button>
                                                                 </div>
                                                             }

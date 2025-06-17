@@ -524,7 +524,7 @@ export function LoginComponent() {
                   setPopUp(false);
                 }}
               >
-                <i class="fa-solid fa-xmark"></i>
+                <i className="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
                 <img
@@ -599,21 +599,21 @@ export function LoginComponent() {
                     setPopUp(false);
                     setLoading(true)
                     handleLogin()
-                  }} type="button" class="btn btn-success-light btn-wave " >
+                  }} type="button" className="btn btn-success-light btn-wave " >
                     <span>Login</span> <i
                       className="fa-solid fa-check"
                     ></i></button> */}
 
                   <button
-                    class="btn2"
+                    className="btn2"
                     onClick={() => {
                       setPopUp(false);
                       setLoading(true);
                       handleLogin();
                     }}
                   >
-                    <span class="text">Login</span>
-                    <i class="fa-solid fa-paper-plane-top"></i>
+                    <span className="text">Login</span>
+                    <i className="fa-solid fa-paper-plane-top"></i>
                   </button>
 
                   <div>

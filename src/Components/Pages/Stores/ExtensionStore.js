@@ -12,7 +12,7 @@ function ExtensionStore() {
           {/* <div className="badge0 ribbon">
                                                             <span>Popular</span>
                                                         </div> */}
-          <div class="badge_ribbon">
+          <div className="badge_ribbon">
             <span>Popular</span>
           </div>
           <h2>10 Extensions</h2>

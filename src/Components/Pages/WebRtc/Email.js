@@ -313,9 +313,9 @@ function Email({ selectedMail }) {
                 <div className="card mb-0 border-0">
                   <div className="card-header d-flex justify-content-between align-items-center" style={{ borderColor: "var(--me-border1)", }}>
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button type="button" class="btn btn-primary" onClick={() => { setShowNewMail(true); setMailReplay(false) }}>
-                      <i class="fa-regular fa-envelope me-2"></i>  New Email</button>
+                    {/* <button className="btn btn-primary"><i className="fa-regular fa-envelope me-2"></i>  New Email</button> */}
+                    <button type="button" className="btn btn-primary" onClick={() => { setShowNewMail(true); setMailReplay(false) }}>
+                      <i className="fa-regular fa-envelope me-2"></i>  New Email</button>
                   </div>
                   <div className="card-body" style={{ height: "calc(100vh - 135px)", }}>
                     <div className="d-flex ">
@@ -329,7 +329,7 @@ function Email({ selectedMail }) {
                                 className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
                                 onClick={() => handleListingClick("inbox")}
                               >
-                                <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2" ></i> Inbox</p>
+                                <p className="mb-0"> <i className="fa-duotone fa-solid fa-envelope me-2" ></i> Inbox</p>
                                 <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
                               </button>
                             </li>
@@ -338,21 +338,21 @@ function Email({ selectedMail }) {
                                 // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
                                 className={`mail_list ${activeList === "sent" ? "active" : ""}`}
                                 onClick={() => handleListingClick("sent")}
-                              ><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p>
+                              ><p className="mb-0"><i className="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p>
                               </button>
                             </li>
                             <li className="">
                               <button
                                 className={`mail_list ${activeList === "starred" ? "active" : ""}`}
                                 onClick={() => handleListingClick("starred")}
-                              ><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p>
+                              ><p className="mb-0"><i className="fa-duotone fa-light fa-star me-2"></i> Starred</p>
                               </button>
                             </li>
                             <li className="">
-                              <button 
-                              className={`mail_list ${activeList === "deleted" ? "active" : ""}`}
-          onClick={() => handleListingClick("deleted")}
-                                > <p className="mb-0 text-danger"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
+                              <button
+                                className={`mail_list ${activeList === "deleted" ? "active" : ""}`}
+                                onClick={() => handleListingClick("deleted")}
+                              > <p className="mb-0 text-danger"><i className="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
                             </li>
                           </ul>
                         </div>
@@ -417,14 +417,14 @@ function Email({ selectedMail }) {
       </main>
 
       {/* 
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Compose Mail</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="staticBackdropLabel">Compose Mail</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <form>
                 <div className="row ">
                   <div className=" col-12">
@@ -476,7 +476,7 @@ function Email({ selectedMail }) {
                   <div className=" col-12">
                     <div className="from-group">
                       <label htmlFor="" className="from-label">Subjects</label>
-                      <input type="text" name="subjects" class="formItem" value="" />
+                      <input type="text" name="subjects" className="formItem" value="" />
                     </div>
                   </div>
                   <div className=" col-12">
@@ -490,9 +490,9 @@ function Email({ selectedMail }) {
 
                       />
                       <div className="footerSms">
-                        <div class="custom_fileWrap">
-                          <label for="file" class="custom_file">
-                            <i class="fa-solid fa-paperclip"></i>
+                        <div className="custom_fileWrap">
+                          <label htmlFor="file" className="custom_file">
+                            <i className="fa-solid fa-paperclip"></i>
                           </label>
                           <input id="file" type="file" />
                         </div>
@@ -502,9 +502,9 @@ function Email({ selectedMail }) {
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Send</button>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" className="btn btn-primary">Send</button>
             </div>
           </div>
         </div>

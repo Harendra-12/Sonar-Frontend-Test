@@ -7,7 +7,7 @@ const NewMail = ({ handleShowNewMail, handleListingClick, handleMailReplay }) =>
                 <div className="card shadow-none rounded-3" style={{ borderColor: "var(--me-border1)", }}>
                     <div className="card-header" style={{ borderColor: "var(--me-border1)", }}>
                         <div className="d-flex align-items-center gap-3">
-                            <button className="back_pev" onClick={handleListingClick}><i class="fa-solid fa-arrow-left"></i></button>
+                            <button className="back_pev" onClick={handleListingClick}><i className="fa-solid fa-arrow-left"></i></button>
                             <div className='d-flex justify-content-between align-items-center w-100'>
                                 <div className="d-flex align-items-center">
                                     {/* <div className="tableProfilePicHolder">
@@ -35,13 +35,13 @@ const NewMail = ({ handleShowNewMail, handleListingClick, handleMailReplay }) =>
                                                     item.is_admin ? */}
                                         <li className='mailList_menu'>
                                             <button className="dropdown-item">
-                                                <i class="fa-duotone fa-light fa-star me-2"></i> Starred
+                                                <i className="fa-duotone fa-light fa-star me-2"></i> Starred
                                             </button>
                                         </li>
 
                                         <li className='mailList_menu'>
                                             <button className="dropdown-item text-danger" >
-                                                <i class="fa-duotone fa-solid fa-trash me-2 "></i> Deleted
+                                                <i className="fa-duotone fa-solid fa-trash me-2 "></i> Deleted
                                             </button>
                                         </li>
 
@@ -103,7 +103,7 @@ const NewMail = ({ handleShowNewMail, handleListingClick, handleMailReplay }) =>
                                     <div className=" col-12">
                                         <div className="from-group">
                                             <label htmlFor="" className="from-label">Subjects</label>
-                                            <input type="text" name="subjects" class="formItem" value="" />
+                                            <input type="text" name="subjects" className="formItem" value="" />
                                         </div>
                                     </div>
                                     <div className=" col-12">
@@ -117,41 +117,41 @@ const NewMail = ({ handleShowNewMail, handleListingClick, handleMailReplay }) =>
 
                                             />
                                             <div className="footerSms">
-                                                <div class="custom_fileWrap">
-                                                    <label for="file" class="custom_file">
-                                                        <i class="fa-solid fa-paperclip"></i>
+                                                <div className="custom_fileWrap">
+                                                    <label htmlFor="file" className="custom_file">
+                                                        <i className="fa-solid fa-paperclip"></i>
                                                     </label>
                                                     <input id="file" type="file" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                             </form>
                         </div>
-                          <div className='mb-3'>
-                                        <div className="d-flex justify-content-end gap-2">
-                                            <button
-                                                className="panelButton m-0"
-                                               
-                                            >
-                                                <span className="text">Send</span>
-                                                <span className="icon">
-                                                    <i className="fa-solid fa-check"></i>
-                                                </span>
-                                            </button>
-                                            <button
-                                                className="panelButton gray m-0 float-end"
-                                               
-                                            >
-                                                <span className="text">Cancel</span>
-                                                <span className="icon">
-                                                    <i className="fa-solid fa-xmark"></i>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
+                        <div className='mb-3'>
+                            <div className="d-flex justify-content-end gap-2">
+                                <button
+                                    className="panelButton m-0"
+
+                                >
+                                    <span className="text">Send</span>
+                                    <span className="icon">
+                                        <i className="fa-solid fa-check"></i>
+                                    </span>
+                                </button>
+                                <button
+                                    className="panelButton gray m-0 float-end"
+
+                                >
+                                    <span className="text">Cancel</span>
+                                    <span className="icon">
+                                        <i className="fa-solid fa-xmark"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

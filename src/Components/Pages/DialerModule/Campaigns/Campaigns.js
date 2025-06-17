@@ -518,9 +518,9 @@ function Campaigns() {
                                                         return (
                                                           <li key={lead.id}>
                                                             <div className="dropdown-item d-flex">
-                                                              {/* <div class="my-auto position-relative mx-1">
-                                                                <div class="cl-toggle-switch">
-                                                                  <label class="cl-switch">
+                                                              {/* <div className="my-auto position-relative mx-1">
+                                                                <div className="cl-toggle-switch">
+                                                                  <label className="cl-switch">
                                                                     <input type="checkbox" id="showAllCheck" />
                                                                     <span></span>
                                                                   </label>

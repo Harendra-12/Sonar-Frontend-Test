@@ -953,7 +953,7 @@ function CdrFilterReport({ page }) {
                           onClick={() => setAdvanceSearchPopup(true)}
                         >
                           <span>Advanced Search</span>
-                          <i class="fa-solid fa-magnifying-glass" />
+                          <i className="fa-solid fa-magnifying-glass" />
                         </button>
                       </div>
                     </div>
@@ -2124,17 +2124,17 @@ function CdrFilterReport({ page }) {
               onClick={() => setAdvanceSearchPopup(false)}
               style={{ position: "absolute", top: "10px", right: "10px" }}
             >
-              <i class="fa-light fa-xmark" />
+              <i className="fa-light fa-xmark" />
             </button>
             <div className="row">
-              <div class="col-12 heading mb-0">
-                <i class="fa-light fa-magnifying-glass"></i>
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-magnifying-glass"></i>
                 <h5>Advance Search</h5>
               </div>
               <div>
-                <div class="searchBoxWrapper">
+                <div className="searchBoxWrapper">
                   <input
-                    class="searchBar formItem"
+                    className="searchBar formItem"
                     type="text"
                     value={advanceSearch}
                     onChange={(e) => setAdvanceSearch(e.target.value)}
@@ -2142,51 +2142,51 @@ function CdrFilterReport({ page }) {
                 </div>
               </div>
               <div className="row mx-auto">
-                <div class="formRow border-0">
-                  <label class="formLabel text-start mb-0 w-100">From</label>
-                  <div class="d-flex w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">From</label>
+                  <div className="d-flex w-100">
                     <input
                       type="date"
-                      class="formItem"
+                      className="formItem"
                       max="2025-04-30"
                       value=""
                       onChange={() => featureUnderdevelopment()}
                     />
                     <input
                       type="time"
-                      class="formItem ms-2"
+                      className="formItem ms-2"
                       value=""
                       onChange={() => featureUnderdevelopment()}
                     />
                   </div>
                 </div>
-                <div class="formRow border-0">
-                  <label class="formLabel text-start mb-0 w-100">To</label>
-                  <div class="d-flex w-100">
+                <div className="formRow border-0">
+                  <label className="formLabel text-start mb-0 w-100">To</label>
+                  <div className="d-flex w-100">
                     <input
                       type="date"
-                      class="formItem"
+                      className="formItem"
                       max="2025-04-30"
                       value=""
                       onChange={() => featureUnderdevelopment()}
                     />
                     <input
                       type="time"
-                      class="formItem ms-2"
+                      className="formItem ms-2"
                       value=""
                       onChange={() => featureUnderdevelopment()}
                     />
                   </div>
                 </div>
               </div>
-              <div class="col-xl-12 mt-3">
+              <div className="col-xl-12 mt-3">
                 <button
-                  class="panelButton mx-auto"
+                  className="panelButton mx-auto"
                   onClick={() => getAdvanceSearch()}
                 >
-                  <span class="text">Search</span>
-                  <span class="icon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                  <span className="text">Search</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-magnifying-glass"></i>
                   </span>
                 </button>
               </div>

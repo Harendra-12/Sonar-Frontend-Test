@@ -256,8 +256,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid, selectedAd
                                   />
                                   <span className="slider round"></span>
                                 </label> */}
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
+                                <div className="cl-toggle-switch">
+                                  <label className="cl-switch">
                                     <input type="checkbox"
                                       checked={
                                         item.id === selectedCardId ? true : false
@@ -374,8 +374,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid, selectedAd
                                       />
                                       <span className="slider round"></span>
                                     </label> */}
-                                    <div class="cl-toggle-switch">
-                                      <label class="cl-switch">
+                                    <div className="cl-toggle-switch">
+                                      <label className="cl-switch">
                                         <input type="checkbox"
                                           id="showAllCheck"
                                           checked={

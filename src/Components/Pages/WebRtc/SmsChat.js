@@ -155,8 +155,8 @@ function SmsChat({ setLoading, loading, did }) {
                                   >
                                     <h4>{item?.from_did}</h4>
                                   </div>
-                                  <div class="callIconAdmin">
-                                    <i class={`fa-solid fa-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: "#fff" }}></i>
+                                  <div className="callIconAdmin">
+                                    <i className={`fa-solid fa-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: "#fff" }}></i>
                                   </div>
                                   <div
                                     className="col-3 my-auto ms-2 ms-xl-3"

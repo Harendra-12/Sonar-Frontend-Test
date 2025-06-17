@@ -594,14 +594,14 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
                           <h5 className="d-flex">Total Call Per Hour
-                            <div class="my-auto position-relative ms-3">
-                              {/* <label class="switch">
+                            <div className="my-auto position-relative ms-3">
+                              {/* <label className="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
-                                <span class="slider round">
+                                <span className="slider round">
                                 </span>
                               </label> */}
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
+                              <div className="cl-toggle-switch">
+                                <label className="cl-switch">
                                   <input type="checkbox"
                                     onChange={() => featureUnderdevelopment()}
                                     id="showAllCheck"
@@ -613,9 +613,9 @@ function PhoneDashboard() {
                           </h5>
                         </div>
                         <div className="col-auto">
-                          <ul class="chart_tabs" >
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphTimeFilter"
+                          <ul className="chart_tabs" >
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphTimeFilter"
                                 value="1"
                                 checked={graphFilter.totalCallMin.startTime === '1'}
                                 onChange={(e) =>
@@ -628,10 +628,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">1 Hr</button>
+                              <button className="nav-link">1 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphTimeFilter" value="3"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphTimeFilter" value="3"
                                 checked={graphFilter.totalCallMin.startTime === '3'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -643,10 +643,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">3 Hr</button>
+                              <button className="nav-link">3 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphTimeFilter" value="6"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphTimeFilter" value="6"
                                 checked={graphFilter.totalCallMin.startTime === '6'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -658,10 +658,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">6 Hr</button>
+                              <button className="nav-link">6 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphTimeFilter" value="12"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphTimeFilter" value="12"
                                 checked={graphFilter.totalCallMin.startTime === '12'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -673,10 +673,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">12 Hr</button>
+                              <button className="nav-link">12 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphTimeFilter" value="24"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphTimeFilter" value="24"
                                 checked={graphFilter.totalCallMin.startTime === '24'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -688,7 +688,7 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">24 Hr</button>
+                              <button className="nav-link">24 Hr</button>
                             </li>
                           </ul>
                         </div>
@@ -698,7 +698,7 @@ function PhoneDashboard() {
                       {graphLoading.totalCallMin == 1 ? (
                         <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
                           <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                            <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                           </div>
                         </div>) :
                         <GraphChart
@@ -730,14 +730,14 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
                           <h5 className="d-flex">Number of Call
-                            <div class="my-auto position-relative ms-3">
-                              {/* <label class="switch">
+                            <div className="my-auto position-relative ms-3">
+                              {/* <label className="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
-                                <span class="slider round">
+                                <span className="slider round">
                                 </span>
                               </label> */}
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
+                              <div className="cl-toggle-switch">
+                                <label className="cl-switch">
                                   <input type="checkbox"
                                     onChange={() => featureUnderdevelopment()}
                                     id="showAllCheck"
@@ -750,9 +750,9 @@ function PhoneDashboard() {
                         </div>
                         <div className="col-auto">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
-                            <ul class="chart_tabs" >
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter"
+                            <ul className="chart_tabs" >
+                              <li className="nav-item">
+                                <input className="nav-link" type="radio" name="graphFilter"
                                   value="3_days"
                                   checked={graphFilter.numberOfCall.date === '3_days'}
                                   onChange={(e) =>
@@ -765,10 +765,10 @@ function PhoneDashboard() {
                                     }))
                                   }
                                 />
-                                <button class="nav-link">3 Days</button>
+                                <button className="nav-link">3 Days</button>
                               </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter"
+                              <li className="nav-item">
+                                <input className="nav-link" type="radio" name="graphFilter"
                                   value="7_days"
                                   checked={graphFilter.numberOfCall.date === '7_days'}
                                   onChange={(e) =>
@@ -781,10 +781,10 @@ function PhoneDashboard() {
                                     }))
                                   }
                                 />
-                                <button class="nav-link">7 Days</button>
+                                <button className="nav-link">7 Days</button>
                               </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="15_days"
+                              <li className="nav-item">
+                                <input className="nav-link" type="radio" name="graphFilter" value="15_days"
                                   checked={graphFilter.numberOfCall.date === '15_days'}
                                   onChange={(e) =>
                                     setGraphFilter((prevGraphData) => ({
@@ -796,10 +796,10 @@ function PhoneDashboard() {
                                     }))
                                   }
                                 />
-                                <button class="nav-link">15 Days</button>
+                                <button className="nav-link">15 Days</button>
                               </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="30_days"
+                              <li className="nav-item">
+                                <input className="nav-link" type="radio" name="graphFilter" value="30_days"
                                   checked={graphFilter.numberOfCall.date === '30_days'}
                                   onChange={(e) =>
                                     setGraphFilter((prevGraphData) => ({
@@ -811,7 +811,7 @@ function PhoneDashboard() {
                                     }))
                                   }
                                 />
-                                <button class="nav-link">1 Month</button>
+                                <button className="nav-link">1 Month</button>
                               </li>
                             </ul>
                           </div>
@@ -822,7 +822,7 @@ function PhoneDashboard() {
                       {graphLoading.numberOfCall == 1 ? (
                         <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
                           <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                            <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                           </div>
                         </div>
                       ) :
@@ -847,14 +847,14 @@ function PhoneDashboard() {
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
                           <h5 className="d-flex">Call Cost Per Hour
-                            <div class="my-auto position-relative ms-3">
-                              {/* <label class="switch">
+                            <div className="my-auto position-relative ms-3">
+                              {/* <label className="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
-                                <span class="slider round">
+                                <span className="slider round">
                                 </span>
                               </label> */}
-                              <div class="cl-toggle-switch">
-                                <label class="cl-switch">
+                              <div className="cl-toggle-switch">
+                                <label className="cl-switch">
                                   <input type="checkbox"
                                     onChange={() => featureUnderdevelopment()}
                                     id="showAllCheck"
@@ -866,9 +866,9 @@ function PhoneDashboard() {
                           </h5>
                         </div>
                         <div className="col-auto">
-                          <ul class="chart_tabs" >
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphCostFilter"
+                          <ul className="chart_tabs" >
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphCostFilter"
                                 value="1"
                                 checked={graphFilter.callCostPerHour.startTime === '1'}
                                 onChange={(e) =>
@@ -881,10 +881,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">1 Hr</button>
+                              <button className="nav-link">1 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphCostFilter" value="3"
                                 checked={graphFilter.callCostPerHour.startTime === '3'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -896,10 +896,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">3 Hr</button>
+                              <button className="nav-link">3 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphCostFilter" value="6"
                                 checked={graphFilter.callCostPerHour.startTime === '6'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -911,10 +911,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">6 Hr</button>
+                              <button className="nav-link">6 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphCostFilter" value="12"
                                 checked={graphFilter.callCostPerHour.startTime === '12'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -926,10 +926,10 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">12 Hr</button>
+                              <button className="nav-link">12 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                            <li className="nav-item">
+                              <input className="nav-link" type="radio" name="graphCostFilter" value="24"
                                 checked={graphFilter.callCostPerHour.startTime === '24'}
                                 onChange={(e) =>
                                   setGraphFilter((prevGraphData) => ({
@@ -941,7 +941,7 @@ function PhoneDashboard() {
                                   }))
                                 }
                               />
-                              <button class="nav-link">24 Hr</button>
+                              <button className="nav-link">24 Hr</button>
                             </li>
                           </ul>
                         </div>
@@ -952,7 +952,7 @@ function PhoneDashboard() {
                         (
                           <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
                             <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                              <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                              <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                             </div>
                           </div>
                         ) :

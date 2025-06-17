@@ -3,15 +3,15 @@ import React from 'react'
 const Transcription = () => {
     return (
         <>
-            <div class="accordion accordion-flush transcription_accordion" id="accordionFlushExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed p-1 fs-12 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" style={{ color: 'var(--ui-accent)'}}>
-                           Node Transition
+            <div className="accordion accordion-flush transcription_accordion" id="accordionFlushExample">
+                <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingOne">
+                        <button className="accordion-button collapsed p-1 fs-12 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" style={{ color: 'var(--ui-accent)' }}>
+                            Node Transition
                         </button>
                     </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
+                    <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div className="accordion-body">
                             <p className='fs-12 mb-0' style={{ color: 'var(--color-subtext)' }}>previous node: begin</p>
                             <p className='fs-12 mb-0' style={{ color: 'var(--color-subtext)' }}>new node: Greetings</p>
                         </div>

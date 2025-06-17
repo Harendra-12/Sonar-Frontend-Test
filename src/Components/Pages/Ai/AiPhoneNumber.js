@@ -72,28 +72,28 @@ const AiPhoneNumber = () => {
                               </button>
                             </div>
                             <div className='knowledge__list'>
-                              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                              <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <button className="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                   <p className='mb-0'>
-                                    <i class="fa-solid fa-phone me-2"></i> +14844731350
+                                    <i className="fa-solid fa-phone me-2"></i> +14844731350
                                   </p>
                                   {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
                                 </button>
-                                <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                <button className="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-solid fa-phone me-2"></i> +14844731383
+                                    <i className="fa-solid fa-phone me-2"></i> +14844731383
                                   </p>
                                   {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
                                 </button>
-                                <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                                <button className="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-solid fa-phone me-2"></i> +16102458451
+                                    <i className="fa-solid fa-phone me-2"></i> +16102458451
                                   </p>
                                   {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
                                 </button>
-                                <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <button className="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
                                   <p className='mb-0'>
-                                    <i class="fa-solid fa-phone me-2"></i> +16105579255
+                                    <i className="fa-solid fa-phone me-2"></i> +16105579255
                                   </p>
                                   {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
                                 </button>
@@ -102,8 +102,8 @@ const AiPhoneNumber = () => {
                           </div>
                         </div>
                         <div className='col-xxl-8 col-xl-7 col-lg-7 '>
-                          <div class="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                          <div className="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
+                            <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                               <div className="heading">
                                 <div className="content">
                                   <h4>+14844731350</h4>
@@ -129,7 +129,7 @@ const AiPhoneNumber = () => {
                                     <button className="panelButton danger" onClick={setDeletePopup}>
                                       <span className="text">Delete</span>
                                       <span className="icon">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i className="fa-solid fa-trash"></i>
                                       </span>
                                     </button>
                                   </div>
@@ -307,13 +307,13 @@ const AiPhoneNumber = () => {
                                 </div>
                               </div>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
                             </div>
-                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 
                             </div>
-                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                            <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 
                             </div>
                           </div>
@@ -352,24 +352,24 @@ const AiPhoneNumber = () => {
                       </div>
                     </div>
                     <div className="card-body aiAgentTab p-3">
-                      <div class="mt-3 baseNav">
-                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                      <div className="mt-3 baseNav">
+                        <ul className="nav nav-pills" id="pills-tab" role="tablist">
 
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="twilio-tab" data-bs-toggle="pill" data-bs-target="#twilio" type="button" role="tab" aria-controls="twilio" aria-selected="true">Import Twilio</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link active" id="twilio-tab" data-bs-toggle="pill" data-bs-target="#twilio" type="button" role="tab" aria-controls="twilio" aria-selected="true">Import Twilio</button>
                           </li>
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="Vonage-tab" data-bs-toggle="pill" data-bs-target="#Vonage" type="button" role="tab" aria-controls="Vonage" aria-selected="false">Import Vonage</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link" id="Vonage-tab" data-bs-toggle="pill" data-bs-target="#Vonage" type="button" role="tab" aria-controls="Vonage" aria-selected="false">Import Vonage</button>
                           </li>
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="import-tab" data-bs-toggle="pill" data-bs-target="#import" type="button" role="tab" aria-controls="import" aria-selected="false">Import Telnyx</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link" id="import-tab" data-bs-toggle="pill" data-bs-target="#import" type="button" role="tab" aria-controls="import" aria-selected="false">Import Telnyx</button>
                           </li>
-                          <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="sip-tab" data-bs-toggle="pill" data-bs-target="#sip" type="button" role="tab" aria-controls="sip" aria-selected="false">BYO SIP Trunk Number</button>
+                          <li className="nav-item" role="presentation">
+                            <button className="nav-link" id="sip-tab" data-bs-toggle="pill" data-bs-target="#sip" type="button" role="tab" aria-controls="sip" aria-selected="false">BYO SIP Trunk Number</button>
                           </li>
                         </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                          <div class="tab-pane fade show active" id="twilio" role="tabpanel" aria-labelledby="twilio-tab">
+                        <div className="tab-content" id="pills-tabContent">
+                          <div className="tab-pane fade show active" id="twilio" role="tabpanel" aria-labelledby="twilio-tab">
                             <form>
                               <div className="formRow flex-column align-items-start px-0">
                                 <div className="formLabel mw-100">
@@ -424,7 +424,7 @@ const AiPhoneNumber = () => {
                             </form>
                           </div>
 
-                          <div class="tab-pane fade pb-3" id="Vonage" role="tabpanel" aria-labelledby="Vonage-tab">
+                          <div className="tab-pane fade pb-3" id="Vonage" role="tabpanel" aria-labelledby="Vonage-tab">
                             <form>
                               <div className="formRow flex-column align-items-start px-0">
                                 <div className="formLabel mw-100">
@@ -480,7 +480,7 @@ const AiPhoneNumber = () => {
 
                           </div>
 
-                          <div class="tab-pane fade" id="import" role="tabpanel" aria-labelledby="import-tab">
+                          <div className="tab-pane fade" id="import" role="tabpanel" aria-labelledby="import-tab">
                             <form>
                               <div className="formRow flex-column align-items-start px-0">
                                 <div className="formLabel mw-100">
@@ -524,7 +524,7 @@ const AiPhoneNumber = () => {
                             </form>
 
                           </div>
-                          <div class="tab-pane fade" id="sip" role="tabpanel" aria-labelledby="sip-tab">
+                          <div className="tab-pane fade" id="sip" role="tabpanel" aria-labelledby="sip-tab">
                             <form>
                               <div className="formRow flex-column align-items-start px-0">
                                 <div className="formLabel">
@@ -539,14 +539,14 @@ const AiPhoneNumber = () => {
                                 </div>
                               </div>
                               <div className="formRow flex-column align-items-start px-0">
-                                
+
                                 <div className="col-12 formLabel mw-100">
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" />
-                                      <label class="form-check-label" for="checkDefault">
-                                        Allow non-E164 Phone Number <br/> 
-                                        <span>Check this box to disabled E164 format validation and use custom phone number formats.</span>
-                                      </label>
+                                  <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" id="checkDefault" />
+                                    <label className="form-check-label" htmlFor="checkDefault">
+                                      Allow non-E164 Phone Number <br />
+                                      <span>Check this box to disabled E164 format validation and use custom phone number formats.</span>
+                                    </label>
                                   </div>
                                 </div>
                               </div>
@@ -609,7 +609,7 @@ const AiPhoneNumber = () => {
           </div>
         }
 
-        
+
         {deletePopup && (
           <div className="popup">
             <div className="container h-100">

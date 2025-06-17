@@ -499,7 +499,7 @@ function CampaignCreateNEW() {
                       <div className="buttonGroup">
                         {/* <div className='d-flex align-items-center'>
                           <div className="formLabel py-0 me-2">
-                            <label for="selectFormRow">Enabled</label>
+                            <label htmlFor="selectFormRow">Enabled</label>
                           </div>
                           <div className="my-auto position-relative mx-1">
                             <label className="switch">
@@ -832,8 +832,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -881,8 +881,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -930,8 +930,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -979,8 +979,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -1028,8 +1028,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -1077,8 +1077,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -1126,8 +1126,8 @@ function CampaignCreateNEW() {
                                           </div>
                                           {/* <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <div class="cl-toggle-switch">
-                                              <label class="cl-switch">
+                                            <div className="cl-toggle-switch">
+                                              <label className="cl-switch">
                                                 <input type="checkbox" id="showAllCheck"
                                                   onChange={(e) => {
                                                     setSchedulerInfo(prevState => prevState.map(day =>
@@ -1498,8 +1498,8 @@ function CampaignCreateNEW() {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
+                                                <div className="cl-toggle-switch">
+                                                  <label className="cl-switch">
                                                     <input type="checkbox"
                                                       checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
                                                       id="showAllCheck"
@@ -1779,14 +1779,14 @@ function CampaignCreateNEW() {
                                       onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
                                     >
                                       <span className="text">Add</span>
-                                      <span className='icon'><i class="fa-solid fa-plus"></i></span>
+                                      <span className='icon'><i className="fa-solid fa-plus"></i></span>
                                     </button>
                                     {/* <button
                                       className="panelButton edit"
                                       onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                     >
                                       <span className="text">Import</span>
-                                      <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
+                                      <span className='icon'><i className="fa-solid fa-file-csv"></i></span>
                                     </button> */}
                                   </div>
                                 </div>

@@ -1107,8 +1107,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1159,8 +1159,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1211,8 +1211,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1263,8 +1263,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1315,8 +1315,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1367,8 +1367,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -1419,8 +1419,8 @@ function CampaignEditNEW() {
                                             </div>
                                             {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
-                                              <div class="cl-toggle-switch">
-                                                <label class="cl-switch">
+                                              <div className="cl-toggle-switch">
+                                                <label className="cl-switch">
                                                   <input type="checkbox" id="showAllCheck"
                                                     onChange={(e) => {
                                                       setSchedulerInfo(prevState => prevState.map(day =>
@@ -2039,8 +2039,8 @@ function CampaignEditNEW() {
                                                     <span className="slider round" />
                                                   </label> */}
 
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
+                                                  <div className="cl-toggle-switch">
+                                                    <label className="cl-switch">
                                                       <input
                                                         type="checkbox"
                                                         checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
@@ -2498,14 +2498,14 @@ function CampaignEditNEW() {
                                         onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
                                       >
                                         <span className="text">Add</span>
-                                        <span className='icon'><i class="fa-solid fa-plus"></i></span>
+                                        <span className='icon'><i className="fa-solid fa-plus"></i></span>
                                       </button>
                                       {/* <button
                                         className="panelButton edit"
                                         onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                       >
                                         <span className="text">Import</span>
-                                        <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
+                                        <span className='icon'><i className="fa-solid fa-file-csv"></i></span>
                                       </button> */}
                                     </div>
                                   </div>
@@ -3229,7 +3229,7 @@ export function LeadFileEditPopup({ setPopup, leadFile, campaignId, setCircularL
             </div>
           </nav>
           <div className="tab-content" id="nav-tabContent" style={{ border: "none", }}>
-            <div className="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab" tabindex="0">
+            <div className="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab" tabIndex="0">
               <div className="mt-3">
                 <div className="tableContainer mt-0" style={{ maxHeight: "calc(-400px + 100vh)" }} >
                   {loading ? <ThreeDotedLoader /> :
@@ -3324,7 +3324,7 @@ export function LeadFileEditPopup({ setPopup, leadFile, campaignId, setCircularL
               id="nav-exten"
               role="tabpanel"
               aria-labelledby="nav-exten-tab"
-              tabindex="0">
+              tabIndex="0">
               <div className="mt-3">
                 <div className="tableContainer mt-0" style={{ maxHeight: "calc(-400px + 100vh)" }} >
                   {loading ? <ThreeDotedLoader /> :

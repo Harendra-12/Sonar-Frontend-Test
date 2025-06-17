@@ -200,7 +200,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -218,7 +218,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -236,7 +236,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -254,7 +254,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -305,7 +305,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -323,7 +323,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -341,7 +341,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -359,7 +359,7 @@ function BillingDashboard() {
                                               <span>$500 </span>
                                               <span>
                                                 <button className="tableButton edit mx-auto">
-                                                  <i class="fa-solid fa-eye"></i>
+                                                  <i className="fa-solid fa-eye"></i>
                                                 </button>
                                               </span>
                                               <span>
@@ -383,9 +383,9 @@ function BillingDashboard() {
                                         <h5>Call Billed Per Hour</h5>
                                       </div>
                                       <div className="col-auto">
-                                        <ul class="chart_tabs" >
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphCostFilter"
+                                        <ul className="chart_tabs" >
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphCostFilter"
                                               value="1"
                                               checked={graphFilter.callCostPerHour.startTime === '1'}
                                               onChange={(e) =>
@@ -398,10 +398,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">1 Hr</button>
+                                            <button className="nav-link">1 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphCostFilter" value="3"
                                               checked={graphFilter.callCostPerHour.startTime === '3'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -413,10 +413,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">3 Hr</button>
+                                            <button className="nav-link">3 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphCostFilter" value="6"
                                               checked={graphFilter.callCostPerHour.startTime === '6'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -428,10 +428,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">6 Hr</button>
+                                            <button className="nav-link">6 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphCostFilter" value="12"
                                               checked={graphFilter.callCostPerHour.startTime === '12'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -443,10 +443,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">12 Hr</button>
+                                            <button className="nav-link">12 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphCostFilter" value="24"
                                               checked={graphFilter.callCostPerHour.startTime === '24'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -458,7 +458,7 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">24 Hr</button>
+                                            <button className="nav-link">24 Hr</button>
                                           </li>
                                         </ul>
                                       </div>
@@ -469,7 +469,7 @@ function BillingDashboard() {
                                       (
                                         <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
                                           <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                            <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                           </div>
                                         </div>
                                       ) :
@@ -551,14 +551,14 @@ function BillingDashboard() {
                                             </div>
                                           </div>
                                           {/* <div className="col-4">
-                                            <div class="parent">
-                                              <div class="magicpattern" />
+                                            <div className="parent">
+                                              <div className="magicpattern" />
                                             </div>
                                           </div> */}
                                           <div className="col-2">
                                             <i className="fa-solid fa-eye"></i>
-                                            <div class="parent mt-5">
-                                              <div class="magicpattern" />
+                                            <div className="parent mt-5">
+                                              <div className="magicpattern" />
                                             </div>
                                           </div>
                                         </div>
@@ -606,8 +606,8 @@ function BillingDashboard() {
 
                                           <div className="col-2">
                                             <i className="fa-solid fa-eye"></i>
-                                            <div class="parent mt-5">
-                                              <div class="magicpattern" />
+                                            <div className="parent mt-5">
+                                              <div className="magicpattern" />
                                             </div>
                                           </div>
                                         </div>
@@ -657,8 +657,8 @@ function BillingDashboard() {
 
                                           <div className="col-2">
                                             <i className="fa-solid fa-eye"></i>
-                                            <div class="parent mt-5">
-                                              <div class="magicpattern" />
+                                            <div className="parent mt-5">
+                                              <div className="magicpattern" />
                                             </div>
                                           </div>
                                         </div>
@@ -709,8 +709,8 @@ function BillingDashboard() {
                                           </div>
                                           <div className="col-2">
                                             <i className="fa-solid fa-eye"></i>
-                                            <div class="parent mt-5">
-                                              <div class="magicpattern" />
+                                            <div className="parent mt-5">
+                                              <div className="magicpattern" />
                                             </div>
                                           </div>
                                         </div>
@@ -727,9 +727,9 @@ function BillingDashboard() {
                                         <h5>Call Per Hour</h5>
                                       </div>
                                       {/* <div className="col-auto">
-                                        <ul class="chart_tabs" >
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphTimeFilter"
+                                        <ul className="chart_tabs" >
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphTimeFilter"
                                               value="1"
                                               checked={graphFilter.totalCallMin.startTime === '1'}
                                               onChange={(e) =>
@@ -742,10 +742,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">1 Hr</button>
+                                            <button className="nav-link">1 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="3"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphTimeFilter" value="3"
                                               checked={graphFilter.totalCallMin.startTime === '3'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -757,10 +757,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">3 Hr</button>
+                                            <button className="nav-link">3 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="6"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphTimeFilter" value="6"
                                               checked={graphFilter.totalCallMin.startTime === '6'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -772,10 +772,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">6 Hr</button>
+                                            <button className="nav-link">6 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="12"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphTimeFilter" value="12"
                                               checked={graphFilter.totalCallMin.startTime === '12'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -787,10 +787,10 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">12 Hr</button>
+                                            <button className="nav-link">12 Hr</button>
                                           </li>
-                                          <li class="nav-item">
-                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="24"
+                                          <li className="nav-item">
+                                            <input className="nav-link" type="radio" name="graphTimeFilter" value="24"
                                               checked={graphFilter.totalCallMin.startTime === '24'}
                                               onChange={(e) =>
                                                 setGraphFilter((prevGraphData) => ({
@@ -802,7 +802,7 @@ function BillingDashboard() {
                                                 }))
                                               }
                                             />
-                                            <button class="nav-link">24 Hr</button>
+                                            <button className="nav-link">24 Hr</button>
                                           </li>
                                         </ul>
                                       </div> */}
@@ -812,7 +812,7 @@ function BillingDashboard() {
                                     {graphLoading.totalCallMin == 1 ? (
                                       <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
                                         <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                          <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                          <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                         </div>
                                       </div>) :
                                       <GraphChart

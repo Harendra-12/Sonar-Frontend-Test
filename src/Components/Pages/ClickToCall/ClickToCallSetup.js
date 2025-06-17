@@ -197,7 +197,7 @@ function ClickToCallSetup() {
                                     id="nav-gen"
                                     role="tabpanel"
                                     aria-labelledby="nav-gen-tab"
-                                    tabindex="0"
+                                    tabIndex="0"
                                   >
                                     <form>
                                       <div className="formRow col-xl-12  ">
@@ -558,13 +558,13 @@ function ClickToCallSetup() {
                                                 />
                                               </div>
                                               <div>
-                                                <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                   <div className="d-flex align-items-center">
                                                     <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
                                                     <label className="ms-2">Choose Color</label>
                                                   </div>
                                                 </button>
-                                                <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
                                                   <HexColorPicker
                                                     color={baseColor}
                                                     onChange={(newColor) => setValue("color", newColor)} />
@@ -588,7 +588,7 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-7">
                                           <div className="d-flex align-items-center justify-content-between">
-                                            <div class="form-widths d-flex">
+                                            <div className="form-widths d-flex">
                                               <div className="me-2">
                                                 <input
                                                   className="formItem ms-1"
@@ -600,13 +600,13 @@ function ClickToCallSetup() {
                                                 />
                                               </div>
                                               <div>
-                                                <button class="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <button className="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                   <div className="d-flex align-items-center">
                                                     <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
                                                     <label className="ms-2">Choose Color</label>
                                                   </div>
                                                 </button>
-                                                <div class="dropdown-menu p-0" aria-labelledby="textColorPicker">
+                                                <div className="dropdown-menu p-0" aria-labelledby="textColorPicker">
                                                   <HexColorPicker
                                                     color={textColor}
                                                     onChange={(newColor) => setValue("textcolor", newColor)} />
@@ -630,7 +630,7 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-7">
                                           <div className="d-flex align-items-center justify-content-between">
-                                            <div class="form-widths d-flex">
+                                            <div className="form-widths d-flex">
                                               <div className="me-2">
                                                 <input
                                                   className="formItem ms-1"
@@ -641,13 +641,13 @@ function ClickToCallSetup() {
                                                   style={{ width: "100px" }}
                                                 />
                                               </div>
-                                              <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                              <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                 <div className="d-flex align-items-center">
                                                   <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
                                                   <label className="ms-2">Choose Color</label>
                                                 </div>
                                               </button>
-                                              <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                              <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
                                                 <HexColorPicker
                                                   color={buttonColor}
                                                   onChange={(newColor) => setValue("buttoncolor", newColor)} />

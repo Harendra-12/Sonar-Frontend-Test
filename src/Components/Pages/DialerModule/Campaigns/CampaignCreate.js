@@ -227,7 +227,7 @@ function CampaignCreate() {
                       <div className="buttonGroup">
                         {/* <div className='d-flex align-items-center'>
                                                     <div className="formLabel py-0 me-2">
-                                                        <label for="selectFormRow">Enabled</label>
+                                                        <label htmlFor="selectFormRow">Enabled</label>
                                                     </div>
                                                     <div className="my-auto position-relative mx-1">
                                                         <label className="switch">
@@ -696,8 +696,8 @@ function CampaignCreate() {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
+                                                <div className="cl-toggle-switch">
+                                                  <label className="cl-switch">
                                                     <input type="checkbox"
                                                       checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
                                                       id="showAllCheck"

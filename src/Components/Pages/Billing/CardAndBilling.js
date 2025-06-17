@@ -699,8 +699,8 @@ function CardAndBilling() {
                                                 />
                                                 <span className="slider round"></span>
                                               </label> */}
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
+                                                  <div className="cl-toggle-switch">
+                                                    <label className="cl-switch">
                                                       <input type="checkbox"
                                                         checked={item.default}
                                                         onChange={(e) => {
@@ -858,8 +858,8 @@ function CardAndBilling() {
                                                   <span className="slider round"></span>
                                                 </label> */}
 
-                                                    <div class="cl-toggle-switch">
-                                                      <label class="cl-switch">
+                                                    <div className="cl-toggle-switch">
+                                                      <label className="cl-switch">
                                                         <input type="checkbox"
                                                           checked={item.default}
                                                           onChange={(e) => {
@@ -1389,7 +1389,7 @@ function CardAndBilling() {
                                               <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
                                             </p>
                                           </div>
-                                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
                                             <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
                                               <span className="text">Edit</span>
                                               <span className="icon"><i className="fa-solid fa-pen" /></span>

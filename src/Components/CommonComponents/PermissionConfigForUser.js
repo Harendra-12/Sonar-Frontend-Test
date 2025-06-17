@@ -580,13 +580,13 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
 
         return (
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
-            <div class="accordion-item">
+            <div className="accordion-item">
               <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button class="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
+                <button className="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
-                    <div class="cl-toggle-switch">
-                      <label class="cl-switch">
+                    <div className="cl-toggle-switch">
+                      <label className="cl-switch">
                         <input
                           type="checkbox"
                           checked={!!expandedSections[sectionName]}
@@ -607,8 +607,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                       </Tippy>
                       <div className="my-auto position-relative ms-3 me-1 d-flex">
                         <span className='me-2'>Master: </span>
-                        <div class="cl-toggle-switch">
-                          <label class="cl-switch">
+                        <div className="cl-toggle-switch">
+                          <label className="cl-switch">
                             <input
                               type="checkbox"
                               checked={filteredModels.every(model =>
@@ -640,8 +640,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 )}
               </div>
               {expandedSections[sectionName] && (
-                <div id={sectionName.replace(/ /g, "")} class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
-                  <div class="accordion-body">
+                <div id={sectionName.replace(/ /g, "")} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
+                  <div className="accordion-body">
                     <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
                       <table className="w-100">
                         <thead>

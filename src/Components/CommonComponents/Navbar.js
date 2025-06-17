@@ -1453,7 +1453,7 @@ function Navbar() {
                       aria-controls="collapse21"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user-robot"></i>
+                        <i className="fa-regular fa-user-robot"></i>
                       </div>
                       <div className="itemTitle">AI Dashboard</div>
                     </button>

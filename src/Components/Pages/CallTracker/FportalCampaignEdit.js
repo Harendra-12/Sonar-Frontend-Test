@@ -914,8 +914,8 @@ function FportalCampaignEdit() {
                                 </label>
                               </div>
                               <div className='col-6'>
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
+                                <div className="cl-toggle-switch">
+                                  <label className="cl-switch">
                                     <input type="checkbox"
                                       checked={isStatus}
                                       id="showAllCheck"
@@ -1071,8 +1071,8 @@ function FportalCampaignEdit() {
                                 </label>
                               </div>
                               <div className="col-6">
-                                <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
+                                <div className="cl-toggle-switch">
+                                  <label className="cl-switch">
                                     <input type="checkbox"
                                       checked={isActiveHour}
                                       id="showAllCheck"
@@ -1121,8 +1121,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1166,8 +1166,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1211,8 +1211,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1256,8 +1256,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1301,8 +1301,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1346,8 +1346,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>
@@ -1391,8 +1391,8 @@ function FportalCampaignEdit() {
                                       </div>
                                       <div className="item">
                                         <div className="my-auto position-relative mx-1">
-                                          <div class="cl-toggle-switch">
-                                            <label class="cl-switch">
+                                          <div className="cl-toggle-switch">
+                                            <label className="cl-switch">
                                               <input type="checkbox" id="showAllCheck"
                                                 onChange={(e) => {
                                                   setSchedulerInfo(prevState => prevState.map(day =>

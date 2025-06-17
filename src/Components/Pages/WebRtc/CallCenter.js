@@ -37,8 +37,6 @@ const CallCenter = ({ initial }) => {
   const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
-  console.log("callCenter", callCenter);
-
   useEffect(() => {
     const getData = async () => {
       dispatch({

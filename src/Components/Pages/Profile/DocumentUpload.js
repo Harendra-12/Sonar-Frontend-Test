@@ -167,7 +167,7 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Reg </label>
-                      <label for="file-upload1" className="custom-file-upload">
+                      <label htmlFor="file-upload1" className="custom-file-upload">
                         {formData.reg ? (
                           formData.reg.name
                         ) : (
@@ -206,7 +206,7 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Tin</label>
-                      <label for="file-upload2" className="custom-file-upload">
+                      <label htmlFor="file-upload2" className="custom-file-upload">
                         {formData.tin ? (
                           formData.tin.name
                         ) : (
@@ -246,7 +246,7 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Moa</label>
-                      <label for="file-upload3" className="custom-file-upload">
+                      <label htmlFor="file-upload3" className="custom-file-upload">
                         {formData.moa ? (
                           formData.moa.name
                         ) : (

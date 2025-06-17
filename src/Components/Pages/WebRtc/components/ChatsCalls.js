@@ -40,7 +40,7 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                         <div className="my-auto ms-2 ms-xl-3 callDetailsWidth">
                                             <p className='justify-content-start ellipsisText'>{item?.sender_id == account?.id ? item?.receiver?.name : item?.sender?.name}
                                                 <span className={`missedCallArrow text-${item?.hangup_cause === "originator_cancel" ? 'danger' : 'success'} ms-2`}>
-                                                    <i class={`fa-regular fa-arrow-${item?.receiver_id == account?.id ? "down-left" : "up-right"}`}></i>
+                                                    <i className={`fa-regular fa-arrow-${item?.receiver_id == account?.id ? "down-left" : "up-right"}`}></i>
                                                 </span>
                                             </p>
                                             <h5>{item?.created?.split(" ")[0]}, {formatTimeWithAMPM(item?.created?.split(" ")[1])}</h5>
@@ -58,7 +58,7 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                             });
 
                                         }}>
-                                            <button className="btn_call"><i class={`fa-regular fa-${item.call_type === "audio" ? 'phone' : 'video'}`}></i></button>
+                                            <button className="btn_call"><i className={`fa-regular fa-${item.call_type === "audio" ? 'phone' : 'video'}`}></i></button>
                                         </div>
                                     </div>
                                 </div>

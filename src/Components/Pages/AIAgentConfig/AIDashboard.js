@@ -40,42 +40,42 @@ function AIDashboard() {
           <div className="container-fluid lightBG_ai">
             <div className="row mt-3">
               <div className='col-xxl-8'>
-                <div class="row gx-xxl-3 gx-lg-2">
-                  <div class="col-xl-4 col-lg-6 col-md-6 mb-3">
+                <div className="row gx-xxl-3 gx-lg-2">
+                  <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
 
-                    <div class="card small-widget overflow-hidden cardbg_gradient">
-                      <div class="card-body primary"> <span class="text25">Calls analyzed </span>
-                        <div class="textArea">
-                          <p class=" fs-14 text-b mb-0" ><strong>27</strong> <span className='f-light fs-12'> by 9 Agents in last 7 days</span></p>
+                    <div className="card small-widget overflow-hidden cardbg_gradient">
+                      <div className="card-body primary"> <span className="text25">Calls analyzed </span>
+                        <div className="textArea">
+                          <p className=" fs-14 text-b mb-0" ><strong>27</strong> <span className='f-light fs-12'> by 9 Agents in last 7 days</span></p>
                         </div>
-                        <div class="bg-gradient">
-                          {/* <i class="fa-solid fa-headset "></i> */}
+                        <div className="bg-gradient">
+                          {/* <i className="fa-solid fa-headset "></i> */}
                           <img src={require('../../assets/images/customer-service.png')} alt='customer-service' />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-4 col-lg-6 col-md-6 mb-3">
-                    <div class="card small-widget overflow-hidden cardbg_gradient2">
-                      <div class="card-body success "> <span class="text25">is the average calls </span>
-                        <div class="textArea">
-                          <p class=" fs-14 text-b mb-0" ><strong>47</strong> <span className='f-light fs-12'> score in last 7 days</span></p>
+                  <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
+                    <div className="card small-widget overflow-hidden cardbg_gradient2">
+                      <div className="card-body success "> <span className="text25">is the average calls </span>
+                        <div className="textArea">
+                          <p className=" fs-14 text-b mb-0" ><strong>47</strong> <span className='f-light fs-12'> score in last 7 days</span></p>
                         </div>
-                        <div class="bg-gradient">
-                          {/* <i class="fa-solid fa-headset "></i> */}
+                        <div className="bg-gradient">
+                          {/* <i className="fa-solid fa-headset "></i> */}
                           <img src={require('../../assets/images/customer-care.png')} alt='customer-care' />
                         </div>
                       </div>
                     </div>
 
                   </div>
-                  <div class="col-xl-4 col-lg-6 col-md-6 mb-3">
-                    <div class="card small-widget overflow-hidden cardbg_gradient3">
-                      <div class="card-body warning "> <span class="text25">Unique moments </span><div class="textArea">
-                        <p class=" fs-14 text-b mb-0" ><strong>27</strong> <span className='f-light fs-12'> captured during coustomer interactions</span></p>
+                  <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
+                    <div className="card small-widget overflow-hidden cardbg_gradient3">
+                      <div className="card-body warning "> <span className="text25">Unique moments </span><div className="textArea">
+                        <p className=" fs-14 text-b mb-0" ><strong>27</strong> <span className='f-light fs-12'> captured during coustomer interactions</span></p>
                       </div>
-                        <div class="bg-gradient">
-                          {/* <i class="fa-solid fa-headset "></i> */}
+                        <div className="bg-gradient">
+                          {/* <i className="fa-solid fa-headset "></i> */}
                           <img src={require('../../assets/images/phone.png')} alt='phone' />
                         </div>
                       </div>
@@ -85,9 +85,9 @@ function AIDashboard() {
 
                   <div className='col-12'>
                     <div className='card border-0 shadow-none'>
-                      <div class="card-header">
-                        <div class="header-top">
-                          <h5 class="m-0">Average Call Score</h5>
+                      <div className="card-header">
+                        <div className="header-top">
+                          <h5 className="m-0">Average Call Score</h5>
                         </div>
                       </div>
                       {/* <div className='card-header bg-transparent py-3' style={{ borderColor: 'var(--me-border1)' }}>
@@ -100,9 +100,9 @@ function AIDashboard() {
                       </div>
                     </div>
 
-                    {/* <div class="card">
-                      <div class="card-header ">
-                        <div class="header-top">
+                    {/* <div className="card">
+                      <div className="card-header ">
+                        <div className="header-top">
                           <h5 className='mb-0'>Average Call Score</h5>
                         
                            <div style={{ width: '100%', height: '300px', position: 'relative', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -110,8 +110,8 @@ function AIDashboard() {
                            </div>
                         </div>
                       </div>
-                      <div class="card-body pt-0">
-                        <div class="monthly-profit">
+                      <div className="card-body pt-0">
+                        <div className="monthly-profit">
                           <div id="profitmonthly"></div>
                         </div>
                       </div>
@@ -121,51 +121,51 @@ function AIDashboard() {
                 </div>
               </div>
               <div className='col-xxl-4'>
-             
-                <div class="schedule-card card">
-                  <div class=" card-header">
-                    <div class="header-top">
-                      <h5 class="m-0">Sentiments Analytics</h5>
+
+                <div className="schedule-card card">
+                  <div className=" card-header">
+                    <div className="header-top">
+                      <h5 className="m-0">Sentiments Analytics</h5>
                     </div>
                   </div>
-                  <div class=" card-body">
-                    <ul class="schedule-list d-flex list-group">
-                      <li class="primary list-group-item">
-                        <div class="me-2"> <span class="avatar avatar-rounded bg-secondary-transparent"> <i class="fa-regular fa-face-worried text-primary"></i> </span> </div>
+                  <div className=" card-body">
+                    <ul className="schedule-list d-flex list-group">
+                      <li className="primary list-group-item">
+                        <div className="me-2"> <span className="avatar avatar-rounded bg-secondary-transparent"> <i className="fa-regular fa-face-worried text-primary"></i> </span> </div>
                         <div className=' flex-fill'>
                           <div className='d-flex justify-content-between align-items-center'>
                             <h6>
                               Maldives Trip</h6>
                             <p className='text-primary fw-bold'>50%</p>
                           </div>
-                          <div class="progress re_progress" role="progressbar">
-                            <div class="progress-bar bg-primary" style={{ width: '50%' }}></div>
+                          <div className="progress re_progress" role="progressbar">
+                            <div className="progress-bar bg-primary" style={{ width: '50%' }}></div>
                           </div>
                         </div>
                       </li>
-                      <li class="warning list-group-item">
-                        <div class="me-2"> <span class="avatar avatar-rounded bg-warning-transparent"> <i class="fa-regular fa-face-worried text-warning"></i> </span> </div>
+                      <li className="warning list-group-item">
+                        <div className="me-2"> <span className="avatar avatar-rounded bg-warning-transparent"> <i className="fa-regular fa-face-worried text-warning"></i> </span> </div>
                         <div className=' flex-fill'>
                           <div className='d-flex justify-content-between align-items-center'>
                             <h6>
                               Savings For Birthday</h6>
                             <p className='text-warning fw-bold'>90%</p>
                           </div>
-                          <div class="progress re_progress" role="progressbar">
-                            <div class="progress-bar bg-warning" style={{ width: '90%' }}></div>
+                          <div className="progress re_progress" role="progressbar">
+                            <div className="progress-bar bg-warning" style={{ width: '90%' }}></div>
                           </div>
                         </div>
                       </li>
-                      <li class="success list-group-item">
-                        <div class="me-2"> <span class="avatar avatar-rounded bg-success-transparent"> <i class="fa-regular fa-face-worried text-success"></i> </span> </div>
+                      <li className="success list-group-item">
+                        <div className="me-2"> <span className="avatar avatar-rounded bg-success-transparent"> <i className="fa-regular fa-face-worried text-success"></i> </span> </div>
                         <div className=' flex-fill'>
                           <div className='d-flex justify-content-between align-items-center'>
                             <h6>
                               Join Guitar Class</h6>
                             <p className='text-success fw-bold'>40%</p>
                           </div>
-                          <div class="progress re_progress" role="progressbar">
-                            <div class="progress-bar bg-success" style={{ width: '40%' }}></div>
+                          <div className="progress re_progress" role="progressbar">
+                            <div className="progress-bar bg-success" style={{ width: '40%' }}></div>
                           </div>
                         </div>
                       </li>
@@ -173,31 +173,31 @@ function AIDashboard() {
                   </div>
                 </div>
                 <div className="card border-0 shadow-none mb-3">
-                  <div class="card-header">
-                    <div class="header-top">
-                      <h5 class="m-0">Top 5 Moments</h5>
+                  <div className="card-header">
+                    <div className="header-top">
+                      <h5 className="m-0">Top 5 Moments</h5>
                     </div>
                   </div>
                   <div className='card-body '>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Product Demo</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Email Marketing</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Problem Resolution</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Meeting</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Flexible schedule</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Product Demo</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Email Marketing</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Problem Resolution</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Meeting</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Flexible schedule</span>
                   </div>
                 </div>
                 <div className="card border-0 shadow-none mb-3">
-                  <div class="card-header">
-                    <div class="header-top">
-                      <h5 class="m-0">Top 5 Customs Moments</h5>
+                  <div className="card-header">
+                    <div className="header-top">
+                      <h5 className="m-0">Top 5 Customs Moments</h5>
                     </div>
                   </div>
                   <div className='card-body '>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Zoho</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Sale</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Hubspot</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Package</span>
-                    <span class="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Meeting</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Zoho</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Sale</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Hubspot</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Package</span>
+                    <span className="badge bg-secondary-subtle text-secondary secondary-badge-border me-1  ">Meeting</span>
                   </div>
                 </div>
               </div>
@@ -205,9 +205,9 @@ function AIDashboard() {
             <div className='row'>
               <div className='col-12'>
                 <div className='card customAicard p-0 border-0 shadow-none'>
-                  <div class="card-header">
-                    <div class="header-top">
-                      <h5 class="m-0">Agent Analytics</h5>
+                  <div className="card-header">
+                    <div className="header-top">
+                      <h5 className="m-0">Agent Analytics</h5>
                     </div>
                   </div>
 

@@ -122,7 +122,7 @@ function AddNewContactPopup({
           </div>
           <div className="col-xl-12">
             <div className="formLabel">
-              <label for="">Full Name</label>
+              <label htmlFor="">Full Name</label>
             </div>
             <div className="col-12">
               <input
@@ -140,7 +140,7 @@ function AddNewContactPopup({
           </div>
           <div className="col-xl-12 mt-3">
             <div className="formLabel">
-              <label for="">DID / Extension</label>
+              <label htmlFor="">DID / Extension</label>
             </div>
             <div className="col-12">
               <input
@@ -188,9 +188,8 @@ function AddNewContactPopup({
                 </span>
                 <span className="icon">
                   <i
-                    className={`fa-solid fa-${
-                      editContactToggle ? "floppy-disk" : "check"
-                    }`}
+                    className={`fa-solid fa-${editContactToggle ? "floppy-disk" : "check"
+                      }`}
                   ></i>
                 </span>
               </button>

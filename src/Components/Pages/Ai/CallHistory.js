@@ -143,35 +143,35 @@ const CallHistory = () => {
                                                     <button className="panelButton static edit exportGroupBtn" >
                                                         <span className="text">Export</span>
                                                         {/* <span className="icon">
-                                                            <i class="fa-solid fa-file-export"></i>
+                                                            <i className="fa-solid fa-file-export"></i>
                                                         </span> */}
                                                     </button>
-                                                    <div class="dropdown listingDorp">
-                                                        <button class="addExportBtnListing dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <div className="dropdown listingDorp">
+                                                        <button className="addExportBtnListing dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i className="fa-solid fa-clock-rotate-left"></i>
                                                         </button>
-                                                        <ul class="dropdown-menu">
+                                                        <ul className="dropdown-menu">
                                                             <div className='dropdownHerder'>
                                                                 <h6>Export Records</h6>
                                                                 <p>The CSVs will be kept for one week. Please download after export.</p>
                                                             </div>
-                                                            <li><Link class="dropdown-item" to="#">
+                                                            <li><Link className="dropdown-item" to="#">
                                                                 <div>
                                                                     <p className='mb-0'>Retell-history(2025-06-10).csv</p>
-                                                                    <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                    <span className='text_success fs-12'> <i className="fa-solid fa-check me-2"></i> Completed</span>
                                                                 </div>
-                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button>
+                                                                <button className="aitable_button bg-transparent"><i className="fa-regular fa-arrow-down-to-line"></i></button>
                                                             </Link></li>
-                                                            <li><Link class="dropdown-item" to="#"><div>
+                                                            <li><Link className="dropdown-item" to="#"><div>
                                                                 <p className='mb-0'>Retell-history(2025-06-10).csv</p>
-                                                                <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                <span className='text_success fs-12'> <i className="fa-solid fa-check me-2"></i> Completed</span>
                                                             </div>
-                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
-                                                            <li><Link class="dropdown-item" to="#"><div>
+                                                                <button className="aitable_button bg-transparent"><i className="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
+                                                            <li><Link className="dropdown-item" to="#"><div>
                                                                 <p className='mb-0'>Retell-history(2025-06-10).csv</p>
-                                                                <span className='text_success fs-12'> <i class="fa-solid fa-check me-2"></i> Completed</span>
+                                                                <span className='text_success fs-12'> <i className="fa-solid fa-check me-2"></i> Completed</span>
                                                             </div>
-                                                                <button class="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
+                                                                <button className="aitable_button bg-transparent"><i className="fa-regular fa-arrow-down-to-line"></i></button></Link></li>
                                                         </ul>
                                                     </div>
 
@@ -286,25 +286,25 @@ const CallHistory = () => {
                                                         </div>
                                                     </div>
                                                     <div className='formRow gap-2 align-items-end p-0'>
-                                                        <div class="btn-group align-items-center ">
-                                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="fa-regular fa-filter me-2"></i> Filter
+                                                        <div className="btn-group align-items-center ">
+                                                            <button type="button" className="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i className="fa-regular fa-filter me-2"></i> Filter
                                                             </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                            <ul className="dropdown-menu">
+                                                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
 
                                                             </ul>
                                                         </div>
-                                                        <div class="btn-group align-items-center ">
-                                                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="fa-regular fa-gear me-2"></i> Customize Fields
+                                                        <div className="btn-group align-items-center ">
+                                                            <button type="button" className="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i className="fa-regular fa-gear me-2"></i> Customize Fields
                                                             </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                            <ul className="dropdown-menu">
+                                                                <li><a className="dropdown-item" href="#">Action</a></li>
+                                                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                                <li><a className="dropdown-item" href="#">Something else here</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -379,18 +379,18 @@ const CallHistory = () => {
 
 
 
-                <div class="offcanvas offcanvas-end w-30" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-header" style={{ borderBlockEnd: '1px solid var(--me-border1)' }}>
+                <div className="offcanvas offcanvas-end w-30" tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div className="offcanvas-header" style={{ borderBlockEnd: '1px solid var(--me-border1)' }}>
                         <div>
-                            <h5 class="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
+                            <h5 className="offcanvas-title" id="offcanvasRightLabel">Call History</h5>
                             <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>See all the details of this Call History</p>
                         </div>
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <button type="button" className="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <div class="offcanvas-body p-3">
+                    <div className="offcanvas-body p-3">
                         <div className='heading'>
-                            <h5 class="offcanvas-title" id="offcanvasRightLabel">06/03/2025 14:40 web_call</h5>
-                            <button className=' bg-transparent border-0 text-danger' onClick={setDeletePopup}><i class="fa-solid fa-trash"></i></button>
+                            <h5 className="offcanvas-title" id="offcanvasRightLabel">06/03/2025 14:40 web_call</h5>
+                            <button className=' bg-transparent border-0 text-danger' onClick={setDeletePopup}><i className="fa-solid fa-trash"></i></button>
                         </div>
                         <div className="content">
                             <p className='mb-0' style={{ color: 'var(--color-subtext)' }}><strong>Agent:</strong> <span className='fs-12'> Patient Screening (from template)(age...875)</span>
@@ -433,62 +433,62 @@ const CallHistory = () => {
                             <audio controls className="w-[300px] h-10">
                                 <source src='src="https://dxc03zgurdly9.cloudfront.net/b275b2dd2dd862aac68665c735024960be447db5228cbd317f378952076625e8/recording.wav"' />
                             </audio>
-                            <button className="aitable_button bg-transparent"><i class="fa-regular fa-arrow-down-to-line"></i></button>
+                            <button className="aitable_button bg-transparent"><i className="fa-regular fa-arrow-down-to-line"></i></button>
                         </div>
                         <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
                             <h6 style={{ color: 'var(--immortalBlack)' }}>Conversation Analysis</h6>
                             <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>Preset</p>
                             <div className='d-flex justify-content-start align-items-center gap-2'>
-                                <p className='status_text'><i class="fa-regular fa-square-check"></i> <span>Call Successful</span></p>
-                                <p className='status_text'><i class="fa-solid fa-circle-small text-success"></i> <span className='endedTxt'>Successful</span></p>
+                                <p className='status_text'><i className="fa-regular fa-square-check"></i> <span>Call Successful</span></p>
+                                <p className='status_text'><i className="fa-solid fa-circle-small text-success"></i> <span className='endedTxt'>Successful</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-center gap-2'>
-                                <p className='status_text'><i class="fa-solid fa-headphones"></i> <span>Call Status</span></p>
-                                <p className='status_text'><i class="fa-solid fa-circle-small text-danger"></i> <span className='endedTxt'>Ended</span></p>
+                                <p className='status_text'><i className="fa-solid fa-headphones"></i> <span>Call Status</span></p>
+                                <p className='status_text'><i className="fa-solid fa-circle-small text-danger"></i> <span className='endedTxt'>Ended</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-center gap-2'>
-                                <p className='status_text'><i class="fa-regular fa-user-vneck-hair"></i> <span>User Sentiment</span></p>
-                                <p className='status_text'><i class="fa-solid fa-circle-small text-primary"></i> <span className='endedTxt'>Neutral</span></p>
+                                <p className='status_text'><i className="fa-regular fa-user-vneck-hair"></i> <span>User Sentiment</span></p>
+                                <p className='status_text'><i className="fa-solid fa-circle-small text-primary"></i> <span className='endedTxt'>Neutral</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-center gap-2'>
-                                <p className='status_text'><i class="fa-regular fa-phone"></i> <span>Disconnection Reason</span></p>
-                                <p className='status_text'><i class="fa-solid fa-circle-small text-warning"></i> <span className='endedTxt'>User_hangup</span></p>
+                                <p className='status_text'><i className="fa-regular fa-phone"></i> <span>Disconnection Reason</span></p>
+                                <p className='status_text'><i className="fa-solid fa-circle-small text-warning"></i> <span className='endedTxt'>User_hangup</span></p>
                             </div>
                         </div>
                         <div className='rounded-3 p-2 table__details mb-2' style={{ border: '1px solid var(--me-border1)' }}>
                             <p className='f-s-14' style={{ color: 'var(--color-subtext)' }}>Custom</p>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'> <span>_do you feel safe in your current living situation?</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>No, I feel unsafe sometimes.</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'><span>_do you have problems with any of the following in your home?</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>None of the above.</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'> <span>_do you currently have a steady place to live?</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>No.</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'><span>_calculate the number of concerned questions</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>3</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'><span>_in the past 12 months, has lack of reliable transportation prevented you from:</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>None of the above.</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'><span>_within the past 12 months, have you worried about running out of food before you had money to buy more?</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>Never true.</span></p>
                             </div>
                             <div className='d-flex justify-content-start align-items-start gap-2 mb-3'>
-                                <i class="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
+                                <i className="fa-regular fa-bars-staggered" style={{ color: 'var(--color-subtext)' }}></i>
                                 <p className='status_text'><span>_are you currently employed?</span></p>
                                 <p className='status_text ms-5'><span className='endedTxt'>No, I’m not seeking work right now.</span></p>
                             </div>
@@ -559,7 +559,7 @@ const CallHistory = () => {
                                     id="nav-user"
                                     role="tabpanel"
                                     aria-labelledby="nav-user-tab"
-                                    tabindex="0"
+                                    tabIndex="0"
                                 >
                                     <Transcription />
                                 </div>
@@ -568,7 +568,7 @@ const CallHistory = () => {
                                     id="nav-exten"
                                     role="tabpanel"
                                     aria-labelledby="nav-exten-tab"
-                                    tabindex="0"
+                                    tabIndex="0"
                                 >
                                     <Data />
                                 </div>
@@ -577,7 +577,7 @@ const CallHistory = () => {
                                     id="nav-exten-1"
                                     role="tabpanel"
                                     aria-labelledby="nav-provision-tab"
-                                    tabindex="0"
+                                    tabIndex="0"
                                 >
                                     <DetailLogs />
                                 </div>
