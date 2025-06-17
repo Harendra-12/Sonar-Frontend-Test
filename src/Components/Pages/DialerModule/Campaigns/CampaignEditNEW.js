@@ -278,9 +278,12 @@ function CampaignEditNEW() {
         title: editState.title,
         campaign_type: editState.campaign_type,
         description: editState.description,
-        start_date: editState.start_date.replace(" ", "T"),
-        end_date: editState.end_date.replace(" ", "T"),
         active_hours: editState.active_hours,
+        ...(watch().active_hours ?
+          {
+            start_date: editState.start_date.replace(" ", "T"),
+            end_date: editState.end_date.replace(" ", "T")
+          } : ""),
         timezone: editState.timezone,
       };
 
@@ -993,59 +996,6 @@ function CampaignEditNEW() {
                               </div>
                               <div className="formRow">
                                 <div className="formLabel">
-                                  <label>Target Date Range</label>
-                                </div>
-                                <div className="col-6">
-                                  <div className="row">
-                                    <div className="col-6 pe-2">
-                                      <div className="formLabel">
-                                        <label>From Date / Time</label>
-                                      </div>
-                                      <div className='row gx-2'>
-                                        <div className='col-12'>
-                                          <input
-                                            type="datetime-local"
-                                            className="formItem"
-                                            {...register("start_date", { ...requiredValidator })}
-                                            min={new Date().toISOString().slice(0, 16)}
-                                          />
-                                        </div>
-                                        {/* <div className='col-6'>
-                                          <input
-                                            type="time"
-                                            className="formItem"
-                                            {...register("start_time", { ...requiredValidator })}
-                                          />
-                                        </div> */}
-                                      </div>
-                                    </div>
-                                    <div className="col-6 ps-2">
-                                      <div className="formLabel">
-                                        <label>To Date / Time</label>
-                                      </div>
-                                      <div className='row gx-2'>
-                                        <div className='col-12'>
-                                          <input
-                                            type="datetime-local"
-                                            className="formItem"
-                                            {...register("end_date", { ...requiredValidator })}
-                                            min={watch().start_date}
-                                          />
-                                        </div>
-                                        {/* <div className='col-6'>
-                                          <input
-                                            type="time"
-                                            className="formItem"
-                                            {...register("end_time", { ...requiredValidator })}
-                                          />
-                                        </div> */}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="formRow">
-                                <div className="formLabel">
                                   <label>Active Hours</label>
                                 </div>
                                 <div className="col-6">
@@ -1060,47 +1010,102 @@ function CampaignEditNEW() {
                                 </div>
                               </div>
                               {watch().active_hours == true &&
-                                <div className="formRow d-block">
-                                  <div className="formLabel">
-                                    <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                <>
+                                  <div className="formRow">
+                                    <div className="formLabel">
+                                      <label>Target Date Range</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <div className="row">
+                                        <div className="col-6 pe-2">
+                                          <div className="formLabel">
+                                            <label>From Date / Time</label>
+                                          </div>
+                                          <div className='row gx-2'>
+                                            <div className='col-12'>
+                                              <input
+                                                type="datetime-local"
+                                                className="formItem"
+                                                {...register("start_date", { ...requiredValidator })}
+                                                min={new Date().toISOString().slice(0, 16)}
+                                              />
+                                            </div>
+                                            {/* <div className='col-6'>
+                                          <input
+                                            type="time"
+                                            className="formItem"
+                                            {...register("start_time", { ...requiredValidator })}
+                                          />
+                                        </div> */}
+                                          </div>
+                                        </div>
+                                        <div className="col-6 ps-2">
+                                          <div className="formLabel">
+                                            <label>To Date / Time</label>
+                                          </div>
+                                          <div className='row gx-2'>
+                                            <div className='col-12'>
+                                              <input
+                                                type="datetime-local"
+                                                className="formItem"
+                                                {...register("end_date", { ...requiredValidator })}
+                                                min={watch().start_date}
+                                              />
+                                            </div>
+                                            {/* <div className='col-6'>
+                                          <input
+                                            type="time"
+                                            className="formItem"
+                                            {...register("end_time", { ...requiredValidator })}
+                                          />
+                                        </div> */}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div style={{ width: 'fit-content', marginTop: '10px' }}>
-                                    <div className="timeTableWrapper col-auto">
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Sunday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Sunday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Sunday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Sunday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+
+                                  <div className="formRow d-block">
+                                    <div className="formLabel">
+                                      <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                    </div>
+                                    <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                      <div className="timeTableWrapper col-auto">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Sunday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Sunday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Sunday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Sunday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Sunday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Sunday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Sunday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Sunday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1116,43 +1121,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Monday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Monday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Monday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Monday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Monday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Monday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Monday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Monday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Monday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Monday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Monday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Monday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Monday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Monday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Monday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1168,43 +1173,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Tuesday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Tuesday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Tuesday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Tuesday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Tuesday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Tuesday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Tuesday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Tuesday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Tuesday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Tuesday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Tuesday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Tuesday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1220,43 +1225,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Wednesday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Wednesday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Wednesday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Wednesday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Wednesday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Wednesday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Wednesday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Wednesday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Wednesday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1272,43 +1277,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Thursday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Thursday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Thursday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Thursday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Thursday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Thursday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Thursday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Thursday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Thursday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Thursday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Thursday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Thursday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1324,43 +1329,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Friday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Friday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Friday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Friday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Friday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Friday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Friday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Friday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Friday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Friday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Friday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Friday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Friday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Friday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Friday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1376,43 +1381,43 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div className="col-12">
-                                        <div className="wrapper mb-0">
-                                          <div className="item" style={{ width: '95px' }}>
-                                            <input type="checkbox"
-                                              checked={schedulerInfo.find(day => day.recurring_day === 'Saturday').status}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
-                                                ));
-                                              }} />
-                                            <label className="ms-2 fw-bold">Saturday</label>
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Saturday')?.start_time}
-                                              onChange={(e) => {
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          <div className="item">
-                                            <input type="time" className="formItem"
-                                              min={schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time}
-                                              value={schedulerInfo.find(day => day.recurring_day === 'Saturday')?.end_time}
-                                              onChange={(e) => {
-                                                if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time) {
-                                                  toast.error('End time should be greater than start time');
-                                                }
-                                                setSchedulerInfo(prevState => prevState.map(day =>
-                                                  day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
-                                                ));
-                                              }} />
-                                          </div>
-                                          {/* <div className="item">
+                                        <div className="col-12">
+                                          <div className="wrapper mb-0">
+                                            <div className="item" style={{ width: '95px' }}>
+                                              <input type="checkbox"
+                                                checked={schedulerInfo.find(day => day.recurring_day === 'Saturday').status}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Saturday' ? { ...day, status: e.target.checked } : day
+                                                  ));
+                                                }} />
+                                              <label className="ms-2 fw-bold">Saturday</label>
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Saturday')?.start_time}
+                                                onChange={(e) => {
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Saturday' ? { ...day, start_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            <div className="item">
+                                              <input type="time" className="formItem"
+                                                min={schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time}
+                                                value={schedulerInfo.find(day => day.recurring_day === 'Saturday')?.end_time}
+                                                onChange={(e) => {
+                                                  if (e.target.value < schedulerInfo.find(day => day.recurring_day === 'Saturday').start_time) {
+                                                    toast.error('End time should be greater than start time');
+                                                  }
+                                                  setSchedulerInfo(prevState => prevState.map(day =>
+                                                    day.recurring_day === 'Saturday' ? { ...day, end_time: e.target.value } : day
+                                                  ));
+                                                }} />
+                                            </div>
+                                            {/* <div className="item">
                                             <div className="my-auto position-relative mx-1">
                                               <div class="cl-toggle-switch">
                                                 <label class="cl-switch">
@@ -1428,11 +1433,12 @@ function CampaignEditNEW() {
                                             </div>
                                             <label className="ms-1">Full day</label>
                                           </div> */}
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                </>
                               }
                             </form>
                             <div
