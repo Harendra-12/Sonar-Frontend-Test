@@ -582,7 +582,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
             <div class="accordion-item">
               <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button class="accordion-button mainSection" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName}`} aria-expanded="false" aria-controls={sectionName}>
+                <button class="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
                     <div class="cl-toggle-switch">
