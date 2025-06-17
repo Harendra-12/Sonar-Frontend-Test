@@ -537,7 +537,8 @@ function Campaigns() {
                                                   <span>{item?.lead_files?.length} File(s)</span>
                                                 </Tippy> : "No Files"}
                                               </td>
-                                              {(checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") || checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete")) ? <td>
+                                              {(checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") || checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete")) ? 
+                                              <td>
                                                 <div className="dropdown">
                                                   <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i className="fa-solid fa-ellipsis-vertical" />

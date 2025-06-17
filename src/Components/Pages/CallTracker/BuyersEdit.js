@@ -71,9 +71,9 @@ const BuyersEdit = () => {
 
     const phoneNumber = parsePhoneNumber(data.phone_number);
     const parsedNumber = phoneNumber?.nationalNumber;
-    const parsedAltNumber = parsePhoneNumber(data.alt_phone)?.nationalNumber;
-
-    const payload = { ...data, phone_number: parsedNumber || data.phone_number, alt_phone: parsedAltNumber || data.alt_phone, phone_code: phoneNumber?.countryCallingCode };
+    const parsedAltNumber = parsePhoneNumber(data?.alt_phone || "")?.nationalNumber;
+    
+    const payload = { ...data, phone_number: parsedNumber || data.phone_number, alt_phone: parsedAltNumber || data.alt_phone || null, phone_code: phoneNumber?.countryCallingCode };
     const apiData = await generalPutFunction(`/buyer/${locationState.state.id}`, payload);
     if (apiData?.status) {
       setLoading(false);
@@ -183,7 +183,6 @@ const BuyersEdit = () => {
                           <div className="formLabel">
                             <label>
                               Alternate Phone number{" "}
-                              <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a name phone number.
@@ -192,7 +191,7 @@ const BuyersEdit = () => {
                           <div className="col-6">
                             <input type="text"
                               className="formItem d-none"
-                              {...register("alt_phone", { ...requiredValidator })}
+                              {...register("alt_phone")}
                             />
                             <PhoneInput
                               defaultCountry="US"
@@ -209,7 +208,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Email <span className="text-danger">*</span>
+                              Email
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a Email id .
@@ -219,7 +218,6 @@ const BuyersEdit = () => {
                             <input type="text"
                               className="formItem"
                               {...register("email", {
-                                ...requiredValidator,
                                 ...emailValidator,
                               })}
                             />
@@ -231,7 +229,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Address <span className="text-danger">*</span>
+                              Address
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a address .
@@ -241,7 +239,7 @@ const BuyersEdit = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("address", { ...requiredValidator, })}
+                              {...register("address")}
                             />
                             {errors.address && (
                               <ErrorMessage text={errors.address.message} />
@@ -251,7 +249,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              City <span className="text-danger">*</span>
+                              City
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a City .
@@ -261,7 +259,7 @@ const BuyersEdit = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("city", { ...requiredValidator, })}
+                              {...register("city")}
                             />
                             {errors.city && (
                               <ErrorMessage text={errors.city.message} />
@@ -271,7 +269,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              State <span className="text-danger">*</span>
+                              State
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a State .
@@ -281,7 +279,7 @@ const BuyersEdit = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("state", { ...requiredValidator, })}
+                              {...register("state")}
                             />
                             {errors.state && (
                               <ErrorMessage text={errors.state.message} />
@@ -291,7 +289,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Province <span className="text-danger">*</span>
+                              Province
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a province.
@@ -301,7 +299,7 @@ const BuyersEdit = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("province", { ...requiredValidator, })}
+                              {...register("province")}
                             />
                             {errors.province && (
                               <ErrorMessage text={errors.province.message} />
@@ -312,7 +310,7 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Postal code <span className="text-danger">*</span>
+                              Postal code
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a postal code
@@ -322,7 +320,7 @@ const BuyersEdit = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("postal_code", { ...requiredValidator, })}
+                              {...register("postal_code")}
                             />
                             {errors.postal_code && (
                               <ErrorMessage text={errors.postal_code.message} />
@@ -332,14 +330,14 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Country Code <span className="text-danger">*</span>
+                              Country Code
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a country code
                             </label>
                           </div>
                           <div className="col-6">
-                            <select {...register("country_code", { ...requiredValidator, })} className="formItem" >
+                            <select {...register("country_code")} className="formItem" >
                               <option value="">Select Country Code</option>
                               {countryCode && countryCode.map((country, index) => (
                                 <option key={index} value={country.country_code}>

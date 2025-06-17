@@ -180,6 +180,7 @@ import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 import GoSocket from "./Components/GlobalFunction/GoSocket";
+import GoSocketActiveCall from "./Components/GlobalFunction/GoSocketActiveCall";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
@@ -196,6 +197,8 @@ import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
+import CDRTracker from "./Components/Pages/CallTracker/CDRTracker";
+import AllUser from "./Components/Pages/Ai/AllUser";
 import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
@@ -232,6 +235,7 @@ function App() {
   Socket();
   const { sendMessage } = GoMessageSocket()
   GoSocket();
+  GoSocketActiveCall();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
   }, [GoMessageSocket]);
@@ -846,6 +850,7 @@ function App() {
           <Route path="/ai-agent-dashboard" element={<AiDashboard />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
@@ -1554,6 +1559,8 @@ function App() {
 
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
+          <Route path="/cdr-tracker" element={<CDRTracker />} />
+          
           <Route
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}

@@ -3196,7 +3196,7 @@ function Messages({
                                     internalCallAction: null,
                                   });
                                   socketSendMessage({
-                                    action: "peercall",
+                                    action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
                                     room_id: `${account.id}-${recipient?.[1]}`,
@@ -3221,7 +3221,7 @@ function Messages({
                                     internalCallAction: null,
                                   });
                                   socketSendMessage({
-                                    action: "peercall",
+                                    action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
                                     room_id: `${account.id}-${recipient?.[1]}`,

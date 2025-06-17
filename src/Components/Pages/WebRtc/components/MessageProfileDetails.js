@@ -199,7 +199,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 internalCallAction: null,
               });
               socketSendMessage({
-                action: "peercall",
+                action: "peercallInitiate",
                 from: account.id,
                 to: recipient?.[1],
                 room_id: `${account.id}-${recipient?.[1]}`,

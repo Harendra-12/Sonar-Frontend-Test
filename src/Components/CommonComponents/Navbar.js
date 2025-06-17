@@ -1030,6 +1030,7 @@ function Navbar() {
                           "/call-forwarding-campaign",
                           "/call-forwarding-campaign-create",
                           "/call-forwarding-campaign-edit",
+                          "/cdr-tracker",
                         ])
                           ? "show"
                           : ""
@@ -1124,6 +1125,25 @@ function Navbar() {
                             </li>
                             <li className="tabItem ">
                               <NavLink
+                                to="/cdr-tracker"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/extensions-add",
+                                      "/extensions-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">CDR Tracker</div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
                                 to="/elastic-trunk"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
@@ -1209,6 +1229,7 @@ function Navbar() {
                             "/all-ai-agent",
                             "/ai-dashboard",
                             "/ai-all-agent",
+                            "/all-users",
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
                             "/ai-call-history",
@@ -1233,6 +1254,7 @@ function Navbar() {
                           "/ai-agent-dashboard",
                           "/all-ai-agent",
                           "/ai-all-agent",
+                          "/all-users",
                           "/ai-knowledge-base",
                           '/ai-phone-number',
                           '/ai-call-history',
@@ -1286,6 +1308,25 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">All Agents</div>
+                              </NavLink>
+                            </li>
+                             <li className="tabItem ">
+                              <NavLink
+                                to="/all-users"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/all-users",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">All Users</div>
                               </NavLink>
                             </li>
                             <li className="tabItem ">

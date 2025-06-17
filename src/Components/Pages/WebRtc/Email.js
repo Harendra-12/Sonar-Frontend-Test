@@ -9,9 +9,11 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
 import MailReply from "./mailBox/MailReply";
 import EmailList from "./mailBox/EmailList";
+import SendItem from "./mailBox/SendItem";
 import ActionListMulti from "../../CommonComponents/ActionListMulti";
 import HeaderApp from "./HeaderApp";
 import NewMail from "./mailBox/NewMail";
+import StarredItem from "./mailBox/StarredItem";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
@@ -22,83 +24,63 @@ function Email({ selectedMail }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
-  const [mailSettings, setMailSettings] = useState([]);
+  const [availableFromMailAddresses, setAvailableFromMailAddresses] = useState(
+    []
+  );
   const [showMailList, setShowMailList] = useState(true);
   const [mailReplay, setMailReplay] = useState(false);
   const [showNewMail, setShowNewMail] = useState(false);
   const [activeList, setActiveList] = useState("inbox");
-
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const handleShowNewMail = () => {
-  //   setShowNewMail();
-  // };
-
-  // const handleListingClick = () => {
-  //   // console.log('hiii');
-  //   setShowMailList()
-  // }
-
-  // const handleMailReplay = () => {
-  //   setMailReplay()
-  // }
-
-
-
   const handleShowNewMail = () => {
     setShowNewMail(true);
     setShowMailList(false);
     setMailReplay(false);
   };
-
   const handleListingClick = (inbox) => {
     setShowMailList(true);
     setShowNewMail(false);
     setMailReplay(false);
     setActiveList(inbox);
+    console.log("inbox", inbox);
   };
-
   const handleMailReplay = () => {
     setMailReplay(true);
     setShowMailList(false);
     setShowNewMail(false);
+    setActiveList("inbox");
   };
-
-
 
   const fetchData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const result = await generalGetFunction("/mail-setting/all");
     if (result?.status) {
-      setMailSettings(result.data);
+      setAvailableFromMailAddresses(result.data);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     } else {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       // navigate("/");
     }
   };
 
   useEffect(() => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = true;
     fetchData(shouldLoad);
   }, []);
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = false;
     fetchData(shouldLoad);
-  }
-
-
-
-
+  };
 
   return (
     <>
@@ -113,7 +95,12 @@ function Email({ selectedMail }) {
       >
         <section className="callPage">
           <div className="col-12 ps-xl-0 stickyHeader">
-            <HeaderApp title={"E-Mail"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+            <HeaderApp
+              title={"E-Mail"}
+              loading={loading}
+              setLoading={setLoading}
+              refreshApi={() => featureUnderdevelopment()}
+            />
           </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
@@ -298,80 +285,109 @@ function Email({ selectedMail }) {
                 </div>
               </div> */}
 
-
-
-
-
-
-
-
-
-
-
-
               <div className="p-0">
                 <div className="card mb-0 border-0">
-                  <div className="card-header d-flex justify-content-between align-items-center" style={{ borderColor: "var(--me-border1)", }}>
+                  <div
+                    className="card-header d-flex justify-content-between align-items-center"
+                    style={{ borderColor: "var(--me-border1)" }}
+                  >
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    {/* <button className="btn btn-primary"><i className="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button type="button" className="btn btn-primary" onClick={() => { setShowNewMail(true); setMailReplay(false) }}>
-                      <i className="fa-regular fa-envelope me-2"></i>  New Email</button>
+                    {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() => {
+                        setShowNewMail(true);
+                        setMailReplay(false);
+                        setActiveList("inbox");
+                      }}
+                    >
+                      <i class="fa-regular fa-envelope me-2"></i> New Email
+                    </button>
                   </div>
-                  <div className="card-body" style={{ height: "calc(100vh - 135px)", }}>
+                  <div
+                    className="card-body"
+                    style={{ height: "calc(100vh - 135px)" }}
+                  >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
                         <div className="card-body ps-0">
                           <ul>
-                            <li className=" " >
+                            <li className=" ">
                               <button
                                 // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
                                 //   onClick={handleListingClick}
-                                className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
+                                className={`mail_list ${activeList === "inbox" ? "active" : ""
+                                  }`}
                                 onClick={() => handleListingClick("inbox")}
                               >
-                                <p className="mb-0"> <i className="fa-duotone fa-solid fa-envelope me-2" ></i> Inbox</p>
-                                <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
+                                <p className="mb-0">
+                                  {" "}
+                                  <i class="fa-duotone fa-solid fa-envelope me-2"></i>{" "}
+                                  Inbox
+                                </p>
+                                <div className="badge badge-solid-primary rounded-pill rounded-5">
+                                  <span>30</span>
+                                </div>
                               </button>
                             </li>
-                            <li >
+                            <li>
                               <button
                                 // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
-                                className={`mail_list ${activeList === "sent" ? "active" : ""}`}
+                                className={`mail_list ${activeList === "sent" ? "active" : ""
+                                  }`}
                                 onClick={() => handleListingClick("sent")}
-                              ><p className="mb-0"><i className="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p>
+                              >
+                                <p className="mb-0">
+                                  <i class="fa-duotone fa-solid fa-paper-plane me-2"></i>{" "}
+                                  Sent Item
+                                </p>
                               </button>
                             </li>
                             <li className="">
                               <button
-                                className={`mail_list ${activeList === "starred" ? "active" : ""}`}
+                                className={`mail_list ${activeList === "starred" ? "active" : ""
+                                  }`}
                                 onClick={() => handleListingClick("starred")}
-                              ><p className="mb-0"><i className="fa-duotone fa-light fa-star me-2"></i> Starred</p>
+                              >
+                                <p className="mb-0">
+                                  <i class="fa-duotone fa-light fa-star me-2"></i>{" "}
+                                  Starred
+                                </p>
                               </button>
                             </li>
                             <li className="">
                               <button
-                                className={`mail_list ${activeList === "deleted" ? "active" : ""}`}
+                                className={`mail_list ${activeList === "deleted" ? "active" : ""
+                                  }`}
                                 onClick={() => handleListingClick("deleted")}
-                              > <p className="mb-0 text-danger"><i className="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p></button>
+                              >
+                                {" "}
+                                <p className="mb-0 text-danger">
+                                  <i class="fa-duotone fa-solid fa-trash me-2"></i>{" "}
+                                  Deleted
+                                </p>
+                              </button>
                             </li>
                           </ul>
                         </div>
                       </div>
-                      <div className="table_card">
-                        {/* {!selectedMail ?(
+                      {activeList === "inbox" && (
+                        <div className="table_card">
+                          {/* {!selectedMail ?(
                           <EmailList  />
                            ) : (
                              
                              <MailReply />
                         ) }
                         {showNewMail && <NewMail />} */}
-                        {/* {
+                          {/* {
                           !showMailList &&  <EmailList handleMailReplay={handleMailReplay}  />
                         }
                         {
                           !mailReplay &&   <MailReply   />
                         } */}
-                        {/* {
+                          {/* {
                           showMailList && !mailReplay && !showNewMail && <EmailList handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
                         }
                         {
@@ -381,32 +397,44 @@ function Email({ selectedMail }) {
                           showNewMail && !mailReplay && <NewMail handleShowNewMail={handleShowNewMail} handleListingClick={handleListingClick} handleMailReplay={handleMailReplay} />
                         } */}
 
-                        {showMailList && !mailReplay && !showNewMail && (
-                          <EmailList
-                            handleShowNewMail={handleShowNewMail}
-                            handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                          />
-                        )}
+                          {showMailList && !mailReplay && !showNewMail && (
+                            <EmailList
+                              handleShowNewMail={handleShowNewMail}
+                              handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                            />
+                          )}
 
-                        {mailReplay && !showMailList && !showNewMail && (
-                          <MailReply
-                            handleShowNewMail={handleShowNewMail}
-                            handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                          />
-                        )}
+                          {mailReplay && !showMailList && !showNewMail && (
+                            <MailReply
+                              handleShowNewMail={handleShowNewMail}
+                              handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                            />
+                          )}
 
-                        {showNewMail && !mailReplay && (
-                          <NewMail
-                            handleShowNewMail={handleShowNewMail}
-                            handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                          />
-                        )}
-
-
-                      </div>
+                          {showNewMail && !mailReplay && (
+                            <NewMail
+                              handleShowNewMail={handleShowNewMail}
+                              handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                              availableFromMailAddresses={
+                                availableFromMailAddresses
+                              }
+                            />
+                          )}
+                        </div>
+                      )}
+                      {activeList === "sent" && (
+                        <div className="table_card">
+                          <SendItem />
+                        </div>
+                      )}
+                      {activeList === "starred" && (
+                        <div className="table_card">
+                          <StarredItem />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

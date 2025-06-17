@@ -570,7 +570,14 @@ function DidListing({ page }) {
                               ) : (
                                 ""
                               )}
-                              <th>Recording</th>
+                              {
+                                page == "tracker" &&
+                                <>
+                                  <th>Campaign Name</th>
+                                  <th>Total Send Call</th>
+                                </>
+                              }
+                              {page !== "tracker" && <th>Recording</th>}
                               {page === "number" ? (
                                 <>
                                   <th>Usages</th>
@@ -648,11 +655,25 @@ function DidListing({ page }) {
                             <>
                               {did &&
                                 did.map((item) => {
+                                  console.log('diddddddd', did)
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
                                         {item.did}
                                       </td>
+                                      {page == "tracker" &&
+                                        <>
+                                          <td>
+                                            {item?.fportalcampaign?.campaign_name}
+                                          </td>
+                                          <td>
+                                            {item?.fportalcampaign?.total_send_call}
+                                          </td>
+                                          <td>
+                                            {item?.fportalcampaign?.source}
+                                          </td>
+                                        </>
+                                      }
                                       {page !== "tracker" && page !== "dialer" ? <>
                                         <td style={{ cursor: "default" }}>
                                           {item?.e911}
@@ -687,7 +708,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      <td>{item?.configuration ? item?.configuration?.record ? "Enabled" : "Disabled" : "N/A"}</td>
+                                      {page !== "tracker" && <td>{item?.configuration ? item?.configuration?.record ? "Enabled" : "Disabled" : "N/A"}</td>}
 
                                       {page === "number" ? (
                                         <>
@@ -972,7 +993,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      {page === "tracker" && <td>N/A</td>}
+
                                       {checkViewSidebar(
                                         "DidDetail",
                                         slugPermissions,

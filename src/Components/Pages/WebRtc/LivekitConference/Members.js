@@ -57,6 +57,7 @@ function Members({
       incomingCall.filter((item) => item?.room_id === roomName)
     );
   }, [incomingCall]);
+  console.log(internalCallAction, "internalCallAction");
   // Function to check if any user added in room and if added then update its value in incomingCall
   useEffect(() => {
     if (
@@ -142,10 +143,10 @@ function Members({
           ?.isOtherMember
       ) {
         socketSendMessage({
-          action: "peercall",
+          action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
-          )?.[0]?.id,
+          )?.[0]?.uuid,
           hangup_cause: "success",
           room_id: roomName,
           duration: 120,
@@ -156,10 +157,10 @@ function Members({
         setCalling(false); // Update parent state if needed
       } else {
         socketSendMessage({
-          action: "peercall",
+          action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
-          )?.[0]?.id,
+          )?.[0]?.uuid,
           hangup_cause: "originator_cancel",
           room_id: roomName,
           duration: 0,

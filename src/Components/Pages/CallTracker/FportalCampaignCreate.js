@@ -214,7 +214,7 @@ function FportalCampaignCreate() {
   const getDidData = async () => {
     const getDid = await generalGetFunction("did/all?all-dids")
     if (getDid?.status) {
-      setDid(getDid.data.filter((item) => item.usages === "tracker"))
+      setDid(getDid?.data?.filter((item) => item?.usages === "tracker" && item?.fportal_id == null))
     }
   }
 
@@ -240,7 +240,7 @@ function FportalCampaignCreate() {
 
   useEffect(() => {
     getAllBuyers()
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   const allDidOptions = did.map((item) => ({
     value: item.id,
@@ -811,7 +811,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Campaign Name
+                                  Campaign Name  <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -839,9 +839,7 @@ function FportalCampaignCreate() {
                                 <input
                                   type="text"
                                   className="formItem"
-                                  {...register("source", {
-                                    ...requiredValidator,
-                                  })}
+                                  {...register("source")}
                                 />
                                 {errors.source && (
                                   <ErrorMessage text={errors.source.message} />
@@ -853,7 +851,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Agent Name
+                                  Agent Name  <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -874,7 +872,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Originate Timeout
+                                  Originate Timeout <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -892,7 +890,7 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           </div>
-                          <div className="col-6">
+                          {/* <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
@@ -912,19 +910,17 @@ function FportalCampaignCreate() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Forward Type
+                                  Forward Type <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
                                 <select defaultValue={"pstn"} className='formItem'
-                                  {...register("forward_type", {
-                                    ...requiredValidator,
-                                  })}
+                                  {...register("forward_type")}
                                 >
                                   <option value="pstn">PSTN</option>
                                   <option value="trunk">Trunk</option>
@@ -947,9 +943,7 @@ function FportalCampaignCreate() {
                                 <div className='col-6'>
                                   <select
                                     className='formItem'
-                                    {...register("trunk_id", {
-                                      ...requiredValidator,
-                                    })}
+                                    {...register("trunk_id")}
                                   >
                                     {allTrunkOptios?.map((data) => (
                                       <>
@@ -970,7 +964,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Start Date
+                                  Start Date <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -979,8 +973,13 @@ function FportalCampaignCreate() {
                                     <input
                                       type="datetime-local"
                                       className="formItem"
-                                      {...register("start_date", { ...requiredValidator })}
+                                      {...register("start_date", {
+                                        ...requiredValidator,
+                                      })}
                                     />
+                                    {errors.trunk_id && (
+                                      <ErrorMessage text={errors.trunk_id.message} />
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -990,7 +989,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  End Date
+                                  End Date <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -999,8 +998,13 @@ function FportalCampaignCreate() {
                                     <input
                                       type="datetime-local"
                                       className="formItem"
-                                      {...register("end_date", { ...requiredValidator })}
+                                      {...register("end_date", {
+                                        ...requiredValidator,
+                                      })}
                                     />
+                                    {errors.trunk_id && (
+                                      <ErrorMessage text={errors.trunk_id.message} />
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -1031,7 +1035,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Did
+                                  Did <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -1045,6 +1049,7 @@ function FportalCampaignCreate() {
                                   options={allDidOptions}
                                   isSearchable
                                   styles={customStyles}
+                                  required={true}
                                 />
                               </div>
                             </div>
@@ -1401,7 +1406,7 @@ function FportalCampaignCreate() {
                           <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
                             <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
                               <div className="content">
-                                <h4>List of Buyers</h4>
+                                <h4>List of Buyers <span className="text-danger">*</span></h4>
                                 <p>You can see the list of agents in this ring group.</p>
                               </div>
                               <div className="buttonGroup">
@@ -1427,7 +1432,7 @@ function FportalCampaignCreate() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Name
+                                        Name <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>
@@ -1442,7 +1447,7 @@ function FportalCampaignCreate() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Priority
+                                        Priority <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>
@@ -1503,7 +1508,7 @@ function FportalCampaignCreate() {
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Live Call Limit
+                                        Live Call Limit <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>

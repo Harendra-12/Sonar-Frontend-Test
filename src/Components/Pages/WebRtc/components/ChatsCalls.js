@@ -50,7 +50,7 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                             setToUser(item.id);
                                             setCalling(true);
                                             socketSendMessage({
-                                                action: "peercall",
+                                                action: "peercallInitiate",
                                                 from: account.id,
                                                 to: item.id,
                                                 room_id: `${account.id}-${item.id}`,
