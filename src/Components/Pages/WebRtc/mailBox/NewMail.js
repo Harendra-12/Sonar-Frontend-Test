@@ -13,6 +13,7 @@ const NewMail = ({
   handleListingClick,
   handleMailReplay,
   availableFromMailAddresses,
+  activeList,
 }) => {
   const [loading, setLoading] = useState(false);
   const {
@@ -38,7 +39,7 @@ const NewMail = ({
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
-        handleListingClick("inbox");
+        handleListingClick(activeList);
         reset();
       } else {
         setLoading(false);
@@ -65,7 +66,7 @@ const NewMail = ({
             <div className="d-flex align-items-center gap-3">
               <button
                 className="back_pev"
-                onClick={() => handleListingClick("inbox")}
+                onClick={() => handleListingClick(activeList)}
               >
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
@@ -242,7 +243,7 @@ const NewMail = ({
                   </button>
                   <button
                     className="panelButton gray m-0 float-end"
-                    onClick={() => handleListingClick("inbox")}
+                    onClick={() => handleListingClick(activeList)}
                   >
                     <span className="text">Cancel</span>
                     <span className="icon">
