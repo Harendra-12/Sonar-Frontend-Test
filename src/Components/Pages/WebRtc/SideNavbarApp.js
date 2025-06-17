@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
-import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
@@ -33,6 +33,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const adminLogout = useSelector((state) => state.adminLogout);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
 
   // Trying to connect with freeswitch at every 3 seconds when disconnect or unregister from feeswitch for any of reason
@@ -282,7 +283,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              { account?.user_role?.roles?.name != "Agent" &&
+              {account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
@@ -314,8 +315,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              {
-                account?.user_role == null &&
+              {checkViewSidebar(
+                "Campaign",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "read") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/campaign-login"
@@ -333,7 +338,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
               }
 
 
-              
+
               {
                 isCustomerAdmin &&
                 <li style={{ cursor: "pointer" }}>
@@ -395,7 +400,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     </div>
                     <div className="itemTitle">SMS</div>
                   </div>
-                </li> }
+                </li>}
               {/* {account?.user_role?.roles?.name !== "Agent" ?
                 <li style={{ cursor: "pointer" }}>
                   <div

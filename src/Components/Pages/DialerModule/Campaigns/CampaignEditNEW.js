@@ -205,15 +205,15 @@ function CampaignEditNEW() {
       const getDid = await generalGetFunction(`/campaign/show/${value}`);
 
       if (getDid?.status) {
-        const { dialer, agents, leads } = getDid.data;
+        const { dialer, agents, cmpleads } = getDid.data;
         setSelectedDisposition(getDid.data.disposition.map((item) => { return ({ id: item.disposition_id, rechain: item.rechain }) }));
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
           thirdStep: agents.length !== 0,
-          fourthStep: leads?.length > 0,
+          fourthStep: cmpleads?.length > 0,
         });
-        if (leads?.length > 0) {
+        if (cmpleads?.length > 0) {
           setCompletedStep(4);
         }
       }
@@ -510,35 +510,40 @@ function CampaignEditNEW() {
 
   // Step four form submit for adding leads
   async function handleFormSubmitStepFour() {
-    if (newFile) {
-      const maxSizeInKB = 2048;
-      const fileSizeInKB = newFile.size / 1024;
-
-      if (fileSizeInKB > maxSizeInKB) {
-        toast.error("Please choose a file less than 2048 kilobytes.");
-      } else {
-        setLoading(true);
-        const parsedData = new FormData();
-        parsedData.append("csv_file", newFile);
-        parsedData.append("campaign_id", value);
-        const apiData = await fileUploadFunction(
-          "/campaign-lead/store",
-          parsedData
-        );
-        if (apiData.status) {
-          navigate(-1);
-          setLoading(false);
-          setCompletedStep(4);
-          setNewFile();
-          toast.success(apiData.message);
-        } else {
-          setLoading(false);
-          toast.error(apiData?.message || apiData?.error);
-        }
-      }
-    } else {
-      toast.error("Please choose a file");
+    if (completedStep === 4) {
+      navigate('/campaigns');
     }
+
+    // if (newFile) {
+    //   const maxSizeInKB = 2048;
+    //   const fileSizeInKB = newFile.size / 1024;
+
+    //   if (fileSizeInKB > maxSizeInKB) {
+    //     toast.error("Please choose a file less than 2048 kilobytes.");
+    //   } else {
+    //     setLoading(true);
+    //     const parsedData = new FormData();
+    //     parsedData.append("csv_file", newFile);
+    //     parsedData.append("campaign_id", value);
+    //     const apiData = await fileUploadFunction(
+    //       "/campaign-lead/store",
+    //       parsedData
+    //     );
+    //     if (apiData.status) {
+    //       navigate(-1);
+    //       setLoading(false);
+    //       setCompletedStep(4);
+    //       setNewFile();
+    //       toast.success(apiData.message);
+    //     } else {
+    //       setLoading(false);
+    //       toast.error(apiData?.message || apiData?.error);
+    //     }
+    //   }
+    // } else {
+    //   toast.error("Please choose a file");
+    // }
+
   }
 
   // Logic to select and unselect did
@@ -655,6 +660,7 @@ function CampaignEditNEW() {
         toast.error(err.response.message);
       } finally {
         getAllLeads();
+        setcampaignRefresh((prev) => prev + 1);
       }
     }
   }
@@ -675,6 +681,7 @@ function CampaignEditNEW() {
         toast.error(err.response.message);
       } finally {
         getAllLeads();
+        setcampaignRefresh((prev) => prev + 1);
       }
     }
   }

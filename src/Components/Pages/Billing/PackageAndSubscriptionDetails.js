@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import GraphChart from '../../CommonComponents/GraphChart';
-import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import Header from '../../CommonComponents/Header';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -180,11 +180,7 @@ function PackageAndSubscriptionDetails() {
                                                     </p>
                                                     <p>
                                                         Started On:{" "}
-                                                        {
-                                                            accountDetails?.subscription?.[0]?.created_at?.split(
-                                                                "T"
-                                                            )[0]
-                                                        }
+                                                        {convertDateToCurrentTimeZone(accountDetails?.subscription?.[0]?.created_at?.split("T")[0])}
                                                     </p>
                                                 </div>
                                                 <div className="col-3">
@@ -212,11 +208,7 @@ function PackageAndSubscriptionDetails() {
                                                 <div className="col-9">
                                                     <h5>Upcoming Transaction</h5>
                                                     <p>
-                                                        {
-                                                            accountDetails?.subscription[0].end_date?.split(
-                                                                " "
-                                                            )[0]
-                                                        }
+                                                        {convertDateToCurrentTimeZone(accountDetails?.subscription[0].end_date?.split(" ")[0])}
                                                     </p>
                                                 </div>
                                                 <div className="col-3">
@@ -231,7 +223,7 @@ function PackageAndSubscriptionDetails() {
                                                     <h5>${accountDetails?.package?.regular_price}</h5>
                                                     <p>
                                                         End Date:{" "}
-                                                        {accountDetails?.subscription[0].end_date?.split(" ")[0]}
+                                                        {convertDateToCurrentTimeZone(accountDetails?.subscription[0].end_date?.split(" ")[0])}
                                                     </p>
                                                     <p>
                                                         {accountDetails?.package?.subscription_type ===
@@ -283,17 +275,7 @@ function PackageAndSubscriptionDetails() {
                                                     </h5>
                                                     <p>
                                                         Transaction Time:{" "}
-                                                        {
-                                                            accountDetails?.payments[0]?.transaction_date.split(
-                                                                " "
-                                                            )[0]
-                                                        }
-                                                        ,{" "}
-                                                        {
-                                                            accountDetails?.payments[0]?.transaction_date.split(
-                                                                " "
-                                                            )[1]
-                                                        }
+                                                        {formatDateTime(accountDetails?.payments[0]?.transaction_date)}
                                                     </p>
                                                 </div>
                                                 <div className="col-3">
@@ -317,17 +299,7 @@ function PackageAndSubscriptionDetails() {
                                                 {accountDetails?.balance?.created_at ? (
                                                     <p>
                                                         Created On:{" "}
-                                                        {
-                                                            accountDetails?.balance?.created_at?.split(
-                                                                "T"
-                                                            )[0]
-                                                        }
-                                                        ,{" "}
-                                                        {
-                                                            accountDetails?.balance?.created_at
-                                                                ?.split("T")[1]
-                                                                ?.split(".")[0]
-                                                        }
+                                                        {formatDateTime(accountDetails?.balance?.created_at)}
                                                     </p>
                                                 ) : (
                                                     ""
@@ -346,17 +318,7 @@ function PackageAndSubscriptionDetails() {
                                                 {accountDetails?.balance?.updated_at ? (
                                                     <p>
                                                         Last recharged:{" "}
-                                                        {
-                                                            accountDetails?.balance?.updated_at?.split(
-                                                                "T"
-                                                            )[0]
-                                                        }
-                                                        ,{" "}
-                                                        {
-                                                            accountDetails?.balance?.updated_at
-                                                                ?.split("T")[1]
-                                                                ?.split(".")[0]
-                                                        }
+                                                        {formatDateTime(accountDetails?.balance?.updated_at)}
                                                     </p>
                                                 ) : (
                                                     ""
@@ -402,7 +364,7 @@ function PackageAndSubscriptionDetails() {
                                                                     ?.slice(0, 5)
                                                                     .map((item, index) => (
                                                                         <li key={index}>
-                                                                            {item.transaction_date}
+                                                                            {formatDateTime(item.transaction_date)}
                                                                             <span
                                                                                 className="float-end fw-bold"
                                                                                 onClick={() =>
@@ -629,7 +591,8 @@ function PackageAndSubscriptionDetails() {
                                                         fields={graphData?.callCostPerHour?.map((item, index) => {
                                                             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                                                             const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
-                                                            const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                                                            const convertedTime = formatDateTime(item.start_time);
+                                                            const time = new Date(convertedTime).getHours().toString().padStart(2, '0') + ":" + new Date(convertedTime).getMinutes().toString().padStart(2, '0');
                                                             return `${time}`
                                                         })}
                                                         percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
