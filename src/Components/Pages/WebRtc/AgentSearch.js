@@ -59,8 +59,8 @@ const AgentSearch = ({
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      // border: '1px solid var(--color4)',
-      border: "1px solid transparent",
+      border: '1px solid var(--border-color)',
+      // border: "1px solid transparent",
       backgroundColor: "var(--ele-color)",
       borderRadius: "8px",
       outline: "none",
@@ -97,8 +97,8 @@ const AgentSearch = ({
     option: (provided, state) => ({
       ...provided,
       paddingLeft: "13px",
-      paddingTop: 2,
-      paddingBottom: 2,
+      paddingTop: 5,
+      paddingBottom: 5,
       borderBottom: "1px solid var(--border-color)",
       backgroundColor: state.isSelected
         ? "var(--ele-color)"
