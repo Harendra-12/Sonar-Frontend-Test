@@ -1420,7 +1420,7 @@ function Navbar() {
                     (item) => item?.addon_id == 2
                   ) ?
                     checkModulePerm(
-                      "Clicktocall",
+                      "Click To Call",
                       permissions,
                       account?.sections,
                     ) &&
