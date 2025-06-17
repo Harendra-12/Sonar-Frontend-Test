@@ -3,7 +3,7 @@ import Header from '../../CommonComponents/Header'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import EmptyPrompt from '../../Loader/EmptyPrompt'
 import ThreeDotedLoader from '../../Loader/ThreeDotedLoader'
-import { generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction'
+import { generalGetFunction, isoToTimeFormat, isoToYYMMDDFormat, useDebounce } from '../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
 import { api_url } from '../../../urls'
 
@@ -16,7 +16,7 @@ const CDRTracker = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState("");
-    
+
     const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
 
@@ -65,9 +65,9 @@ const CDRTracker = () => {
                                         <div className="heading">
                                             <div className="content">
                                                 <h4> All Tracker CDR
-                                                    <button 
-                                                        class="clearButton" 
-                                                        onClick={getRefresh} 
+                                                    <button
+                                                        class="clearButton"
+                                                        onClick={getRefresh}
                                                         disabled={refreshState}>
                                                         <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
                                                 </h4>
@@ -128,15 +128,24 @@ const CDRTracker = () => {
                                             <table>
                                                 <thead>
                                                     <tr>
+                                                        <th>#</th>
+                                                        <th>Source Number</th>
+                                                        <th>Caller Id</th>
+                                                        <th>DID</th>
                                                         <th>Campaign Name</th>
-                                                        <th>Disposition</th>
-                                                        <th>Source</th>
+                                                        <th>Buyer Name</th>
                                                         <th>Destination</th>
                                                         <th>Duration</th>
-                                                        <th>Hangup Cause</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Hangup Cause and Status</th>
                                                         <th>Switch Disposition</th>
+                                                        <th>Dublicate</th>
+                                                        <th>Block</th>
+                                                        <th>Bills</th>
                                                     </tr>
                                                 </thead>
+                                                
                                                 <tbody>
                                                     {loading ?
                                                         <ThreeDotedLoader />
@@ -144,13 +153,23 @@ const CDRTracker = () => {
                                                         allCdrReport?.data && allCdrReport?.data?.length > 0 ?
                                                             allCdrReport?.data?.map((item, index) => (
                                                                 <tr key={index}>
-                                                                    <td>{item?.fportalcampaign?.campaign_name}</td>
-                                                                    <td>{item?.disposition}</td>
+                                                                    <td>{index + 1}</td>
                                                                     <td>{item?.src}</td>
+                                                                    <td>{item?.src}</td>
+                                                                    <td>{item?.did_num}</td>
+                                                                    <td>{item?.fportalcampaign?.campaign_name}</td>
+                                                                    <td>Buyer name</td>
                                                                     <td>{item?.dest}</td>
                                                                     <td>{item?.duration}</td>
+                                                                    <td>{isoToYYMMDDFormat(item?.created_at)}</td>
+                                                                    <td>{isoToTimeFormat(item?.created_at)}</td>
                                                                     <td>{item?.hangup_cause}</td>
                                                                     <td>{item?.switch_disposition}</td>
+                                                                    <td>{item?.duplicated}</td>
+                                                                    <td>block</td>
+                                                                    <td>{item?.variable_billsec}</td>
+                                                                    
+                                                                    
                                                                 </tr>
                                                             )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
                                                     }

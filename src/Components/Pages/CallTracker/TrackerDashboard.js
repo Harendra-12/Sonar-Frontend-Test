@@ -38,10 +38,18 @@ function TrackerDashboard() {
     }
 
     const fetchCallPerHourGraph = (shouldLoad) => {
+        const now = new Date();
+        const formatDateTime = (date, time) => {
+            const pad = (n) => (n < 10 ? '0' + n : n);
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${time}`;
+        };
+        const startTime = formatDateTime(now, "00:00:00");
+        const endTime = formatDateTime(now, "23:59:59");
+
         handleApiFun(
             shouldLoad,
             setCallPerHourData,
-            api_url?.FCAMPAIGN_CDR_GRAPH_REPORT(graphFilterHour, "2025-06-12 13:18:08", "2025-06-13 13:18:08")
+            api_url?.FCAMPAIGN_CDR_GRAPH_REPORT(graphFilterHour, startTime, endTime)
         )
     }
 
@@ -384,15 +392,15 @@ function TrackerDashboard() {
                                                             <div className="d-flex flex-wrap justify-content-between">
                                                                 <div className='col-4'>
                                                                     <p>Today</p>
-                                                                    <h4>18</h4>
+                                                                    <h4>{cdrReportDetails?.today_calls_repeated}</h4>
                                                                 </div>
                                                                 <div className='col-4 text-center'>
                                                                     <p>This Week</p>
-                                                                    <h4>43</h4>
+                                                                    <h4>{cdrReportDetails?.week_calls_repeated}</h4>
                                                                 </div>
                                                                 <div className='col-4 text-end'>
                                                                     <p>This Month</p>
-                                                                    <h4>965</h4>
+                                                                    <h4>{cdrReportDetails?.month_calls_repeated}</h4>
                                                                 </div>
                                                             </div>
                                                         </div>

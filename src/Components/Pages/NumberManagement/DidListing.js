@@ -232,6 +232,9 @@ function DidListing({ page }) {
       setPreviousUsages("");
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
+      if (usages == "ai") {
+        navigate('/ai-phone-number')
+      }
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -1206,6 +1209,7 @@ function DidListing({ page }) {
                       <option value="pbx">PBX</option>
                       <option value="dialer">Dialer</option>
                       <option value="tracker">Tracker</option>
+                      <option value="ai">AI</option>
                     </select>
                     <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                       <button

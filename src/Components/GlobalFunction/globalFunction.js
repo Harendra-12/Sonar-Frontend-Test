@@ -738,3 +738,18 @@ export const handleCsvDownload = (data) => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+
+export const isoToYYMMDDFormat = (isoString) => {
+  const date = new Date(isoString);
+  return date.toISOString().split('T')[0]; // e.g., "2025-06-17"
+}
+
+export const isoToTimeFormat = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  }); // e.g., "3:23:16 PM"
+}
