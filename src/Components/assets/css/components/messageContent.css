@@ -49,7 +49,8 @@
     border-radius: 5px;
     min-height: 35px;
     padding: 0px 0 0 35px;
-    width: 100%;
+    width: 97%;
+    margin: 0 10px;
     color: var(--form-label);
     font-size: 0.875rem;
     background: var(--searchBg) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
@@ -976,7 +977,7 @@
 
 .mainContentApp .webrtc_newMessageUi .contactListItem {
     min-height: auto;
-    border-bottom: 0 !important;
+    border-bottom: 0;
     padding: 15px 25px;
     background-color: unset;
 }
@@ -1622,13 +1623,16 @@
 .webrtc_newMessageUi .messageOverlay.groupChat .messageList {
     height: calc(100vh - 319px);
 }
+
 .activeCallTabMinWidth .nav-link {
     min-width: 65px;
 }
+
 .activeCallTabMinWidth .nav-link span {
-   margin-left: 0;
+    margin-left: 0;
 }
-.addNewContactPopup .MuiPagination-ul{
+
+.addNewContactPopup .MuiPagination-ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -1636,7 +1640,8 @@
     overflow-y: unset;
     border: unset;
 }
-.addNewContactPopup .MuiPagination-ul li{
+
+.addNewContactPopup .MuiPagination-ul li {
     width: unset;
     padding-bottom: unset;
     font-size: unset;

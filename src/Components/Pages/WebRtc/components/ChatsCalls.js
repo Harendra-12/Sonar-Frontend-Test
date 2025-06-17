@@ -27,11 +27,12 @@ const ChatsCalls = ({ loading, setMeetingPage, setToUser, setCalling, socketSend
                                         >
                                             {item?.receiver?.profile_picture || item?.sender?.profile_picture ? (
                                                 <img
-                                                    src={item?.sender_id == account?.id ? item?.receiver?.profile_picture : item?.sender?.profile_picture}
-                                                    alt="profile"
-                                                    onError={(e) =>
-                                                        (e.target.src = require("../../../assets/images/placeholder-image.webp"))
+                                                    src={
+                                                        item?.sender_id == account?.id
+                                                            ? item?.receiver?.profile_picture || require("../../../assets/images/placeholder-image.webp")
+                                                            : item?.sender?.profile_picture || require("../../../assets/images/placeholder-image.webp")
                                                     }
+                                                    alt="profile"
                                                 />
                                             ) : (
                                                 <i className="fa-light fa-user fs-5"></i>
