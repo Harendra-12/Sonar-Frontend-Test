@@ -25,7 +25,7 @@ function Account({ account, nextPage, companyStatus }) {
         </div>
       </div>
 
-      <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+      {/* <div className="col-12" style={{ padding: '25px 23px', }}>
         <div className="row px-2 pb-2">
           <div className="formRow col-xl-3">
             <div className="formLabel">
@@ -184,6 +184,22 @@ function Account({ account, nextPage, companyStatus }) {
             </div>
           </div>
         </div>
+      </div> */}
+      <div className="col-12">
+        <ul className="listViewProfileInfo">
+          <li><span className="textImmortalBlack">Company Name : </span> <span className="textSubtext">{account.company_name}</span></li>
+          <li><span className="textImmortalBlack">Admin Name : </span> <span className="textSubtext">{account.admin_name}</span></li>
+          <li><span className="textImmortalBlack">Email : </span> <span className="textSubtext">{account.email}</span></li>
+          <li><span className="textImmortalBlack">Phone Number : </span> <span className="textSubtext">{account.contact_no}</span></li>
+          <li><span className="textImmortalBlack">Alternate Number: </span> <span className="textSubtext">{account.alternate_contact_no}</span></li>
+          <li><span className="textImmortalBlack">Timezone : </span> <span className="textSubtext">{account.timezone.name}</span></li>
+          <li><span className="textImmortalBlack">Block/Unit/Place : </span> <span className="textSubtext">{account.unit}</span></li>
+          <li><span className="textImmortalBlack">Building : </span> <span className="textSubtext">{account.building}</span></li>
+          <li><span className="textImmortalBlack">City : </span> <span className="textSubtext">{account.city}</span></li>
+          <li><span className="textImmortalBlack">Zip Code : </span> <span className="textSubtext">{account.zip}</span></li>
+          <li><span className="textImmortalBlack">State : </span> <span className="textSubtext">{account.state}</span></li>
+          <li><span className="textImmortalBlack">Country : </span> <span className="textSubtext">{account.country}</span></li>
+        </ul>
       </div>
     </>
   );

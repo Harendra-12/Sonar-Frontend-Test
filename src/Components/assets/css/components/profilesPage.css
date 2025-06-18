@@ -19,8 +19,10 @@
     box-shadow: rgba(134, 144, 165, 0.212) 0 0 10px;
     border-radius: 15px;
 }
+
 .profileView .baseDetails.wrpDetails__box {
     box-shadow: none;
+    padding-left: 40px;
 }
 
 .profilenames {
@@ -188,16 +190,26 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    position: absolute;
-    top: -30px;
+    /* position: absolute;
+    top: -30px; */
+    flex-direction: column;
+    gap: 100px;
+}
+
+.progressStepWrapper .stepWrapper.success .step::before {
+    background-color: rgba(0, 212, 0, 1) !important;
+}
+
+.progressStepWrapper .stepWrapper.pending .step::before {
+    background-color: #ffae00 !important;
 }
 
 .progressStepWrapper .stepWrapper.success .step {
-    background-color: #198754 !important;
+    border-color: #198754 !important;
 }
 
 .progressStepWrapper .stepWrapper.pending .step {
-    background-color: #ffae00 !important;
+    border-color: #ffae00 !important;
 }
 
 .progressStepWrapper .stepWrapper.success .status {
@@ -215,12 +227,24 @@
 .progressStepWrapper .stepWrapper {
     text-align: center;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wrpDetails__box .progress {
+    height: 100%;
+    box-shadow: none;
+    width: 4px;
+    position: absolute;
+    inset: 0;
+    margin: auto 26px;
 }
 
 .progressStepWrapper .step {
     width: 55px;
     height: 55px;
-    background-color: #ababab;
+    background-color: var(--ele-color);
     border-radius: 50%;
     /* margin-top: -18px; */
     margin: 0 auto;
@@ -229,8 +253,25 @@
     align-items: center;
     position: relative;
     z-index: 1;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
     cursor: pointer;
+    border: 1px dashed #ababab;
+    flex-shrink: 0;
+}
+
+.progressStepWrapper .step::before {
+    content: '';
+    background-color: #ababab;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
 }
 
 .progressStepWrapper .step i {
@@ -278,6 +319,16 @@
 .progressStepWrapper .stepWrapper.pending .status::after {
     border-top-color: #cb8a00;
 }
+
+.progress-bar.bg_success {
+    background: linear-gradient(104deg, rgba(0, 212, 0, 1) 0%, rgba(255, 174, 0, 1) 100%);
+}
+
+.temporaryDashAccordionContent .permissionListWrapper {
+    overflow: unset;
+    height: auto;
+}
+
 
 
 
@@ -459,4 +510,20 @@
 
 .profile_image img {
     border-radius: 50%;
+}
+
+.listViewProfileInfo li {
+    list-style-type: none;
+}
+
+.textImmortalBlack {
+    color: var(--immortalBlack);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.textSubtext {
+    color: var(--color-subtext);
+    font-size: 14px;
+    font-weight: 500;
 }
