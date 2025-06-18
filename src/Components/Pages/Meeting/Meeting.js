@@ -285,10 +285,10 @@ function Meeting() {
                                                                                             </td>
                                                                                             <td>
                                                                                                 <div
-                                                                                                    className="tableButton"
+                                                                                                    className="tableButton edit"
                                                                                                     onClick={() => setSendEmailPopup(true)}
                                                                                                 >
-                                                                                                    <i className="fa-solid fa-mail"></i>
+                                                                                                    <i className="fa-solid fa-envelope"></i>
                                                                                                 </div>
                                                                                             </td>
                                                                                             {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
@@ -585,17 +585,17 @@ function Meeting() {
                                                     <ul className="dropdown-menu actionBtnDropdowns collapse">
                                                         <li className="dropdown-item">
                                                             <div className="clearButton text-align-start">
-                                                                <i className="fa-regular fa-gear me-2" /> Send Recording
+                                                                <i className="fa-regular fa-video me-2" /> Send Recording
                                                             </div>
                                                         </li>
                                                         <li className="dropdown-item">
                                                             <div className="clearButton text-align-start">
-                                                                <i className="fa-regular fa-arrows-rotate me-2" /> Send Summary
+                                                                <i className="fa-regular fa-note me-2" /> Send Summary
                                                             </div>
                                                         </li>
                                                         <li className="dropdown-item">
                                                             <div className="clearButton text-align-start">
-                                                                <i className="fa-regular fa-trash me-2" /> Send Both
+                                                                <i className="fa-regular fa-send me-2" /> Send Both
                                                             </div>
                                                         </li>
                                                     </ul>
