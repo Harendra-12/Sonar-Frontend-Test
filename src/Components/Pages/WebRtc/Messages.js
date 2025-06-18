@@ -431,12 +431,10 @@ function Messages({
         ) {
           getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
-          console.log("from first");
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
-        console.log("from second");
       }
     }
   }, [recipient, loadMore, allAgents]);
@@ -664,7 +662,6 @@ function Messages({
 
   useEffect(() => {
     if (incomingMessage) {
-      console.log("incomingMessage", incomingMessage);
 
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
@@ -676,7 +673,6 @@ function Messages({
           [recipient[0]]: "Generating Ai response..."
         }));
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
-          console.log("Response", res);
 
           if (res.data) {
             setMessageInput((prev) => ({
@@ -695,7 +691,6 @@ function Messages({
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
-      console.log("agentDetails", agentDetails);
 
       const time = formatDateTime(new Date());
 
@@ -3374,9 +3369,8 @@ function Messages({
                                   : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                const todayDate = new Date()
-                                  .toISOString()
-                                  ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                const todayDate = formatDateTime(new Date()).split(" ")[0]; // Get today's date in "YYYY-MM-DD" format
+
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
@@ -3643,7 +3637,6 @@ function Messages({
                                       placeholder="Please enter your message"
                                       value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
-                                        { console.log("reciepent", recipient) }
                                         const value = e.target.value;
                                         const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
 

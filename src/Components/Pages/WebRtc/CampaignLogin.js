@@ -19,6 +19,7 @@ function CampaignLogin({ initial }) {
     const Id = account?.id || "";
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isOnBreak, setIsOnBreak] = useState(false);
+    const [getAgentDataForCampaign, setGetAgentDataForCampaign] = useState([]);
 
 
     // Function to handle logout
@@ -50,30 +51,48 @@ function CampaignLogin({ initial }) {
                 setLoading(false);
             }
         }
-
-        const getAssignedDialerData = async () => {
-            setLoading(true);
-            const response = await generalGetFunction(`campaign/agent-update/${Id}`)
-            if (response?.status) {
-                console.log("allCampaign", response.data);
-            } else {
-                setLoading(false);
-            }
-        }
         getCampaignData();
-        getAssignedDialerData()
     }, [refresh])
 
-    const handleLoginLogout = async (action) => {
-        const parsedData = {
-            status: action,
-        };
-        const apiData = await generalPutFunction(
-            `campaign/agent-update/${Id}`,
-            parsedData
-        );
-        if (apiData.status) {
-            setRefresh(refresh + 1);
+    const getAssignedDialerData = async (campId) => {
+        setLoading(true);
+        const response = await generalGetFunction(`campaign/break-time/${campId}/${Id}`)
+        if (response?.status) {
+            setGetAgentDataForCampaign(response.data);
+        } else {
+            setLoading(false);
+        }
+    }
+
+    const handleLoginLogout = async (action, campId) => {
+        try {
+            const parsedData = {
+                status: action,
+                campaign_id: campId
+            };
+            const apiData = await generalPutFunction(`campaign/agent-update/${Id}`, parsedData);
+            if (apiData.status) {
+                setRefresh(refresh + 1);
+                getAssignedDialerData(campId);
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            const action = getAgentDataForCampaign.agent_data.status;
+            switch (action) {
+                case "Logged Out":
+                    setIsLoggedIn(false);
+                    setIsOnBreak(false);
+                    break;
+                case "Available":
+                    setIsLoggedIn(true);
+                    setIsOnBreak(false);
+                    break;
+                case "On Break":
+                    setIsLoggedIn(true);
+                    setIsOnBreak(true);
+                    break;
+            }
         }
     }
 
@@ -142,7 +161,7 @@ function CampaignLogin({ initial }) {
                                                 <tbody>
                                                     {
                                                         assignedCampaigns && assignedCampaigns.length > 0 ? assignedCampaigns.map((item, index) => (
-                                                            <tr>
+                                                            <tr id={item.id}>
                                                                 <td>{index + 1}</td>
                                                                 <td>{item.title}</td>
                                                                 <td>{item.dialer.type}</td>
@@ -153,9 +172,9 @@ function CampaignLogin({ initial }) {
                                                                                 className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
                                                                                 onClick={() => {
                                                                                     if (!isOnBreak)
-                                                                                        handleLoginLogout("On Break");
+                                                                                        handleLoginLogout("On Break", item.id);
                                                                                     else if (isOnBreak)
-                                                                                        handleLoginLogout("Available");
+                                                                                        handleLoginLogout("Available", item.id);
                                                                                 }}
                                                                             >
                                                                                 {isOnBreak ? "Resume" : "Break"}
@@ -163,7 +182,7 @@ function CampaignLogin({ initial }) {
                                                                             <label
                                                                                 className="tableLabel fail"
                                                                                 onClick={() =>
-                                                                                    handleLoginLogout("Logged Out")
+                                                                                    handleLoginLogout("Logged Out", item.id)
                                                                                 }
                                                                             >
                                                                                 Logout
@@ -173,7 +192,7 @@ function CampaignLogin({ initial }) {
                                                                         <label
                                                                             className="tableLabel success"
                                                                             onClick={() =>
-                                                                                handleLoginLogout("Available")
+                                                                                handleLoginLogout("Available", item.id)
                                                                             }
                                                                         >
                                                                             Login

@@ -90,14 +90,11 @@ function OngoingCall({
       console.error("No active session found");
     }
   };
-  console.log("Outside hold status", isOnHeld);
 
   // Logic to toggle hold and unhold
   async function holdCall(type) {
-    console.log("Inside hold setp 1");
 
     if (canHold) {
-      console.log("Inside hold setp 2");
       if (type === "hold" && !holdProcessing) {
         setHoldProcessing(true);
         var sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
@@ -207,7 +204,6 @@ function OngoingCall({
 
   // Logic to toggle mute and unmute
   const muteCall = (type) => {
-    console.log("GlobalSession", globalSession);
     const currentSession = globalSession.find((item) => item.id === session.id);
 
     if (canMute) {
@@ -574,13 +570,13 @@ function OngoingCall({
         type: "user",
       });
     } else {
-     const isNumberPresent = activeCall.find((item)=>(item.cid_num == callProgressDestination || item.did_tag == callProgressDestination));
+      const isNumberPresent = activeCall.find((item) => (item.cid_num == callProgressDestination || item.did_tag == callProgressDestination));
       setCallExtraInfo({
         info: isNumberPresent?.did_tag || callProgressDestination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll,activeCall])
+  }, [accountDetails, didAll, activeCall])
 
 
 
@@ -790,9 +786,9 @@ function OngoingCall({
                     placement="bottom"
                     onCreate={instance => (tippyRef.current = instance)}
                     // allowHTML={true}
-                      maxWidth="fit-content"
-                      className="margeCall"
-                      content={
+                    maxWidth="fit-content"
+                    className="margeCall"
+                    content={
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <Tippy content="Attendant Transfer">
                           <button
@@ -825,7 +821,7 @@ function OngoingCall({
                         </Tippy>
                       </div>
                     }
-                // content="Attendant Transfer" 
+                  // content="Attendant Transfer" 
                   >
                     <button
                       className={` ${showTranferableList ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
