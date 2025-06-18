@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import LogOutPopUp from './LogOutPopUp';
-import { featureUnderdevelopment, generalGetFunction, generalPutFunction, logout } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, formatTimeInHHMMSS, generalGetFunction, generalPutFunction, logout, secondsToHHMMSS } from '../../GlobalFunction/globalFunction';
 import { useSIPProvider } from 'modify-react-sipjs';
 import DarkModeToggle from '../../CommonComponents/DarkModeToggle';
 import HeaderApp from './HeaderApp';
@@ -78,7 +78,6 @@ function CampaignLogin({ initial }) {
         } catch (err) {
             console.log(err);
         } finally {
-            const action = getAgentDataForCampaign.agent_data.status;
             switch (action) {
                 case "Logged Out":
                     setIsLoggedIn(false);
@@ -122,7 +121,7 @@ function CampaignLogin({ initial }) {
                     />
                 )}
                 <div className={" px-0"}>
-                    <HeaderApp title={"Campaign"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
+                    <HeaderApp title={"Campaign"} loading={loading} setLoading={setLoading} refreshApi={() => setRefresh(refresh + 1)} />
                 </div>
                 <div className="container-fluid">
                     <div className="row webrtc_newMessageUi">
@@ -134,9 +133,6 @@ function CampaignLogin({ initial }) {
                                             <div className="content">
                                                 <h4>
                                                     Campaigns{" "}
-                                                    <button className="clearButton2" onClick={() => setRefresh(refresh + 1)}>
-                                                        <i className="fa-regular fa-arrows-rotate fs-5"></i>
-                                                    </button>
                                                 </h4>
                                                 <p>You can subscribe to a campaign or change your status here</p>
                                             </div>
@@ -198,6 +194,12 @@ function CampaignLogin({ initial }) {
                                                                             Login
                                                                         </label>
                                                                     )}
+                                                                </td>
+                                                                <td>
+                                                                    00:00:00
+                                                                </td>
+                                                                <td>
+                                                                    {getAgentDataForCampaign ? secondsToHHMMSS(getAgentDataForCampaign?.break?.[0]?.total_break_time || '0') : "0"}
                                                                 </td>
                                                             </tr>
                                                         )) : ""
