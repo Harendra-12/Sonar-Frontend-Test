@@ -30,6 +30,7 @@ function Meeting() {
     const viewVideoRef = useRef(null);
     const [pageLoading, setPageLoading] = useState(false);
     const [preSignedUrl, setPreSignedUrl] = useState('');
+    const [sendEmailPopup, setSendEmailPopup] = useState(false);
 
     const account = useSelector((state) => state?.account);
     const slugPermissions = useSelector((state) => state?.permissions);
@@ -243,6 +244,7 @@ function Meeting() {
                                                                 <th>Joining Pin</th>
                                                                 <th>Meeting link</th>
                                                                 <th>Recordings</th>
+                                                                <th>Email</th>
                                                                 {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
                                                                 {/* <th>Action</th> */}
                                                             </tr>
@@ -279,6 +281,14 @@ function Meeting() {
                                                                                                     onClick={() => setShowRecordingsPopup(true)}
                                                                                                 >
                                                                                                     <i className="fa-solid fa-archive"></i>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div
+                                                                                                    className="tableButton"
+                                                                                                    onClick={() => setSendEmailPopup(true)}
+                                                                                                >
+                                                                                                    <i className="fa-solid fa-mail"></i>
                                                                                                 </div>
                                                                                             </td>
                                                                                             {checkViewSidebar("Conference", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <td>
@@ -457,30 +467,43 @@ function Meeting() {
                                     </p>
                                     <div className="border-bottom col-12" />
                                     <div className="col-xl-12">
-                                        <div className='formRow'>
-                                            <div className='d-flex justify-content-between w-100'>
-                                                <div className="formLabel">
-                                                    <label htmlFor="">Share Link</label>
-                                                </div>
-                                                <div className="formLabel">
-                                                    <a className='formItemDesc mt-0'
-                                                        onClick={() => { navigator.clipboard.writeText(preSignedUrl); toast.success("Copied to clipboard") }}
-                                                        style={{ cursor: 'pointer' }}
-                                                    >
-                                                        Click to copy
-                                                    </a>
+                                        <div className="overviewTableWrapper p-0">
+                                            <div className='overviewTableChild border-0 shadow-none'>
+                                                <div className='col-xl-12'>
+                                                    <div className='tableContainer m-0 p-0'>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Sl No.
+                                                                    </th>
+                                                                    <th>
+                                                                        Email
+                                                                    </th>
+                                                                    <th>
+                                                                        View
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>#</td>
+                                                                    <td>#</td>
+                                                                    <td>
+                                                                        <input />
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div className='col-xl-12 mt-2'>
+                                                        <button className="panelButton gray ms-auto" onClick={() => setShowRecordingsPopup(false)}>
+                                                            <span className="text">Close</span>
+                                                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="col-12">
-                                                <textarea
-                                                    type="text"
-                                                    className="formItem h-auto"
-                                                    value={preSignedUrl}
-                                                    disabled
-                                                    rows={"4"}
-                                                />
-                                            </div>
-
                                         </div>
                                     </div>
                                     <div className='col-xl-12 mt-2'>
@@ -488,6 +511,97 @@ function Meeting() {
                                             <span className="text">Close</span>
                                             <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                {sendEmailPopup &&
+                    <div className="popup">
+                        <div className='container h-100'>
+                            <div className='row h-100 justify-content-center align-items-center '>
+                                <div className="content col-xl-4 col-md-5">
+                                    <div className="row">
+                                        <div className="col-12 heading">
+                                            <i className="fa-light fa-user-plus" />
+                                            <h5>Select Emails of Participants</h5>
+                                            <p>Select Emails of Participants to send recording or summary of the meeting</p>
+                                        </div>
+                                        <div className="col-xl-12">
+                                            <div className="col-12 d-flex justify-content-between align-items-center">
+                                                <input
+                                                    type="text"
+                                                    className="formItem"
+                                                    placeholder="Search"
+                                                    name="name"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-3">
+                                            <div
+                                                className="tableContainer mt-0"
+                                                style={{ maxHeight: "calc(-400px + 100vh)" }}
+                                            >
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Name</th>
+                                                            <th>Extension</th>
+                                                            <th>
+                                                                <input type="checkbox" />
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Webvio Technologies</td>
+                                                            <td>1037</td>
+                                                            <td>
+                                                                <input type="checkbox" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-2">
+                                            <div className="d-flex justify-content-between">
+                                                <button className="panelButton gray ms-0" onClick={() => setSendEmailPopup(false)}>
+                                                    <span className="text">Close</span>
+                                                    <span className="icon">
+                                                        <i className="fa-light fa-xmark" />
+                                                    </span>
+                                                </button>
+                                                <div className='dropdown' >
+                                                    <button className="panelButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span className="text">Send</span>
+                                                        <span className="icon">
+                                                            <i className="fa-solid fa-send" />
+                                                        </span>
+                                                    </button>
+                                                    <ul className="dropdown-menu actionBtnDropdowns collapse">
+                                                        <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                                <i className="fa-regular fa-gear me-2" /> Send Recording
+                                                            </div>
+                                                        </li>
+                                                        <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                                <i className="fa-regular fa-arrows-rotate me-2" /> Send Summary
+                                                            </div>
+                                                        </li>
+                                                        <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                                <i className="fa-regular fa-trash me-2" /> Send Both
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
