@@ -1210,7 +1210,6 @@ function CdrReport({ page }) {
                                       }
                                     );
                                     const storageSize = matchedStorage?.size || "N/A";
-                                    console.log(selectedCdrToDelete);
 
                                     return (
                                       <>

@@ -399,13 +399,15 @@ function CampaignEditNEW() {
       toast.error("Please select at least one agent");
       return
     }
-    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
-      toast.error("Start Time cannot be earlier than current time");
-      return
-    }
-    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
-      toast.error("End Time cannot be earlier than current time");
-      return
+    if (watch().active_hours == 1) {
+      if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+        toast.error("Start Time cannot be earlier than current time");
+        return
+      }
+      if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+        toast.error("End Time cannot be earlier than current time");
+        return
+      }
     }
 
     setLoading(true);
@@ -413,12 +415,15 @@ function CampaignEditNEW() {
       ...data,
       business_numbers: selectedItems,
       account_id: account.account_id,
-      status: "Active",
-      ...(watch().active_hours ? { scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })) } : {}),
+      status: editState.status,
       user_id: selectedAgent,
-      start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
-      end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`,
+      ...(watch().active_hours ? {
+        scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })),
+        start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
+        end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`
+      } : {}),
     };
+
     const apiData = await generalPutFunction(
       `/campaign/update/${value}`,
       payload
@@ -459,7 +464,7 @@ function CampaignEditNEW() {
 
       if (apiData?.status) {
         setCompletedStep(2);
-        setStepSelector(3);
+        setStepSelector(4);
         setLoading(false);
         toast.success(apiData.message);
       } else {
@@ -474,7 +479,7 @@ function CampaignEditNEW() {
       );
       if (apiData?.status) {
         setCompletedStep(2);
-        setStepSelector(3);
+        setStepSelector(4);
         setLoading(false);
         toast.success(apiData.message);
         setcampaignRefresh((prev) => prev + 1);
@@ -495,7 +500,7 @@ function CampaignEditNEW() {
     const payload = {
       campaign_id: value,
       user_id: selectedAgent,
-      status: "active",
+      status: editState.status,
     };
     const apiData = await generalPostFunction("/campaign-agent/store", payload);
     if (apiData?.status) {
