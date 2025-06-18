@@ -100,7 +100,7 @@ export async function generalGetFunction(endpoint) {
         toast.error("Too many attempts. Please wait before trying again.");
       } else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
-      } else if(err?.response?.status == 422){
+      } else if (err?.response?.status == 422) {
         toast.error(err?.response?.data?.message)
       } else {
         return err;
@@ -585,30 +585,26 @@ export function formatTimeWithAMPM(timeString) {
 // Formate date for time stamp to get time when message arrives
 export function formatRelativeTime(dateString) {
   const account = localStorage.getItem("account");
+  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+
   try {
-    const timeZone = JSON.parse(account)?.timezone?.name;
-    // Parse input date (UTC) and current time
-    const date = new Date(dateString);
     const now = new Date();
+    const date = new Date(dateString);
 
-    // Convert both dates to the target timezone for accurate comparison
-    const dateInTz = new Date(date.toLocaleString('en-US', { timeZone }));
-    const nowInTz = new Date(now.toLocaleString('en-US', { timeZone }));
-
-    // Calculate differences in timezone-adjusted time
-    const diffMs = nowInTz - dateInTz;
+    // Calculate the diff in milliseconds (no need to convert to local strings for diff)
+    const diffMs = now.getTime() - date.getTime();
     const diffSeconds = Math.floor(diffMs / 1000);
+
+    if (diffSeconds < 0) return "Just now";
+
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
 
-    // Handle timezone-adjusted relative time
+    // For "Yesterday" or date format, convert date to target timezone for display
     if (diffDays >= 1) {
       if (diffDays === 1) return "Yesterday";
-
-      // Format full date in target timezone
-      return dateInTz.toLocaleDateString('en-US', {
-        timeZone,
+      return new Date(date.toLocaleString('en-US', { timeZone })).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: diffDays >= 365 ? 'numeric' : undefined
@@ -622,11 +618,10 @@ export function formatRelativeTime(dateString) {
     }
   } catch (error) {
     console.error("Error formatting time:", error);
-    // Fallback to UTC formatting if timezone fails
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US');
+    return new Date(dateString).toLocaleDateString('en-US');
   }
 }
+
 
 // Format date to get today date OR YYYY-MM-DD H:M:I in YYYY-MM-DD H:M:I according to timezone 
 export function formatDateTime(dateInput) {
@@ -721,23 +716,23 @@ export const useDebounce = (value, delay) => {
 
 
 export const handleCsvDownload = (data) => {
-    const headers = Object.keys(data[0]);
-    const rows = data.map((obj) =>
-      headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
-    );
-    const csvContent = [headers.join(","), ...rows].join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
+  const headers = Object.keys(data[0]);
+  const rows = data.map((obj) =>
+    headers.map((header) => JSON.stringify(obj[header] || "")).join(",")
+  );
+  const csvContent = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
 
-    link.href = url;
-    link.download = "sample.csv";
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
+  link.href = url;
+  link.download = "sample.csv";
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
 
 export const isoToYYMMDDFormat = (isoString) => {
   const date = new Date(isoString);
