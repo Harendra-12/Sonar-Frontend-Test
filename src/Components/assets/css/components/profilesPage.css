@@ -23,6 +23,8 @@
 .profileView .baseDetails.wrpDetails__box {
     box-shadow: none;
     padding-left: 40px;
+    border-right: 1px solid var(--me-border1);
+    border-radius: 0;
 }
 
 .profilenames {
@@ -222,8 +224,11 @@
 
 .progressStepWrapper .stepWrapper.success label {
     color: var(--immortalBlack) !important;
-}
 
+}
+.progressStepWrapper .stepWrapper label{
+    margin-top: 0 !important;
+}
 .progressStepWrapper .stepWrapper {
     text-align: center;
     position: relative;
@@ -239,6 +244,9 @@
     position: absolute;
     inset: 0;
     margin: auto 26px;
+}
+.progress-bar{
+    width: 4px;
 }
 
 .progressStepWrapper .step {
