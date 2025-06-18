@@ -101,6 +101,7 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [doomScrollLoading, setDoomScrollLoading] = useState(false);
   const [messageRefresh, setMessageRefresh] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
@@ -1687,8 +1688,23 @@ function Messages({
       if (response.status) {
         const sortedArr = response.data.data;
 
-        setInternalCallHistory(sortedArr);
-        setOriginalInternalCallHistory(sortedArr);
+        // setInternalCallHistory(sortedArr);
+
+        setOriginalInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
+
+        setInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
 
         setRawInternalCallHistory(response.data);
       }
@@ -1696,6 +1712,7 @@ function Messages({
       console.log(err);
     } finally {
       setLoading(false);
+      setDoomScrollLoading(false);
     }
   };
 
@@ -2530,6 +2547,8 @@ function Messages({
                       <ChatsCalls
                         loading={loading}
                         setLoading={setLoading}
+                        doomScrollLoading={doomScrollLoading}
+                        setDoomScrollLoading={setDoomScrollLoading}
                         setMeetingPage={setMeetingPage}
                         setToUser={setToUser}
                         setCalling={setCalling}
