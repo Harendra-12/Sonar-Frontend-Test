@@ -104,6 +104,7 @@ const DidConfig = () => {
       setValue("usages", "extension" || []);
     }
   }, [locationData]);
+
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
@@ -125,6 +126,7 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
+  
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");

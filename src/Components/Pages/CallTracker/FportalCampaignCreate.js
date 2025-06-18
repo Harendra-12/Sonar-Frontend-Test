@@ -7,11 +7,16 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import { backToTop, generalGetFunction, generalPostFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
-import { requiredValidator } from "../../validations/validation";
+import { rangeValidator, requiredValidator } from "../../validations/validation";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import Tippy from "@tippyjs/react";
+import { useSelector } from "react-redux";
+import AddMusic from "../../CommonComponents/AddMusic";
 
 function FportalCampaignCreate() {
   const navigate = useNavigate();
+  const state = useSelector((state) => state);
+  const account = state?.account;
   const [loading, setLoading] = useState(false)
   const [selectedItems, setSelectedItems] = useState([]);
   const [did, setDid] = useState([]);
@@ -21,6 +26,10 @@ function FportalCampaignCreate() {
   const [allTrunk, setAllTrunk] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
+  const [holdMusic, setHoldMusic] = useState()
+  const [showMusic, setShowMusic] = useState(false);
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
       name: 'Sunday',
@@ -98,9 +107,12 @@ function FportalCampaignCreate() {
 
   const {
     register,
+    setError: setErr,
     formState: { errors },
+    reset,
     handleSubmit,
-    watch
+    setValue,
+    watch,
   } = useForm();
 
   // const getAllBuyers = async () => {
@@ -232,10 +244,36 @@ function FportalCampaignCreate() {
     }
   }
 
+  const getAllSounds = async () => {
+    if (account && account.id) {
+      setLoading(true);
+      const holdMusic = await generalGetFunction("/sound/all?type=hold");
+      setLoading(false);
+      if (holdMusic?.status) {
+        setHoldMusic(holdMusic.data);
+        if (holdMusic.data.length > 0 && uploadedMusic) {
+          setValue("hold_music", uploadedMusic.id);
+        }
+      } else {
+        navigate("/");
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (account && account.id) {
+      getAllSounds()
+    } else {
+      setLoading(false);
+      navigate("/");
+    }
+  }, [account, musicRefresh])
+
   useEffect(() => {
     getDidData()
     getAllBuyers()
     getElasticTrunk()
+    getAllSounds()
   }, [])
 
   useEffect(() => {
@@ -374,13 +412,14 @@ function FportalCampaignCreate() {
         monthly_call_limit: item?.monthly_call_limit ?? 0,
         daily_call_limit: item?.daily_call_limit ?? 0,
         live_call_limit: item?.live_call_limit ?? 1,
-        total_send_call: item?.total_send_call ?? 0
+        total_send_call: item?.total_send_call ?? 0,
+        buyer_status: item?.buyer_status
       }))
       setBulkAddBuyersList(arr);
       setSelectAll(false)
     }
   }
-  console.log('aaaaaaaaaa', bulkAddBuyersList)
+
   const deleteItemFromBulk = (id) => {
     const updatedArr = bulkAddBuyersList.filter((item) => item.id !== id);
     setBulkAddBuyersList(updatedArr);
@@ -393,6 +432,10 @@ function FportalCampaignCreate() {
         }
       });
     updatedBuyerSelect();
+  }
+
+  const handleBuyerEdit = () => {
+
   }
 
   return (
@@ -851,16 +894,14 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Agent Name  <span className="text-danger">*</span>
+                                  Tag
                                 </label>
                               </div>
                               <div className='col-6'>
                                 <input
                                   type="text"
                                   className="formItem"
-                                  {...register("agent_name", {
-                                    ...requiredValidator,
-                                  })}
+                                  {...register("agent_name")}
                                 />
                                 {errors.agent_name && (
                                   <ErrorMessage text={errors.agent_name.message} />
@@ -960,56 +1001,7 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           }
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Start Date <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <div className='row gx-2'>
-                                  <div className='col-12'>
-                                    <input
-                                      type="datetime-local"
-                                      className="formItem"
-                                      {...register("start_date", {
-                                        ...requiredValidator,
-                                      })}
-                                    />
-                                    {errors.trunk_id && (
-                                      <ErrorMessage text={errors.trunk_id.message} />
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  End Date <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <div className='row gx-2'>
-                                  <div className='col-12'>
-                                    <input
-                                      type="datetime-local"
-                                      className="formItem"
-                                      {...register("end_date", {
-                                        ...requiredValidator,
-                                      })}
-                                    />
-                                    {errors.trunk_id && (
-                                      <ErrorMessage text={errors.trunk_id.message} />
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+
 
                           {/* <div className="formRow">
                             <div className='formLabel'>
@@ -1035,7 +1027,7 @@ function FportalCampaignCreate() {
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Did <span className="text-danger">*</span>
+                                  Inbound Assigned Did  <span className="text-danger">*</span>
                                 </label>
                               </div>
                               <div className='col-6'>
@@ -1054,11 +1046,293 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           </div>
+
+                          <div className="formRow col-6">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">Sticky Agent</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select the status of Sticky Agent
+                              </label>
+                            </div>
+                            <div
+                              className={`col-${watch().sticky_agent_enable == "true" ||
+                                watch().sticky_agent_enable == 1
+                                ? "2 pe-2 ms-auto"
+                                : "6"
+                                }`}
+                            >
+                              {watch().sticky_agent_enable === "true" ||
+                                watch().sticky_agent_enable === 1 ? (
+                                <div className="formLabel">
+                                  <label className="formItemDesc">Status</label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <select
+                                className="formItem"
+                                name=""
+                                defaultValue="false"
+                                id="selectFormRow"
+                                {...register("sticky_agent_enable")}
+                              >
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                              </select>
+                            </div>
+
+                            {(watch().sticky_agent_enable == true ||
+                              watch().sticky_agent_enable == "true") && (
+                                <div
+                                  className="col-2 pe-2"
+                                  style={{ width: "12%" }}
+                                >
+                                  <div className="formLabel">
+                                    <Tippy content="Check the duration of sticky agent">
+                                      <label className="formItemDesc">
+                                        Duration{" "}
+                                      </label>
+                                    </Tippy>
+                                  </div>
+                                  <input
+                                    type="number"
+                                    name="forward_to"
+                                    className="formItem"
+                                    {...register(
+                                      "stick_agent_expires",
+                                      rangeValidator(1, 99), {
+                                      requiredValidator
+                                    }
+                                    )}
+                                  />
+                                  {errors.stick_agent_expires && (
+                                    <ErrorMessage
+                                      text={errors.stick_agent_expires.message}
+                                    />
+                                  )}
+                                </div>
+                              )}
+                            {(watch().sticky_agent_enable == true ||
+                              watch().sticky_agent_enable == "true") && (
+                                <div className="col-2" style={{ width: "21.3%" }}>
+                                  <div className="formLabel">
+                                    <label className="formItemDesc">
+                                      Agent Type
+                                    </label>
+                                  </div>
+                                  <select
+                                    className="formItem"
+                                    name=""
+                                    id="selectFormRow"
+                                    {...register("stick_agent_type")}
+                                  >
+                                    <option selected="" value="last_spoken">
+                                      Last Spoken
+                                    </option>
+                                    <option value="longest_time">
+                                      Longest Time
+                                    </option>
+                                  </select>
+                                </div>
+                              )}
+                            {(watch().sticky_agent_enable == true ||
+                              watch().sticky_agent_enable == "true") && (
+                                <div
+                                  className="col-2 pe-2"
+                                  style={{ width: "12%" }}
+                                >
+                                  <div className="formLabel">
+                                    <Tippy content="Timout for the sticky agent and return to normal routing">
+                                      <label className="formItemDesc">
+                                        Timeout(Sec.){" "}
+                                      </label>
+                                    </Tippy>
+                                  </div>
+                                  <input
+                                    type="number"
+                                    name="forward_to"
+                                    className="formItem"
+                                    {...register(
+                                      "sticky_agent_timeout",
+                                      rangeValidator(1, 99), {
+                                      requiredValidator
+                                    }
+                                    )}
+                                  />
+                                  {errors.stick_agent_expires && (
+                                    <ErrorMessage
+                                      text={errors.stick_agent_expires.message}
+                                    />
+                                  )}
+                                </div>
+                              )}
+                          </div>
+                          <div className="formRow col-6">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">Spam Filter</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Select the type of Spam Filter
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <div className="row">
+                                <div
+                                  className={`col-${watch().spam_filter_type === "3"
+                                    ? "4 pe-1 ms-auto"
+                                    : "12"
+                                    }`}
+                                >
+                                  {watch().spam_filter_type != "1" && (
+                                    <div className="formLabel">
+                                      <label>Type</label>
+                                    </div>
+                                  )}
+                                  <select
+                                    className="formItem"
+                                    name=""
+                                    defaultValue="1"
+                                    id="selectFormRow"
+                                    {...register("spam_filter_type")}
+                                  >
+                                    <option value="1">Disable</option>
+                                    <option value="2">Call Screening</option>
+                                    <option value="3">DTMF Input</option>
+                                  </select>
+                                </div>
+                                {watch().spam_filter_type === "3" && (
+                                  <>
+                                    <div className="col-4 px-1">
+                                      <div className="formLabel">
+                                        <label htmlFor="selectFormRow">
+                                          Retries
+                                        </label>
+                                      </div>
+                                      <select
+                                        className="formItem"
+                                        name=""
+                                        id="selectFormRow"
+                                        {...register("dtmf_retries")}
+                                      >
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                      </select>
+                                    </div>
+                                    <div className="col-4 ps-1">
+                                      <div className="formLabel">
+                                        <Tippy content="Input in Days, Max 5">
+                                          <label>
+                                            Length{" "}
+                                            <span
+                                              style={{
+                                                color: "var(--color-subtext)",
+                                              }}
+                                            ></span>
+                                          </label>
+                                        </Tippy>
+                                      </div>
+                                      <select
+                                        className="formItem"
+                                        name=""
+                                        defaultValue="false"
+                                        id="selectFormRow"
+                                        {...register("dtmf_length")}
+                                      >
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
+                                      </select>
+                                    </div>
+                                    <div className="col-6 pe-1">
+                                      <div className="formLabel">
+                                        <label>
+                                          DTMF type{" "}
+                                          <span
+                                            style={{
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          ></span>
+                                        </label>
+                                      </div>
+                                      <select
+                                        className="formItem"
+                                        name=""
+                                        defaultValue="false"
+                                        id="selectFormRow"
+                                        {...register("dtmf_type")}
+                                      >
+                                        <option value="random_digit">
+                                          Random Digit
+                                        </option>
+                                        <option value="last_caller_id_digit">
+                                          Caller last digit
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <div className="col-6 ps-1">
+                                      <div className="formLabel">
+                                        <label htmlFor="selectFormRow">
+                                          Retry File
+                                        </label>
+                                      </div>
+                                      <select
+                                        className="formItem"
+                                        name=""
+                                        id="selectFormRow"
+                                        {...register("dtmf_retry_file_sound")}
+                                      >
+                                        <option value={""}>None</option>
+                                        {holdMusic &&
+                                          holdMusic.map((ring) => {
+                                            return (
+                                              <option
+                                                key={ring.id}
+                                                value={ring.id}
+                                              >
+                                                {ring.name}
+                                              </option>
+                                            );
+                                          })}
+                                      </select>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="formRow col-6">
+                              <div className="formLabel">
+                                <label htmlFor="selectFormRow">Record</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Save the recording.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("record")}
+                                  defaultValue={"false"}
+                                >
+                                  <option selected="" value="true">
+                                    True
+                                  </option>
+                                  <option value="false">False</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+
                           <div className="col-6">
                             <div className="formRow">
                               <div className='formLabel'>
                                 <label>
-                                  Active Hours
+                                  Scheduler
                                 </label>
                               </div>
                               <div className="col-6">
@@ -1079,7 +1353,55 @@ function FportalCampaignCreate() {
                             isActiveHour &&
                             <div className="formRow d-block">
                               <div className="formLabel">
-                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Targeted Date & Time</label>
+                              </div>
+                              <div className="row">
+                                <div className="col-6">
+                                  <div className="formRow">
+                                    <div className='formLabel'>
+                                      <label>
+                                        Start Date
+                                      </label>
+                                    </div>
+                                    <div className='col-6'>
+                                      <div className='row gx-2'>
+                                        <div className='col-12'>
+                                          <input
+                                            type="date"
+                                            className="formItem"
+                                            {...register("start_date")}
+                                          />
+                                          {errors.trunk_id && (
+                                            <ErrorMessage text={errors.trunk_id.message} />
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-6">
+                                  <div className="formRow">
+                                    <div className='formLabel'>
+                                      <label>
+                                        End Date
+                                      </label>
+                                    </div>
+                                    <div className='col-6'>
+                                      <div className='row gx-2'>
+                                        <div className='col-12'>
+                                          <input
+                                            type="date"
+                                            className="formItem"
+                                            {...register("end_date")}
+                                          />
+                                          {errors.trunk_id && (
+                                            <ErrorMessage text={errors.trunk_id.message} />
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                               <div style={{ width: 'fit-content', marginTop: '10px' }}>
                                 <div className="timeTableWrapper col-auto">
@@ -1542,6 +1864,42 @@ function FportalCampaignCreate() {
                                       />
                                     </div>
                                   </div> */}
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Buyer Status
+                                      </label>
+                                    </div>}
+                                    <div className="col-12">
+                                      <div class="cl-toggle-switch">
+                                        <label class="cl-switch">
+                                          <input type="checkbox"
+                                            id="showAllCheck"
+                                            checked={buyer?.buyer_status == 'enable' ? true : false ?? false}
+                                            onChange={(e) => {
+                                              setBulkAddBuyersList(prevState =>
+                                                prevState.map(item =>
+                                                  item.id == buyer.id
+                                                    ? { ...item, buyer_status: e.target.checked ? 'enable' : 'disable' }
+                                                    : item
+                                                ));
+                                            }}
+                                          />
+                                          <span></span>
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleBuyerEdit(buyer.id)}
+                                      className="tableButton edit"
+                                    >
+                                      <i className="fa-solid fa-pencil"></i>
+                                    </button>
+                                  </div>
                                   {bulkAddBuyersList.length === 1 ? (
                                     ""
                                   ) : (
@@ -1721,6 +2079,16 @@ function FportalCampaignCreate() {
           </div>
         </div>
       }
+      {showMusic && (
+        <AddMusic
+          show={showMusic}
+          setShow={setShowMusic}
+          setUploadedMusic={setUploadedMusic}
+          setMusicRefresh={setMusicRefresh}
+          musicRefresh={musicRefresh}
+          listArray={["hold"]}
+        />
+      )}
     </main>
   );
 }

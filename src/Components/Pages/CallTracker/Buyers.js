@@ -152,7 +152,6 @@ function Buyers() {
                           <thead>
                             <tr>
                               <th>Buyer name</th>
-                              <th>Phone Code</th>
                               <th>Phone Number</th>
                               <th>Alt Phone Number</th>
                               <th>Email</th>
@@ -175,8 +174,7 @@ function Buyers() {
                                 allBuyers.map((buyer, index) => (
                                   <tr key={index}>
                                     <td>{buyer.name}</td>
-                                    <td>{buyer.phone_code}</td>
-                                    <td>{buyer.phone_number}</td>
+                                    <td>+{buyer.phone_code} - {buyer.phone_number}</td>
                                     <td>{buyer.alt_phone}</td>
                                     <td>{buyer.email}</td>
                                     <td>{buyer.address}</td>

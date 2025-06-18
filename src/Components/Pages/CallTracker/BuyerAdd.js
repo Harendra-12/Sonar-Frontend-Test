@@ -13,6 +13,9 @@ const BuyerAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [countryCode, setCountryCode] = useState();
+  const [additionalBuyerPhNumbers, setAdditionalBuyerPhNumbers] = useState([]);
+  const [bulkAddPopUp,setBulkAddPopUp] = useState(false)
+  const [bulkAddBuyersList, setBulkAddBuyersList] = useState([])
 
 
   const { watch, register, formState: { errors }, reset, handleSubmit, setValue } = useForm();
@@ -158,7 +161,6 @@ const BuyerAdd = () => {
                           <div className="formLabel">
                             <label>
                               Alternate Phone number{" "}
-                              <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a alt phone number.
@@ -167,7 +169,7 @@ const BuyerAdd = () => {
                           <div className="col-6">
                             <input type="text"
                               className="formItem d-none"
-                              {...register("alt_phone", { ...requiredValidator })}
+                              {...register("alt_phone")}
                             />
                             <PhoneInput
                               defaultCountry="US"
@@ -184,7 +186,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Email <span className="text-danger">*</span>
+                              Email
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a Email id .
@@ -194,7 +196,6 @@ const BuyerAdd = () => {
                             <input type="text"
                               className="formItem"
                               {...register("email", {
-                                ...requiredValidator,
                                 ...emailValidator,
                               })}
                             />
@@ -206,7 +207,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Address <span className="text-danger">*</span>
+                              Address
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a address .
@@ -216,7 +217,7 @@ const BuyerAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("address", { ...requiredValidator, })}
+                              {...register("address")}
                             />
                             {errors.address && (
                               <ErrorMessage text={errors.address.message} />
@@ -226,7 +227,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              City <span className="text-danger">*</span>
+                              City
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a City .
@@ -236,7 +237,7 @@ const BuyerAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("city", { ...requiredValidator, })}
+                              {...register("city")}
                             />
                             {errors.city && (
                               <ErrorMessage text={errors.city.message} />
@@ -246,7 +247,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              State <span className="text-danger">*</span>
+                              State
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a State .
@@ -256,7 +257,7 @@ const BuyerAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("state", { ...requiredValidator, })}
+                              {...register("state")}
                             />
                             {errors.state && (
                               <ErrorMessage text={errors.state.message} />
@@ -266,7 +267,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Province <span className="text-danger">*</span>
+                              Province
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a province.
@@ -276,7 +277,7 @@ const BuyerAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("province", { ...requiredValidator, })}
+                              {...register("province")}
                             />
                             {errors.province && (
                               <ErrorMessage text={errors.province.message} />
@@ -287,7 +288,7 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Postal code <span className="text-danger">*</span>
+                              Postal code
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a postal code
@@ -297,7 +298,7 @@ const BuyerAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("postal_code", { ...requiredValidator, })}
+                              {...register("postal_code")}
                             />
                             {errors.postal_code && (
                               <ErrorMessage text={errors.postal_code.message} />
@@ -307,14 +308,14 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Country Code <span className="text-danger">*</span>
+                              Country Code
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a country code
                             </label>
                           </div>
                           <div className="col-6">
-                            <select {...register("country_code", { ...requiredValidator, })} className="formItem">
+                            <select {...register("country_code")} className="formItem">
                               <option value="">Select Country Code</option>
                               {countryCode && countryCode.map((country, index) => (
                                 <option key={index} value={country.country_code}>
@@ -325,6 +326,29 @@ const BuyerAdd = () => {
                             {errors.country_code && (
                               <ErrorMessage text={errors.country_code.message} />
                             )}
+                          </div>
+                        </div>
+                        <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}></div>
+                        <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
+                          <div className="content">
+                            <h4>List of Additional Phone Numbers</h4>
+                            <p>You can see the list of additional numbers.</p>
+                          </div>
+                          <div className="buttonGroup">
+                            <button
+                              type="button"
+                              className="panelButton"
+                              onClick={() => {
+                                if (additionalBuyerPhNumbers?.data?.length !== bulkAddBuyersList.length)
+                                  setBulkAddPopUp(true);
+                                else toast.warn("All agent selected");
+                              }}
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
                           </div>
                         </div>
                       </form>
