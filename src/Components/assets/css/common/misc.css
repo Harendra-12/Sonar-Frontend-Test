@@ -27,6 +27,46 @@
     color: rgb(255, 102, 0);
 }
 
+
+.popup .heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup .heading>i {
+    color: #fff;
+    font-size: 1.25rem;
+    background-color: var(--ui-accent);
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    margin-bottom: 20px;
+
+}
+
+.popup .heading h5 {
+    margin-bottom: 10px;
+}
+
+.popup .heading p {
+    font-size: 0.75rem;
+    color: var(--color-subtext);
+}
+
+.popup .formLabel {
+    font-weight: 600;
+    font-size: 0.8125rem;
+}
+
 .extensionStatusWithName {
     margin: auto 0;
 }
@@ -620,8 +660,9 @@ input[type=number] {
     flex-wrap: wrap;
     gap: 5px;
 }
-.contactTags.mwMaxContent{
-     width: max-content;
+
+.contactTags.mwMaxContent {
+    width: max-content;
 }
 
 .contactTags span {
@@ -683,6 +724,7 @@ input[type=number] {
     background-color: #c7a0fa;
     color: #53187e !important;
 }
+
 .contactTags span[data-id="8"] {
     background-color: #fdeacd;
     color: #f7a659 !important;
@@ -692,6 +734,7 @@ input[type=number] {
     background-color: #b8eadcb0;
     color: #247662 !important;
 }
+
 .contactTags span[data-id="10"] {
     background-color: #ddb8ea;
     color: #9300ff !important;
@@ -758,10 +801,12 @@ input[type=number] {
     opacity: 0;
     transition: all 0.4s ease-in-out;
 }
+
 .contactTags span.removableTag:hover::before {
     opacity: 1;
-     font-size: 0.625rem;
+    font-size: 0.625rem;
 }
+
 .contactTags span.removableTag:hover {
     background-color: #ff0000;
     color: #fff !important;

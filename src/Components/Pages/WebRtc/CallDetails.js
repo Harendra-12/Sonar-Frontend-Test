@@ -117,7 +117,6 @@ function CallDetails({
     // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
     // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
     // }
-    console.log({ url })
     const trnascript = await fileUploadFunction(`transcribe-audio`,
       { src: url },
     );

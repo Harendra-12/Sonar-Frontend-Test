@@ -172,13 +172,15 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one agent");
       return
     }
-    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
-      toast.error("Start Time cannot be earlier than current time");
-      return
-    }
-    if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
-      toast.error("End Time cannot be earlier than current time");
-      return
+    if (watch().active_hours == 1) {
+      if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().start_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+        toast.error("Start Time cannot be earlier than current time");
+        return
+      }
+      if (watch().end_date.split("T")[0] == watch().start_date.split("T")[0] && watch().end_date.split("T")[1] < new Date().toTimeString().slice(0, 5)) {
+        toast.error("End Time cannot be earlier than current time");
+        return
+      }
     }
 
     const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)

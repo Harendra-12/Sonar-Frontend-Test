@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
  */
 function AgentFeedback() {
     const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
-    console.log("desposiTionOptions", desposiTionOptions);
     const [currentDisposition, setCurrentDisposiTion] = useState([]);
     const [agentNote, setAgentNote] = useState("");
 
@@ -60,7 +59,6 @@ function AgentFeedback() {
         }
     }
 
-    console.log("currentDisposition", currentDisposition);
 
     return (
         <>

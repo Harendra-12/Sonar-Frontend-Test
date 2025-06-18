@@ -12,17 +12,18 @@ const GoogleTranslate = () => {
 
       const listenForLanguageChange = () => {
         const iframe = document.querySelector("iframe.goog-te-menu-frame");
+
         if (iframe) {
-          const iframeDocument =
-            iframe.contentDocument || iframe.contentWindow.document;
+          const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 
           const observer = new MutationObserver(() => {
-            const languageSelect = iframeDocument.querySelector(
-              ".goog-te-menu2-item-selected"
-            );
-            if (languageSelect) {
-              const selectedLang = languageSelect.textContent.trim();
-              localStorage.setItem("selected_language", selectedLang);
+            const selectedOption = iframeDocument.querySelector(".goog-te-menu2-item-selected a");
+            if (selectedOption) {
+              const href = selectedOption.getAttribute("href");
+              if (href) {
+                const langCode = href.split("/").pop();
+                localStorage.setItem("selected_language", langCode);
+              }
             }
           });
 
@@ -51,51 +52,21 @@ const GoogleTranslate = () => {
 
     // Optional cleanup
     return () => {
-      const script = document.querySelector(
-        "script[src*='translate_a/element.js']"
-      );
+      const script = document.querySelector("script[src*='translate_a/element.js']");
       if (script) script.remove();
     };
   }, []);
 
-  return (
-    // <Rnd
-    //     minWidth={"300px"}
-    //     minHeight={"450px"}
-    //     maxWidth={"300px"}
-    //     maxHeight={"450px"}
-    //     dragHandleClassName="drag-handle" // Specify draggable area
-    // >
-    //     <div
-    //         style={{
-    //             background: "transparent",
-    //             position: "relative",
-    //             zIndex: "999",
-    //         }}
-    //     >
-    //         {/* Draggable Top Area */}
-    //         <div
-    //             id="google_translate_element"
-    //             className="drag-handle"
-    //             style={{
-    //                 position: "absolute",
-    //                 top: "35px",
-    //                 width: "100%",
-    //                 height: "105px",
-    //                 zIndex: "999999",
-    //                 background: "transparent",
-    //                 cursor: "move",
-    //             }}
-    //         ></div>
-    //     </div>
-    // </Rnd>
 
-    <div className="sticky-icon">
-      <div id="google_translate_element"></div>
-      <div className="">
-        <i className="fa-solid fa-language"></i>
+  return (
+    <>
+      <div className="sticky-icon">
+        <div id="google_translate_element"></div>
+        <div className="">
+          <i className="fa-solid fa-language"></i>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

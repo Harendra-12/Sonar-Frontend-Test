@@ -452,7 +452,7 @@ const Dashboard = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                   <path
                     fill="var(--color2)"
-                    fill-opacity="1"
+                    fillOpacity="1"
                     d="M0,160L120,186.7C240,213,480,267,720,277.3C960,288,1200,256,1320,240L1440,224L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"
                   ></path>
                 </svg>
@@ -951,11 +951,11 @@ const Dashboard = () => {
                                 <div className='circularProgressWrapper'>
                                   <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                     <circle className="bg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" strokeWidth="20"
                                     ></circle>
                                     <circle className="fg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
-                                      stroke-dasharray="361.25 361.25"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" strokeWidth="20"
+                                      strokeDasharray="361.25 361.25"
                                     ></circle>
                                   </svg>
                                   <div className='circularProgressContent'>
@@ -996,11 +996,11 @@ const Dashboard = () => {
                                 <div className='circularProgressWrapper'>
                                   <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
                                     <circle className="bg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" strokeWidth="20"
                                     ></circle>
                                     <circle className="fg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
-                                      stroke-dasharray="361.25 361.25"
+                                      cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" strokeWidth="20"
+                                      strokeDasharray="361.25 361.25"
                                     ></circle>
                                   </svg>
                                   <div className='circularProgressContent'>
@@ -1380,11 +1380,11 @@ const Dashboard = () => {
                             <div className='circularProgressWrapper'>
                               <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                 <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d0130" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d0130" strokeWidth="20"
                                 ></circle>
                                 <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d01" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d01" strokeWidth="20"
+                                  strokeDasharray="361.25 361.25"
                                 ></circle>
                               </svg>
                               <div className='circularProgressContent'>
@@ -1414,11 +1414,11 @@ const Dashboard = () => {
                             <div className='circularProgressWrapper'>
                               <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((allCall?.inbound?.completed / allCall?.inbound?.total) * 100)}` }}>
                                 <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a30" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a30" strokeWidth="20"
                                 ></circle>
                                 <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a" strokeWidth="20"
+                                  strokeDasharray="361.25 361.25"
                                 ></circle>
                               </svg>
                               <div className='circularProgressContent'>
