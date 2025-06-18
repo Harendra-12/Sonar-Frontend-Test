@@ -35,10 +35,13 @@ function FportalCampaignEdit() {
   const [pageNumber, setPageNumber] = useState(1);
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
   const [allBuyers, setAllBuyers] = useState([]);
+  const [allBuyersNumbers, setAllBuyersNumbers] = useState([])
   const [holdMusic, setHoldMusic] = useState()
   const [showMusic, setShowMusic] = useState(false);
   const [uploadedMusic, setUploadedMusic] = useState();
   const [musicRefresh, setMusicRefresh] = useState(0);
+  const [selectedBuyerDetails, setSelectedBuyerDetails] = useState(null)
+  const [selectedBuyerNumbers, setSelectedBuyerNumbers] = useState([])
   const [schedulerInfo, setSchedulerInfo] = useState([
     {
       name: 'Sunday',
@@ -168,7 +171,7 @@ function FportalCampaignEdit() {
     if (selectedBuyers && selectedBuyers.length > 0) {
       const arr = selectedBuyers.map((item) => ({
         id: item?.id,
-        name: item?.name,
+        name: `${item?.buyer?.name} - ${item?.phone_number}`,
         priority: -1,
         monthly_call_limit: item?.monthly_call_limit ?? 0,
         daily_call_limit: item?.daily_call_limit ?? 0,
@@ -261,7 +264,7 @@ function FportalCampaignEdit() {
         // total_send_call: item?.total_send_call
         buyer_status: item?.buyer_status
       }))
-      setBulkAddBuyersList(arr);
+      setBulkAddBuyersList(arr || []);
       setLoading(false);
 
     } else {
@@ -529,6 +532,20 @@ function FportalCampaignEdit() {
 
 
 
+  const handleAddBuyerNumbers = async() => {
+     const response = await generalGetFunction(`buyernumbers/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
+      // setLoading(true)
+     if (response.status) {
+      setAllBuyersNumbers(response?.data);
+      setLoading(false);
+    } else {
+      toast.error(response.message);
+      setLoading(false);
+    }
+    if (allBuyersNumbers?.data?.length !== bulkAddBuyersList?.length)
+      setBulkAddPopUp(true);
+    else toast.warn("All agent selected");
+  }
   return (
     <main className="mainContent">
       {loading && <CircularLoader />}
@@ -2004,6 +2021,76 @@ function FportalCampaignEdit() {
                           }
 
                           <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
+                            {/* <div className="col-12 mt-3">
+                              <h4>Add Buyers<span className="text-danger">*</span></h4>
+                              <div className="row mt-2">
+                                <div className="col-3">
+                                  <select
+                                    className="formItem"
+                                    name=""
+                                    id="selectFormRow"
+                                    defaultValue={""}
+                                    onChange={(event) => {
+                                      const buyer = allBuyers?.data?.find((item) => item?.id == event?.target?.value)
+                                      setSelectedBuyerDetails(buyer)
+                                    }}
+                                  >
+                                    <option selected="" value="">Select Buyer</option>
+                                    {allBuyers?.data?.map((buyer) =>
+                                      <option value={buyer?.id}>{buyer?.name}</option>
+                                    )}
+                                  </select>
+                                </div>
+                                {
+                                  selectedBuyerDetails !== null && selectedBuyerDetails !== undefined &&
+                                  <div className="col-3">
+                                    <div className="dropdown">
+                                      <button
+                                        className="formItem"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside"
+                                        style={{ width: "160px" }}
+                                      >
+                                        Choose Filters
+                                      </button>
+
+                                      <ul className="dropdown-menu">
+                                        {selectedBuyerDetails?.numbers?.map((option) => (
+                                          <li key={option?.id}>
+                                            <div className="dropdown-item" href="#">
+                                              <input
+                                                type="checkbox"
+                                                checked={selectedBuyerNumbers?.includes(option?.id)}
+                                                onChange={() => {
+                                                  setSelectedBuyerNumbers((prev) =>
+                                                    prev.includes(option?.id)
+                                                      ? prev.filter((val) => val !== option?.id)
+                                                      : [...prev, option?.id]
+                                                  );
+                                                }}
+                                              />
+                                              <span className="text-dark ms-2">
+                                                {option?.phone_number} -{option?.name}
+                                              </span>
+                                            </div>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                }
+                                <div className="col-3">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleBuyerAdd()}
+                                    className=""
+                                  >
+                                    Button
+                                  </button>
+                                </div>
+                              </div>
+                            </div> */}
                             <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
                               <div className="content">
                                 <h4>List of Buyers<span className="text-danger">*</span></h4>
@@ -2013,11 +2100,7 @@ function FportalCampaignEdit() {
                                 <button
                                   type="button"
                                   className="panelButton"
-                                  onClick={() => {
-                                    if (allBuyers?.data?.length !== bulkAddBuyersList.length)
-                                      setBulkAddPopUp(true);
-                                    else toast.warn("All agent selected");
-                                  }}
+                                  onClick={() => handleAddBuyerNumbers()}
                                 >
                                   <span className="text">Add</span>
                                   <span className="icon">
@@ -2027,7 +2110,6 @@ function FportalCampaignEdit() {
                               </div>
                             </div>
                             {bulkAddBuyersList && bulkAddBuyersList?.length > 0 ? bulkAddBuyersList?.map((buyer, index) => {
-                              { console.log('buyer', buyer) }
                               return (
                                 <div className="row">
                                   <div className="formRow col">
@@ -2040,7 +2122,7 @@ function FportalCampaignEdit() {
                                       <input
                                         type="text"
                                         className="formItem"
-                                        value={buyer?.name}
+                                        value={buyer?.name} 
                                         disabled={true}
                                       />
                                     </div>
@@ -2190,7 +2272,7 @@ function FportalCampaignEdit() {
                                     </div>
                                   </div>
 
-                                  <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
+                                  {/* <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
                                     <button
                                       type="button"
                                       onClick={() => handleBuyerEdit(buyer.id)}
@@ -2198,7 +2280,7 @@ function FportalCampaignEdit() {
                                     >
                                       <i className="fa-solid fa-pencil"></i>
                                     </button>
-                                  </div>
+                                  </div> */}
 
                                   {bulkAddBuyersList.length === 1 ? (
                                     ""
@@ -2215,7 +2297,12 @@ function FportalCampaignEdit() {
                                   )}
                                 </div>
                               )
-                            }) : ""}
+                            })
+                              : ""}
+
+                            {/* {
+                              allBuyers && allBuyers?.data?.length > 0 ? allBuyers?.data?.map((buyer, index) => )
+                            } */}
                           </div>
                         </form>
                       </div>
@@ -2278,10 +2365,9 @@ function FportalCampaignEdit() {
                       <thead>
                         <tr>
                           <th>S.No</th>
-                          <th>Name</th>
+                          <th>Buyer</th>
+                          <th>Tag</th>
                           <th>Phone Number</th>
-                          <th>City</th>
-                          <th>Country</th>
                           <th>
                             <input
                               type="checkbox"
@@ -2292,7 +2378,7 @@ function FportalCampaignEdit() {
                         </tr>
                       </thead>
                       <tbody>
-                        {allBuyers?.data?.sort((a, b) => {
+                        {allBuyersNumbers?.data?.sort((a, b) => {
                           const aMatches =
                             a.name
                               .toLowerCase()
@@ -2314,10 +2400,9 @@ function FportalCampaignEdit() {
                             return (
                               <tr key={item.id || index}>
                                 <td>{index + 1}</td>
-                                <td>{item.name}</td>
-                                <td>{item.phone_number}</td>
-                                <td>{item.city}</td>
-                                <td>{item.country_code}</td>
+                                <td>{item?.buyer?.name}</td>
+                                <td>{item?.name}</td>
+                                <td>{item?.full_phone_number}</td>
                                 <td>
                                   <input
                                     type="checkbox"

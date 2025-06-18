@@ -1,53 +1,77 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { emailValidator, lengthValidator, numberValidator, requiredValidator } from "../../validations/validation";
+import { emailValidator, lengthValidator, numberValidator, rangeValidator, requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import PhoneInput, { parsePhoneNumber, getCountryCallingCode } from "react-phone-number-input";
+import Tippy from "@tippyjs/react";
+import { useSelector } from "react-redux";
 
 const BuyersEdit = () => {
   const navigate = useNavigate();
+  const state = useSelector((state) => state);
+  const account = state?.account;
   const [loading, setLoading] = useState(false);
   const [countryCode, setCountryCode] = useState();
-
+  const [holdMusic, setHoldMusic] = useState()
+  const [uploadedMusic, setUploadedMusic] = useState();
+  const [musicRefresh, setMusicRefresh] = useState(0);
+  const [listOfAdditionalPhNumbers, setListOfAdditionalPhNumbers] = useState([])
+  console.log('list of adintional nuber', listOfAdditionalPhNumbers)
   const { watch, setValue, register, formState: { errors }, reset, handleSubmit } = useForm();
   const locationState = useLocation();
 
   // Initial API Call to get Buyer Info
-  useEffect(() => {
-    async function getData() {
-      if (locationState.state.id) {
-        setLoading(true);
-        try {
-          const apiData = await generalGetFunction(`/buyer/${locationState.state.id}`)
-          if (apiData.status) {
-            const { name, phone_number, phone_code, alt_phone, email, address, city, state, province, postal_code, country_code } = apiData?.data;
+  async function getData() {
+    if (locationState.state.id) {
+      setLoading(true);
+      try {
+        const apiData = await generalGetFunction(`/buyer/${locationState.state.id}`)
+        if (apiData.status) {
+          const {
+            name,
+            numbers,
+            phone_number,
+            phone_code,
+            alt_phone,
+            email,
+            address,
+            city,
+            state,
+            province,
+            postal_code,
+            country_code
+          } = apiData?.data;
 
-            // Combine phone_code and phone_number for PhoneInput
-            const fullPhoneNumber = phone_code && phone_number
-              ? `+${phone_code}${phone_number}`
-              : undefined;
+          // Combine phone_code and phone_number for PhoneInput
+          const fullPhoneNumber = phone_code && phone_number
+            ? `+${phone_code}${phone_number}`
+            : undefined;
 
-            const fullAltNumber = phone_code && alt_phone
-              ? `+${phone_code}${alt_phone}`
-              : undefined;
+          const fullAltNumber = phone_code && alt_phone
+            ? `+${phone_code}${alt_phone}`
+            : undefined;
 
-            reset({ name, phone_number: fullPhoneNumber, phone_code, alt_phone: fullAltNumber, email, address, city, state, province, postal_code, country_code });
-            setLoading(false);
-          }
-        } catch (err) {
-          console.log(err);
+          reset({ name, phone_number: fullPhoneNumber, phone_code, alt_phone: fullAltNumber, email, address, city, state, province, postal_code, country_code });
+
+          const updatedNumber = numbers?.map((item) => ({
+            ...item,
+            full_phone_number: `+${item?.full_phone_number || ""}`,
+
+          }))
+          setListOfAdditionalPhNumbers(updatedNumber)
           setLoading(false);
         }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
       }
     }
-    fetchAllCountry()
-    getData()
-  }, [countryCode, locationState.state.id]);
+  }
 
   // Fetch all countries
   const fetchAllCountry = async () => {
@@ -65,6 +89,38 @@ const BuyersEdit = () => {
     }
   }
 
+  const getAllSounds = async () => {
+    if (account && account.id) {
+      setLoading(true);
+      const holdMusic = await generalGetFunction("/sound/all?type=hold");
+      setLoading(false);
+      if (holdMusic?.status) {
+        setHoldMusic(holdMusic.data);
+        if (holdMusic.data.length > 0 && uploadedMusic) {
+          setValue("hold_music", uploadedMusic.id);
+        }
+      } else {
+        navigate("/");
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchAllCountry()
+    getData()
+    getAllSounds()
+  }, [countryCode, locationState.state.id]);
+
+  useEffect(() => {
+    if (account && account.id) {
+      getAllSounds()
+    } else {
+      setLoading(false);
+      navigate("/");
+    }
+  }, [account, musicRefresh]);
+
+
   // Handle Buyer Edit
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
@@ -72,8 +128,27 @@ const BuyersEdit = () => {
     const phoneNumber = parsePhoneNumber(data.phone_number);
     const parsedNumber = phoneNumber?.nationalNumber;
     const parsedAltNumber = parsePhoneNumber(data?.alt_phone || "")?.nationalNumber;
-    
-    const payload = { ...data, phone_number: parsedNumber || data.phone_number, alt_phone: parsedAltNumber || data.alt_phone || null, phone_code: phoneNumber?.countryCallingCode };
+    const record = data?.record == "true" ? true : false;
+    const sticky_agent_enable = data?.sticky_agent_enable == "true" ? true : false;
+    const list_of_additional_numbers = listOfAdditionalPhNumbers?.map((item) => {
+      const parseNumber = parsePhoneNumber(item?.full_phone_number)
+      return {
+        "id": item?.id,
+        "name": item?.name,
+        "phone_code": parseNumber?.countryCallingCode,
+        "phone_number": parseNumber?.nationalNumber
+      }
+    })
+
+    const payload = {
+      ...data,
+      phone_number: parsedNumber || data.phone_number,
+      alt_phone: parsedAltNumber || data.alt_phone || null,
+      phone_code: phoneNumber?.countryCallingCode,
+      record: record,
+      phone_numbers: list_of_additional_numbers,
+      sticky_agent_enable: sticky_agent_enable
+    };
     const apiData = await generalPutFunction(`/buyer/${locationState.state.id}`, payload);
     if (apiData?.status) {
       setLoading(false);
@@ -83,6 +158,18 @@ const BuyersEdit = () => {
       setLoading(false);
     }
   });
+
+  const handleDeleteBuyerAdditionalNumber = async (item) => {
+    const apiData = await generalDeleteFunction(`/buyernumbers/${item?.id}`);
+    if (apiData?.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+       getData()
+    } else {
+      setLoading(false);
+    }
+    // { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }
+  }
 
   return (
     <>
@@ -350,6 +437,375 @@ const BuyersEdit = () => {
                             )}
                           </div>
                         </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Sticky Agent</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the status of Sticky Agent
+                            </label>
+                          </div>
+                          <div
+                            className={`col-${watch().sticky_agent_enable == "true" ||
+                              watch().sticky_agent_enable == 1
+                              ? "2 pe-2 ms-auto"
+                              : "6"
+                              }`}
+                          >
+                            {watch().sticky_agent_enable === "true" ||
+                              watch().sticky_agent_enable === 1 ? (
+                              <div className="formLabel">
+                                <label className="formItemDesc">Status</label>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <select
+                              className="formItem"
+                              name=""
+                              defaultValue="false"
+                              id="selectFormRow"
+                              {...register("sticky_agent_enable")}
+                            >
+                              <option value="true">True</option>
+                              <option value="false">False</option>
+                            </select>
+                          </div>
+
+                          {(watch().sticky_agent_enable == true ||
+                            watch().sticky_agent_enable == "true") && (
+                              <div
+                                className="col-2 pe-2"
+                                style={{ width: "12%" }}
+                              >
+                                <div className="formLabel">
+                                  <Tippy content="Check the duration of sticky agent">
+                                    <label className="formItemDesc">
+                                      Duration{" "}
+                                    </label>
+                                  </Tippy>
+                                </div>
+                                <input
+                                  type="number"
+                                  name="forward_to"
+                                  className="formItem"
+                                  {...register(
+                                    "stick_agent_expires",
+                                    rangeValidator(1, 99), {
+                                    requiredValidator
+                                  }
+                                  )}
+                                />
+                                {errors.stick_agent_expires && (
+                                  <ErrorMessage
+                                    text={errors.stick_agent_expires.message}
+                                  />
+                                )}
+                              </div>
+                            )}
+                          {(watch().sticky_agent_enable == true ||
+                            watch().sticky_agent_enable == "true") && (
+                              <div className="col-2" style={{ width: "21.3%" }}>
+                                <div className="formLabel">
+                                  <label className="formItemDesc">
+                                    Agent Type
+                                  </label>
+                                </div>
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  id="selectFormRow"
+                                  {...register("stick_agent_type")}
+                                >
+                                  <option selected="" value="last_spoken">
+                                    Last Spoken
+                                  </option>
+                                  <option value="longest_time">
+                                    Longest Time
+                                  </option>
+                                </select>
+                              </div>
+                            )}
+                          {(watch().sticky_agent_enable == true ||
+                            watch().sticky_agent_enable == "true") && (
+                              <div
+                                className="col-2 pe-2"
+                                style={{ width: "12%" }}
+                              >
+                                <div className="formLabel">
+                                  <Tippy content="Timout for the sticky agent and return to normal routing">
+                                    <label className="formItemDesc">
+                                      Timeout(Sec.){" "}
+                                    </label>
+                                  </Tippy>
+                                </div>
+                                <input
+                                  type="number"
+                                  name="forward_to"
+                                  className="formItem"
+                                  {...register(
+                                    "sticky_agent_timeout",
+                                    rangeValidator(1, 99), {
+                                    requiredValidator
+                                  }
+                                  )}
+                                />
+                                {errors.stick_agent_expires && (
+                                  <ErrorMessage
+                                    text={errors.stick_agent_expires.message}
+                                  />
+                                )}
+                              </div>
+                            )}
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Spam Filter</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select the type of Spam Filter
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <div className="row">
+                              <div
+                                className={`col-${watch().spam_filter_type === "3"
+                                  ? "4 pe-1 ms-auto"
+                                  : "12"
+                                  }`}
+                              >
+                                {watch().spam_filter_type != "1" && (
+                                  <div className="formLabel">
+                                    <label>Type</label>
+                                  </div>
+                                )}
+                                <select
+                                  className="formItem"
+                                  name=""
+                                  defaultValue="1"
+                                  id="selectFormRow"
+                                  {...register("spam_filter_type")}
+                                >
+                                  <option value="1">Disable</option>
+                                  <option value="2">Call Screening</option>
+                                  <option value="3">DTMF Input</option>
+                                </select>
+                              </div>
+                              {watch().spam_filter_type === "3" && (
+                                <>
+                                  <div className="col-4 px-1">
+                                    <div className="formLabel">
+                                      <label htmlFor="selectFormRow">
+                                        Retries
+                                      </label>
+                                    </div>
+                                    <select
+                                      className="formItem"
+                                      name=""
+                                      id="selectFormRow"
+                                      {...register("dtmf_retries")}
+                                    >
+                                      <option value={1}>1</option>
+                                      <option value={2}>2</option>
+                                      <option value={3}>3</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-4 ps-1">
+                                    <div className="formLabel">
+                                      <Tippy content="Input in Days, Max 5">
+                                        <label>
+                                          Length{" "}
+                                          <span
+                                            style={{
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          ></span>
+                                        </label>
+                                      </Tippy>
+                                    </div>
+                                    <select
+                                      className="formItem"
+                                      name=""
+                                      defaultValue="false"
+                                      id="selectFormRow"
+                                      {...register("dtmf_length")}
+                                    >
+                                      <option value={1}>1</option>
+                                      <option value={2}>2</option>
+                                      <option value={3}>3</option>
+                                      <option value={4}>4</option>
+                                      <option value={5}>5</option>
+                                    </select>
+                                  </div>
+                                  <div className="col-6 pe-1">
+                                    <div className="formLabel">
+                                      <label>
+                                        DTMF type{" "}
+                                        <span
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        ></span>
+                                      </label>
+                                    </div>
+                                    <select
+                                      className="formItem"
+                                      name=""
+                                      defaultValue="false"
+                                      id="selectFormRow"
+                                      {...register("dtmf_type")}
+                                    >
+                                      <option value="random_digit">
+                                        Random Digit
+                                      </option>
+                                      <option value="last_caller_id_digit">
+                                        Caller last digit
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div className="col-6 ps-1">
+                                    <div className="formLabel">
+                                      <label htmlFor="selectFormRow">
+                                        Retry File
+                                      </label>
+                                    </div>
+                                    <select
+                                      className="formItem"
+                                      name=""
+                                      id="selectFormRow"
+                                      {...register("dtmf_retry_file_sound")}
+                                    >
+                                      <option value={""}>None</option>
+                                      {holdMusic &&
+                                        holdMusic.map((ring) => {
+                                          return (
+                                            <option
+                                              key={ring.id}
+                                              value={ring.id}
+                                            >
+                                              {ring.name}
+                                            </option>
+                                          );
+                                        })}
+                                    </select>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Record</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Save the recording.
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              className="formItem"
+                              name=""
+                              id="selectFormRow"
+                              {...register("record")}
+                              defaultValue={false}
+                            >
+                              <option value={true}>True</option>
+                              <option value={false}>False</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
+                        </div>
+                        <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
+                          <div className="content">
+                            <h4>List of Additional Phone Numbers <span className="text-danger">*</span></h4>
+                            <p>You can add the list of additional numbers.</p>
+                          </div>
+                        </div>
+                        {
+                          listOfAdditionalPhNumbers?.map((item, index) => {
+                            return (
+                              <div className=" col-xl-12" key={index}>
+                                <div className="formRow justify-content-start">
+                                  <div className="col-6" >
+                                    {
+                                      index === 0 &&
+                                      <div className="formLabel">
+                                        <label className="formItemDesc">
+                                          Tag
+                                        </label>
+                                      </div>
+                                    }
+                                    <div className="col-3">
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={listOfAdditionalPhNumbers[index]?.name || ""}
+                                        onChange={(event) => {
+                                          const newTag = [...listOfAdditionalPhNumbers];
+                                          newTag[index].name = event?.target?.value;
+                                          setListOfAdditionalPhNumbers(newTag);
+                                        }}
+                                      />
+                                      {errors.other_number_tag_name && (
+                                        <ErrorMessage text={errors.other_number_tag_name.message} />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="col-3" >
+                                    {
+                                      index === 0 &&
+                                      <div className="formLabel">
+                                        <label className="formItemDesc">
+                                          Phone Number
+                                        </label>
+                                      </div>
+                                    }
+                                    <div className="col-6">
+                                      <PhoneInput
+                                        defaultCountry={countryCode?.find(
+                                          (code) => code?.prefix_code === `+${listOfAdditionalPhNumbers[index]?.phone_code}`
+                                        )?.country_code}
+                                        placeholder="Enter phone number"
+                                        limitMaxLength={true}
+                                        value={listOfAdditionalPhNumbers[index]?.full_phone_number || ""}
+                                        onChange={(value) => {
+                                          const newNumbers = [...listOfAdditionalPhNumbers];
+                                          newNumbers[index].full_phone_number = value;
+                                          setListOfAdditionalPhNumbers(newNumbers);
+                                        }}
+                                      />
+                                      {errors.additional_number && (
+                                        <ErrorMessage text={errors.additional_number.message} />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="col-3 mt-4">
+                                    {
+                                      listOfAdditionalPhNumbers?.length > 1 &&
+                                      <button
+                                        type="button"
+                                        className="tableButton delete mx-auto"
+                                        onClick={() => handleDeleteBuyerAdditionalNumber(item)} >
+                                        <i className="fa-solid fa-trash" />
+                                      </button>
+                                    }
+                                  </div>
+                                  {
+                                    index === listOfAdditionalPhNumbers?.length - 1 &&
+                                    <div className="col-3 mt-4" >
+                                      <button type="button" className="panelButton" onClick={() => { if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") { setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }]) } }}>
+                                        <span className="text">Add</span>
+                                        <span className="icon">
+                                          <i className="fa-solid fa-plus"></i>
+                                        </span>
+                                      </button>
+                                    </div>
+                                  }
+                                </div>
+                              </div>
+                            )
+                          })
+                        }
                       </form>
                     </div>
                   </div>
