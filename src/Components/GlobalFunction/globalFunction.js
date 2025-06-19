@@ -3,18 +3,11 @@ import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
-const aiBaseName = "https://ai.webvio.in/backend/backend";
-const aiToken = "key_a083999b0156a43721cc1b5942a1";
 let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
-// Creating instance of axios
-const axiosInstance = axios.create({
-  baseURL: baseName,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const aiBaseName = "https://ai.webvio.in/backend/backend";
+const aiToken = "key_a083999b0156a43721cc1b5942a1";
 
 // ai axios instance
 const aiAxiosInstance = axios.create({
@@ -24,26 +17,6 @@ const aiAxiosInstance = axios.create({
     Authorization: `Bearer ${aiToken}`,
   },
 });
-
-if (token !== null) {
-  axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
-
-/**
- * Sets or removes the Authorization header for the axios instance.
- * If a token is provided, it sets the Authorization header to use the Bearer token.
- * If no token is provided, it removes the Authorization header.
- *
- * @param {string|null} token - The token to be used for authorization, or null to remove the header.
- */
-
-const setAuthToken = (token) => {
-  if (token) {
-    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  } else {
-    delete axiosInstance.defaults.headers.common["Authorization"];
-  }
-};
 
 // AI General Get function
 export const aiGeneralGetFunction = async (endpoint) => {
@@ -75,7 +48,7 @@ export const aiGeneralPutFunction = async (endpoint, data) => {
     return error.response.data;
   }
 };
-// General Delete function
+// AI General Delete function
 export const aiGeneralDeleteFunction = async (endpoint) => {
   try {
     const response = await aiAxiosInstance.delete(endpoint);
@@ -83,6 +56,34 @@ export const aiGeneralDeleteFunction = async (endpoint) => {
   } catch (error) {
     // console.error("Error: ", error);
     return error.response.data;
+  }
+};
+
+// Creating instance of axios
+const axiosInstance = axios.create({
+  baseURL: baseName,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+if (token !== null) {
+  axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+
+/**
+ * Sets or removes the Authorization header for the axios instance.
+ * If a token is provided, it sets the Authorization header to use the Bearer token.
+ * If no token is provided, it removes the Authorization header.
+ *
+ * @param {string|null} token - The token to be used for authorization, or null to remove the header.
+ */
+
+const setAuthToken = (token) => {
+  if (token) {
+    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete axiosInstance.defaults.headers.common["Authorization"];
   }
 };
 
@@ -659,30 +660,28 @@ export function formatTimeWithAMPM(timeString) {
 // Formate date for time stamp to get time when message arrives
 export function formatRelativeTime(dateString) {
   const account = localStorage.getItem("account");
+  const timeZone = JSON.parse(account)?.timezone?.name || "UTC";
+
   try {
-    const timeZone = JSON.parse(account)?.timezone?.name;
-    // Parse input date (UTC) and current time
-    const date = new Date(dateString);
     const now = new Date();
+    const date = new Date(dateString);
 
-    // Convert both dates to the target timezone for accurate comparison
-    const dateInTz = new Date(date.toLocaleString("en-US", { timeZone }));
-    const nowInTz = new Date(now.toLocaleString("en-US", { timeZone }));
-
-    // Calculate differences in timezone-adjusted time
-    const diffMs = nowInTz - dateInTz;
+    // Calculate the diff in milliseconds (no need to convert to local strings for diff)
+    const diffMs = now.getTime() - date.getTime();
     const diffSeconds = Math.floor(diffMs / 1000);
+
+    if (diffSeconds < 0) return "Just now";
+
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
 
-    // Handle timezone-adjusted relative time
+    // For "Yesterday" or date format, convert date to target timezone for display
     if (diffDays >= 1) {
       if (diffDays === 1) return "Yesterday";
-
-      // Format full date in target timezone
-      return dateInTz.toLocaleDateString("en-US", {
-        timeZone,
+      return new Date(
+        date.toLocaleString("en-US", { timeZone })
+      ).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: diffDays >= 365 ? "numeric" : undefined,
@@ -696,9 +695,7 @@ export function formatRelativeTime(dateString) {
     }
   } catch (error) {
     console.error("Error formatting time:", error);
-    // Fallback to UTC formatting if timezone fails
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US");
+    return new Date(dateString).toLocaleDateString("en-US");
   }
 }
 
@@ -824,3 +821,29 @@ export const isoToTimeFormat = (isoString) => {
     hour12: true,
   }); // e.g., "3:23:16 PM"
 };
+
+export const formatTimeSecondsToHHMMSS = (seconds) => {
+  const hours = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0");
+  const minutes = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
+  return `${hours}:${minutes}:${secs}`;
+};
+export function secondsToHHMMSS(totalSeconds) {
+  const hours = Math.floor(totalSeconds / 3600)
+    .toString()
+    .padStart(2, "0");
+
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+
+  const seconds = Math.floor(totalSeconds % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`;
+}
