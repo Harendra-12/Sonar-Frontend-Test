@@ -456,7 +456,7 @@ function App() {
           <Route
             path="/access-control-list"
             element={
-              accountDetails?.add_on_subscription.find(
+              accountDetails?.add_on_subscription?.find(
                 (item) => item?.addon_id == 7
               ) &&
                 (checkViewSidebar(
@@ -482,7 +482,7 @@ function App() {
           <Route
             path="/access-control-list-add"
             element={
-              accountDetails?.add_on_subscription.find(
+              accountDetails?.add_on_subscription?.find(
                 (item) => item?.addon_id == 7
               ) &&
                 (checkViewSidebar(
@@ -508,7 +508,7 @@ function App() {
           <Route
             path="/access-control-list-edit"
             element={
-              accountDetails?.add_on_subscription.find(
+              accountDetails?.add_on_subscription?.find(
                 (item) => item?.addon_id == 7
               ) &&
                 (checkViewSidebar(
@@ -1416,7 +1416,7 @@ function App() {
           {/* Spam Filter end */}
 
           <Route path="click-to-call-edit" element={
-            accountDetails?.add_on_subscription.find(
+            accountDetails?.add_on_subscription?.find(
               (item) => item?.addon_id == 2
             ) &&
               checkViewSidebar(
@@ -1433,7 +1433,7 @@ function App() {
           <Route
             path="click-to-call-listing"
             element={
-              accountDetails?.add_on_subscription.find(
+              accountDetails?.add_on_subscription?.find(
                 (item) => item?.addon_id == 2
               ) &&
                 checkViewSidebar(
@@ -1448,7 +1448,7 @@ function App() {
             }
           />
           <Route path="click-to-call-add" element={
-            accountDetails?.add_on_subscription.find(
+            accountDetails?.add_on_subscription?.find(
               (item) => item?.addon_id == 2
             ) &&
               checkViewSidebar(

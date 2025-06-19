@@ -54,7 +54,7 @@ function MeetingEdit() {
         }
         reset(data);
 
-        setAddedUsers(data.users);
+        // setAddedUsers(data.users);
         setParticipants(data.emails);
       }
     } catch (err) {
@@ -66,7 +66,7 @@ function MeetingEdit() {
   }
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants[0].trim() == "") {
+    if (participants.length == 1 && participants[0].length == 0) {
       toast.error("Please add participants");
       return;
     }
@@ -109,6 +109,10 @@ function MeetingEdit() {
       );
       if (response.status) {
         setAllInternalUsers(response.data);
+        if (watch().conf_type == "internal") {
+          const addedUsers = response.data.filter((user) => watch().users.some((item) => item.user_id == user.id));
+          setAddedUsers(addedUsers);
+        }
       }
     } catch (err) {
       toast.error(err.response.message || err.response.error);
@@ -118,12 +122,12 @@ function MeetingEdit() {
   }
 
   useEffect(() => {
-    if (conferenceType == "internal") {
+    if (watch().conf_type == "internal") {
       if (allInternalUsers?.length == 0) {
         getInternalUsers();
       }
     }
-  }, [conferenceType]);
+  }, [watch().conf_type]);
 
   function handleChecked(userId) {
     if (selectedUser.includes(userId)) {
@@ -172,8 +176,8 @@ function MeetingEdit() {
               <div className="col-12">
                 <div className="heading">
                   <div className="content">
-                    <h4>Create Meeting Room</h4>
-                    <p>Create a new conference and configure it.</p>
+                    <h4>Edit Meeting Room</h4>
+                    <p>Edit the conference to configure it.</p>
                   </div>
                   <div className="buttonGroup">
                     <div className="d-flex align-items-center">
@@ -397,7 +401,7 @@ function MeetingEdit() {
                     </div>
                   </form>
                 </div>
-                {conferenceType == "internal" && (
+                {watch().conf_type == "internal" && (
                   <div className="col-xl-6">
                     <nav className="tangoNavs">
                       <div className="nav nav-tabs" id="nav-tab" role="tablist">

@@ -102,8 +102,11 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
       return false
     }
     if (moderatorPassword == item) {
+      setIsConferenceAdmin(true);
+      setJoinAsModPopup(false)
       return true
     } else {
+      toast.error("Incorrect moderator password");
       return false
     }
   }
@@ -224,7 +227,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                           <td>{item.conf_url}</td>
                                           <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>
                                           <td>
-                                            {isAllDay || isLessThan5Minutes ? (
+                                            {(isAllDay || isLessThan5Minutes) && isUser ? (
                                               <div className="dropdown">
                                                 <div className="tableButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                   <i className="fa-solid fa-send"></i>
@@ -258,7 +261,13 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                             </p>
                                                             <input type="password" className="formItem" value={moderatorPassword} onChange={(e) => setModeratorPassword(e.target.value)} />
                                                             <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
-                                                              <button className="panelButton m-0" onClick={checkModeratorPassword(item.moderator_pin) ? handleConferenceJoin(item.conf_url) : ""}>
+                                                              <button className="panelButton gray m-0" onClick={() => { setJoinAsModPopup(false); setModeratorPassword("") }}>
+                                                                <span className="text">Close</span>
+                                                                <span className="icon">
+                                                                  <i className="fa-solid fa-xmark" />
+                                                                </span>
+                                                              </button>
+                                                              <button className="panelButton m-0" onClick={() => checkModeratorPassword(item?.moderator_pin) ? handleConferenceJoin(item.conf_url) : ""}>
                                                                 <span className="text">Join</span>
                                                                 <span className="icon">
                                                                   <i className="fa-solid fa-send" />
@@ -270,9 +279,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                       </div>
                                                     </div>
                                                   </div>
-                                                )
-
-                                                }
+                                                )}
                                               </div>
                                             ) : !isUser ? (
                                               <div className="tableButton" onClick={() => { handleConferenceJoin(item.conf_url); setIsConferenceAdmin(true) }}>
