@@ -477,15 +477,15 @@ const AiPhoneNumber = () => {
                           </div>
                         </div>
                       </div> */}
-                         <div className="formLabel">
-                            <label>Provider</label>
-                          </div>
+                      <div className="formLabel">
+                        <label>Provider</label>
+                      </div>
                       <div className="row radio-input px-2">
                         <div className="col-6">
                           <label className="label radioLabel">
                             <p className="text">Twilio</p>
                             <input
-                            checked
+                              checked
                               type="radio"
                               id="send-now"
                               name="value-radio"
@@ -518,11 +518,11 @@ const AiPhoneNumber = () => {
                             />
                           </div>
                         </div>
-                          <div className='col-12 mt-3'>
-                              <div className='noticeMessageBox'>
-                                <i class="fa-regular fa-circle-exclamation "></i>  <p className='mb-0 f-s-14'>This number incurs a monthly fee of $2.00.</p>
-                              </div>
+                        <div className='col-12 mt-3'>
+                          <div className='noticeMessageBox'>
+                            <i class="fa-regular fa-circle-exclamation "></i>  <p className='mb-0 f-s-14'>This number incurs a monthly fee of $2.00.</p>
                           </div>
+                        </div>
 
                       </div>
                     </div>

@@ -199,6 +199,7 @@ import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboa
 import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
+import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -844,6 +845,7 @@ function App() {
           <Route path="/ai-billing" element={<Billing />} />
           <Route path="/ai-batch-call" element={<AiBatchCall />} />
           <Route path="/ai-agent-dashboard" element={<AiDashboard />} />
+          <Route path="/conversations-flow" element={<ConversationsFlow />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
