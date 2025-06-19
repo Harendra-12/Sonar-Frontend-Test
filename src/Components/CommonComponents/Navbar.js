@@ -1019,6 +1019,7 @@ function Navbar() {
                         id="collapse7"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/tracker-dashboard",
+                          "/tracker-active-calls",
                           "/did-listing-tracker",
                           "/buyers",
                           "/source",
@@ -1045,6 +1046,14 @@ function Navbar() {
                                 onClick={backToTop}
                               >
                                 <div className="itemTitle">Dashboard</div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/tracker-active-calls"
+                                onClick={backToTop}
+                              >
+                                <div className="itemTitle">Active Calls</div>
                               </NavLink>
                             </li>
 
