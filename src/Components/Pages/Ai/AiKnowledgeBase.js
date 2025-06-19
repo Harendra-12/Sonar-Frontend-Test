@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
+import { requiredValidator, urlValidator } from "../../validations/validation";
 
 const AiKnowledgeBase = () => {
   const [refreshState, setRefreshState] = useState(false);
