@@ -186,6 +186,8 @@ function Account({ account, nextPage, companyStatus }) {
         </div>
       </div> */}
       <div className="col-12 mt-3">
+         <div className=" d-flex gap-3 flex-wrap w-100">
+
         <ul className="listViewProfileInfo">
           <li className="mb-2"><span className="textImmortalBlack">Company Name : </span> <span className="textSubtext">{account.company_name}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Admin Name : </span> <span className="textSubtext">{account.admin_name}</span></li>
@@ -193,6 +195,10 @@ function Account({ account, nextPage, companyStatus }) {
           <li className="mb-2"><span className="textImmortalBlack">Phone Number : </span> <span className="textSubtext">{account.contact_no}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Alternate Number: </span> <span className="textSubtext">{account.alternate_contact_no}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Timezone : </span> <span className="textSubtext">{account.timezone.name}</span></li>
+         
+        </ul>
+
+        <ul className="listViewProfileInfo">
           <li className="mb-2"><span className="textImmortalBlack">Block/Unit/Place : </span> <span className="textSubtext">{account.unit}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Building : </span> <span className="textSubtext">{account.building}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">City : </span> <span className="textSubtext">{account.city}</span></li>
@@ -200,6 +206,7 @@ function Account({ account, nextPage, companyStatus }) {
           <li className="mb-2"><span className="textImmortalBlack">State : </span> <span className="textSubtext">{account.state}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Country : </span> <span className="textSubtext">{account.country}</span></li>
         </ul>
+         </div>
       </div>
     </>
   );

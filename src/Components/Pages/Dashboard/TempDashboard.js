@@ -14,6 +14,7 @@ function TempDashboard() {
   const dispatch = useDispatch();
   const [statusClick, setStatusClick] = useState("account");
   const [refreshDetails, setRefreshDetails] = useState(1);
+  const isSmall = window.matchMedia("(max-width: 1399px)").matches;
 
   const navigate = useNavigate();
   const [account, setAccount] = useState(
@@ -67,6 +68,11 @@ function TempDashboard() {
   function handleCallBack(value) {
     setStatusClick(value);
   }
+
+
+
+
+
 
   return (
     <>
@@ -152,12 +158,11 @@ function TempDashboard() {
               <div className="profileView p-3" >
                 <div className="profileDetailsHolder position-relative">
                   <div className="row">
-                    <div className="col-lg-3">
+                    <div className="col-xxl-3 col-xl-12">
                       <div className="baseDetails wrpDetails__box row align-items-start mt-3"
                       // style={{ padding: "30px 10px 55px" }}
                       >
-                        <div className="col-xl-4 p-3 position-relative pb-0">
-
+                        <div className="col-xxl-4 col-xl-8 p-3 position-relative pb-0 mb-xl-5">
                           <div className="progressStepWrapper position-relative">
                             <div
                               className="stepWrapper success"
@@ -270,27 +275,40 @@ function TempDashboard() {
                                 className={`progress-bar ${Number(account.company_status) === 4 ? "bg_success" :
                                   Number(account.company_status) === 100 ? "bg-success" : "bg_success"
                                   }`}
-                                style={{
-                                  height: `${Number(account.company_status) === 1
-                                    ? "40"
-                                    : Number(account.company_status) === 2
-                                      ? "55"
-                                      : Number(account.company_status) === 3
-                                        ? "65"
-                                        : Number(account.company_status) === 4
-                                          ? "85"
-                                          : "100"
-                                    }%`,
-                                }}
+                                style={isSmall ?
+                                  {
+                                    width: `${Number(account.company_status) === 1
+                                      ? "40"
+                                      : Number(account.company_status) === 2
+                                        ? "55"
+                                        : Number(account.company_status) === 3
+                                          ? "65"
+                                          : Number(account.company_status) === 4
+                                            ? "85"
+                                            : "100"
+                                      }%`,
+                                  } :
+                                  {
+                                    height: `${Number(account.company_status) === 1
+                                      ? "40"
+                                      : Number(account.company_status) === 2
+                                        ? "55"
+                                        : Number(account.company_status) === 3
+                                          ? "65"
+                                          : Number(account.company_status) === 4
+                                            ? "85"
+                                            : "100"
+                                      }%`,
+                                  }}
                               ></div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-9">
-                      <div className=" p-3">
-                        <div className="">
+                    <div className="col-xxl-9 col-xl-12">
+                      <div className=" p-3 h-100">
+                        <div className="h-100">
                           {statusClick === "account" ? (
                             <Account
                               account={account}
