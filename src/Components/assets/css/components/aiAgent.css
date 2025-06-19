@@ -54,11 +54,11 @@
     border-radius: 10px;
     background-color: var(--knowledge-leftinfo);
     overflow: hidden;
-    max-height: calc(100vh - 232px);
+    height: 100%;
 }
 
 .heightAuto {
-    max-height: calc(100vh - 232px);
+    max-height: calc(100vh - 280px);
     overflow: auto;
 }
 
@@ -702,4 +702,47 @@
     color: var(--immortalBlack);
     background: #b2d4ff69;
     border-radius: 10px !important;
+}
+.TestCallMessage{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+.messageContent.heightAuto{
+    flex: 1;
+    max-height: calc(100vh - 355px);
+}
+.TestCallMessage .messageItem.sender .messageDetails {
+   border: none !important;
+   background: #3caeff5c;
+}
+.TestCallMessage .messageItem.receiver .messageDetails {
+    background-color: #7888b154;
+    border: none !important;
+}
+.messageFooter{
+    border-top: 1px solid var(--me-border1);
+    padding: 10px;
+}
+.callBtn{
+    background-color: #0047ff4a;
+    border-radius: 5px;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    width: 100%;
+}
+.text_info{
+    color: var(--textInfo);
+}
+.textCall{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
 }

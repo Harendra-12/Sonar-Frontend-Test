@@ -3,6 +3,7 @@ import Header from '../../CommonComponents/Header'
 import Tippy from '@tippyjs/react'
 import WelcomeMessage from './WelcomeMessage'
 import FlowAccordionContent from './FlowAccordionContent'
+import TestCallChat from './TestCallChat'
 
 const ConversationsFlow = () => {
     const [refreshState, setRefreshState] = useState(false)
@@ -100,11 +101,8 @@ const ConversationsFlow = () => {
                                                 <div>
                                                     {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
                                                     <div className="buttonGroup">
-                                                        <button className="panelButton danger" onClick={setDeletePopup}>
-                                                            <span className="text">Delete</span>
-                                                            <span className="icon">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </span>
+                                                        <button className="panelButton static" >
+                                                            <span className="text">Update</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -127,9 +125,10 @@ const ConversationsFlow = () => {
                                                     </div>
                                                 </div>
                                                 <div className='col-xxl-3 '>
-                                                    <div className='KnowledgeLeftinfo'>
-                                                        <div className='heightAuto'>
-                                                            <WelcomeMessage />
+                                                    <div className='KnowledgeLeftinfo p-0'>
+                                                        <div className='h-100'>
+                                                            <TestCallChat />
+
                                                         </div>
                                                     </div>
                                                 </div>
