@@ -3,165 +3,100 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
+  checkTimeDifference,
+  checkViewSidebar,
+  formatDateTime,
   generalGetFunction,
+  useDebounce,
 } from "../../../GlobalFunction/globalFunction";
 import ContentLoader from "../../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
+import { set } from "date-fns";
+import EmptyPrompt from "../../../Loader/EmptyPrompt";
+import ThreeDotedLoader from "../../../Loader/ThreeDotedLoader";
+import axios from "axios";
+import PaginationComponent from "../../../CommonComponents/PaginationComponent";
+import HeaderApp from "../HeaderApp";
+import CircularLoader from "../../../Loader/CircularLoader";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin, isVideoOn }) => {
-  const [conferenceName, setConferenceName] = useState("");
-  const [conferenceType, setConferenceType] = useState("public");
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, pin, calling, setCalling, interCallMinimize, setInterCallMinimize, setIsConferenceCall, setIsConferenceAdmin }) => {
   const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState(5);
-  const [moderatorPin, setModeratorPin] = useState(555555);
-  const [participantPin, setParticipantPin] = useState(1111);
-  const [retryCount, setRetryCount] = useState(3);
-  const [holdSound, setHoldSound] = useState([]);
-  const [moh, setMoh] = useState("");
+  const [spinLoading, setSpinLoading] = useState(false);
   const [allConferences, setAllConferences] = useState([]);
   const [conferenceRefresh, setConferenceRefresh] = useState(0);
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const [error, setError] = useState("");
-  const [selectedTab, setselectedTab] = useState("nav-voicemail-tab");
+  const [selectedTab, setselectedTab] = useState("conf-list-tab");
   const videoRef = useRef(null);           // Reference to the video element
   const streamRef = useRef(null);          // Reference to store the media stream
   const [videoEnable, setVideoEnable] = useState(true); // State to track video status
+  const [token, setToken] = useState(null);
+  const [serverUrl, setServerUrl] = useState(null);
 
-  useEffect(() => {
-    // Start the camera on component mount
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Error accessing the camera:", error);
-      }
-    };
+  const [pageNumber, setPageNumber] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
+  const debouncedSearch = useDebounce(searchValue, 1000);
 
-    startCamera();
+  const account = useSelector((state) => state.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
-    // Cleanup on unmount
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
-
-  const toggleVideo = () => {
-    if (streamRef.current) {
-      streamRef.current.getVideoTracks().forEach((track) => {
-        track.enabled = !track.enabled; // Toggle video track
-      });
-      setVideoEnable((prev) => !prev); // Update the state
-    }
-  };
-
+  // Initial API call to get all conference data
   useEffect(() => {
     async function getData() {
-      const musicData = await generalGetFunction("/sound/all");
-      const apiData = await generalGetFunction("/conference/all");
-      if (apiData?.status) {
-        setAllConferences(apiData.data);
-      }
-      if (musicData?.status) {
-        setHoldSound(musicData.data.filter((item) => item.type === "hold"));
+      setLoading(true);
+      try {
+        let url;
+        if (account.usertype !== "Company" && account.usertype !== "SupreAdmin") {
+          url = `/conference/get-user-conferences?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${debouncedSearch}`;
+        } else {
+          url = `/conference/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${debouncedSearch}`
+        }
+        const apiData = await generalGetFunction(url);
+        if (apiData?.status) {
+          setAllConferences(apiData.data);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
       }
     }
     getData();
   }, [conferenceRefresh]);
 
-  // async function handleSubmit() {
-  //   if (conferenceName === null || conferenceName === "") {
-  //     toast.error("Please enter conference name");
-  //   } else if (
-  //     conferenceType === "private" &&
-  //     (participantPin < 100000 || participantPin > 999999)
-  //   ) {
-  //     toast.error("Please enter 6 digit participant pin");
-  //   } else if (members === null || members === "") {
-  //     toast.error("Please enter number of members");
-  //   } else if (
-  //     conferenceType === "private" &&
-  //     (moderatorPin < 100000 || moderatorPin > 999999)
-  //   ) {
-  //     toast.error("Please enter 6 digit moderator pin");
-  //   } else if (
-  //     conferenceType === "private" &&
-  //     (retryCount < 1 || retryCount > 5)
-  //   ) {
-  //     toast.error("Please enter  retry count between 1 to 5");
-  //   } else if (moh === "") {
-  //     toast.error("Please select moh");
-  //   } else {
-  //     setLoading(true);
-  //     const parsedData = {
-  //       conf_name: conferenceName,
-  //       conf_max_members: members,
-  //       pin_retries: retryCount,
-  //       moderator_pin: String(moderatorPin),
-  //       nopin: conferenceType !== "private" ? "0" : "1",
-  //       conf_type: conferenceType,
-  //       moh_sound: moh,
-  //       participate_pin: String(participantPin),
-  //     };
-  //     const apiData = await generalPostFunction(
-  //       "/conference/store",
-  //       parsedData
-  //     );
-  //     if (apiData.status) {
-  //       setLoading(false);
-  //       toast.success(apiData.message);
-  //       setConferenceRefresh(conferenceRefresh + 1);
-  //       setselectedTab("nav-all-tab");
-  //     } else {
-  //       setLoading(false);
-  //     }
-  //   }
-  // }
 
-  const validateAndSetConferenceId = (url) => {
+  // Refresh Conference Data
+  const handleConferenceRefresh = () => {
+    setLoading(true);
+    setConferenceRefresh(conferenceRefresh + 1);
+  };
+
+  // Conference Join Function
+  const handleConferenceJoin = async (roomId) => {
+    setSpinLoading(true)
+    setIsConferenceCall(true);
     try {
-      const urlObj = new URL(url);
-      const path = urlObj.pathname; // e.g., "/conference"
-      const query = urlObj.searchParams.get("type"); // e.g., "public/8/y03T2a"
-
-      if (path !== "/conference" || !query) {
-        setConferenceId("")
-        throw new Error("Invalid URL format");
-      }
-      if (pin === "") {
-        toast.error("Please enter your pin")
-        return
-      }
-
-      // Extract the conference ID (the "8" part)
-      const parts = query.split("/");
-      if (parts.length < 2 || isNaN(parts[1])) {
-        setConferenceId("")
-        throw new Error("Invalid conference link");
-      }
-
-      setConferenceId(parts[1]); // Set "8" as the conference ID
+      const urlObj = new URL(roomId)
+      const param = urlObj.searchParams.get("id");
       dispatch({
         type: "SET_ROOMID",
-        RoomID: parts[1]
+        RoomID: param
       })
-      setConferenceToggle(true);
-      setError(""); // Clear error if validation passes
     } catch (err) {
-      setError(err.message);
-      setConferenceId(""); // Clear conference ID if validation fails
+      console.log(err)
+    } finally {
+      setTimeout(() => {
+        setCalling(true);
+        setSpinLoading(false);
+      }, 1000)
     }
-  };
+  }
 
   return (
     <>
-
+      {spinLoading && <CircularLoader />}
       <main
         className="mainContentApp"
         style={{
@@ -172,6 +107,14 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
         }}
       >
         <section id="phonePage">
+          <div className="w-100 p-0">
+            <HeaderApp
+              title={"Conference"}
+              loading={loading}
+              setLoading={setLoading}
+              refreshApi={handleConferenceRefresh}
+            />
+          </div>
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -179,9 +122,19 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Join a Conference</h4>
+                        <h4>Join a Conference
+                          <button className="clearButton ms-2" onClick={handleConferenceRefresh}>
+                            <i
+                              className={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
+                          </button>
+                        </h4>
                         <p>
-                          An extension is a destinations that can be called.
+                          You are assigned to the following conferences
                         </p>
                       </div>
                     </div>
@@ -192,355 +145,116 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                       padding: "25px 23px",
                     }}
                   >
-                    <form action="#" className="tangoNavs">
-                      <nav>
-                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                        </div>
-                      </nav>
-                      {loading ? (
-                        <div colSpan={99}>
-                          <ContentLoader />
-                        </div>
-                      ) : (
-                        <div className="tab-content" id="nav-tabContent">
-                          <div
-                            className={`tab-pane fade ${selectedTab == "nav-all-tab"
-                              ? "show active"
-                              : ""
-                              }`}
-                            id="nav-all"
-                            role="tabpanel"
-                            aria-labelledby="nav-all"
-                            tabIndex="0"
-                          >
-                            <div className="tableContainer">
-                              <table>
-                                <thead>
-                                  <tr>
-                                    <th>Conference Name</th>
-                                    <th>Max. Members</th>
-                                    <th>Conference ID</th>
-                                    <th>Moderator Pin</th>
-                                    <th>Joining Pin</th>
-                                    <th>Meeting link</th>
-                                    <th>Delete</th>
-                                    {/* <th>Action</th> */}
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <>
-                                    {allConferences &&
-                                      allConferences?.data?.map((item) => {
-                                        return (
-                                          <tr>
-                                            <td>{item.conf_name}</td>
-                                            <td>{item.conf_max_members}</td>
-                                            <td>{item.conf_ext}</td>
-                                            <td>{item.moderator_pin}</td>
-                                            <td>{item.participate_pin}</td>
-                                            <td>{item.conf_url}</td>
-                                            <td>
-                                              <div
-                                                className="tableButton delete"
-                                                onClick={() => {
-                                                  // setPopUp(true);
-                                                  // setDeleteToggle(true);
-                                                  // setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      })}{" "}
-                                  </>
-                                </tbody>
-                              </table>
-                            </div>
+                    <div className="tab-content" id="nav-tabContent">
+                      <div
+                        className={`tab-pane fade ${selectedTab == "conf-list-tab" ? 'show active' : ""}`}
+                        id="conf-list"
+                        role="tabpanel"
+                        aria-labelledby="conf-list"
+                        tabIndex="0"
+                      >
+                        <div className="tableHeader">
+                          <div className="showEntries">
+                            <label>Show</label>
+                            <select
+                              className="formItem"
+                              value={itemsPerPage}
+                              onChange={(e) => setItemsPerPage(e.target.value)}
+                            >
+                              <option value={10}>10</option>
+                              <option value={20}>20</option>
+                              <option value={30}>30</option>
+                            </select>
+                            <label>entries</label>
                           </div>
-                          <div
-                            className={`tab-pane fade ${selectedTab == "nav-gen-tab"
-                              ? "show active"
-                              : ""
-                              }`}
-                            id="nav-gen"
-                            role="tabpanel"
-                            aria-labelledby="nav-gen-tab"
-                            tabIndex="0"
-                          >
-                            <form className="col-12 mx-auto">
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Conference Name</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Name of the conference
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setConferenceName(e.target.value)
-                                    }
-                                    value={conferenceName}
-                                  />
-                                </div>
+                          {checkViewSidebar(
+                            "Conference",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "search"
+                          ) && (
+                              <div className="searchBox position-relative">
+                                <label>Search:</label>
+                                <input
+                                  type="text"
+                                  name="Search"
+                                  placeholder="Search"
+                                  value={searchValue}
+                                  className="formItem"
+                                  onChange={(e) => setSearchValue(e.target.value)}
+                                />
                               </div>
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Conference Type</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Define type for the conference so that
-                                    participants can join accordingly
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <select
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setConferenceType(e.target.value)
-                                    }
-                                    value={conferenceType}
-                                  >
-                                    <option value="public">Public</option>
-                                    <option value="private">Private</option>
-                                    <option value="webiner">webiner</option>
-                                  </select>
-                                </div>
-                              </div>
-                              {conferenceType !== "private" ? (
-                                ""
-                              ) : (
+                            )}
+                        </div>
+                        <div className="tableContainer">
+                          {loading ? <ThreeDotedLoader /> :
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Conference Name</th>
+                                  <th>Meeting link</th>
+                                  <th>Scheduled Time</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
                                 <>
-                                  <div className="formRow col-xl-3">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Conference pin</label>
-                                      <label
-                                        htmlFor="data"
-                                        className="formItemDesc"
-                                      >
-                                        Share this pin with participants
-                                      </label>
-                                    </div>
-                                    <div className="col-xl-6 col-12">
-                                      <input
-                                        type="number"
-                                        name="extension"
-                                        className="formItem"
-                                        onChange={(e) =>
-                                          setParticipantPin(e.target.value)
-                                        }
-                                        value={participantPin}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="formRow col-xl-3">
-                                    <div className="formLabel">
-                                      <label htmlFor="">Retry attempts</label>
-                                      <label
-                                        htmlFor="data"
-                                        className="formItemDesc"
-                                      >
-                                        Number of times participant can retry
-                                        joining
-                                      </label>
-                                    </div>
-                                    <div className="col-xl-6 col-12">
-                                      <input
-                                        type="number"
-                                        name="extension"
-                                        className="formItem"
-                                        onChange={(e) =>
-                                          setRetryCount(e.target.value)
-                                        }
-                                        value={retryCount}
-                                      />
-                                    </div>
-                                  </div>
+                                  {allConferences && allConferences?.data?.length > 0 ?
+                                    allConferences?.data?.map((item) => {
+                                      return (
+                                        <tr>
+                                          <td>{item.conf_name}</td>
+                                          <td>{item.conf_url}</td>
+                                          <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>
+                                          <td>
+                                            {item?.conf_start_time && account.usertype !== "Company" && account.usertype !== 'SupreAdmin' ?
+                                              checkTimeDifference(formatDateTime(item?.conf_start_time)) &&
+                                              <div className="dropdown">
+                                                <div className="tableButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                  <i className="fa-solid fa-send"></i>
+                                                </div>
+                                                <ul className="dropdown-menu actionBtnDropdowns">
+                                                  <li className="dropdown-item" onClick={() => handleConferenceJoin(item.conf_url)}>
+                                                    <div className="clearButton text-align-start">
+                                                      <i className="fa-regular fa-gear me-2" /> Join
+                                                    </div>
+                                                  </li>
+                                                  <li className="dropdown-item">
+                                                    <div className="clearButton text-align-start">
+                                                      <i className="fa-regular fa-arrows-rotate me-2" /> Join as Mod
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div> :
+                                              <div className="tableButton" onClick={() => handleConferenceJoin(item.conf_url)}>
+                                                <i className="fa-solid fa-send"></i>
+                                              </div>
+                                            }
+                                          </td>
+                                        </tr>
+                                      );
+                                    }) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}{" "}
                                 </>
-                              )}
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Music on hold</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Select music that will be played on hold
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <select
-                                    type="number"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) => setMoh(e.target.value)}
-                                    value={moh}
-                                  >
-                                    <option disabled value="" selected>
-                                      Select Hold Music
-                                    </option>
-                                    {holdSound &&
-                                      holdSound?.map((item, index) => {
-                                        return (
-                                          <option key={index} value={item.id}>
-                                            {item.name}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Number of members</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Enter maximum number of members that can
-                                    join
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="number"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setMembers(e.target.value)
-                                    }
-                                    value={members}
-                                  />
-                                </div>
-                              </div>
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Moderator pin</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Set pin for moderators
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="number"
-                                    name="extension"
-                                    className="formItem"
-                                    onChange={(e) =>
-                                      setModeratorPin(e.target.value)
-                                    }
-                                    value={moderatorPin}
-                                  />
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                          <div
-                            className={`tab-pane fade ${selectedTab == "nav-voicemail-tab"
-                              ? "show active"
-                              : ""
-                              }`}
-                            id="nav-voicemail"
-                            role="tabpanel"
-                            aria-labelledby="nav-voicemail-tab"
-                            tabIndex="0"
-                          >
-                            <div className="loginWrapper2 p-0 h-auto" style={{ position: 'static', transform: 'none', background: 'none', boxShadow: 'none' }}>
-                              <div className="row h-100 justify-content-evenly">
-                                <div className='col-xl-5 position-relative'>
-                                  <div className="col-xl-12 h-100 position-relative d-flex align-items-center">
-                                    <div className="content col-xl-7 m-auto">
-                                      <h3>Join conference</h3>
-                                      <p>Enter your name to join conference</p>
-                                      <div className="border-bottom my-4"></div>
-                                      <form className="loginForm">
-                                        <div className="col-xl-12 m-auto">
-                                          <label>Meeting Url</label>
-                                          <div className="position-relative">
-                                            <i className="fa-thin fa-user" />
-                                            <input
-                                              type="text"
-                                              placeholder="Enter the meeting url"
-                                              className="loginFormItem"
-                                              // value={conferenceId}
-                                              onChange={(e) =>
-                                                setConferenceId(e.target.value)
-                                              }
-                                            />
-                                            {error && (
-                                              <p style={{ color: "red" }}>{error}</p>
-                                            )}
-                                          </div>
-                                          <label>Pin</label>
-                                          <div className="position-relative">
-                                            <i className="fa-thin fa-user" />
-                                            <input
-                                              type="number"
-                                              placeholder="Enter the meeting pin"
-                                              className="loginFormItem"
-                                              value={pin}
-                                              onChange={(e) =>
-                                                setPin(e.target.value)
-                                              }
-                                            />
-                                          </div>
-                                          <div>
-                                            <button type="button" className="formSubmit" onClick={() =>
-                                              validateAndSetConferenceId(conferenceId)
-                                            }>
-                                              <i className="fa-solid fa-right-to-bracket position-static text-white"></i> Join
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className='col-xl-6 d-xl-block d-none my-auto'>
-                                  <div className="loginImgWrapper h-auto bg-transparent">
-                                    <div className="content" style={{ padding: '25px' }}>
-                                      <div className='conferenceJoinVideo'>
-                                        <video
-                                          className="donotremoveclassname"
-                                          ref={videoRef}
-                                          autoPlay
-                                          playsInline
-                                          style={{
-                                            transform: "scaleX(-1)", // Flip the video horizontally
-                                          }}
-                                        ></video>
-                                        <div className='buttonGroup' >
-                                          <button className='clearButton2 xl white'>
-                                            <i className="fa-light fa-microphone"></i>
-                                          </button>
-                                          <button className='clearButton2 xl white ms-3' onClick={() => { if (isVideoOn) { toggleVideo() } }}>
-                                            <i className={videoEnable && isVideoOn ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                              </tbody>
+                            </table>
+                          }
                         </div>
-                      )}
-
-                      <div />
-                    </form>
+                        <div className="tableFooter">
+                          {allConferences && allConferences?.data?.length > 0 ? (
+                            <PaginationComponent
+                              pageNumber={(e) => setPageNumber(e)}
+                              totalPage={allConferences.last_page}
+                              from={allConferences.from}
+                              to={allConferences.to}
+                              total={allConferences.total}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -548,7 +262,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
           </div>
         </section>
       </main>
-
     </>
   );
 };

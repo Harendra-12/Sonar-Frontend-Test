@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import LiveKitConference from "./LiveKitConference";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function InitiateCall({
   from,
@@ -16,19 +17,33 @@ function InitiateCall({
   setRecipient,
   selectedChat,
   setSelectedChat,
+  isConferenceCall,
+  isConferenceAdmin
 }) {
   const [token, setToken] = useState(null);
   const [serverUrl, setServerUrl] = useState(null);
-  const roomName = `${from}-${to}`;
+  // const roomName = `${from}-${to}`;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [storeRecipient, setStoreRecipient] = useState();
- 
-    
+  const roomId = useSelector((state) => state.RoomID);
+  const [roomName, setRoomName] = useState("");
+  const [isAdmin, setIsAdmin] = useState(true);
+
+  // Check if its a Conference Call or Normal Call
+  useEffect(() => {
+    if (isConferenceCall) {
+      setRoomName(roomId);
+      setIsAdmin(isConferenceAdmin);
+    } else {
+      setRoomName(`${from}-${to}`)
+    }
+  }, [isConferenceCall])
+
   useEffect(() => {
     async function getToken() {
       axios
         .get(
-          `https://meet.webvio.in/backend/get-token?room=${roomName}&username=${name}&isAdmin=${true}`
+          `https://meet.webvio.in/backend/get-token?room=${roomName}&username=${name}&isAdmin=${isAdmin}`
         )
         .then((res) => {
           setToken(res.data.token);
@@ -38,13 +53,13 @@ function InitiateCall({
           console.log("This error coming from conference", err);
         });
     }
-    if (to) {
+    if (roomName) {
       getToken();
     }
     if (recipient[1] == to) {
       setStoreRecipient(recipient);
     }
-  }, [from, to, name]);
+  }, [from, to, name, roomName, isAdmin]);
 
   // useEffect(() => {
   //     const handleClick = (event) => {

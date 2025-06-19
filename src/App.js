@@ -203,6 +203,7 @@ import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
+import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -303,6 +304,17 @@ function App() {
               "add"
             ) ?
               <MeetingAdd /> :
+              <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/meeting-edit" element={
+            checkViewSidebar(
+              "Conference",
+              slugPermissions,
+              account?.sectionPermissions,
+              account?.permissions,
+              "edit"
+            ) ?
+              <MeetingEdit /> :
               <Navigate to="/dashboard" replace />
           } />
           <Route path="/dashboard" element={<Dashboard />} />

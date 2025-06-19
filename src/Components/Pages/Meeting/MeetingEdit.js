@@ -3,6 +3,7 @@ import {
   backToTop,
   generalGetFunction,
   generalPostFunction,
+  generalPutFunction,
   useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -12,6 +13,9 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { use } from "react";
+import { useForm } from "react-hook-form";
+import { requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function MeetingEdit() {
   const location = useLocation();
@@ -29,35 +33,59 @@ function MeetingEdit() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(()=>{
-    if(!id){
+  const { register, formState: { errors }, reset, handleSubmit, watch, setValue } = useForm();
+
+  useEffect(() => {
+    if (!id) {
       navigate(-1);
+    } else {
+      getConferenceData();
     }
-    async function getData(){
-      const apiData = await generalGetFunction()
+  }, [id]);
+
+  async function getConferenceData() {
+    setLoading(true);
+    try {
+      const response = await generalGetFunction(`/conference/${id}`);
+      if (response.status) {
+        const data = response.data;
+        if (data.conf_start_time && data.conf_end_time) {
+          setValue("conf_scheduled", "1")
+        }
+        reset(data);
+
+        setAddedUsers(data.users);
+        setParticipants(data.emails);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
-  })
-  async function handleSubmit() {
-    if (conferenceName === null || conferenceName === "") {
-      toast.error("Please enter conference name");
-    } else if (
-      conferenceType !== "internal" &&
+
+  }
+
+  const handleMeetingForm = handleSubmit(async (data) => {
+    if (participants[0].trim() == "") {
+      toast.error("Please add participants");
+      return;
+    }
+    if (
+      watch().conf_type !== "internal" &&
       (members === null || members === "")
     ) {
       toast.error("Please enter number of members");
     } else {
       setLoading(true);
       const parsedData = {
-        conf_name: conferenceName,
-        conf_max_members: members,
-        conf_type: conferenceType,
-        ai_notetaker: aiNotes,
-        ...(conferenceType === "internal"
+        ...data,
+        ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
-          : { emails: participants }),
+          : ""),
+        emails: participants
       };
-      const apiData = await generalPostFunction(
-        "/conference/store",
+      const apiData = await generalPutFunction(
+        `/conference/${id}`,
         parsedData
       );
       if (apiData.status) {
@@ -68,16 +96,15 @@ function MeetingEdit() {
         setLoading(false);
       }
     }
-  }
+  })
 
   async function getInternalUsers() {
     setLoading(true);
     try {
       const response = await generalGetFunction(
-        `/user/search?account=${account.account_id}${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       if (response.status) {
@@ -92,7 +119,9 @@ function MeetingEdit() {
 
   useEffect(() => {
     if (conferenceType == "internal") {
-      getInternalUsers();
+      if (allInternalUsers?.length == 0) {
+        getInternalUsers();
+      }
     }
   }, [conferenceType]);
 
@@ -166,7 +195,7 @@ function MeetingEdit() {
                         type="button"
                         effect="ripple"
                         className="panelButton"
-                        onClick={handleSubmit}
+                        onClick={handleMeetingForm}
                       >
                         <span className="text">Save</span>
                         <span className="icon">
@@ -199,9 +228,11 @@ function MeetingEdit() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          onChange={(e) => setConferenceName(e.target.value)}
-                          value={conferenceName}
+                          {...register("conf_name", { ...requiredValidator, })}
                         />
+                        {errors.conf_name && (
+                          <ErrorMessage text={errors.conf_name.message} />
+                        )}
                       </div>
                     </div>
                     <div className="formRow">
@@ -215,13 +246,15 @@ function MeetingEdit() {
                       <div className="col-xl-6 col-12">
                         <select
                           className="formItem"
-                          onChange={(e) => setConferenceType(e.target.value)}
-                          value={conferenceType}
+                          {...register("conf_type", { ...requiredValidator, })}
                         >
                           <option value="public">Public</option>
                           <option value="private">Private</option>
                           <option value="internal">Internal</option>
                         </select>
+                        {errors.conf_type && (
+                          <ErrorMessage text={errors.conf_type.message} />
+                        )}
                       </div>
                     </div>
                     <div className="formRow">
@@ -236,9 +269,57 @@ function MeetingEdit() {
                           type="number"
                           name="extension"
                           className="formItem"
-                          onChange={(e) => setMembers(e.target.value)}
-                          value={members}
+                          {...register("conf_max_members", { ...requiredValidator, })}
                         />
+                        {errors.conf_max_members && (
+                          <ErrorMessage text={errors.conf_max_members.message} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow">
+                      <div className="formLabel">
+                        <label htmlFor="">Scheduled Time</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter maximum number of members that can join
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <div className="row">
+                          <div className="col-12">
+                            <select className="formItem" {...register("conf_scheduled")}>
+                              <option value={"0"}>
+                                Disabled
+                              </option>
+                              <option value={"1"}>
+                                Enabled
+                              </option>
+                            </select>
+                          </div>
+                          {watch().conf_scheduled == "1" ? <>
+                            <div className="col-6 mt-2">
+                              <label htmlFor="data" className="formItemDesc">
+                                Start Date & Time
+                              </label>
+                              <input
+                                type="datetime-local"
+                                name="extension"
+                                className="formItem"
+                                {...register("conf_start_time")}
+                              />
+                            </div>
+                            <div className="col-6 mt-2">
+                              <label htmlFor="data" className="formItemDesc">
+                                End Date & Time
+                              </label>
+                              <input
+                                type="datetime-local"
+                                name="extension"
+                                className="formItem"
+                                {...register("conf_end_time")}
+                              />
+                            </div>
+                          </> : ""}
+                        </div>
                       </div>
                     </div>
                     <div className="formRow">
@@ -252,9 +333,8 @@ function MeetingEdit() {
                         <label class="cl-switch">
                           <input
                             type="checkbox"
-                            checked={aiNotes}
-                            onChange={() => setAiNotes(!aiNotes)}
                             id="showAllCheck"
+                            {...register("ai_notetaker")}
                           />
                           <span></span>
                         </label>
@@ -272,9 +352,8 @@ function MeetingEdit() {
                         {participants.map((participant, index) => (
                           <div
                             key={index}
-                            className={`d-flex justify-content-between align-items-center ${
-                              participants?.length > 1 && "mb-2"
-                            }`}
+                            className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
+                              }`}
                           >
                             <input
                               type="email"
@@ -285,7 +364,7 @@ function MeetingEdit() {
                                 newParticipants[index] = e.target.value;
                                 setParticipants(newParticipants);
                               }}
-                              value={participant}
+                              value={participant.email}
                             />
                             <button
                               onClick={() => {

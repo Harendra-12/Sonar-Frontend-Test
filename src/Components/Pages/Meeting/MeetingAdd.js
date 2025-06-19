@@ -12,6 +12,9 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { use } from "react";
+import { useForm } from "react-hook-form";
+import { requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function MeetingAdd() {
   const account = useSelector((state) => state.account);
@@ -26,25 +29,31 @@ function MeetingAdd() {
   const [addedUsers, setAddedUsers] = useState([]);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [confStartDate, setConfStartDate] = useState("");
+  const [confEndDate, setConfEndDate] = useState("");
 
-  async function handleSubmit() {
-    if (conferenceName === null || conferenceName === "") {
-      toast.error("Please enter conference name");
-    } else if (
-      conferenceType !== "internal" &&
+
+  const { register, formState: { errors }, reset, handleSubmit, watch } = useForm();
+
+  const handleMeetingForm = handleSubmit(async (data) => {
+    if (participants[0].trim() == "") {
+      toast.error("Please add participants");
+      return;
+    }
+    if (
+      watch().conf_type !== "internal" &&
       (members === null || members === "")
     ) {
       toast.error("Please enter number of members");
     } else {
       setLoading(true);
       const parsedData = {
-        conf_name: conferenceName,
-        conf_max_members: members,
-        conf_type: conferenceType,
-        ai_notetaker: aiNotes,
-        ...(conferenceType === "internal"
+        ...data,
+        ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
-          : { emails: participants }),
+          : ""),
+        emails: participants
       };
       const apiData = await generalPostFunction(
         "/conference/store",
@@ -58,16 +67,15 @@ function MeetingAdd() {
         setLoading(false);
       }
     }
-  }
+  })
 
   async function getInternalUsers() {
     setLoading(true);
     try {
       const response = await generalGetFunction(
-        `/user/search?account=${account.account_id}${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       if (response.status) {
@@ -81,10 +89,12 @@ function MeetingAdd() {
   }
 
   useEffect(() => {
-    if (conferenceType == "internal") {
-      getInternalUsers();
+    if (watch().conf_type == "internal") {
+      if (allInternalUsers?.length == 0) {
+        getInternalUsers();
+      }
     }
-  }, [conferenceType]);
+  }, [watch().conf_type]);
 
   function handleChecked(userId) {
     if (selectedUser.includes(userId)) {
@@ -156,7 +166,7 @@ function MeetingAdd() {
                         type="button"
                         effect="ripple"
                         className="panelButton"
-                        onClick={handleSubmit}
+                        onClick={handleMeetingForm}
                       >
                         <span className="text">Save</span>
                         <span className="icon">
@@ -189,9 +199,11 @@ function MeetingAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          onChange={(e) => setConferenceName(e.target.value)}
-                          value={conferenceName}
+                          {...register("conf_name", { ...requiredValidator, })}
                         />
+                        {errors.conf_name && (
+                          <ErrorMessage text={errors.conf_name.message} />
+                        )}
                       </div>
                     </div>
                     <div className="formRow">
@@ -205,13 +217,15 @@ function MeetingAdd() {
                       <div className="col-xl-6 col-12">
                         <select
                           className="formItem"
-                          onChange={(e) => setConferenceType(e.target.value)}
-                          value={conferenceType}
+                          {...register("conf_type", { ...requiredValidator, })}
                         >
                           <option value="public">Public</option>
                           <option value="private">Private</option>
                           <option value="internal">Internal</option>
                         </select>
+                        {errors.conf_type && (
+                          <ErrorMessage text={errors.conf_type.message} />
+                        )}
                       </div>
                     </div>
                     <div className="formRow">
@@ -226,9 +240,57 @@ function MeetingAdd() {
                           type="number"
                           name="extension"
                           className="formItem"
-                          onChange={(e) => setMembers(e.target.value)}
-                          value={members}
+                          {...register("conf_max_members", { ...requiredValidator, })}
                         />
+                        {errors.conf_max_members && (
+                          <ErrorMessage text={errors.conf_max_members.message} />
+                        )}
+                      </div>
+                    </div>
+                    <div className="formRow">
+                      <div className="formLabel">
+                        <label htmlFor="">Scheduled Time</label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter maximum number of members that can join
+                        </label>
+                      </div>
+                      <div className="col-xl-6 col-12">
+                        <div className="row">
+                          <div className="col-12">
+                            <select className="formItem" {...register("conf_scheduled")}>
+                              <option value={"0"}>
+                                Disabled
+                              </option>
+                              <option value={"1"}>
+                                Enabled
+                              </option>
+                            </select>
+                          </div>
+                          {watch().conf_scheduled == "1" ? <>
+                            <div className="col-6 mt-2">
+                              <label htmlFor="data" className="formItemDesc">
+                                Start Date & Time
+                              </label>
+                              <input
+                                type="datetime-local"
+                                name="extension"
+                                className="formItem"
+                                {...register("conf_start_time")}
+                              />
+                            </div>
+                            <div className="col-6 mt-2">
+                              <label htmlFor="data" className="formItemDesc">
+                                End Date & Time
+                              </label>
+                              <input
+                                type="datetime-local"
+                                name="extension"
+                                className="formItem"
+                                {...register("conf_end_time")}
+                              />
+                            </div>
+                          </> : ""}
+                        </div>
                       </div>
                     </div>
                     <div className="formRow">
@@ -242,9 +304,8 @@ function MeetingAdd() {
                         <label class="cl-switch">
                           <input
                             type="checkbox"
-                            checked={aiNotes}
-                            onChange={() => setAiNotes(!aiNotes)}
                             id="showAllCheck"
+                            {...register("ai_notetaker")}
                           />
                           <span></span>
                         </label>
@@ -262,9 +323,8 @@ function MeetingAdd() {
                         {participants.map((participant, index) => (
                           <div
                             key={index}
-                            className={`d-flex justify-content-between align-items-center ${
-                              participants?.length > 1 && "mb-2"
-                            }`}
+                            className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
+                              }`}
                           >
                             <input
                               type="email"
@@ -308,7 +368,7 @@ function MeetingAdd() {
                     </div>
                   </form>
                 </div>
-                {conferenceType == "internal" && (
+                {watch().conf_type == "internal" && (
                   <div className="col-xl-6">
                     <nav className="tangoNavs">
                       <div className="nav nav-tabs" id="nav-tab" role="tablist">

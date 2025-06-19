@@ -340,7 +340,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
 
 
               {
-                isCustomerAdmin &&
+                checkViewSidebar(
+                  "Conference",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "read") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("conference")}
