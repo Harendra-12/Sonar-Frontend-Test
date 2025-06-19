@@ -202,6 +202,7 @@ import AllUser from "./Components/Pages/Ai/AllUser";
 import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
+import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -1560,6 +1561,7 @@ function App() {
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
           <Route path="/cdr-tracker" element={<CDRTracker />} />
+          <Route path="/tracker-active-calls" element={<ActiveCall />} />
 
           <Route
             path="/did-listing-tracker"

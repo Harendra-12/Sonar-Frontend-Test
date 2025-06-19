@@ -170,8 +170,8 @@ function Buyers() {
                               // <SkeletonTableLoader col={13} row={15} />
                               <ThreeDotedLoader />
                               :
-                              allBuyers && allBuyers.length > 0 ?
-                                allBuyers.map((buyer, index) => (
+                              allBuyers && allBuyers?.length > 0 ?
+                                allBuyers?.map((buyer, index) => (
                                   <tr key={index}>
                                     <td>{buyer.name}</td>
                                     <td>+{buyer.phone_code} - {buyer.phone_number}</td>
