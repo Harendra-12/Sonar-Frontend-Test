@@ -1,21 +1,259 @@
-import React, { useState } from 'react'
-import Header from '../../CommonComponents/Header'
+import React, { useEffect, useState } from "react";
+import Header from "../../CommonComponents/Header";
+import {
+  aiGeneralDeleteFunction,
+  aiGeneralGetFunction,
+  aiGeneralPostFunction,
+} from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
+import { useForm, Controller } from "react-hook-form";
+import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
 
 const AiKnowledgeBase = () => {
-  const [refreshState, setRefreshState] = useState(false)
-  const [addKnowledgeBase, setKnowledgeBase] = useState(false)
-  const [dataCopy, setDataCopy] = useState(false)
-  const [idCopy, setIdCopy] = useState(false)
-  const [deletePopup, setDeletePopup] = useState(false);
+  const [refreshState, setRefreshState] = useState(false);
+  const [addKnowledgeBase, setKnowledgeBase] = useState(false);
+  const [dataCopy, setDataCopy] = useState(false);
+  const [idCopy, setIdCopy] = useState(false);
+  const [deletePopup, setShowDeleteDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [initialData, setInitialData] = useState([]);
+  const [activeFile, setActiveFile] = useState(null);
+  const [currentTab, setCurrentTab] = useState("webPage");
+  const [addedFiles, setAddedFiles] = useState([]);
+  const [isValid, setIsValid] = useState(false);
 
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      webPageUrl: "",
+      uploadFile: "",
+      addTextName: "",
+      addTextContent: "",
+    },
+  });
+
+  // initial fetch data
+  useEffect(() => {
+    fetchInitialData();
+  }, []);
+  const fetchInitialData = async () => {
+    try {
+      setLoading(true);
+      const res = await aiGeneralGetFunction("/knowledgebase/all");
+      if (res.status) {
+        setInitialData(res?.knowledgeBaseResponses);
+        setActiveFile(
+          res?.knowledgeBaseResponses?.length > 0
+            ? res?.knowledgeBaseResponses[0]
+            : null
+        );
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching initial data: ", error);
+    }
+  };
+
+  const handleDeleteKnowledgeBase = async () => {
+    if (!activeFile) {
+      toast.error("No knowledge base selected for deletion");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await aiGeneralDeleteFunction(
+        `/knowledgebase/delete/${activeFile?.knowledge_base_id}`
+      );
+
+      if (res.status) {
+        toast.success("Knowledge base deleted successfully");
+        setLoading(false);
+        setShowDeleteDialog(false);
+        setActiveFile(null);
+        fetchInitialData(); // Refresh the list after deletion
+      } else {
+        toast.error("Failed to delete knowledge base");
+        setLoading(false);
+        setShowDeleteDialog(false);
+      }
+    } catch (error) {
+      console.error("Error deleting knowledge base: ", error);
+      toast.error("Failed to delete knowledge base");
+      setLoading(false);
+      setShowDeleteDialog(false);
+    }
+  };
+
+  const validateForm = async () => {
+    const formValid = await form.trigger();
+    if (!formValid) return false;
+
+    const values = form.getValues();
+
+    // Common validation for name
+    if (!values.name?.trim()) {
+      form.setError("name", { message: "Name is required" });
+      return false;
+    }
+
+    // Validate based on current tab
+    if (currentTab === "webPage") {
+      const url = values.webPageUrl?.trim();
+      if (!url) {
+        form.setError("webPageUrl", { message: "Web page URL is required" });
+        return false;
+      }
+
+      try {
+        new URL(url); // Throws if invalid
+      } catch {
+        form.setError("webPageUrl", { message: "Please enter a valid URL" });
+        return false;
+      }
+    } else if (currentTab === "uploadFile") {
+      if (!values.uploadFile) {
+        form.setError("uploadFile", { message: "File is required" });
+        return false;
+      }
+    } else if (currentTab === "addText") {
+      if (!values.addTextName?.trim() || !values.addTextContent?.trim()) {
+        if (!values.addTextName?.trim()) {
+          form.setError("addTextName", { message: "File name is required" });
+        }
+        if (!values.addTextContent?.trim()) {
+          form.setError("addTextContent", { message: "Content is required" });
+        }
+        return false;
+      }
+    }
+
+    return true;
+  };
+  const handleFileAdd = async () => {
+    if (!(await validateForm())) return;
+
+    const values = form.getValues();
+    let displayName = "";
+    let data = null;
+
+    if (currentTab === "webPage") {
+      try {
+        const url = new URL(values.webPageUrl);
+        displayName = url.hostname;
+        data = values.webPageUrl;
+      } catch (error) {
+        displayName = values.webPageUrl;
+        data = values.webPageUrl;
+        console.error("Invalid URL:", error);
+      }
+    } else if (currentTab === "uploadFile") {
+      displayName = values.uploadFile?.name || "Unnamed File";
+      data = values.uploadFile;
+    } else {
+      displayName = values.addTextName;
+      data = { name: values.addTextName, content: values.addTextContent };
+    }
+
+    const newFile = {
+      id: Date.now(),
+      name: values.name,
+      displayName,
+      type: currentTab,
+      date: new Date().toISOString(),
+      data,
+    };
+
+    setAddedFiles((prev) => [newFile, ...prev]);
+    setIsValid(true);
+
+    // Reset form while keeping the name
+    const currentName = values.name;
+    form.reset();
+    form.setValue("name", currentName);
+  };
+
+  const handleRemoveFile = (id) => {
+    setAddedFiles((prev) => {
+      const newFiles = prev.filter((file) => file.id !== id);
+      setIsValid(newFiles.length > 0);
+      return newFiles;
+    });
+  };
+
+  const handleSaveChanges = async () => {
+    if (!isValid || addedFiles.length === 0) return;
+
+    // toast.loading("Saving files...");
+    setLoading(true);
+    const name = form.getValues("name").trim();
+    const texts = [];
+    const urls = [];
+    const files = [];
+
+    // Organize added files
+    addedFiles.forEach((file) => {
+      if (file.type === "webPage") {
+        urls.push(file.data);
+      } else if (file.type === "uploadFile") {
+        if (Array.isArray(file.data)) {
+          file.data.forEach((f) => files.push(f)); // support multiple files
+        } else {
+          files.push(file.data); // single File object
+        }
+      } else if (file.type === "addText") {
+        texts.push({ title: file.data.name, text: file.data.content });
+      }
+    });
+
+    // Create form data
+    const formData = new FormData();
+    formData.append("name", name);
+
+    if (urls.length > 0) {
+      formData.append("urls", JSON.stringify(urls));
+    }
+
+    if (texts.length > 0) {
+      formData.append("texts", JSON.stringify(texts));
+    }
+
+    if (files.length > 0) {
+      files.forEach((file) => {
+        formData.append("file", file);
+      });
+    }
+
+    try {
+      const res = await aiGeneralPostFunction("/knowledgebase/store", formData);
+
+      if (res.status) {
+        toast.success("Knowledge base saved successfully");
+        setLoading(false);
+        setIsValid(false);
+        setAddedFiles([]);
+        form.reset();
+        fetchInitialData();
+      } else {
+        toast.error("Failed to save knowledge base");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error saving knowledge base:", error);
+      toast.error("Failed to save knowledge base");
+      setLoading(false);
+    }
+  };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     // const shouldLoad = false
     // getData(shouldLoad);
-  }
+  };
 
-
+  if (loading) return <CircularLoader />;
   return (
     <>
       <main className="mainContent">
@@ -29,7 +267,8 @@ const AiKnowledgeBase = () => {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Knowledge Base {" "}
+                          <h4>
+                            Knowledge Base{" "}
                             <button
                               className="clearButton"
                               onClick={handleRefreshBtnClicked}
@@ -48,60 +287,88 @@ const AiKnowledgeBase = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='col-12'>
-                      <div className='row p-3'>
-                        <div className='col-xxl-4 col-xl-5 col-lg-12 '>
-                          <div className='KnowledgeLeftinfo'>
-                            <div className='info_header'>
-                              <h5 className='mb-0'>Uploaded files</h5>
+                    <div className="col-12">
+                      <div className="row p-3">
+                        <div className="col-xxl-4 col-xl-5 col-lg-12 ">
+                          <div className="KnowledgeLeftinfo">
+                            <div className="info_header">
+                              <h5 className="mb-0">Uploaded files</h5>
                               <button
                                 className={`tableButton`}
-                                role="button"
                                 onClick={setKnowledgeBase}
                               >
                                 <i className="fa-regular fa-plus" />
                               </button>
                             </div>
-                            <div className='knowledge__list'>
-                              <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <button className="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
-                                  <p className='mb-0'>
-                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc
-                                  </p>
-                                  <p className='mb-0'>added on <span> 5/26/2025</span></p>
-                                </button>
-                                <button className="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc2
-                                  </p>
-                                  <p className='mb-0'>added on <span> 5/26/2025</span></p>
-                                </button>
-                                <button className="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc3
-                                  </p>
-                                  <p className='mb-0'>added on <span> 5/26/2025</span></p>
-                                </button>
-                                <button className="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-duotone fa-solid fa-folder-open me-2"></i> abc4
-                                  </p>
-                                  <p className='mb-0'>added on <span> 5/26/2025</span></p>
-                                </button>
+                            <div className="knowledge__list">
+                              <div
+                                className="nav flex-column nav-pills me-3"
+                                id="v-pills-tab"
+                                role="tablist"
+                                aria-orientation="vertical"
+                              >
+                                {initialData &&
+                                  initialData.map((item) => (
+                                    <button
+                                      key={item.knowledge_base_id}
+                                      className={`nav-link ${
+                                        item.knowledge_base_id ===
+                                        activeFile?.knowledge_base_id
+                                          ? "active"
+                                          : ""
+                                      }`}
+                                      id="v-pills-home-tab"
+                                      data-bs-toggle="pill"
+                                      data-bs-target="#v-pills-home"
+                                      type="button"
+                                      role="tab"
+                                      aria-controls="v-pills-home"
+                                      aria-selected="true"
+                                      onClick={() => {
+                                        setActiveFile(item);
+                                      }}
+                                    >
+                                      <p className="mb-0">
+                                        <i className="fa-duotone fa-solid fa-folder-open me-2"></i>{" "}
+                                        {item?.knowledge_base_name}
+                                      </p>
+                                      <p className="mb-0">
+                                        added on{" "}
+                                        <span>
+                                          {" "}
+                                          {new Date(
+                                            item?.user_modified_timestamp
+                                          ).toLocaleDateString()}
+                                        </span>
+                                      </p>
+                                    </button>
+                                  ))}
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div className='col-xxl-8 col-xl-7 col-lg-12 '>
-                          <div className="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
-                            <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <div className="col-xxl-8 col-xl-7 col-lg-12 ">
+                          <div
+                            className="tab-content KnowledgeRightinfo"
+                            id="v-pills-tabContent"
+                          >
+                            <div
+                              className="tab-pane fade show active"
+                              id="v-pills-home"
+                              role="tabpanel"
+                              aria-labelledby="v-pills-home-tab"
+                            >
                               <div className="heading">
                                 <div className="content">
-                                  <h4>abc</h4>
-                                  <p className='mb-0'>ID: <span>125634Knowledge_Base26</span>
+                                  <h4>{activeFile?.knowledge_base_name}</h4>
+                                  <p className="mb-0">
+                                    ID:{" "}
+                                    <span>{activeFile?.knowledge_base_id}</span>
                                     <button
                                       className="clearButton"
-                                      onClick={() => { setIdCopy(!idCopy) }}
+                                      onClick={() => {
+                                        setIdCopy(!idCopy);
+                                      }}
                                     >
                                       <i
                                         className={
@@ -110,22 +377,34 @@ const AiKnowledgeBase = () => {
                                             : "fa-solid fa-clone"
                                         }
                                       ></i>
-
                                     </button>
                                   </p>
                                 </div>
                                 <div>
-                                  <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p>
+                                  <p className="text-end mb-2 f-s-14">
+                                    Last Update on :{" "}
+                                    <strong>
+                                      {new Date(
+                                        activeFile?.user_modified_timestamp
+                                      ).toLocaleDateString()}
+                                    </strong>
+                                  </p>
                                   <div className="buttonGroup">
-                                    <button effect="ripple" className="panelButton edit" onClick={setKnowledgeBase}>
+                                    {/* <button
+                                      effect="ripple"
+                                      className="panelButton edit"
+                                      onClick={setKnowledgeBase}
+                                    >
                                       <span className="text">Edit</span>
                                       <span className="icon">
                                         <i className="fa-solid fa-pen"></i>
                                       </span>
-                                    </button>
+                                    </button> */}
 
-
-                                    <button className="panelButton danger" onClick={setDeletePopup}>
+                                    <button
+                                      className="panelButton danger"
+                                      onClick={setShowDeleteDialog}
+                                    >
                                       <span className="text">Delete</span>
                                       <span className="icon">
                                         <i className="fa-solid fa-trash"></i>
@@ -134,7 +413,7 @@ const AiKnowledgeBase = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className='k_body px-2'>
+                              <div className="k_body px-2">
                                 <div className="tableContainer">
                                   <table>
                                     {/* <thead>
@@ -147,53 +426,81 @@ const AiKnowledgeBase = () => {
                                     </thead> */}
                                     <tbody className="">
                                       <>
-                                        <tr>
-                                          <td colSpan={12}>
-                                            <div className="d-flex align-items-center">
-                                              <div className="table__icon">
-                                                <i className="fa-solid fa-file-pdf"></i>
-                                              </div>
-                                              <div className="ms-2 detailsTable">
-                                                <h5 className='mb-0'>google.com</h5>
-                                                <p className='mb-0'>URL | 3MB</p>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <div className='d-flex justify-content-end align-items-center gap-2'>
-                                              <button className='aitable_button bg-transparent' onClick={() => setDataCopy(!dataCopy)}>
-
-                                                <i className={
-                                                  dataCopy
-                                                    ? "fa-solid fa-check text_success"
-                                                    : "fa-solid fa-clone"
-                                                }
-                                                ></i>
-                                              </button>
-                                              <button className='aitable_button bg-transparent'>
-                                                <i className="fa-regular fa-arrow-down-to-line"></i>
-                                              </button>
-                                            </div>
-                                          </td>
-
-                                        </tr>
-
-
+                                        {activeFile &&
+                                          activeFile?.knowledge_base_sources?.map(
+                                            (data) => (
+                                              <tr key={data?.source_id}>
+                                                <td colSpan={12}>
+                                                  <div className="d-flex align-items-center">
+                                                    <div className="table__icon">
+                                                      <i className="fa-solid fa-file-pdf"></i>
+                                                    </div>
+                                                    <div className="ms-2 detailsTable">
+                                                      <h5 className="mb-0">
+                                                        {(data?.type ===
+                                                          "text" &&
+                                                          data.title) ||
+                                                          (data?.type ===
+                                                            "url" &&
+                                                            data?.url) ||
+                                                          (data?.type ===
+                                                            "document" &&
+                                                            data?.filename)}
+                                                      </h5>
+                                                      <p className="mb-0">
+                                                        {data?.type.toUpperCase()}
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </td>
+                                                <td>
+                                                  <div className="d-flex justify-content-end align-items-center gap-2">
+                                                    <button
+                                                      className="aitable_button bg-transparent"
+                                                      onClick={() =>
+                                                        setDataCopy(!dataCopy)
+                                                      }
+                                                    >
+                                                      <i
+                                                        className={
+                                                          dataCopy
+                                                            ? "fa-solid fa-check text_success"
+                                                            : "fa-solid fa-clone"
+                                                        }
+                                                      ></i>
+                                                    </button>
+                                                    <button className="aitable_button bg-transparent">
+                                                      <i className="fa-regular fa-arrow-down-to-line"></i>
+                                                    </button>
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            )
+                                          )}
                                       </>
                                     </tbody>
                                   </table>
                                 </div>
                               </div>
                             </div>
-                            <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-
-                            </div>
-                            <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-
-                            </div>
-                            <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-
-                            </div>
+                            <div
+                              className="tab-pane fade"
+                              id="v-pills-profile"
+                              role="tabpanel"
+                              aria-labelledby="v-pills-profile-tab"
+                            ></div>
+                            <div
+                              className="tab-pane fade"
+                              id="v-pills-messages"
+                              role="tabpanel"
+                              aria-labelledby="v-pills-messages-tab"
+                            ></div>
+                            <div
+                              className="tab-pane fade"
+                              id="v-pills-settings"
+                              role="tabpanel"
+                              aria-labelledby="v-pills-settings-tab"
+                            ></div>
                           </div>
                         </div>
                       </div>
@@ -205,8 +512,7 @@ const AiKnowledgeBase = () => {
           </div>
         </section>
 
-
-        {addKnowledgeBase &&
+        {addKnowledgeBase && (
           <div className="popup ">
             <div className="popup music">
               <div className="container h-100">
@@ -223,43 +529,46 @@ const AiKnowledgeBase = () => {
                           <h5 className="card-title fs14 fw700 mb-0">
                             Add Knowledge Base for Agent
                           </h5>
-                          <p className='sub_text mb-0'>choose any type of data that best suits for your agent</p></div>
-                        <button className="clearButton2 xl" onClick={() => setKnowledgeBase(false)}>
+                          <p className="sub_text mb-0">
+                            choose any type of data that best suits for your
+                            agent
+                          </p>
+                        </div>
+                        <button
+                          className="clearButton2 xl"
+                          onClick={() => setKnowledgeBase(false)}
+                        >
                           <i className="fa-solid fa-xmark"></i>
                         </button>
                       </div>
                     </div>
                     <div className="card-body aiAgentTab p-3">
-                      <div className='addFile_box'>
+                      <div className="addFile_box">
                         <h5 className="card-title fs14 border-bootm fw700 mb-3">
                           Added Files
                         </h5>
-                        <div className='addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2'>
-                          <div className='d-flex align-items-center gap-1'>
-                            <i className="fa-regular fa-file me-2"></i>
-                            <h5 className="card-title fs14 border-bootm fw700 mb-0">
-                              dummy.pdf
-                            </h5>
+                        {addedFiles.map((file) => (
+                          <div
+                            key={file.id}
+                            className="addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2"
+                          >
+                            <div className="d-flex align-items-center gap-1">
+                              <i className="fa-regular fa-file me-2"></i>
+                              <h5 className="card-title fs14 border-bootm fw700 mb-0">
+                                {file.displayName}
+                              </h5>
+                            </div>
+                            <button
+                              onClick={() => handleRemoveFile(file.id)}
+                              className="aitable_button bg-transparent d-flex justify-content-center align-items-center p-1 text-danger border-danger"
+                            >
+                              <i className={`fa-regular fa-trash `}></i>
+                            </button>
                           </div>
-                          <button className='aitable_button bg-transparent d-flex justify-content-center align-items-center p-1 text-danger border-danger'>
-                            <i className={`fa-regular fa-trash `}></i>
-                          </button>
-                        </div>
-                        <div className='addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2'>
-                          <div className='d-flex align-items-center gap-1'>
-                            <i className="fa-regular fa-file me-2"></i>
-                            <h5 className="card-title fs14 border-bootm fw700 mb-0">
-                              dummy.pdf
-                            </h5>
-                          </div>
-                          <button className='aitable_button bg-transparent d-flex justify-content-center align-items-center p-1 text-danger border-danger'>
-                            <i className={`fa-regular fa-trash `}></i>
-                          </button>
-                        </div>
-
+                        ))}
                       </div>
 
-                      <form>
+                      <form onSubmit={form.handleSubmit(handleFileAdd)}>
                         <div className="formRow flex-column align-items-start">
                           <div className="formLabel">
                             <label> Name:</label>
@@ -267,84 +576,165 @@ const AiKnowledgeBase = () => {
                           <div className="col-12">
                             <input
                               type="text"
+                              name="name"
                               className="formItem"
-                              placeholder='Enter a name for your knowledge base'
+                              placeholder="Enter a name for your knowledge base"
+                              {...form.register("name")}
                             />
+                            <ErrorMessage error={form.formState.errors.name} />
                           </div>
                         </div>
-                      </form>
-                      <div className="mt-3 baseNav">
-                        <ul className="nav nav-pills" id="pills-tab" role="tablist">
-                          <li className="nav-item" role="presentation">
-                            <button className="nav-link active" id="webPAge-tab" data-bs-toggle="pill" data-bs-target="#webPAge" type="button" role="tab" aria-controls="webPAge" aria-selected="true">Web Page</button>
-                          </li>
-                          <li className="nav-item" role="presentation">
-                            <button className="nav-link" id="upload-tab" data-bs-toggle="pill" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Upload File</button>
-                          </li>
-                          <li className="nav-item" role="presentation">
-                            <button className="nav-link" id="addText-tab" data-bs-toggle="pill" data-bs-target="#addText" type="button" role="tab" aria-controls="addText" aria-selected="false">Add Text</button>
-                          </li>
-                        </ul>
-                        <div className="tab-content" id="pills-tabContent">
-                          <div className="tab-pane fade show active" id="webPAge" role="tabpanel" aria-labelledby="webPAge-tab">
 
-                            <form>
+                        <div className="mt-3 baseNav">
+                          <ul
+                            className="nav nav-pills"
+                            id="pills-tab"
+                            role="tablist"
+                          >
+                            <li className="nav-item" role="presentation">
+                              <button
+                                className={`nav-link${
+                                  currentTab === "webPage" ? " active" : ""
+                                }`}
+                                id="webPAge-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#webPAge"
+                                type="button"
+                                role="tab"
+                                aria-controls="webPAge"
+                                aria-selected={currentTab === "webPage"}
+                                onClick={() => setCurrentTab("webPage")}
+                              >
+                                Web Page
+                              </button>
+                            </li>
+                            <li className="nav-item" role="presentation">
+                              <button
+                                className={`nav-link${
+                                  currentTab === "uploadFile" ? " active" : ""
+                                }`}
+                                id="upload-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#upload"
+                                type="button"
+                                role="tab"
+                                aria-controls="upload"
+                                aria-selected={currentTab === "uploadFile"}
+                                onClick={() => setCurrentTab("uploadFile")}
+                              >
+                                Upload File
+                              </button>
+                            </li>
+                            <li className="nav-item" role="presentation">
+                              <button
+                                className={`nav-link${
+                                  currentTab === "addText" ? " active" : ""
+                                }`}
+                                id="addText-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#addText"
+                                type="button"
+                                role="tab"
+                                aria-controls="addText"
+                                aria-selected={currentTab === "addText"}
+                                onClick={() => setCurrentTab("addText")}
+                              >
+                                Add Text
+                              </button>
+                            </li>
+                          </ul>
+                          <div className="tab-content" id="pills-tabContent">
+                            <div
+                              className={`tab-pane fade${
+                                currentTab === "webPage" ? " show active" : ""
+                              }`}
+                              id="webPAge"
+                              role="tabpanel"
+                              aria-labelledby="webPAge-tab"
+                            >
                               <div className="formRow flex-column align-items-start">
                                 <div className="formLabel">
-                                  <label> Web PAge URL</label>
+                                  <label> Web Page URL</label>
                                 </div>
                                 <div className="col-12">
                                   <input
                                     type="text"
                                     className="formItem"
-                                    placeholder='Enter Web page URl'
+                                    placeholder="Enter Web page URL"
+                                    name="webPageUrl"
+                                    {...form.register("webPageUrl")}
                                   />
-
+                                  <ErrorMessage
+                                    error={form.formState.errors.webPageUrl}
+                                  />
                                 </div>
                               </div>
-                            </form>
-                          </div>
-                          <div className="tab-pane fade pb-3" id="upload" role="tabpanel" aria-labelledby="upload-tab">
-                            <h5 className="card-title fs14 border-bootm fw700 mt-3">
-                              Upload File
-                            </h5>
-                            <div className="popup-border text-center p-2">
-                              <input
-                                type="file"
-                                className="form-control-file d-none"
-                                id="fileInput"
-                                accept=".csv"
-                              />
-                              <label
-                                htmlFor="fileInput"
-                                className="d-block"
-                              >
-                                <div className="test-user text-center">
-                                  <i
-                                    className="fa-solid fa-cloud-arrow-up"
-                                    style={{ fontSize: 30 }}
-                                  />
-                                  <p className="mb-0 mt-2 text-center">
-                                    Drag and Drop or{" "}
-                                    <span>Click on upload</span>
-                                  </p>
-                                  <span className='text2'>
-                                    Supports formats : MP3, Max
-                                    Size: 2MB
-                                  </span>
-                                </div>
-                              </label>
-                              {/* {fileName && (
-                                                <p className="mt-3 text-center">
-                                                    Selected File:{" "}
-                                                    <strong>{fileName}</strong>
-                                                </p>
-                                            )} */}
                             </div>
-
-                          </div>
-                          <div className="tab-pane fade" id="addText" role="tabpanel" aria-labelledby="addText-tab">
-                            <form>
+                            <div
+                              className={`tab-pane fade pb-3${
+                                currentTab === "uploadFile"
+                                  ? " show active"
+                                  : ""
+                              }`}
+                              id="upload"
+                              role="tabpanel"
+                              aria-labelledby="upload-tab"
+                            >
+                              <h5 className="card-title fs14 border-bootm fw700 mt-3">
+                                Upload File
+                              </h5>
+                              <div className="popup-border text-center p-2">
+                                {/* File input using Controller for react-hook-form */}
+                                <Controller
+                                  name="uploadFile"
+                                  control={form.control}
+                                  render={({ field: { onChange } }) => (
+                                    <>
+                                      <input
+                                        type="file"
+                                        className="form-control-file d-none"
+                                        id="fileInput"
+                                        accept=".pdf,.docx,.txt,.md"
+                                        onChange={(e) => {
+                                          const file = e.target.files?.[0];
+                                          onChange(file);
+                                        }}
+                                      />
+                                      <label
+                                        htmlFor="fileInput"
+                                        className="d-block"
+                                      >
+                                        <div className="test-user text-center">
+                                          <i
+                                            className="fa-solid fa-cloud-arrow-up"
+                                            style={{ fontSize: 30 }}
+                                          />
+                                          <p className="mb-0 mt-2 text-center">
+                                            Drag and Drop or{" "}
+                                            <span>Click on upload</span>
+                                          </p>
+                                          <span className="text2">
+                                            Supports formats : PDF, DOCX, TXT,
+                                            MD
+                                          </span>
+                                        </div>
+                                      </label>
+                                      <ErrorMessage
+                                        error={form.formState.errors.uploadFile}
+                                      />
+                                    </>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                            <div
+                              className={`tab-pane fade${
+                                currentTab === "addText" ? " show active" : ""
+                              }`}
+                              id="addText"
+                              role="tabpanel"
+                              aria-labelledby="addText-tab"
+                            >
                               <div className="formRow flex-column align-items-start">
                                 <div className="formLabel">
                                   <label> File Name</label>
@@ -353,7 +743,12 @@ const AiKnowledgeBase = () => {
                                   <input
                                     type="text"
                                     className="formItem"
-                                    placeholder='Enter Web page URl'
+                                    placeholder="Enter file name"
+                                    name="addTextName"
+                                    {...form.register("addTextName")}
+                                  />
+                                  <ErrorMessage
+                                    error={form.formState.errors.addTextName}
                                   />
                                 </div>
                               </div>
@@ -362,53 +757,76 @@ const AiKnowledgeBase = () => {
                                   <label>Content</label>
                                 </div>
                                 <div className="col-12">
-                                  <textarea rows={8} className="formItem" placeholder='Enter Text'></textarea>
+                                  <textarea
+                                    rows={8}
+                                    className="formItem"
+                                    placeholder="Enter Text"
+                                    name="addTextContent"
+                                    {...form.register("addTextContent")}
+                                  ></textarea>
+                                  <ErrorMessage
+                                    error={form.formState.errors.addTextContent}
+                                  />
                                 </div>
                               </div>
-                            </form>
-
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className=" card-footer d-flex justify-content-between">
-                      <div className="d-flex justify-content-start">
-                        <button className="panelButton add m-0" >
-                          <span className="text">Add File</span>
-                          <span className="icon">
-                            <i className="fa-regular fa-plus"></i>
-                          </span>
-                        </button>
-
-                      </div>
-                      <div className="d-flex justify-content-end">
-                        <button className="panelButton  m-0" >
-                          <span className="text">Confirm</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        </button>
-                        <button
-                          className="panelButton gray"
-                          onClick={() => {
-                            setKnowledgeBase(false);
-                            // setNewImage(null);
-                          }}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-xmark"></i>
-                          </span>
-                        </button>
-                      </div>
+                        <div className=" card-footer d-flex justify-content-between">
+                          <div className="d-flex justify-content-start">
+                            <button
+                              className="panelButton add m-0"
+                              type="submit"
+                            >
+                              <span className="text">
+                                Add
+                                {currentTab === "webPage"
+                                  ? " Web Page"
+                                  : currentTab === "uploadFile"
+                                  ? " File"
+                                  : currentTab === "addText" && " Text"}
+                              </span>
+                              <span className="icon">
+                                <i className="fa-regular fa-plus"></i>
+                              </span>
+                            </button>
+                          </div>
+                          <div className="d-flex justify-content-end">
+                            <button
+                              className="panelButton  m-0"
+                              type="button"
+                              onClick={handleSaveChanges}
+                              disabled={
+                                !isValid || addedFiles.length === 0 || loading
+                              }
+                            >
+                              <span className="text">Save Changes</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-check"></i>
+                              </span>
+                            </button>
+                            <button
+                              className="panelButton gray"
+                              type="button"
+                              onClick={() => {
+                                setKnowledgeBase(false);
+                              }}
+                            >
+                              <span className="text">Cancel</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-xmark"></i>
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        }
-
+        )}
 
         {deletePopup && (
           <div className="popup">
@@ -422,12 +840,14 @@ const AiKnowledgeBase = () => {
                   </div>
                   <div className="col-12">
                     <h4 className="text-center text-danger">Confirmation!</h4>
-                    <p className="text-center">Are you sure! You want to delete this DID</p>
+                    <p className="text-center">
+                      Are you sure! You want to delete this DID
+                    </p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
                       <button
                         className="panelButton m-0"
-
+                        onClick={handleDeleteKnowledgeBase}
                       >
                         <span className="text">Delete</span>
                         <span className="icon">
@@ -437,7 +857,7 @@ const AiKnowledgeBase = () => {
                       <button
                         className="panelButton gray m-0 float-end"
                         onClick={() => {
-                          setDeletePopup(false);
+                          setShowDeleteDialog(false);
                         }}
                       >
                         <span className="text">Cancel</span>
@@ -452,11 +872,9 @@ const AiKnowledgeBase = () => {
             </div>
           </div>
         )}
-
-
-      </main >
+      </main>
     </>
-  )
-}
+  );
+};
 
-export default AiKnowledgeBase
+export default AiKnowledgeBase;
