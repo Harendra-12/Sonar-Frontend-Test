@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
+  aiFileUploadFunction,
   aiGeneralDeleteFunction,
   aiGeneralGetFunction,
   aiGeneralPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, FormProvider } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
 import { requiredValidator, urlValidator } from "../../validations/validation";
 
@@ -16,23 +17,50 @@ const AiKnowledgeBase = () => {
   const [addKnowledgeBase, setKnowledgeBase] = useState(false);
   const [dataCopy, setDataCopy] = useState(false);
   const [idCopy, setIdCopy] = useState(false);
+  const [linkCopy, setLinkCopy] = useState(null);
   const [deletePopup, setShowDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const [initialData, setInitialData] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
   const [currentTab, setCurrentTab] = useState("webPage");
   const [addedFiles, setAddedFiles] = useState([]);
-  const [isValid, setIsValid] = useState(false);
+  const [isValids, setIsValids] = useState(false);
 
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      webPageUrl: "",
-      uploadFile: "",
-      addTextName: "",
-      addTextContent: "",
-    },
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    setError,
+    getValues,
+    setValue,
+    trigger,
+    clearErrors,
+    control,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
   });
+
+  // link copy function with dynamically state change
+  const copyLink = (link) => {
+    if (!link) return;
+    setLinkCopy(link);
+    navigator.clipboard.writeText(link);
+
+    setTimeout(() => {
+      setLinkCopy(null);
+    }, 1000);
+  };
+
+  const downloadFile = (link) => {
+    window.open(link, "_blank");
+  };
+
+  // Clear errors when switching tabs
+  useEffect(() => {
+    clearErrors();
+  }, [currentTab, clearErrors]);
 
   // initial fetch data
   useEffect(() => {
@@ -41,6 +69,7 @@ const AiKnowledgeBase = () => {
   const fetchInitialData = async () => {
     try {
       setLoading(true);
+      setRefreshState(true);
       const res = await aiGeneralGetFunction("/knowledgebase/all");
       if (res.status) {
         setInitialData(res?.knowledgeBaseResponses);
@@ -50,9 +79,11 @@ const AiKnowledgeBase = () => {
             : null
         );
         setLoading(false);
+        setRefreshState(false);
       }
     } catch (error) {
       setLoading(false);
+      setRefreshState(false);
       console.error("Error fetching initial data: ", error);
     }
   };
@@ -89,14 +120,15 @@ const AiKnowledgeBase = () => {
   };
 
   const validateForm = async () => {
-    const formValid = await form.trigger();
+    const formValid = await trigger();
+    console.log("formValid", formValid);
     if (!formValid) return false;
 
-    const values = form.getValues();
+    const values = getValues();
 
     // Common validation for name
     if (!values.name?.trim()) {
-      form.setError("name", { message: "Name is required" });
+      setError("name", { message: "Name is required" });
       return false;
     }
 
@@ -104,28 +136,28 @@ const AiKnowledgeBase = () => {
     if (currentTab === "webPage") {
       const url = values.webPageUrl?.trim();
       if (!url) {
-        form.setError("webPageUrl", { message: "Web page URL is required" });
+        setError("webPageUrl", { message: "Web page URL is required" });
         return false;
       }
 
       try {
         new URL(url); // Throws if invalid
       } catch {
-        form.setError("webPageUrl", { message: "Please enter a valid URL" });
+        setError("webPageUrl", { message: "Please enter a valid URL" });
         return false;
       }
     } else if (currentTab === "uploadFile") {
       if (!values.uploadFile) {
-        form.setError("uploadFile", { message: "File is required" });
+        setError("uploadFile", { message: "File is required" });
         return false;
       }
     } else if (currentTab === "addText") {
       if (!values.addTextName?.trim() || !values.addTextContent?.trim()) {
         if (!values.addTextName?.trim()) {
-          form.setError("addTextName", { message: "File name is required" });
+          setError("addTextName", { message: "File name is required" });
         }
         if (!values.addTextContent?.trim()) {
-          form.setError("addTextContent", { message: "Content is required" });
+          setError("addTextContent", { message: "Content is required" });
         }
         return false;
       }
@@ -136,7 +168,7 @@ const AiKnowledgeBase = () => {
   const handleFileAdd = async () => {
     if (!(await validateForm())) return;
 
-    const values = form.getValues();
+    const values = getValues();
     let displayName = "";
     let data = null;
 
@@ -168,28 +200,28 @@ const AiKnowledgeBase = () => {
     };
 
     setAddedFiles((prev) => [newFile, ...prev]);
-    setIsValid(true);
+    setIsValids(true);
 
     // Reset form while keeping the name
     const currentName = values.name;
-    form.reset();
-    form.setValue("name", currentName);
+    reset();
+    setValue("name", currentName);
   };
 
   const handleRemoveFile = (id) => {
     setAddedFiles((prev) => {
       const newFiles = prev.filter((file) => file.id !== id);
-      setIsValid(newFiles.length > 0);
+      setIsValids(newFiles.length > 0);
       return newFiles;
     });
   };
 
   const handleSaveChanges = async () => {
-    if (!isValid || addedFiles.length === 0) return;
+    if (!isValids || addedFiles.length === 0) return;
 
     // toast.loading("Saving files...");
     setLoading(true);
-    const name = form.getValues("name").trim();
+    const name = getValues("name").trim();
     const texts = [];
     const urls = [];
     const files = [];
@@ -228,14 +260,15 @@ const AiKnowledgeBase = () => {
     }
 
     try {
-      const res = await aiGeneralPostFunction("/knowledgebase/store", formData);
+      const res = await aiFileUploadFunction("/knowledgebase/store", formData);
 
       if (res.status) {
         toast.success("Knowledge base saved successfully");
         setLoading(false);
-        setIsValid(false);
+        setIsValids(false);
+        setKnowledgeBase(false);
         setAddedFiles([]);
-        form.reset();
+        reset();
         fetchInitialData();
       } else {
         toast.error("Failed to save knowledge base");
@@ -249,9 +282,7 @@ const AiKnowledgeBase = () => {
   };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true);
-    // const shouldLoad = false
-    // getData(shouldLoad);
+    fetchInitialData();
   };
 
   if (loading) return <CircularLoader />;
@@ -368,12 +399,13 @@ const AiKnowledgeBase = () => {
                                     <button
                                       className="clearButton"
                                       onClick={() => {
-                                        setIdCopy(!idCopy);
+                                        copyLink(activeFile?.knowledge_base_id);
                                       }}
                                     >
                                       <i
                                         className={
-                                          idCopy
+                                          linkCopy ===
+                                          activeFile?.knowledge_base_id
                                             ? "fa-solid fa-check text_success"
                                             : "fa-solid fa-clone"
                                         }
@@ -391,17 +423,6 @@ const AiKnowledgeBase = () => {
                                     </strong>
                                   </p>
                                   <div className="buttonGroup">
-                                    {/* <button
-                                      effect="ripple"
-                                      className="panelButton edit"
-                                      onClick={setKnowledgeBase}
-                                    >
-                                      <span className="text">Edit</span>
-                                      <span className="icon">
-                                        <i className="fa-solid fa-pen"></i>
-                                      </span>
-                                    </button> */}
-
                                     <button
                                       className="panelButton danger"
                                       onClick={setShowDeleteDialog}
@@ -417,14 +438,6 @@ const AiKnowledgeBase = () => {
                               <div className="k_body px-2">
                                 <div className="tableContainer">
                                   <table>
-                                    {/* <thead>
-                                      <tr>
-                                        
-                                        <th></th>
-                                        <th></th>
-
-                                      </tr>
-                                    </thead> */}
                                     <tbody className="">
                                       <>
                                         {activeFile &&
@@ -434,7 +447,16 @@ const AiKnowledgeBase = () => {
                                                 <td colSpan={12}>
                                                   <div className="d-flex align-items-center">
                                                     <div className="table__icon">
-                                                      <i className="fa-solid fa-file-pdf"></i>
+                                                      {data.type === "text" && (
+                                                        <i className="fa-solid fa-file-lines" />
+                                                      )}
+                                                      {data.type ===
+                                                        "document" && (
+                                                        <i className="fa-solid fa-file" />
+                                                      )}
+                                                      {data.type === "url" && (
+                                                        <i className="fa-solid fa-link" />
+                                                      )}
                                                     </div>
                                                     <div className="ms-2 detailsTable">
                                                       <h5 className="mb-0">
@@ -456,22 +478,57 @@ const AiKnowledgeBase = () => {
                                                 </td>
                                                 <td>
                                                   <div className="d-flex justify-content-end align-items-center gap-2">
+                                                    {(data.type === "text" ||
+                                                      data.type ===
+                                                        "document") && (
+                                                      <button
+                                                        className="aitable_button bg-transparent"
+                                                        onClick={() =>
+                                                          downloadFile(
+                                                            data.type === "text"
+                                                              ? data?.content_url
+                                                              : data.type ===
+                                                                "document"
+                                                              ? data?.file_url
+                                                              : data.type ===
+                                                                  "url" &&
+                                                                data.url
+                                                          )
+                                                        }
+                                                      >
+                                                        <i className="fa-regular fa-arrow-down-to-line"></i>
+                                                      </button>
+                                                    )}
                                                     <button
                                                       className="aitable_button bg-transparent"
                                                       onClick={() =>
-                                                        setDataCopy(!dataCopy)
+                                                        copyLink(
+                                                          data.type === "text"
+                                                            ? data?.content_url
+                                                            : data.type ===
+                                                              "document"
+                                                            ? data?.file_url
+                                                            : data.type ===
+                                                                "url" &&
+                                                              data.url
+                                                        )
                                                       }
                                                     >
                                                       <i
                                                         className={
-                                                          dataCopy
+                                                          linkCopy ===
+                                                          (data.type === "text"
+                                                            ? data?.content_url
+                                                            : data.type ===
+                                                              "document"
+                                                            ? data?.file_url
+                                                            : data.type ===
+                                                                "url" &&
+                                                              data.url)
                                                             ? "fa-solid fa-check text_success"
                                                             : "fa-solid fa-clone"
                                                         }
                                                       ></i>
-                                                    </button>
-                                                    <button className="aitable_button bg-transparent">
-                                                      <i className="fa-regular fa-arrow-down-to-line"></i>
                                                     </button>
                                                   </div>
                                                 </td>
@@ -569,7 +626,7 @@ const AiKnowledgeBase = () => {
                         ))}
                       </div>
 
-                      <form onSubmit={form.handleSubmit(handleFileAdd)}>
+                      <form onSubmit={handleSubmit(handleFileAdd)}>
                         <div className="formRow flex-column align-items-start">
                           <div className="formLabel">
                             <label> Name:</label>
@@ -580,9 +637,18 @@ const AiKnowledgeBase = () => {
                               name="name"
                               className="formItem"
                               placeholder="Enter a name for your knowledge base"
-                              {...form.register("name")}
+                              {...register("name", {
+                                required:
+                                  currentTab === "webPage" ||
+                                  currentTab === "uploadFile" ||
+                                  currentTab === "addText"
+                                    ? "Name is required"
+                                    : false,
+                              })}
                             />
-                            <ErrorMessage error={form.formState.errors.name} />
+                            {errors.name && (
+                              <ErrorMessage text={errors.name.message} />
+                            )}
                           </div>
                         </div>
 
@@ -663,11 +729,28 @@ const AiKnowledgeBase = () => {
                                     className="formItem"
                                     placeholder="Enter Web page URL"
                                     name="webPageUrl"
-                                    {...form.register("webPageUrl")}
+                                    {...register("webPageUrl", {
+                                      required:
+                                        currentTab === "webPage"
+                                          ? "Web page URL is required"
+                                          : false,
+                                      pattern:
+                                        currentTab === "webPage"
+                                          ? {
+                                              value:
+                                                /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]{2,}(\/.*)?$/,
+                                              message:
+                                                "Please enter a valid URL",
+                                            }
+                                          : undefined,
+                                    })}
                                   />
-                                  <ErrorMessage
-                                    error={form.formState.errors.webPageUrl}
-                                  />
+                                  {currentTab === "webPage" &&
+                                    errors.webPageUrl && (
+                                      <ErrorMessage
+                                        text={errors.webPageUrl.message}
+                                      />
+                                    )}
                                 </div>
                               </div>
                             </div>
@@ -685,11 +768,16 @@ const AiKnowledgeBase = () => {
                                 Upload File
                               </h5>
                               <div className="popup-border text-center p-2">
-                                {/* File input using Controller for react-hook-form */}
                                 <Controller
                                   name="uploadFile"
-                                  control={form.control}
-                                  render={({ field: { onChange } }) => (
+                                  control={control}
+                                  rules={{
+                                    required:
+                                      currentTab === "uploadFile"
+                                        ? "File is required"
+                                        : false,
+                                  }}
+                                  render={({ field: { onChange, value } }) => (
                                     <>
                                       <input
                                         type="file"
@@ -697,8 +785,7 @@ const AiKnowledgeBase = () => {
                                         id="fileInput"
                                         accept=".pdf,.docx,.txt,.md"
                                         onChange={(e) => {
-                                          const file = e.target.files?.[0];
-                                          onChange(file);
+                                          onChange(e.target.files?.[0]);
                                         }}
                                       />
                                       <label
@@ -718,15 +805,28 @@ const AiKnowledgeBase = () => {
                                             Supports formats : PDF, DOCX, TXT,
                                             MD
                                           </span>
+                                          {value && (
+                                            <p className="text-center mt-2">
+                                              Selected file:
+                                              <span className="text-success text2">
+                                                {" "}
+                                                {value.name}
+                                              </span>
+                                            </p>
+                                          )}
                                         </div>
                                       </label>
-                                      <ErrorMessage
-                                        error={form.formState.errors.uploadFile}
-                                      />
                                     </>
                                   )}
                                 />
+                                {/* show selected file name */}
                               </div>
+                              {currentTab === "uploadFile" &&
+                                errors.uploadFile && (
+                                  <ErrorMessage
+                                    text={errors.uploadFile.message}
+                                  />
+                                )}
                             </div>
                             <div
                               className={`tab-pane fade${
@@ -746,11 +846,19 @@ const AiKnowledgeBase = () => {
                                     className="formItem"
                                     placeholder="Enter file name"
                                     name="addTextName"
-                                    {...form.register("addTextName")}
+                                    {...register("addTextName", {
+                                      required:
+                                        currentTab === "addText"
+                                          ? "File name is required"
+                                          : false,
+                                    })}
                                   />
-                                  <ErrorMessage
-                                    error={form.formState.errors.addTextName}
-                                  />
+                                  {currentTab === "addText" &&
+                                    errors.addTextName && (
+                                      <ErrorMessage
+                                        text={errors.addTextName.message}
+                                      />
+                                    )}
                                 </div>
                               </div>
                               <div className="formRow flex-column align-items-start">
@@ -763,17 +871,25 @@ const AiKnowledgeBase = () => {
                                     className="formItem"
                                     placeholder="Enter Text"
                                     name="addTextContent"
-                                    {...form.register("addTextContent")}
+                                    {...register("addTextContent", {
+                                      required:
+                                        currentTab === "addText"
+                                          ? "Content is required"
+                                          : false,
+                                    })}
                                   ></textarea>
-                                  <ErrorMessage
-                                    error={form.formState.errors.addTextContent}
-                                  />
+                                  {currentTab === "addText" &&
+                                    errors.addTextContent && (
+                                      <ErrorMessage
+                                        text={errors.addTextContent.message}
+                                      />
+                                    )}
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div className=" card-footer d-flex justify-content-between">
+                        <div className=" d-flex justify-content-between">
                           <div className="d-flex justify-content-start">
                             <button
                               className="panelButton add m-0"
@@ -798,7 +914,7 @@ const AiKnowledgeBase = () => {
                               type="button"
                               onClick={handleSaveChanges}
                               disabled={
-                                !isValid || addedFiles.length === 0 || loading
+                                !isValids || addedFiles.length === 0 || loading
                               }
                             >
                               <span className="text">Save Changes</span>
