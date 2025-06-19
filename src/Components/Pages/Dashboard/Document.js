@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useRef, useState } from "react";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import {
   fileUploadFunction,
   generalGetFunction,
@@ -334,453 +334,453 @@ function Document({
           </div>
         </div>
       </div>
-
-      <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
-        <div className="row">
-          <div className="col-xl-12 mb-3">
-            <div className="documentPending">
-              {checkDocumentStatus(account.details) != null && rejectDocument.length === uploadApprove.length && (
-                <div className="statusMessage">
-                  <div className={`statusWrapper ${checkDocumentStatus(account.details).includes("approved") ? "success" : "pending"}`}>
-                    <div className="mx-2">
-                      <h5 className="text-dark">
-                        <i className={`text-dark fa-regular fa-${checkDocumentStatus(account.details).includes("approved") ? "check" : "clock"} me-1`}></i>{" "}
-                        {checkDocumentStatus(account.details)}
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {rejectDocument.length !== 0 &&
-                rejectDocument.length !== uploadApprove.length ? (
-                <>
+      <div className="d-flex flex-wrap">
+        <div className="col-12" style={{ padding: '25px 23px', }}>
+          <div className="row">
+            <div className="col-xl-12 mb-3">
+              <div className="documentPending">
+                {checkDocumentStatus(account.details) != null && rejectDocument.length === uploadApprove.length && (
                   <div className="statusMessage">
-                    <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
-                      <h5>
-                        <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
-                        {uploadDocument.every((value) => value === true)
-                          ? "Documents are under review. We will get back to you soon!"
-                          : "We have faced an issue while validating your document(s)!"}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <div className="profileView px-0">
-                    <div
-                      className="profileDetailsHolder position-relative"
-                      style={{ border: "1px solid red" }}
-                    >
-                      <div className="row px-2">
-                        <div className="statusContent">
-                          <p className="mb-2">
-                            The following document(s) have been rejected for various
-                            reasons :-
-                          </p>
-                          <ul>
-                            {rejectDocument.map((item, key) => {
-                              return (
-                                <li className="d-flex justify-content-between mt-3">
-                                  <div className="col-10">
-                                    <b>
-                                      <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
-                                      {item.document.name}
-                                    </b>
-                                    : <span style={{ color: 'var(--color-subtext)' }}>{item.description}</span>
-                                  </div>{" "}
-                                  {uploadDocument[key] ? (
-                                    <div className="col-2 clearButton fw-bold float-end text-end">
-                                      Under Verification{" "}
-                                      {/* <i className="fa-duotone fa-upload"></i> */}
-                                    </div>
-                                  ) : uploadApprove[key] ? (
-                                    <div
-                                      // onClick={() => {
-                                      //   setReUploadPopUp(true);
-                                      //   setReUploadId(item.document_id);
-                                      // }}
-                                      style={{ cursor: "pointer" }}
-                                      className="pe-5 clearButton fw-bold float-end col-auto text-end"
-                                    >
-                                      Approved{" "}
-                                      {/* <i className="fa-duotone fa-upload"></i> */}
-                                    </div>
-                                  ) : (
-                                    <button
-                                      onClick={() => {
-                                        setReUploadPopUp(true);
-                                        setReUploadId(item.document_id);
-                                      }}
-                                      style={{ cursor: "pointer" }}
-                                      className="tableButton"
-                                    >
-                                      <i className="fa-solid fa-upload"></i>
-                                    </button>
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
+                    <div className={`statusWrapper ${checkDocumentStatus(account.details).includes("approved") ? "success" : "pending"}`}>
+                      <div className="mx-2">
+                        <h5 className="text-dark">
+                          <i className={`text-dark fa-regular fa-${checkDocumentStatus(account.details).includes("approved") ? "check" : "clock"} me-1`}></i>{" "}
+                          {checkDocumentStatus(account.details)}
+                        </h5>
                       </div>
                     </div>
                   </div>
-                </>
+                )}
+                {rejectDocument.length !== 0 &&
+                  rejectDocument.length !== uploadApprove.length ? (
+                  <>
+                    <div className="statusMessage">
+                      <div className={uploadDocument.every((value) => value === true) ? "statusWrapper pending" : "statusWrapper"}>
+                        <h5 className="text-white">
+                          <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
+                          {uploadDocument.every((value) => value === true)
+                            ? "Documents are under review. We will get back to you soon!"
+                            : "We have faced an issue while validating your document(s)!"}
+                        </h5>
+                      </div>
+                    </div>
+
+                    <div className="profileView px-0">
+                      <div
+                        className="profileDetailsHolder position-relative mt-2"
+                        style={{ border: "1px solid red" }}
+                      >
+                        <div className="row px-2">
+                          <div className="statusContent">
+                            <p className="mb-2">
+                              The following document(s) have been rejected for various
+                              reasons :-
+                            </p>
+                            <ul>
+                              {rejectDocument.map((item, key) => {
+                                return (
+                                  <li className="d-flex justify-content-between mt-3">
+                                    <div className="col-10">
+                                      <b>
+                                        <i className="fa-solid fa-triangle-exclamation me-1"></i>{" "}
+                                        {item.document.name}
+                                      </b>
+                                      : <span style={{ color: 'var(--color-subtext)' }}>{item.description}</span>
+                                    </div>{" "}
+                                    {uploadDocument[key] ? (
+                                      <div className="col-2 clearButton fw-bold float-end text-end">
+                                        Under Verification{" "}
+                                        {/* <i className="fa-duotone fa-upload"></i> */}
+                                      </div>
+                                    ) : uploadApprove[key] ? (
+                                      <div
+                                        // onClick={() => {
+                                        //   setReUploadPopUp(true);
+                                        //   setReUploadId(item.document_id);
+                                        // }}
+                                        style={{ cursor: "pointer" }}
+                                        className="pe-5 clearButton fw-bold float-end col-auto text-end"
+                                      >
+                                        Approved{" "}
+                                        {/* <i className="fa-duotone fa-upload"></i> */}
+                                      </div>
+                                    ) : (
+                                      <button
+                                        onClick={() => {
+                                          setReUploadPopUp(true);
+                                          setReUploadId(item.document_id);
+                                        }}
+                                        style={{ cursor: "pointer" }}
+                                        className="tableButton"
+                                      >
+                                        <i className="fa-solid fa-upload"></i>
+                                      </button>
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <div className="col-xl-8" style={{ borderRight: '1px solid #ddd' }}>
+              <form action="#" className="row px-2 justify-content-between">
+                <div className="col-xl-12 headerCommon">
+                  Account Details
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Company Name</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.company_name}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Admin Name</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.admin_name}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Email</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.email}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Phone Number</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.contact_no}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Alternate Number</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.alternate_contact_no}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Timezone</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.timezone.name}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Block/Unit/Place</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.unit}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Building</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.building}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">City</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.city}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Zip Code</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.zip}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">State</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.state}
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="formRow col-xl-3">
+                  <div className="formLabel">
+                    <label htmlFor="data">Country</label>
+                  </div>
+                  <div className="col-6">
+                    <input
+                      type="text"
+                      className="formItem"
+                      value={account.country}
+                      disabled
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="col-xl-4">
+              {nonUploadedDocuments.length > 0 && (
+                <div className="masterList h-auto" style={{ borderBottom: '1px solid #ddd' }}>
+                  <div className="masterSegment">
+                    <div className="headerCommon">
+                      <div className="col-12">Upload Below Documents</div>
+                    </div>
+                    <ul>
+                      {nonUploadedDocuments.map((item, index) => {
+                        return (
+                          <li
+                            key={index}
+                          >
+                            <div className="">
+                              <input type="text" placeholder={item?.name} disabled />
+                            </div>
+                            <button
+                              onClick={() => {
+                                setUploadPopup(true);
+                                setuploadId(item.id);
+                                // setReUploadId(item.document_id);
+                              }}
+                              style={{ cursor: "pointer" }}
+                              className="tableButton"
+                            >
+                              <i className="fa-solid fa-upload"></i>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {account.details.length > 0 ? (
+                <div className="profileView px-0 pt-0">
+                  <div className="profileDetailsHolder shadow-none px-0 border-0 pt-0">
+                    <div className="headerCommon">
+                      <div className="col-12">Uploaded Documents</div>
+                    </div>
+                    {account.details.length > 0 ? (
+                      <div className="qLinkContent temporaryDashAccordionContent" ref={wrapperRef}>
+                        <div
+                          className="accordion permissionListWrapper"
+                          id="accordionFlushExample"
+                        >
+                          {docId.map((item2, key) => {
+                            return (
+                              <div className="accordion-item">
+                                <h2
+                                  className="accordion-header"
+                                  id={`flush-heading${key}`}
+                                >
+                                  <button
+                                    className="accordion-button collapsed px-3"
+                                    style={{ padding: "15px 5px" }}
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target={`#flush-collapse${key}`}
+                                    aria-expanded="false"
+                                    aria-controls={`flush-collapse${key}`}
+                                  >
+                                    {item2?.document?.name}
+                                  </button>
+                                </h2>
+                                <div
+                                  id={`flush-collapse${key}`}
+                                  className="accordion-collapse collapse"
+                                  aria-labelledby={`flush-heading${key}`}
+                                  data-bs-parent="#accordionFlushExample"
+                                >
+                                  {account.details.map((item) => {
+                                    if (item.document_id === item2.document_id) {
+                                      return (
+                                        <div className="accordion-body">
+                                          <div className="row position-relative align-items-center w-100">
+                                            <div className="col-auto ps-0 pe-2">
+                                              <div className="iconWrapper2">
+                                                {item.status === "1" ? (
+                                                  <i className="fa-solid fa-check "></i>
+                                                ) : item.status === "2" ? (
+                                                  <i className="fa-solid fa-xmark text-danger"></i>
+                                                ) : (
+                                                  <i className="fa-solid fa-image"></i>
+                                                )}
+                                              </div>
+                                            </div>
+                                            <div className="col-8 my-auto ps-1">
+                                              <p>{item?.document?.name}</p>
+                                            </div>
+                                            <div
+                                              className="col-auto px-0 my-auto ms-auto"
+                                              onClick={() => {
+                                                setOpenPopup(!openPopup);
+                                                setOpenNumber(key);
+                                              }}
+                                            >
+                                              <button className="clearButton2">
+                                                <i className="fa-solid fa-ellipsis"></i>
+                                              </button>
+                                            </div>
+                                            <div className="col-12">
+                                              <p
+                                                style={{
+                                                  fontSize: 12,
+                                                  paddingLeft: 20,
+                                                  color: "#ff2e2e",
+                                                }}
+                                              >
+                                                {item.description}
+                                              </p>
+                                            </div>
+                                            {openPopup && openNumber === key ? (
+                                              <div className="buttonPopup">
+                                                <div style={{ cursor: "pointer" }}>
+                                                  <div
+                                                    className="clearButton"
+                                                    onClick={() =>
+                                                      downloadImage(
+                                                        item.path,
+                                                        "Register file"
+                                                      )
+                                                    }
+                                                  >
+                                                    <i className="fa-solid fa-file-arrow-down fs-12 me-2"></i>{" "}
+                                                    Download
+                                                  </div>
+                                                </div>
+                                                <div style={{ cursor: "pointer" }}>
+                                                  <div className="clearButton">
+                                                    <a
+                                                      href={item.path}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                    >
+                                                      <i className="fa-sharp fa-solid fa-eye fs-12 me-2"></i>{" "}
+                                                      View
+                                                    </a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            ) : (
+                                              ""
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      // <Link to="/upload-document">
+                      <>
+                        <div className="imgWrapper">
+                          <img
+                            src={require("../../assets/images/upload-file.png")}
+                            alt=""
+                          />
+                        </div>
+                        <div className="text-center mt-3">
+                          <h5>
+                            Please upload the{" "}
+                            <span
+                              style={{ color: "var(--ui-accent)", cursor: "pointer" }}
+                            >
+                              <b>required documents</b>
+                            </span>
+                            .
+                          </h5>
+                        </div>
+                      </>
+                      // </Link>
+                    )}
+                  </div>
+                </div>
               ) : (
                 ""
               )}
             </div>
           </div>
-          <div className="col-xl-8" style={{ borderRight: '1px solid #ddd' }}>
-            <form action="#" className="row px-2 justify-content-between">
-              <div className="col-xl-12 headerCommon">
-                Account Details
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Company Name</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.company_name}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Admin Name</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.admin_name}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Email</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.email}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Phone Number</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.contact_no}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Alternate Number</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.alternate_contact_no}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Timezone</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.timezone.name}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Block/Unit/Place</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.unit}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Building</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.building}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">City</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.city}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Zip Code</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.zip}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">State</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.state}
-                    disabled
-                  />
-                </div>
-              </div>
-              <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="data">Country</label>
-                </div>
-                <div className="col-6">
-                  <input
-                    type="text"
-                    className="formItem"
-                    value={account.country}
-                    disabled
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="col-xl-4">
-            {nonUploadedDocuments.length > 0 && (
-              <div className="masterList h-auto" style={{ borderBottom: '1px solid #ddd' }}>
-                <div className="masterSegment">
-                  <div className="headerCommon">
-                    <div className="col-12">Upload Below Documents</div>
-                  </div>
-                  <ul>
-                    {nonUploadedDocuments.map((item, index) => {
-                      return (
-                        <li
-                          key={index}
-                        >
-                          <div className="">
-                            <input type="text" placeholder={item?.name} disabled />
-                          </div>
-                          <button
-                            onClick={() => {
-                              setUploadPopup(true);
-                              setuploadId(item.id);
-                              // setReUploadId(item.document_id);
-                            }}
-                            style={{ cursor: "pointer" }}
-                            className="tableButton"
-                          >
-                            <i className="fa-solid fa-upload"></i>
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            {account.details.length > 0 ? (
-              <div className="profileView px-0 pt-0">
-                <div className="profileDetailsHolder shadow-none px-0 border-0 pt-0">
-                  <div className="headerCommon">
-                    <div className="col-12">Uploaded Documents</div>
-                  </div>
-                  {account.details.length > 0 ? (
-                    <div className="qLinkContent" ref={wrapperRef}>
-                      <div
-                        className="accordion permissionListWrapper"
-                        id="accordionFlushExample"
-                      >
-                        {docId.map((item2, key) => {
-                          return (
-                            <div className="accordion-item">
-                              <h2
-                                className="accordion-header"
-                                id={`flush-heading${key}`}
-                              >
-                                <button
-                                  className="accordion-button collapsed px-3"
-                                  style={{ padding: "15px 5px" }}
-                                  type="button"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target={`#flush-collapse${key}`}
-                                  aria-expanded="false"
-                                  aria-controls={`flush-collapse${key}`}
-                                >
-                                  {item2?.document?.name}
-                                </button>
-                              </h2>
-                              <div
-                                id={`flush-collapse${key}`}
-                                className="accordion-collapse collapse"
-                                aria-labelledby={`flush-heading${key}`}
-                                data-bs-parent="#accordionFlushExample"
-                              >
-                                {account.details.map((item) => {
-                                  if (item.document_id === item2.document_id) {
-                                    return (
-                                      <div className="accordion-body">
-                                        <div className="row position-relative align-items-center w-100">
-                                          <div className="col-auto ps-0 pe-2">
-                                            <div className="iconWrapper2">
-                                              {item.status === "1" ? (
-                                                <i className="fa-solid fa-check "></i>
-                                              ) : item.status === "2" ? (
-                                                <i className="fa-solid fa-xmark text-danger"></i>
-                                              ) : (
-                                                <i className="fa-solid fa-image"></i>
-                                              )}
-                                            </div>
-                                          </div>
-                                          <div className="col-8 my-auto ps-1">
-                                            <p>{item?.document?.name}</p>
-                                          </div>
-                                          <div
-                                            className="col-auto px-0 my-auto ms-auto"
-                                            onClick={() => {
-                                              setOpenPopup(!openPopup);
-                                              setOpenNumber(key);
-                                            }}
-                                          >
-                                            <div className="clearButton2">
-                                              <i className="fa-solid fa-ellipsis"></i>
-                                            </div>
-                                          </div>
-                                          <div className="col-12">
-                                            <p
-                                              style={{
-                                                fontSize: 12,
-                                                paddingLeft: 20,
-                                                color: "#ff2e2e",
-                                              }}
-                                            >
-                                              {item.description}
-                                            </p>
-                                          </div>
-                                          {openPopup && openNumber === key ? (
-                                            <div className="buttonPopup">
-                                              <div style={{ cursor: "pointer" }}>
-                                                <div
-                                                  className="clearButton"
-                                                  onClick={() =>
-                                                    downloadImage(
-                                                      item.path,
-                                                      "Register file"
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                                                  Download
-                                                </div>
-                                              </div>
-                                              <div style={{ cursor: "pointer" }}>
-                                                <div className="clearButton">
-                                                  <a
-                                                    href={item.path}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                  >
-                                                    <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                                    View
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-                                })}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    // <Link to="/upload-document">
-                    <>
-                      <div className="imgWrapper">
-                        <img
-                          src={require("../../assets/images/upload-file.png")}
-                          alt=""
-                        />
-                      </div>
-                      <div className="text-center mt-3">
-                        <h5>
-                          Please upload the{" "}
-                          <span
-                            style={{ color: "var(--ui-accent)", cursor: "pointer" }}
-                          >
-                            <b>required documents</b>
-                          </span>
-                          .
-                        </h5>
-                      </div>
-                    </>
-                    // </Link>
-                  )}
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
         </div>
       </div>
-
       <div className="d-flex flex-wrap documentPending">
         {reUploadPopUp ? (
           <div className="popup">
