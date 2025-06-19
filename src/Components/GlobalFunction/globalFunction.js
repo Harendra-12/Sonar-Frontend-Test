@@ -58,6 +58,21 @@ export const aiGeneralDeleteFunction = async (endpoint) => {
     return error.response.data;
   }
 };
+// AI General File upload function
+export const aiFileUploadFunction = async (endpoint, data) => {
+  return aiAxiosInstance
+    .post(endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
 
 // Creating instance of axios
 const axiosInstance = axios.create({
