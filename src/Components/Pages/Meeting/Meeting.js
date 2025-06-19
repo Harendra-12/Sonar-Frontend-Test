@@ -16,7 +16,20 @@ import { set } from "react-hook-form";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
+/**
+ * This component renders the meeting rooms page
+ * It displays a table with conference name, max members, conference id, moderator pin, joining pin, meeting link, recordings, and email
+ * The component also includes a search box and a select all button
+ * The component also includes a delete button that calls the handleDelete function
+ * The component also includes a share button that calls the handleShare function
+ * The component also includes a view button that calls the handleView function
+ * The component also includes a email button that calls the handleEmail function
+ * The component also includes a send email popup that allows the user to select emails of participants to send the recording or summary of the meeting
+ * The component also includes a share recording popup that allows the user to select how to share the file
+ * The component also includes a view recording popup that displays the recording
+ */
 function Meeting() {
   const [refreshState, setRefreshState] = useState(0);
   const [refreshBooleanState, setRefreshBooleanState] = useState(false);
@@ -24,6 +37,7 @@ function Meeting() {
   const [loading, setLoading] = useState(true);
   const [conference, setConference] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [pageNumber, setPageNumber] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [popUp, setPopUp] = useState(false);
   const [viewVideoPopup, setViewVideoPopup] = useState(false);
@@ -38,13 +52,16 @@ function Meeting() {
   const [pageLoading, setPageLoading] = useState(false);
   const [preSignedUrl, setPreSignedUrl] = useState("");
   const [sendEmailPopup, setSendEmailPopup] = useState(false);
-
+  const [copyElement, setCopyElement] = useState(null);
   const account = useSelector((state) => state?.account);
+  const [selectedMeeting, setSelectedMeeting] = useState(null);
+  const [selectedEmails, setSelectedEmails] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction("/conference/all");
+    const apiData = await generalGetFunction(`/conference/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
     if (apiData?.status) {
       setLoading(false);
       setRefreshBooleanState(false);
@@ -59,7 +76,7 @@ function Meeting() {
     setRefreshBooleanState(true);
     const shouldLoad = true;
     getData(shouldLoad);
-  }, [refreshState]);
+  }, [refreshState,pageNumber, itemsPerPage, searchValue]);
 
   async function handleDelete() {
     setLoading(true);
@@ -147,6 +164,25 @@ function Meeting() {
     const shouldLoad = false;
     getData(shouldLoad);
   };
+
+  function handleEmailCheckBoxChange(email) {
+    setSelectedEmails((prevEmails) => {
+      if (prevEmails.includes(email)) {
+        return prevEmails.filter((e) => e !== email);
+      } else {
+        return [...prevEmails, email];
+      }
+    });
+  }
+
+  function handleSelectAllToggel() {
+    if (selectedEmails.length === selectedMeeting?.emails?.length) {
+      setSelectedEmails([]);
+    } else {
+      const allEmails = selectedMeeting?.emails?.map((email) => email.email);
+      setSelectedEmails(allEmails);
+    }
+  }
   return (
     <>
       {pageLoading && <CircularLoader />}
@@ -357,8 +393,38 @@ function Meeting() {
                                                 </div>
                                               )}
                                             </td>
-                                            <td style={{ width: "174px" }}>
-                                              {item.conf_url}
+                                            <td
+                                              style={{
+                                                width: "174px",
+                                                cursor: "pointer",
+                                              }}
+                                              onClick={() => {
+                                                setCopyElement(item.conf_url);
+                                                navigator.clipboard.writeText(
+                                                  item.conf_url
+                                                );
+                                                setTimeout(() => {
+                                                  setCopyElement(null);
+                                                }, 1000);
+                                              }}
+                                              title="Click to copy"
+                                            >
+                                              <div className="position-relative">
+                                                {item.conf_url}
+                                                <div
+                                                  className="smallNottif"
+                                                  style={{
+                                                    opacity:
+                                                      item.conf_url ===
+                                                      copyElement
+                                                        ? 1
+                                                        : 0,
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-check" />{" "}
+                                                  Copied
+                                                </div>
+                                              </div>
                                             </td>
                                             <td>
                                               <div
@@ -374,13 +440,24 @@ function Meeting() {
                                             <td>
                                               {item?.emails?.length > 0 && (
                                                 <button
-                                                disabled={!item?.recording_url && !item?.summary}
-                                                  className="tableButton"
-                                                  onClick={() =>
-                                                    setSendEmailPopup(true)
-                                                  }
+                                                  //   disabled={
+                                                  //     !item?.recording_url &&
+                                                  //     !item?.summary
+                                                  //   }
+                                                  className={`tableButton edit ${
+                                                    !item?.recording_url &&
+                                                    !item?.summary
+                                                      ? "disabled"
+                                                      : ""
+                                                  }`}
+                                                  onClick={() => {
+                                                    setSelectedMeeting(item);
+                                                    setSelectedEmails([]);
+                                                    setSearchQuery("");
+                                                    setSendEmailPopup(true);
+                                                  }}
                                                 >
-                                                  <i className="fa-solid fa-mail"></i>
+                                                  <i className="fa-solid fa-envelope"></i>
                                                 </button>
                                               )}
                                             </td>
@@ -411,6 +488,19 @@ function Meeting() {
                               )}
                             </tbody>
                           </table>
+                        )}
+                      </div>
+                       <div className="tableFooter">
+                        {conference && conference?.data?.length > 0 ? (
+                          <PaginationComponent
+                            pageNumber={(e) => setPageNumber(e)}
+                            totalPage={conference.last_page}
+                            from={conference.from}
+                            to={conference.to}
+                            total={conference.total}
+                          />
+                        ) : (
+                          ""
                         )}
                       </div>
                     </div>
@@ -658,7 +748,9 @@ function Meeting() {
                           type="text"
                           className="formItem"
                           placeholder="Search"
-                          name="name"
+                          //   name="name"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
                         />
                       </div>
                     </div>
@@ -671,22 +763,57 @@ function Meeting() {
                           <thead>
                             <tr>
                               <th>S.No</th>
-                              <th>Name</th>
-                              <th>Extension</th>
+                              <th>Email</th>
                               <th>
-                                <input type="checkbox" />
+                                <input
+                                  type="checkbox"
+                                  checked={
+                                    selectedEmails.length ===
+                                    selectedMeeting?.emails?.length
+                                  }
+                                  onChange={() => handleSelectAllToggel()}
+                                />
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Webvio Technologies</td>
-                              <td>1037</td>
-                              <td>
-                                <input type="checkbox" />
-                              </td>
-                            </tr>
+                            {selectedMeeting &&
+                            selectedMeeting?.emails?.length === 0 ? (
+                              <tr>
+                                <td colSpan={3} className="text-center">
+                                  No Emails Found
+                                </td>
+                              </tr>
+                            ) : (
+                              selectedMeeting &&
+                              selectedMeeting?.emails
+                                ?.sort((a, b) => {
+                                  const aMatches = a.email
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase());
+                                  const bMatches = b.email
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase());
+                                  return bMatches - aMatches;
+                                })
+                                .map((email, index) => (
+                                  <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{email.email}</td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedEmails.includes(
+                                          email.email
+                                        )}
+                                        onChange={() =>
+                                          handleEmailCheckBoxChange(email.email)
+                                        }
+                                      />
+                                    </td>
+                                  </tr>
+                                ))
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -704,6 +831,7 @@ function Meeting() {
                         </button>
                         <div className="dropdown">
                           <button
+                            disabled={selectedEmails.length === 0}
                             className="panelButton"
                             role="button"
                             data-bs-toggle="dropdown"
@@ -715,24 +843,31 @@ function Meeting() {
                             </span>
                           </button>
                           <ul className="dropdown-menu actionBtnDropdowns collapse">
-                            <li className="dropdown-item">
-                              <div className="clearButton text-align-start">
-                                <i className="fa-regular fa-gear me-2" /> Send
-                                Recording
-                              </div>
-                            </li>
-                            <li className="dropdown-item">
-                              <div className="clearButton text-align-start">
-                                <i className="fa-regular fa-arrows-rotate me-2" />{" "}
-                                Send Summary
-                              </div>
-                            </li>
-                            <li className="dropdown-item">
-                              <div className="clearButton text-align-start">
-                                <i className="fa-regular fa-trash me-2" /> Send
-                                Both
-                              </div>
-                            </li>
+                            {/* {selectedMeeting?.recording_url && ( */}
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-video me-2" />{" "}
+                                  Send Recording
+                                </div>
+                              </li>
+                            {/* )} */}
+                            {/* {selectedMeeting?.summary && ( */}
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-note me-2" /> Send
+                                  Summary
+                                </div>
+                              </li>
+                            {/* )} */}
+                            {/* {selectedMeeting?.recording_url &&
+                              selectedMeeting?.summary && ( */}
+                                <li className="dropdown-item">
+                                  <div className="clearButton text-align-start">
+                                    <i className="fa-regular fa-send me-2" />{" "}
+                                    Send Both
+                                  </div>
+                                </li>
+                              {/* )} */}
                           </ul>
                         </div>
                       </div>

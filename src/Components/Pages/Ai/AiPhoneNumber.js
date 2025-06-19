@@ -3,6 +3,7 @@ import Header from '../../CommonComponents/Header'
 import Select from 'react-select';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import { Link } from 'react-router-dom';
 
 const AiPhoneNumber = () => {
   const [refreshState, setRefreshState] = useState(false)
@@ -16,6 +17,7 @@ const AiPhoneNumber = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
   const [value, setValue] = useState();
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true)
@@ -79,24 +81,6 @@ const AiPhoneNumber = () => {
                                   </p>
                                   {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
                                 </button>
-                                <button className="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-solid fa-phone me-2"></i> +14844731383
-                                  </p>
-                                  {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
-                                </button>
-                                <button className="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-solid fa-phone me-2"></i> +16102458451
-                                  </p>
-                                  {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
-                                </button>
-                                <button className="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                                  <p className='mb-0'>
-                                    <i className="fa-solid fa-phone me-2"></i> +16105579255
-                                  </p>
-                                  {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
-                                </button>
                               </div>
                             </div>
                           </div>
@@ -107,21 +91,39 @@ const AiPhoneNumber = () => {
                               <div className="heading">
                                 <div className="content">
                                   <h4>+14844731350</h4>
-                                  <p className='mb-0'>ID: <span>125634Knowledge_Base26</span>
-                                    <button
-                                      className="clearButton"
-                                      onClick={() => { setIdCopy(!idCopy) }}
-                                    >
-                                      <i
-                                        className={
-                                          idCopy
-                                            ? "fa-solid fa-check text_success"
-                                            : "fa-solid fa-clone"
-                                        }
-                                      ></i>
+                                  <div className='d-flex justify-content-start align-items-center gap-3'>
+                                    <p className='mb-0'>ID: <span>125634Knowledge_Base26</span>
+                                      <button
+                                        className="clearButton"
+                                        onClick={() => { setIdCopy(!idCopy) }}
+                                      >
+                                        <i
+                                          className={
+                                            idCopy
+                                              ? "fa-solid fa-check text_success"
+                                              : "fa-solid fa-clone"
+                                          }
+                                        ></i>
 
-                                    </button>
-                                  </p>
+                                      </button>
+                                    </p>
+                                    <p className='mb-0'>Provider: <span>Telnyx</span>
+                                      <button
+                                        className="clearButton"
+                                        onClick={() => { setIdCopy(!idCopy) }}
+                                      >
+                                        <i
+                                          className={
+                                            idCopy
+                                              ? "fa-solid fa-check text_success"
+                                              : "fa-solid fa-clone"
+                                          }
+                                        ></i>
+
+                                      </button>
+                                    </p>
+
+                                  </div>
                                 </div>
                                 <div>
                                   {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
@@ -136,45 +138,13 @@ const AiPhoneNumber = () => {
                                 </div>
                               </div>
                               <div className='k_body px-3'>
-                                <form>
-                                  <div className="formRow flex-column align-items-start px-0">
-                                    <div className="formLabel">
-                                      <label>Phone Number Name:</label>
-                                    </div>
-                                    <div className="col-12">
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        placeholder='Enter a name for your knowledge base'
 
-                                      />
-                                    </div>
-                                  </div>
-                                </form>
                                 <div className='d_card mb-3'>
-                                  <div className='heading flex-column text-start align-items-start bg-transparent p-0'>
-                                    <h4 className='mb-2'>Inbound Settings</h4>
-                                    <p className='text2'>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it </p>
-                                  </div>
                                   <div>
                                     <form>
                                       <div className="formRow flex-column align-items-start px-0">
                                         <div className="formLabel">
-                                          <label>Phone Number Name:</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <input
-                                            type="text"
-                                            className="formItem"
-                                            placeholder='Enter a name for your knowledge base'
-                                            value={14844731350}
-                                            disabled
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>Select Assistant</label>
+                                          <label>Inbound Call Agent</label>
                                         </div>
                                         <div className="col-12">
                                           <Select
@@ -191,9 +161,34 @@ const AiPhoneNumber = () => {
                                           />
                                         </div>
                                       </div>
+                                      <div className="py-2">
+                                        <input
+                                          type="checkbox"
+                                          className="form-check-input"
+                                          id="toggleWebhook"
+                                        />
+                                        <label className="form-check-label ms-3" htmlFor="toggleWebhook">
+                                          Add on Inbound webhook. <Link to="" className='urlText'>( Learn More )</Link>
+                                        </label>
+
+                                        <div className="formRow flex-column align-items-start px-0 showUrl">
+                                          <div className="formLabel">
+                                            <label>Enter url</label>
+                                          </div>
+                                          <div className="col-12">
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              placeholder="Enter url"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+
                                       <div className="formRow flex-column align-items-start px-0">
                                         <div className="formLabel">
-                                          <label>Select Squad</label>
+                                          <label>
+                                            Outbound Call Agent</label>
                                         </div>
                                         <div className="col-12">
                                           <Select
@@ -210,111 +205,11 @@ const AiPhoneNumber = () => {
                                           />
                                         </div>
                                       </div>
-                                      <h6>Fallback Destination</h6>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel mw-100">
-                                          <label>Set a fallback destination for inbound call when the  assistant or squad is not available</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <PhoneInput
-                                            defaultCountry="IN"
-                                            placeholder="Enter phone number"
-                                            value={value}
-                                            onChange={setValue}
-                                            className="custom-phone-input formItem"
-                                          />
-                                        </div>
-                                      </div>
-                                    </form>
-                                  </div>
-                                </div>
-                                <div className='d_card mb-3'>
-                                  <div className='heading flex-column text-start align-items-start bg-transparent p-0'>
-                                    <h4 className='mb-2'>Inbound Settings</h4>
-                                    <p className='text2'>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it </p>
-                                  </div>
-                                  <div>
-                                    <form>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>Phone Number Name:</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <input
-                                            type="text"
-                                            className="formItem"
-                                            placeholder='Enter a name for your knowledge base'
-                                            value={14844731350}
-                                            disabled
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>Select Assistant</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <Select
-                                            className="basic-single "
-                                            classNamePrefix="select"
-                                            // defaultValue={colourOptions[0]}
-                                            isDisabled={isDisabled}
-                                            isLoading={isLoading}
-                                            isClearable={isClearable}
-                                            isRtl={isRtl}
-                                            isSearchable={isSearchable}
-                                            name="color"
-                                          // options={colourOptions}
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>Select Squad</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <Select
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            // defaultValue={colourOptions[0]}
-                                            isDisabled={isDisabled}
-                                            isLoading={isLoading}
-                                            isClearable={isClearable}
-                                            isRtl={isRtl}
-                                            isSearchable={isSearchable}
-                                            name="color"
-                                          // options={colourOptions}
-                                          />
-                                        </div>
-                                      </div>
-                                      <h6>Fallback Destination</h6>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel mw-100">
-                                          <label>Set a fallback destination for inbound call when the  assistant or squad is not available</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <PhoneInput
-                                            defaultCountry="IN"
-                                            placeholder="Enter phone number"
-                                            value={value}
-                                            onChange={setValue}
-                                            className="custom-phone-input formItem"
-                                          />
-                                        </div>
-                                      </div>
+
                                     </form>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-
-                            </div>
-                            <div className="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-
-                            </div>
-                            <div className="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-
                             </div>
                           </div>
                         </div>
@@ -343,17 +238,17 @@ const AiPhoneNumber = () => {
                       <div className="d-flex justify-content-between align-items-center">
                         <div>
                           <h5 className="card-title fs14 fw700 mb-0">
-                            Phone Number
+                            Buy Phone Number
                           </h5>
-                          <p className='sub_text mb-0'>Add a new phone number to your account</p></div>
+                        </div>
                         <button className="clearButton2 xl" onClick={() => setKnowledgeBase(false)}>
                           <i className="fa-solid fa-xmark"></i>
                         </button>
                       </div>
                     </div>
                     <div className="card-body aiAgentTab p-3">
-                      <div className="mt-3 baseNav">
-                        <ul className="nav nav-pills" id="pills-tab" role="tablist">
+                      {/* <div class="mt-3 baseNav">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
 
                           <li className="nav-item" role="presentation">
                             <button className="nav-link active" id="twilio-tab" data-bs-toggle="pill" data-bs-target="#twilio" type="button" role="tab" aria-controls="twilio" aria-selected="true">Import Twilio</button>
@@ -541,9 +436,9 @@ const AiPhoneNumber = () => {
                               <div className="formRow flex-column align-items-start px-0">
 
                                 <div className="col-12 formLabel mw-100">
-                                  <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="checkDefault" />
-                                    <label className="form-check-label" htmlFor="checkDefault">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" />
+                                    <label class="form-check-label" for="checkDefault">
                                       Allow non-E164 Phone Number <br />
                                       <span>Check this box to disabled E164 format validation and use custom phone number formats.</span>
                                     </label>
@@ -579,6 +474,54 @@ const AiPhoneNumber = () => {
 
                           </div>
                         </div>
+                      </div> */}
+                         <div className="formLabel">
+                            <label>Provider</label>
+                          </div>
+                      <div className="row radio-input px-2">
+                        <div className="col-6">
+                          <label className="label radioLabel">
+                            <p className="text">Twilio</p>
+                            <input
+                            checked
+                              type="radio"
+                              id="send-now"
+                              name="value-radio"
+                              value="send-now"
+
+                            />
+                          </label>
+                        </div>
+                        <div className="col-6">
+                          <label className="label radioLabel">
+                            <p className="text">Telnyx</p>
+                            <input
+                              type="radio"
+                              id="schedule"
+                              name="value-radio"
+                              value="schedule"
+
+                            />
+                          </label>
+                        </div>
+                        <div className='col-12 mt-3'>
+                          <div className="formLabel">
+                            <label>Area Code (Optional)</label>
+                          </div>
+                          <div className="col-12">
+                            <input
+                              type="text"
+                              className="formItem"
+                              placeholder='e.g. 650'
+                            />
+                          </div>
+                        </div>
+                          <div className='col-12 mt-3'>
+                              <div className='noticeMessageBox'>
+                                <i class="fa-regular fa-circle-exclamation "></i>  <p className='mb-0 f-s-14'>This number incurs a monthly fee of $2.00.</p>
+                              </div>
+                          </div>
+
                       </div>
                     </div>
                     <div className=" card-footer d-flex justify-content-end">
@@ -622,7 +565,7 @@ const AiPhoneNumber = () => {
                   </div>
                   <div className="col-12">
                     <h4 className="text-center text-danger">Confirmation!</h4>
-                    <p className="text-center">Are you sure! You want to delete this DID</p>
+                    <p className="text-center">Are you sure! You want to delete this Number?</p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
                       <button

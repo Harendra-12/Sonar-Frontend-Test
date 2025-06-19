@@ -539,3 +539,21 @@ table td.incoming::after {
 .cl-switch>input:checked:disabled+span::after {
     background-color: #61b5b4;
 }
+
+table .smallNottif{
+    position: absolute;
+    top: -20px;
+    right: 0;
+    z-index: 9;
+    background-color: var(--ele-color);
+    border-radius: 5px;
+    padding: 2px 5px;
+    border: 1px solid var(--border-color);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    font-size: 0.75rem;
+    color: var(--color-subtext);
+    transition: 0.3s ease-in-out;
+}
+table .smallNottif i{
+    color: var(--badge-info-text-subtle);
+}

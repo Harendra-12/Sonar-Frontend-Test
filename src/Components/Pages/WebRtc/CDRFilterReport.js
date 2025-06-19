@@ -1392,8 +1392,6 @@ function CdrFilterReport({ page }) {
                                     Choose Filters
                                   </button>
                                   <ul className="dropdown-menu">
-                                    {console.log('hangupStatusOptions', hangupStatusOptions)}
-                                    {console.log('hangupStatus', hangupStatus)}
                                     {hangupStatusOptions?.map((option) => (
                                       <li key={option.value}>
                                         <div className="dropdown-item" href="#">

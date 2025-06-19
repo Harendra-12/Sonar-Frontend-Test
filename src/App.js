@@ -263,7 +263,7 @@ function App() {
     <>
       <Router>
         {adminLogout && <AdminLogoutPopUp />}
-        {/* <GoogleTranslate /> */}
+        <GoogleTranslate />
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -1560,7 +1560,7 @@ function App() {
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
           <Route path="/cdr-tracker" element={<CDRTracker />} />
-          
+
           <Route
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}

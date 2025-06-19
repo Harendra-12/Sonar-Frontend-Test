@@ -101,6 +101,7 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [doomScrollLoading, setDoomScrollLoading] = useState(false);
   const [messageRefresh, setMessageRefresh] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
@@ -430,12 +431,10 @@ function Messages({
         ) {
           getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
-          console.log("from first");
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
-        console.log("from second");
       }
     }
   }, [recipient, loadMore, allAgents]);
@@ -663,7 +662,6 @@ function Messages({
 
   useEffect(() => {
     if (incomingMessage) {
-      console.log("incomingMessage", incomingMessage);
 
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
@@ -675,7 +673,6 @@ function Messages({
           [recipient[0]]: "Generating Ai response..."
         }));
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
-          console.log("Response", res);
 
           if (res.data) {
             setMessageInput((prev) => ({
@@ -694,7 +691,6 @@ function Messages({
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
-      console.log("agentDetails", agentDetails);
 
       const time = formatDateTime(new Date());
 
@@ -1687,8 +1683,23 @@ function Messages({
       if (response.status) {
         const sortedArr = response.data.data;
 
-        setInternalCallHistory(sortedArr);
-        setOriginalInternalCallHistory(sortedArr);
+        // setInternalCallHistory(sortedArr);
+
+        setOriginalInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
+
+        setInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
 
         setRawInternalCallHistory(response.data);
       }
@@ -1696,6 +1707,7 @@ function Messages({
       console.log(err);
     } finally {
       setLoading(false);
+      setDoomScrollLoading(false);
     }
   };
 
@@ -2530,6 +2542,8 @@ function Messages({
                       <ChatsCalls
                         loading={loading}
                         setLoading={setLoading}
+                        doomScrollLoading={doomScrollLoading}
+                        setDoomScrollLoading={setDoomScrollLoading}
                         setMeetingPage={setMeetingPage}
                         setToUser={setToUser}
                         setCalling={setCalling}
@@ -3355,9 +3369,8 @@ function Messages({
                                   : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                const todayDate = new Date()
-                                  .toISOString()
-                                  ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                const todayDate = formatDateTime(new Date()).split(" ")[0]; // Get today's date in "YYYY-MM-DD" format
+
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
@@ -3624,7 +3637,6 @@ function Messages({
                                       placeholder="Please enter your message"
                                       value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
-                                        { console.log("reciepent", recipient) }
                                         const value = e.target.value;
                                         const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
 
