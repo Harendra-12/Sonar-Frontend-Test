@@ -42,8 +42,8 @@ const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
-  const state = useSelector((state) => state);
-  const volume = state?.volume;
+  // const state = useSelector((state) => state);
+  const volume = useSelector((state) =>state?.volume);
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;

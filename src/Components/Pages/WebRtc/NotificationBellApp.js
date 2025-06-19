@@ -5,10 +5,9 @@ import { formatTimeWithAMPM } from '../../GlobalFunction/globalFunction';
 import { set } from 'react-hook-form';
 
 function NotificationBellApp() {
-    const state = useSelector((state) => state)
-    const recipient_to_remove_notification = state?.recipient_to_remove_notification;
+    const recipient_to_remove_notification = ((state) => state?.recipient_to_remove_notification);
     const incomingMessage = useSelector((state) => state.incomingMessage);
-    const groupMessage = state.groupMessage;
+    const groupMessage =useSelector((state) => state.groupMessage);
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
@@ -62,25 +61,23 @@ function NotificationBellApp() {
     }, [groupMessage]);
 
 
-    useEffect(() => {
-        if (recipient_to_remove_notification !== null) {
-            if (recipient_to_remove_notification[2] !== "groupChat") {
-                setAllNotification(prevNotifications =>
-                    prevNotifications?.filter(msg =>
-                        msg.message_group_id !== undefined || msg.sender_id !== recipient_to_remove_notification[1]
-                    )
-                );
+   useEffect(() => {
+  if (!recipient_to_remove_notification || recipient_to_remove_notification.length < 3) return;
 
-            } else {
-                setAllNotification(prevNotifications =>
-                    prevNotifications?.filter(msg =>
-                        msg?.group_name !== recipient_to_remove_notification[0]
-                    )
-                );
-            }
+  setAllNotification(prevNotifications => {
+    if (recipient_to_remove_notification[2] !== "groupChat") {
+      return prevNotifications?.filter(msg =>
+        msg.message_group_id !== undefined ||
+        msg.sender_id !== recipient_to_remove_notification[1]
+      );
+    } else {
+      return prevNotifications?.filter(msg =>
+        msg?.group_name !== recipient_to_remove_notification[0]
+      );
+    }
+  });
+}, [recipient_to_remove_notification?.[0], recipient_to_remove_notification?.[1], recipient_to_remove_notification?.[2]]);
 
-        }
-    }, [recipient_to_remove_notification])
 
     const removeNotification = (item) => {
         if (item.message_text) {
