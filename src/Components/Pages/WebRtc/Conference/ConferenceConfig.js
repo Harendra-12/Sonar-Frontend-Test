@@ -38,6 +38,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const debouncedSearch = useDebounce(searchValue, 1000);
+  const [joinAsModPopup, setJoinAsModPopup] = useState(false);
+  const [moderatorPassword, setModeratorPassword] = useState("");
 
   const account = useSelector((state) => state.account);
   const slugPermissions = useSelector((state) => state?.permissions);
@@ -94,6 +96,17 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
     }
   }
 
+  const checkModeratorPassword = (item) => {
+    if (moderatorPassword.trim() == "") {
+      toast.error("Please enter moderator password");
+      return false
+    }
+    if (moderatorPassword == item) {
+      return true
+    } else {
+      return false
+    }
+  }
   return (
     <>
       {spinLoading && <CircularLoader />}
@@ -202,14 +215,16 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                 <>
                                   {allConferences && allConferences?.data?.length > 0 ?
                                     allConferences?.data?.map((item) => {
+                                      const isUser = account.usertype !== "Company" && account.usertype !== 'SupreAdmin';
+                                      const isLessThan5Minutes = item?.conf_start_time ? checkTimeDifference(formatDateTime(item?.conf_start_time)) : false;
+                                      const isAllDay = item?.conf_start_time == null ? true : false;
                                       return (
                                         <tr>
                                           <td>{item.conf_name}</td>
                                           <td>{item.conf_url}</td>
                                           <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>
                                           <td>
-                                            {item?.conf_start_time && account.usertype !== "Company" && account.usertype !== 'SupreAdmin' ?
-                                              checkTimeDifference(formatDateTime(item?.conf_start_time)) &&
+                                            {isAllDay || isLessThan5Minutes ? (
                                               <div className="dropdown">
                                                 <div className="tableButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                   <i className="fa-solid fa-send"></i>
@@ -217,20 +232,53 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                 <ul className="dropdown-menu actionBtnDropdowns">
                                                   <li className="dropdown-item" onClick={() => handleConferenceJoin(item.conf_url)}>
                                                     <div className="clearButton text-align-start">
-                                                      <i className="fa-regular fa-gear me-2" /> Join
+                                                      <i className="fa-regular fa-user me-2" /> Join
                                                     </div>
                                                   </li>
-                                                  <li className="dropdown-item">
+                                                  <li className="dropdown-item" onClick={() => setJoinAsModPopup(true)}>
                                                     <div className="clearButton text-align-start">
-                                                      <i className="fa-regular fa-arrows-rotate me-2" /> Join as Mod
+                                                      <i className="fa-regular fa-gear me-2" /> Join as Mod
                                                     </div>
                                                   </li>
                                                 </ul>
-                                              </div> :
-                                              <div className="tableButton" onClick={() => handleConferenceJoin(item.conf_url)}>
+                                                {joinAsModPopup && (
+                                                  <div className="popup" >
+                                                    <div className="container h-100">
+                                                      <div className="d-flex h-100 justify-content-center align-items-center">
+                                                        <div className="row content col-xxl-4 col-xl-5 col-md-6">
+                                                          <div className="col-12 px-0">
+                                                            <div className="iconWrapper mb-3">
+                                                              <i className="fa-duotone fa-circle-exclamation" />
+                                                            </div>
+                                                          </div>
+                                                          <div className="col-12 ps-0 pe-0 text-center">
+                                                            <h4 className="text-center text-orange">Join as Moderator!</h4>
+                                                            <p className="mb-2">
+                                                              Please input your moderator password to join as moderator
+                                                            </p>
+                                                            <input type="password" className="formItem" value={moderatorPassword} onChange={(e) => setModeratorPassword(e.target.value)} />
+                                                            <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
+                                                              <button className="panelButton m-0" onClick={checkModeratorPassword(item.moderator_pin) ? handleConferenceJoin(item.conf_url) : ""}>
+                                                                <span className="text">Join</span>
+                                                                <span className="icon">
+                                                                  <i className="fa-solid fa-send" />
+                                                                </span>
+                                                              </button>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                )
+
+                                                }
+                                              </div>
+                                            ) : !isUser ? (
+                                              <div className="tableButton" onClick={() => { handleConferenceJoin(item.conf_url); setIsConferenceAdmin(true) }}>
                                                 <i className="fa-solid fa-send"></i>
                                               </div>
-                                            }
+                                            ) : ""}
                                           </td>
                                         </tr>
                                       );
