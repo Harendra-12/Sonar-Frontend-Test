@@ -22,8 +22,8 @@ import Tippy from "@tippyjs/react";
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, SettingsProp }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const state = useSelector((state) => state)
-  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null;
+  // const state = useSelector((state) => state)
+  const isWhatsAppAvailable = useSelector((state) =>state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null);
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -143,9 +143,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                       <p>Ext- {extension}</p>
                     </div>
                     <div className="">
-                      <button onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                      <div onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         <i className="fa-regular fa-gears" />
-                      </button>
+                      </div>
                       <div className="dropdown-menu settingDropDown">
                         {SettingsProp}
                       </div>

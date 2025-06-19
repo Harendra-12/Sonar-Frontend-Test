@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActionType } from "../../Redux/reduxActionType";
 
 const SoundSettings = ({ audioRef, gainNodeRef }) => {
-    const state = useSelector((state) => state);
-    const volume = state?.volume;
+    // const state = useSelector((state) => state);
+    const volume = useSelector((state) => state?.volume);
     const dispatch = useDispatch();
 
     const handleVolumeChange = (event) => {
@@ -21,7 +21,7 @@ const SoundSettings = ({ audioRef, gainNodeRef }) => {
                 min="0"
                 max="1"
                 step="0.01"
-                value={volume}
+                value={volume ?? "1"}
                 onChange={handleVolumeChange}
                 style={{ width: '100%' }}
             />

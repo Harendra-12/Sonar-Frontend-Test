@@ -21,7 +21,8 @@ function FportalCampaignCreate() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [did, setDid] = useState([]);
   const [isActiveHour, setIsActiveHour] = useState(false);
-  const [isStatus, setIsStatus] = useState(false);
+  const [allBuyersNumbers, setAllBuyersNumbers] = useState([])
+  const [originalAllNumber, setOriginalAllNumber] = useState([])
   const [allBuyers, setAllBuyers] = useState([]);
   const [allTrunk, setAllTrunk] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -260,6 +261,26 @@ function FportalCampaignCreate() {
     }
   }
 
+  const fetchAllBuyerNumber = async () => {
+    const response = await generalGetFunction(`buyernumbers/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
+    // setLoading(true)
+    if (response.status) {
+      const updatedArr = response?.data?.data?.filter(
+        item => !bulkAddBuyersList?.some(data => data?.buyer_number_id === item?.id)
+      );
+      const updatedObj = {
+        ...response?.data,
+        data: updatedArr
+      }
+      setOriginalAllNumber(response?.data)
+      setAllBuyersNumbers(updatedObj);
+      setLoading(false);
+    } else {
+      toast.error(response.message);
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (account && account.id) {
       getAllSounds()
@@ -274,6 +295,7 @@ function FportalCampaignCreate() {
     getAllBuyers()
     getElasticTrunk()
     getAllSounds()
+    fetchAllBuyerNumber()
   }, [])
 
   useEffect(() => {
@@ -296,7 +318,7 @@ function FportalCampaignCreate() {
   }))
 
   const formatDateTime = (input) => {
-    if (!input.includes(':00')) {
+    if (!input?.includes(':00')) {
       input += ':00';
     }
     const date = new Date(input);
@@ -332,18 +354,30 @@ function FportalCampaignCreate() {
     setLoading(true);
     const payload = {
       ...data,
-      buyers: bulkAddBuyersList,
+      record: data?.record == "false" ? false : true,
+      sticky_agent_enable: data?.sticky_agent_enable == "false" ? false : true,
+      buyers: bulkAddBuyersList?.map((item) => ({
+        buyer_name: item?.buyer_name,
+        buyer_number: item?.buyer_number,
+        buyer_number_id: item?.buyer_number_id,
+        buyer_status: item?.buyer_status ? item?.buyer_status == "disable" ? "disable" : "enable" : "disable",
+        daily_call_limit: item?.daily_call_limit,
+        live_call_limit: item?.live_call_limit,
+        monthly_call_limit: item?.monthly_call_limit,
+        priority: item?.priority,
+        total_send_call: item?.total_send_call
+      })),
       dids: selectedItems,
       active_hours: isActiveHour ? "1" : "0",
-      start_date: startDate,
-      end_date: endDate,
       schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
         end_time: convertTimeToDateTime(item?.end_time),
         full_day: item?.full_day,
         name: item?.name,
         recurring_day: item?.recurring_day,
         start_time: convertTimeToDateTime(item?.start_time),
-        status: item?.status
+        status: item?.status,
+        start_date: startDate,
+        end_date: endDate,
       }))
     };
     const apiData = await generalPostFunction("/fcampaign/store", payload);
@@ -413,7 +447,10 @@ function FportalCampaignCreate() {
         daily_call_limit: item?.daily_call_limit ?? 0,
         live_call_limit: item?.live_call_limit ?? 1,
         total_send_call: item?.total_send_call ?? 0,
-        buyer_status: item?.buyer_status
+        buyer_status: item?.buyer_status,
+        buyer_number_id: item?.id,
+        buyer_name: item?.buyer?.name,
+        buyer_number: item?.phone_number
       }))
       setBulkAddBuyersList(arr);
       setSelectAll(false)
@@ -421,7 +458,7 @@ function FportalCampaignCreate() {
   }
 
   const deleteItemFromBulk = (id) => {
-    const updatedArr = bulkAddBuyersList.filter((item) => item.id !== id);
+    const updatedArr = bulkAddBuyersList.filter((item) => item.buyer_number_id !== id);
     setBulkAddBuyersList(updatedArr);
 
     const updatedBuyerSelect = () =>
@@ -1748,20 +1785,35 @@ function FportalCampaignCreate() {
                                 </button>
                               </div>
                             </div>
-                            {bulkAddBuyersList && bulkAddBuyersList.length > 0 ? bulkAddBuyersList.map((buyer, index) => {
+                            {bulkAddBuyersList && bulkAddBuyersList?.length > 0 ? bulkAddBuyersList?.map((buyer, index) => {
                               return (
                                 <div className="row">
                                   <div className="formRow col">
                                     {index === 0 && <div className='formLabel'>
                                       <label>
-                                        Name <span className="text-danger">*</span>
+                                        Buyer Name <span className="text-danger">*</span>
                                       </label>
                                     </div>}
                                     <div className='col-12'>
                                       <input
                                         type="text"
                                         className="formItem"
-                                        value={buyer.name}
+                                        value={buyer?.buyer_name}
+                                        disabled={true}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="formRow col">
+                                    {index === 0 && <div className='formLabel'>
+                                      <label>
+                                        Buyer Number <span className="text-danger">*</span>
+                                      </label>
+                                    </div>}
+                                    <div className='col-12'>
+                                      <input
+                                        type="text"
+                                        className="formItem"
+                                        value={buyer?.buyer_number}
                                         disabled={true}
                                       />
                                     </div>
@@ -1783,7 +1835,7 @@ function FportalCampaignCreate() {
                                         }}
                                       >
                                         <option value={-1}>None</option>
-                                        {allBuyers.length > 0 && allBuyers.map((buyer, index) => (
+                                        {originalAllNumber?.data?.length > 0 && originalAllNumber?.data?.map((buyer, index) => (
                                           <option value={index + 1}>{index + 1}</option>
                                         ))}
                                       </select>
@@ -1891,7 +1943,7 @@ function FportalCampaignCreate() {
                                     </div>
                                   </div>
 
-                                  <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
+                                  {/* <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
                                     <button
                                       type="button"
                                       onClick={() => handleBuyerEdit(buyer.id)}
@@ -1899,14 +1951,14 @@ function FportalCampaignCreate() {
                                     >
                                       <i className="fa-solid fa-pencil"></i>
                                     </button>
-                                  </div>
+                                  </div> */}
                                   {bulkAddBuyersList.length === 1 ? (
                                     ""
                                   ) : (
                                     <div className={`formRow col ${index === 0 && 'mt-auto'}`}>
                                       <button
                                         type="button"
-                                        onClick={() => deleteItemFromBulk(buyer.id)}
+                                        onClick={() => deleteItemFromBulk(buyer.buyer_number_id)}
                                         className="tableButton delete"
                                       >
                                         <i className="fa-solid fa-trash"></i>
@@ -1980,10 +2032,9 @@ function FportalCampaignCreate() {
                     <thead>
                       <tr>
                         <th>S.No</th>
-                        <th>Name</th>
+                        <th>Buyer</th>
+                        <th>Tag</th>
                         <th>Phone Number</th>
-                        <th>City</th>
-                        <th>Country</th>
                         <th>
                           <input
                             type="checkbox"
@@ -1994,33 +2045,31 @@ function FportalCampaignCreate() {
                       </tr>
                     </thead>
                     <tbody>
-                      {allBuyers
-                        .sort((a, b) => {
-                          const aMatches =
-                            a.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (a?.extension?.extension || "")
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase());
-                          const bMatches =
-                            b.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (b?.extension?.extension || "")
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase());
-                          // Sort: matching items come first
-                          return bMatches - aMatches;
-                        }).filter((item) => bulkAddBuyersList.every(buyer => buyer.id !== item.id))
+                      {allBuyersNumbers?.data?.sort((a, b) => {
+                        const aMatches =
+                          a.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (a?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        const bMatches =
+                          b.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (b?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        // Sort: matching items come first
+                        return bMatches - aMatches;
+                      }).filter((item) => bulkAddBuyersList.every(buyer => buyer.id !== item.id))
                         .map((item, index) => {
                           return (
                             <tr key={item.id || index}>
                               <td>{index + 1}</td>
-                              <td>{item.name}</td>
-                              <td>{item.phone_number}</td>
-                              <td>{item.city}</td>
-                              <td>{item.country_code}</td>
+                              <td>{item?.buyer?.name}</td>
+                              <td>{item?.name}</td>
+                              <td>{item?.phone_number}</td>
                               <td>
                                 <input
                                   type="checkbox"

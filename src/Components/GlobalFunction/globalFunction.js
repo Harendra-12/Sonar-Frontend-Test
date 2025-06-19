@@ -3,8 +3,76 @@ import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
-let sessionExpiredToastShown = false
+let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
+
+const aiBaseName = "https://ai.webvio.in/backend/backend";
+const aiToken = "key_a083999b0156a43721cc1b5942a1";
+
+// ai axios instance
+const aiAxiosInstance = axios.create({
+  baseURL: aiBaseName,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${aiToken}`,
+  },
+});
+
+// AI General Get function
+export const aiGeneralGetFunction = async (endpoint) => {
+  try {
+    const response = await aiAxiosInstance.get(endpoint);
+    return response.data;
+  } catch (error) {
+    // console.error("Error: ", error);
+    return error.response.data;
+  }
+};
+// AI General Post function
+export const aiGeneralPostFunction = async (endpoint, data) => {
+  try {
+    const response = await aiAxiosInstance.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    // console.error("Error: ", error);
+    return error.response.data;
+  }
+};
+// AI General Put function
+export const aiGeneralPutFunction = async (endpoint, data) => {
+  try {
+    const response = await aiAxiosInstance.put(endpoint, data);
+    return response.data;
+  } catch (error) {
+    // console.error("Error: ", error);
+    return error.response.data;
+  }
+};
+// AI General Delete function
+export const aiGeneralDeleteFunction = async (endpoint) => {
+  try {
+    const response = await aiAxiosInstance.delete(endpoint);
+    return response.data;
+  } catch (error) {
+    // console.error("Error: ", error);
+    return error.response.data;
+  }
+};
+// AI General File upload function
+export const aiFileUploadFunction = async (endpoint, data) => {
+  return aiAxiosInstance
+    .post(endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -14,11 +82,9 @@ const axiosInstance = axios.create({
   },
 });
 
-
 if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
-
 
 /**
  * Sets or removes the Authorization header for the axios instance.
@@ -86,7 +152,10 @@ export async function generalGetFunction(endpoint) {
 
         if (!sessionExpiredToastShown) {
           sessionExpiredToastShown = true;
-          toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+          toast.error(
+            err?.response?.data?.message ||
+              "Session expired. Please login again."
+          );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
             sessionExpiredToastShown = false;
@@ -101,7 +170,7 @@ export async function generalGetFunction(endpoint) {
       } else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
       } else if (err?.response?.status == 422) {
-        toast.error(err?.response?.data?.message)
+        toast.error(err?.response?.data?.message);
       } else {
         return err;
       }
@@ -136,8 +205,7 @@ export async function generalGetFunctionWithToken(endpoint, token) {
       });
 
       return err.response?.data;
-
-    })
+    });
 }
 
 // General Post function
@@ -164,7 +232,9 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
-        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+        toast.error(
+          err?.response?.data?.message || "Session expired. Please login again."
+        );
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
@@ -188,10 +258,8 @@ export async function generalPostFunctionWithToken(endpoint, data, token) {
       return res.data;
     })
     .catch((err) => {
-
       return err.response?.data;
-    })
-
+    });
 }
 
 // General Put function
@@ -215,7 +283,9 @@ export async function generalPutFunction(endpoint, data) {
         toast.error(err.response.data.message);
       }
       if (err.response.status === 401) {
-        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+        toast.error(
+          err?.response?.data?.message || "Session expired. Please login again."
+        );
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -249,7 +319,9 @@ export async function generalDeleteFunction(endpoint) {
         );
       }
       if (err.response.status === 401) {
-        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+        toast.error(
+          err?.response?.data?.message || "Session expired. Please login again."
+        );
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -316,7 +388,9 @@ export async function generatePreSignedUrl(name) {
         );
       }
       if (err.response.status === 401) {
-        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
+        toast.error(
+          err?.response?.data?.message || "Session expired. Please login again."
+        );
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
@@ -374,7 +448,11 @@ export function checkViewSidebar(
 ) {
   const account = localStorage.getItem("account");
   // Return true immediately if user is a company
-  if (JSON.parse(account)?.usertype == 'Company' || JSON.parse(account)?.user_role?.roles?.name === "Super Admin") return true;
+  if (
+    JSON.parse(account)?.usertype == "Company" ||
+    JSON.parse(account)?.user_role?.roles?.name === "Super Admin"
+  )
+    return true;
 
   // Return false immediately if no permissions exist
   if (!permissions) return false;
@@ -387,7 +465,11 @@ export function checkViewSidebar(
         if (!sectionPermissions?.includes(item.id)) continue;
 
         // If no action specified, check if model matches
-        if (!action && item.model === slug[1] && item.module_section === slug[0]) {
+        if (
+          !action &&
+          item.model === slug[1] &&
+          item.module_section === slug[0]
+        ) {
           return true;
         }
 
@@ -412,7 +494,7 @@ export function checkViewSidebar(
 export function checkModulePerm(slug, permissions, section) {
   const account = localStorage.getItem("account");
   // Return true immediately if user is a company
-  if (JSON.parse(account)?.usertype == 'Company') return true;
+  if (JSON.parse(account)?.usertype == "Company") return true;
 
   // Return false immediately if no permissions exist
   if (!permissions) return false;
@@ -424,14 +506,13 @@ export function checkModulePerm(slug, permissions, section) {
       for (const item of modulePermissions) {
         // Check if item belongs to the module section or current section
         if (section?.includes(item.section_id)) {
-          return true
+          return true;
         }
       }
     }
   }
 
   return false;
-
 }
 
 export function featureUnderdevelopment() {
@@ -514,7 +595,7 @@ export function convertDateToCurrentTimeZone(dateString) {
   try {
     const timeZone = JSON.parse(account)?.timezone?.name;
     // Create a Date object from the input string (UTC midnight)
-    const date = new Date(dateString + 'T00:00:00Z');
+    const date = new Date(dateString + "T00:00:00Z");
 
     if (isNaN(date.getTime())) {
       return "Invalid date format";
@@ -522,20 +603,20 @@ export function convertDateToCurrentTimeZone(dateString) {
 
     // Options for formatting
     const options = {
-      timeZone: timeZone || 'UTC',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
+      timeZone: timeZone || "UTC",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     };
 
     // Format the date according to the timezone
-    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const formatter = new Intl.DateTimeFormat("en-US", options);
     const parts = formatter.formatToParts(date);
 
     // Extract year, month, and day from the formatted parts
-    const year = parts.find(p => p.type === 'year').value;
-    const month = parts.find(p => p.type === 'month').value;
-    const day = parts.find(p => p.type === 'day').value;
+    const year = parts.find((p) => p.type === "year").value;
+    const month = parts.find((p) => p.type === "month").value;
+    const day = parts.find((p) => p.type === "day").value;
 
     // Reconstruct in original format but with timezone-adjusted values
     return `${year}-${month}-${day}`;
@@ -553,28 +634,37 @@ export function formatTimeWithAMPM(timeString) {
 
     // Create a date object with the input time (using today's date)
     const now = new Date();
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
 
     if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
       return "Invalid time format";
     }
 
     // Set the time components
-    const date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, seconds);
+    const date = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes,
+      seconds
+    );
 
     // Format the time according to the timezone
     const options = {
-      timeZone: timeZone || 'UTC', // Use provided timezone or default to UTC
+      timeZone: timeZone || "UTC", // Use provided timezone or default to UTC
       hour12: true,
-      hour: 'numeric',
-      minute: '2-digit',
-      second: '2-digit'
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
     };
 
-    let formattedTime = date.toLocaleTimeString('en-US', options);
+    let formattedTime = date.toLocaleTimeString("en-US", options);
 
     // Ensure AM/PM is uppercase and format is consistent
-    formattedTime = formattedTime.replace(/(am|pm)/i, match => match.toUpperCase());
+    formattedTime = formattedTime.replace(/(am|pm)/i, (match) =>
+      match.toUpperCase()
+    );
 
     return formattedTime;
   } catch (error) {
@@ -627,52 +717,50 @@ export function formatRelativeTime(dateString) {
 export function formatDateTime(dateInput) {
   // Parse account timezone
   const account = localStorage.getItem("account");
-  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+  const timeZone = JSON.parse(account)?.timezone?.name || "UTC";
 
   // Convert input to Date object if it's a string
   let date;
-  if (typeof dateInput === 'string') {
+  if (typeof dateInput === "string") {
     // Handle both "2025-06-13 13:37:55" and ISO format
-    const isoString = dateInput.includes('T') ? dateInput : dateInput.replace(' ', 'T');
+    const isoString = dateInput.includes("T")
+      ? dateInput
+      : dateInput.replace(" ", "T");
     date = new Date(isoString);
     if (isNaN(date.getTime())) {
-      console.error('Invalid date string:', dateInput);
-      return 'Invalid Date';
+      console.error("Invalid date string:", dateInput);
+      return "Invalid Date";
     }
   } else if (dateInput instanceof Date) {
     date = dateInput;
   } else {
-    console.error('Invalid date input type:', typeof dateInput);
-    return 'Invalid Date';
+    console.error("Invalid date input type:", typeof dateInput);
+    return "Invalid Date";
   }
 
   // Timezone-aware formatting
   const options = {
     timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
   };
 
-  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const formatter = new Intl.DateTimeFormat("en-US", options);
   const parts = formatter.formatToParts(date);
 
   // Extract components
-  const getPart = (type) => parts.find(p => p.type === type)?.value || '00';
+  const getPart = (type) => parts.find((p) => p.type === type)?.value || "00";
 
-  return [
-    getPart('year'),
-    getPart('month'),
-    getPart('day'),
-  ].join('-') + ' ' + [
-    getPart('hour'),
-    getPart('minute'),
-    getPart('second')
-  ].join(':');
+  return (
+    [getPart("year"), getPart("month"), getPart("day")].join("-") +
+    " " +
+    [getPart("hour"), getPart("minute"), getPart("second")].join(":")
+  );
 }
 
 // Function to format Time Duration
@@ -688,7 +776,7 @@ export function formatTime(seconds) {
 }
 
 export function formatTimeInHHMMSS(time) {
-  const [hours, minutes] = time.split(':');
+  const [hours, minutes] = time.split(":");
   const dateObj = new Date();
   dateObj.setHours(parseInt(hours));
   dateObj.setMinutes(parseInt(minutes));
@@ -712,8 +800,7 @@ export const useDebounce = (value, delay) => {
   }, [value, delay]);
 
   return debouncedValue;
-}
-
+};
 
 export const handleCsvDownload = (data) => {
   const headers = Object.keys(data[0]);
@@ -736,19 +823,29 @@ export const handleCsvDownload = (data) => {
 
 export const isoToYYMMDDFormat = (isoString) => {
   const date = new Date(isoString);
-  return date.toISOString().split('T')[0]; // e.g., "2025-06-17"
-}
+  return date.toISOString().split("T")[0]; // e.g., "2025-06-17"
+};
 
 export const isoToTimeFormat = (isoString) => {
   const date = new Date(isoString);
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    second: '2-digit',
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   }); // e.g., "3:23:16 PM"
 }
 
+export const formatTimeSecondsToHHMMSS = (seconds) => {
+  const hours = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0");
+  const minutes = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
+  return `${hours}:${minutes}:${secs}`;
+}
 export function secondsToHHMMSS(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600)
     .toString()

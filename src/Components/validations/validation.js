@@ -128,12 +128,24 @@ export const restrictToNumbers = (e) => {
   const allowedKey = /[0-9]/;
 
   // Allow: Ctrl+C and Ctrl+V
-  if ((e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "v" || e.key === "a" || e.key === "x" || e.key === "C" || e.key === "V" || e.key === "A" || e.key === "X")) {
+  if (
+    (e.ctrlKey || e.metaKey) &&
+    (e.key === "c" ||
+      e.key === "v" ||
+      e.key === "a" ||
+      e.key === "x" ||
+      e.key === "C" ||
+      e.key === "V" ||
+      e.key === "A" ||
+      e.key === "X")
+  ) {
     return;
   }
 
   // Allow: Backspace, Tab, Delete
-  if (["Backspace", "Tab", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+  if (
+    ["Backspace", "Tab", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)
+  ) {
     return;
   }
 
@@ -176,3 +188,10 @@ export const rangeValidator = (min, max) => ({
     message: `Value must be at most ${max}`,
   },
 });
+
+export const urlValidator = {
+  pattern: {
+    value: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+    message: "Invalid URL",
+  },
+};

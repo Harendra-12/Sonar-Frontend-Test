@@ -39,7 +39,7 @@ function Payment({ account, nextPage, companyStatus }) {
         </div>
       </div>
 
-      <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+      <div className="col-12" style={{ padding: '25px 23px', }}>
         <div className="row gx-5">
           <div className="col-xl-6" style={{ borderRight: '1px solid #ddd' }}>
             <form action="#" className="row px-2">
