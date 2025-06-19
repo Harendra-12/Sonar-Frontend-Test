@@ -19,7 +19,7 @@ import PaginationComponent from "../../../CommonComponents/PaginationComponent";
 import HeaderApp from "../HeaderApp";
 import CircularLoader from "../../../Loader/CircularLoader";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, pin, calling, setCalling, interCallMinimize, setInterCallMinimize, setIsConferenceCall, setIsConferenceAdmin }) => {
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, pin, calling, setCalling, setIsConferenceCall, setIsConferenceAdmin }) => {
   const [loading, setLoading] = useState(false);
   const [spinLoading, setSpinLoading] = useState(false);
   const [allConferences, setAllConferences] = useState([]);

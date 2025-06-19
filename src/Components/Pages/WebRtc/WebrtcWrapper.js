@@ -43,7 +43,7 @@ const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
   // const state = useSelector((state) => state);
-  const volume = useSelector((state) =>state?.volume);
+  const volume = useSelector((state) => state?.volume);
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
@@ -610,8 +610,6 @@ const WebrtcWrapper = () => {
             isVideoOn={isVideoOn}
             calling={calling}
             setCalling={setCalling}
-            interCallMinimize={interCallMinimize}
-            setInterCallMinimize={setInterCallMinimize}
             setIsConferenceCall={setIsConferenceCall}
             setIsConferenceAdmin={setIsConferenceAdmin}
           />
@@ -695,8 +693,6 @@ const WebrtcWrapper = () => {
                   allContact={allContact}
                   accountDetails={accountDetails}
                   didAll={didAll}
-                  isConferenceCall={isConferenceCall}
-                  isConferenceAdmin={isConferenceAdmin}
                 // globalSession={sessions}
                 />
               </div>
@@ -944,6 +940,8 @@ const WebrtcWrapper = () => {
               setRecipient={setRecipient}
               selectedChat={selectedChat}
               setSelectedChat={setSelectedChat}
+              isConferenceCall={isConferenceCall}
+              isConferenceAdmin={isConferenceAdmin}
             />
           </div>
         </Rnd>

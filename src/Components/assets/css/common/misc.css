@@ -2539,7 +2539,7 @@ input[type=number] {
     flex: 1 0 0%;
 }
 
-.messageMeetingWrap .settings-menu .tab-content h3 {
+/* .messageMeetingWrap .settings-menu .tab-content h3 {
     color: #ffff;
     font-size: 1.25rem;
     margin-bottom: 10px;
@@ -2553,7 +2553,7 @@ input[type=number] {
 
 .messageMeetingWrap .settings-menu .tab-content .wrap {
     margin-bottom: 20px;
-}
+} */
 
 .messageMeetingWrap .lk-chat-header {
     justify-content: space-between;

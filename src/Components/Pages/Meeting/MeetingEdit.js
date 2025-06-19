@@ -55,7 +55,7 @@ function MeetingEdit() {
         reset(data);
 
         // setAddedUsers(data.users);
-        setParticipants(data.emails);
+        setParticipants(data.emails.length == 0 ? [""] : data.emails);
       }
     } catch (err) {
       console.log(err);
@@ -66,10 +66,10 @@ function MeetingEdit() {
   }
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants.length == 1 && participants[0].length == 0) {
-      toast.error("Please add participants");
-      return;
-    }
+    // if (participants.length == 1 && participants[0].length == 0) {
+    //   toast.error("Please add participants");
+    //   return;
+    // }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")
@@ -122,10 +122,8 @@ function MeetingEdit() {
   }
 
   useEffect(() => {
-    if (watch().conf_type == "internal") {
-      if (allInternalUsers?.length == 0) {
-        getInternalUsers();
-      }
+    if (allInternalUsers?.length == 0) {
+      getInternalUsers();
     }
   }, [watch().conf_type]);
 
