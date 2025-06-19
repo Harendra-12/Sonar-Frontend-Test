@@ -57,7 +57,6 @@ function Members({
       incomingCall.filter((item) => item?.room_id === roomName)
     );
   }, [incomingCall]);
-  console.log(internalCallAction, "internalCallAction");
   // Function to check if any user added in room and if added then update its value in incomingCall
   useEffect(() => {
     if (

@@ -764,3 +764,35 @@ export function secondsToHHMMSS(totalSeconds) {
 
   return `${hours}:${minutes}:${seconds}`;
 }
+
+export function checkTimeDifference(targetDateTime) {
+  // Parse account timezone
+  const account = localStorage.getItem("account");
+  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+
+  // Get current time in desired timezone
+  const currentTime = new Date(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: timeZone,
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).format(new Date())
+  );
+
+  // Convert targetDateTime to Date object
+  const targetTime = new Date(targetDateTime);
+
+  // Calculate time difference in milliseconds
+  const diffMs = Math.abs(currentTime - targetTime);
+  const diffMinutes = diffMs / (1000 * 60);
+
+  // If difference is 5 mins or less, log it
+  if (diffMinutes <= 5) {
+    return diffMinutes.toFixed(2)
+  }
+}

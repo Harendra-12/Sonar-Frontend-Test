@@ -109,6 +109,8 @@ const WebrtcWrapper = () => {
   const [meetingPage, setMeetingPage] = useState();
   const [toUser, setToUser] = useState(null);
   const [internalCaller, setInternalCaller] = useState(account.id);
+  const [isConferenceCall, setIsConferenceCall] = useState(false);
+  const [isConferenceAdmin, setIsConferenceAdmin] = useState(false);
 
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
@@ -121,7 +123,7 @@ const WebrtcWrapper = () => {
   const gainNodeRef = useRef(null);
   const analyserRef = useRef(null);
   const audio = new Audio(ringtone);
-   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
+  const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -209,7 +211,7 @@ const WebrtcWrapper = () => {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
     refVideoRemote: null,
-    autoStop:false,
+    autoStop: false,
     refAudioRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
@@ -342,8 +344,8 @@ const WebrtcWrapper = () => {
   useEffect(() => {
     async function fetchData() {
       // setCallLoading(true);
-      if(hangupRefresh == 0)
-      setIsCallLoading(true)
+      if (hangupRefresh == 0)
+        setIsCallLoading(true)
       if (callCurrentPage === 1) {
         // setCallLoading(true);
       } else {
@@ -395,7 +397,7 @@ const WebrtcWrapper = () => {
       } else {
         setIsCallLoading(true);
       }
-     const basePaths = {
+      const basePaths = {
         all: "/call-details-phone?",
         incoming: "/call-details-phone?inbound",
         outgoing: "/call-details-phone?outbound",
@@ -452,13 +454,18 @@ const WebrtcWrapper = () => {
     }
   }
 
+
+
   useEffect(() => {
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
 
     if (interCallMinimize) {
       setInterCallSize({ width: "100%", height: "100%" });
-      setInterCallPosition({ x: screenWidth <= 1366 ? 0 : 650, y: screenWidth <= 1366 ? 0 : 61 });
+      setInterCallPosition(isConferenceCall ?
+        { x: screenWidth <= 1366 ? 0 : 210, y: screenWidth <= 1366 ? 0 : 61 } :
+        { x: screenWidth <= 1366 ? 0 : 650, y: screenWidth <= 1366 ? 0 : 61 }
+      );
     } else if (!interCallMinimize) {
       setInterCallSize({
         width: 200,
@@ -469,7 +476,7 @@ const WebrtcWrapper = () => {
         y: screenHeight - (screenWidth <= 1366 ? 300 : 420),
       });
     }
-  }, [interCallMinimize]);
+  }, [interCallMinimize, isConferenceCall]);
   return (
     <>
       <style>
@@ -601,6 +608,12 @@ const WebrtcWrapper = () => {
             pin={pin}
             setPin={setPin}
             isVideoOn={isVideoOn}
+            calling={calling}
+            setCalling={setCalling}
+            interCallMinimize={interCallMinimize}
+            setInterCallMinimize={setInterCallMinimize}
+            setIsConferenceCall={setIsConferenceCall}
+            setIsConferenceAdmin={setIsConferenceAdmin}
           />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
@@ -682,6 +695,8 @@ const WebrtcWrapper = () => {
                   allContact={allContact}
                   accountDetails={accountDetails}
                   didAll={didAll}
+                  isConferenceCall={isConferenceCall}
+                  isConferenceAdmin={isConferenceAdmin}
                 // globalSession={sessions}
                 />
               </div>
@@ -900,7 +915,7 @@ const WebrtcWrapper = () => {
           }}
           minWidth={"290px"}
           minHeight={"280px"}
-          maxWidth={"calc(100vw - 650px)"}
+          maxWidth={`calc(100vw - ${isConferenceCall ? '210px' : '650px'})`}
           maxHeight={"calc(100vh - 61px)"}
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
           disableDragging={interCallMinimize}
