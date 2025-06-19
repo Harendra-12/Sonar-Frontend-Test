@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import { convertDateToCurrentTimeZone, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
@@ -199,7 +199,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 internalCallAction: null,
               });
               socketSendMessage({
-                action: "peercall",
+                action: "peercallInitiate",
                 from: account.id,
                 to: recipient?.[1],
                 room_id: `${account.id}-${recipient?.[1]}`,
@@ -217,18 +217,18 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
       <div className="rightPanel pt-3">
         <div className="tangoNavs px-3">
           <nav className="noScrollBar">
-            <div class="nav nav-tabs align-items-center" id="nav-tab" role="tablist">
-              <button class="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Files</button>
-              <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
-              <button class="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
-              <button class="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
+            <div className="nav nav-tabs align-items-center" id="nav-tab" role="tablist">
+              <button className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Files</button>
+              <button className="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
+              <button className="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
+              <button className="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
               <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
             </div>
           </nav>
           <div className="tab-content mt-3">
             <input type="search" name="Search" id="headerSearch" placeholder="Search" value="" className="mb-2" onChange={() => featureUnderdevelopment()} />
 
-            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
+            <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabIndex="0">
               <div className="filePanelActive">
                 {allFiles && allFiles?.length > 0 ? (
                   allFiles.map((item, index) => (
@@ -240,7 +240,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                       </div>
                       <div className=" ">
                         <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                        <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                        <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                       </div>
                       <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                         <button>
@@ -252,7 +252,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
               </div>
             </div>
-            <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabindex="0">
+            <div className="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabIndex="0">
               {allFiles && allFiles?.length > 0 ? (
                 allFiles.filter((item) => item.message_type === "file").map((item, index) => (
                   <div className="file_list" key={index}>
@@ -263,7 +263,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                     </div>
                     <div className=" ">
                       <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                      <p className="text_muted">{item?.created_at?.split(" ")[0]} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                      <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
                     </div>
                     <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
                       <button>
@@ -274,7 +274,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 ))
               ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
             </div>
-            <div class="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabindex="0">
+            <div className="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabIndex="0">
               {allFiles && allFiles?.length > 0 ? (
                 <div className="imageList">
                   {allFiles.filter((item) => item.message_type === "image").map((item, index) => (
@@ -297,7 +297,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 </div>
               ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
             </div>
-            <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabindex="0">
+            <div className="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabIndex="0">
               {allFiles && allFiles?.length > 0 ? (
                 <div className="imageList">
                   {allFiles.filter((item) => item.message_type === "video").map((item, index) => (

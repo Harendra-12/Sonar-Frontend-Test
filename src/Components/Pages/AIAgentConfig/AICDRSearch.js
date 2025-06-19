@@ -7,7 +7,9 @@ import Header from "../../CommonComponents/Header";
 
 import {
     backToTop,
+    convertDateToCurrentTimeZone,
     featureUnderdevelopment,
+    formatTimeWithAMPM,
     generalGetFunction,
     generalPostFunction,
     generatePreSignedUrl,
@@ -98,33 +100,6 @@ function AICDRSearch({ page }) {
 
     const thisAudioRef = useRef(null);
 
-    function formatTimeWithAMPM(timeString) {
-        const [hours, minutes, seconds] = timeString.split(":").map(Number);
-
-        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-            return "Invalid time format";
-        }
-
-        let period = "AM";
-        let formattedHours = hours;
-
-        if (hours >= 12) {
-            period = "PM";
-            if (hours > 12) {
-                formattedHours -= 12;
-            }
-        }
-
-        if (formattedHours === 0) {
-            formattedHours = 12; // Midnight is 12 AM
-        }
-
-        const formattedMinutes = minutes.toString().padStart(2, "0");
-        const formattedSeconds = seconds.toString().padStart(2, "0");
-
-        return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
-    }
-
     async function getData() {
         // build a dynamic url which include only the available params to make API call easy
         const queryParams = cdrSearchAI.map(id => `ids[]=${encodeURIComponent(id)}`).join('&');
@@ -139,7 +114,7 @@ function AICDRSearch({ page }) {
                     key === "variable_start_stamp" &&
                     obj.hasOwnProperty("variable_start_stamp")
                 ) {
-                    filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
+                    filteredObj["Date"] = convertDateToCurrentTimeZone(obj["variable_start_stamp"]?.split(" ")[0]);
                     filteredObj["Time"] = formatTimeWithAMPM(
                         obj["variable_start_stamp"]?.split(" ")[1]
                     );
@@ -462,7 +437,7 @@ function AICDRSearch({ page }) {
                                                                 //     col={showKeys.length}
                                                                 //     row={12}
                                                                 // />
-                                                                  <ThreeDotedLoader />
+                                                                <ThreeDotedLoader />
                                                             ) : (
                                                                 <>
                                                                     {cdr?.data?.map((item, index) => {
@@ -721,7 +696,7 @@ function AICDRSearch({ page }) {
                                                 ) : (
                                                     <div>
                                                         <div className='mt-5'>
-                                                            <div className='imgWrapper loader' style={{ width: '150px', height: '150px' }}>
+                                                            <div className='imgWrapper loader position-static' style={{ width: '150px', height: '150px', transform: 'none' }}>
                                                                 <img src={require(`../../assets/images/ai.png`)} alt="Empty" className="w-100" />
                                                             </div>
                                                             <div className='text-center mt-3'>

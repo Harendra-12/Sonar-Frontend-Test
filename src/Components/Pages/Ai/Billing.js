@@ -61,23 +61,23 @@ const Billing = () => {
                                                     <p>You can manage your billing information here. </p>
                                                 </div>
                                                 <div className="buttonGroup">
-                                                    <button effect="ripple" className="panelButton xlWidth" 
+                                                    <button effect="ripple" className="panelButton xlWidth"
                                                     // onClick={() => {
                                                     //     setIsAgentCreatePopup(true); }}
-                                                        >
+                                                    >
                                                         <span className="text">Change payment methods</span>
                                                         <span className="icon">
-                                                            <i class="fa-solid fa-arrow-up-right"></i>
+                                                            <i className="fa-solid fa-arrow-up-right"></i>
                                                         </span>
                                                     </button>
-                                                    <button className="panelButton edit xlWidth" 
+                                                    <button className="panelButton edit xlWidth"
                                                     // onClick={() => {
                                                     //     setAddUploadAgentToggle(true);
                                                     // }}
                                                     >
                                                         <span className="text">Manage Billing Info</span>
                                                         <span className="icon">
-                                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                         </span>
                                                     </button>
                                                 </div>
@@ -137,7 +137,7 @@ const Billing = () => {
                                                     id="nav-user"
                                                     role="tabpanel"
                                                     aria-labelledby="nav-user-tab"
-                                                    tabindex="0"
+                                                    tabIndex="0"
                                                 >
                                                     <BillingHistory />
                                                 </div>
@@ -146,7 +146,7 @@ const Billing = () => {
                                                     id="nav-exten"
                                                     role="tabpanel"
                                                     aria-labelledby="nav-exten-tab"
-                                                    tabindex="0"
+                                                    tabIndex="0"
                                                 >
                                                     <Usage />
                                                 </div>
@@ -155,9 +155,9 @@ const Billing = () => {
                                                     id="nav-exten-1"
                                                     role="tabpanel"
                                                     aria-labelledby="nav-provision-tab"
-                                                    tabindex="0"
+                                                    tabIndex="0"
                                                 >
-                                                   <Limits />
+                                                    <Limits />
                                                 </div>
                                             </div>
                                         </div>

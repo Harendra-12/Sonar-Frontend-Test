@@ -6,6 +6,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
+  // console.log(incomingCall,internalCallAction)
 
   const dispatch = useDispatch();
   function answerCall(item) {
@@ -19,8 +20,8 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     }, 1000);
 
     socketSendMessage({
-      action: "peercall",
-      chat_call_id: item.id,
+      action: "peercallUpdate",
+      chat_call_id: item.uuid,
       hangup_cause: "",
       room_id: item.room_id,
       duration: "",
@@ -35,8 +36,8 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     });
     dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
     socketSendMessage({
-      action: "peercall",
-      chat_call_id: item.id,
+      action: "peercallUpdate",
+      chat_call_id: item.uuid,
       hangup_cause: "rejected",
       room_id: item.room_id,
       duration: "0",
@@ -57,7 +58,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     <>
       {incomingCall.length > 0 &&
         incomingCall.map((item) => {
-          if (item.sender_id !== account.id && !item.recieved) {
+          if (item.sender_id != account.id && !item.recieved) {
             return (
               <div className="messageIncomingPopup">
                 <div className="incomingCallPopup ">
@@ -74,7 +75,8 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
                           />
                         </div>
                       ) : (
-                        <div className="userHolder" id={"profileOfflineNav"}>
+                        <div className="userHolder" 
+                        >
                           <i className="fa-light fa-user fs-5"></i>
                         </div>
                       )}

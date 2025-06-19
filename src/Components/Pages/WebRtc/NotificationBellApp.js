@@ -5,10 +5,9 @@ import { formatTimeWithAMPM } from '../../GlobalFunction/globalFunction';
 import { set } from 'react-hook-form';
 
 function NotificationBellApp() {
-    const state = useSelector((state) => state)
-    const recipient_to_remove_notification = state?.recipient_to_remove_notification;
+    const recipient_to_remove_notification = ((state) => state?.recipient_to_remove_notification);
     const incomingMessage = useSelector((state) => state.incomingMessage);
-    const groupMessage = state.groupMessage;
+    const groupMessage =useSelector((state) => state.groupMessage);
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
@@ -62,25 +61,23 @@ function NotificationBellApp() {
     }, [groupMessage]);
 
 
-    useEffect(() => {
-        if (recipient_to_remove_notification !== null) {
-            if (recipient_to_remove_notification[2] !== "groupChat") {
-                setAllNotification(prevNotifications =>
-                    prevNotifications?.filter(msg =>
-                        msg.message_group_id !== undefined || msg.sender_id !== recipient_to_remove_notification[1]
-                    )
-                );
+   useEffect(() => {
+  if (!recipient_to_remove_notification || recipient_to_remove_notification.length < 3) return;
 
-            } else {
-                setAllNotification(prevNotifications =>
-                    prevNotifications?.filter(msg =>
-                        msg?.group_name !== recipient_to_remove_notification[0]
-                    )
-                );
-            }
+  setAllNotification(prevNotifications => {
+    if (recipient_to_remove_notification[2] !== "groupChat") {
+      return prevNotifications?.filter(msg =>
+        msg.message_group_id !== undefined ||
+        msg.sender_id !== recipient_to_remove_notification[1]
+      );
+    } else {
+      return prevNotifications?.filter(msg =>
+        msg?.group_name !== recipient_to_remove_notification[0]
+      );
+    }
+  });
+}, [recipient_to_remove_notification?.[0], recipient_to_remove_notification?.[1], recipient_to_remove_notification?.[2]]);
 
-        }
-    }, [recipient_to_remove_notification])
 
     const removeNotification = (item) => {
         if (item.message_text) {
@@ -104,39 +101,39 @@ function NotificationBellApp() {
     //         }
     //     }
     // }, [locationState.state, contact, allAgents]);
-    
+
     return (
-        <div class="dropdown notification_dropdown">
+        <div className="dropdown notification_dropdown">
             <button
                 className="border-0 bg-transparent dropdown-toggle position-relative"
                 type='button'
                 data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
             >
                 <i className="fa-regular fa-bell" />
-                <span class="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">{allNotification?.length || 0}</span>
+                <span className="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">{allNotification?.length || 0}</span>
             </button>
             <div className="dropdown-menu" style={{ minWidth: "300px" }}>
-                <div class="p-2 header">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <p class="mb-0 fs-17 fw-semibold">Notifications</p>
-                        {/* <span class="badge bg-secondary-transparent" id="notifiation-data">5 Unread</span> */}
+                <div className="p-2 header">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <p className="mb-0 fs-17 fw-semibold">Notifications</p>
+                        {/* <span className="badge bg-secondary-transparent" id="notifiation-data">5 Unread</span> */}
                     </div>
                 </div>
                 <ul>
                     {allNotification && allNotification?.length > 0 ?
                         allNotification?.slice(0, 5).map((item, index) => (
-                            <li class="dropdown-item">
-                                <div class="d-flex align-items-start">
+                            <li className="dropdown-item">
+                                <div className="d-flex align-items-start">
                                     {item.message_text ? (
                                         <>
-                                            <div class="pe-2">
-                                                <span class="badge_icon bg-secondary-transparent">
-                                                    <i class="fa-duotone fa-solid fa-messages"></i>
+                                            <div className="pe-2">
+                                                <span className="badge_icon bg-secondary-transparent">
+                                                    <i className="fa-duotone fa-solid fa-messages"></i>
                                                 </span>
                                             </div>
-                                            <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                                            <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>
-                                                    <p class="mb-0 d-flex">
+                                                    <p className="mb-0 d-flex">
                                                         {item?.group_name ?
                                                             <>
                                                                 <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}<>)</></strong>&nbsp;
@@ -149,10 +146,10 @@ function NotificationBellApp() {
                                                         }
 
                                                     </p>
-                                                    <span class="text_gray fw-normal fs-12 ">{item.updated_at.split("T")[0]} - {new Date(item.updated_at).toLocaleTimeString()}</span>
+                                                    <span className="text_gray fw-normal fs-12 ">{item.updated_at.split("T")[0]} - {new Date(item.updated_at).toLocaleTimeString()}</span>
                                                 </div>
                                                 <div className='ms-4 align-self-start'>
-                                                    <button class="closeBtn me-1 border-0 bg-transparent text_gray" onClick={() => removeNotification(item)}><i class="fa-regular fa-xmark"></i></button> </div>
+                                                    <button className="closeBtn me-1 border-0 bg-transparent text_gray" onClick={() => removeNotification(item)}><i className="fa-regular fa-xmark"></i></button> </div>
                                             </div>
                                         </>
                                     ) : ""}
@@ -163,35 +160,35 @@ function NotificationBellApp() {
                         )
                     }
 
-                    {/* <li class="dropdown-item">
-                        <div class="d-flex align-items-start">
-                            <div class="pe-2">
-                                <span class="badge_icon bg-secondary-transparent "><i class="fa-duotone fa-solid fa-messages"></i></span>
+                    {/* <li className="dropdown-item">
+                        <div className="d-flex align-items-start">
+                            <div className="pe-2">
+                                <span className="badge_icon bg-secondary-transparent "><i className="fa-duotone fa-solid fa-messages"></i></span>
                             </div>
-                            <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                            <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="mb-0">
+                                    <p className="mb-0">
                                         <span className='text-primary'>Message Received From </span> <strong>( pratima - 1002 )</strong><span className="unread text-white" style={{ backgroundColor: ' rgb(1, 199, 142)' }}>2</span></p>
-                                    <span class="text_gray fw-normal fs-12 ">28 April, 2025</span>
+                                    <span className="text_gray fw-normal fs-12 ">28 April, 2025</span>
                                 </div>
                                 <div className='ms-4 align-self-start'>
-                                    <button class="closeBtn me-1 border-0 bg-transparent text_gray"><i class="fa-regular fa-xmark"></i></button> </div>
+                                    <button className="closeBtn me-1 border-0 bg-transparent text_gray"><i className="fa-regular fa-xmark"></i></button> </div>
                             </div>
                         </div>
                     </li>
-                    <li class="dropdown-item">
-                        <div class="d-flex align-items-start">
-                            <div class="pe-2">
-                                <span class="badge_icon bg-primary-transparent "><i class="fa-duotone fa-solid fa-envelope"></i></span>
+                    <li className="dropdown-item">
+                        <div className="d-flex align-items-start">
+                            <div className="pe-2">
+                                <span className="badge_icon bg-primary-transparent "><i className="fa-duotone fa-solid fa-envelope"></i></span>
                             </div>
-                            <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                            <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                 <div>
-                                    <p class="mb-0">
+                                    <p className="mb-0">
                                         <span className='text-success'>Voice Mail From </span> <strong>( pratima - 1002 )</strong><span className="unread text-white" style={{ backgroundColor: ' rgb(1, 199, 142)' }}>2</span></p>
-                                    <span class="text_gray fw-normal fs-12 ">28 April, 2025</span>
+                                    <span className="text_gray fw-normal fs-12 ">28 April, 2025</span>
                                 </div>
                                 <div className='ms-4 align-self-start'>
-                                    <button class="closeBtn me-1 border-0 bg-transparent text_gray"><i class="fa-regular fa-xmark"></i></button> </div>
+                                    <button className="closeBtn me-1 border-0 bg-transparent text_gray"><i className="fa-regular fa-xmark"></i></button> </div>
                             </div>
                         </div>
                     </li> */}

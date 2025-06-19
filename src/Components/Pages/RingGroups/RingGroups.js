@@ -454,8 +454,8 @@ const RingGroups = () => {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div class="cl-toggle-switch">
-                                                  <label class="cl-switch">
+                                                <div className="cl-toggle-switch">
+                                                  <label className="cl-switch">
                                                     <input type="checkbox"
                                                       checked={
                                                         item.status == "active"
@@ -512,8 +512,8 @@ const RingGroups = () => {
                                                 }}
                                               >
                                                 <i className="fa-solid fa-trash" />
-                                                {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
-                                                {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
+                                                {/* <i className="fa-duotone fa-solid fa-trash"></i> */}
+                                                {/* <i className="fa-duotone fa-solid fa-user-minus"></i> */}
                                               </button>
                                             </td>
                                           }

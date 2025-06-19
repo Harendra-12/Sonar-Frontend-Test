@@ -1019,6 +1019,7 @@ function Navbar() {
                         id="collapse7"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/tracker-dashboard",
+                          "/tracker-active-calls",
                           "/did-listing-tracker",
                           "/buyers",
                           "/source",
@@ -1030,6 +1031,7 @@ function Navbar() {
                           "/call-forwarding-campaign",
                           "/call-forwarding-campaign-create",
                           "/call-forwarding-campaign-edit",
+                          "/cdr-tracker",
                         ])
                           ? "show"
                           : ""
@@ -1044,6 +1046,14 @@ function Navbar() {
                                 onClick={backToTop}
                               >
                                 <div className="itemTitle">Dashboard</div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/tracker-active-calls"
+                                onClick={backToTop}
+                              >
+                                <div className="itemTitle">Active Calls</div>
                               </NavLink>
                             </li>
 
@@ -1120,6 +1130,25 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">Source</div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/cdr-tracker"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/extensions-add",
+                                      "/extensions-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">CDR Tracker</div>
                               </NavLink>
                             </li>
                             <li className="tabItem ">
@@ -1209,6 +1238,7 @@ function Navbar() {
                             "/all-ai-agent",
                             "/ai-dashboard",
                             "/ai-all-agent",
+                            "/all-users",
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
                             "/ai-call-history",
@@ -1233,6 +1263,7 @@ function Navbar() {
                           "/ai-agent-dashboard",
                           "/all-ai-agent",
                           "/ai-all-agent",
+                          "/all-users",
                           "/ai-knowledge-base",
                           '/ai-phone-number',
                           '/ai-call-history',
@@ -1249,7 +1280,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             <li className="tabItem ">
-                                  <NavLink
+                              <NavLink
                                 to="/ai-agent-dashboard"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
@@ -1266,9 +1297,9 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Ai Dashboard</div>
                               </NavLink>
-                              
+
                             </li>
-                           
+
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-all-agent"
@@ -1286,6 +1317,25 @@ function Navbar() {
                                 }
                               >
                                 <div className="itemTitle">All Agents</div>
+                              </NavLink>
+                            </li>
+                             <li className="tabItem ">
+                              <NavLink
+                                to="/all-users"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/all-users",
+
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">All Users</div>
                               </NavLink>
                             </li>
                             <li className="tabItem ">
@@ -1420,7 +1470,7 @@ function Navbar() {
                     (item) => item?.addon_id == 2
                   ) ?
                     checkModulePerm(
-                      "Clicktocall",
+                      "Click To Call",
                       permissions,
                       account?.sections,
                     ) &&
@@ -1453,7 +1503,7 @@ function Navbar() {
                       aria-controls="collapse21"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user-robot"></i>
+                        <i className="fa-regular fa-user-robot"></i>
                       </div>
                       <div className="itemTitle">AI Dashboard</div>
                     </button>
@@ -2056,7 +2106,7 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
-                            {isCustomerAdmin && (
+                            {/* {isCustomerAdmin && (
                               <li className="tabItem ">
                                 <NavLink
                                   to="/global-permission-config"
@@ -2067,7 +2117,7 @@ function Navbar() {
                                   </div>
                                 </NavLink>
                               </li>
-                            )}
+                            )} */}
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"

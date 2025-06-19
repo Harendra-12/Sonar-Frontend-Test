@@ -104,6 +104,7 @@ const DidConfig = () => {
       setValue("usages", "extension" || []);
     }
   }, [locationData]);
+
   useEffect(() => {
     if (account && account.id) {
       async function getData() {
@@ -125,6 +126,7 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
+  
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
@@ -207,7 +209,7 @@ const DidConfig = () => {
     } else {
       data.forward_to = "";
     }
-    if(data.forward === "disabled") {
+    if (data.forward === "disabled") {
       delete data.forward_to;
     }
     delete data.forward_action;
@@ -649,118 +651,116 @@ const DidConfig = () => {
                               Select the status of Sticky Agent
                             </label>
                           </div>
-                          <div
-                            className={`col-${watch().sticky_agent_enable == "true" ||
-                              watch().sticky_agent_enable == 1
-                              ? "2 pe-2 ms-auto"
-                              : "6"
-                              }`}
-                          >
-                            {watch().sticky_agent_enable === "true" ||
-                              watch().sticky_agent_enable === 1 ? (
-                              <div className="formLabel">
-                                <label className="formItemDesc">Status</label>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            <select
-                              className="formItem"
-                              name=""
-                              defaultValue="false"
-                              id="selectFormRow"
-                              {...register("sticky_agent_enable")}
-                            >
-                              <option value="true">True</option>
-                              <option value="false">False</option>
-                            </select>
-                          </div>
-
-                          {(watch().sticky_agent_enable == true ||
-                            watch().sticky_agent_enable == "true") && (
+                          <div className="col-6">
+                            <div className="row gx-2">
                               <div
-                                className="col-2 pe-2"
-                                style={{ width: "12%" }}
+                                className={`col-${watch().sticky_agent_enable == "true" ||
+                                  watch().sticky_agent_enable == 1
+                                  ? "3"
+                                  : "12"
+                                  }`}
                               >
-                                <div className="formLabel">
-                                  <Tippy content="Check the duration of sticky agent">
-                                    <label className="formItemDesc">
-                                      Duration{" "}
-                                    </label>
-                                  </Tippy>
-                                </div>
-                                <input
-                                  type="number"
-                                  name="forward_to"
-                                  className="formItem"
-                                  {...register(
-                                    "stick_agent_expires",
-                                    rangeValidator(1, 99), {
-                                    requiredValidator
-                                  }
-                                  )}
-                                />
-                                {errors.stick_agent_expires && (
-                                  <ErrorMessage
-                                    text={errors.stick_agent_expires.message}
-                                  />
+                                {watch().sticky_agent_enable === "true" ||
+                                  watch().sticky_agent_enable === 1 ? (
+                                  <div className="formLabel">
+                                    <label className="formItemDesc">Status</label>
+                                  </div>
+                                ) : (
+                                  ""
                                 )}
-                              </div>
-                            )}
-                          {(watch().sticky_agent_enable == true ||
-                            watch().sticky_agent_enable == "true") && (
-                              <div className="col-2" style={{ width: "21.3%" }}>
-                                <div className="formLabel">
-                                  <label className="formItemDesc">
-                                    Agent Type
-                                  </label>
-                                </div>
                                 <select
                                   className="formItem"
                                   name=""
+                                  defaultValue="false"
                                   id="selectFormRow"
-                                  {...register("stick_agent_type")}
+                                  {...register("sticky_agent_enable")}
                                 >
-                                  <option selected="" value="last_spoken">
-                                    Last Spoken
-                                  </option>
-                                  <option value="longest_time">
-                                    Longest Time
-                                  </option>
+                                  <option value="true">True</option>
+                                  <option value="false">False</option>
                                 </select>
                               </div>
-                            )}
-                          {(watch().sticky_agent_enable == true ||
-                            watch().sticky_agent_enable == "true") && (
-                              <div
-                                className="col-2 pe-2"
-                                style={{ width: "12%" }}
-                              >
-                                <div className="formLabel">
-                                  <Tippy content="Timout for the sticky agent and return to normal routing">
-                                    <label className="formItemDesc">
-                                      Timeout(Sec.){" "}
-                                    </label>
-                                  </Tippy>
-                                </div>
-                                <input
-                                  type="number"
-                                  name="forward_to"
-                                  className="formItem"
-                                  {...register(
-                                    "sticky_agent_timeout",
-                                    rangeValidator(1, 99), {
-                                    requiredValidator
-                                  }
-                                  )}
-                                />
-                                {errors.stick_agent_expires && (
-                                  <ErrorMessage
-                                    text={errors.stick_agent_expires.message}
-                                  />
+
+                              {(watch().sticky_agent_enable == true ||
+                                watch().sticky_agent_enable == "true") && (
+                                  <div className="col-3">
+                                    <div className="formLabel">
+                                      <Tippy content="Check the duration of sticky agent">
+                                        <label className="formItemDesc">
+                                          Duration{" "}
+                                        </label>
+                                      </Tippy>
+                                    </div>
+                                    <input
+                                      type="number"
+                                      name="forward_to"
+                                      className="formItem"
+                                      {...register(
+                                        "stick_agent_expires",
+                                        rangeValidator(1, 99), {
+                                        requiredValidator
+                                      }
+                                      )}
+                                    />
+                                    {errors.stick_agent_expires && (
+                                      <ErrorMessage
+                                        text={errors.stick_agent_expires.message}
+                                      />
+                                    )}
+                                  </div>
                                 )}
-                              </div>
-                            )}
+                              {(watch().sticky_agent_enable == true ||
+                                watch().sticky_agent_enable == "true") && (
+                                  <div className="col-3">
+                                    <div className="formLabel">
+                                      <label className="formItemDesc">
+                                        Agent Type
+                                      </label>
+                                    </div>
+                                    <select
+                                      className="formItem"
+                                      name=""
+                                      id="selectFormRow"
+                                      {...register("stick_agent_type")}
+                                    >
+                                      <option selected="" value="last_spoken">
+                                        Last Spoken
+                                      </option>
+                                      <option value="longest_time">
+                                        Longest Time
+                                      </option>
+                                    </select>
+                                  </div>
+                                )}
+                              {(watch().sticky_agent_enable == true ||
+                                watch().sticky_agent_enable == "true") && (
+                                  <div className="col-3">
+                                    <div className="formLabel">
+                                      <Tippy content="Timout for the sticky agent and return to normal routing">
+                                        <label className="formItemDesc">
+                                          Timeout(Sec.){" "}
+                                        </label>
+                                      </Tippy>
+                                    </div>
+                                    <input
+                                      type="number"
+                                      name="forward_to"
+                                      className="formItem"
+                                      {...register(
+                                        "sticky_agent_timeout",
+                                        rangeValidator(1, 99), {
+                                        requiredValidator
+                                      }
+                                      )}
+                                    />
+                                    {errors.stick_agent_expires && (
+                                      <ErrorMessage
+                                        text={errors.stick_agent_expires.message}
+                                      />
+                                    )}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
                         </div>
 
                         <div className="formRow col-xl-3">
@@ -780,7 +780,7 @@ const DidConfig = () => {
                               >
                                 {watch().spam_filter_type != "1" && (
                                   <div className="formLabel">
-                                    <label>Type</label>
+                                    <label className="formItemDesc">Type</label>
                                   </div>
                                 )}
                                 <select
@@ -799,7 +799,7 @@ const DidConfig = () => {
                                 <>
                                   <div className="col-4 px-1">
                                     <div className="formLabel">
-                                      <label htmlFor="selectFormRow">
+                                      <label className="formItemDesc">
                                         Retries
                                       </label>
                                     </div>
@@ -817,7 +817,7 @@ const DidConfig = () => {
                                   <div className="col-4 ps-1">
                                     <div className="formLabel">
                                       <Tippy content="Input in Days, Max 5">
-                                        <label>
+                                        <label className="formItemDesc">
                                           Length{" "}
                                           <span
                                             style={{
@@ -843,7 +843,7 @@ const DidConfig = () => {
                                   </div>
                                   <div className="col-6 pe-1">
                                     <div className="formLabel">
-                                      <label>
+                                      <label className="formItemDesc">
                                         DTMF type{" "}
                                         <span
                                           style={{
@@ -869,7 +869,7 @@ const DidConfig = () => {
                                   </div>
                                   <div className="col-6 ps-1">
                                     <div className="formLabel">
-                                      <label htmlFor="selectFormRow">
+                                      <label className="formItemDesc">
                                         Retry File
                                       </label>
                                     </div>
@@ -917,6 +917,50 @@ const DidConfig = () => {
                               <option value="prefix">Prefix</option>
                               <option value="feature">Feature</option>
                             </select>
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label htmlFor="selectFormRow">Missed Call</label>
+                            <label htmlFor="data" className="formItemDesc">
+                              Select in which medium you want to receive missed call notification
+                            </label>
+                          </div>
+                          <div className="col-6">
+                            <div className="row">
+                              <div className={`col-${watch().missed_call == 'disabled' ? '12' : '6'}`}>
+                                <select
+                                  className="formItem"
+                                  defaultValue="disabled"
+                                  id="selectFormRow"
+                                  {...register("missed_call")}
+                                >
+                                  <option value="disabled">Disabled</option>
+                                  <option value="email">Email</option>
+                                  <option value="sms">SMS</option>
+                                </select>
+                              </div>
+                              {watch().missed_call == 'sms' && <div className={`col-6`}>
+                                <input
+                                  type="number"
+                                  className="formItem"
+                                  {...register(
+                                    "missed_call_sms",
+                                    ...noSpecialCharactersValidator,
+                                  )}
+                                />
+                              </div>}
+                              {watch().missed_call == 'email' && <div className={`col-6`}>
+                                <input
+                                  type="email"
+                                  className="formItem"
+                                  {...register(
+                                    "missed_call_email",
+                                  )}
+                                />
+                              </div>}
+                            </div>
                           </div>
                         </div>
                       </form>

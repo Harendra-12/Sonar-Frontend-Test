@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, checkViewSidebar, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, convertDateToCurrentTimeZone, formatTimeWithAMPM, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
@@ -225,8 +225,8 @@ const BillingCardAndWallet = () => {
                                                                             <tr key={index}>
                                                                                 <td>{item?.transaction_id}</td>
                                                                                 <td>
-                                                                                    <button class="badge badge-subtle badge-border border-0">
-                                                                                        <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
+                                                                                    <button className="badge badge-subtle badge-border border-0">
+                                                                                        <i className="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
                                                                                         <div className='card_info'>
                                                                                             <ul>
                                                                                                 <li className='mb-1 '><span className=' text-muted0 '>Card Name : </span>{item?.payment_details?.fullname}</li>
@@ -254,12 +254,12 @@ const BillingCardAndWallet = () => {
                                                                                         </span>
                                                                                     }
                                                                                 </td>
-                                                                                <td>{item?.transaction_date.split(" ")[0]}</td>
+                                                                                <td>{convertDateToCurrentTimeZone(item?.transaction_date.split(" ")[0])}</td>
                                                                                 <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
                                                                                 <td>{item?.description}</td>
                                                                                 <td className='text-center'>
                                                                                     <button className='tableButton mx-auto' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
-                                                                                        <i class="fa-regular fa-download"></i>
+                                                                                        <i className="fa-regular fa-download"></i>
                                                                                     </button>
                                                                                 </td>
                                                                             </tr>

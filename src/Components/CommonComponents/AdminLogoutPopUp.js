@@ -33,9 +33,9 @@ function AdminLogoutPopUp() {
                                         <i className="fa-solid fa-check" />
                                     </span>
                                 </button> */}
-                                <button type="button" class="btn btn_info"  onClick={handleLogout}>
+                                <button type="button" className="btn btn_info" onClick={handleLogout}>
                                     <span>Ok</span>
-                                <i class="fa-solid fa-power-off "></i>
+                                    <i className="fa-solid fa-power-off "></i>
                                 </button>
                             </div>
                         </div>

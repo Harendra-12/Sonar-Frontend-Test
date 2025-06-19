@@ -50,13 +50,13 @@ function ViewMessages() {
 
 
 
-                                                   
+
                                                     <div className='d-flex align-items-center justify-content-between border-btmo'>
                                                         <p>
                                                             Status :
 
                                                         </p>
-                                                        <span class="tableLabel success">
+                                                        <span className="tableLabel success">
                                                             Open
                                                         </span>
                                                     </div>

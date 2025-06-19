@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
-import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
@@ -22,8 +22,8 @@ import Tippy from "@tippyjs/react";
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, SettingsProp }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const state = useSelector((state) => state)
-  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null;
+  // const state = useSelector((state) => state)
+  const isWhatsAppAvailable = useSelector((state) =>state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null);
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -33,6 +33,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const adminLogout = useSelector((state) => state.adminLogout);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
 
   // Trying to connect with freeswitch at every 3 seconds when disconnect or unregister from feeswitch for any of reason
@@ -142,9 +143,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                       <p>Ext- {extension}</p>
                     </div>
                     <div className="">
-                      <button onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                      <div onClick={handleToggle} className="clearButton2 text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                         <i className="fa-regular fa-gears" />
-                      </button>
+                      </div>
                       <div className="dropdown-menu settingDropDown">
                         {SettingsProp}
                       </div>
@@ -282,7 +283,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              { account?.user_role?.roles?.name != "Agent" &&
+              {account?.user_role?.roles?.name != "Agent" &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
@@ -314,8 +315,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              {
-                account?.user_role == null &&
+              {checkViewSidebar(
+                "Campaign",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "read") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/campaign-login"
@@ -333,9 +338,14 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
               }
 
 
-              
+
               {
-                isCustomerAdmin &&
+                checkViewSidebar(
+                  "Conference",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "read") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("conference")}
@@ -375,7 +385,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-brands fa-whatsapp"></i>
+                      <i className="fa-brands fa-whatsapp"></i>
                     </div>
                     <div className="itemTitle">WhatsApp</div>
                   </div>
@@ -391,11 +401,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-solid fa-comment-sms"></i>
+                      <i className="fa-solid fa-comment-sms"></i>
                     </div>
                     <div className="itemTitle">SMS</div>
                   </div>
-                </li> }
+                </li>}
               {/* {account?.user_role?.roles?.name !== "Agent" ?
                 <li style={{ cursor: "pointer" }}>
                   <div
@@ -405,7 +415,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                     }
                   >
                     <div className="iconHolder">
-                      <i class="fa-solid fa-gear"></i>
+                      <i className="fa-solid fa-gear"></i>
                     </div>
                     <div className="itemTitle">Settings</div>
                   </div>

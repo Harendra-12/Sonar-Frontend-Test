@@ -11,7 +11,9 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "modify-react-sipjs";
 import {
+  convertDateToCurrentTimeZone,
   featureUnderdevelopment,
+  formatTimeWithAMPM,
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,
@@ -304,6 +306,7 @@ function Call({
 
     // Call Type Icon Selector
     const statusIcons = {
+      CANCEL: "fa-solid fa-phone-missed",
       Missed: "fa-solid fa-phone-missed",
       Cancelled: "fa-solid fa-phone-xmark",
       Failed: "fa-solid fa-phone-slash",
@@ -315,7 +318,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
@@ -325,7 +329,8 @@ function Call({
           statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -334,7 +339,8 @@ function Call({
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
           item.variable_DIALSTATUS == "Missed" ||
-            item.variable_DIALSTATUS == "Failed"
+            item.variable_DIALSTATUS == "Failed" ||
+            item.variable_DIALSTATUS == "CANCEL"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",
@@ -477,15 +483,16 @@ function Call({
 
               <div className="col-auto text-end ms-auto">
                 <p className="timeAgo mb-0">
-                  <span className="callhistory-date">{item.variable_start_stamp.split(" ")[0]}</span>
-                  {new Date(item.variable_start_stamp)
+                  <span className="callhistory-date">{convertDateToCurrentTimeZone(item.variable_start_stamp.split(" ")[0])}</span>
+                  {formatTimeWithAMPM(item.variable_start_stamp.split(" ")[1])}
+                  {/* {new Date(item.variable_start_stamp)
                     .toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: true,
                     })
                     .replace(" AM", "am")
-                    .replace(" PM", "pm")}
+                    .replace(" PM", "pm")} */}
                 </p>
                 <button
                   className="clearButton2 xl"
@@ -507,8 +514,6 @@ function Call({
   useEffect(() => {
     if (clickedExtension) {
       const filteredHistory = data.filter((item) => {
-        console.log(item["variable_sip_from_user"], item["variable_sip_to_user"], clickedExtension);
-
         if (!isCustomerAdmin) {
           return (
             (
@@ -525,38 +530,50 @@ function Call({
     }
   }, [clickedExtension, allApiData, extension]);
 
-  const groupCallsByDate = (calls) => {
+  const groupCallsByDate = (calls, account) => {
+    const timeZone = account?.timezone?.name || 'UTC'; // Default to UTC only if missing
+
     return calls.reduce((acc, call) => {
-      // Parse the date as UTC and handle different formats
-      const callDate = new Date(call.variable_start_stamp);
-      const today = new Date();
+      try {
+        // Parse and convert to target timezone
+        const callDate = new Date(call.variable_start_stamp);
+        const callDateInTz = new Date(callDate.toLocaleString('en-US', { timeZone }));
 
-      // Ensure `today` is at midnight UTC
-      const todayDate = new Date(
-        Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
-      );
-      const yesterday = new Date(todayDate);
-      yesterday.setUTCDate(todayDate.getUTCDate() - 1);
+        // Get today/yesterday in target timezone
+        const now = new Date();
+        const today = new Date(now.toLocaleString('en-US', { timeZone }));
+        const todayDate = new Date(Date.UTC(
+          today.getFullYear(), today.getMonth(), today.getDate()
+        ));
+        const yesterday = new Date(todayDate);
+        yesterday.setUTCDate(todayDate.getUTCDate() - 1);
 
-      let dateLabel = callDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+        // Format and compare in target timezone
+        const callDateFormatted = callDateInTz.toLocaleDateString("en-US", {
+          timeZone,
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
 
-      // Compare only the date parts
-      if (callDate.toDateString() === todayDate.toDateString()) {
-        dateLabel = "Today";
-      } else if (callDate.toDateString() === yesterday.toDateString()) {
-        dateLabel = "Yesterday";
+        let dateLabel = callDateFormatted;
+        if (callDateInTz.toDateString() === today.toDateString()) {
+          dateLabel = "Today";
+        } else if (callDateInTz.toDateString() === yesterday.toDateString()) {
+          dateLabel = "Yesterday";
+        }
+
+        // Group (timezone-adjusted)
+        acc[dateLabel] = acc[dateLabel] || [];
+        acc[dateLabel].push(call);
+        return acc;
+      } catch (error) {
+        console.error(`Skipping call (using UTC fallback): ${error.message}`);
+        const fallbackDate = call.variable_start_stamp.split('T')[0]; // UTC date part
+        acc[fallbackDate] = acc[fallbackDate] || [];
+        acc[fallbackDate].push(call);
+        return acc;
       }
-
-      if (!acc[dateLabel]) {
-        acc[dateLabel] = [];
-      }
-
-      acc[dateLabel].push(call);
-      return acc;
     }, {});
   };
   const sortKeys = (keys) => {
@@ -900,7 +917,7 @@ function Call({
                           setLoading(true)
                           setIsChatLoadedForNextPage(false)
                         }}>
-                        <i class="fa-solid fa-phone-volume"></i>
+                        <i className="fa-solid fa-phone-volume"></i>
                         <span>All</span>
                       </button>
                       <button
@@ -912,7 +929,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }}
                       >
-                        <i class="fa-solid fa-phone-arrow-down-left"></i>
+                        <i className="fa-solid fa-phone-arrow-down-left"></i>
                         <span>Inbound</span>
                       </button>
                       <button
@@ -924,7 +941,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }}
                       >
-                        <i class="fa-solid fa-phone-arrow-up-right"></i>
+                        <i className="fa-solid fa-phone-arrow-up-right"></i>
                         <span>Outbound</span>
                       </button>
                       <button
@@ -936,7 +953,7 @@ function Call({
                           setIsChatLoadedForNextPage(false)
                         }
                         }>
-                        <i class="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
+                        <i className="fa-solid fa-phone-missed"></i> <span>Missed</span></button>
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -948,48 +965,50 @@ function Call({
                     >
                       {loading ? (
                         <ContentLoader />
-                      ) : // Object.keys(groupedCalls).length < 0 ? (
-                        //   sortKeys(Object.keys(groupedCalls)).map((date, key) => (
-                        //     <div key={key}>
-                        //       <div key={date} className="dateHeader">
-                        //         <p>{date}</p>
-                        //       </div>
-                        //       {sortedGroupedCalls[date].map(renderCallItem)}
-                        //     </div>
-                        //   ))
-                        // )
-                        data.length > 0 ? (
-                          <>
-                            {data.map((item) => {
-                              return renderCallItem(item);
-                            })}
-                          </>
-                        ) : (
-                          <div className="startAJob">
-                            <div className="text-center mt-3">
-                              <img
-                                src={require("../../assets/images/empty-box.png")}
-                                alt="Empty"
-                              ></img>
-                              <div>
-                                <h5>
-                                  No{" "}
-                                  <span>
-                                    <b>
-                                      {clickStatus === "all"
-                                        ? "calls"
-                                        : clickStatus}
-                                    </b>
-                                  </span>{" "}
-                                  {clickStatus != "all" ? "calls" : ""} available.
-                                </h5>
-                                <h5>
-                                  Please start a <b>call</b> to see them here.
-                                </h5>
+                      ) :
+                        Object.keys(groupedCalls).length > 0 ? (
+                          sortKeys(Object.keys(groupedCalls)).map((date, key) => (
+                            <div key={key}>
+                              <div key={date} className="dateHeader">
+                                <p>{date}</p>
+                              </div>
+                              {sortedGroupedCalls[date].map(renderCallItem)}
+                            </div>
+                          ))
+                        )
+                          // data.length > 0 ? (
+                          //   <>
+                          //     {data.map((item) => {
+                          //       return renderCallItem(item);
+                          //     })}
+                          //   </>
+                          // )
+                          : (
+                            <div className="startAJob">
+                              <div className="text-center mt-3">
+                                <img
+                                  src={require("../../assets/images/empty-box.png")}
+                                  alt="Empty"
+                                ></img>
+                                <div>
+                                  <h5>
+                                    No{" "}
+                                    <span>
+                                      <b>
+                                        {clickStatus === "all"
+                                          ? "calls"
+                                          : clickStatus}
+                                      </b>
+                                    </span>{" "}
+                                    {clickStatus != "all" ? "calls" : ""} available.
+                                  </h5>
+                                  <h5>
+                                    Please start a <b>call</b> to see them here.
+                                  </h5>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                       {/* {isCallLoading ? (
                         <ContentLoader />
                       ) : (

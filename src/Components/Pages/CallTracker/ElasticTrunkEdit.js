@@ -15,14 +15,13 @@ const ElasticTrunkEdit = () => {
 
   const { watch, setValue, register, formState: { errors }, reset, handleSubmit } = useForm();
   const locationState = useLocation();
-
   // Initial API Call to get Buyer Info
   useEffect(() => {
     async function getData() {
-      if (locationState.state.id) {
+      if (locationState?.state?.id) {
         setLoading(true);
         try {
-          const apiData = await generalGetFunction(`/fportaltrunk/${locationState.state.id}`)
+          const apiData = await generalGetFunction(`/fportaltrunk/${locationState?.state?.id}`)
           if (apiData.status) {
             reset(apiData?.data);
             setLoading(false);
@@ -34,13 +33,13 @@ const ElasticTrunkEdit = () => {
       }
     }
     getData()
-  }, [locationState.state.id]);
+  }, [locationState?.state?.id]);
 
   // Handle Trunk Edit
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data };
-    const apiData = await generalPutFunction(`/fportaltrunk/${locationState.state.id}`, payload);
+    const apiData = await generalPutFunction(`/fportaltrunk/${locationState?.state?.id}`, payload);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
@@ -75,8 +74,8 @@ const ElasticTrunkEdit = () => {
                         </div>
                         <div className="buttonGroup">
                           <div className="my-auto position-relative mx-1">
-                            <div class="cl-toggle-switch">
-                              <label class="cl-switch">
+                            <div className="cl-toggle-switch">
+                              <label className="cl-switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -201,7 +200,7 @@ const ElasticTrunkEdit = () => {
                           </div>
                           <div className="col-6">
                             <select {...register("auth_type", { ...requiredValidator, })} className="formItem">
-                              <option value="">Select Auth Type</option>
+                              <option value={-1}>Select Auth Type</option>
                               <option value={0}>IP Based</option>
                               <option value={1}>Username & Password</option>
                             </select>
@@ -210,86 +209,95 @@ const ElasticTrunkEdit = () => {
                             )}
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              Domain IP <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter the domain IP for the trunk.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              {...register("domain_ip", { ...requiredValidator, })}
-                            />
-                            {errors.domain_ip && (
-                              <ErrorMessage text={errors.domain_ip.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              Port <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter a port for the trunk.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              {...register("port", { ...requiredValidator, })}
-                            />
-                            {errors.port && (
-                              <ErrorMessage text={errors.port.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              SIP Username <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter the sip username for the trunk.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              {...register("sip_username", { ...requiredValidator, })}
-                            />
-                            {errors.sip_username && (
-                              <ErrorMessage text={errors.sip_username.message} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label>
-                              SIP Password <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Enter the sip password for the trunk.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              {...register("sip_password", { ...requiredValidator, })}
-                            />
-                            {errors.sip_password && (
-                              <ErrorMessage text={errors.sip_password.message} />
-                            )}
-                          </div>
-                        </div>
+                        {(watch()?.auth_type == 0 && watch()?.auth_type != -1) &&
+                          <>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label>
+                                  Domain IP <span className="text-danger">*</span>
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the domain IP for the trunk.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("domain_ip", { ...requiredValidator, })}
+                                />
+                                {errors.domain_ip && (
+                                  <ErrorMessage text={errors.domain_ip.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label>
+                                  Port <span className="text-danger">*</span>
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter a port for the trunk.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("port", { ...requiredValidator, })}
+                                />
+                                {errors.port && (
+                                  <ErrorMessage text={errors.port.message} />
+                                )}
+                              </div>
+                            </div>
+                          </>
+                        }
+                        
+                        {(watch()?.auth_type == 1 && watch()?.auth_type != -1) &&
+                          <>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label>
+                                  SIP Username <span className="text-danger">*</span>
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the sip username for the trunk.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("sip_username", { ...requiredValidator, })}
+                                />
+                                {errors.sip_username && (
+                                  <ErrorMessage text={errors.sip_username.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <div className="formLabel">
+                                <label>
+                                  SIP Password <span className="text-danger">*</span>
+                                </label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Enter the sip password for the trunk.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  className="formItem"
+                                  {...register("sip_password", { ...requiredValidator, })}
+                                />
+                                {errors.sip_password && (
+                                  <ErrorMessage text={errors.sip_password.message} />
+                                )}
+                              </div>
+                            </div>
+                          </>
+                        }
                       </form>
                     </div>
                   </div>

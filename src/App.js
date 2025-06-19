@@ -180,6 +180,7 @@ import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
 import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 import GoSocket from "./Components/GlobalFunction/GoSocket";
+import GoSocketActiveCall from "./Components/GlobalFunction/GoSocketActiveCall";
 import PackageAndSubscriptionDetails from "./Components/Pages/Billing/PackageAndSubscriptionDetails";
 import AIDashboard from "./Components/Pages/AIAgentConfig/AIDashboard";
 import AICDRSearch from "./Components/Pages/AIAgentConfig/AICDRSearch";
@@ -196,10 +197,14 @@ import CallHistory from "./Components/Pages/Ai/CallHistory";
 import Billing from "./Components/Pages/Ai/Billing";
 import AiBatchCall from "./Components/Pages/Ai/AiBatchCall";
 import CustomDashboardPage from "./Components/Pages/PhoneDashboard/CustomDashboardPage";
+import CDRTracker from "./Components/Pages/CallTracker/CDRTracker";
+import AllUser from "./Components/Pages/Ai/AllUser";
 import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
 import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
+import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
+import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -233,6 +238,7 @@ function App() {
   Socket();
   const { sendMessage } = GoMessageSocket()
   GoSocket();
+  GoSocketActiveCall();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
   }, [GoMessageSocket]);
@@ -260,7 +266,7 @@ function App() {
     <>
       <Router>
         {adminLogout && <AdminLogoutPopUp />}
-        {/* <GoogleTranslate /> */}
+        <GoogleTranslate />
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -299,6 +305,17 @@ function App() {
               "add"
             ) ?
               <MeetingAdd /> :
+              <Navigate to="/dashboard" replace />
+          } />
+          <Route path="/meeting-edit" element={
+            checkViewSidebar(
+              "Conference",
+              slugPermissions,
+              account?.sectionPermissions,
+              account?.permissions,
+              "edit"
+            ) ?
+              <MeetingEdit /> :
               <Navigate to="/dashboard" replace />
           } />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -848,6 +865,7 @@ function App() {
           <Route path="/conversations-flow" element={<ConversationsFlow />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
+          <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
@@ -1070,7 +1088,7 @@ function App() {
           } />
 
           <Route path="/number-compliances" element={<NumberCompliancesHome />} />
-          <Route path="/number-compliances/dz" element={<AlgeriaCompliance />} />
+          <Route path="/number-compliances/:country" element={<AlgeriaCompliance />} />
 
           {/* Number Management Path End */}
 
@@ -1556,6 +1574,9 @@ function App() {
 
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
+          <Route path="/cdr-tracker" element={<CDRTracker />} />
+          <Route path="/tracker-active-calls" element={<ActiveCall />} />
+
           <Route
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}

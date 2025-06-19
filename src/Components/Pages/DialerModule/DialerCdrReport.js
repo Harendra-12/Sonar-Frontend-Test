@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, checkViewSidebar, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import { backToTop, checkViewSidebar, convertDateToCurrentTimeZone, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -345,7 +345,7 @@ function DialerCdrReport() {
                                     <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
                                     <td style={{ textTransform: 'capitalize' }}>{item.ext_dispo?.replace(/_/g, ' ') || 'N/A'}</td>
                                     <td>{item?.hangup_cause || 'N/A'}</td>
-                                    <td>{item.created_at ? item?.created_at?.split(" ")[0] : 'N/A'}</td>
+                                    <td>{item.created_at ? convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0]) : 'N/A'}</td>
                                     <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
                                   </tr>
                                 ))

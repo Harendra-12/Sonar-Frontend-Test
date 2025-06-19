@@ -42,7 +42,7 @@ function Buyers() {
     setRefreshState(true);
     const shouldLoad = true
     getAllBuyers(shouldLoad);
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber ])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
@@ -91,8 +91,8 @@ function Buyers() {
                       <div className="heading">
                         <div className="content">
                           <h4> All Buyers
-                            <button class="clearButton" onClick={getRefresh} disabled={refreshState}>
-                              <i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
+                            <button className="clearButton" onClick={getRefresh} disabled={refreshState}>
+                              <i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
                           </h4>
                           <p>You can see all list of all buyers</p>
                         </div>
@@ -152,7 +152,6 @@ function Buyers() {
                           <thead>
                             <tr>
                               <th>Buyer name</th>
-                              <th>Phone Code</th>
                               <th>Phone Number</th>
                               <th>Alt Phone Number</th>
                               <th>Email</th>
@@ -171,12 +170,11 @@ function Buyers() {
                               // <SkeletonTableLoader col={13} row={15} />
                               <ThreeDotedLoader />
                               :
-                              allBuyers && allBuyers.length > 0 ?
-                                allBuyers.map((buyer, index) => (
+                              allBuyers && allBuyers?.length > 0 ?
+                                allBuyers?.map((buyer, index) => (
                                   <tr key={index}>
                                     <td>{buyer.name}</td>
-                                    <td>{buyer.phone_code}</td>
-                                    <td>{buyer.phone_number}</td>
+                                    <td>+{buyer.phone_code} - {buyer.phone_number}</td>
                                     <td>{buyer.alt_phone}</td>
                                     <td>{buyer.email}</td>
                                     <td>{buyer.address}</td>

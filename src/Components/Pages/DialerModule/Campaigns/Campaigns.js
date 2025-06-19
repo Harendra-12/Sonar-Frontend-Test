@@ -518,9 +518,9 @@ function Campaigns() {
                                                         return (
                                                           <li key={lead.id}>
                                                             <div className="dropdown-item d-flex">
-                                                              {/* <div class="my-auto position-relative mx-1">
-                                                                <div class="cl-toggle-switch">
-                                                                  <label class="cl-switch">
+                                                              {/* <div className="my-auto position-relative mx-1">
+                                                                <div className="cl-toggle-switch">
+                                                                  <label className="cl-switch">
                                                                     <input type="checkbox" id="showAllCheck" />
                                                                     <span></span>
                                                                   </label>
@@ -537,7 +537,8 @@ function Campaigns() {
                                                   <span>{item?.lead_files?.length} File(s)</span>
                                                 </Tippy> : "No Files"}
                                               </td>
-                                              {(checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") || checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete")) ? <td>
+                                              {(checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") || checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete")) ? 
+                                              <td>
                                                 <div className="dropdown">
                                                   <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i className="fa-solid fa-ellipsis-vertical" />

@@ -112,7 +112,7 @@ function HeaderApp({ title, loading, setLoading, refreshApi }) {
                                     <span className="status">Available</span>
                                   </div> */}
 
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i className="fa-solid fa-right-from-bracket"></i>
               </div>
               <ul className="dropdown-menu">
                 <li

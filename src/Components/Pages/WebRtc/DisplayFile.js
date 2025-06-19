@@ -233,7 +233,7 @@ const DisplayFile = ({ item, index }) => {
               data-bs-toggle="dropdown"
               aria-expanded="true"
               onClick={toggleOptions}
-            > <i class="fa-solid fa-ellipsis-vertical"  ></i></button>
+            > <i className="fa-solid fa-ellipsis-vertical"  ></i></button>
             <ul
               className="dropdown-menu light"
             >

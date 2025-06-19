@@ -3,7 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  convertDateToCurrentTimeZone,
   featureUnderdevelopment,
+  formatTimeWithAMPM,
   generalGetFunction,
   generatePreSignedUrl,
   logout,
@@ -134,38 +136,62 @@ function AllVoicemails({ isCustomerAdmin }) {
     }
   };
   const groupVoicemailsByDate = (voiceMail) => {
-    if (voiceMail.length == 0) return [];
+    if (voiceMail.length === 0) return {};
+
+    // Get timezone from account or default to UTC
+    const timeZone = account.timezone?.name || 'UTC';
 
     return voiceMail.reduce((acc, call) => {
-      // Manually parse the date if necessary
-      const callDate = new Date(call.created_at.replace(/-/g, "/")); // Ensure valid parsing
-      const today = new Date();
+      try {
+        // Parse the call date with timezone consideration
+        const callDate = new Date(call.created_at.replace(/-/g, "/"));
+        const callDateInTz = new Date(callDate.toLocaleString('en-US', { timeZone }));
 
-      // Ensure `today` is at midnight UTC
-      const todayDate = new Date(
-        Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
-      );
-      const yesterday = new Date(todayDate);
-      yesterday.setUTCDate(todayDate.getUTCDate() - 1);
+        // Get current date in the specified timezone
+        const now = new Date();
+        const todayInTz = new Date(now.toLocaleString('en-US', { timeZone }));
 
-      let dateLabel = callDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
+        // Create today and yesterday dates in target timezone
+        const todayDate = new Date(Date.UTC(
+          todayInTz.getFullYear(),
+          todayInTz.getMonth(),
+          todayInTz.getDate()
+        ));
 
-      // Compare only the date parts
-      if (callDate.toDateString() === todayDate.toDateString()) {
-        dateLabel = "Today";
-      } else if (callDate.toDateString() === yesterday.toDateString()) {
-        dateLabel = "Yesterday";
+        const yesterday = new Date(todayDate);
+        yesterday.setUTCDate(todayDate.getUTCDate() - 1);
+
+        // Format date label according to timezone
+        let dateLabel = callDateInTz.toLocaleDateString("en-US", {
+          timeZone,
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        // Compare dates in target timezone
+        if (callDateInTz.toDateString() === todayInTz.toDateString()) {
+          dateLabel = "Today";
+        } else if (callDateInTz.toDateString() === yesterday.toDateString()) {
+          dateLabel = "Yesterday";
+        }
+
+        // Group the voicemail
+        if (!acc[dateLabel]) {
+          acc[dateLabel] = [];
+        }
+        acc[dateLabel].push(call);
+
+      } catch (error) {
+        console.error("Error processing voicemail date:", error);
+        // Fallback to UTC date if conversion fails
+        const fallbackDate = call.created_at.split('T')[0];
+        if (!acc[fallbackDate]) {
+          acc[fallbackDate] = [];
+        }
+        acc[fallbackDate].push(call);
       }
 
-      if (!acc[dateLabel]) {
-        acc[dateLabel] = [];
-      }
-
-      acc[dateLabel].push(call);
       return acc;
     }, {});
   };
@@ -236,7 +262,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             ) : (
               <h4>{getSourceName(item.src, item.dest)}</h4>
             )}
-            <h5 style={{ fontSize: "12px" }}>{formatDate(item.created_at)}</h5>
+            <h5 style={{ fontSize: "12px" }}>{convertDateToCurrentTimeZone(item.created_at.split(" ")[0])}</h5>
             {/* <h5>USER XYZ</h5>
             <h6
               style={{
@@ -254,7 +280,7 @@ function AllVoicemails({ isCustomerAdmin }) {
             </div>
           </div>
           <div className="col-2 text-end ms-auto">
-            <p className="timeAgo">{formatTo12HourTime(item.created_at)}</p>
+            <p className="timeAgo">{formatTimeWithAMPM(item.created_at.split(" ")[1])}</p>
           </div>
         </div>
       </div>
@@ -282,20 +308,6 @@ function AllVoicemails({ isCustomerAdmin }) {
 
     // Format the time string
     return `${hours}:${minutes} ${period}`;
-  };
-
-  const formatDate = (dateString) => {
-    if (dateString) {
-      const date = new Date(dateString.replace(" ", "T") + "Z");
-      const formattedTimestamp = date.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-      return formattedTimestamp;
-    } else {
-      return null;
-    }
   };
 
   // function to play the audio
@@ -338,16 +350,6 @@ function AllVoicemails({ isCustomerAdmin }) {
   };
 
   const handleTranscript = () => { };
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const minutesString = minutes < 10 ? `0${minutes}` : minutes;
-    return `${hours}:${minutesString} ${ampm}`;
-  };
 
   const selectedVoiceMailExtensionList = filteredVoiceMail.filter((item) => {
     if (!isCustomerAdmin) {
@@ -389,7 +391,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               title={"Voicemails"}
               loading={loading}
               setLoading={setLoading}
-              refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)}
+              refreshApi={handleRefreshBtnClicked}
             />
           </div>
           <div className="container-fluid">
@@ -656,7 +658,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-home"
                                   aria-selected="true"
                                 >
-                                  <i class="fa-light fa-circle-info me-1"></i>{" "}
+                                  <i className="fa-light fa-circle-info me-1"></i>{" "}
                                   Info
                                 </button>
                                 <button
@@ -669,7 +671,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                   aria-controls="nav-profile"
                                   aria-selected="false"
                                 >
-                                  <i class="fa-light fa-list-ul me-1"></i> Logs
+                                  <i className="fa-light fa-list-ul me-1"></i> Logs
                                 </button>
                               </div>
                             </nav>
@@ -698,14 +700,10 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     <tbody>
                                       <tr>
                                         <td>
-                                          {formatDate(
-                                            clickedVoiceMail.created_at
-                                          )}
+                                          {convertDateToCurrentTimeZone(clickedVoiceMail.created_at.split(" ")[0])}
                                         </td>
                                         <td>
-                                          {formatTime(
-                                            clickedVoiceMail.created_at
-                                          )}
+                                          {formatTimeWithAMPM(clickedVoiceMail.created_at.split(" ")[1])}
                                         </td>
                                         <td
                                           style={{
@@ -911,14 +909,10 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                   role="button"
                                                 >
                                                   <td>
-                                                    {formatDate(
-                                                      item.created_at
-                                                    )}
+                                                    {convertDateToCurrentTimeZone(item.created_at.split(" ")[0])}
                                                   </td>
                                                   <td>
-                                                    {formatTime(
-                                                      item.created_at
-                                                    )}
+                                                    {formatTimeWithAMPM(item.created_at.split(" ")[1])}
                                                   </td>
                                                   <td
                                                     style={{

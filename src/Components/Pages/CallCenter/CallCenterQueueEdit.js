@@ -780,8 +780,8 @@ function CallCenterQueueEdit() {
                               />
                               <span className="slider round" />
                             </label> */}
-                            <div class="cl-toggle-switch">
-                              <label class="cl-switch">
+                            <div className="cl-toggle-switch">
+                              <label className="cl-switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -905,7 +905,7 @@ function CallCenterQueueEdit() {
                         id="nav-gen"
                         role="tabpanel"
                         aria-labelledby="nav-gen-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
                           <div className="formRow col-xl-3 col-lg-12">
@@ -1143,7 +1143,7 @@ function CallCenterQueueEdit() {
                         id="nav-tier"
                         role="tabpanel"
                         aria-labelledby="nav-tier-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
                           <div className="formRow col-xl-3 col-lg-12">
@@ -1225,7 +1225,7 @@ function CallCenterQueueEdit() {
                         id="nav-max"
                         role="tabpanel"
                         aria-labelledby="nav-max-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
                           <div className="formRow col-xl-3 col-lg-12">
@@ -1326,7 +1326,7 @@ function CallCenterQueueEdit() {
                         id="nav-queue"
                         role="tabpanel"
                         aria-labelledby="nav-queue-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
                           <div className="formRow col-xl-3 col-lg-12">
@@ -1446,7 +1446,7 @@ function CallCenterQueueEdit() {
                         id="nav-adv"
                         role="tabpanel"
                         aria-labelledby="nav-adv-tab"
-                        tabindex="0"
+                        tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
                           <div className="formRow col-xl-3 col-lg-12">

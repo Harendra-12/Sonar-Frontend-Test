@@ -406,7 +406,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                   call["recording_path"] && showAudio &&
                                   <tr>
                                     <td colspan="18">
-                                      <div class="audio-container mx-2">
+                                      <div className="audio-container mx-2">
                                         <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(call?.peak_json)} />
                                       </div>
                                     </td>

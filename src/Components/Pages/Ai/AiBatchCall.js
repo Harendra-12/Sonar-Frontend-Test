@@ -12,8 +12,8 @@ const AiBatchCall = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRtl, setIsRtl] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
-     const [pageNumber, setPageNumber] = useState(1);
-       const [agents, setAgents] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [agents, setAgents] = useState([]);
 
 
     const handleRefreshBtnClicked = () => {
@@ -156,17 +156,17 @@ const AiBatchCall = () => {
                 </section>
             </main>
 
-            <div class="offcanvas offcanvas-end batchCallCanvas" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <button type="button" class="aitable_button bg-transparent" data-bs-dismiss="offcanvas" aria-label="Close">
-                        <i class="fa-solid fa-angle-left"></i>
+            <div className="offcanvas offcanvas-end batchCallCanvas" tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div className="offcanvas-header">
+                    <button type="button" className="aitable_button bg-transparent" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <i className="fa-solid fa-angle-left"></i>
                     </button>
                     <div className='col-3 ps-4'>
-                        <h5 class="offcanvas-title" id="offcanvasRightLabel">Create a batch call</h5>
+                        <h5 className="offcanvas-title" id="offcanvasRightLabel">Create a batch call</h5>
                         <p className='f-s-14 mb-0' style={{ color: 'var(--color-subtext)' }}>Batch call cost $0.005 per dial</p>
                     </div>
                 </div>
-                <div class="offcanvas-body p-0">
+                <div className="offcanvas-body p-0">
                     <div className='right_body p-3'>
                         <div className='details_header'>
                             <p className='mb-0'>Recipients</p>
@@ -248,7 +248,7 @@ const AiBatchCall = () => {
                                 <label> Upload Recipients</label>
                             </div>
                             <div className="col-auto">
-                                <button type="button" class="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
+                                <button type="button" className="aitable_button bg-transparent py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close"><i className="fa-regular fa-arrow-down-to-line me-2"></i> Download the template</button>
                             </div>
                         </div>
                         <div className="col-auto px-2">
@@ -260,7 +260,7 @@ const AiBatchCall = () => {
                                         <p>2 Recipients</p>
                                     </div>
                                 </div>
-                                <button className='aitable_button text-danger border-danger bg-danger-subtle'><i class="fa-regular fa-trash-can"></i></button>
+                                <button className='aitable_button text-danger border-danger bg-danger-subtle'><i className="fa-regular fa-trash-can"></i></button>
                             </div>
                         </div>
                         <div className="formRow flex-column align-items-start">

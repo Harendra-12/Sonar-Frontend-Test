@@ -20,7 +20,7 @@ const Source = () => {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Source <button class="clearButton" onClick={getAllTrunk}><i class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button></h4>
+                          <h4>Source <button className="clearButton" onClick={getAllTrunk}><i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button></h4>
                           <p>You can see all list of Source groups</p>
                         </div>
                         <div className="buttonGroup">
@@ -31,7 +31,7 @@ const Source = () => {
                             </span>
                           </button>
                           <button
-                            
+
                             // effect="ripple"
                             className="panelButton"
                             style={{ cursor: "not-allowed" }}
@@ -53,10 +53,10 @@ const Source = () => {
                           <label>Show</label>
                           <select
                             className="formItem"
-                            // value={itemsPerPage}
-                            // onChange={(e) => {
-                            //     setItemsPerPage(e.target.value);
-                            // }}
+                          // value={itemsPerPage}
+                          // onChange={(e) => {
+                          //     setItemsPerPage(e.target.value);
+                          // }}
                           >
                             <option value={10}>10</option>
                             <option value={20}>20</option>
@@ -72,7 +72,7 @@ const Source = () => {
                             placeholder="Search"
                             // value={searchValue}
                             className="formItem"
-                            // onChange={(e) => setSearchValue(e.target.value)}
+                          // onChange={(e) => setSearchValue(e.target.value)}
                           />
                         </div>
                       </div>
@@ -88,7 +88,7 @@ const Source = () => {
                               <th>
                                 <div className="d-flex align-items-center justify-content-start">
                                   <div className="ms-2 me-2">
-                                    <i class="fa-regular fa-gear"></i>
+                                    <i className="fa-regular fa-gear"></i>
                                   </div>
                                   <div>Lead</div>
                                 </div>
@@ -115,7 +115,7 @@ const Source = () => {
                               <td>
                                 <div className="d-flex  justify-content-start">
                                   <div className="ms-2 me-2">
-                                    <i class="fa-solid fa-bars"></i>
+                                    <i className="fa-solid fa-bars"></i>
                                   </div>
                                   <div>
                                     <div className="d-flex align-items-center justify-content-start">
@@ -136,7 +136,7 @@ const Source = () => {
 
                                     <div className="d-flex align-items-center justify-content-start ">
                                       <div>Advertising</div>
-                                      <i class="fa-solid px-1 fa-circle-info"></i>
+                                      <i className="fa-solid px-1 fa-circle-info"></i>
                                     </div>
                                   </div>
                                 </div>
@@ -154,11 +154,11 @@ const Source = () => {
                               <td>
                                 <div className="d-flex align-items-center justify-content-start">
                                   <div className="me-2">
-                                    <i class="fa-brands fa-facebook"></i>
+                                    <i className="fa-brands fa-facebook"></i>
                                   </div>
                                   <div className="me-2">facebook</div>
                                   <div className="me-2">
-                                    <i class="fa-solid fa-chevron-right"></i>
+                                    <i className="fa-solid fa-chevron-right"></i>
                                   </div>
                                   <div className="me-2">Call</div>
                                 </div>
@@ -207,7 +207,7 @@ const Source = () => {
                               <td>
                                 <div className="d-flex  justify-content-start">
                                   <div className="ms-2 me-2">
-                                    <i class="fa-solid fa-bars"></i>
+                                    <i className="fa-solid fa-bars"></i>
                                   </div>
                                   <div>
                                     <div className="d-flex align-items-center justify-content-start">
@@ -228,7 +228,7 @@ const Source = () => {
 
                                     <div className="d-flex align-items-center justify-content-start ">
                                       <div>Advertising</div>
-                                      <i class="fa-solid px-1 fa-circle-info"></i>
+                                      <i className="fa-solid px-1 fa-circle-info"></i>
                                     </div>
                                   </div>
                                 </div>
@@ -246,11 +246,11 @@ const Source = () => {
                               <td>
                                 <div className="d-flex align-items-center justify-content-start">
                                   <div className="me-2">
-                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <i className="fa-brands fa-whatsapp"></i>
                                   </div>
                                   <div className="me-2">WhatsApp</div>
                                   <div className="me-2">
-                                    <i class="fa-solid fa-chevron-right"></i>
+                                    <i className="fa-solid fa-chevron-right"></i>
                                   </div>
                                   <div className="me-2">Call</div>
                                 </div>
@@ -295,13 +295,13 @@ const Source = () => {
                             <tr>
                               <td>
                                 <div>
-                                 3
+                                  3
                                 </div>
                               </td>
                               <td>
                                 <div className="d-flex align-items-center justify-content-start">
                                   <div className="ms-2 me-2">
-                                    <i class="fa-solid fa-bars"></i>
+                                    <i className="fa-solid fa-bars"></i>
                                   </div>
                                   <div>
                                     <h6 className="m-0 p-0">lead #187</h6>
@@ -325,11 +325,11 @@ const Source = () => {
                               <td>
                                 <div className="d-flex align-items-center justify-content-start">
                                   <div className="me-2">
-                                    <i class="fa-brands fa-google"></i>
+                                    <i className="fa-brands fa-google"></i>
                                   </div>
                                   <div className="me-2">Google</div>
                                   <div className="me-2">
-                                    <i class="fa-solid fa-chevron-right"></i>
+                                    <i className="fa-solid fa-chevron-right"></i>
                                   </div>
                                   <div className="me-2">Call</div>
                                 </div>

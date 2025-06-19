@@ -11,6 +11,8 @@ import AddNewAddress from "./AddNewAddress";
 import {
   backToTop,
   checkViewSidebar,
+  convertDateToCurrentTimeZone,
+  formatDateTime,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -501,7 +503,7 @@ function CardAndBilling() {
                                 {/* <p>16-01-2024</p> */}
                                 <p>On:{" "}
                                   {accountDetails.subscription[0]?.end_date
-                                    ? accountDetails.subscription[0]?.end_date.split(" ")[0]
+                                    ? convertDateToCurrentTimeZone(accountDetails.subscription[0]?.end_date.split(" ")[0])
                                     : ""}
                                 </p>
                               </div>
@@ -565,7 +567,7 @@ function CardAndBilling() {
                             <div className="heading d-flex justify-content-between align-items-center gap-1">
                               <div className="">
                                 <h5>Wallet Balance</h5>
-                                <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
+                                <p>Created On: {convertDateToCurrentTimeZone(accountDetails?.balance?.created_at?.split("T")[0])}</p>
                               </div>
                               <div className="">
                                 <i
@@ -697,8 +699,8 @@ function CardAndBilling() {
                                                 />
                                                 <span className="slider round"></span>
                                               </label> */}
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
+                                                  <div className="cl-toggle-switch">
+                                                    <label className="cl-switch">
                                                       <input type="checkbox"
                                                         checked={item.default}
                                                         onChange={(e) => {
@@ -856,8 +858,8 @@ function CardAndBilling() {
                                                   <span className="slider round"></span>
                                                 </label> */}
 
-                                                    <div class="cl-toggle-switch">
-                                                      <label class="cl-switch">
+                                                    <div className="cl-toggle-switch">
+                                                      <label className="cl-switch">
                                                         <input type="checkbox"
                                                           checked={item.default}
                                                           onChange={(e) => {
@@ -1255,7 +1257,7 @@ function CardAndBilling() {
                                 return (
                                   <li key={key}>
                                     <div className="col-xxl-7 col-xl-6">
-                                      <p>{item.transaction_date}</p>
+                                      <p>{formatDateTime(item.transaction_date)}</p>
                                     </div>
                                     <div className="me-2" style={{ width: 55 }}>
                                       <p>${item.amount_subtotal}</p>
@@ -1266,8 +1268,7 @@ function CardAndBilling() {
                                       onClick={() =>
                                         downloadImage(
                                           item.invoice_url,
-                                          `invoice${item.transaction_date?.split(" ")[0]
-                                          }`
+                                          `invoice${convertDateToCurrentTimeZone(item.transaction_date?.split(" ")[0])}`
                                         )
                                       }
                                     >
@@ -1291,9 +1292,7 @@ function CardAndBilling() {
                                     <h5>Last Transaction</h5>
                                     <p>On:{" "}
                                       {
-                                        accountDetails?.payments[0].transaction_date?.split(
-                                          " "
-                                        )[0]
+                                        convertDateToCurrentTimeZone(accountDetails?.payments[0].transaction_date?.split(" ")[0])
                                       }
                                     </p>
                                   </div>
@@ -1390,7 +1389,7 @@ function CardAndBilling() {
                                               <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
                                             </p>
                                           </div>
-                                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                                          <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
                                             <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
                                               <span className="text">Edit</span>
                                               <span className="icon"><i className="fa-solid fa-pen" /></span>

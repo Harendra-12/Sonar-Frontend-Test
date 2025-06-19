@@ -27,6 +27,19 @@
     transform: scale(0.95) rotateZ(1.7deg);
 }
 
+.permissionsConfigWrapper .accordion-button.mainSection {
+    padding: 0;
+}
+
+.permissionsConfigWrapper .accordion-button::after {
+    right: 60px;
+}
+
+.permissionsConfigWrapper.accordion .accordion-button.mainSection:not(.collapsed) {
+    background: none;
+    border: none;
+}
+
 .permissionsConfigWrapper {
     /* border-bottom: 1px solid var(--border-color); */
     border-radius: 10px;

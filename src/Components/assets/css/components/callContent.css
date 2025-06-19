@@ -775,7 +775,7 @@
 }
 
 .searchStyle {
-    border: none !important;
+    /* border: none !important; */
     min-height: 40px !important;
     padding: 0px 0 0 41px !important;
 }
@@ -808,7 +808,7 @@
 
 .mainContentApp .webrtc_newMessageUi .tab-content .callList {
     overflow: hidden auto;
-    height: calc(100vh - 207px);
+    height: calc(100vh - 250px);
 }
 
 /* .newMessageWrapper {
@@ -1004,10 +1004,12 @@ h2.titleName {
 .basic-container input[type="checkbox"]:checked+label {
     color: #6366f1;
 }
+
 .mainContentApp .webrtc_newMessageUi .tab-content .callList.AllCall__list {
     overflow: hidden auto;
     height: calc(100vh - 357px);
 }
+
 .mainContentApp .webrtc_newMessageUi .tab-content .callList.voicemailCallList {
     overflow: hidden auto;
     height: calc(100vh - 242px);

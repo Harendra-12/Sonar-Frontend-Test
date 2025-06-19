@@ -60,8 +60,9 @@
 .clearButton2.danger {
   color: #ff0000
 }
+
 .panelButton.danger {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
 
 .panelButtonOLD {
@@ -136,7 +137,7 @@
 
 .panelButton .text {
   transform: translateX(10px);
-  color: white ;
+  color: white;
   font-weight: 500;
   font-size: 0.875rem;
 }
@@ -660,10 +661,11 @@
   transition-duration: 0.3s;
 }
 
-.approvalButton.disabled {
-  background-color: #3f3f3f;
-  opacity: 0.7;
-  cursor: not-allowed;
+.disabled {
+  background-color: var(--webUtilGray) !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  color: var(--immortalBlack) !important;
 }
 
 .approvalButton::before {
@@ -845,7 +847,7 @@
 } */
 .tableButton.edit:hover {
   background-color: #0ab39c;
-  color: #fff !important;
+  color: #fff;
 }
 
 /* .tableButton.edit {
@@ -1015,6 +1017,7 @@
   overflow: auto !important;
   max-width: 100%;
 }
+
 .css-tj5bde-Svg {
   display: inline-block;
   fill: rgb(28 17 17);
@@ -1023,23 +1026,28 @@
   stroke-width: 0;
   width: 16px;
 }
-.css-330zns-control{
+
+.css-330zns-control {
   flex-wrap: nowrap !important;
   /* max-width: 350px !important; */
 }
-.css-1b9don6-control{
+
+.css-1b9don6-control {
   flex-wrap: nowrap !important;
   /* max-width: 45%; */
 }
+
 .css-wsp0cs-MultiValueGeneric {
 
   font-size: 68% !important;
   padding: 1px !important;
   padding-left: 5px !important;
 }
+
 .css-16xg2p0-indicatorContainer {
   padding: 4px !important;
 }
-.css-1l2s6lu-ValueContainer{
+
+.css-1l2s6lu-ValueContainer {
   width: 120px;
 }

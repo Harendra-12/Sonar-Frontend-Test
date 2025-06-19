@@ -423,7 +423,7 @@ function GetDid() {
                                 <div className="d-flex justify-content-between flex-wrap">
                                   <div className="checkbox-wrapper-4">
                                     <input className="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
-                                    <label className="cbx" for="Voice">
+                                    <label className="cbx" htmlFor="Voice">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
@@ -438,7 +438,7 @@ function GetDid() {
                                   </div>
                                   <div className="checkbox-wrapper-4">
                                     <input className="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
-                                    <label className="cbx" for="Text">
+                                    <label className="cbx" htmlFor="Text">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
@@ -453,7 +453,7 @@ function GetDid() {
                                   </div>
                                   <div className="checkbox-wrapper-4">
                                     <input className="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
-                                    <label className="cbx" for="Fax">
+                                    <label className="cbx" htmlFor="Fax">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
@@ -468,7 +468,7 @@ function GetDid() {
                                   </div>
                                   <div className="checkbox-wrapper-4">
                                     <input className="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
-                                    <label className="cbx" for="Emergency">
+                                    <label className="cbx" htmlFor="Emergency">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>

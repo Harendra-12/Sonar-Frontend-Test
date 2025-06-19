@@ -10,6 +10,8 @@ import AgentSearch from "./AgentSearch";
 import InitiateCall from "./LivekitConference/InitiateCall";
 import {
   featureUnderdevelopment,
+  formatDateTime,
+  formatRelativeTime,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -99,6 +101,7 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [doomScrollLoading, setDoomScrollLoading] = useState(false);
   const [messageRefresh, setMessageRefresh] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
@@ -149,8 +152,10 @@ function Messages({
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
   const [origInalinternalCallHistory, setOriginalInternalCallHistory] = useState([])
+  const [rawInternalCallHistory, setRawInternalCallHistory] = useState([])
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
+  const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -343,39 +348,39 @@ function Messages({
   };
 
   // Formate date to get today date same as backend send
-  const formatDateTime = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
+  // const formatDateTime = (date) => {
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const hours = String(date.getHours()).padStart(2, "0");
+  //   const minutes = String(date.getMinutes()).padStart(2, "0");
+  //   const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
+  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  // };
 
   // Formate date for time stamp to get time when message arrives
-  function formatRelativeTime(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
+  // function formatRelativeTime(dateString) {
+  //   const date = new Date(dateString);
+  //   const now = new Date();
 
-    const diffMs = now - date;
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
+  //   const diffMs = now - date;
+  //   const diffSeconds = Math.floor(diffMs / 1000);
+  //   const diffMinutes = Math.floor(diffSeconds / 60);
+  //   const diffHours = Math.floor(diffMinutes / 60);
+  //   const diffDays = Math.floor(diffHours / 24);
 
-    if (diffDays >= 1) {
-      if (diffDays === 1) return "Yesterday";
-      return date.toLocaleDateString(); // Formats as the date for older days
-    } else if (diffHours >= 1) {
-      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-    } else if (diffMinutes >= 1) {
-      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
-    } else {
-      return `${diffSeconds} second${diffSeconds > 1 ? "s" : ""} ago`;
-    }
-  }
+  //   if (diffDays >= 1) {
+  //     if (diffDays === 1) return "Yesterday";
+  //     return date.toLocaleDateString(); // Formats as the date for older days
+  //   } else if (diffHours >= 1) {
+  //     return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+  //   } else if (diffMinutes >= 1) {
+  //     return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+  //   } else {
+  //     return `${diffSeconds} second${diffSeconds > 1 ? "s" : ""} ago`;
+  //   }
+  // }
 
   // Getting messages based on pagination
   useEffect(() => {
@@ -396,7 +401,7 @@ function Messages({
             {
               from: item.user_id,
               body: item?.message_text,
-              time: item.created_at,
+              time: formatDateTime(item.created_at),
               user_id: item.user_id,
               user_name: user_details?.username,
               profile_picture: user_details?.profile_picture,
@@ -426,12 +431,10 @@ function Messages({
         ) {
           getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
-          console.log("from first");
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
-        console.log("from second");
       }
     }
   }, [recipient, loadMore, allAgents]);
@@ -659,7 +662,6 @@ function Messages({
 
   useEffect(() => {
     if (incomingMessage) {
-      console.log("incomingMessage", incomingMessage);
 
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
@@ -671,7 +673,6 @@ function Messages({
           [recipient[0]]: "Generating Ai response..."
         }));
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
-          console.log("Response", res);
 
           if (res.data) {
             setMessageInput((prev) => ({
@@ -690,7 +691,6 @@ function Messages({
       setIsFreeSwitchMessage(true);
       const extensionExists = contact.some((contact) => contact?.id === from);
       const agentDetails = agents.find((agent) => agent?.id === from);
-      console.log("agentDetails", agentDetails);
 
       const time = formatDateTime(new Date());
 
@@ -1401,6 +1401,10 @@ function Messages({
   }
 
   const handleEditGroupName = async () => {
+    if (groupNameEdit.trim() === '') {
+      toast.error("Group name cannot be empty");
+      return;
+    }
     const parsedData = {
       group_name: groupNameEdit,
       // members: groupSelecedAgents.map((agent) => {
@@ -1675,16 +1679,35 @@ function Messages({
   const getAllInternalCallsHistory = async () => {
     setLoading(true);
     try {
-      const response = await generalGetFunction("/chatcall/calls");
+      const response = await generalGetFunction(`/chatcall/calls?page=${internalCallsPageNumber}`);
       if (response.status) {
-        const sortedArr = response.data.data
-        setInternalCallHistory(sortedArr);
-        setOriginalInternalCallHistory(sortedArr)
+        const sortedArr = response.data.data;
+
+        // setInternalCallHistory(sortedArr);
+
+        setOriginalInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
+
+        setInternalCallHistory(prev => {
+          const existingIds = new Set(prev.map(item => item.id));
+
+          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+
+          return [...prev, ...newItems];
+        });
+
+        setRawInternalCallHistory(response.data);
       }
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
+      setDoomScrollLoading(false);
     }
   };
 
@@ -1758,7 +1781,7 @@ function Messages({
               </div>
               <div className="col-xl-12">
                 <div className="formLabel">
-                  <label for="">Full Name</label>
+                  <label htmlFor="">Full Name</label>
                 </div>
                 <div className="col-12">
                   <input
@@ -1937,7 +1960,7 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-phone"></i> <span>Calls</span>
+                        <i className="fa-regular fa-phone"></i> <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -2012,7 +2035,14 @@ function Messages({
                           >
                             Chats <i className="fa-solid fa-chevron-down"></i>
                           </h5>
-
+                        </div>
+                        <div
+                          className="collapse show"
+                          id="collapse2"
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
+                        >
                           <input
                             type="search"
                             name="Search"
@@ -2022,14 +2052,6 @@ function Messages({
                             value={searchValueForMessage}
                             onChange={(event) => handleMessageSearchChange(event)}
                           />
-                        </div>
-                        <div
-                          className="collapse show"
-                          id="collapse2"
-                        // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
-                        // }}
-                        >
                           {contact.map((item) => {
                             return (
                               <div
@@ -2184,6 +2206,12 @@ function Messages({
                             Group Chat{" "}
                             <i className="fa-solid fa-chevron-down"></i>
                           </h5>
+                        </div>
+                        <div
+                          className="collapse show"
+                          id="collapse3"
+                        // style={{ borderBottom: "1px solid #ddd" }}
+                        >
                           <input
                             type="search"
                             name="Search"
@@ -2193,12 +2221,6 @@ function Messages({
                             value={searchValueForGroup}
                             onChange={(event) => handleGroupSearchChange(event)}
                           />
-                        </div>
-                        <div
-                          className="collapse show"
-                          id="collapse3"
-                        // style={{ borderBottom: "1px solid #ddd" }}
-                        >
                           {groups.map((item, index) => {
                             return (
                               <div
@@ -2520,6 +2542,8 @@ function Messages({
                       <ChatsCalls
                         loading={loading}
                         setLoading={setLoading}
+                        doomScrollLoading={doomScrollLoading}
+                        setDoomScrollLoading={setDoomScrollLoading}
                         setMeetingPage={setMeetingPage}
                         setToUser={setToUser}
                         setCalling={setCalling}
@@ -2528,6 +2552,9 @@ function Messages({
                         formatRelativeTime={formatRelativeTime}
                         onlineUser={onlineUser}
                         callHistory={internalCallHistory}
+                        pageNumber={internalCallsPageNumber}
+                        setPageNumber={setInternalCallsPageNumber}
+                        rawData={rawInternalCallHistory}
                       />
                     </div>
                   ) : (
@@ -2806,7 +2833,7 @@ function Messages({
                                     </div>
                                     <div className=" text-end">
                                       <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                        {/* <button className="btn_call"><i class="fa-regular fa-video"></i></button> */}
+                                        {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
                                         <p className="timeAgo">
                                           {item?.last_message_data?.created_at
                                             ? formatRelativeTime(
@@ -2819,7 +2846,7 @@ function Messages({
                                           ""
                                         ) : (
                                           <span className="chat-read-icon readsms ">
-                                            <i class="fa-solid fa-check-double"></i>
+                                            <i className="fa-solid fa-check-double"></i>
                                           </span>
                                         )}
                                       </div>
@@ -3064,7 +3091,7 @@ function Messages({
                                           className="more info"
                                           onClick={() => handleCreateNewTag()}
                                         >
-                                          <i class="fa-regular fa-plus me-1"></i>{" "}
+                                          <i className="fa-regular fa-plus me-1"></i>{" "}
                                           Create New Tag
                                         </button>
                                       )}
@@ -3194,7 +3221,7 @@ function Messages({
                                     internalCallAction: null,
                                   });
                                   socketSendMessage({
-                                    action: "peercall",
+                                    action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
                                     room_id: `${account.id}-${recipient?.[1]}`,
@@ -3219,7 +3246,7 @@ function Messages({
                                     internalCallAction: null,
                                   });
                                   socketSendMessage({
-                                    action: "peercall",
+                                    action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
                                     room_id: `${account.id}-${recipient?.[1]}`,
@@ -3342,9 +3369,8 @@ function Messages({
                                   : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                const todayDate = new Date()
-                                  .toISOString()
-                                  ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                const todayDate = formatDateTime(new Date()).split(" ")[0]; // Get today's date in "YYYY-MM-DD" format
+
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
@@ -3611,7 +3637,6 @@ function Messages({
                                       placeholder="Please enter your message"
                                       value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
-                                        { console.log("reciepent", recipient) }
                                         const value = e.target.value;
                                         const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
 
@@ -3684,7 +3709,7 @@ function Messages({
                                       className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
                                       onClick={() => setAutoReply(!autoReply)}
                                     >
-                                      <i class="fa-solid fa-message-bot"></i>
+                                      <i className="fa-solid fa-message-bot"></i>
                                     </button>
 
                                   </Tippy>
@@ -3746,7 +3771,7 @@ function Messages({
                         </button>
                       } allowHTML={true} placement="top" interactive={true}>
                         <button className='clearButton2'>
-                          <i class="fa-regular fa-arrows-left-right"></i>
+                          <i className="fa-regular fa-arrows-left-right"></i>
                         </button>
                       </Tippy>
                     </PanelResizeHandle> */}
@@ -3766,46 +3791,72 @@ function Messages({
                           style={{ height: "71px" }}
                         >
                           <div className="col">
-                            <h4 className="my-0">
-                              <input
-                                value={groupNameEdit}
-                                disabled={!saveEditToggleGroupNameChange}
-                                onChange={(e) =>
-                                  setGroupNameEdit(e.target.value)
-                                }
-                                className="border-0 bg-transparent w-100"
-                                style={{ fontSize: "18px", fontWeight: 500 }}
-                              />
+                            <h4 className="my-0" style={{ fontSize: "18px", fontWeight: 500 }}>
+                              {groupNameEdit}
                             </h4>
                           </div>
                           <div className="d-flex my-auto">
-                            {!saveEditToggleGroupNameChange ? (
-                              <button
-                                className="clearButton2 "
-                                onClick={() =>
-                                  setSaveEditToggleGroupNameChange(true)
-                                }
-                              >
-                                <i className="fa-regular fa-pen"></i>
-                              </button>
-                            ) : (
-                              <button
-                                className="clearButton2 "
-                                onClick={() =>
-                                  // setSaveEditToggleGroupNameChange(false)
-                                  handleEditGroupName()
-                                }
-                              >
-                                <i className="fa-regular fa-check"></i>
-                              </button>
-                            )}
+                            <button
+                              className="clearButton2 "
+                              onClick={() =>
+                                setSaveEditToggleGroupNameChange(true)
+                              }
+                            >
+                              <i className="fa-regular fa-pen"></i>
+                            </button>
                           </div>
+                          {
+                            saveEditToggleGroupNameChange &&
+                            <div className="popup">
+                              <div className="container h-100">
+                                <div className="row h-100 justify-content-center align-items-center">
+                                  <div className="row content col-xxl-4 col-xl-5 col-md-5">
+                                    <div className="col-12 mb-2">
+                                      <div className="iconWrapper">
+                                        <i className="fa-duotone fa-circle-exclamation" />
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="mb-2">
+                                        <h4 className="text-center text-orange">
+                                          Please type the new name of the group below
+                                        </h4>
+                                      </div>
+                                      <div className="my-2">
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={groupNameEdit}
+                                          onChange={(e) =>
+                                            setGroupNameEdit(e.target.value)
+                                          }
+                                        />
+                                      </div>
+                                      <div className="d-flex justify-content-center gap-2 mt-3">
+                                        <button className="panelButton m-0" onClick={handleEditGroupName}>
+                                          <span className="text">Confirm</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-check" />
+                                          </span>
+                                        </button>
+                                        <button className="panelButton gray m-0 float-end" onClick={() => { setSaveEditToggleGroupNameChange(false); setGroupNameEdit(recipient?.[3]) }}>
+                                          <span className="text">Cancel</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-xmark" />
+                                          </span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          }
                         </div>
-
                         <div
                           data-bell=""
                           className="contactListItem bg-transparent"
-                          style={{ minHeight: "auto" }}
+                          style={{ minHeight: "auto", borderBottom: '1px solid var(--border-color)' }}
                         >
                           <div className="row justify-content-between">
                             <div
@@ -3867,6 +3918,7 @@ function Messages({
                                 <div className="col-12 d-flex justify-content-between align-items-center">
                                   <input
                                     type="text"
+                                    id="headerSearch"
                                     className="formItem searchStyle"
                                     placeholder="Search"
                                     name="name"
@@ -3892,9 +3944,9 @@ function Messages({
                                     <table>
                                       <thead>
                                         <tr>
-                                          <th>S.No</th>
+                                          <th style={{ width: '20px' }}>S.No</th>
                                           <th>Name</th>
-                                          <th>
+                                          <th style={{ width: '20px' }}>
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
@@ -3942,10 +3994,10 @@ function Messages({
                                               )
                                           ) // Exclude agents already in `agent`
                                           .map((item, index) => (
-                                            <tr key={""}>
-                                              <td>{index + 1}.</td>
-                                              <td>{item.name}</td>
-                                              <td>
+                                            <tr key={item.id}>
+                                              <td style={{ width: '20px' }}>{index + 1}.</td>
+                                              <td style={{ whiteSpace: 'break-spaces' }}>{item.name}</td>
+                                              <td style={{ width: '20px' }}>
                                                 <input
                                                   type="checkbox"
                                                   onChange={() =>

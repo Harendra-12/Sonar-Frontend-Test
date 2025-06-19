@@ -169,7 +169,7 @@ const MetaConfigEdit = () => {
                             id="instagram"
                             role="tabpanel"
                             aria-labelledby="instagram-tab"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <form className="col-12 mx-auto">
                               <div className="formRow col-xl-3">
@@ -259,7 +259,7 @@ const MetaConfigEdit = () => {
                             id="facebook"
                             role="tabpanel"
                             aria-labelledby="facebook-tab"
-                            tabindex="0"
+                            tabIndex="0"
                           >
                             <form className="col-12 mx-auto">
                               <div className="formRow col-xl-3">

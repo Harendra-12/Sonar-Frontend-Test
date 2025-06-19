@@ -11,20 +11,38 @@ import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import languages from './ListOfLanguage.json';
+
+
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const account = useSelector((state) => state.account);
+  const userCountry = localStorage.getItem("userCountry");
+  const userLanguage = localStorage.getItem("userLanguage");
+  const [languageChangePopup, setLanguageChangePopup] = useState(false);
+
   if (token && account) {
     if (account?.user_role?.roles?.name === "Agent") {
       navigate("/webrtc");
     } else if (account?.user_role?.roles?.name.toLowerCase() === "employee") {
       navigate("/messages");
     } else {
-      navigate("/dashboard");
+      if (userCountry == "AE" && userLanguage !== "ar") {
+        handleLanguageChange();
+      } else {
+        navigate("/dashboard");
+      }
     }
   }
+
+  const handleLanguageChange = () => {
+    if (!languageChangePopup) {
+      setLanguageChangePopup(true)
+    }
+  }
+
   return (
     <>
       <style>
@@ -42,7 +60,7 @@ function Login() {
                     <h3>Get Started Now</h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
-                    <LoginComponent />
+                    <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
                   </div>
                   <div
                     className="text-center position-absolute w-100"
@@ -96,13 +114,14 @@ function Login() {
           </div>
         </main>
       </div>
+      {languageChangePopup && <LanguagePromptPopup setLanguageChangePopup={setLanguageChangePopup} />}
     </>
   );
 }
 
 export default Login;
 
-export function LoginComponent() {
+export function LoginComponent({ setLanguageChangePopup }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
@@ -123,6 +142,9 @@ export function LoginComponent() {
     const data = await login(userName, password);
     if (data) {
       if (data.status) {
+        const country = JSON.parse(data.details).countryCode;
+        localStorage.setItem('userCountry', country)
+
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
@@ -192,7 +214,12 @@ export function LoginComponent() {
               } else {
                 setLoading(false);
                 window.scrollTo(0, 0);
-                navigate("/dashboard");
+                // navigate("/dashboard");
+                if (country == "AE") {
+                  setLanguageChangePopup(true);
+                } else {
+                  navigate("/dashboard")
+                }
               }
             }
           } else {
@@ -255,7 +282,6 @@ export function LoginComponent() {
         setLoginDetails(logOut?.data);
         setLogInText("You can login now");
       } else {
-        console.log("00err", logOut);
         if (logOut?.message === "Token expired") {
           const expireLogout = await generalPostFunctionWithToken(
             `${baseName}/logout-expired-token`,
@@ -294,6 +320,9 @@ export function LoginComponent() {
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
+        const country = JSON.parse(checkLogin.details).countryCode;
+        localStorage.setItem('userCountry', country)
+
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
@@ -365,7 +394,12 @@ export function LoginComponent() {
               } else {
                 setLoading(false);
                 window.scrollTo(0, 0);
-                navigate("/dashboard");
+                // navigate("/dashboard");
+                if (country == "AE") {
+                  setLanguageChangePopup(true);
+                } else {
+                  navigate("/dashboard")
+                }
               }
             }
           } else {
@@ -429,7 +463,6 @@ export function LoginComponent() {
         `${baseName}/logout?all`,
         logOutToken
       );
-      console.log({ logoutAll });
       if (logoutAll.status) {
         handleLogin();
       } else {
@@ -458,6 +491,7 @@ export function LoginComponent() {
       );
     }
   }
+
   return (
     <>
       <form className="loginForm">
@@ -524,7 +558,7 @@ export function LoginComponent() {
                   setPopUp(false);
                 }}
               >
-                <i class="fa-solid fa-xmark"></i>
+                <i className="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
                 <img
@@ -599,21 +633,21 @@ export function LoginComponent() {
                     setPopUp(false);
                     setLoading(true)
                     handleLogin()
-                  }} type="button" class="btn btn-success-light btn-wave " >
+                  }} type="button" className="btn btn-success-light btn-wave " >
                     <span>Login</span> <i
                       className="fa-solid fa-check"
                     ></i></button> */}
 
                   <button
-                    class="btn2"
+                    className="btn2"
                     onClick={() => {
                       setPopUp(false);
                       setLoading(true);
                       handleLogin();
                     }}
                   >
-                    <span class="text">Login</span>
-                    <i class="fa-solid fa-paper-plane-top"></i>
+                    <span className="text">Login</span>
+                    <i className="fa-solid fa-paper-plane-top"></i>
                   </button>
 
                   <div>
@@ -689,4 +723,100 @@ export function LoginComponent() {
       )}
     </>
   );
+}
+
+export function LanguagePromptPopup({ setLanguageChangePopup }) {
+  const [changeLanguage, setChangeLanguage] = useState(false);
+  const [selectLanguage, setSelectLanguage] = useState("");
+  const navigate = useNavigate()
+
+  function setCookie(key, value, expiry) {
+    var expires = new Date();
+    expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+    document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+  }
+
+  const handleSaveLanguage = () => {
+    if (selectLanguage) {
+      setCookie('googtrans', `/en/${selectLanguage}`, 1);
+
+      // Check if select exists and set its value
+      const selectElement = document.querySelector("#google_translate_element select");
+      if (selectElement) {
+        selectElement.value = selectLanguage;
+        const event = new Event("change");
+        selectElement.dispatchEvent(event);
+      }
+
+      // Or optionally re-init widget (note: may not respect cookie immediately without reload)
+      if (window.googleTranslateElementInit) {
+        window.googleTranslateElementInit();
+      }
+      localStorage.setItem("userLanguage", selectLanguage);
+      setLanguageChangePopup(false);
+      navigate("/dashboard");
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="popup" >
+      <div className="container h-100">
+        <div className="d-flex h-100 justify-content-center align-items-center">
+          <div className="row content col-xxl-4 col-xl-5 col-md-6">
+            <div className="col-12 px-0">
+              <div className="iconWrapper mb-3">
+                <i className="fa-duotone fa-circle-exclamation" />
+              </div>
+            </div>
+            <div className="col-12 ps-0 pe-0 text-center">
+              <h4 className="text-center text-orange">Confirmation!</h4>
+              {!changeLanguage ?
+                <>
+                  <p className="mb-2">
+                    The default language is set to English! Do you want to change it to something else?
+                  </p>
+                  <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
+                    <button className="panelButton m-0" onClick={() => setChangeLanguage(true)}>
+                      <span className="text">Yes!</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check" />
+                      </span>
+                    </button>
+                    <button className="panelButton gray m-0 float-end" onClick={() => { setLanguageChangePopup(false); navigate("/dashboard") }}>
+                      <span className="text">No</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark" />
+                      </span>
+                    </button>
+                  </div>
+                </> : <>
+                  <p className="mb-2">
+                    Please choose your language from the dropdown below
+                  </p>
+                  <div className="formRow">
+                    <select className="formItem" onChange={(e) => setSelectLanguage(e.target.value)}>
+                      <option value={""}>Select Language</option>
+                      {languages.map((lang, index) => {
+                        return (
+                          <option key={index} value={lang.code}>{lang.name}</option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
+                    <button className="panelButton m-0" onClick={handleSaveLanguage}>
+                      <span className="text">Save</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-floppy-disk" />
+                      </span>
+                    </button>
+                  </div>
+                </>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }

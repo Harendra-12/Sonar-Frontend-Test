@@ -150,10 +150,10 @@ function RateCardView() {
                                         </div>
                                         <nav className='tangoNavs mt-2'>
                                             <div className='nav nav-tabs' id="nav-tab" role="tablist">
-                                                <button class="nav-link active" id="nav-in-tab" data-bs-toggle="tab" data-bs-target="#nav-in" type="button" role="tab">
+                                                <button className="nav-link active" id="nav-in-tab" data-bs-toggle="tab" data-bs-target="#nav-in" type="button" role="tab">
                                                     Inbound
                                                 </button>
-                                                <button class="nav-link" id="nav-out-tab" data-bs-toggle="tab" data-bs-target="#nav-out" type="button" role="tab">
+                                                <button className="nav-link" id="nav-out-tab" data-bs-toggle="tab" data-bs-target="#nav-out" type="button" role="tab">
                                                     Outbound
                                                 </button>
                                             </div>

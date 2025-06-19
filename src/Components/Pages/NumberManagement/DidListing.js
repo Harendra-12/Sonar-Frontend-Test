@@ -232,6 +232,9 @@ function DidListing({ page }) {
       setPreviousUsages("");
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
+      if (usages == "ai") {
+        navigate('/ai-phone-number')
+      }
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -324,7 +327,7 @@ function DidListing({ page }) {
                             disabled={refreshState}
                           >
                             <i
-                              class={`fa-regular fa-arrows-rotate fs-5 
+                              className={`fa-regular fa-arrows-rotate fs-5 
                                 ${refreshState ? "fa-spin" : ""}`}
                             ></i>
                           </button>
@@ -403,11 +406,11 @@ function DidListing({ page }) {
                                 <div className="mt-3 logoutPopup d-flex justify-content-center">
                                   <button
                                     type="button"
-                                    class="btn btn_info"
+                                    className="btn btn_info"
                                     onClick={() => setAddNew(false)}
                                   >
                                     <span>Ok</span>
-                                    <i class="fa-solid fa-power-off "></i>
+                                    <i className="fa-solid fa-power-off "></i>
                                   </button>
                                 </div>
                               </div>
@@ -570,7 +573,14 @@ function DidListing({ page }) {
                               ) : (
                                 ""
                               )}
-                              <th>Recording</th>
+                              {
+                                page == "tracker" &&
+                                <>
+                                  <th>Campaign Name</th>
+                                  <th>Total Send Call</th>
+                                </>
+                              }
+                              {page !== "tracker" && <th>Recording</th>}
                               {page === "number" ? (
                                 <>
                                   <th>Usages</th>
@@ -648,11 +658,25 @@ function DidListing({ page }) {
                             <>
                               {did &&
                                 did.map((item) => {
+                                  console.log('diddddddd', did)
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
                                         {item.did}
                                       </td>
+                                      {page == "tracker" &&
+                                        <>
+                                          <td>
+                                            {item?.fportalcampaign?.campaign_name}
+                                          </td>
+                                          <td>
+                                            {item?.fportalcampaign?.total_send_call}
+                                          </td>
+                                          <td>
+                                            {item?.fportalcampaign?.source}
+                                          </td>
+                                        </>
+                                      }
                                       {page !== "tracker" && page !== "dialer" ? <>
                                         <td style={{ cursor: "default" }}>
                                           {item?.e911}
@@ -687,7 +711,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      <td>{item?.configuration ? item?.configuration?.record ? "Enabled" : "Disabled" : "N/A"}</td>
+                                      {page !== "tracker" && <td>{item?.configuration ? item?.configuration?.record ? "Enabled" : "Disabled" : "N/A"}</td>}
 
                                       {page === "number" ? (
                                         <>
@@ -757,7 +781,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -776,7 +800,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>
@@ -836,7 +860,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -855,7 +879,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>
@@ -910,7 +934,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-bolt-lightning me-2"></i>{" "}
+                                                      <i className="fa-solid fa-bolt-lightning me-2"></i>{" "}
                                                       Default
                                                     </button>
                                                   </li>
@@ -929,7 +953,7 @@ function DidListing({ page }) {
                                                         }
                                                       }}
                                                     >
-                                                      <i class="fa-solid fa-code-merge me-2"></i>{" "}
+                                                      <i className="fa-solid fa-code-merge me-2"></i>{" "}
                                                       Alternate
                                                     </button>
                                                   </li>
@@ -972,7 +996,7 @@ function DidListing({ page }) {
                                       ) : (
                                         ""
                                       )}
-                                      {page === "tracker" && <td>N/A</td>}
+
                                       {checkViewSidebar(
                                         "DidDetail",
                                         slugPermissions,
@@ -1185,6 +1209,7 @@ function DidListing({ page }) {
                       <option value="pbx">PBX</option>
                       <option value="dialer">Dialer</option>
                       <option value="tracker">Tracker</option>
+                      <option value="ai">AI</option>
                     </select>
                     <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                       <button

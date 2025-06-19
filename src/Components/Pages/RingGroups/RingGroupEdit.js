@@ -175,8 +175,8 @@ const RingGroupEdit = () => {
             ...{
               followme: followme == 1 ? true : false,
               status: status == "active" ? true : false,
-              recording_enabled:
-                editData.recording_enabled === 1 ? true : false,
+              // recording_enabled:
+              //   editData.recording_enabled === 1 ? true : false,
               call_timeout: call_timeout !== null ? call_timeout : "",
             },
           };
@@ -452,7 +452,7 @@ const RingGroupEdit = () => {
       ...data,
       ...{
         account_id: account.account_id,
-        recording_enabled: data.recording_enabled === "true" ? 1 : 0,
+        // recording_enabled: data.recording_enabled === "true" ? 1 : 0,
         followme: data.followme === "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
@@ -686,8 +686,8 @@ const RingGroupEdit = () => {
                               />
                               <span className="slider round" />
                             </label> */}
-                            <div class="cl-toggle-switch">
-                              <label class="cl-switch">
+                            <div className="cl-toggle-switch">
+                              <label className="cl-switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -1003,12 +1003,9 @@ const RingGroupEdit = () => {
                           {...register("recording_enabled")}
                           id="selectFormRow"
                           name="recording_enabled"
-                          defaultValue={"false"}
                         >
-                          <option className="status" value="true">
-                            True
-                          </option>
-                          <option value="false">False</option>
+                          <option value="1">True</option>
+                          <option value="0">False</option>
                         </select>
                       </div>
                     </div>

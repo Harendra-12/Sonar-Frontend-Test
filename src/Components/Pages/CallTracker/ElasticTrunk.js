@@ -17,7 +17,7 @@ function ElasticTrunk() {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const { confirm, ModalComponent } = PromptFunctionPopup();
-   const debouncedSearchTerm = useDebounce(searchValue, 1000);
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllTrunk = async () => {
     setLoading(true);
@@ -34,7 +34,7 @@ function ElasticTrunk() {
   // Initial data fetch
   useEffect(() => {
     getAllTrunk();
-  }, [itemsPerPage, debouncedSearchTerm])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
@@ -75,7 +75,7 @@ function ElasticTrunk() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Elastic Trunk <button class="clearButton" onClick={getAllTrunk}><i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? 'fa-spin' : ''}`} /></button></h4>
+                          <h4>Elastic Trunk <button className="clearButton" onClick={getAllTrunk}><i className={`fa-regular fa-arrows-rotate fs-5 ${loading ? 'fa-spin' : ''}`} /></button></h4>
                           <p>You can see all list of Elastic Trunk portal</p>
                         </div>
                         <div className="buttonGroup">

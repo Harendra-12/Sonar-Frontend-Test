@@ -142,10 +142,10 @@ function Members({
           ?.isOtherMember
       ) {
         socketSendMessage({
-          action: "peercall",
+          action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
-          )?.[0]?.id,
+          )?.[0]?.uuid,
           hangup_cause: "success",
           room_id: roomName,
           duration: 120,
@@ -156,10 +156,10 @@ function Members({
         setCalling(false); // Update parent state if needed
       } else {
         socketSendMessage({
-          action: "peercall",
+          action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
-          )?.[0]?.id,
+          )?.[0]?.uuid,
           hangup_cause: "originator_cancel",
           room_id: roomName,
           duration: 0,
@@ -340,7 +340,7 @@ function Members({
         const allMembersButton = document.createElement("button");
         allMembersButton.className = "lk-button all-members-button";
         allMembersButton.innerHTML =
-          '<i class="fa-light fa-users"></i> All Members';
+          '<i className="fa-light fa-users"></i> All Members';
         allMembersButton.onclick = () => setParticipantList((prev) => !prev);
 
         // Create the "Record" button
@@ -363,14 +363,14 @@ function Members({
     const recordButton = document.querySelector(".record-button");
     if (recordButton && isAdmin) {
       recordButton.innerHTML = processingRecRequest
-        ? '<i class="fa-solid fa-spinner fa-spin"></i> Record'
+        ? '<i className="fa-solid fa-spinner fa-spin"></i> Record'
         : isCurrentUserStartRecording
-        ? manualRecording
-          ? '<i class="fa-light fa-stop"></i> Stop Recording'
-          : '<i class="fa-light fa-circle"></i> Record'
-        : isRecording
-        ? '<i class="fa-light fa-stop"></i> Stop Recording'
-        : '<i class="fa-light fa-circle"></i> Record';
+          ? manualRecording
+            ? '<i className="fa-light fa-stop"></i> Stop Recording'
+            : '<i className="fa-light fa-circle"></i> Record'
+          : isRecording
+            ? '<i className="fa-light fa-stop"></i> Stop Recording'
+            : '<i className="fa-light fa-circle"></i> Record';
     }
   }, [isRecording, processingRecRequest]);
 

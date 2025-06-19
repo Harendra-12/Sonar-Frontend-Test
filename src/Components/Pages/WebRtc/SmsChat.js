@@ -138,8 +138,8 @@ function SmsChat({ setLoading, loading, did }) {
                   <div className="tab-content">
                     <div className="callList">
                       <div className="dateHeader">
-                    <p className="fw-semibold">Today</p>
-                  </div>
+                        <p className="fw-semibold">Today</p>
+                      </div>
                       {allSmsLogs?.map((item, index) => {
                         return (
                           <>
@@ -155,8 +155,8 @@ function SmsChat({ setLoading, loading, did }) {
                                   >
                                     <h4>{item?.from_did}</h4>
                                   </div>
-                                  <div class="callIconAdmin">
-                                    <i class={`fa-solid fa-circle-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: item?.delivery_status === 'rejected' ? 'var(--funky-boy4)' : "var(--ui-accent)" }}></i>
+                                  <div className="callIconAdmin">
+                                    <i className={`fa-solid fa-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: "#fff" }}></i>
                                   </div>
                                   <div
                                     className="col-3 my-auto ms-2 ms-xl-3"
@@ -178,7 +178,7 @@ function SmsChat({ setLoading, loading, did }) {
                                     </div>
                                   </div>
                                   <div className="col-auto text-end ms-auto">
-                                    <p className="timeAgo">{new Date(item?.created_at).toLocaleTimeString()}</p>
+                                    <p className="timeAgo">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</p>
                                     {item?.message && <button className="clearButton2"><i className="fa-regular fa-comment" /></button>}
                                   </div>
                                 </div>
@@ -198,7 +198,7 @@ function SmsChat({ setLoading, loading, did }) {
                                   <span className="username-cmt ms-2"> {item?.from_did}</span>
                                   <div className="d-flex align-items-end justify-content-between mt-1">
                                     <span className="name-comment ms-1"> {item?.message}</span>
-                                    <span className="date-small"> {new Date(item?.created_at).toLocaleTimeString()}</span>
+                                    <span className="date-small">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</span>
                                   </div>
                                 </div>
                               </div>
