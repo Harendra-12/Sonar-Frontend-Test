@@ -522,12 +522,17 @@
 
 .listViewProfileInfo li {
     list-style-type: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .textImmortalBlack {
     color: var(--immortalBlack);
     font-size: 16px;
     font-weight: 600;
+    max-width: 200px;
+    width: 100%;
 }
 
 .textSubtext {

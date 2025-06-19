@@ -152,7 +152,7 @@ function TempDashboard() {
               <div className="profileView p-3" >
                 <div className="profileDetailsHolder position-relative">
                   <div className="row">
-                    <div className="col-lg-4">
+                    <div className="col-lg-3">
                       <div className="baseDetails wrpDetails__box row align-items-start mt-3"
                       // style={{ padding: "30px 10px 55px" }}
                       >
@@ -288,7 +288,7 @@ function TempDashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-8">
+                    <div className="col-lg-9">
                       <div className=" p-3">
                         <div className="">
                           {statusClick === "account" ? (

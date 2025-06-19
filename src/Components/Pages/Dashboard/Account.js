@@ -3,7 +3,7 @@ import React from "react";
 function Account({ account, nextPage, companyStatus }) {
   return (
     <>
-      <div className="d-flex flex-wrap">
+      <div className="d-flex flex-wrap" style={{borderBlockEnd: '1px solid var(--me-border1)'}}>
         <div className="col-12">
           <div className="heading d-flex justify-content-between align-items-center pb-3">
             <div className="content">
@@ -185,7 +185,7 @@ function Account({ account, nextPage, companyStatus }) {
           </div>
         </div>
       </div> */}
-      <div className="col-12">
+      <div className="col-12 mt-3">
         <ul className="listViewProfileInfo">
           <li className="mb-2"><span className="textImmortalBlack">Company Name : </span> <span className="textSubtext">{account.company_name}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Admin Name : </span> <span className="textSubtext">{account.admin_name}</span></li>
