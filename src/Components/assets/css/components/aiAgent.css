@@ -680,7 +680,7 @@
 
 .FlowAccordion_content .dropdown-menu.settingMenu.w300.show {
     display: block;
-    min-width: 389px;
+    min-width: 310px;
     width: 100%;
     background: var(--ele-color);
 }
