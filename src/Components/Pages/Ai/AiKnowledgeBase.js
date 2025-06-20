@@ -371,12 +371,11 @@ const AiKnowledgeBase = () => {
                                         }}
                                       >
                                         <p className="mb-0">
-                                          <i className="fa-duotone fa-solid fa-folder-open me-2"></i>{" "}
+                                          <i className="fa-duotone fa-solid fa-folder-open me-2" style={{color: 'var(--color-subtext)'}}></i>{" "}
                                           {item?.knowledge_base_name}
                                         </p>
                                         <p className="mb-0">
-                                          added on{" "}
-                                          <span>
+                                          <span style={{fontSize: '0.75rem', color: 'var(--color-subtext)'}}>
                                             {" "}
                                             {new Date(
                                               item?.user_modified_timestamp
@@ -400,7 +399,7 @@ const AiKnowledgeBase = () => {
                                 role="tabpanel"
                                 aria-labelledby="v-pills-home-tab"
                               >
-                                <div className="heading">
+                                <div className="heading px-0">
                                   <div className="content">
                                     <h4>{activeFile?.knowledge_base_name}</h4>
                                     <p className="mb-0">
@@ -449,7 +448,7 @@ const AiKnowledgeBase = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="k_body px-2">
+                                <div className="k_body">
                                   <div className="tableContainer">
                                     <table>
                                       <tbody className="">
@@ -908,13 +907,13 @@ const AiKnowledgeBase = () => {
                             </div>
                           </div>
                         </div>
-                        <div className=" d-flex justify-content-between">
+                        <div className=" d-flex justify-content-between px-2">
                           <div className="d-flex justify-content-start">
                             <button
-                              className="panelButton add m-0"
+                              className="panelButton static add m-0"
                               type="submit"
                             >
-                              <span className="text">
+                              <span className="text text-white">
                                 Add
                                 {currentTab === "webPage"
                                   ? " Web Page"
@@ -922,21 +921,21 @@ const AiKnowledgeBase = () => {
                                   ? " File"
                                   : currentTab === "addText" && " Text"}
                               </span>
-                              <span className="icon">
+                              {/* <span className="icon">
                                 <i className="fa-regular fa-plus"></i>
-                              </span>
+                              </span> */}
                             </button>
                           </div>
                           <div className="d-flex justify-content-end">
                             <button
-                              className="panelButton  m-0"
+                              className="panelButton m-0"
                               type="button"
                               onClick={handleSaveChanges}
                               disabled={
                                 !isValids || addedFiles.length === 0 || loading
                               }
                             >
-                              <span className="text">Save Changes</span>
+                              <span className="text text-white">Save</span>
                               <span className="icon">
                                 <i className="fa-solid fa-check"></i>
                               </span>
@@ -948,7 +947,7 @@ const AiKnowledgeBase = () => {
                                 setKnowledgeBase(false);
                               }}
                             >
-                              <span className="text">Cancel</span>
+                              <span className="text text-white">Cancel</span>
                               <span className="icon">
                                 <i className="fa-solid fa-xmark"></i>
                               </span>

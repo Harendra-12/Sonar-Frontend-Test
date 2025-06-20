@@ -50,7 +50,7 @@
 }
 
 .KnowledgeLeftinfo {
-    padding: 20px;
+    padding: 20px 10px;
     border-radius: 10px;
     background-color: var(--knowledge-leftinfo);
     overflow: hidden;
@@ -87,7 +87,7 @@
 }
 
 .knowledge__list .nav .nav-link.active i {
-    color: #066ed7;
+    color: #066ed7 !important;
 }
 
 .KnowledgeRightinfo {
@@ -109,7 +109,7 @@
     border: 1px solid var(--me-border1);
     border-radius: 5px;
     transition: all 0.4s ease-in-out;
-    color: var(--color-subtext);
+    color: var(--ui-accent);
     font-size: 0.813rem;
 }
 
@@ -119,12 +119,13 @@
 }
 
 .table__icon {
-    font-size: 25px;
+    font-size: 1rem;
     color: #9595a9;
 }
 
 .detailsTable h5 {
     color: var(--immortalBlack);
+    font-size: 0.9rem;
 }
 
 .detailsTable p {
@@ -170,7 +171,7 @@
 }
 
 .addFile_box {
-    border: 1px solid var(--me-border1);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 15px;
 
