@@ -649,94 +649,100 @@ const BuyerAdd = () => {
                           </div>
                         </div>
                         <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
-                        </div>
-                        <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
-                          <div className="content">
-                            <h4>List of Additional Phone Numbers <span className="text-danger">*</span></h4>
-                            <p>You can add the list of additional numbers.</p>
+                          <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
+                            <div className="content">
+                              <h4>List of Additional Phone Numbers <span className="text-danger">*</span></h4>
+                              <p>You can add the list of additional numbers.</p>
+                            </div>
                           </div>
-                        </div>
-                        {
-                          listOfAdditionalPhNumbers?.map((item, index) => {
-                            return (
-                              <div className=" col-xl-12" key={index}>
-                                <div className="formRow justify-content-start">
-                                  <div className="col-6" >
-                                    {
-                                      index === 0 &&
+                          {
+                            listOfAdditionalPhNumbers?.map((item, index) => {
+                              return (
+                                <div className=" col-xl-12" key={index}>
+                                  <div className="row">
+                                    <div className={`col-auto ${index == 0 ? 'mt-auto mb-1' : 'my-auto'}`}>
                                       <div className="formLabel">
-                                        <label className="formItemDesc">
-                                          Tag
-                                        </label>
+                                        <label>{index + 1}.</label>
                                       </div>
-                                    }
-                                    <div className="col-3">
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={listOfAdditionalPhNumbers[index]?.tag || ""}
-                                        onChange={(event) => {
-                                          const newTag = [...listOfAdditionalPhNumbers];
-                                          newTag[index].tag = event?.target?.value;
-                                          setListOfAdditionalPhNumbers(newTag);
-                                        }}
-                                      />
-                                      {errors.other_number_tag_name && (
-                                        <ErrorMessage text={errors.other_number_tag_name.message} />
-                                      )}
                                     </div>
-                                  </div>
-                                  <div className="col-3" >
-                                    {
-                                      index === 0 &&
-                                      <div className="formLabel">
-                                        <label className="formItemDesc">
-                                          Phone Number
-                                        </label>
+                                    <div className="col-3" >
+                                      {
+                                        index === 0 &&
+                                        <div className="formLabel">
+                                          <label className="formItemDesc">
+                                            Tag
+                                          </label>
+                                        </div>
+                                      }
+                                      <div className="col-12">
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={listOfAdditionalPhNumbers[index]?.tag || ""}
+                                          onChange={(event) => {
+                                            const newTag = [...listOfAdditionalPhNumbers];
+                                            newTag[index].tag = event?.target?.value;
+                                            setListOfAdditionalPhNumbers(newTag);
+                                          }}
+                                        />
+                                        {errors.other_number_tag_name && (
+                                          <ErrorMessage text={errors.other_number_tag_name.message} />
+                                        )}
                                       </div>
-                                    }
-                                    <div className="col-6">
+                                    </div>
+                                    <div className="col-3" >
+                                      {
+                                        index === 0 &&
+                                        <div className="formLabel">
+                                          <label className="formItemDesc">
+                                            Phone Number
+                                          </label>
+                                        </div>
+                                      }
+                                      <div className="col-12">
 
-                                      <PhoneInput
-                                        defaultCountry="US"
-                                        placeholder="Enter phone number"
-                                        limitMaxLength={true}
-                                        value={listOfAdditionalPhNumbers[index]?.number || ""}
-                                        onChange={(value) => {
-                                          const newNumbers = [...listOfAdditionalPhNumbers];
-                                          newNumbers[index].number = value;
-                                          setListOfAdditionalPhNumbers(newNumbers);
-                                        }}
-                                      />
-                                      {errors.additional_number && (
-                                        <ErrorMessage text={errors.additional_number.message} />
-                                      )}
+                                        <PhoneInput
+                                          defaultCountry="US"
+                                          placeholder="Enter phone number"
+                                          limitMaxLength={true}
+                                          value={listOfAdditionalPhNumbers[index]?.number || ""}
+                                          onChange={(value) => {
+                                            const newNumbers = [...listOfAdditionalPhNumbers];
+                                            newNumbers[index].number = value;
+                                            setListOfAdditionalPhNumbers(newNumbers);
+                                          }}
+                                        />
+                                        {errors.additional_number && (
+                                          <ErrorMessage text={errors.additional_number.message} />
+                                        )}
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="col-3 mt-4">
                                     {
-                                      listOfAdditionalPhNumbers?.length > 1 &&
-                                      <button type="button" className="tableButton delete mx-auto" onClick={() => { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }} >
-                                        <i className="fa-solid fa-trash" />
-                                      </button>
+                                      listOfAdditionalPhNumbers?.length > 1 && <div className={`col-auto ${index == 0 ? 'mt-auto mb-1' : 'my-auto'}`}>
+
+                                        <button type="button" className="tableButton delete mx-auto" onClick={() => { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }} >
+                                          <i className="fa-solid fa-trash" />
+                                        </button>
+
+                                      </div>
+                                    }
+                                    {
+                                      index === listOfAdditionalPhNumbers?.length - 1 &&
+                                      <div className="col-3 mt-auto" >
+                                        <button type="button" className="panelButton" onClick={() => { if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") { setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }]) } }}>
+                                          <span className="text">Add</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-plus"></i>
+                                          </span>
+                                        </button>
+                                      </div>
                                     }
                                   </div>
-                                  {
-                                    index === listOfAdditionalPhNumbers?.length - 1 &&
-                                    <div className="col-3 mt-4" >
-                                      <button type="button" className="panelButton" onClick={() => { if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") { setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }]) } }}>
-                                        <span className="text">Add</span>
-                                        <span className="icon">
-                                          <i className="fa-solid fa-plus"></i>
-                                        </span>
-                                      </button>
-                                    </div>
-                                  }
                                 </div>
-                              </div>
-                            )
-                          })
-                        }
+                              )
+                            })
+                          }
+                        </div>
                       </form>
                     </div>
                   </div>

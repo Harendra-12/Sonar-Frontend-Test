@@ -127,6 +127,7 @@ function InitiateCall({
           setCalling={setCalling}
           isMinimize={interCallMinimize}
           setIsMinimize={setInterCallMinimize}
+          isConferenceCall={isConferenceCall}
         />
       ) : (
         ""

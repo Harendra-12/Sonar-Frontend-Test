@@ -37,6 +37,7 @@ function Members({
   isCurrentUserStartRecording,
   setIsCurrentUserStartRecording,
   setCalling,
+  isConferenceCall
 }) {
   const room = useRoomContext();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
@@ -386,13 +387,13 @@ function Members({
     const allMembersButton = document.querySelector(".all-members-button");
 
     if (allMembersButton) {
-      console.log("Insideee");
-
       allMembersButton.style.backgroundColor = showParticipants
         ? "#373737"
         : "#1e1e1e";
+
+      allMembersButton.style.display = isConferenceCall ? "block" : "none";
     }
-  }, [showParticipants]);
+  }, [showParticipants, isConferenceCall]);
 
   // Attach the toggleRecording function to the "Record" button
   useEffect(() => {

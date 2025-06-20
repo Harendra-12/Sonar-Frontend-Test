@@ -887,85 +887,77 @@ function FportalCampaignCreate() {
                     <div className="row">
                       <div className="col-12" style={{ padding: '0 30px' }}>
                         <form className="row mb-0">
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Campaign Name  <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  {...register("campaign_name", {
-                                    ...requiredValidator,
-                                  })}
-                                />
-                                {errors.campaign_name && (
-                                  <ErrorMessage text={errors.campaign_name.message} />
-                                )}
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Campaign Name  <span className="text-danger">*</span>
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("campaign_name", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.campaign_name && (
+                                <ErrorMessage text={errors.campaign_name.message} />
+                              )}
                             </div>
                           </div>
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Source
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  {...register("source")}
-                                />
-                                {errors.source && (
-                                  <ErrorMessage text={errors.source.message} />
-                                )}
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Source
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("source")}
+                              />
+                              {errors.source && (
+                                <ErrorMessage text={errors.source.message} />
+                              )}
                             </div>
                           </div>
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Tag
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <input
-                                  type="text"
-                                  className="formItem"
-                                  {...register("agent_name")}
-                                />
-                                {errors.agent_name && (
-                                  <ErrorMessage text={errors.agent_name.message} />
-                                )}
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Tag
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="text"
+                                className="formItem"
+                                {...register("agent_name")}
+                              />
+                              {errors.agent_name && (
+                                <ErrorMessage text={errors.agent_name.message} />
+                              )}
                             </div>
                           </div>
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Originate Timeout <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <input
-                                  type="number"
-                                  className="formItem"
-                                  defaultValue={60}
-                                  {...register("originate_timeout", {
-                                    ...requiredValidator,
-                                  })}
-                                />
-                                {errors.originate_timeout && (
-                                  <ErrorMessage text={errors.originate_timeout.message} />
-                                )}
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Originate Timeout <span className="text-danger">*</span>
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <input
+                                type="number"
+                                className="formItem"
+                                defaultValue={60}
+                                {...register("originate_timeout", {
+                                  ...requiredValidator,
+                                })}
+                              />
+                              {errors.originate_timeout && (
+                                <ErrorMessage text={errors.originate_timeout.message} />
+                              )}
                             </div>
                           </div>
                           {/* <div className="col-6">
@@ -989,52 +981,48 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           </div> */}
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Forward Type <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <select defaultValue={"pstn"} className='formItem'
-                                  {...register("forward_type")}
-                                >
-                                  <option value="pstn">PSTN</option>
-                                  <option value="trunk">Trunk</option>
-                                </select>
-                                {errors.forward_type && (
-                                  <ErrorMessage text={errors.forward_type.message} />
-                                )}
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Forward Type <span className="text-danger">*</span>
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <select defaultValue={"pstn"} className='formItem'
+                                {...register("forward_type")}
+                              >
+                                <option value="pstn">PSTN</option>
+                                <option value="trunk">Trunk</option>
+                              </select>
+                              {errors.forward_type && (
+                                <ErrorMessage text={errors.forward_type.message} />
+                              )}
                             </div>
                           </div>
                           {
                             watch()?.forward_type === "trunk" &&
-                            <div className="col-6">
-                              <div className="formRow">
-                                <div className='formLabel'>
-                                  <label>
-                                    Trunk
-                                  </label>
-                                </div>
-                                <div className='col-6'>
-                                  <select
-                                    className='formItem'
-                                    {...register("trunk_id")}
-                                  >
-                                    {allTrunkOptios?.map((data) => (
-                                      <>
-                                        <option value={data?.value}>{data?.label}</option>
-                                      </>
+                            <div className="formRow col-xl-3">
+                              <div className='formLabel'>
+                                <label>
+                                  Trunk
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <select
+                                  className='formItem'
+                                  {...register("trunk_id")}
+                                >
+                                  {allTrunkOptios?.map((data) => (
+                                    <>
+                                      <option value={data?.value}>{data?.label}</option>
+                                    </>
 
 
-                                    ))}
-                                  </select>
-                                  {errors.trunk_id && (
-                                    <ErrorMessage text={errors.trunk_id.message} />
-                                  )}
-                                </div>
+                                  ))}
+                                </select>
+                                {errors.trunk_id && (
+                                  <ErrorMessage text={errors.trunk_id.message} />
+                                )}
                               </div>
                             </div>
                           }
@@ -1060,151 +1048,147 @@ function FportalCampaignCreate() {
                               />
                             </div>
                           </div> */}
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Inbound Assigned Did  <span className="text-danger">*</span>
-                                </label>
-                              </div>
-                              <div className='col-6'>
-                                <Select
-                                  onChange={(selectedOptions) => {
-                                    const values = (selectedOptions || []).map((option) => option.value)
-                                    toggleSelect(values)
-                                  }}
-                                  value={allDidOptions.filter(option => selectedItems.includes(option.value))}
-                                  isMulti
-                                  options={allDidOptions}
-                                  isSearchable
-                                  styles={customStyles}
-                                  required={true}
-                                />
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Inbound Assigned Did  <span className="text-danger">*</span>
+                              </label>
+                            </div>
+                            <div className='col-6'>
+                              <Select
+                                onChange={(selectedOptions) => {
+                                  const values = (selectedOptions || []).map((option) => option.value)
+                                  toggleSelect(values)
+                                }}
+                                value={allDidOptions.filter(option => selectedItems.includes(option.value))}
+                                isMulti
+                                options={allDidOptions}
+                                isSearchable
+                                styles={customStyles}
+                                required={true}
+                              />
                             </div>
                           </div>
 
-                          <div className="formRow col-6">
+                          <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">Sticky Agent</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Select the status of Sticky Agent
                               </label>
                             </div>
-                            <div
-                              className={`col-${watch().sticky_agent_enable == "true" ||
-                                watch().sticky_agent_enable == 1
-                                ? "2 pe-2 ms-auto"
-                                : "6"
-                                }`}
-                            >
-                              {watch().sticky_agent_enable === "true" ||
-                                watch().sticky_agent_enable === 1 ? (
-                                <div className="formLabel">
-                                  <label className="formItemDesc">Status</label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <select
-                                className="formItem"
-                                name=""
-                                defaultValue="false"
-                                id="selectFormRow"
-                                {...register("sticky_agent_enable")}
-                              >
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                              </select>
-                            </div>
-
-                            {(watch().sticky_agent_enable == true ||
-                              watch().sticky_agent_enable == "true") && (
+                            <div className="col-6">
+                              <div className="row gx-2">
                                 <div
-                                  className="col-2 pe-2"
-                                  style={{ width: "12%" }}
+                                  className={`col-${watch().sticky_agent_enable == "true" ||
+                                    watch().sticky_agent_enable == 1
+                                    ? "3"
+                                    : "12"
+                                    }`}
                                 >
-                                  <div className="formLabel">
-                                    <Tippy content="Check the duration of sticky agent">
-                                      <label className="formItemDesc">
-                                        Duration{" "}
-                                      </label>
-                                    </Tippy>
-                                  </div>
-                                  <input
-                                    type="number"
-                                    name="forward_to"
-                                    className="formItem"
-                                    {...register(
-                                      "stick_agent_expires",
-                                      rangeValidator(1, 99), {
-                                      requiredValidator
-                                    }
-                                    )}
-                                  />
-                                  {errors.stick_agent_expires && (
-                                    <ErrorMessage
-                                      text={errors.stick_agent_expires.message}
-                                    />
+                                  {watch().sticky_agent_enable === "true" ||
+                                    watch().sticky_agent_enable === 1 ? (
+                                    <div className="formLabel">
+                                      <label className="formItemDesc">Status</label>
+                                    </div>
+                                  ) : (
+                                    ""
                                   )}
-                                </div>
-                              )}
-                            {(watch().sticky_agent_enable == true ||
-                              watch().sticky_agent_enable == "true") && (
-                                <div className="col-2" style={{ width: "21.3%" }}>
-                                  <div className="formLabel">
-                                    <label className="formItemDesc">
-                                      Agent Type
-                                    </label>
-                                  </div>
                                   <select
                                     className="formItem"
                                     name=""
+                                    defaultValue="false"
                                     id="selectFormRow"
-                                    {...register("stick_agent_type")}
+                                    {...register("sticky_agent_enable")}
                                   >
-                                    <option selected="" value="last_spoken">
-                                      Last Spoken
-                                    </option>
-                                    <option value="longest_time">
-                                      Longest Time
-                                    </option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
                                   </select>
                                 </div>
-                              )}
-                            {(watch().sticky_agent_enable == true ||
-                              watch().sticky_agent_enable == "true") && (
-                                <div
-                                  className="col-2 pe-2"
-                                  style={{ width: "12%" }}
-                                >
-                                  <div className="formLabel">
-                                    <Tippy content="Timout for the sticky agent and return to normal routing">
-                                      <label className="formItemDesc">
-                                        Timeout(Sec.){" "}
-                                      </label>
-                                    </Tippy>
-                                  </div>
-                                  <input
-                                    type="number"
-                                    name="forward_to"
-                                    className="formItem"
-                                    {...register(
-                                      "sticky_agent_timeout",
-                                      rangeValidator(1, 99), {
-                                      requiredValidator
-                                    }
-                                    )}
-                                  />
-                                  {errors.stick_agent_expires && (
-                                    <ErrorMessage
-                                      text={errors.stick_agent_expires.message}
-                                    />
+
+                                {(watch().sticky_agent_enable == true ||
+                                  watch().sticky_agent_enable == "true") && (
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <Tippy content="Check the duration of sticky agent">
+                                          <label className="formItemDesc">
+                                            Duration{" "}
+                                          </label>
+                                        </Tippy>
+                                      </div>
+                                      <input
+                                        type="number"
+                                        name="forward_to"
+                                        className="formItem"
+                                        {...register(
+                                          "stick_agent_expires",
+                                          rangeValidator(1, 99), {
+                                          requiredValidator
+                                        }
+                                        )}
+                                      />
+                                      {errors.stick_agent_expires && (
+                                        <ErrorMessage
+                                          text={errors.stick_agent_expires.message}
+                                        />
+                                      )}
+                                    </div>
                                   )}
-                                </div>
-                              )}
+                                {(watch().sticky_agent_enable == true ||
+                                  watch().sticky_agent_enable == "true") && (
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <label className="formItemDesc">
+                                          Agent Type
+                                        </label>
+                                      </div>
+                                      <select
+                                        className="formItem"
+                                        name=""
+                                        id="selectFormRow"
+                                        {...register("stick_agent_type")}
+                                      >
+                                        <option selected="" value="last_spoken">
+                                          Last Spoken
+                                        </option>
+                                        <option value="longest_time">
+                                          Longest Time
+                                        </option>
+                                      </select>
+                                    </div>
+                                  )}
+                                {(watch().sticky_agent_enable == true ||
+                                  watch().sticky_agent_enable == "true") && (
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <Tippy content="Timout for the sticky agent and return to normal routing">
+                                          <label className="formItemDesc">
+                                            Timeout(Sec.){" "}
+                                          </label>
+                                        </Tippy>
+                                      </div>
+                                      <input
+                                        type="number"
+                                        name="forward_to"
+                                        className="formItem"
+                                        {...register(
+                                          "sticky_agent_timeout",
+                                          rangeValidator(1, 99), {
+                                          requiredValidator
+                                        }
+                                        )}
+                                      />
+                                      {errors.stick_agent_expires && (
+                                        <ErrorMessage
+                                          text={errors.stick_agent_expires.message}
+                                        />
+                                      )}
+                                    </div>
+                                  )}
+                              </div>
+                            </div>
                           </div>
-                          <div className="formRow col-6">
+                          <div className="formRow col-xl-3">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">Spam Filter</label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1339,61 +1323,57 @@ function FportalCampaignCreate() {
                               </div>
                             </div>
                           </div>
-                          <div className="row">
-                            <div className="formRow col-6">
-                              <div className="formLabel">
-                                <label htmlFor="selectFormRow">Record</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Save the recording.
-                                </label>
-                              </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem"
-                                  name=""
-                                  id="selectFormRow"
-                                  {...register("record")}
-                                  defaultValue={"false"}
-                                >
-                                  <option selected="" value="true">
-                                    True
-                                  </option>
-                                  <option value="false">False</option>
-                                </select>
-                              </div>
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">Record</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Save the recording.
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <select
+                                className="formItem"
+                                name=""
+                                id="selectFormRow"
+                                {...register("record")}
+                                defaultValue={"false"}
+                              >
+                                <option selected="" value="true">
+                                  True
+                                </option>
+                                <option value="false">False</option>
+                              </select>
                             </div>
                           </div>
 
 
-                          <div className="col-6">
-                            <div className="formRow">
-                              <div className='formLabel'>
-                                <label>
-                                  Scheduler
+                          <div className="formRow col-xl-3">
+                            <div className='formLabel'>
+                              <label>
+                                Scheduler
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <div className="cl-toggle-switch">
+                                <label className="cl-switch">
+                                  <input type="checkbox"
+                                    checked={isActiveHour}
+                                    id="showAllCheck"
+                                    onChange={() => setIsActiveHour(prev => !prev)}
+                                  />
+                                  <span></span>
                                 </label>
-                              </div>
-                              <div className="col-6">
-                                <div className="cl-toggle-switch">
-                                  <label className="cl-switch">
-                                    <input type="checkbox"
-                                      checked={isActiveHour}
-                                      id="showAllCheck"
-                                      onChange={() => setIsActiveHour(prev => !prev)}
-                                    />
-                                    <span></span>
-                                  </label>
-                                </div>
                               </div>
                             </div>
                           </div>
                           {
                             isActiveHour &&
-                            <div className="formRow d-block">
+                            <div className="formRow d-block col-xl-3">
                               <div className="formLabel">
                                 <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Targeted Date & Time</label>
                               </div>
                               <div className="row">
-                                <div className="col-6">
+                                <div className="col-12">
                                   <div className="formRow">
                                     <div className='formLabel'>
                                       <label>
@@ -1416,7 +1396,7 @@ function FportalCampaignCreate() {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-12">
                                   <div className="formRow">
                                     <div className='formLabel'>
                                       <label>
