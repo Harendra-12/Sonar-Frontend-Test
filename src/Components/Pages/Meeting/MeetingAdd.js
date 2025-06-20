@@ -89,10 +89,8 @@ function MeetingAdd() {
   }
 
   useEffect(() => {
-    if (watch().conf_type == "internal") {
-      if (allInternalUsers?.length == 0) {
-        getInternalUsers();
-      }
+    if (allInternalUsers?.length == 0) {
+      getInternalUsers();
     }
   }, [watch().conf_type]);
 
