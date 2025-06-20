@@ -8,6 +8,8 @@ import {
   generalPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -294,26 +296,31 @@ function Members({
       console.log(isRecordingRef.current);
 
       if (!isRecordingRef.current) {
-        console.log("Start recording", isRecordingRef.current);
-
-        // Start recording
-        const response = await generalGetFunction(
-          `/start-recording?roomName=${roomName}`
-        );
-        console.log("Start Recording Response:", response);
-        if (response) {
-          setManualRecording(true); // Set manual recording state to true
-          setIsCurrentUserStartRecording(true); // Set the state to indicate the current user started recording
+        try {
+          const response = await axios.get(`https://meet.webvio.in/backend/start-recording?roomName=${room.name}`);
+          if (response.data.success) {
+            toast.success(response.data.message);
+            setManualRecording(true); // Set manual recording state to true
+            setIsCurrentUserStartRecording(true); // Set the state to indicate the current user started recording
+          } else {
+            toast.error(response.data.error);
+          }
+        } catch (err) {
+          toast.error(err.response.data.error);
         }
       } else {
         // Stop recording
-        const response = await generalGetFunction(
-          `/stop-recording?roomName=${roomName}`
-        );
-        console.log("Stop Recording Response:", response);
-        if (response) {
-          setManualRecording(false); // Set manual recording state to false
-          setIsCurrentUserStartRecording(true); // Reset the state to indicate the current user stopped recording
+        try {
+          const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+          if (response.data.success) {
+            toast.success(response.data.message);
+            setManualRecording(false); // Set manual recording state to false
+            setIsCurrentUserStartRecording(true); // Reset the state to indicate the current user stopped recording
+          } else {
+            toast.error(response.data.error);
+          }
+        } catch (err) {
+          toast.error(err.response.data.error);
         }
       }
     } catch (error) {
@@ -409,10 +416,21 @@ function Members({
   // }
 
   async function handleRemove(participant) {
-    await generalPostFunction(`/remove-participant`, {
+    const payload = {
       room: roomName,
       participantId: participant,
-    });
+    }
+    // await generalPostFunction(`/remove-participant`, {
+    //   room: roomName,
+    //   participantId: participant,
+    // });
+    const response = await axios.post(`https://meet.webvio.in/backend/remove-participant`, payload);
+    if (response.data.success) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
+    }
+
   }
 
   return (

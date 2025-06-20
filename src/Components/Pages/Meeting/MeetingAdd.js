@@ -37,10 +37,10 @@ function MeetingAdd() {
   const { register, formState: { errors }, reset, handleSubmit, watch } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants.length == 1 && participants[0].length == 0) {
-      toast.error("Please add participants");
-      return;
-    }
+    // if (participants.length == 1 && participants[0].length == 0) {
+    //   toast.error("Please add participants");
+    //   return;
+    // }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")

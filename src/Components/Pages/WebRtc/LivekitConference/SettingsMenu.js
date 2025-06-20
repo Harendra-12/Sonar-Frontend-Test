@@ -5,6 +5,8 @@ import { useRoomContext, TrackToggle, MediaDeviceMenu } from "@livekit/component
 import { Track } from "livekit-client";
 import { useDispatch } from "react-redux";
 import { generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import axios from "axios";
+import { toast } from "react-toastify";
 // import { generalGetFunction } from "./GlobalFunction/globalFunction";
 
 const SettingsMenu = () => {
@@ -103,16 +105,38 @@ const SettingsMenu = () => {
 
     async function toggleRoomRecording() {
         if (isRecording) {
-            const apiData = await generalGetFunction(`/stop-recording?roomName=${room.name}`);
+            // const apiData = await generalGetFunction(`/stop-recording?roomName=${room.name}`);
+            const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            if (response.data.success) {
+                toast.success(response.data.message);
+                setIsRecording(false);
+            } else {
+                toast.error(response.data.message);
+                setIsRecording(false);
+            }
+
             // if(apiData.status){
 
             // }
             // stopRecording();
         } else {
-            const apiData = await generalGetFunction(`/start-recording?roomName=${room.name}`);
-            // startRecording();
+            // const apiData = await generalGetFunction(`/start-recording?roomName=${room.name}`);
+            const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            if (response.data.success) {
+                toast.success(response.data.message);
+                setIsRecording(true);
+            } else {
+                toast.error(response.data.message);
+                setIsRecording(false);
+            }
         }
-        setIsRecording(!isRecording);
+    }
+
+    const handleCloseSettings = () => {
+        const btns = document.getElementsByClassName('lk-settings-toggle');
+        if (btns.length > 0) {
+            btns[0].click();
+        }
     }
     return (
         <div className="settings-menu">
@@ -130,8 +154,11 @@ const SettingsMenu = () => {
             <div className="tab-content">
                 {activeTab === "media" && (
                     <>
-                        <h3>Media Settings</h3>
-                        <section className="wrap">
+                        <div className="d-flex justify-content-between align-items-center border-bottom pb-3">
+                            <h3 className="fs-4 mb-0">Media Settings </h3>
+                            <button className="aitable_button bg-transparent" onClick={handleCloseSettings}><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <section className="wrap mt-3">
                             <h4>Camera</h4>
                             <div className="lk-button-group">
                                 <TrackToggle source={Track.Source.Camera}>Toggle Camera</TrackToggle>
@@ -139,7 +166,7 @@ const SettingsMenu = () => {
                             </div>
                         </section>
                         <section className="wrap">
-                            
+
                             <h4>Microphone</h4>
                             <div className="lk-button-group">
                                 <TrackToggle source={Track.Source.Microphone}>Toggle Microphone</TrackToggle>
