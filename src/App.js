@@ -202,6 +202,7 @@ import AllUser from "./Components/Pages/Ai/AllUser";
 import AiDashboard from "./Components/Pages/Ai/AiDashboard";
 import NumberCompliancesHome from "./Components/Pages/NumberManagement/NumberCompliances/NumberCompliancesHome";
 import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberCompliances/CountryCompliances/AlgeriaCompliance";
+import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 
@@ -861,6 +862,7 @@ function App() {
           <Route path="/ai-billing" element={<Billing />} />
           <Route path="/ai-batch-call" element={<AiBatchCall />} />
           <Route path="/ai-agent-dashboard" element={<AiDashboard />} />
+          <Route path="/conversations-flow" element={<ConversationsFlow />} />
 
           <Route path="/ai-all-agent" element={<AllAgent />} />
           <Route path="/all-users" element={<AllUser />} />

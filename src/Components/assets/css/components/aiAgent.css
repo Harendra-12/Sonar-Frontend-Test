@@ -53,7 +53,13 @@
     padding: 20px;
     border-radius: 10px;
     background-color: var(--knowledge-leftinfo);
-    height: 100%;
+    overflow: hidden;
+    max-height: calc(100vh - 232px);
+}
+
+.heightAuto {
+    max-height: calc(100vh - 232px);
+    overflow: auto;
 }
 
 .info_header {
@@ -506,34 +512,40 @@
         box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     }
 }
-.noTableData{
+
+.noTableData {
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 150px);
     /* overflow: auto; */
 }
-.details_header{
+
+.details_header {
     min-height: 50px;
 }
-.details_header p{
+
+.details_header p {
     color: var(--immortalBlack);
 }
-.noTableData p{
+
+.noTableData p {
     color: var(--color-subtext);
     font-weight: 400;
 }
-.fileDetails h6{
-  color: var(--immortalBlack);
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0;
+
+.fileDetails h6 {
+    color: var(--immortalBlack);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0;
 }
-.fileDetails p{
-  color: var(--color-subtext);
-  font-size: 0.75rem;
-  font-weight: 400;
-  margin-bottom: 0;
+
+.fileDetails p {
+    color: var(--color-subtext);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-bottom: 0;
 }
 
 
@@ -543,13 +555,14 @@
 /* ===================  number-compliances */
 
 
-.compliancesBox{
+.compliancesBox {
     box-shadow: rgba(120, 120, 120, 0.1) -3px 1px 16px;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
 }
-.compliancesBox .basicContent .heading{
+
+.compliancesBox .basicContent .heading {
     background: var(--color2);
     padding: 20px;
     font-size: 1.2rem;
@@ -558,39 +571,48 @@
 }
 
 .compliancesBox .basicContent ul li:nth-child(2n-1).listingLi {
-  background-color: var(--color2) !important;
+    background-color: var(--color2) !important;
 }
+
 .compliancesBox .basicContent ul li:nth-child(2n-1).listingLi .heading {
-  padding: 0;
-  background-color: transparent;
+    padding: 0;
+    background-color: transparent;
 }
-.compliancesBox .basicContent h4{
+
+.compliancesBox .basicContent h4 {
     margin-bottom: 20px;
 }
-.compliancesBox .basicContent ul li{
+
+.compliancesBox .basicContent ul li {
     list-style-type: none;
     padding: 20px;
 }
+
 .compliancesBox .basicContent ul li:nth-child(2n-1) {
-  background-color: var(--table-odd-color) !important;
-}
-.compliancesBox .basicContent ul li p{
-   margin-bottom: 0;
-}
-.compliancesBox .basicContent .compDetails{
-   margin-bottom: 0;
-   padding: 0;
-   margin-top: 30px;
-}
-.showUrl {
-  display: none;
+    background-color: var(--table-odd-color) !important;
 }
 
-#toggleWebhook:checked ~ .showUrl {
-  display: flex; /* or block, depending on layout */
-  flex-direction: column;
+.compliancesBox .basicContent ul li p {
+    margin-bottom: 0;
 }
-.noticeMessageBox{
+
+.compliancesBox .basicContent .compDetails {
+    margin-bottom: 0;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.showUrl {
+    display: none;
+}
+
+#toggleWebhook:checked~.showUrl {
+    display: flex;
+    /* or block, depending on layout */
+    flex-direction: column;
+}
+
+.noticeMessageBox {
     background: #00000024;
     border-radius: 5px;
     display: flex;
@@ -599,16 +621,85 @@
     gap: 10px;
     padding: 10px 10px;
 }
-.noticeMessageBox p , .noticeMessageBox .fa-circle-exclamation  {
+
+.noticeMessageBox p,
+.noticeMessageBox .fa-circle-exclamation {
     color: var(--color-subtext);
     font-weight: 400 !important;
 }
-.urlText{
+
+.urlText {
     color: var(--color-subtext);
     font-size: 14px;
     text-decoration: none;
     transition: all 0.4s ease-in-out;
 }
-.urlText:hover{
+
+.urlText:hover {
     color: var(--color2);
+}
+
+.toolTripContext li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.FlowAccordion_content .detailText {
+    font-size: 0.75rem;
+    color: var(--color-subtext);
+}
+
+.FlowAccordion_content .accordion-body {
+    padding: 15px 20px !important;
+}
+
+.FlowAccordion_content .accordion-body ul li {
+    list-style-type: none;
+}
+
+.form-check-label {
+    color: var(--form-label);
+    font-size: 0.75rem;
+}
+
+.aitable_button.static {
+    font-size: 16px;
+    font-size: 16px;
+    padding: 4px 10px;
+    background: #6666661c;
+}
+
+.listHeding {
+    font-size: 0.875rem;
+    color: var(--form-label);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.FlowAccordion_content .dropdown-menu.settingMenu.w300.show {
+    display: block;
+    min-width: 389px;
+    width: 100%;
+    background: var(--ele-color);
+}
+
+.FlowAccordion_content .dropdown-menu.settingMenu.show .dropdown-item {
+    color: var(--color-subtext);
+}
+
+.FlowAccordion_content .dropdown-menu.settingMenu.show .text2 {
+    color: var(--color-subtext);
+}
+
+.textGray,
+.iconGray {
+    color: var(--color-subtext);
+}
+
+.accordion.FlowAccordion_content .accordion-button {
+    color: var(--immortalBlack);
+    background: #b2d4ff69;
+    border-radius: 10px !important;
 }
