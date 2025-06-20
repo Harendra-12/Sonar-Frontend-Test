@@ -53,8 +53,19 @@ const AllAgent = () => {
     setUpdateListing(true);
     const apiData = await aiGeneralGetFunction("/agent/all");
     if (apiData.status) {
+      // setAllAgents(apiData.data);
+      // Remove duplicates based on agent_id
+      const seen = new Set();
+      const uniqueAgents = [];
+
+      for (const agent of apiData.data) {
+        if (!seen.has(agent.agent_id)) {
+          seen.add(agent.agent_id);
+          uniqueAgents.push(agent);
+        }
+      }
+      setAllAgents(uniqueAgents);
       setUpdateListing(false);
-      setAllAgents(apiData.data);
       setLoading(false);
     } else {
       setUpdateListing(false);

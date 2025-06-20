@@ -12,6 +12,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiPhoneNumber = () => {
   const [refreshState, setRefreshState] = useState(false);
@@ -24,6 +25,7 @@ const AiPhoneNumber = () => {
   const [isRtl, setIsRtl] = useState(false);
   const [linkCopy, setLinkCopy] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [createNumberLoading, setCreateNumberLoading] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState("");
   const [defaultName, setDefaultName] = useState(Date.now().toString());
   const [isEdit, setIsEdit] = useState(false);
@@ -68,6 +70,7 @@ const AiPhoneNumber = () => {
       // setInboundCallAgent(res.data[0]?.agent_id);
       // setOutboundCallAgent(res.data[0]?.agent_id);
       setLoading(false);
+      setRefreshState(false);
     } else {
       setLoading(false);
       console.error("Failed to fetch available LLMs");
@@ -86,6 +89,7 @@ const AiPhoneNumber = () => {
         setInboundCallAgent(firstNumber.inbound_agent_id || "");
         setOutboundCallAgent(firstNumber.outbound_agent_id || "");
         setNumberProvider(firstNumber.number_provider || "twilio");
+        setRefreshState(false);
       }
     } else {
       console.error("Failed to fetch available phone numbers");
@@ -118,7 +122,7 @@ const AiPhoneNumber = () => {
       number_provider: numberProvider ? numberProvider : "twilio",
     };
 
-    setLoading(true);
+    setCreateNumberLoading(true);
     const res = await aiGeneralPostFunction("/phonenumber/store", payload);
     if (res.status) {
       setAvailableNumbers([...availableNumbers, res.data]);
@@ -135,11 +139,11 @@ const AiPhoneNumber = () => {
       toast.success("Phone number created successfully!");
     } else {
       console.error("Faild to create phone number: ", res);
-      setLoading(false);
+      setCreateNumberLoading(false);
       toast.error("Failed to create phone number. Please try again.");
     }
 
-    setLoading(false);
+    setCreateNumberLoading(false);
   };
 
   const handleUpdateNumber = async (updatedData = {}) => {
@@ -218,6 +222,7 @@ const AiPhoneNumber = () => {
       setNumberProvider("twilio");
       setShowUrlField(false);
       fetchAvailableAgents();
+      setDeletePopup(false);
       toast.success("Phone number deleted successfully!");
     } else {
       console.error("Failed to delete phone number: ", res);
@@ -230,9 +235,11 @@ const AiPhoneNumber = () => {
     setRefreshState(true);
     // const shouldLoad = false
     // getData(shouldLoad);
+    fetchAvailableAgents();
+    fetchAvailableNumbers();
   };
 
-  if (loading) {
+  if (createNumberLoading) {
     return <CircularLoader />;
   }
 
@@ -245,7 +252,12 @@ const AiPhoneNumber = () => {
               <Header title="Phone Numbers" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
+                  <div
+                    className="d-flex flex-wrap position-relative"
+                    style={
+                      loading ? { height: "calc(100vh - 200px)" } : undefined
+                    }
+                  >
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
@@ -269,254 +281,265 @@ const AiPhoneNumber = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-12">
-                      <div className="row p-3">
-                        <div className="col-xxl-4 col-xl-5 col-lg-5 ">
-                          <div className="KnowledgeLeftinfo">
-                            <div className="info_header">
-                              <h5 className="mb-0">Available Numbers</h5>
-                              <button
-                                className={`tableButton`}
-                                role="button"
-                                onClick={setKnowledgeBase}
-                              >
-                                <i className="fa-regular fa-plus" />
-                              </button>
-                            </div>
-                            <div className="knowledge__list">
-                              {availableNumbers.length === 0 ? (
-                                <div className="flex items-center justify-center p-2 border rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-700 cursor-pointer">
-                                  <span>No numbers available</span>
-                                </div>
-                              ) : (
-                                availableNumbers.map((number, index) => (
-                                  <div
-                                    key={index}
-                                    className="nav flex-column nav-pills me-3"
-                                    id="v-pills-tab"
-                                    role="tablist"
-                                    aria-orientation="vertical"
-                                  >
-                                    <button
-                                      className={`nav-link ${
-                                        number?.phone_number === selectedNumber
-                                          ? "active"
-                                          : ""
-                                      }`}
-                                      id="v-pills-home-tab"
-                                      data-bs-toggle="pill"
-                                      data-bs-target="#v-pills-home"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="v-pills-home"
-                                      aria-selected="true"
-                                      onClick={() => {
-                                        // Update all state values when selecting a number
-                                        setSelectedNumber(number?.phone_number);
-                                        setDefaultName(
-                                          number?.nickname ||
-                                            number?.phone_number ||
-                                            ""
-                                        );
-                                        setAreaCode(number?.area_code || "");
-                                        setWebhookUrl(
-                                          number?.inbound_webhook_url || ""
-                                        );
-                                        setInboundCallAgent(
-                                          number?.inbound_agent_id || ""
-                                        );
-                                        setOutboundCallAgent(
-                                          number?.outbound_agent_id || ""
-                                        );
-                                        setNumberProvider(
-                                          number?.number_provider || "twilio"
-                                        );
-                                        setShowUrlField(
-                                          !!number?.inbound_webhook_url
-                                        );
-                                      }}
-                                    >
-                                      <p className="mb-0">
-                                        <i className="fa-solid fa-phone me-2"></i>{" "}
-                                        {number?.phone_number}
-                                      </p>
-                                      {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
-                                    </button>
+                    {loading ? (
+                      <ThreeDotedLoader />
+                    ) : (
+                      <div className="col-12">
+                        <div className="row p-3">
+                          <div className="col-xxl-4 col-xl-5 col-lg-5 ">
+                            <div className="KnowledgeLeftinfo">
+                              <div className="info_header">
+                                <h5 className="mb-0">Available Numbers</h5>
+                                <button
+                                  className={`tableButton`}
+                                  role="button"
+                                  onClick={setKnowledgeBase}
+                                >
+                                  <i className="fa-regular fa-plus" />
+                                </button>
+                              </div>
+                              <div className="knowledge__list">
+                                {availableNumbers.length === 0 ? (
+                                  <div className="flex items-center justify-center p-2 border rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-700 cursor-pointer">
+                                    <span>No numbers available</span>
                                   </div>
-                                ))
-                              )}
+                                ) : (
+                                  availableNumbers.map((number, index) => (
+                                    <div
+                                      key={index}
+                                      className="nav flex-column nav-pills me-3"
+                                      id="v-pills-tab"
+                                      role="tablist"
+                                      aria-orientation="vertical"
+                                    >
+                                      <button
+                                        className={`nav-link ${
+                                          number?.phone_number ===
+                                          selectedNumber
+                                            ? "active"
+                                            : ""
+                                        }`}
+                                        id="v-pills-home-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-home"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="v-pills-home"
+                                        aria-selected="true"
+                                        onClick={() => {
+                                          // Update all state values when selecting a number
+                                          setSelectedNumber(
+                                            number?.phone_number
+                                          );
+                                          setDefaultName(
+                                            number?.nickname ||
+                                              number?.phone_number ||
+                                              ""
+                                          );
+                                          setAreaCode(number?.area_code || "");
+                                          setWebhookUrl(
+                                            number?.inbound_webhook_url || ""
+                                          );
+                                          setInboundCallAgent(
+                                            number?.inbound_agent_id || ""
+                                          );
+                                          setOutboundCallAgent(
+                                            number?.outbound_agent_id || ""
+                                          );
+                                          setNumberProvider(
+                                            number?.number_provider || "twilio"
+                                          );
+                                          setShowUrlField(
+                                            !!number?.inbound_webhook_url
+                                          );
+                                        }}
+                                      >
+                                        <p className="mb-0">
+                                          <i className="fa-solid fa-phone me-2"></i>{" "}
+                                          {number?.phone_number}
+                                        </p>
+                                        {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
+                                      </button>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        {availableNumbers.length > 0 && (
-                          <div className="col-xxl-8 col-xl-7 col-lg-7 ">
-                            <div
-                              className="tab-content KnowledgeRightinfo"
-                              id="v-pills-tabContent"
-                            >
+
+                          <div className="col-xxl-8 col-xl-7 col-lg-7 position-relative">
+                            {availableNumbers.length > 0 && (
                               <div
-                                className="tab-pane fade show active"
-                                id="v-pills-home"
-                                role="tabpanel"
-                                aria-labelledby="v-pills-home-tab"
+                                className="tab-content KnowledgeRightinfo"
+                                id="v-pills-tabContent"
                               >
-                                <div className="heading">
-                                  <div className="content">
-                                    <div className="d-flex align-items-center">
-                                      {isEdit ? (
-                                        <input
-                                          className={"formItem"}
-                                          value={defaultName}
-                                          onChange={(e) =>
-                                            setDefaultName(e.target.value)
-                                          }
-                                          onBlur={() => {
-                                            setIsEdit(false);
-                                            handleUpdateNumber({ defaultName });
-                                          }}
-                                        />
-                                      ) : (
-                                        <h4 className="text-xl mb-0">
-                                          {defaultName}
-                                        </h4>
-                                      )}
-                                      <button
-                                        variant={"outline"}
-                                        size={"icon"}
-                                        className={"clearButton2 ms-2"}
-                                        onClick={() => setIsEdit(!isEdit)}
-                                      >
-                                        <i
-                                          className={`fa-solid fa-${
-                                            !isEdit
-                                              ? "pen-to-square"
-                                              : "floppy-disk"
-                                          }`}
-                                        />
-                                      </button>
-                                    </div>
-                                    <div className="d-flex justify-content-start align-items-center gap-3">
-                                      <p className="mb-0">
-                                        ID: <span>{selectedNumber}</span>
-                                        <button
-                                          className="clearButton"
-                                          onClick={() => {
-                                            copyLink(selectedNumber);
-                                          }}
-                                        >
-                                          <i
-                                            className={
-                                              linkCopy
-                                                ? "fa-solid fa-check text_success"
-                                                : "fa-solid fa-clone"
-                                            }
-                                          ></i>
-                                        </button>
-                                      </p>
-                                      <p className="mb-0">
-                                        Provider: <span>{numberProvider}</span>
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
-                                    <div className="buttonGroup">
-                                      <button
-                                        className="panelButton danger"
-                                        onClick={setDeletePopup}
-                                      >
-                                        <span className="text">Delete</span>
-                                        <span className="icon">
-                                          <i className="fa-solid fa-trash"></i>
-                                        </span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="k_body px-3">
-                                  <div className="d_card mb-3">
-                                    <div>
-                                      <form>
-                                        <div className="formRow flex-column align-items-start px-0">
-                                          <div className="formLabel">
-                                            <label>Inbound Call Agent</label>
-                                          </div>
-                                          <div className="col-12">
-                                            <Select
-                                              className="basic-single"
-                                              classNamePrefix="select"
-                                              isDisabled={isDisabled}
-                                              isLoading={isLoading}
-                                              isClearable={isClearable}
-                                              isRtl={isRtl}
-                                              isSearchable={isSearchable}
-                                              name="inboundCallAgent"
-                                              value={formattedAgents.find(
-                                                (option) =>
-                                                  option.value ===
-                                                  inboundCallAgent
-                                              )}
-                                              onChange={(option) => {
-                                                const selected = option?.value;
-                                                setInboundCallAgent(selected);
-                                                handleUpdateNumber({
-                                                  inboundCallAgent: selected,
-                                                });
-                                              }}
-                                              options={formattedAgents}
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="py-2">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="v-pills-home"
+                                  role="tabpanel"
+                                  aria-labelledby="v-pills-home-tab"
+                                >
+                                  <div className="heading">
+                                    <div className="content">
+                                      <div className="d-flex align-items-center">
+                                        {isEdit ? (
                                           <input
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            id="toggleWebhook"
-                                            onClick={() => {
-                                              setShowUrlField(!showUrlField);
+                                            className={"formItem"}
+                                            value={defaultName}
+                                            onChange={(e) =>
+                                              setDefaultName(e.target.value)
+                                            }
+                                            onBlur={() => {
+                                              setIsEdit(false);
+                                              handleUpdateNumber({
+                                                defaultName,
+                                              });
                                             }}
                                           />
-                                          <label
-                                            className="form-check-label ms-3"
-                                            htmlFor="toggleWebhook"
+                                        ) : (
+                                          <h4 className="text-xl mb-0">
+                                            {defaultName}
+                                          </h4>
+                                        )}
+                                        <button
+                                          variant={"outline"}
+                                          size={"icon"}
+                                          className={"clearButton2 ms-2"}
+                                          onClick={() => setIsEdit(!isEdit)}
+                                        >
+                                          <i
+                                            className={`fa-solid fa-${
+                                              !isEdit
+                                                ? "pen-to-square"
+                                                : "floppy-disk"
+                                            }`}
+                                          />
+                                        </button>
+                                      </div>
+                                      <div className="d-flex justify-content-start align-items-center gap-3">
+                                        <p className="mb-0">
+                                          ID: <span>{selectedNumber}</span>
+                                          <button
+                                            className="clearButton"
+                                            onClick={() => {
+                                              copyLink(selectedNumber);
+                                            }}
                                           >
-                                            Add on Inbound webhook.{" "}
-                                            <Link to="" className="urlText">
-                                              ( Learn More )
-                                            </Link>
-                                          </label>
-                                          {showUrlField && (
-                                            <div className="formRow flex-column align-items-start px-0 showUrl">
-                                              <div className="formLabel">
-                                                <label>Enter url</label>
-                                              </div>
-                                              <div className="col-12">
-                                                <input
-                                                  type="text"
-                                                  className="formItem"
-                                                  placeholder="Enter url"
-                                                  onChange={(e) =>
-                                                    setWebhookUrl(
-                                                      e.target.value
-                                                    )
-                                                  }
-                                                  onBlur={() => {
-                                                    handleUpdateNumber({
-                                                      webhookUrl,
-                                                    });
-                                                  }}
-                                                />
-                                              </div>
+                                            <i
+                                              className={
+                                                linkCopy
+                                                  ? "fa-solid fa-check text_success"
+                                                  : "fa-solid fa-clone"
+                                              }
+                                            ></i>
+                                          </button>
+                                        </p>
+                                        <p className="mb-0">
+                                          Provider:{" "}
+                                          <span>{numberProvider}</span>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
+                                      <div className="buttonGroup">
+                                        <button
+                                          className="panelButton danger"
+                                          onClick={setDeletePopup}
+                                        >
+                                          <span className="text">Delete</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-trash"></i>
+                                          </span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="k_body px-3">
+                                    <div className="d_card mb-3">
+                                      <div>
+                                        <form>
+                                          <div className="formRow flex-column align-items-start px-0">
+                                            <div className="formLabel">
+                                              <label>Inbound Call Agent</label>
                                             </div>
-                                          )}
-                                        </div>
-
-                                        <div className="formRow flex-column align-items-start px-0">
-                                          <div className="formLabel">
-                                            <label>Outbound Call Agent</label>
+                                            <div className="col-12">
+                                              <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isDisabled={isDisabled}
+                                                isLoading={isLoading}
+                                                isClearable={isClearable}
+                                                isRtl={isRtl}
+                                                isSearchable={isSearchable}
+                                                name="inboundCallAgent"
+                                                value={formattedAgents.find(
+                                                  (option) =>
+                                                    option.value ===
+                                                    inboundCallAgent
+                                                )}
+                                                onChange={(option) => {
+                                                  const selected =
+                                                    option?.value;
+                                                  setInboundCallAgent(selected);
+                                                  handleUpdateNumber({
+                                                    inboundCallAgent: selected,
+                                                  });
+                                                }}
+                                                options={formattedAgents}
+                                              />
+                                            </div>
                                           </div>
-                                          <div className="col-12">
-                                            {/* <Select
+                                          <div className="py-2">
+                                            <input
+                                              type="checkbox"
+                                              className="form-check-input"
+                                              id="toggleWebhook"
+                                              onClick={() => {
+                                                setShowUrlField(!showUrlField);
+                                              }}
+                                            />
+                                            <label
+                                              className="form-check-label ms-3"
+                                              htmlFor="toggleWebhook"
+                                            >
+                                              Add on Inbound webhook.{" "}
+                                              <Link to="" className="urlText">
+                                                ( Learn More )
+                                              </Link>
+                                            </label>
+                                            {showUrlField && (
+                                              <div className="formRow flex-column align-items-start px-0 showUrl">
+                                                <div className="formLabel">
+                                                  <label>Enter url</label>
+                                                </div>
+                                                <div className="col-12">
+                                                  <input
+                                                    type="text"
+                                                    className="formItem"
+                                                    placeholder="Enter url"
+                                                    onChange={(e) =>
+                                                      setWebhookUrl(
+                                                        e.target.value
+                                                      )
+                                                    }
+                                                    onBlur={() => {
+                                                      handleUpdateNumber({
+                                                        webhookUrl,
+                                                      });
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                          </div>
+
+                                          <div className="formRow flex-column align-items-start px-0">
+                                            <div className="formLabel">
+                                              <label>Outbound Call Agent</label>
+                                            </div>
+                                            <div className="col-12">
+                                              {/* <Select
                                             className="basic-single"
                                             classNamePrefix="select"
                                             // defaultValue={colourOptions[0]}
@@ -528,41 +551,45 @@ const AiPhoneNumber = () => {
                                             name="color"
                                             // options={colourOptions}
                                           /> */}
-                                            <Select
-                                              className="basic-single"
-                                              classNamePrefix="select"
-                                              isDisabled={isDisabled}
-                                              isLoading={isLoading}
-                                              isClearable={isClearable}
-                                              isRtl={isRtl}
-                                              isSearchable={isSearchable}
-                                              name="outboundCallAgent"
-                                              value={formattedAgents.find(
-                                                (option) =>
-                                                  option.value ===
-                                                  outboundCallAgent
-                                              )}
-                                              onChange={(option) => {
-                                                const selected = option?.value;
-                                                setOutboundCallAgent(selected);
-                                                handleUpdateNumber({
-                                                  outboundCallAgent: selected,
-                                                });
-                                              }}
-                                              options={formattedAgents}
-                                            />
+                                              <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isDisabled={isDisabled}
+                                                isLoading={isLoading}
+                                                isClearable={isClearable}
+                                                isRtl={isRtl}
+                                                isSearchable={isSearchable}
+                                                name="outboundCallAgent"
+                                                value={formattedAgents.find(
+                                                  (option) =>
+                                                    option.value ===
+                                                    outboundCallAgent
+                                                )}
+                                                onChange={(option) => {
+                                                  const selected =
+                                                    option?.value;
+                                                  setOutboundCallAgent(
+                                                    selected
+                                                  );
+                                                  handleUpdateNumber({
+                                                    outboundCallAgent: selected,
+                                                  });
+                                                }}
+                                                options={formattedAgents}
+                                              />
+                                            </div>
                                           </div>
-                                        </div>
-                                      </form>
+                                        </form>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -880,12 +907,6 @@ const AiPhoneNumber = () => {
                             />
                           </div>
                         </div>
-                        <div className='col-12 mt-3'>
-                          <div className='noticeMessageBox'>
-                            <i class="fa-regular fa-circle-exclamation "></i>  <p className='mb-0 f-s-14'>This number incurs a monthly fee of $2.00.</p>
-                          </div>
-                        </div>
-
                         <div className="col-12 mt-3">
                           <div className="noticeMessageBox">
                             <i class="fa-regular fa-circle-exclamation "></i>{" "}
