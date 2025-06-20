@@ -7,7 +7,8 @@ let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
 const aiBaseName = "https://ai.webvio.in/backend/backend";
-const aiToken = "key_a083999b0156a43721cc1b5942a1";
+// const aiToken = "key_a083999b0156a43721cc1b5942a1";
+const aiToken = "key_f3f8d64a285120a16182f6add20d";
 
 // ai axios instance
 const aiAxiosInstance = axios.create({

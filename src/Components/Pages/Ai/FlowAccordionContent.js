@@ -1,5 +1,5 @@
 import Tippy from '@tippyjs/react';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -7,9 +7,23 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import KnowledgeBaseFlow from './KnowledgeBaseFlow';
 import SpeechSettings from './SpeechSettings';
+import {aiGeneralGetFunction, aiGeneralPostFunction, aiGeneralPutFunction } from '../../GlobalFunction/globalFunction';
+import { toast } from 'react-toastify';
 
-const FlowAccordionContent = () => {
-
+const FlowAccordionContent = ({ 
+  defaultName,
+  setDefaultName,
+  newAgent,
+  saveClicked,
+  agentData,
+  llmData,
+  setLoading,
+  beginMessage,
+  generalPrompt,
+  setBeginMessage,
+  setGeneralPrompt,
+  }) => {
+  const [agentId, setAgentId] = useState(agentData?.agent_id);
   const [endCallPopup, setEndCallPopup] = useState();
   const [callTransferPopup, setCallTransferPopup] = useState();
   const [checkCalendarAvailabilityPopup, setCheckCalendarAvailabilityPopup] = useState();
@@ -23,6 +37,352 @@ const FlowAccordionContent = () => {
   const [selectVoiceSettings, SetSelectVoiceSettings] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
   const [editPostCallPopup, setEditPostCallPopup] = useState(false);
+
+
+  // Initializing all the states for agent creation
+  const [llm_id, setLlmId] = useState(null);
+  const [voice_id, setVoiceId] = useState("11labs-Lily");
+  const [voice_model, setVoiceModel] = useState("eleven_turbo_v2"); //The voice model to use for the agent. Default to eleven_turbo_v2.
+  const [fallback_voice_ids, setFallbackVoiceIds] = useState(null);
+  const [voice_temperature, setVoiceTemperature] = useState(1); //Controls how stable the voice is. Value ranging from [0,2]
+  const [voice_speed, setVoiceSpeed] = useState(1); //Controls speed of voice. Value ranging from [0.5,2]
+  const [volume, setVolume] = useState(1); //If set, will control the volume of the agent. Value ranging from [0,2]
+  const [responsiveness, setResponsiveness] = useState(1); //Controls how responsive is the agent. Value ranging from [0,1]
+  const [interruption_sensitivity, setInterruptionSensitivity] = useState(1); //Controls how sensitive the agent is to user interruptions. Value ranging from [0,1]
+  const [enable_backchannel, setEnableBackchannel] = useState(false); //Controls whether the agent would backchannel (agent interjects the speaker with phrases like "yeah", "uh-huh" to signify interest and engagement)
+  const [backchannel_frequency, setBackchannelFrequency] = useState(0); //Controls how often the agent would backchannel. Value ranging from [0,1]
+  const [backchannel_words, setBackchannelWords] = useState(null);
+  const [reminder_trigger_ms, setReminderTriggerMs] = useState(10000); //If set (in milliseconds), will trigger a reminder to the agent to speak if the user has been silent for the specified duration after some agent speech
+  const [reminder_max_count, setReminderMaxCount] = useState(1); //If set, controls how many times agent would remind user when user is unresponsive
+  const [ambient_sound, setAmbientSounds] = useState(null); //If set, will add ambient environment sound to the call to make experience more realistic Currently supports the following options: coffee-shop, convention-hall,summer-outdoor, mountain-outdoor, static-noise, call-center
+  const [ambient_sound_volume, setAmbientSoundVolume] = useState(1); //If set, will control the volume of the ambient sound. Value ranging from [0,2]
+  const [language, setLanguage] = useState("en-US"); //Specifies what language (and dialect) the speech recognition will operate in
+  const [webhook_url, setWebhookUrl] = useState(null); //The webhook for agent to listen to call events.
+  const [boosted_keywords, setBoostedKeywords] = useState(null); //Provide a customized list of keywords to bias the transcriber model, so that these words are more likely to get transcribed. Commonly used for names, brands, street, etc.
+  const [enable_transcription_formatting, setEnableTranscriptionFormatting] =
+    useState(false); //If set to true, will format transcription to number, date, email, etc. If set to false, will return transcripts in raw words
+  const [opt_out_sensitive_data_storage, setOptOutSensitiveDataStorage] =
+    useState(false); //Whether this agent opts out of sensitive data storage like transcript, recording, logging, inbound/outbound phone numbers, etc.
+  const [opt_in_signed_url, setOptInSignedUrl] = useState(false); //Whether this agent opts in for signed URLs for public logs and recordings. When enabled, the generated URLs will include security signatures that restrict access and automatically expire after 24 hours.
+  const [pronunciation_dictionary, setPronunciationDictionary] = useState(null); //A list of words / phrases and their pronunciation to be used to guide the audio synthesize for consistent pronunciation. Currently only supported for English & 11labs voices. Set to null to remove pronunciation dictionary from this agent.
+  const [normalize_for_speech, setNormalizeForSpeech] = useState(false); //If set to true, will normalize the some part of text (number, currency, date, etc) to spoken to its spoken form for more consistent speech synthesis (sometimes the voice synthesize system itself might read these wrong with the raw text)
+  const [end_call_after_silence_ms, setEndCallAfterSilenceMs] =
+    useState(600000); //If users stay silent for a period after agent speech, end the call. The minimum value allowed is 10,000 ms (10 s). By default, this is set to 600000 (10 min).
+  const [max_call_duration_ms, setMaxCallDurationMs] = useState(7200000); //Maximum allowed length for the call, will force end the call if reached. The minimum value allowed is 60,000 ms (1 min), and maximum value allowed is 7,200,000 (2 hours). By default, this is set to 3,600,000 (1 hour).
+  const [enable_voicemail_detection, setEnableVoicemailDetection] =
+    useState(false); //If set to true, will detect voicemail and pause the call if detected
+  const [voicemail_message, setVoicemailMessage] = useState(""); //The message to be played when the call enters a voicemail. Note that this feature is only available for phone calls. If you want to hangup after hitting voicemail, set this to empty string
+  const [voicemail_detection_timeout_ms, setVoicemailDetectionTimeoutMs] =
+    useState(30000); //Configures when to stop running voicemail detection, as it becomes unlikely to hit voicemail after a couple minutes, and keep running it will only have negative impact
+  const [post_call_analysis_data, setPostCallAnalysisData] = useState([]); //Post call analysis data to extract from the call. This data will augment the pre-defined variables extracted in the call analysis. This will be available after the call ends.
+  const [post_call_analysis_model, setPostCallAnalysisModel] =
+    useState("gpt-4o-mini"); //The model to use for post call analysis. Currently only supports gpt-4o-mini and gpt-4o. Default to gpt-4o-mini.
+  const [begin_message_delay_ms, setBeginMessageDelayMs] = useState(0); //If set, will delay the first message by the specified amount of milliseconds, so that it gives user more time to prepare to take the call
+  const [ring_duration_ms, setRingDurationMs] = useState(30000); //If set, the phone ringing will last for the specified amount of milliseconds. This applies for both outbound call ringtime, and call transfer ringtime
+  const [stt_mode, setSttModel] = useState("fast"); //If set, determines whether speech to text should focus on latency or accuracy. Default to fast mode.
+  const [allow_user_dtmf, setAllowUserDtmf] = useState(true); //If set to true, DTMF input will be accepted and processed. If false, any DTMF input will be ignored. Default to true.
+  const [digit_limit, setDigitLimit] = useState(10); //The maximum number of digits allowed in the user's DTMF (Dual-Tone Multi-Frequency) input per turn. Once this limit is reached, the input is considered complete and a response will be generated immediately.
+  const [termination_keys, setTerminationKeys] = useState("#"); //A single key that signals the end of DTMF input. Acceptable values include any digit (0–9), the pound/hash symbol (#), or the asterisk (*).
+  const [timeout_ms, setTimeoutMs] = useState(15000); //The time (in milliseconds) to wait for user DTMF input before timing out. The timer resets with each digit received.
+  const [denoising_mode, setDenoisingMode] = useState("noise-cancellation"); //If set, determines what denoising mode to use. Default to noise-cancellation..
+  const [postCallName, setPostCallName] = useState("");
+  const [postCallDescription, setPostCallDescription] = useState("");
+  const [postCallExample, setPostCallExample] = useState("");
+  const [allKnowledgeBases, setAllKnowledgeBases] = useState([]);
+  const [allVoices, setAllVoices] = useState([]);
+  const [postCallDataEdit, setPostCallDataEdit] = useState(null);
+  const [model_high_priority, setModelHighPriority] = useState(false);
+  const [model_temperature, setModelTemperature] = useState(0);
+  const [model, setModel] = useState("gpt-4o");
+  const [llmModels, setLlmModels] = useState([]);
+  const [llmKnowlwdgeBaseIds, setLlmKnowlwdgeBaseIds] = useState([]);
+
+  // LLm model Functions payload added to the agent
+  const [general_tools, setGeneralTools] = useState([]);
+  const [type, setType] = useState();
+  const [name, setName] = useState();
+  const [description, setDescription] = useState("");
+  const [transfer_destination, setTransferDestination] = useState({});
+  const [transferType, setTransferType] = useState("predefined");
+  const [transferNumber, setTransferNumber] = useState();
+  const [transferPrompt, setTransferPrompt] = useState("");
+  const [transfer_options, setTransferOptions] = useState({});
+  const [transferOptionType, setTransferOptionType] = useState();
+  const [show_transferee_as_caller, setShowTransfereeAsCaller] =
+    useState(false);
+  const [public_handoff_option, setPublicHandoffOption] = useState({});
+  const [publicHandoffType, setPublicHandoffOptionType] = useState("prompt");
+  const [publicHandOffPrompt, setPublicHandOffPrompt] = useState("");
+  const [publicHandOffMessage, setPublicHandOffMessage] = useState("");
+  const [cal_api_key, setCalApiKey] = useState();
+  const [event_type_id, setEventTypeId] = useState();
+  const [timezone, setTimezone] = useState();
+  const [delay_ms, setDelayMs] = useState();
+  const [url, setUrl] = useState();
+  const [speak_during_execution, setSpeakDuringExecution] = useState(true);
+  const [speak_after_execution, setSpeakAfterExecution] = useState(true);
+  const [parameters, setParameters] = useState();
+  const [execution_message_description, setExecutionMessageDescription] =
+    useState();
+  const [customTimeoutMs, setCustomTimeoutMs] = useState(120000);
+  const [parameterType, setParameterType] = useState();
+  const [parameterProperties, setParameterProperties] = useState({});
+  const [parameterRequired, setParameterRequired] = useState([]);
+  const [propertiesKey, setPropertiesKey] = useState();
+
+  useEffect(() => {
+    async function getData() {
+      const apiData = await aiGeneralGetFunction("/knowledgebase/all");
+      const voicesData = await aiGeneralGetFunction("/voice/all");
+      const llmModelsData = await aiGeneralGetFunction("/llm/all");
+      if (apiData.status) {
+        setAllKnowledgeBases(apiData.knowledgeBaseResponses);
+      }
+      if (voicesData.status) {
+        setAllVoices(
+          voicesData.data.filter((item) => item.provider === "elevenlabs")
+        );
+      }
+      if (llmModelsData.status) {
+        setLlmModels(llmModelsData.data);
+      }
+    }
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (agentData && !newAgent) {
+      setLlmId(agentData.response_engine.llm_id);
+      setVoiceId(agentData.voice_id);
+      setDefaultName(agentData.agent_name);
+      setVoiceModel(agentData.voice_model);
+      setFallbackVoiceIds(agentData.fallback_voice_ids);
+      setVoiceTemperature(agentData.voice_temperature);
+      setVoiceSpeed(agentData.voice_speed);
+      setVolume(agentData.volume);
+      setResponsiveness(agentData.responsiveness);
+      setInterruptionSensitivity(agentData.interruption_sensitivity);
+      setEnableBackchannel(agentData.enable_backchannel);
+      setBackchannelFrequency(agentData.backchannel_frequency);
+      setBackchannelWords(agentData.backchannel_words);
+      setReminderTriggerMs(agentData.reminder_trigger_ms);
+      setEnableVoicemailDetection(agentData.enable_voicemail_detection);
+      setVoicemailMessage(agentData.voicemail_message);
+      setVoicemailDetectionTimeoutMs(agentData.voicemail_detection_timeout_ms);
+      setPostCallAnalysisData(agentData.post_call_analysis_data);
+      setPostCallAnalysisModel(agentData.post_call_analysis_model);
+      setBeginMessageDelayMs(agentData.begin_message_delay_ms);
+      setRingDurationMs(agentData.ring_duration_ms);
+      setSttModel(agentData.stt_mode);
+      setAllowUserDtmf(agentData.allow_user_dtmf);
+      setDigitLimit(agentData.user_dtmf_options?.digit_limit);
+      setTerminationKeys(agentData.user_dtmf_options?.termination_keys);
+      setTimeoutMs(agentData.user_dtmf_options?.timeout_ms);
+      setDenoisingMode(agentData.denoising_mode);
+      setLanguage(agentData.language);
+      setWebhookUrl(agentData.webhook_url);
+      setBoostedKeywords(agentData.boosted_keywords);
+      setEnableTranscriptionFormatting(
+        agentData.enable_transcription_formatting
+      );
+      setOptOutSensitiveDataStorage(agentData.opt_out_sensitive_data_storage);
+      setOptInSignedUrl(agentData.opt_in_signed_url);
+      setPronunciationDictionary(agentData.pronunciation_dictionary);
+      setNormalizeForSpeech(agentData.normalize_for_speech);
+      setEndCallAfterSilenceMs(agentData.end_call_after_silence_ms);
+      setMaxCallDurationMs(agentData.max_call_duration_ms);
+      setAmbientSounds(agentData.ambient_sound);
+      setAmbientSoundVolume(agentData.ambient_sound_volume);
+      // Setting llm data
+      setModel(llmData.model);
+      setModelTemperature(llmData.model_temperature);
+      setModelHighPriority(llmData.model_high_priority);
+      setGeneralPrompt(llmData.general_prompt);
+      setBeginMessage(llmData.begin_message);
+      setLlmKnowlwdgeBaseIds(llmData.knowledge_base_ids || []);
+      setGeneralTools(llmData.general_tools || []);
+    }
+  }, [agentData, newAgent]);
+
+  async function handleSave() {
+    setLoading(true);
+    if (newAgent) {
+      const llmParsedData = {
+        model: model,
+        model_temperature: model_temperature,
+        model_high_priority: model_high_priority,
+        general_prompt: generalPrompt,
+        begin_message: beginMessage,
+        knowledge_base_ids: llmKnowlwdgeBaseIds,
+        general_tools: general_tools.length > 0 ? general_tools : null,
+      };
+      const llmData = await aiGeneralPostFunction("/llm/store", llmParsedData);
+      if (llmData.status) {
+        console.log(llmData);
+        const agentParsedData = {
+          response_engine: { type: "retell-llm", llm_id: llmData.llm_id },
+          voice_id: voice_id,
+          agent_name: defaultName,
+          voice_model: voice_model,
+          fallback_voice_ids: fallback_voice_ids,
+          voice_temperature: voice_temperature,
+          voice_speed: voice_speed,
+          volume: volume,
+          responsiveness: responsiveness,
+          interruption_sensitivity: interruption_sensitivity,
+          enable_backchannel: enable_backchannel,
+          backchannel_frequency: backchannel_frequency,
+          backchannel_words: backchannel_words,
+          reminder_trigger_ms: reminder_trigger_ms,
+          reminder_max_count: reminder_max_count,
+          ambient_sound: ambient_sound,
+          ambient_sound_volume: ambient_sound_volume,
+          language: language,
+          webhook_url: webhook_url,
+          boosted_keywords: boosted_keywords,
+          enable_transcription_formatting: enable_transcription_formatting,
+          opt_out_sensitive_data_storage: opt_out_sensitive_data_storage,
+          opt_in_signed_url: opt_in_signed_url,
+          pronunciation_dictionary: pronunciation_dictionary,
+          normalize_for_speech: normalize_for_speech,
+          end_call_after_silence_ms: end_call_after_silence_ms,
+          max_call_duration_ms: max_call_duration_ms,
+          enable_voicemail_detection: enable_voicemail_detection,
+          voicemail_message: voicemail_message,
+          voicemail_detection_timeout_ms: voicemail_detection_timeout_ms,
+          post_call_analysis_data: post_call_analysis_data,
+          post_call_analysis_model: post_call_analysis_model,
+          begin_message_delay_ms: begin_message_delay_ms,
+          ring_duration_ms: ring_duration_ms,
+          stt_mode: stt_mode,
+          allow_user_dtmf: allow_user_dtmf,
+          user_dtmf_options: {
+            digit_limit: digit_limit,
+            termination_keys: termination_keys,
+            timeout_ms: timeout_ms,
+          },
+          denoising_mode: denoising_mode,
+        };
+        const apiData = await aiGeneralPostFunction(
+          "/agent/store",
+          agentParsedData
+        );
+        if (apiData.status) {
+          console.log(apiData);
+          setLoading(false);
+          setAgentId(apiData.data.agent_id);
+          toast.success("Agent created successfully!");
+        } else {
+          toast.error(apiData.error);
+          setLoading(false);
+        }
+      } else {
+        toast.error(llmData.error);
+        setLoading(false);
+      }
+    } else {
+      const llmParsedData = {
+        model: model,
+        model_temperature: model_temperature,
+        model_high_priority: model_high_priority,
+        general_prompt: generalPrompt,
+        begin_message: beginMessage,
+        knowledge_base_ids: llmKnowlwdgeBaseIds,
+        general_tools: general_tools.length > 0 ? general_tools : null,
+      };
+      const llmData = await aiGeneralPutFunction(
+        `/llm/update-llm/${llm_id}`,
+        llmParsedData
+      );
+      if (llmData.status) {
+        // console.log(llmData);
+        const agentParsedData = {
+          response_engine: { type: "retell-llm", llm_id: llm_id },
+          voice_id: voice_id,
+          agent_name: defaultName,
+          voice_model: voice_model,
+          fallback_voice_ids: fallback_voice_ids,
+          voice_temperature: voice_temperature,
+          voice_speed: voice_speed,
+          volume: volume,
+          responsiveness: responsiveness,
+          interruption_sensitivity: interruption_sensitivity,
+          enable_backchannel: enable_backchannel,
+          backchannel_frequency: backchannel_frequency,
+          backchannel_words: backchannel_words,
+          reminder_trigger_ms: reminder_trigger_ms,
+          reminder_max_count: reminder_max_count,
+          ambient_sound: ambient_sound,
+          ambient_sound_volume: ambient_sound_volume,
+          language: language,
+          webhook_url: webhook_url,
+          boosted_keywords: boosted_keywords,
+          enable_transcription_formatting: enable_transcription_formatting,
+          opt_out_sensitive_data_storage: opt_out_sensitive_data_storage,
+          opt_in_signed_url: opt_in_signed_url,
+          pronunciation_dictionary: pronunciation_dictionary,
+          normalize_for_speech: normalize_for_speech,
+          end_call_after_silence_ms: end_call_after_silence_ms,
+          max_call_duration_ms: max_call_duration_ms,
+          enable_voicemail_detection: enable_voicemail_detection,
+          voicemail_message: voicemail_message,
+          voicemail_detection_timeout_ms: voicemail_detection_timeout_ms,
+          post_call_analysis_data: post_call_analysis_data,
+          post_call_analysis_model: post_call_analysis_model,
+          begin_message_delay_ms: begin_message_delay_ms,
+          ring_duration_ms: ring_duration_ms,
+          stt_mode: stt_mode,
+          allow_user_dtmf: allow_user_dtmf,
+          user_dtmf_options: {
+            digit_limit: digit_limit,
+            termination_keys: termination_keys,
+            timeout_ms: timeout_ms,
+          },
+          denoising_mode: denoising_mode,
+        };
+        const apiData = await aiGeneralPutFunction(
+          `/agent/update-agent/${agentData.agent_id}`,
+          agentParsedData
+        );
+        if (apiData.status) {
+          setLoading(false);
+          toast.success("Agent updated successfully!");
+        } else {
+          toast.error(apiData.error);
+          setLoading(false);
+        }
+      } else {
+        toast.error(llmData.error);
+        setLoading(false);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (saveClicked > 0) {
+      handleSave();
+    }
+  }, [saveClicked]);
+  const [formData, setFormData] = useState({
+    // name: dialogType === "end_call" ? "end_call" : "",
+    name: "",
+    description: "",
+  });
+  const [callTransfer, setCallTransfer] = useState("cold_transfer");
+  const [displayNumber, setDisplayNumber] = useState("retell-agents");
+  // const [speakDuringExecution, setSpeakDuringExecution] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const [openTrigger, setOpenTrigger] = useState(null);
+  const [editableKey, setEditableKey] = useState(null);
+  const [jsonError, setJsonError] = useState(null); // just for error feedback
 
   return (
     <>
@@ -60,13 +420,67 @@ const FlowAccordionContent = () => {
                   <span class="text"><i class="fa-regular fa-plus me-2"></i> Add</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><button class="dropdown-item" onClick={setEndCallPopup}><i class="fa-regular fa-phone-arrow-up-right me-2"></i> End Call</button></li>
-                  <li><button class="dropdown-item" onClick={setCallTransferPopup}><i class="fa-regular fa-phone-arrow-right me-2"></i> Call Transfer</button></li>
-                  <li><button class="dropdown-item" onClick={setCheckCalendarAvailabilityPopup}><i class="fa-regular fa-calendar me-2"></i> Check Calendar Availability (Cal.com)</button></li>
-                  <li><button class="dropdown-item" onClick={setBookCalendarPopup}><i class="fa-regular fa-calendar-plus me-2"></i> Book on the Calendar (Cal.com)</button></li>
-                  <li><button class="dropdown-item" onClick={setPressDigitsPopup}><i class="fa-regular fa-calendar-days me-2"></i> Press Digits (IVR Navigation)</button></li>
+                  <li><button class="dropdown-item"  onClick={() => {
+                                setType("end_call");
+                                setName(null);
+                                setDescription("");
+                                setEditableKey(null);
+                                setEndCallPopup(true);
+                              }} ><i class="fa-regular fa-phone-arrow-up-right me-2"></i> End Call</button></li>
+                  <li><button class="dropdown-item" onClick={() => {
+                                setType("transfer_call");
+                                setName(null);
+                                setDescription("");
+                                setTransferType("predefined");
+                                setTransferNumber("");
+                                setTransferPrompt("");
+                                setCallTransfer("cold_transfer");
+                                setShowTransfereeAsCaller(false);
+                                setPublicHandoffOptionType(null);
+                                setPublicHandOffPrompt("");
+                                setPublicHandOffMessage("");
+                                setEditableKey(null);
+                                setCallTransferPopup(true);
+                              }}><i class="fa-regular fa-phone-arrow-right me-2"></i> Call Transfer</button></li>
+                  <li><button class="dropdown-item"  onClick={() => {
+                                setType("check_availability_cal");
+                                setName("");
+                                setDescription("");
+                                setCalApiKey("");
+                                setEventTypeId();
+                                setTimezone("");
+                                setEditableKey(null);
+                                setCheckCalendarAvailabilityPopup(true);
+                              }}><i class="fa-regular fa-calendar me-2"></i> Check Calendar Availability (Cal.com)</button></li>
+                  <li><button class="dropdown-item"  onClick={() => {
+                                setType("book_appointment_cal ");
+                                setName("");
+                                setDescription("");
+                                setCalApiKey("");
+                                setEventTypeId();
+                                setTimezone("");
+                                setEditableKey(null);
+                                setBookCalendarPopup(true);
+                              }}><i class="fa-regular fa-calendar-plus me-2"></i> Book on the Calendar (Cal.com)</button></li>
+                  <li><button class="dropdown-item"  onClick={() => {
+                                setType("press_digit");
+                                setName("");
+                                setDescription("");
+                                setDelayMs(1000);
+                                setEditableKey(null);
+                                setPressDigitsPopup(true);
+                              }}><i class="fa-regular fa-calendar-days me-2"></i> Press Digits (IVR Navigation)</button></li>
                   <li><hr class="dropdown-divider" /></li>
-                  <li><button class="dropdown-item" onClick={setCustomFunctionPopup}><i class="fa-regular fa-gear me-2"></i> Custom Function</button></li>
+                  <li><button class="dropdown-item"  onClick={() => {
+                                setType("custom");
+                                setName("");
+                                setDescription("");
+                                setUrl("");
+                                setTimeoutMs(1000);
+                                setParameters();
+                                setEditableKey(null);
+                                setCustomFunctionPopup(true);
+                              }}><i class="fa-regular fa-gear me-2"></i> Custom Function</button></li>
                 </ul>
               </div>
             </div>
@@ -447,6 +861,8 @@ const FlowAccordionContent = () => {
                           type="text"
                           className="formItem"
                           placeholder='Enter Name'
+                           value={name}
+                                      onChange={(e) => setName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -466,7 +882,35 @@ const FlowAccordionContent = () => {
                   </div>
                   <div className=" card-footer d-flex justify-content-end">
                     <div className="d-flex justify-content-end">
-                      <button className="panelButton  m-0" >
+                      <button className="panelButton  m-0"   onClick={() => {
+                                      setOpenTrigger(null);
+                                      console.log(editableKey);
+                                      if (name) {
+                                        setGeneralTools((prev) => {
+                                          if (
+                                            editableKey !== null &&
+                                            editableKey !== undefined
+                                          ) {
+                                            // Update existing item
+                                            return prev.map((tool, index) =>
+                                              index === editableKey
+                                                ? { ...tool, name, description }
+                                                : tool
+                                            );
+                                          } else {
+                                            // Add new item
+                                            return [
+                                              ...prev,
+                                              {
+                                                type: "end_call",
+                                                name,
+                                                description,
+                                              },
+                                            ];
+                                          }
+                                        });
+                                      }
+                                    }} >
                         <span className="text">Confirm</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
@@ -527,6 +971,8 @@ const FlowAccordionContent = () => {
                           type="text"
                           className="formItem"
                           placeholder='Enter Name'
+                          value={name}
+                                      onChange={(e) => setName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -540,6 +986,10 @@ const FlowAccordionContent = () => {
                           className="formItem h-auto"
                           rows={3}
                           placeholder='Enter Description'
+                          value={description}
+                                      onChange={(e) =>
+                                        setDescription(e.target.value)
+                                      }
                         />
                       </div>
                     </div>
@@ -549,10 +999,10 @@ const FlowAccordionContent = () => {
                     <div class="mt-2 baseNav">
                       <ul class="nav nav-pills" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link active" id="webPAge-tab" data-bs-toggle="pill" data-bs-target="#webPAge" type="button" role="tab" aria-controls="webPAge" aria-selected="true">Static Number</button>
+                          <button onClick={() => setTransferType("predefined")} class="nav-link active" id="webPAge-tab" data-bs-toggle="pill" data-bs-target="#webPAge" type="button" role="tab" aria-controls="webPAge" aria-selected="true">Static Number</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                          <button class="nav-link" id="upload-tab" data-bs-toggle="pill" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Dynamic Routing</button>
+                        <li class="nav-item" role="inferred">
+                          <button onClick={() => setTransferType("predefined")} class="nav-link" id="upload-tab" data-bs-toggle="pill" data-bs-target="#upload" type="button" role="tab" aria-controls="upload" aria-selected="false">Dynamic Routing</button>
                         </li>
 
                       </ul>
