@@ -10,6 +10,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { setRef } from "@mui/material";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const CallHistory = () => {
   const [endDateFlag, setEndDateFlag] = useState(
@@ -28,16 +29,16 @@ const CallHistory = () => {
   const [refreshData, setRefreshData] = useState(0);
   useEffect(() => {
     async function getData() {
-        setRefreshState(true)
+      setRefreshState(true);
       const apiData = await aiGeneralGetFunction("/call/all");
       if (apiData.status) {
-        setRefreshState(false)
+        setRefreshState(false);
         setCalls(apiData.data);
         setLoading(false);
         setDeleteLoading(false);
         setShowDeleteDialog(false);
       } else {
-        setRefreshState(false)
+        setRefreshState(false);
         setLoading(false);
       }
     }
@@ -165,7 +166,7 @@ const CallHistory = () => {
                               disabled={refreshState}
                             >
                               <i
-                              onClick={()=>setRefreshData(refreshData+1)}
+                                onClick={() => setRefreshData(refreshData + 1)}
                                 className={
                                   refreshState
                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
@@ -252,54 +253,60 @@ const CallHistory = () => {
                             </tr>
                           </thead>
                           <tbody className="">
-                            <>
-                              {filteredCalls.length === 0 ? (
-                                <tr>
-                                  <td colSpan="10" className="text-center">
-                                    No data found
-                                  </td>
-                                </tr>
-                              ) : (
-                                filteredCalls.map((call, index) => (
-                                  <tr
-                                    onClick={() => {
-                                      setSelectedCall(call);
-                                    }}
-                                    key={index}
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight"
-                                  >
-                                    <td>
-                                      {formatTimestampToDateTime(
-                                        call?.start_timestamp
-                                      )}
+                            {loading ? (
+                              <ThreeDotedLoader />
+                            ) : (
+                              <>
+                                {filteredCalls.length === 0 ? (
+                                  <tr>
+                                    <td colSpan="10" className="text-center">
+                                      No data found
                                     </td>
-                                    <td>
-                                      {formatDurationToTime(call?.duration_ms)}
-                                    </td>
-                                    <td>{call?.call_type}</td>
-                                    <td>
-                                      {" "}
-                                      {call?.call_cost?.combined_cost && "$"}
-                                      {call?.call_cost?.combined_cost}
-                                    </td>
-                                    <td> {call?.call_id}</td>
-                                    <td>
-                                      {call?.disconnection_reason
-                                        ?.split("_")
-                                        .join(" ")}
-                                    </td>
-                                    <td>{call?.call_status}</td>
-                                    <td>
-                                      {call?.call_analysis?.user_sentiment}
-                                    </td>
-                                    <td>{call?.from_number}</td>
-                                    <td>{call?.to_number}</td>
                                   </tr>
-                                ))
-                              )}
-                            </>
+                                ) : (
+                                  filteredCalls.map((call, index) => (
+                                    <tr
+                                      onClick={() => {
+                                        setSelectedCall(call);
+                                      }}
+                                      key={index}
+                                      data-bs-toggle="offcanvas"
+                                      data-bs-target="#offcanvasRight"
+                                      aria-controls="offcanvasRight"
+                                    >
+                                      <td>
+                                        {formatTimestampToDateTime(
+                                          call?.start_timestamp
+                                        )}
+                                      </td>
+                                      <td>
+                                        {formatDurationToTime(
+                                          call?.duration_ms
+                                        )}
+                                      </td>
+                                      <td>{call?.call_type}</td>
+                                      <td>
+                                        {" "}
+                                        {call?.call_cost?.combined_cost && "$"}
+                                        {call?.call_cost?.combined_cost}
+                                      </td>
+                                      <td> {call?.call_id}</td>
+                                      <td>
+                                        {call?.disconnection_reason
+                                          ?.split("_")
+                                          .join(" ")}
+                                      </td>
+                                      <td>{call?.call_status}</td>
+                                      <td>
+                                        {call?.call_analysis?.user_sentiment}
+                                      </td>
+                                      <td>{call?.from_number}</td>
+                                      <td>{call?.to_number}</td>
+                                    </tr>
+                                  ))
+                                )}
+                              </>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -388,7 +395,11 @@ const CallHistory = () => {
               className="d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-              <audio src={selectedCall?.recording_url} controls className="w-[300px] h-10">
+              <audio
+                src={selectedCall?.recording_url}
+                controls
+                className="w-[300px] h-10"
+              >
                 {/* <source  /> */}
               </audio>
             </div>
@@ -459,7 +470,7 @@ const CallHistory = () => {
               {selectedCall?.transcript_object?.map((item, index) => {
                 return (
                   <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                    <p className="status_text" style={{maxWidth: '50px'}}>
+                    <p className="status_text" style={{ maxWidth: "50px" }}>
                       {" "}
                       <span>{item.role}:</span>
                     </p>
@@ -491,8 +502,13 @@ const CallHistory = () => {
                   </p>
 
                   <div className="d-flex justify-content-center gap-2 mt-4">
-                    <button className="panelButton m-0" onClick={handleDeleteKnowledgeBase}>
-                      <span className="text">{deleteLoading ? "Deleting..." : "Delete"}</span>
+                    <button
+                      className="panelButton m-0"
+                      onClick={handleDeleteKnowledgeBase}
+                    >
+                      <span className="text">
+                        {deleteLoading ? "Deleting..." : "Delete"}
+                      </span>
                       <span className="icon">
                         <i className="fa-solid fa-check"></i>
                       </span>

@@ -1279,7 +1279,7 @@ function Navbar() {
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/ai-agent-dashboard"
                                 onClick={() => backToTop()}
@@ -1298,7 +1298,7 @@ function Navbar() {
                                 <div className="itemTitle">Ai Dashboard</div>
                               </NavLink>
 
-                            </li>
+                            </li> */}
 
                             <li className="tabItem ">
                               <NavLink
@@ -1319,7 +1319,7 @@ function Navbar() {
                                 <div className="itemTitle">All Agents</div>
                               </NavLink>
                             </li>
-                             <li className="tabItem ">
+                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-users"
                                 onClick={() => backToTop()}
@@ -1337,7 +1337,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle">All Users</div>
                               </NavLink>
-                            </li>
+                            </li> */}
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-knowledge-base"
@@ -1395,7 +1395,7 @@ function Navbar() {
                                 <div className="itemTitle">  Call History</div>
                               </NavLink>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/ai-billing"
                                 onClick={() => backToTop()}
@@ -1432,7 +1432,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle"> Batch Call</div>
                               </NavLink>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>

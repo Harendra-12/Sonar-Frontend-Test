@@ -3,21 +3,23 @@ import Header from "../../CommonComponents/Header";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import Tippy from "@tippyjs/react";
 import "../../assets/css/components/aiAgent.css";
-import { aiGeneralDeleteFunction, aiGeneralGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  aiGeneralDeleteFunction,
+  aiGeneralGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 const AllAgent = () => {
   const [isAgentCreatePopup, setIsAgentCreatePopup] = useState(false);
-  const [refreshState, setRefreshState] = useState(false);
+  const [refreshState, setRefreshState] = useState(0);
+  const [updateListing, setUpdateListing] = useState(false);
   const [addUploadAgentToggle, setAddUploadAgentToggle] = useState(false);
   const [createNewAgentToggle, setCreateNewAgentToggle] = useState(false);
   const [deletePopup, setDeletePopup] = useState(false);
-
   const [allAgents, setAllAgents] = useState([]);
   const [availableNumbers, setAvailableNumbers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletedItem, setDeletedItem] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAgents = allAgents
@@ -42,14 +44,17 @@ const AllAgent = () => {
   useEffect(() => {
     getData();
     fetchAvailableNumbers();
-  }, []);
+  }, [refreshState]);
 
   async function getData() {
+    setUpdateListing(true);
     const apiData = await aiGeneralGetFunction("/agent/all");
     if (apiData.status) {
+      setUpdateListing(false);
       setAllAgents(apiData.data);
       setLoading(false);
     } else {
+      setUpdateListing(false);
       setLoading(false);
     }
   }
@@ -73,8 +78,9 @@ const AllAgent = () => {
   };
 
   const handleDeleteAgent = async () => {
+    setDeletePopup(false);
     try {
-      setLoading(true);
+      setUpdateListing(true);
 
       // Delete the LLM
       const llmRes = await aiGeneralDeleteFunction(
@@ -100,12 +106,8 @@ const AllAgent = () => {
       console.error(error.message, error);
       toast.error(`${error.message}. Please try again.`);
     } finally {
-      setLoading(false);
+      setUpdateListing(false);
     }
-  };
-
-  const handleRefreshBtnClicked = () => {
-    setRefreshState(true);
   };
 
   return (
@@ -125,12 +127,12 @@ const AllAgent = () => {
                             Agents{" "}
                             <button
                               className="clearButton"
-                              onClick={handleRefreshBtnClicked}
-                              disabled={refreshState}
+                              onClick={() => setRefreshState(refreshState + 1)}
+                              disabled={updateListing}
                             >
                               <i
                                 className={
-                                  refreshState
+                                  updateListing
                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     : "fa-regular fa-arrows-rotate fs-5"
                                 }
@@ -153,7 +155,7 @@ const AllAgent = () => {
                             </span>
                           </button>
 
-                          <button
+                          {/* <button
                             className="panelButton edit"
                             onClick={() => {
                               setAddUploadAgentToggle(true);
@@ -163,7 +165,7 @@ const AllAgent = () => {
                             <span className="icon">
                               <i className="fa-solid fa-file-csv"></i>
                             </span>
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -171,6 +173,18 @@ const AllAgent = () => {
                       className="col-12"
                       style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
+                      <div className="tableHeader ">
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            value={searchTerm}
+                            className="formItem"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </div>
+                      </div>
                       <div className="tableContainer">
                         <table>
                           <thead>
@@ -184,244 +198,83 @@ const AllAgent = () => {
                             </tr>
                           </thead>
                           <tbody className="">
-                            <>
-                              <tr>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
-                                      <i className="fa-light fa-user" />
-                                      {/* )} */}
-                                    </div>
-                                    <div className="ms-2">ravi raj</div>
-                                  </div>
-                                </td>
-                                <td>conversation flow</td>
-                                <td>14844731350</td>
-                                <td>en-US</td>
-                                <td>abc</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <button
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </button>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <li className="dropdown-item">
-                                        <Tippy content="Reset configuration of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-clone me-2"></i>
-                                            Duplicate
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content="Select the usage of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
-                                            Export
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content={"Delete the DID"}>
+                            {loading ? (
+                              <ThreeDotedLoader />
+                            ) : (
+                              <>
+                                {filteredAgents.map((item, index) => {
+                                  return (
+                                    <tr>
+                                      <td>
+                                        <div className="d-flex align-items-center">
+                                          <div className="tableProfilePicHolder">
+                                            <i className="fa-light fa-user" />
+                                            {/* )} */}
+                                          </div>
+                                          <div className="ms-2">
+                                            {item.agent_name}
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>{item.response_engine?.["type"]}</td>
+                                      <td>
+                                        {item?.agent_id &&
+                                          (finePhoneNumber(item.agent_id)
+                                            ?.length > 0
+                                            ? finePhoneNumber(item.agent_id)
+                                            : "-")}
+                                      </td>
+                                      <td>{item.language}</td>
+                                      <td>{item.voice_id}</td>
+                                      <td>
+                                        <div className="dropdown">
                                           <button
-                                            className="clearButton text-align-start text-danger"
-                                            onClick={setDeletePopup}
+                                            className={`tableButton`}
+                                            href="#"
+                                            role="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
                                           >
-                                            <i
-                                              className={`fa-regular fa-trash me-2`}
-                                            ></i>{" "}
-                                            Delete
+                                            <i className="fa-solid fa-ellipsis-vertical" />
                                           </button>
-                                        </Tippy>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
-                                      <i className="fa-light fa-user" />
-                                      {/* )} */}
-                                    </div>
-                                    <div className="ms-2">sajid mirza</div>
-                                  </div>
-                                </td>
-                                <td>conversation flow</td>
-                                <td>14844731350</td>
-                                <td>en-US</td>
-                                <td>abc</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <button
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </button>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <li className="dropdown-item">
-                                        <Tippy content="Reset configuration of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-clone me-2"></i>
-                                            Duplicate
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content="Select the usage of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
-                                            Export
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content={"Delete the DID"}>
-                                          <button
-                                            className="clearButton text-align-start text-danger"
-                                            onClick={setDeletePopup}
-                                          >
-                                            <i
-                                              className={`fa-regular fa-trash me-2`}
-                                            ></i>{" "}
-                                            Delete
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
-                                      <i className="fa-light fa-user" />
-                                      {/* )} */}
-                                    </div>
-                                    <div className="ms-2">riddhee gupta</div>
-                                  </div>
-                                </td>
-                                <td>conversation flow</td>
-                                <td>14844731350</td>
-                                <td>en-US</td>
-                                <td>abc</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <button
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </button>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <li className="dropdown-item">
-                                        <Tippy content="Reset configuration of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-clone me-2"></i>
-                                            Duplicate
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content="Select the usage of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
-                                            Export
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content={"Delete the DID"}>
-                                          <button
-                                            className="clearButton text-align-start text-danger"
-                                            onClick={setDeletePopup}
-                                          >
-                                            <i
-                                              className={`fa-regular fa-trash me-2`}
-                                            ></i>{" "}
-                                            Delete
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
-                                      <i className="fa-light fa-user" />
-                                      {/* )} */}
-                                    </div>
-                                    <div className="ms-2">Sanjib Mukherjee</div>
-                                  </div>
-                                </td>
-                                <td>conversation flow</td>
-                                <td>14844731350</td>
-                                <td>en-US</td>
-                                <td>abc</td>
-                                <td>
-                                  <div className="dropdown">
-                                    <button
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </button>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <li className="dropdown-item">
-                                        <Tippy content="Reset configuration of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-clone me-2"></i>
-                                            Duplicate
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content="Select the usage of this DID">
-                                          <button className="clearButton text-align-start">
-                                            <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
-                                            Export
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content={"Delete the DID"}>
-                                          <button
-                                            className="clearButton text-align-start text-danger"
-                                            onClick={setDeletePopup}
-                                          >
-                                            <i
-                                              className={`fa-regular fa-trash me-2`}
-                                            ></i>{" "}
-                                            Delete
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </td>
-                              </tr>
-                            </>
+                                          <ul className="dropdown-menu actionBtnDropdowns">
+                                            {/* <li className="dropdown-item">
+                                              <Tippy content="Reset configuration of this DID">
+                                                <button className="clearButton text-align-start">
+                                                  <i className="fa-regular fa-clone me-2"></i>
+                                                  Duplicate
+                                                </button>
+                                              </Tippy>
+                                            </li>
+                                            <li className="dropdown-item">
+                                              <Tippy content="Select the usage of this DID">
+                                                <button className="clearButton text-align-start">
+                                                  <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
+                                                  Export
+                                                </button>
+                                              </Tippy>
+                                            </li> */}
+                                            <li className="dropdown-item">
+                                              <Tippy content={"Delete the DID"}>
+                                                <button
+                                                  className="clearButton text-align-start text-danger"
+                                                  onClick={()=>{setDeletePopup(true);setDeletedItem(item)}}
+                                                >
+                                                  <i
+                                                    className={`fa-regular fa-trash me-2`}
+                                                  ></i>{" "}
+                                                  Delete
+                                                </button>
+                                              </Tippy>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -834,7 +687,8 @@ const AllAgent = () => {
                     </p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
-                      <button className="panelButton m-0">
+                      <button className="panelButton m-0"  onClick={handleDeleteAgent}
+                            disabled={loading}>
                         <span className="text">Delete</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
