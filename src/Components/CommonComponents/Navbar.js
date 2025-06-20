@@ -263,7 +263,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
-                            {accountDetails?.add_on_subscription.find(
+                            {accountDetails?.add_on_subscription?.find(
                               (item) => item?.addon_id == 7
                             ) ?
                               (checkViewSidebar(
@@ -1466,7 +1466,7 @@ function Navbar() {
                     </li>
                   }
 
-                  {accountDetails?.add_on_subscription.find(
+                  {accountDetails?.add_on_subscription?.find(
                     (item) => item?.addon_id == 2
                   ) ?
                     checkModulePerm(

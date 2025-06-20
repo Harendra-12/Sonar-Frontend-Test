@@ -37,7 +37,7 @@ function MeetingAdd() {
   const { register, formState: { errors }, reset, handleSubmit, watch } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants[0].trim() == "") {
+    if (participants.length == 1 && participants[0].length == 0) {
       toast.error("Please add participants");
       return;
     }
