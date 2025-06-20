@@ -21,7 +21,6 @@ const BuyersEdit = () => {
   const [uploadedMusic, setUploadedMusic] = useState();
   const [musicRefresh, setMusicRefresh] = useState(0);
   const [listOfAdditionalPhNumbers, setListOfAdditionalPhNumbers] = useState([])
-  console.log('list of adintional nuber', listOfAdditionalPhNumbers)
   const { watch, setValue, register, formState: { errors }, reset, handleSubmit } = useForm();
   const locationState = useLocation();
 
@@ -159,16 +158,19 @@ const BuyersEdit = () => {
     }
   });
 
-  const handleDeleteBuyerAdditionalNumber = async (item) => {
-    const apiData = await generalDeleteFunction(`/buyernumbers/${item?.id}`);
-    if (apiData?.status) {
-      setLoading(false);
-      toast.success(apiData.message);
-       getData()
+  const handleDeleteBuyerAdditionalNumber = async (item, index) => {
+    if (item?.id) {
+      const apiData = await generalDeleteFunction(`/buyernumbers/${item?.id}`);
+      if (apiData?.status) {
+        setLoading(false);
+        toast.success(apiData.message);
+        getData()
+      } else {
+        setLoading(false);
+      }
     } else {
-      setLoading(false);
+      setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index))
     }
-    // { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }
   }
 
   return (
@@ -417,17 +419,17 @@ const BuyersEdit = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Country Code
+                              Country Code <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a country code
                             </label>
                           </div>
                           <div className="col-6">
-                            <select {...register("country_code")} className="formItem" >
+                            <select {...register("country_code", { ...requiredValidator })} className="formItem" >
                               <option value="">Select Country Code</option>
                               {countryCode && countryCode.map((country, index) => (
-                                <option key={index} value={country.country_code}>
+                                <option key={index} value={country.prefix_code}>
                                   {country.country} ({country.country_code})
                                 </option>
                               ))}
@@ -785,7 +787,7 @@ const BuyersEdit = () => {
                                       <button
                                         type="button"
                                         className="tableButton delete mx-auto"
-                                        onClick={() => handleDeleteBuyerAdditionalNumber(item)} >
+                                        onClick={() => handleDeleteBuyerAdditionalNumber(item, index)} >
                                         <i className="fa-solid fa-trash" />
                                       </button>
                                     }
@@ -793,7 +795,13 @@ const BuyersEdit = () => {
                                   {
                                     index === listOfAdditionalPhNumbers?.length - 1 &&
                                     <div className="col-3 mt-4" >
-                                      <button type="button" className="panelButton" onClick={() => { if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") { setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }]) } }}>
+                                      <button type="button"
+                                        className="panelButton"
+                                        onClick={() => {
+                                          if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "" || listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.phone_number !== "") {
+                                            setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }])
+                                          }
+                                        }}>
                                         <span className="text">Add</span>
                                         <span className="icon">
                                           <i className="fa-solid fa-plus"></i>

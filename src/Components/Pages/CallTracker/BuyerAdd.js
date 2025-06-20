@@ -39,6 +39,7 @@ const BuyerAdd = () => {
         "phone_number": parseNumber?.nationalNumber
       }
     })
+
     const payload = {
       ...data,
       phone_number: parsedNumber || data.phone_number,
@@ -69,7 +70,7 @@ const BuyerAdd = () => {
         if (apiData?.status) {
           setCountryCode(apiData.data);
           setLoading(false);
-          setTimeout(() => setValue("country_code", "US"), 100)
+          setTimeout(() => setValue("country_code", "+1"), 100)
         }
       } catch (err) {
         console.log(err);
@@ -353,17 +354,17 @@ const BuyerAdd = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label>
-                              Country Code
+                              Country Code <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Enter a country code
                             </label>
                           </div>
                           <div className="col-6">
-                            <select {...register("country_code")} className="formItem">
+                            <select {...register("country_code", { ...requiredValidator })} className="formItem">
                               <option value="">Select Country Code</option>
                               {countryCode && countryCode.map((country, index) => (
-                                <option key={index} value={country.country_code}>
+                                <option key={index} value={country.prefix_code}>
                                   {country.country} ({country.country_code})
                                 </option>
                               ))}
@@ -716,7 +717,10 @@ const BuyerAdd = () => {
                                   <div className="col-3 mt-4">
                                     {
                                       listOfAdditionalPhNumbers?.length > 1 &&
-                                      <button type="button" className="tableButton delete mx-auto" onClick={() => { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }} >
+                                      <button
+                                        type="button"
+                                        className="tableButton delete mx-auto"
+                                        onClick={() => { setListOfAdditionalPhNumbers(listOfAdditionalPhNumbers?.filter((_, i) => i !== index)) }} >
                                         <i className="fa-solid fa-trash" />
                                       </button>
                                     }
@@ -724,7 +728,13 @@ const BuyerAdd = () => {
                                   {
                                     index === listOfAdditionalPhNumbers?.length - 1 &&
                                     <div className="col-3 mt-4" >
-                                      <button type="button" className="panelButton" onClick={() => { if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") { setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }]) } }}>
+                                      <button type="button"
+                                        className="panelButton"
+                                        onClick={() => {
+                                          if (listOfAdditionalPhNumbers[listOfAdditionalPhNumbers?.length - 1]?.number !== "") {
+                                            setListOfAdditionalPhNumbers([...listOfAdditionalPhNumbers, { tag: "", number: "" }])
+                                          }
+                                        }}>
                                         <span className="text">Add</span>
                                         <span className="icon">
                                           <i className="fa-solid fa-plus"></i>

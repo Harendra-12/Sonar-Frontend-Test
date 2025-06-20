@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -12,6 +13,8 @@ import EmailList from "./mailBox/EmailList";
 import ActionListMulti from "../../CommonComponents/ActionListMulti";
 import HeaderApp from "./HeaderApp";
 import NewMail from "./mailBox/NewMail";
+import { toast } from "react-toastify";
+import { api_url } from "../../../urls";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
@@ -25,10 +28,12 @@ function Email({ selectedMail }) {
   const [availableFromMailAddresses, setAvailableFromMailAddresses] = useState(
     []
   );
+  const [allCategory, setAllCategory] = useState()
   const [showMailList, setShowMailList] = useState(true);
   const [mailReplay, setMailReplay] = useState(false);
   const [showNewMail, setShowNewMail] = useState(false);
   const [activeList, setActiveList] = useState("inbox");
+  const [activeCategory, setActiveCategory] = useState()
   const [currentMail, setCurrentMail] = useState([]);
   const [allMails, setAllMails] = useState([]);
   const [allStarredMails, setAllStarredMails] = useState([]);
@@ -37,6 +42,7 @@ function Email({ selectedMail }) {
   const [pageNumber, setPageNumber] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [allMailLoading, setAllMailLoading] = useState(false);
+  const [checkedMail, setCheckedMail] = useState([])
   // Add separate pagination states for each tab
   const [inboxPage, setInboxPage] = useState(1);
   const [sentPage, setSentPage] = useState(1);
@@ -47,11 +53,7 @@ function Email({ selectedMail }) {
   const [starredLastPage, setStarredLastPage] = useState(1);
   const [trashLastPage, setTrashLastPage] = useState(1);
 
-  const showMailHandler = (mail) => {
-    setCurrentMail(mail);
-  };
-
-  const fetchMail = () => {};
+  const fetchMail = () => { };
 
   const [show, setShow] = useState(false);
 
@@ -63,31 +65,6 @@ function Email({ selectedMail }) {
     setShowMailList(false);
     setMailReplay(false);
   };
-  const handleListingClick = (inbox) => {
-    setActiveList(inbox);
-    // Reset pagination for the selected tab
-    switch (inbox) {
-      case "inbox":
-        setPageNumber(inboxPage);
-        setLastPage(inboxLastPage);
-        break;
-      case "sent":
-        setPageNumber(sentPage);
-        setLastPage(sentLastPage);
-        break;
-      case "starred":
-        setPageNumber(starredPage);
-        setLastPage(starredLastPage);
-        break;
-      case "deleted":
-        setPageNumber(trashPage);
-        setLastPage(trashLastPage);
-        break;
-    }
-    setShowMailList(true);
-    setShowNewMail(false);
-    setMailReplay(false);
-  };
   const handleMailReplay = () => {
     setMailReplay(true);
     setShowMailList(false);
@@ -96,10 +73,10 @@ function Email({ selectedMail }) {
   };
 
   // get all mails
-  const fetchAllMail = async () => {
+  const fetchAllMail = async (mail_type) => {
     setAllMailLoading(true);
     const result = await generalGetFunction(
-      `/emails?type=inbox&page=${pageNumber}`
+      `/emails?type=${mail_type}&page=${pageNumber}`
     );
     if (result?.status) {
       setAllMails(result.data);
@@ -175,6 +152,50 @@ function Email({ selectedMail }) {
     }
   };
 
+  const deleteMail = async (payload) => {
+    setAllMailLoading(true);
+    const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
+    if (result?.status) {
+      fetchAllMail(activeCategory?.value)
+      toast.success(result?.message)
+      setAllMailLoading(false);
+    } else {
+      setAllMailLoading(false);
+    }
+  }
+
+  const mailStatusApiCall = async (shouldLoad, payload) => {
+    if(shouldLoad)
+    setAllMailLoading(false);
+    const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
+    if (result?.status) {
+      fetchAllMail(activeCategory?.value)
+      toast.success(result?.message)
+      setAllMailLoading(false);
+    } else {
+      setAllMailLoading(false);
+    }
+  }
+
+  const handleShowMail = async (mail) => {
+    setCurrentMail(mail);
+    const shouldLoad = true
+    mailStatusApiCall(shouldLoad, {
+      uid: mail?.uid,
+      action: "seen",
+      type: activeCategory?.value
+    })
+  };
+
+  const handleUnSeenMail = (mail) => {
+    const shouldLoad = true
+    mailStatusApiCall(shouldLoad, {
+      uid: mail?.uid,
+      action: "unseen",
+      type: activeCategory?.value
+    })
+  }
+
   const fetchData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
     const result = await generalGetFunction("/mail-setting/all");
@@ -188,29 +209,52 @@ function Email({ selectedMail }) {
       // navigate("/");
     }
   };
+
+  const fetchMailCategory = async (shouldLoad) => {
+    if (shouldLoad) setLoading(true);
+    const result = await generalGetFunction("/get-labels");
+    if (result?.status) {
+      setAllCategory(result?.data);
+      setActiveCategory(result?.data[0])
+      setLoading(false);
+      setRefreshState(false);
+    } else {
+      setLoading(false);
+      setRefreshState(false);
+      // navigate("/");
+    }
+  };
+
   useEffect(() => {
-    setRefreshState(true);
     const shouldLoad = true;
+    fetchMailCategory(shouldLoad)
+    setRefreshState(true);
     fetchData(shouldLoad);
-    fetchAllMail();
+    const mailType = "INBOX"
+    fetchAllMail(mailType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     // Only fetch mails if we're in list view mode and not returning from mail reply
-    if (showMailList && !mailReplay) {
-      // Always fetch data when page number changes
-      if (activeList === "inbox") {
-        fetchAllMail();
-      } else if (activeList === "sent") {
-        fetchSendMail();
-      } else if (activeList === "starred") {
-        fetchStarredMail();
-      } else if (activeList === "deleted") {
-        fetchTrashedMail();
-      }
-    }
+    // if (showMailList && !mailReplay) {
+    //   // Always fetch data when page number changes
+    //   if (activeList === "inbox") {
+    //     fetchAllMail();
+    //   } else if (activeList === "sent") {
+    //     fetchSendMail();
+    //   } else if (activeList === "starred") {
+    //     fetchStarredMail();
+    //   } else if (activeList === "deleted") {
+    //     fetchTrashedMail();
+    //   }
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, activeList, showMailList, mailReplay]);
+
+    if (pageNumber !== 1) {
+      fetchAllMail(activeCategory?.value)
+    }
+  }, [pageNumber]);
 
   // Add a new useEffect to handle initial data load
   useEffect(() => {
@@ -235,7 +279,7 @@ function Email({ selectedMail }) {
       if (shouldFetch) {
         // Fetch mails based on active tab
         if (activeList === "inbox") {
-          fetchAllMail();
+          // fetchAllMail();
         } else if (activeList === "sent") {
           fetchSendMail();
         } else if (activeList === "starred") {
@@ -253,6 +297,82 @@ function Email({ selectedMail }) {
     const shouldLoad = false;
     fetchData(shouldLoad);
   };
+
+  const handleListingClick = (category) => {
+    setActiveList(category?.label);
+    setActiveCategory(category)
+    fetchAllMail(category?.value)
+    // Reset pagination for the selected tab
+    // switch (formatCategoryName) {
+    //   case "inbox":
+    //     setPageNumber(inboxPage);
+    //     setLastPage(inboxLastPage);
+    //     break;
+    //   case "sent":
+    //     setPageNumber(sentPage);
+    //     setLastPage(sentLastPage);
+    //     break;
+    //   case "starred":
+    //     setPageNumber(starredPage);
+    //     setLastPage(starredLastPage);
+    //     break;
+    //   case "deleted":
+    //     setPageNumber(trashPage);
+    //     setLastPage(trashLastPage);
+    //     break;
+    // }
+    setShowMailList(true);
+    setShowNewMail(false);
+    setMailReplay(false);
+  };
+
+  const handleMailDelete = (item) => {
+    deleteMail({
+      uid: item?.uid?.toString(),
+      type: activeCategory?.value,
+      action: "move"
+    })
+  }
+
+  const handleMultipleDelete = () => {
+    const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    deleteMail({
+      uid: listOfMessageId,
+      type: activeCategory?.value,
+      action: "move"
+    })
+  }
+
+  const handleMultipleView = () => {
+
+  }
+
+  const getCategoryIconClass = (name) => {
+    const formatted = name.toLowerCase();
+
+    if (formatted.includes("inbox")) return "fa-solid fa-inbox";
+    if (formatted.includes("sent")) return "fa-solid fa-paper-plane";
+    if (formatted.includes("all mail")) return "fa-solid fa-box-archive";
+    if (formatted.includes("draft")) return "fa-solid fa-pen-to-square";
+    if (formatted.includes("spam")) return "fa-solid fa-triangle-exclamation";
+    if (formatted.includes("trash") || formatted.includes("deleted")) return "fa-solid fa-trash";
+
+    return "fa-solid fa-envelope";
+  };
+
+  const getCategoryColorClass = (name) => {
+    const formatted = name.toLowerCase();
+    if (formatted.includes("inbox")) return "text-primary";
+    if (formatted.includes("sent")) return "text-info";
+    if (formatted.includes("all mail")) return "text-secondary";
+    if (formatted.includes("draft")) return "text-warning";
+    if (formatted.includes("spam")) return "text-danger";
+    if (formatted.includes("trash") || formatted.includes("deleted")) return "text-danger";
+    return "text-dark";
+  };
+
+
+
 
   return (
     <>
@@ -294,6 +414,17 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button>
+                    <h5 className="card-title mb-0 text_dark">
+                      <i class="fa-regular fa-star me-3"></i>
+                      <i
+                        class="fa-solid fa-trash me-3"
+                        onClick={() => handleMultipleDelete()}
+                      ></i>{" "}
+                      <i
+                        class="fa-solid fa-envelope-open me-3"
+                        onClick={() => handleMultipleView()}
+                      ></i>
+                    </h5>
                   </div>
                   <div
                     className="card-body"
@@ -303,7 +434,28 @@ function Email({ selectedMail }) {
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
                         <div className="card-body ps-0">
                           <ul>
-                            <li className=" ">
+                            {allCategory?.map((category) => {
+                              const iconClass = getCategoryIconClass(category?.label);
+                              const colorClass = getCategoryColorClass(category?.label);
+                              const isActive = activeList?.toLocaleLowerCase() === category?.label.toLowerCase();
+                              return (<li>
+                                <button
+                                  className={`mail_list d-flex align-items-center ${isActive ? "active" : ""}`}
+                                  onClick={() => handleListingClick(category)}
+                                >
+                                  {" "}
+                                  <p className={`mb-0 d-flex align-items-center ${colorClass}`}>
+                                    <i className={`${iconClass} me-2`}></i>{" "}
+                                    {category?.label}
+                                  </p>
+                                  <div className="">
+                                    <span style={{ color: 'black' }}>{category?.totalMessages}/{category?.unseenMessages}</span>
+                                  </div>
+                                </button>
+                              </li>)
+                            }
+                            )}
+                            {/* <li className=" ">
                               <button
                                 // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
                                 //   onClick={handleListingClick}
@@ -358,50 +510,53 @@ function Email({ selectedMail }) {
                                   Deleted
                                 </p>
                               </button>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
-                      {activeList === "inbox" && (
-                        <div className="table_card">
-                          {showMailList && !mailReplay && !showNewMail && (
-                            <EmailList
-                              handleShowNewMail={handleShowNewMail}
-                              handleListingClick={handleListingClick}
-                              handleMailReplay={handleMailReplay}
-                              showMailHandler={showMailHandler}
-                              loading={allMailLoading}
-                              allMails={allMails}
-                              pageNumber={pageNumber}
-                              setPageNumber={setPageNumber}
-                              lastPage={lastPage}
-                            />
-                          )}
+                      <div className="table_card">
+                        {showMailList && !mailReplay && !showNewMail && (
+                          <EmailList
+                            // handleShowNewMail={handleShowNewMail}
+                            // handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                            handleShowMail={handleShowMail}
+                            loading={allMailLoading}
+                            allMails={allMails}
+                            pageNumber={pageNumber}
+                            setPageNumber={setPageNumber}
+                            lastPage={lastPage}
+                            handleMailDelete={handleMailDelete}
+                            setCheckedMail={setCheckedMail}
+                            checkedMail={checkedMail}
+                            handleUnSeenMail={handleUnSeenMail}
+                          />
+                        )}
 
-                          {mailReplay && !showMailList && !showNewMail && (
-                            <MailReply
-                              handleShowNewMail={handleShowNewMail}
-                              handleListingClick={handleListingClick}
-                              handleMailReplay={handleMailReplay}
-                              currentMail={currentMail}
-                              activeList={activeList}
-                            />
-                          )}
+                        {mailReplay && !showMailList && !showNewMail && (
+                          <MailReply
+                            handleShowNewMail={handleShowNewMail}
+                            handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                            currentMail={currentMail}
+                            activeList={activeList}
+                            handleMailDelete={handleMailDelete}
+                          />
+                        )}
 
-                          {showNewMail && !mailReplay && (
-                            <NewMail
-                              handleShowNewMail={handleShowNewMail}
-                              handleListingClick={handleListingClick}
-                              handleMailReplay={handleMailReplay}
-                              availableFromMailAddresses={
-                                availableFromMailAddresses
-                              }
-                              activeList={activeList}
-                            />
-                          )}
-                        </div>
-                      )}{" "}
-                      {activeList === "sent" && (
+                        {showNewMail && !mailReplay && (
+                          <NewMail
+                            handleShowNewMail={handleShowNewMail}
+                            handleListingClick={handleListingClick}
+                            handleMailReplay={handleMailReplay}
+                            availableFromMailAddresses={
+                              availableFromMailAddresses
+                            }
+                            activeList={activeList}
+                          />
+                        )}
+                      </div>
+                      {/* {activeList === "sent" && (
                         <div className="table_card">
                           {showMailList && !mailReplay && !showNewMail && (
                             <EmailList
@@ -511,7 +666,7 @@ function Email({ selectedMail }) {
                             />
                           )}
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
