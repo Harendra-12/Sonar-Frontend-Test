@@ -141,6 +141,7 @@
   --chat-input-bg: #ffffff;
   --chat-user-list: #ffffff;
   --chat-header: #f1f2f6;
+  --textInfo: #0048ff;
   /* ==== new badge color */
   --bg-badge-accent: rgba(0, 239, 255, 0.129);
   --bg-badge-accent-border: #d9f6f8;
@@ -325,7 +326,7 @@
   --chat-header: #202b34;
   --color3: #ff8c42;
   /* --ui-accent: #3e8ef77c; */
-
+  --textInfo: #bbceff;
   /* ==== new badge color */
   --bg-badge-accent: rgba(217, 246, 248, 0);
   --bg-badge-accent-border: #02c0ce;
