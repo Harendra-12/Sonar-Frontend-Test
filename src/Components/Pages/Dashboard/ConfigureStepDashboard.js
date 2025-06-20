@@ -126,7 +126,7 @@ function ConfigureStepDashboard({ account2 }) {
   }
 
   return (
-    <div>
+    <div className="h-100 d-flex justify-content-center align-items-center">
       <div className="container">
         <div className="row">
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">

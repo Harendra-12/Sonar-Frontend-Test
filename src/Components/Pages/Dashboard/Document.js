@@ -299,14 +299,14 @@ function Document({
           }
         `}
       </style>
-      <div className="d-flex flex-wrap">
+      <div className="d-flex flex-wrap" style={{ borderBlockEnd: '1px solid var(--me-border1)' }}>
         <div className="col-12">
-          <div className="heading">
+          <div className="heading d-flex justify-content-between align-items-center pb-3">
             <div className="content">
               <h4>Document Verification</h4>
               <p>Please upload your documents for verification.</p>
             </div>
-            <div className="buttonGroup">
+            <div className="buttonGroup d-flex justify-content-start align-items-center gap-2">
               <button
                 type="button"
                 effect="ripple"
@@ -335,7 +335,7 @@ function Document({
         </div>
       </div>
       <div className="d-flex flex-wrap">
-        <div className="col-12" style={{ padding: '25px 23px', }}>
+        <div className="col-12 py-3">
           <div className="row">
             <div className="col-xl-12 mb-3">
               <div className="documentPending">
@@ -431,10 +431,28 @@ function Document({
               </div>
             </div>
             <div className="col-xl-8" style={{ borderRight: '1px solid #ddd' }}>
-              <form action="#" className="row px-2 justify-content-between">
-                <div className="col-xl-12 headerCommon">
-                  Account Details
-                </div>
+              <div className="col-xl-12 headerCommon">
+                Account Details
+              </div>
+              <div className=" d-flex gap-3 flex-wrap">
+                <ul className="listViewProfileInfo pe-3" style={{ borderRight: '1px solid var(--me-border1)' }}>
+                  <li className="mb-2"><span className="textImmortalBlack">Company Name : </span> <span className="textSubtext">{account.company_name}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Email : </span> <span className="textSubtext">{account.email}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Alternate  Number : </span> <span className="textSubtext">{account.alternate_contact_no}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Block/Unit/Place : </span> <span className="textSubtext">{account.unit}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">City : </span> <span className="textSubtext">{account.city}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">State : </span> <span className="textSubtext">{account.state}</span></li>
+                </ul>
+                <ul className="listViewProfileInfo">
+                  <li className="mb-2"><span className="textImmortalBlack">Admin Name : </span> <span className="textSubtext">{account.admin_name}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Phone Number : </span> <span className="textSubtext">{account.contact_no}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Timezone : </span> <span className="textSubtext">{account.timezone.name}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Building : </span> <span className="textSubtext">{account.building}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Zip Code : </span> <span className="textSubtext">{account.zip}</span></li>
+                  <li className="mb-2"><span className="textImmortalBlack">Country : </span> <span className="textSubtext">{account.country}</span></li>
+                </ul>
+              </div>
+              {/* <form action="#" className="row px-2 justify-content-between">
                 <div className="formRow col-xl-3">
                   <div className="formLabel">
                     <label htmlFor="data">Company Name</label>
@@ -591,7 +609,7 @@ function Document({
                     />
                   </div>
                 </div>
-              </form>
+              </form> */}
             </div>
             <div className="col-xl-4">
               {nonUploadedDocuments.length > 0 && (
