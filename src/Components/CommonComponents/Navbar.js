@@ -993,6 +993,7 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/tracker-dashboard",
+                            "/tracker-active-calls",
                             "/did-listing-tracker",
                             "/buyers",
                             "/source",
@@ -1246,6 +1247,7 @@ function Navbar() {
                             "/ai-batch-call",
                             "/ai-agent-add",
                             "/ai-agent-edit",
+                            "/ai-phone-number"
                           ])
                             ? "true"
                             : "false"
@@ -1271,6 +1273,7 @@ function Navbar() {
                           "/ai-batch-call",
                           "/ai-agent-add",
                           "/ai-agent-edit",
+                           "/ai-phone-number"
                         ])
                           ? "show"
                           : ""
@@ -1319,7 +1322,7 @@ function Navbar() {
                                 <div className="itemTitle">All Agents</div>
                               </NavLink>
                             </li>
-                             {/* <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/all-users"
                                 onClick={() => backToTop()}

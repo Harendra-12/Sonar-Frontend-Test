@@ -898,6 +898,7 @@
     padding: 15px;
     background: #e5e5e5;
     color: #000;
+    z-index: 99;
 }
 
 .lk-button.lk-button-menu {
@@ -925,6 +926,10 @@
 .lk-button-group>.lk-disconnect-button:first-child {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+}
+
+.lk-button-group .lk-button-group-menu {
+    display: none;
 }
 
 /* .setting_menu{
@@ -1013,4 +1018,35 @@ h2.titleName {
 .mainContentApp .webrtc_newMessageUi .tab-content .callList.voicemailCallList {
     overflow: hidden auto;
     height: calc(100vh - 242px);
+}
+
+.lk-settings-menu-modal {
+    background: #e7eaf1 !important;
+    color: #000;
+    box-shadow: none !important;
+    top: 65% !important;
+}
+
+.settings-menu h3 {
+    color: #000;
+}
+
+.settings-menu section.wrap h4 {
+    color: #000;
+    font-size: 1rem !important;
+}
+
+.settings-menu section {
+    margin-bottom: 15px;
+}
+
+.settings-menu section>* {
+    color: #fff;
+}
+
+.settings-menu section.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 45px;
 }

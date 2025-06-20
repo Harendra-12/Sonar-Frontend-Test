@@ -30,6 +30,8 @@ function InitiateCall({
   const [isAdmin, setIsAdmin] = useState(true);
 
   // Check if its a Conference Call or Normal Call
+  console.log(isConferenceCall);
+
   useEffect(() => {
     if (isConferenceCall) {
       setRoomName(roomId);
@@ -125,6 +127,7 @@ function InitiateCall({
           setCalling={setCalling}
           isMinimize={interCallMinimize}
           setIsMinimize={setInterCallMinimize}
+          isConferenceCall={isConferenceCall}
         />
       ) : (
         ""

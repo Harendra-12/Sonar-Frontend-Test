@@ -3,7 +3,7 @@ import React from "react";
 function Account({ account, nextPage, companyStatus }) {
   return (
     <>
-      <div className="d-flex flex-wrap">
+      <div className="d-flex flex-wrap" style={{borderBlockEnd: '1px solid var(--me-border1)'}}>
         <div className="col-12">
           <div className="heading d-flex justify-content-between align-items-center pb-3">
             <div className="content">
@@ -185,7 +185,9 @@ function Account({ account, nextPage, companyStatus }) {
           </div>
         </div>
       </div> */}
-      <div className="col-12">
+      <div className="col-12 mt-3">
+         <div className=" d-flex gap-3 flex-wrap w-100">
+
         <ul className="listViewProfileInfo">
           <li className="mb-2"><span className="textImmortalBlack">Company Name : </span> <span className="textSubtext">{account.company_name}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Admin Name : </span> <span className="textSubtext">{account.admin_name}</span></li>
@@ -193,6 +195,10 @@ function Account({ account, nextPage, companyStatus }) {
           <li className="mb-2"><span className="textImmortalBlack">Phone Number : </span> <span className="textSubtext">{account.contact_no}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Alternate Number: </span> <span className="textSubtext">{account.alternate_contact_no}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Timezone : </span> <span className="textSubtext">{account.timezone.name}</span></li>
+         
+        </ul>
+
+        <ul className="listViewProfileInfo">
           <li className="mb-2"><span className="textImmortalBlack">Block/Unit/Place : </span> <span className="textSubtext">{account.unit}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Building : </span> <span className="textSubtext">{account.building}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">City : </span> <span className="textSubtext">{account.city}</span></li>
@@ -200,6 +206,7 @@ function Account({ account, nextPage, companyStatus }) {
           <li className="mb-2"><span className="textImmortalBlack">State : </span> <span className="textSubtext">{account.state}</span></li>
           <li className="mb-2"><span className="textImmortalBlack">Country : </span> <span className="textSubtext">{account.country}</span></li>
         </ul>
+         </div>
       </div>
     </>
   );

@@ -1,31 +1,247 @@
-import React, { useState } from 'react'
-import Header from '../../CommonComponents/Header'
-import Select from 'react-select';
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Header from "../../CommonComponents/Header";
+import Select from "react-select";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import { Link } from "react-router-dom";
+import {
+  aiGeneralDeleteFunction,
+  aiGeneralGetFunction,
+  aiGeneralPostFunction,
+  aiGeneralPutFunction,
+} from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiPhoneNumber = () => {
-  const [refreshState, setRefreshState] = useState(false)
-  const [addKnowledgeBase, setKnowledgeBase] = useState(false)
-  const [idCopy, setIdCopy] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
+  const [addKnowledgeBase, setKnowledgeBase] = useState(false);
   const [deletePopup, setDeletePopup] = useState(false);
-
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
-  const [value, setValue] = useState();
-  const [selectedOption, setSelectedOption] = useState("");
+  const [linkCopy, setLinkCopy] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [createNumberLoading, setCreateNumberLoading] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState("");
+  const [defaultName, setDefaultName] = useState(Date.now().toString());
+  const [isEdit, setIsEdit] = useState(false);
+  const [areaCode, setAreaCode] = useState("");
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [inboundCallAgent, setInboundCallAgent] = useState();
+  const [outboundCallAgent, setOutboundCallAgent] = useState();
+  const [numberProvider, setNumberProvider] = useState("twilio");
+  const [showUrlField, setShowUrlField] = useState(false);
+  const [availableAgents, setAvailableAgents] = useState([]);
+  const [availableNumbers, setAvailableNumbers] = useState([]);
+
+  useEffect(() => {
+    fetchAvailableAgents();
+    fetchAvailableNumbers();
+  }, []);
+
+  // link copy function with dynamically state change
+  const copyLink = (link) => {
+    if (!link) return;
+    setLinkCopy(link);
+    navigator.clipboard.writeText(link);
+
+    setTimeout(() => {
+      setLinkCopy(null);
+    }, 1000);
+  };
+
+  const formattedAgents = [
+    { value: "null", label: "None (disabled inbound)" },
+    ...availableAgents.map((agent) => ({
+      value: agent.agent_id,
+      label: `${agent.agent_name} - Version: ${agent.version}`,
+    })),
+  ];
+
+  const fetchAvailableAgents = async () => {
+    setLoading(true);
+    const res = await aiGeneralGetFunction("/agent/all");
+    if (res.status) {
+      setAvailableAgents(res.data);
+      // setInboundCallAgent(res.data[0]?.agent_id);
+      // setOutboundCallAgent(res.data[0]?.agent_id);
+      setLoading(false);
+      setRefreshState(false);
+    } else {
+      setLoading(false);
+      console.error("Failed to fetch available LLMs");
+    }
+  };
+  const fetchAvailableNumbers = async () => {
+    const res = await aiGeneralGetFunction("/phonenumber/all");
+    if (res.status) {
+      setAvailableNumbers(res.data);
+      if (res.data[0]) {
+        const firstNumber = res.data[0];
+        setSelectedNumber(firstNumber.phone_number);
+        setDefaultName(firstNumber.nickname || firstNumber.phone_number || "");
+        setAreaCode(firstNumber.area_code || "");
+        setWebhookUrl(firstNumber.inbound_webhook_url || "");
+        setInboundCallAgent(firstNumber.inbound_agent_id || "");
+        setOutboundCallAgent(firstNumber.outbound_agent_id || "");
+        setNumberProvider(firstNumber.number_provider || "twilio");
+        setRefreshState(false);
+      }
+    } else {
+      console.error("Failed to fetch available phone numbers");
+    }
+  };
+
+  const selectedAgent = (agentId) => {
+    return availableAgents.find((agent) => agent.agent_id === agentId);
+  };
+
+  const handleCreateNumber = async () => {
+    const inboundAgent = selectedAgent(inboundCallAgent);
+    const outboundAgent = selectedAgent(outboundCallAgent);
+
+    // Convert area code to integer or null if empty/invalid
+    const parsedAreaCode = areaCode ? parseInt(areaCode, 10) : null;
+    if (areaCode && isNaN(parsedAreaCode)) {
+      toast.error("Area code must be a valid number");
+      return;
+    }
+
+    const payload = {
+      inbound_agent_id: inboundAgent ? inboundAgent.agent_id : null,
+      inbound_agent_name: inboundAgent ? inboundAgent.agent_name : null,
+      inbound_agent_version: inboundAgent ? inboundAgent.version : null,
+      outbound_agent_id: outboundAgent ? outboundAgent.agent_id : null,
+      area_code: parsedAreaCode,
+      nickname: defaultName ? defaultName : null,
+      inbound_webhook_url: webhookUrl ? webhookUrl : null,
+      number_provider: numberProvider ? numberProvider : "twilio",
+    };
+
+    setCreateNumberLoading(true);
+    const res = await aiGeneralPostFunction("/phonenumber/store", payload);
+    if (res.status) {
+      setAvailableNumbers([...availableNumbers, res.data]);
+      setDefaultName(res?.data?.nickname || res?.data?.phone_number || "");
+      setAreaCode("");
+      setWebhookUrl("");
+      setInboundCallAgent("");
+      setOutboundCallAgent("");
+      setNumberProvider("twilio");
+      setShowUrlField(false);
+      fetchAvailableAgents();
+      fetchAvailableNumbers();
+      setKnowledgeBase(false);
+      toast.success("Phone number created successfully!");
+    } else {
+      console.error("Faild to create phone number: ", res);
+      setCreateNumberLoading(false);
+      toast.error("Failed to create phone number. Please try again.");
+    }
+
+    setCreateNumberLoading(false);
+  };
+
+  const handleUpdateNumber = async (updatedData = {}) => {
+    if (!selectedNumber) {
+      toast.error("Please select a phone number to update.");
+      return;
+    }
+
+    const inboundAgent = selectedAgent(
+      updatedData.inboundCallAgent || inboundCallAgent
+    );
+    const outboundAgent = selectedAgent(
+      updatedData.outboundCallAgent || outboundCallAgent
+    );
+
+    // Prepare the payload with all required fields
+    const newAreaCode = updatedData.areaCode || areaCode;
+    const parsedAreaCode = newAreaCode ? parseInt(newAreaCode, 10) : null;
+    if (newAreaCode && isNaN(parsedAreaCode)) {
+      toast.error("Area code must be a valid number");
+      return;
+    }
+
+    const payload = {
+      phone_number: selectedNumber,
+      inbound_agent_id: inboundAgent ? inboundAgent.agent_id : null,
+      outbound_agent_id: outboundAgent ? outboundAgent.agent_id : null,
+      inbound_agent_version: inboundAgent ? inboundAgent.version : null,
+      outbound_agent_version: outboundAgent ? outboundAgent.version : null,
+      area_code: parsedAreaCode,
+      nickname: updatedData.defaultName || defaultName || null,
+      inbound_webhook_url: updatedData.webhookUrl || webhookUrl || null,
+      number_provider: updatedData.numberProvider || numberProvider || "twilio",
+    };
+
+    setLoading(true);
+    try {
+      const res = await aiGeneralPutFunction(
+        `/phonenumber/update/${selectedNumber}`,
+        payload
+      );
+      if (res.status) {
+        await Promise.all([fetchAvailableAgents(), fetchAvailableNumbers()]);
+        toast.success("Phone number updated successfully!");
+      } else {
+        console.error("Failed to update phone number: ", res);
+        toast.error("Failed to update phone number. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating phone number:", error);
+      toast.error("Failed to update phone number. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteNumber = async () => {
+    if (!selectedNumber) {
+      toast.error("Please select a phone number to delete.");
+      return;
+    }
+    setLoading(true);
+    const res = await aiGeneralDeleteFunction(
+      `/phonenumber/delete/${selectedNumber}`
+    );
+    if (res.status) {
+      setAvailableNumbers(
+        availableNumbers.filter((num) => num.phone_number !== selectedNumber)
+      );
+      setSelectedNumber("");
+      setDefaultName("");
+      setAreaCode("");
+      setWebhookUrl("");
+      setInboundCallAgent("");
+      setOutboundCallAgent("");
+      setNumberProvider("twilio");
+      setShowUrlField(false);
+      fetchAvailableAgents();
+      setDeletePopup(false);
+      toast.success("Phone number deleted successfully!");
+    } else {
+      console.error("Failed to delete phone number: ", res);
+      toast.error("Failed to delete phone number. Please try again.");
+    }
+    setLoading(false);
+  };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     // const shouldLoad = false
     // getData(shouldLoad);
+    fetchAvailableAgents();
+    fetchAvailableNumbers();
+  };
+
+  if (createNumberLoading) {
+    return <CircularLoader />;
   }
-
-
 
   return (
     <>
@@ -36,11 +252,17 @@ const AiPhoneNumber = () => {
               <Header title="Phone Numbers" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
+                  <div
+                    className="d-flex flex-wrap position-relative"
+                    style={
+                      loading ? { height: "calc(100vh - 200px)" } : undefined
+                    }
+                  >
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Phone Numbers
+                          <h4>
+                            Phone Numbers
                             <button
                               className="clearButton"
                               onClick={handleRefreshBtnClicked}
@@ -59,139 +281,265 @@ const AiPhoneNumber = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='col-12'>
-                      <div className='row p-3'>
-                        <div className='col-xxl-4 col-xl-5 col-lg-5 '>
-                          <div className='KnowledgeLeftinfo'>
-                            <div className='info_header'>
-                              <h5 className='mb-0'>Available Numbers</h5>
-                              <button
-                                className={`tableButton`}
-                                role="button"
-                                onClick={setKnowledgeBase}
-                              >
-                                <i className="fa-regular fa-plus" />
-                              </button>
-                            </div>
-                            <div className='knowledge__list'>
-                              <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <button className="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
-                                  <p className='mb-0'>
-                                    <i className="fa-solid fa-phone me-2"></i> +14844731350
-                                  </p>
-                                  {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
+                    {loading ? (
+                      <ThreeDotedLoader />
+                    ) : (
+                      <div className="col-12">
+                        <div className="row p-3">
+                          <div className="col-xxl-4 col-xl-5 col-lg-5 ">
+                            <div className="KnowledgeLeftinfo">
+                              <div className="info_header">
+                                <h5 className="mb-0">Available Numbers</h5>
+                                <button
+                                  className={`tableButton`}
+                                  role="button"
+                                  onClick={setKnowledgeBase}
+                                >
+                                  <i className="fa-regular fa-plus" />
                                 </button>
+                              </div>
+                              <div className="knowledge__list">
+                                {availableNumbers.length === 0 ? (
+                                  <div className="flex items-center justify-center p-2 border rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-700 cursor-pointer">
+                                    <span>No numbers available</span>
+                                  </div>
+                                ) : (
+                                  availableNumbers.map((number, index) => (
+                                    <div
+                                      key={index}
+                                      className="nav flex-column nav-pills me-3"
+                                      id="v-pills-tab"
+                                      role="tablist"
+                                      aria-orientation="vertical"
+                                    >
+                                      <button
+                                        className={`nav-link ${
+                                          number?.phone_number ===
+                                          selectedNumber
+                                            ? "active"
+                                            : ""
+                                        }`}
+                                        id="v-pills-home-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-home"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="v-pills-home"
+                                        aria-selected="true"
+                                        onClick={() => {
+                                          // Update all state values when selecting a number
+                                          setSelectedNumber(
+                                            number?.phone_number
+                                          );
+                                          setDefaultName(
+                                            number?.nickname ||
+                                              number?.phone_number ||
+                                              ""
+                                          );
+                                          setAreaCode(number?.area_code || "");
+                                          setWebhookUrl(
+                                            number?.inbound_webhook_url || ""
+                                          );
+                                          setInboundCallAgent(
+                                            number?.inbound_agent_id || ""
+                                          );
+                                          setOutboundCallAgent(
+                                            number?.outbound_agent_id || ""
+                                          );
+                                          setNumberProvider(
+                                            number?.number_provider || "twilio"
+                                          );
+                                          setShowUrlField(
+                                            !!number?.inbound_webhook_url
+                                          );
+                                        }}
+                                      >
+                                        <p className="mb-0">
+                                          <i className="fa-solid fa-phone me-2"></i>{" "}
+                                          {number?.phone_number}
+                                        </p>
+                                        {/* <p className='mb-0'>added on <span> 5/26/2025</span></p> */}
+                                      </button>
+                                    </div>
+                                  ))
+                                )}
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className='col-xxl-8 col-xl-7 col-lg-7 '>
-                          <div className="tab-content KnowledgeRightinfo" id="v-pills-tabContent">
-                            <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                              <div className="heading">
-                                <div className="content">
-                                  <h4>+14844731350</h4>
-                                  <div className='d-flex justify-content-start align-items-center gap-3'>
-                                    <p className='mb-0'>ID: <span>125634Knowledge_Base26</span>
-                                      <button
-                                        className="clearButton"
-                                        onClick={() => { setIdCopy(!idCopy) }}
-                                      >
-                                        <i
-                                          className={
-                                            idCopy
-                                              ? "fa-solid fa-check text_success"
-                                              : "fa-solid fa-clone"
-                                          }
-                                        ></i>
 
-                                      </button>
-                                    </p>
-                                    <p className='mb-0'>Provider: <span>Telnyx</span>
-                                      <button
-                                        className="clearButton"
-                                        onClick={() => { setIdCopy(!idCopy) }}
-                                      >
-                                        <i
-                                          className={
-                                            idCopy
-                                              ? "fa-solid fa-check text_success"
-                                              : "fa-solid fa-clone"
-                                          }
-                                        ></i>
-
-                                      </button>
-                                    </p>
-
-                                  </div>
-                                </div>
-                                <div>
-                                  {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
-                                  <div className="buttonGroup">
-                                    <button className="panelButton danger" onClick={setDeletePopup}>
-                                      <span className="text">Delete</span>
-                                      <span className="icon">
-                                        <i className="fa-solid fa-trash"></i>
-                                      </span>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='k_body px-3'>
-
-                                <div className='d_card mb-3'>
-                                  <div>
-                                    <form>
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>Inbound Call Agent</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <Select
-                                            className="basic-single "
-                                            classNamePrefix="select"
-                                            // defaultValue={colourOptions[0]}
-                                            isDisabled={isDisabled}
-                                            isLoading={isLoading}
-                                            isClearable={isClearable}
-                                            isRtl={isRtl}
-                                            isSearchable={isSearchable}
-                                            name="color"
-                                          // options={colourOptions}
+                          <div className="col-xxl-8 col-xl-7 col-lg-7 position-relative">
+                            {availableNumbers.length > 0 && (
+                              <div
+                                className="tab-content KnowledgeRightinfo"
+                                id="v-pills-tabContent"
+                              >
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="v-pills-home"
+                                  role="tabpanel"
+                                  aria-labelledby="v-pills-home-tab"
+                                >
+                                  <div className="heading">
+                                    <div className="content">
+                                      <div className="d-flex align-items-center">
+                                        {isEdit ? (
+                                          <input
+                                            className={"formItem"}
+                                            value={defaultName}
+                                            onChange={(e) =>
+                                              setDefaultName(e.target.value)
+                                            }
+                                            onBlur={() => {
+                                              setIsEdit(false);
+                                              handleUpdateNumber({
+                                                defaultName,
+                                              });
+                                            }}
                                           />
-                                        </div>
+                                        ) : (
+                                          <h4 className="text-xl mb-0">
+                                            {defaultName}
+                                          </h4>
+                                        )}
+                                        <button
+                                          variant={"outline"}
+                                          size={"icon"}
+                                          className={"clearButton2 ms-2"}
+                                          onClick={() => setIsEdit(!isEdit)}
+                                        >
+                                          <i
+                                            className={`fa-solid fa-${
+                                              !isEdit
+                                                ? "pen-to-square"
+                                                : "floppy-disk"
+                                            }`}
+                                          />
+                                        </button>
                                       </div>
-                                      <div className="py-2">
-                                        <input
-                                          type="checkbox"
-                                          className="form-check-input"
-                                          id="toggleWebhook"
-                                        />
-                                        <label className="form-check-label ms-3" htmlFor="toggleWebhook">
-                                          Add on Inbound webhook. <Link to="" className='urlText'>( Learn More )</Link>
-                                        </label>
-
-                                        <div className="formRow flex-column align-items-start px-0 showUrl">
-                                          <div className="formLabel">
-                                            <label>Enter url</label>
+                                      <div className="d-flex justify-content-start align-items-center gap-3">
+                                        <p className="mb-0">
+                                          ID: <span>{selectedNumber}</span>
+                                          <button
+                                            className="clearButton"
+                                            onClick={() => {
+                                              copyLink(selectedNumber);
+                                            }}
+                                          >
+                                            <i
+                                              className={
+                                                linkCopy
+                                                  ? "fa-solid fa-check text_success"
+                                                  : "fa-solid fa-clone"
+                                              }
+                                            ></i>
+                                          </button>
+                                        </p>
+                                        <p className="mb-0">
+                                          Provider:{" "}
+                                          <span>{numberProvider}</span>
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {/* <p className='text-end mb-2 f-s-14'>Last Update on : <strong> 5/26/2025</strong></p> */}
+                                      <div className="buttonGroup">
+                                        <button
+                                          className="panelButton danger"
+                                          onClick={setDeletePopup}
+                                        >
+                                          <span className="text">Delete</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-trash"></i>
+                                          </span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="k_body px-3">
+                                    <div className="d_card mb-3">
+                                      <div>
+                                        <form>
+                                          <div className="formRow flex-column align-items-start px-0">
+                                            <div className="formLabel">
+                                              <label>Inbound Call Agent</label>
+                                            </div>
+                                            <div className="col-12">
+                                              <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isDisabled={isDisabled}
+                                                isLoading={isLoading}
+                                                isClearable={isClearable}
+                                                isRtl={isRtl}
+                                                isSearchable={isSearchable}
+                                                name="inboundCallAgent"
+                                                value={formattedAgents.find(
+                                                  (option) =>
+                                                    option.value ===
+                                                    inboundCallAgent
+                                                )}
+                                                onChange={(option) => {
+                                                  const selected =
+                                                    option?.value;
+                                                  setInboundCallAgent(selected);
+                                                  handleUpdateNumber({
+                                                    inboundCallAgent: selected,
+                                                  });
+                                                }}
+                                                options={formattedAgents}
+                                              />
+                                            </div>
                                           </div>
-                                          <div className="col-12">
+                                          <div className="py-2">
                                             <input
-                                              type="text"
-                                              className="formItem"
-                                              placeholder="Enter url"
+                                              type="checkbox"
+                                              className="form-check-input"
+                                              id="toggleWebhook"
+                                              onClick={() => {
+                                                setShowUrlField(!showUrlField);
+                                              }}
                                             />
+                                            <label
+                                              className="form-check-label ms-3"
+                                              htmlFor="toggleWebhook"
+                                            >
+                                              Add on Inbound webhook.{" "}
+                                              <Link to="" className="urlText">
+                                                ( Learn More )
+                                              </Link>
+                                            </label>
+                                            {showUrlField && (
+                                              <div className="formRow flex-column align-items-start px-0 showUrl">
+                                                <div className="formLabel">
+                                                  <label>Enter url</label>
+                                                </div>
+                                                <div className="col-12">
+                                                  <input
+                                                    type="text"
+                                                    className="formItem"
+                                                    placeholder="Enter url"
+                                                    onChange={(e) =>
+                                                      setWebhookUrl(
+                                                        e.target.value
+                                                      )
+                                                    }
+                                                    onBlur={() => {
+                                                      handleUpdateNumber({
+                                                        webhookUrl,
+                                                      });
+                                                    }}
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
                                           </div>
-                                        </div>
-                                      </div>
 
-                                      <div className="formRow flex-column align-items-start px-0">
-                                        <div className="formLabel">
-                                          <label>
-                                            Outbound Call Agent</label>
-                                        </div>
-                                        <div className="col-12">
-                                          <Select
+                                          <div className="formRow flex-column align-items-start px-0">
+                                            <div className="formLabel">
+                                              <label>Outbound Call Agent</label>
+                                            </div>
+                                            <div className="col-12">
+                                              {/* <Select
                                             className="basic-single"
                                             classNamePrefix="select"
                                             // defaultValue={colourOptions[0]}
@@ -201,20 +549,47 @@ const AiPhoneNumber = () => {
                                             isRtl={isRtl}
                                             isSearchable={isSearchable}
                                             name="color"
-                                          // options={colourOptions}
-                                          />
-                                        </div>
+                                            // options={colourOptions}
+                                          /> */}
+                                              <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isDisabled={isDisabled}
+                                                isLoading={isLoading}
+                                                isClearable={isClearable}
+                                                isRtl={isRtl}
+                                                isSearchable={isSearchable}
+                                                name="outboundCallAgent"
+                                                value={formattedAgents.find(
+                                                  (option) =>
+                                                    option.value ===
+                                                    outboundCallAgent
+                                                )}
+                                                onChange={(option) => {
+                                                  const selected =
+                                                    option?.value;
+                                                  setOutboundCallAgent(
+                                                    selected
+                                                  );
+                                                  handleUpdateNumber({
+                                                    outboundCallAgent: selected,
+                                                  });
+                                                }}
+                                                options={formattedAgents}
+                                              />
+                                            </div>
+                                          </div>
+                                        </form>
                                       </div>
-
-                                    </form>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -222,8 +597,7 @@ const AiPhoneNumber = () => {
           </div>
         </section>
 
-
-        {addKnowledgeBase &&
+        {addKnowledgeBase && (
           <div className="popup ">
             <div className="popup music">
               <div className="container h-100">
@@ -241,7 +615,10 @@ const AiPhoneNumber = () => {
                             Buy Phone Number
                           </h5>
                         </div>
-                        <button className="clearButton2 xl" onClick={() => setKnowledgeBase(false)}>
+                        <button
+                          className="clearButton2 xl"
+                          onClick={() => setKnowledgeBase(false)}
+                        >
                           <i className="fa-solid fa-xmark"></i>
                         </button>
                       </div>
@@ -483,12 +860,14 @@ const AiPhoneNumber = () => {
                           <label className="label radioLabel">
                             <p className="text">Twilio</p>
                             <input
-                              checked
                               type="radio"
-                              id="send-now"
-                              name="value-radio"
-                              value="send-now"
-
+                              id="twilio"
+                              name="twilio"
+                              value="twilio"
+                              checked={numberProvider === "twilio"}
+                              onChange={(e) =>
+                                setNumberProvider(e.target.value)
+                              }
                             />
                           </label>
                         </div>
@@ -497,14 +876,17 @@ const AiPhoneNumber = () => {
                             <p className="text">Telnyx</p>
                             <input
                               type="radio"
-                              id="schedule"
-                              name="value-radio"
-                              value="schedule"
-
+                              id="telnyx"
+                              name="telnyx"
+                              value="telnyx"
+                              checked={numberProvider === "telnyx"}
+                              onChange={(e) =>
+                                setNumberProvider(e.target.value)
+                              }
                             />
                           </label>
                         </div>
-                        <div className='col-12 mt-3'>
+                        <div className="col-12 mt-3">
                           <div className="formLabel">
                             <label>Area Code (Optional)</label>
                           </div>
@@ -512,21 +894,35 @@ const AiPhoneNumber = () => {
                             <input
                               type="text"
                               className="formItem"
-                              placeholder='e.g. 650'
+                              placeholder="e.g. 650"
+                              value={areaCode}
+                              onChange={(e) => {
+                                // Only allow numbers
+                                const value = e.target.value.replace(
+                                  /[^0-9]/g,
+                                  ""
+                                );
+                                setAreaCode(value);
+                              }}
                             />
                           </div>
                         </div>
-                        <div className='col-12 mt-3'>
-                          <div className='noticeMessageBox'>
-                            <i class="fa-regular fa-circle-exclamation "></i>  <p className='mb-0 f-s-14'>This number incurs a monthly fee of $2.00.</p>
+                        <div className="col-12 mt-3">
+                          <div className="noticeMessageBox">
+                            <i class="fa-regular fa-circle-exclamation "></i>{" "}
+                            <p className="mb-0 f-s-14">
+                              This number incurs a monthly fee of $2.00.
+                            </p>
                           </div>
                         </div>
-
                       </div>
                     </div>
                     <div className=" card-footer d-flex justify-content-end">
                       <div className="d-flex justify-content-end">
-                        <button className="panelButton  m-0" >
+                        <button
+                          className="panelButton  m-0"
+                          onClick={handleCreateNumber}
+                        >
                           <span className="text">Confirm</span>
                           <span className="icon">
                             <i className="fa-solid fa-check"></i>
@@ -550,8 +946,7 @@ const AiPhoneNumber = () => {
               </div>
             </div>
           </div>
-        }
-
+        )}
 
         {deletePopup && (
           <div className="popup">
@@ -565,12 +960,14 @@ const AiPhoneNumber = () => {
                   </div>
                   <div className="col-12">
                     <h4 className="text-center text-danger">Confirmation!</h4>
-                    <p className="text-center">Are you sure! You want to delete this Number?</p>
+                    <p className="text-center">
+                      Are you sure! You want to delete this Number?
+                    </p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
                       <button
                         className="panelButton m-0"
-
+                        onClick={handleDeleteNumber}
                       >
                         <span className="text">Delete</span>
                         <span className="icon">
@@ -595,11 +992,9 @@ const AiPhoneNumber = () => {
             </div>
           </div>
         )}
-
-
-      </main >
+      </main>
     </>
-  )
-}
+  );
+};
 
-export default AiPhoneNumber
+export default AiPhoneNumber;

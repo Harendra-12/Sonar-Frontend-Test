@@ -8,6 +8,7 @@ import {
   aiGeneralGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AllAgent = () => {
   const [isAgentCreatePopup, setIsAgentCreatePopup] = useState(false);
@@ -21,6 +22,8 @@ const AllAgent = () => {
   const [loading, setLoading] = useState(true);
   const [deletedItem, setDeletedItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [agentName, setAgentName] = useState("");
+  const navigate = useNavigate();
 
   const filteredAgents = allAgents
     .filter((item) =>
@@ -50,8 +53,19 @@ const AllAgent = () => {
     setUpdateListing(true);
     const apiData = await aiGeneralGetFunction("/agent/all");
     if (apiData.status) {
+      // setAllAgents(apiData.data);
+      // Remove duplicates based on agent_id
+      const seen = new Set();
+      const uniqueAgents = [];
+
+      for (const agent of apiData.data) {
+        if (!seen.has(agent.agent_id)) {
+          seen.add(agent.agent_id);
+          uniqueAgents.push(agent);
+        }
+      }
+      setAllAgents(uniqueAgents);
       setUpdateListing(false);
-      setAllAgents(apiData.data);
       setLoading(false);
     } else {
       setUpdateListing(false);
@@ -110,6 +124,18 @@ const AllAgent = () => {
     }
   };
 
+  const addNewAgent = () => {
+    if (agentName === "") {
+      toast.error("Please enter agent name");
+      return;
+    }
+    navigate("/conversations-flow", {
+      state: {
+        unique: true,
+        agentName: agentName,
+      },
+    });
+  };
   return (
     <>
       <main className="mainContent">
@@ -126,6 +152,7 @@ const AllAgent = () => {
                           <h4>
                             Agents{" "}
                             <button
+                              type="button"
                               className="clearButton"
                               onClick={() => setRefreshState(refreshState + 1)}
                               disabled={updateListing}
@@ -143,6 +170,7 @@ const AllAgent = () => {
                         </div>
                         <div className="buttonGroup">
                           <button
+                            type="button"
                             effect="ripple"
                             className="panelButton "
                             onClick={() => {
@@ -155,7 +183,7 @@ const AllAgent = () => {
                             </span>
                           </button>
 
-                          {/* <button
+                          {/* <button  type="button"
                             className="panelButton edit"
                             onClick={() => {
                               setAddUploadAgentToggle(true);
@@ -229,6 +257,7 @@ const AllAgent = () => {
                                       <td>
                                         <div className="dropdown">
                                           <button
+                                            type="button"
                                             className={`tableButton`}
                                             href="#"
                                             role="button"
@@ -240,7 +269,7 @@ const AllAgent = () => {
                                           <ul className="dropdown-menu actionBtnDropdowns">
                                             {/* <li className="dropdown-item">
                                               <Tippy content="Reset configuration of this DID">
-                                                <button className="clearButton text-align-start">
+                                                <button  type="button" className="clearButton text-align-start">
                                                   <i className="fa-regular fa-clone me-2"></i>
                                                   Duplicate
                                                 </button>
@@ -248,7 +277,7 @@ const AllAgent = () => {
                                             </li>
                                             <li className="dropdown-item">
                                               <Tippy content="Select the usage of this DID">
-                                                <button className="clearButton text-align-start">
+                                                <button  type="button" className="clearButton text-align-start">
                                                   <i className="fa-regular fa-arrow-right-arrow-left me-2"></i>
                                                   Export
                                                 </button>
@@ -257,8 +286,12 @@ const AllAgent = () => {
                                             <li className="dropdown-item">
                                               <Tippy content={"Delete the DID"}>
                                                 <button
+                                                  type="button"
                                                   className="clearButton text-align-start text-danger"
-                                                  onClick={()=>{setDeletePopup(true);setDeletedItem(item)}}
+                                                  onClick={() => {
+                                                    setDeletePopup(true);
+                                                    setDeletedItem(item);
+                                                  }}
                                                 >
                                                   <i
                                                     className={`fa-regular fa-trash me-2`}
@@ -303,6 +336,7 @@ const AllAgent = () => {
                           Select Template
                         </h5>
                         <button
+                          type="button"
                           className="clearButton2 xl"
                           onClick={() => setIsAgentCreatePopup(false)}
                         >
@@ -319,18 +353,18 @@ const AllAgent = () => {
                           aria-orientation="vertical"
                         >
                           <button
+                            type="button"
                             className="nav-link active"
                             id="v-pills-home-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#v-pills-home"
-                            type="button"
                             role="tab"
                             aria-controls="v-pills-home"
                             aria-selected="true"
                           >
                             Single Prompt
                           </button>
-                          <button
+                          {/* <button  type="button"
                             className="nav-link"
                             id="v-pills-profile-tab"
                             data-bs-toggle="pill"
@@ -341,7 +375,7 @@ const AllAgent = () => {
                             aria-selected="false"
                           >
                             conversation flow
-                          </button>
+                          </button> */}
                         </div>
                         <div
                           className="tab-content w-100"
@@ -356,6 +390,7 @@ const AllAgent = () => {
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
+                                  type="button"
                                   className="popup-border text-center bg-transparent p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
@@ -379,8 +414,8 @@ const AllAgent = () => {
                                   </h5>
                                 </div>
                               </div>
-                              <div className="popup_box">
-                                <button
+                              {/* <div className="popup_box">
+                                <button  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
@@ -414,7 +449,7 @@ const AllAgent = () => {
                                     dummy text ever
                                   </span>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div
@@ -426,6 +461,7 @@ const AllAgent = () => {
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
+                                  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={setCreateNewAgentToggle}
                                 >
@@ -452,6 +488,7 @@ const AllAgent = () => {
                               </div>
                               <div className="popup_box">
                                 <button
+                                  type="button"
                                   className=" border-0 bg-transparent text-center p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
@@ -548,6 +585,7 @@ const AllAgent = () => {
                         Upload an Agent
                       </h5>
                       <button
+                        type="button"
                         className="clearButton2 xl"
                         onClick={() =>
                           setAddUploadAgentToggle(!addUploadAgentToggle)
@@ -581,13 +619,14 @@ const AllAgent = () => {
                   </div>
                   <div className="card-footer">
                     <div className="d-flex justify-content-between">
-                      <button className="panelButton m-0">
+                      <button type="button" className="panelButton m-0">
                         <span className="text">Confirm</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
+                        type="button"
                         className="panelButton gray"
                         onClick={() => {
                           setAddUploadAgentToggle(false);
@@ -622,6 +661,7 @@ const AllAgent = () => {
                         Create a New Agent
                       </h5>
                       <button
+                        type="button"
                         className="clearButton2 xl"
                         onClick={() =>
                           setCreateNewAgentToggle(!createNewAgentToggle)
@@ -632,26 +672,36 @@ const AllAgent = () => {
                     </div>
                   </div>
                   <div className="card-body">
-                    <form>
+                    <div>
                       <div className="formRow">
                         <div className="formLabel">
                           <label>Enter a Agent Name:</label>
                         </div>
                         <div className="col-8">
-                          <input type="text" className="formItem" />
+                          <input
+                            value={agentName}
+                            onChange={(e) => setAgentName(e.target.value)}
+                            type="text"
+                            className="formItem"
+                          />
                         </div>
                       </div>
-                    </form>
+                    </div>
                   </div>
                   <div className="card-footer">
                     <div className="d-flex justify-content-between">
-                      <button className="panelButton m-0">
+                      <button
+                        type="button"
+                        className="panelButton m-0"
+                        onClick={addNewAgent}
+                      >
                         <span className="text">Create</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
+                        type="button"
                         className="panelButton gray"
                         onClick={() => {
                           setCreateNewAgentToggle(false);
@@ -687,14 +737,19 @@ const AllAgent = () => {
                     </p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
-                      <button className="panelButton m-0"  onClick={handleDeleteAgent}
-                            disabled={loading}>
+                      <button
+                        type="button"
+                        className="panelButton m-0"
+                        onClick={handleDeleteAgent}
+                        disabled={loading}
+                      >
                         <span className="text">Delete</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
+                        type="button"
                         className="panelButton gray m-0 float-end"
                         onClick={() => {
                           setDeletePopup(false);

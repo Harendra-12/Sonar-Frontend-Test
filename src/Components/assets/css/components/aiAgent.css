@@ -50,15 +50,15 @@
 }
 
 .KnowledgeLeftinfo {
-    padding: 20px;
+    padding: 20px 10px;
     border-radius: 10px;
     background-color: var(--knowledge-leftinfo);
     overflow: hidden;
-    max-height: calc(100vh - 232px);
+    height: 100%;
 }
 
 .heightAuto {
-    max-height: calc(100vh - 232px);
+    max-height: calc(100vh - 280px);
     overflow: auto;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .knowledge__list .nav .nav-link.active i {
-    color: #066ed7;
+    color: #066ed7 !important;
 }
 
 .KnowledgeRightinfo {
@@ -109,7 +109,7 @@
     border: 1px solid var(--me-border1);
     border-radius: 5px;
     transition: all 0.4s ease-in-out;
-    color: var(--color-subtext);
+    color: var(--ui-accent);
     font-size: 0.813rem;
 }
 
@@ -119,12 +119,13 @@
 }
 
 .table__icon {
-    font-size: 25px;
+    font-size: 1rem;
     color: #9595a9;
 }
 
 .detailsTable h5 {
     color: var(--immortalBlack);
+    font-size: 0.9rem;
 }
 
 .detailsTable p {
@@ -170,7 +171,7 @@
 }
 
 .addFile_box {
-    border: 1px solid var(--me-border1);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 15px;
 
@@ -680,7 +681,7 @@
 
 .FlowAccordion_content .dropdown-menu.settingMenu.w300.show {
     display: block;
-    min-width: 389px;
+    min-width: 310px;
     width: 100%;
     background: var(--ele-color);
 }
@@ -702,4 +703,47 @@
     color: var(--immortalBlack);
     background: #b2d4ff69;
     border-radius: 10px !important;
+}
+.TestCallMessage{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+.messageContent.heightAuto{
+    flex: 1;
+    max-height: calc(100vh - 355px);
+}
+.TestCallMessage .messageItem.sender .messageDetails {
+   border: none !important;
+   background: #3caeff5c;
+}
+.TestCallMessage .messageItem.receiver .messageDetails {
+    background-color: #7888b154;
+    border: none !important;
+}
+.messageFooter{
+    border-top: 1px solid var(--me-border1);
+    padding: 10px;
+}
+.callBtn{
+    background-color: #0047ff4a;
+    border-radius: 5px;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    width: 100%;
+}
+.text_info{
+    color: var(--textInfo);
+}
+.textCall{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
 }

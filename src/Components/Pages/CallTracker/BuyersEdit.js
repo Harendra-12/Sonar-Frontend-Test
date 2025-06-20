@@ -715,8 +715,8 @@ const BuyersEdit = () => {
                             </select>
                           </div>
                         </div>
-                        <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
-                        </div>
+                      </form>
+                      <div className="col-12 mt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
                         <div className="heading bg-transparent border-bottom-0 px-0 pb-0">
                           <div className="content">
                             <h4>List of Additional Phone Numbers <span className="text-danger">*</span></h4>
@@ -726,9 +726,14 @@ const BuyersEdit = () => {
                         {
                           listOfAdditionalPhNumbers?.map((item, index) => {
                             return (
-                              <div className=" col-xl-12" key={index}>
-                                <div className="formRow justify-content-start">
-                                  <div className="col-6" >
+                              <div className="col-xl-12 mb-2" key={index}>
+                                <div className="row">
+                                  <div className={`col-auto ${index == 0 ? 'mt-auto mb-1' : 'my-auto'}`}>
+                                    <div className="formLabel">
+                                      <label>{index + 1}.</label>
+                                    </div>
+                                  </div>
+                                  <div className="col-3" >
                                     {
                                       index === 0 &&
                                       <div className="formLabel">
@@ -737,7 +742,7 @@ const BuyersEdit = () => {
                                         </label>
                                       </div>
                                     }
-                                    <div className="col-3">
+                                    <div className="col-12">
                                       <input
                                         type="text"
                                         className="formItem"
@@ -762,7 +767,7 @@ const BuyersEdit = () => {
                                         </label>
                                       </div>
                                     }
-                                    <div className="col-6">
+                                    <div className="col-12">
                                       <PhoneInput
                                         defaultCountry={countryCode?.find(
                                           (code) => code?.prefix_code === `+${listOfAdditionalPhNumbers[index]?.phone_code}`
@@ -781,17 +786,15 @@ const BuyersEdit = () => {
                                       )}
                                     </div>
                                   </div>
-                                  <div className="col-3 mt-4">
-                                    {
-                                      listOfAdditionalPhNumbers?.length > 1 &&
+                                  {
+                                    listOfAdditionalPhNumbers?.length > 1 && <div className={`col-auto ${index == 0 ? 'mt-auto mb-1' : 'my-auto'}`}>
                                       <button
                                         type="button"
                                         className="tableButton delete mx-auto"
                                         onClick={() => handleDeleteBuyerAdditionalNumber(item, index)} >
                                         <i className="fa-solid fa-trash" />
                                       </button>
-                                    }
-                                  </div>
+                                    </div>}
                                   {
                                     index === listOfAdditionalPhNumbers?.length - 1 &&
                                     <div className="col-3 mt-4" >
@@ -814,7 +817,7 @@ const BuyersEdit = () => {
                             )
                           })
                         }
-                      </form>
+                      </div>
                     </div>
                   </div>
                 </div>

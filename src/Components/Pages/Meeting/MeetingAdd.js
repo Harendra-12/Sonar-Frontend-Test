@@ -37,10 +37,10 @@ function MeetingAdd() {
   const { register, formState: { errors }, reset, handleSubmit, watch } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants.length == 1 && participants[0].length == 0) {
-      toast.error("Please add participants");
-      return;
-    }
+    // if (participants.length == 1 && participants[0].length == 0) {
+    //   toast.error("Please add participants");
+    //   return;
+    // }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")
@@ -53,6 +53,7 @@ function MeetingAdd() {
         ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
           : ""),
+        // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
         emails: participants
       };
       const apiData = await generalPostFunction(
@@ -89,10 +90,8 @@ function MeetingAdd() {
   }
 
   useEffect(() => {
-    if (watch().conf_type == "internal") {
-      if (allInternalUsers?.length == 0) {
-        getInternalUsers();
-      }
+    if (allInternalUsers?.length == 0) {
+      getInternalUsers();
     }
   }, [watch().conf_type]);
 

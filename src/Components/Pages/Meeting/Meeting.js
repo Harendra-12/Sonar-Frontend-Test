@@ -300,6 +300,7 @@ function Meeting() {
                             <thead>
                               <tr>
                                 <th>Conference Name</th>
+                                <th>Type</th>
                                 <th>Max. Members</th>
                                 <th>Moderator Pin</th>
                                 <th>Joining Pin</th>
@@ -344,6 +345,7 @@ function Meeting() {
                                         <>
                                           <tr key={key}>
                                             <td>{item.conf_name}</td>
+                                            <td style={{ textTransform: "capitalize" }}>{item.conf_type}</td>
                                             <td>{item.conf_max_members}</td>
                                             <td>
                                               {item?.moderator_pin && <div className="d-flex align-items-center justify-content-start ">

@@ -549,14 +549,17 @@
 }
 
 .participantMemberList ul li span {
-    color: #f5f5f5;
+    color: #000;
     font-size: 0.875rem;
 }
 
 .participantMemberList ul li .profileHolder {
-    width: 30px;
+    align-items: center;
+    display: flex;
+    font-size: .875rem;
     height: 30px;
-    font-size: 0.875rem;
+    justify-content: center;
+    width: 30px;
 }
 
 .videoCallWrapper .videoBody .participant {
