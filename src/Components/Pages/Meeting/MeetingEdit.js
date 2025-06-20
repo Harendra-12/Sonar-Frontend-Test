@@ -52,10 +52,13 @@ function MeetingEdit() {
         if (data.conf_start_time && data.conf_end_time) {
           setValue("conf_scheduled", "1")
         }
+        if (Array.isArray(data.users) && data.users.length === 0) {
+          delete data.users;
+        }
         reset(data);
 
         // setAddedUsers(data.users);
-        setParticipants(data.emails.length == 0 ? [""] : data.emails);
+        setParticipants(data.emails.length == 0 ? [""] : data.emails.map((email) => email.email));
       }
     } catch (err) {
       console.log(err);
@@ -79,9 +82,9 @@ function MeetingEdit() {
       setLoading(true);
       const parsedData = {
         ...data,
-        ...(watch().conf_type === "internal"
+        ...(watch().conf_type == "internal" && addedUsers.length > 0
           ? { users: addedUsers.map((user) => user.id) }
-          : ""),
+          : {}),
         emails: participants
       };
       const apiData = await generalPutFunction(
