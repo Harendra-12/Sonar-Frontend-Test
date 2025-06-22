@@ -286,9 +286,15 @@ const CallHistory = () => {
                                       </td>
                                       <td>{call?.call_type}</td>
                                       <td>
-                                        {" "}
-                                        {call?.call_cost?.combined_cost && "$"}
-                                        {call?.call_cost?.combined_cost}
+                                        {call?.call_cost?.combined_cost !=
+                                          null && (
+                                          <>
+                                            {"$"}
+                                            {(
+                                              call.call_cost.combined_cost / 100
+                                            ).toFixed(2)}
+                                          </>
+                                        )}
                                       </td>
                                       <td> {call?.call_id}</td>
                                       <td>
@@ -387,7 +393,7 @@ const CallHistory = () => {
               <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
                 <strong>Cost:</strong>{" "}
                 <span className="fs-12">
-                  ${selectedCall?.call_cost?.combined_cost}
+                  $ {(selectedCall.call_cost.combined_cost / 100).toFixed(2)}
                 </span>
               </p>
             </div>

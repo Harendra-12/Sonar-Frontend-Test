@@ -148,6 +148,9 @@ const FlowAccordionContent = ({
         setAllVoices(
           voicesData.data.filter((item) => item.provider === "elevenlabs")
         );
+        setFilterModels(
+          voicesData.data.filter((item) => item.provider === "elevenlabs")
+        );
       }
       if (llmModelsData.status) {
         setLlmModels(llmModelsData.data);
@@ -175,7 +178,7 @@ const FlowAccordionContent = ({
       setEnableVoicemailDetection(agentData.enable_voicemail_detection);
       setVoicemailMessage(agentData.voicemail_message);
       setVoicemailDetectionTimeoutMs(agentData.voicemail_detection_timeout_ms);
-      setPostCallAnalysisData(agentData.post_call_analysis_data);
+      setPostCallAnalysisData(agentData.post_call_analysis_data || []);
       setPostCallAnalysisModel(agentData.post_call_analysis_model);
       setBeginMessageDelayMs(agentData.begin_message_delay_ms);
       setRingDurationMs(agentData.ring_duration_ms);
@@ -1331,7 +1334,7 @@ const FlowAccordionContent = ({
                         </button>
                         <button onClick={() => {
                                 setPostCallAnalysisData((prev) =>
-                                  prev.filter((data) => data.name !== item.name)
+                                  prev?.filter((data) => data.name !== item.name)
                                 );
                               }} className="clearButton text-align-start text-danger">
                           <i class="fa-regular fa-trash-can"></i>
@@ -3272,7 +3275,7 @@ const FlowAccordionContent = ({
                             setEditPostCallPopup(false);
                           } else {
                             setPostCallAnalysisData((prev) => [
-                              ...prev.filter(
+                              ...prev?.filter(
                                 (data, index) => index !== postCallDataEdit
                               ),
                               {

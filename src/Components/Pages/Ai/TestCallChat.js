@@ -59,7 +59,6 @@ const TestCallChat = ({ agentId }) => {
     // eslint-disable-next-line
   }, []);
 
-
   const toggleConversation = async () => {
     setIsLoading(true);
     if (isCalling) {
@@ -71,8 +70,8 @@ const TestCallChat = ({ agentId }) => {
       } finally {
         setIsCalling(false);
         setIsLoading(false);
-        setTestCallToken(null);
-        setTranscript([]);
+        // setTestCallToken(null);
+        // setTranscript([]);
         transcriptRef.current = [];
       }
     } else {
@@ -133,7 +132,7 @@ const TestCallChat = ({ agentId }) => {
           <button
             className="callBtn"
             disabled={isCalling || isLoading || !agentId}
-            onClick={toggleConversation}
+            // onClick={toggleConversation}
           >
             <div className="text_info">
               <i className="fa-light fa-phone me-2"></i>
@@ -142,7 +141,8 @@ const TestCallChat = ({ agentId }) => {
           </button>
         </div>
 
-        {testCallToken && (isCalling || transcript.length > 0) ? (
+        {/* {testCallToken && (isCalling || transcript.length > 0) ? ( */}
+        {testCallToken ? (
           <>
             <div className="messageContent heightAuto">
               {transcript &&
@@ -150,7 +150,7 @@ const TestCallChat = ({ agentId }) => {
                   <div key={index} className="messageList">
                     <div
                       className={`messageItem ${
-                        msg.role === "agent" ? "sender" : "receiver"
+                        msg.role === "agent" ? "receiver" : "sender"
                       }`}
                     >
                       <div className="second">

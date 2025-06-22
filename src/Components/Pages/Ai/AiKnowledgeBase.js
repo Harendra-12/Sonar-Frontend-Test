@@ -7,17 +7,13 @@ import {
   aiGeneralPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
-import { requiredValidator, urlValidator } from "../../validations/validation";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiKnowledgeBase = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [addKnowledgeBase, setKnowledgeBase] = useState(false);
-  const [dataCopy, setDataCopy] = useState(false);
-  const [idCopy, setIdCopy] = useState(false);
   const [linkCopy, setLinkCopy] = useState(null);
   const [deletePopup, setShowDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,7 +52,13 @@ const AiKnowledgeBase = () => {
   };
 
   const downloadFile = (link) => {
-    window.open(link, "_blank");
+    // window.open(link, "_blank");
+    const a = document.createElement("a");
+    a.href = link;
+    a.setAttribute("download", ""); // Or set a specific filename like 'example.pdf'
+    document.body.appendChild(a); // Needed for Firefox
+    a.click();
+    document.body.removeChild(a);
   };
 
   // Clear errors when switching tabs
@@ -287,7 +289,7 @@ const AiKnowledgeBase = () => {
     fetchInitialData();
   };
 
-  if (createFileLoading) return <CircularLoader />;
+  if (createFileLoading) return <ThreeDotedLoader />;
   return (
     <>
       <main className="mainContent">
@@ -353,11 +355,12 @@ const AiKnowledgeBase = () => {
                                     initialData.map((item) => (
                                       <button
                                         key={item.knowledge_base_id}
-                                        className={`nav-link ${item.knowledge_base_id ===
-                                            activeFile?.knowledge_base_id
+                                        className={`nav-link ${
+                                          item.knowledge_base_id ===
+                                          activeFile?.knowledge_base_id
                                             ? "active"
                                             : ""
-                                          }`}
+                                        }`}
                                         id="v-pills-home-tab"
                                         data-bs-toggle="pill"
                                         data-bs-target="#v-pills-home"
@@ -370,11 +373,21 @@ const AiKnowledgeBase = () => {
                                         }}
                                       >
                                         <p className="mb-0">
-                                          <i className="fa-duotone fa-solid fa-folder-open me-2" style={{ color: 'var(--color-subtext)' }}></i>{" "}
+                                          <i
+                                            className="fa-duotone fa-solid fa-folder-open me-2"
+                                            style={{
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          ></i>{" "}
                                           {item?.knowledge_base_name}
                                         </p>
                                         <p className="mb-0">
-                                          <span style={{ fontSize: '0.75rem', color: 'var(--color-subtext)' }}>
+                                          <span
+                                            style={{
+                                              fontSize: "0.75rem",
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          >
                                             {" "}
                                             {new Date(
                                               item?.user_modified_timestamp
@@ -398,7 +411,7 @@ const AiKnowledgeBase = () => {
                                 role="tabpanel"
                                 aria-labelledby="v-pills-home-tab"
                               >
-                                <div className="heading">
+                                <div className="heading px-0">
                                   <div className="content">
                                     <h4>{activeFile?.knowledge_base_name}</h4>
                                     <p className="mb-0">
@@ -417,7 +430,7 @@ const AiKnowledgeBase = () => {
                                         <i
                                           className={
                                             linkCopy ===
-                                              activeFile?.knowledge_base_id
+                                            activeFile?.knowledge_base_id
                                               ? "fa-solid fa-check text_success"
                                               : "fa-solid fa-clone"
                                           }
@@ -447,8 +460,8 @@ const AiKnowledgeBase = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="k_body p-3">
-                                  <div className="tableContainer my-0">
+                                <div className="k_body">
+                                  <div className="tableContainer">
                                     <table>
                                       <tbody className="">
                                         <>
@@ -461,16 +474,16 @@ const AiKnowledgeBase = () => {
                                                       <div className="table__icon">
                                                         {data.type ===
                                                           "text" && (
-                                                            <i className="fa-solid fa-file-lines" />
-                                                          )}
+                                                          <i className="fa-solid fa-file-lines" />
+                                                        )}
                                                         {data.type ===
                                                           "document" && (
-                                                            <i className="fa-solid fa-file" />
-                                                          )}
+                                                          <i className="fa-solid fa-file" />
+                                                        )}
                                                         {data.type ===
                                                           "url" && (
-                                                            <i className="fa-solid fa-link" />
-                                                          )}
+                                                          <i className="fa-solid fa-link" />
+                                                        )}
                                                       </div>
                                                       <div className="ms-2 detailsTable">
                                                         <h5 className="mb-0">
@@ -494,26 +507,26 @@ const AiKnowledgeBase = () => {
                                                     <div className="d-flex justify-content-end align-items-center gap-2">
                                                       {(data.type === "text" ||
                                                         data.type ===
-                                                        "document") && (
-                                                          <button
-                                                            className="aitable_button bg-transparent"
-                                                            onClick={() =>
-                                                              downloadFile(
-                                                                data.type ===
-                                                                  "text"
-                                                                  ? data?.content_url
-                                                                  : data.type ===
-                                                                    "document"
-                                                                    ? data?.file_url
-                                                                    : data.type ===
+                                                          "document") && (
+                                                        <button
+                                                          className="aitable_button bg-transparent"
+                                                          onClick={() =>
+                                                            downloadFile(
+                                                              data.type ===
+                                                                "text"
+                                                                ? data?.content_url
+                                                                : data.type ===
+                                                                  "document"
+                                                                ? data?.file_url
+                                                                : data.type ===
                                                                     "url" &&
-                                                                    data.url
-                                                              )
-                                                            }
-                                                          >
-                                                            <i className="fa-regular fa-arrow-down-to-line"></i>
-                                                          </button>
-                                                        )}
+                                                                  data.url
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa-regular fa-arrow-down-to-line"></i>
+                                                        </button>
+                                                      )}
                                                       <button
                                                         className="aitable_button bg-transparent"
                                                         onClick={() =>
@@ -522,9 +535,9 @@ const AiKnowledgeBase = () => {
                                                               ? data?.content_url
                                                               : data.type ===
                                                                 "document"
-                                                                ? data?.file_url
-                                                                : data.type ===
-                                                                "url" &&
+                                                              ? data?.file_url
+                                                              : data.type ===
+                                                                  "url" &&
                                                                 data.url
                                                           )
                                                         }
@@ -532,15 +545,15 @@ const AiKnowledgeBase = () => {
                                                         <i
                                                           className={
                                                             linkCopy ===
-                                                              (data.type ===
-                                                                "text"
-                                                                ? data?.content_url
-                                                                : data.type ===
-                                                                  "document"
-                                                                  ? data?.file_url
-                                                                  : data.type ===
+                                                            (data.type ===
+                                                            "text"
+                                                              ? data?.content_url
+                                                              : data.type ===
+                                                                "document"
+                                                              ? data?.file_url
+                                                              : data.type ===
                                                                   "url" &&
-                                                                  data.url)
+                                                                data.url)
                                                               ? "fa-solid fa-check text_success"
                                                               : "fa-solid fa-clone"
                                                           }
@@ -618,32 +631,45 @@ const AiKnowledgeBase = () => {
                       </div>
                     </div>
                     <div className="card-body aiAgentTab p-3">
-                      <div className="formRow flex-column align-items-start w-100">
-                        <div className="addFile_box w-100">
-                          <h5 className="card-title fs14 border-bootm fw700 mb-3">
-                            Added Files
-                          </h5>
-                          {addedFiles.map((file) => (
-                            <div
-                              key={file.id}
-                              className="addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2"
-                            >
-                              <div className="d-flex align-items-center gap-1">
-                                <i className="fa-regular fa-file me-2"></i>
-                                <h5 className="card-title fs14 border-bootm fw700 mb-0">
-                                  {file.displayName}
-                                </h5>
-                              </div>
-                              <button
-                                onClick={() => handleRemoveFile(file.id)}
-                                className="aitable_button bg-transparent d-flex justify-content-center align-items-center p-1 text-danger border-danger"
-                              >
-                                <i className={`fa-regular fa-trash `}></i>
-                              </button>
+                      <div className="addFile_box">
+                        <h5 className="card-title fs14 border-bootm fw700 mb-3">
+                          Added Files List
+                        </h5>
+                        {addedFiles.length === 0 && (
+                          <h5 className="sub_text mb-3">No files added yet</h5>
+                        )}
+                        {addedFiles.map((file) => (
+                          <div
+                            key={file.id}
+                            className="addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2"
+                          >
+                            <div className="d-flex align-items-center gap-1">
+                              <i
+                                className={
+                                  file.type === "addText"
+                                    ? "fa-solid fa-file-lines"
+                                    : file.type === "uploadFile"
+                                    ? "fa-solid fa-file"
+                                    : file.type === "webPage"
+                                    ? "fa-solid fa-link"
+                                    : "fa-solid fa-file-circle-question"
+                                }
+                              />
+
+                              <h5 className="card-title fs14 border-bootm fw700 mb-0">
+                                {file.displayName}
+                              </h5>
                             </div>
-                          ))}
-                        </div>
+                            <button
+                              onClick={() => handleRemoveFile(file.id)}
+                              className="aitable_button bg-transparent d-flex justify-content-center align-items-center p-1 text-danger border-danger"
+                            >
+                              <i className={`fa-regular fa-trash `}></i>
+                            </button>
+                          </div>
+                        ))}
                       </div>
+
                       <form onSubmit={handleSubmit(handleFileAdd)}>
                         <div className="formRow flex-column align-items-start">
                           <div className="formLabel">
@@ -658,8 +684,8 @@ const AiKnowledgeBase = () => {
                               {...register("name", {
                                 required:
                                   currentTab === "webPage" ||
-                                    currentTab === "uploadFile" ||
-                                    currentTab === "addText"
+                                  currentTab === "uploadFile" ||
+                                  currentTab === "addText"
                                     ? "Name is required"
                                     : false,
                               })}
@@ -678,8 +704,9 @@ const AiKnowledgeBase = () => {
                           >
                             <li className="nav-item" role="presentation">
                               <button
-                                className={`nav-link${currentTab === "webPage" ? " active" : ""
-                                  }`}
+                                className={`nav-link${
+                                  currentTab === "webPage" ? " active" : ""
+                                }`}
                                 id="webPAge-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#webPAge"
@@ -694,8 +721,9 @@ const AiKnowledgeBase = () => {
                             </li>
                             <li className="nav-item" role="presentation">
                               <button
-                                className={`nav-link${currentTab === "uploadFile" ? " active" : ""
-                                  }`}
+                                className={`nav-link${
+                                  currentTab === "uploadFile" ? " active" : ""
+                                }`}
                                 id="upload-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#upload"
@@ -710,8 +738,9 @@ const AiKnowledgeBase = () => {
                             </li>
                             <li className="nav-item" role="presentation">
                               <button
-                                className={`nav-link${currentTab === "addText" ? " active" : ""
-                                  }`}
+                                className={`nav-link${
+                                  currentTab === "addText" ? " active" : ""
+                                }`}
                                 id="addText-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#addText"
@@ -727,8 +756,9 @@ const AiKnowledgeBase = () => {
                           </ul>
                           <div className="tab-content" id="pills-tabContent">
                             <div
-                              className={`tab-pane fade${currentTab === "webPage" ? " show active" : ""
-                                }`}
+                              className={`tab-pane fade${
+                                currentTab === "webPage" ? " show active" : ""
+                              }`}
                               id="webPAge"
                               role="tabpanel"
                               aria-labelledby="webPAge-tab"
@@ -751,11 +781,11 @@ const AiKnowledgeBase = () => {
                                       pattern:
                                         currentTab === "webPage"
                                           ? {
-                                            value:
-                                              /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]{2,}(\/.*)?$/,
-                                            message:
-                                              "Please enter a valid URL",
-                                          }
+                                              value:
+                                                /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]{2,}(\/.*)?$/,
+                                              message:
+                                                "Please enter a valid URL",
+                                            }
                                           : undefined,
                                     })}
                                   />
@@ -769,10 +799,11 @@ const AiKnowledgeBase = () => {
                               </div>
                             </div>
                             <div
-                              className={`tab-pane fade pb-3${currentTab === "uploadFile"
+                              className={`tab-pane fade pb-3${
+                                currentTab === "uploadFile"
                                   ? " show active"
                                   : ""
-                                }`}
+                              }`}
                               id="upload"
                               role="tabpanel"
                               aria-labelledby="upload-tab"
@@ -842,8 +873,9 @@ const AiKnowledgeBase = () => {
                                 )}
                             </div>
                             <div
-                              className={`tab-pane fade${currentTab === "addText" ? " show active" : ""
-                                }`}
+                              className={`tab-pane fade${
+                                currentTab === "addText" ? " show active" : ""
+                              }`}
                               id="addText"
                               role="tabpanel"
                               aria-labelledby="addText-tab"
@@ -912,8 +944,8 @@ const AiKnowledgeBase = () => {
                                 {currentTab === "webPage"
                                   ? " Web Page"
                                   : currentTab === "uploadFile"
-                                    ? " File"
-                                    : currentTab === "addText" && " Text"}
+                                  ? " File"
+                                  : currentTab === "addText" && " Text"}
                               </span>
                               {/* <span className="icon">
                                 <i className="fa-regular fa-plus"></i>
