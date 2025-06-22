@@ -326,10 +326,10 @@
 
 }
 
-.panelButton.exportGroupBtn {
+/* .panelButton.exportGroupBtn {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-}
+} */
 
 .listingDorp .dropdown-menu.show {
     min-width: 450px;

@@ -1504,7 +1504,7 @@ const FlowAccordionContent = ({
             </div>
           </div>
         </div>
-        <div class="accordion-item">+
+        <div class="accordion-item">
           <h2 class="accordion-header" id="flush-heading08">
             <button
               class="accordion-button collapsed"
