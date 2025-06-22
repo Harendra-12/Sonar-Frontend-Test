@@ -24,7 +24,7 @@ const WelcomeMessage = () => {
                     <div className="col-12">
                         <textarea
                             type="text"
-                            className="formItem"
+                            className="formItem fw-light"
                             rows={12}
                             style={{minHeight: "400px"}} >
                             Agent Name: Kate

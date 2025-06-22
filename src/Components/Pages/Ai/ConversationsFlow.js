@@ -54,14 +54,22 @@ const ConversationsFlow = () => {
                                 autoFocus
                               />
                             ) : (
-                              <h4>{defaultName}</h4>
+                              <h4 className="mb-0">{defaultName}</h4>
                             )}
 
                             <button
-                              className="aitable_button bg-transparent"
-                              onClick={() => setIsEditing(true)}
+                              variant={"outline"}
+                              size={"icon"}
+                              className={"clearButton2 ms-2 f-s-14"}
+                              onClick={() => setIsEditing(!isEditing)}
+                              // onClick={() => setIsEditing(true)}
                             >
-                              <i className="fa-regular fa-pen"></i>
+                              <i
+                                className={`fa-solid fa-${!isEditing
+                                  ? "pen-to-square"
+                                  : "floppy-disk"
+                                  }`}
+                              />
                             </button>
                           </div>
                           <div className="d-flex justify-content-start align-items-center gap-3">
@@ -138,7 +146,7 @@ const ConversationsFlow = () => {
                     </div>
                     <div className="col-12">
                       <div className="row p-3">
-                        <div className="col-xxl-6 ">
+                        <div className="col-xxl-5 col-xl-12 mb-2">
                           <div className="KnowledgeLeftinfo">
                             <div className="heightAuto">
                               <WelcomeMessage
@@ -150,7 +158,7 @@ const ConversationsFlow = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xxl-3 ">
+                        <div className="col-xxl-4 col-xl-6 mb-2">
                           <div className="KnowledgeLeftinfo">
                             <div className="heightAuto">
                               <FlowAccordionContent
@@ -170,9 +178,9 @@ const ConversationsFlow = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xxl-3 ">
+                        <div className="col-xxl-3 col-xl-6 mb-2 ">
                           <div className="KnowledgeLeftinfo">
-                            <div className="heightAuto">
+                            <div className="heightAuto h-100">
                               <TestCallChat />
                             </div>
                           </div>

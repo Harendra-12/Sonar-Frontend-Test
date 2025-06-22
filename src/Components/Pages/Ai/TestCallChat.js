@@ -157,7 +157,7 @@ const TestCallChat = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='messageFooter'>
+                        <div className='messageFooter pb-0'>
                             <button className="callBtn" onClick={toggleCall}>
                                 {isCalling ? (
                                     <div className='text-danger'>
@@ -175,7 +175,7 @@ const TestCallChat = () => {
                     </>
                 ) : (
                   
-                    <div className='textCall'>
+                    <div className='textCall '>
                         <i class="fa-regular fa-microphone-lines"></i>
                         <div className='d-flex'>
                             <p className='mb-0'>Test your agent</p>
