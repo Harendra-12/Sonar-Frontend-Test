@@ -26,8 +26,10 @@ const FlowAccordionContent = ({
   generalPrompt,
   setBeginMessage,
   setGeneralPrompt,
+  agentId,
+  setAgentId
 }) => {
-  const [agentId, setAgentId] = useState(agentData?.agent_id);
+  // const [agentId, setAgentId] = useState(agentData?.agent_id);
   const [endCallPopup, setEndCallPopup] = useState();
   const [callTransferPopup, setCallTransferPopup] = useState();
   const [checkCalendarAvailabilityPopup, setCheckCalendarAvailabilityPopup] =
@@ -213,7 +215,7 @@ const FlowAccordionContent = ({
     if (newAgent) {
       const llmParsedData = {
         model: model,
-        model_temperature: model_temperature,
+        model_temperature: Number(model_temperature),
         model_high_priority: model_high_priority,
         general_prompt: generalPrompt,
         begin_message: beginMessage,
@@ -232,8 +234,8 @@ const FlowAccordionContent = ({
           voice_temperature: voice_temperature,
           voice_speed: voice_speed,
           volume: volume,
-          responsiveness: responsiveness,
-          interruption_sensitivity: interruption_sensitivity,
+          responsiveness: Number(responsiveness),
+          interruption_sensitivity: Number(interruption_sensitivity),
           enable_backchannel: enable_backchannel,
           backchannel_frequency: backchannel_frequency,
           backchannel_words: backchannel_words,
@@ -287,7 +289,7 @@ const FlowAccordionContent = ({
     } else {
       const llmParsedData = {
         model: model,
-        model_temperature: model_temperature,
+        model_temperature: Number(model_temperature),
         model_high_priority: model_high_priority,
         general_prompt: generalPrompt,
         begin_message: beginMessage,
@@ -309,8 +311,8 @@ const FlowAccordionContent = ({
           voice_temperature: voice_temperature,
           voice_speed: voice_speed,
           volume: volume,
-          responsiveness: responsiveness,
-          interruption_sensitivity: interruption_sensitivity,
+          responsiveness: Number(responsiveness),
+          interruption_sensitivity: Number(interruption_sensitivity),
           enable_backchannel: enable_backchannel,
           backchannel_frequency: backchannel_frequency,
           backchannel_words: backchannel_words,
@@ -473,25 +475,138 @@ const FlowAccordionContent = ({
               </p>
 
               <ul>
-                <li>
+                {general_tools.length > 0 &&
+                    general_tools.map((item, key) => {
+                      return (
+                <li key={key}>
                   <div class="noticeMessageBox justify-content-between">
                     <div className="d-flex align-items-center gap-2">
                       <i class="fa-regular fa-phone-arrow-up-right iconGray"></i>
-                      <p class="mb-0 f-s-14">end_call</p>
+                      <p class="mb-0 f-s-14">{item.type}</p>
                     </div>
                     <div className="d-flex align-items-center gap-1">
                       <button
                         className="clearButton text-align-start"
-                        onClick={setEditCustomFunctionPopup}
+                         onClick={() => {
+                                  setOpenTrigger(item.type);
+                                  setEditableKey(key);
+                                  if (item.type === "end_call") {
+                                    setEndCallPopup(true);
+                                    setType("end_call");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                  } else if (item.type === "transfer_call") {
+                                    setCallTransferPopup(true);
+                                    setType("transfer_call");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                    if (
+                                      item.transfer_destination.type ===
+                                      "inferred"
+                                    ) {
+                                      setTransferType("inferred");
+                                      setTransferPrompt(
+                                        item.transfer_destination.prompt
+                                      );
+                                    } else {
+                                      setTransferType("predefined");
+                                      setTransferNumber(
+                                        item.transfer_destination.number
+                                      );
+                                    }
+                                    if (
+                                      item.transfer_option.type ===
+                                      "cold_transfer"
+                                    ) {
+                                      setTransferOptionType("cold_transfer");
+                                      setShowTransfereeAsCaller(
+                                        item.transfer_option
+                                          .show_transferee_as_caller
+                                      );
+                                    } else {
+                                      setTransferOptionType("warm_transfer");
+                                      if (
+                                        item.transfer_option
+                                          .public_handoff_option.type ===
+                                        "prompt"
+                                      ) {
+                                        setPublicHandoffOptionType("prompt");
+                                        setPublicHandOffPrompt(
+                                          item.transfer_option
+                                            .public_handoff_option.prompt
+                                        );
+                                      } else {
+                                        setPublicHandoffOptionType(
+                                          "static_message"
+                                        );
+                                        setPublicHandOffMessage(
+                                          item.transfer_option
+                                            .public_handoff_option.message
+                                        );
+                                      }
+                                    }
+                                  } else if (
+                                    item.type === "check_availability_cal"
+                                  ) {
+                                    setCheckCalendarAvailabilityPopup(true);
+                                    setType("check_availability_cal");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                    setCalApiKey(item.cal_api_key);
+                                    setEventTypeId(Number(item.event_type_id));
+                                    setTimezone(item.timezone);
+                                  } else if (
+                                    item.type === "book_appointment_cal"
+                                  ) {
+                                    setBookCalendarPopup(true);
+                                    setType("book_appointment_cal");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                    setCalApiKey(item.cal_api_key);
+                                    setEventTypeId(Number(item.event_type_id));
+                                    setTimezone(item.timezone);
+                                  } else if (item.type === "press_digit") {
+                                    setPressDigitsPopup(true);
+                                    setType("press_digit");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                    setDelayMs(item.delay_ms);
+                                  } else if (item.type === "custom") {
+                                    setCustomFunctionPopup(true);
+                                    setType("custom");
+                                    setName(item.name);
+                                    setDescription(item.description);
+                                    setUrl(item.url);
+                                    setSpeakDuringExecution(
+                                      item.speak_during_execution
+                                    );
+                                    setSpeakAfterExecution(
+                                      item.speak_after_execution
+                                    );
+                                    setParameters(
+                                      JSON.stringify(item.parameters) || {}
+                                    );
+                                    setExecutionMessageDescription(
+                                      item.execution_message_description
+                                    );
+                                    setCustomTimeoutMs(item.custom_timeout_ms);
+                                  }
+                                }}
                       >
                         <i class="fa-regular fa-pen-to-square"></i>
                       </button>
-                      <button className="clearButton text-align-start text-danger">
+                      <button onClick={() => {
+                                  setGeneralTools((prev) =>
+                                    prev.filter((tool, index) => key !== index)
+                                  );
+                                }} className="clearButton text-align-start text-danger">
                         <i class="fa-regular fa-trash-can"></i>
                       </button>
                     </div>
                   </div>
                 </li>
+                      );
+                    })}
               </ul>
               <div class="dropdown">
                 <button
@@ -1071,7 +1186,7 @@ const FlowAccordionContent = ({
             data-bs-parent="#accordionFlushExample"
           >
             <div class="accordion-body">
-              <SpeechSettings ambient_sound={ambient_sound} setAmbientSounds={setAmbientSounds} ambient_sound_volume={ambient_sound_volume} setAmbientSoundVolume={setAmbientSoundVolume} setResponsiveness={setResponsiveness} responsiveness={responsiveness} interruption_sensitivity={interruption_sensitivity} setInterruptionSensitivity={setInterruptionSensitivity} enable_backchannel={enable_backchannel} setEnableBackchannel={setEnableBackchannel} stt_mode={stt_mode} setSttMode={setSttModel} setBoostedKeywords={setBoostedKeywords} boosted_keywords={boosted_keywords} setNormalizeForSpeech={setNormalizeForSpeech} normalize_for_speech={normalize_for_speech} enable_transcription_formatting={enable_transcription_formatting} setEnableTranscriptionFormatting={setEnableTranscriptionFormatting} setReminderTriggerMs={setReminderTriggerMs} reminder_trigger_ms={reminder_trigger_ms} />
+              <SpeechSettings ambient_sound={ambient_sound} setAmbientSounds={setAmbientSounds} ambient_sound_volume={ambient_sound_volume} setAmbientSoundVolume={setAmbientSoundVolume} setResponsiveness={setResponsiveness} responsiveness={responsiveness} interruption_sensitivity={interruption_sensitivity} setInterruptionSensitivity={setInterruptionSensitivity} enable_backchannel={enable_backchannel} setEnableBackchannel={setEnableBackchannel} stt_mode={stt_mode} setSttModel={setSttModel} setBoostedKeywords={setBoostedKeywords} boosted_keywords={boosted_keywords} setNormalizeForSpeech={setNormalizeForSpeech} normalize_for_speech={normalize_for_speech} enable_transcription_formatting={enable_transcription_formatting} setEnableTranscriptionFormatting={setEnableTranscriptionFormatting} setReminderTriggerMs={setReminderTriggerMs} reminder_trigger_ms={reminder_trigger_ms} />
             </div>
           </div>
         </div>
@@ -1235,6 +1350,7 @@ const FlowAccordionContent = ({
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
+                  onClick={()=>setPostCallDataEdit(null)}
                 >
                   <span class="text">
                     <i class="fa-regular fa-plus me-2"></i> Add
@@ -1282,22 +1398,23 @@ const FlowAccordionContent = ({
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  gpt-4.1-nano
+                  {post_call_analysis_model}
                 </button>
                 <ul class="dropdown-menu">
-                  <li>
+                  <li onClick={()=>setPostCallAnalysisModel("gpt-4o-mini")}>
                     <a class="dropdown-item" href="#">
-                      Action
+                     GPT-4o Mini{" "}
+                                <span className="text-xs text-muted-foreground">
+                                  (free)
+                                </span>
                     </a>
                   </li>
-                  <li>
+                  <li onClick={()=>setPostCallAnalysisModel("gpt-4o")}>
                     <a class="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Something else here
+                      GPT-4o{" "}
+                                <span className="text-xs text-muted-foreground">
+                                  ($0.017/session)
+                                </span>
                     </a>
                   </li>
                 </ul>
@@ -1338,7 +1455,7 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="cl-toggle-switch">
                   <label className="cl-switch">
-                    <input type="checkbox" id="showAllCheck" />
+                    <input type="checkbox" checked={opt_out_sensitive_data_storage} onChange={(e) => setOptOutSensitiveDataStorage(e.target.checked)} id="showAllCheck" />
                     <span></span>
                   </label>
                 </div>
@@ -1354,12 +1471,12 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="cl-toggle-switch">
                   <label className="cl-switch">
-                    <input type="checkbox" id="showAllCheck" />
+                    <input type="checkbox" checked={opt_in_signed_url} onChange={(e) => setOptInSignedUrl(e.target.checked)} id="showAllCheck" />
                     <span></span>
                   </label>
                 </div>
               </div>
-              <div className="mb-2">
+              {/* <div className="mb-2">
                 <div class="formLabel mw-100">
                   <label>Fallback Voice ID</label>
                   <br />
@@ -1383,11 +1500,11 @@ const FlowAccordionContent = ({
                 <span class="text">
                   <i class="fa-regular fa-plus me-2"></i> Add
                 </span>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
-        <div class="accordion-item">
+        <div class="accordion-item">+
           <h2 class="accordion-header" id="flush-heading08">
             <button
               class="accordion-button collapsed"
@@ -1418,7 +1535,8 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="formRow flex-column align-items-start px-0">
                   <div className="col-12">
-                    <input type="text" className="formItem" placeholder="" />
+                    <input type="text" className="formItem" placeholder="" value={webhook_url}
+                    onChange={(e) => setWebhookUrl(e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -1491,7 +1609,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
-                          setOpenTrigger(null);
+                          setEndCallPopup(false);
                           console.log(editableKey);
                           if (name) {
                             setGeneralTools((prev) => {
@@ -1883,6 +2001,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
+                           setCallTransferPopup(false);
                           setOpenTrigger(null);
                           if (name) {
                             setGeneralTools((prev) => {
@@ -2078,6 +2197,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
+                          setCheckCalendarAvailabilityPopup(false);
                           if (name) {
                             setGeneralTools((prev) => {
                               const newTool = {
@@ -2245,6 +2365,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
+                           setBookCalendarPopup(false);
                           if (name) {
                             setGeneralTools((prev) => {
                               const newTool = {
@@ -2399,6 +2520,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={(e) => {
+                          setPressDigitsPopup(false);
                           if (name) {
                             setGeneralTools((prev) => {
                               const newTool = {
@@ -2657,6 +2779,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
+                          setCustomFunctionPopup(false);
                           if (name) {
                             setGeneralTools((prev) => {
                               const newTool = {
@@ -3082,6 +3205,8 @@ const FlowAccordionContent = ({
                           type="text"
                           className="formItem"
                           placeholder="detailed_call_summary"
+                           value={postCallName}
+                            onChange={(e) => setPostCallName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -3095,6 +3220,10 @@ const FlowAccordionContent = ({
                           className="formItem h-auto"
                           rows={3}
                           placeholder="Detailed summary of the call before you transfer the call to a human agent so that the human agent can understand the context of the call"
+                          value={postCallDescription}
+                            onChange={(e) =>
+                              setPostCallDescription(e.target.value)
+                            }
                         />
                       </div>
                     </div>
@@ -3109,18 +3238,57 @@ const FlowAccordionContent = ({
                               type="text"
                               className="formItem"
                               placeholder="detailed_call_summary"
+                              value={postCallExample}
+                              onChange={(e) =>
+                                setPostCallExample(e.target.value)
+                              }
                             />
                           </div>
                         </div>
                       </div>
-                      <button class="aitable_button bg-transparent text-danger">
+                      <button  onClick={() => {
+                              setPostCallExample("");
+                            }} class="aitable_button bg-transparent text-danger">
                         <i class="fa-regular fa-trash-can"></i>
                       </button>
                     </div>
                   </div>
                   <div className=" card-footer d-flex justify-content-end">
                     <div className="d-flex justify-content-end">
-                      <button className="panelButton  m-0">
+                      <button className="panelButton  m-0"  onClick={() => {
+                          if (postCallDataEdit === null) {
+                            setPostCallAnalysisData((prev) => [
+                              ...prev,
+                              {
+                                type: "string",
+                                name: postCallName,
+                                description: postCallDescription,
+                                example: postCallExample,
+                              },
+                            ]);
+                            setPostCallName("");
+                            setPostCallDescription("");
+                            setPostCallExample("");
+                            setEditPostCallPopup(false);
+                          } else {
+                            setPostCallAnalysisData((prev) => [
+                              ...prev.filter(
+                                (data, index) => index !== postCallDataEdit
+                              ),
+                              {
+                                type: "string",
+                                name: postCallName,
+                                description: postCallDescription,
+                                example: postCallExample,
+                              },
+                            ]);
+                            setPostCallName("");
+                            setPostCallDescription("");
+                            setPostCallExample("");
+                            setPostCallDataEdit(null);
+                             
+                          }
+                        }} >
                         <span className="text">Confirm</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
@@ -3129,6 +3297,10 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton gray"
                         onClick={() => {
+                           setPostCallName("");
+                            setPostCallDescription("");
+                            setPostCallExample("");
+                            setPostCallDataEdit(null);
                           setEditPostCallPopup(false);
                         }}
                       >

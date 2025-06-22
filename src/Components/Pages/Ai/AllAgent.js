@@ -136,6 +136,27 @@ const AllAgent = () => {
       },
     });
   };
+
+  async function handleEditClick(item) {
+    setLoading(true);
+    const apiData = await aiGeneralGetFunction(`/agent/get/${item.agent_id}`);
+    if (apiData.status) {
+      const llmData = await aiGeneralGetFunction(
+        `/llm/get/${apiData.data.response_engine.llm_id}`
+      );
+      if (llmData.status) {
+        // setLoading(false);
+        navigate("/conversations-flow", {
+          state: {
+            unique: false,
+            agentName: item.agent_name,
+            agentData: apiData.data,
+            llmData: llmData.data,
+          },
+        });
+      }
+    }
+  }
   return (
     <>
       <main className="mainContent">
@@ -232,7 +253,10 @@ const AllAgent = () => {
                               <>
                                 {filteredAgents.map((item, index) => {
                                   return (
-                                    <tr>
+                                    <tr
+                                      key={index}
+                                      onClick={() => handleEditClick(item)}
+                                    >
                                       <td>
                                         <div className="d-flex align-items-center">
                                           <div className="tableProfilePicHolder">
