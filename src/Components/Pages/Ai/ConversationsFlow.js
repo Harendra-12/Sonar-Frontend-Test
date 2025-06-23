@@ -127,7 +127,7 @@ const ConversationsFlow = () => {
                             </span>
                           </button>
 
-                          <div effect="ripple" className="panelButton">
+                          <div effect="ripple" className="panelButton" onClick={() => setSaveClicked(saveClicked + 1)} >
                             <span className="text">Save</span>
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
