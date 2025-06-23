@@ -6,6 +6,7 @@ const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
+
 // const aiBaseName = "https://ai.webvio.in/backend/backend";
 const aiBaseName = "http://localhost:8000/backend";
 // const aiToken = "key_a083999b0156a43721cc1b5942a1"; // bip key

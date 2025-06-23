@@ -761,7 +761,7 @@ const FlowAccordionContent = ({
                     <div className="formLabel mw-100">
                       <label>Voice & Language</label>
                     </div>
-                    <select
+                    <select className="formItem"
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                     >
@@ -1343,9 +1343,10 @@ const FlowAccordionContent = ({
                   })}
                 </ul>
               </div>
-              <div class="dropdown">
+              <div className="d-flex align-items-center gap-1 flex-wrap">
+              <div class="dropdown mb-1">
                 <button
-                  className="panelButton static mt-3 dropdown-toggle"
+                  className="panelButton static dropdown-toggle"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -1390,7 +1391,7 @@ const FlowAccordionContent = ({
                   </li>
                 </ul>
               </div>
-              <div class="dropdown ms-2">
+              <div class="dropdown ms-2 mb-1">
                 <button
                   class="aitable_button static  w-100 dropdown-toggle"
                   type="button"
@@ -1417,6 +1418,7 @@ const FlowAccordionContent = ({
                     </a>
                   </li>
                 </ul>
+              </div>
               </div>
             </div>
           </div>
@@ -1502,7 +1504,7 @@ const FlowAccordionContent = ({
             </div>
           </div>
         </div>
-        <div class="accordion-item">+
+        <div class="accordion-item">
           <h2 class="accordion-header" id="flush-heading08">
             <button
               class="accordion-button collapsed"
@@ -3067,7 +3069,7 @@ const FlowAccordionContent = ({
                       <div className="col-lg-3">
                         <select
                           name="gender"
-                          className="basic-single"
+                          className="basic-single formItem"
                           value={genderFilter}
                           onChange={(e) => setGenderFilter(e.target.value)}
                         >
@@ -3079,7 +3081,7 @@ const FlowAccordionContent = ({
                       <div className="col-lg-3">
                         <select
                           name="gender"
-                          className="basic-single"
+                          className="basic-single formItem"
                           value={AccentFilter}
                           onChange={(e) => setAccentFilter(e.target.value)}
                         >
