@@ -7,17 +7,13 @@ import {
   aiGeneralPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
-import { requiredValidator, urlValidator } from "../../validations/validation";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiKnowledgeBase = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [addKnowledgeBase, setKnowledgeBase] = useState(false);
-  const [dataCopy, setDataCopy] = useState(false);
-  const [idCopy, setIdCopy] = useState(false);
   const [linkCopy, setLinkCopy] = useState(null);
   const [deletePopup, setShowDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,7 +52,13 @@ const AiKnowledgeBase = () => {
   };
 
   const downloadFile = (link) => {
-    window.open(link, "_blank");
+    // window.open(link, "_blank");
+    const a = document.createElement("a");
+    a.href = link;
+    a.setAttribute("download", ""); // Or set a specific filename like 'example.pdf'
+    document.body.appendChild(a); // Needed for Firefox
+    a.click();
+    document.body.removeChild(a);
   };
 
   // Clear errors when switching tabs
@@ -287,7 +289,7 @@ const AiKnowledgeBase = () => {
     fetchInitialData();
   };
 
-  if (createFileLoading) return <CircularLoader />;
+  if (createFileLoading) return <ThreeDotedLoader />;
   return (
     <>
       <main className="mainContent">
@@ -371,11 +373,21 @@ const AiKnowledgeBase = () => {
                                         }}
                                       >
                                         <p className="mb-0">
-                                          <i className="fa-duotone fa-solid fa-folder-open me-2" style={{color: 'var(--color-subtext)'}}></i>{" "}
+                                          <i
+                                            className="fa-duotone fa-solid fa-folder-open me-2"
+                                            style={{
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          ></i>{" "}
                                           {item?.knowledge_base_name}
                                         </p>
                                         <p className="mb-0">
-                                          <span style={{fontSize: '0.75rem', color: 'var(--color-subtext)'}}>
+                                          <span
+                                            style={{
+                                              fontSize: "0.75rem",
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          >
                                             {" "}
                                             {new Date(
                                               item?.user_modified_timestamp
@@ -621,15 +633,29 @@ const AiKnowledgeBase = () => {
                     <div className="card-body aiAgentTab p-3">
                       <div className="addFile_box">
                         <h5 className="card-title fs14 border-bootm fw700 mb-3">
-                          Added Files
+                          Added Files List
                         </h5>
+                        {addedFiles.length === 0 && (
+                          <h5 className="sub_text mb-3">No files added yet</h5>
+                        )}
                         {addedFiles.map((file) => (
                           <div
                             key={file.id}
                             className="addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2"
                           >
                             <div className="d-flex align-items-center gap-1">
-                              <i className="fa-regular fa-file me-2"></i>
+                              <i
+                                className={
+                                  file.type === "addText"
+                                    ? "fa-solid fa-file-lines"
+                                    : file.type === "uploadFile"
+                                    ? "fa-solid fa-file"
+                                    : file.type === "webPage"
+                                    ? "fa-solid fa-link"
+                                    : "fa-solid fa-file-circle-question"
+                                }
+                              />
+
                               <h5 className="card-title fs14 border-bootm fw700 mb-0">
                                 {file.displayName}
                               </h5>

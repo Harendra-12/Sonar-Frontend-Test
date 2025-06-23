@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
 import { Link } from "react-router-dom";
 import {
   aiGeneralDeleteFunction,
@@ -11,7 +10,6 @@ import {
   aiGeneralPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiPhoneNumber = () => {
@@ -240,7 +238,7 @@ const AiPhoneNumber = () => {
   };
 
   if (createNumberLoading) {
-    return <CircularLoader />;
+    return <ThreeDotedLoader />;
   }
 
   return (
