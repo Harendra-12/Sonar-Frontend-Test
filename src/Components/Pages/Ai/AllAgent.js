@@ -254,11 +254,8 @@ const AllAgent = () => {
                               <>
                                 {filteredAgents.map((item, index) => {
                                   return (
-                                    <tr
-                                      key={index}
-                                      onClick={() => handleEditClick(item)}
-                                    >
-                                      <td>
+                                    <tr key={index}>
+                                      <td onClick={() => handleEditClick(item)}>
                                         <div className="d-flex align-items-center">
                                           <div className="tableProfilePicHolder">
                                             <i className="fa-light fa-user" />
