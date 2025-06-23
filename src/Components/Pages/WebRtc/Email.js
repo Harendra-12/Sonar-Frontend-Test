@@ -4,6 +4,7 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -15,6 +16,7 @@ import HeaderApp from "./HeaderApp";
 import NewMail from "./mailBox/NewMail";
 import { toast } from "react-toastify";
 import { api_url } from "../../../urls";
+import { useForm } from "react-hook-form";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
@@ -43,6 +45,11 @@ function Email({ selectedMail }) {
   const [lastPage, setLastPage] = useState(1);
   const [allMailLoading, setAllMailLoading] = useState(false);
   const [checkedMail, setCheckedMail] = useState([])
+  const [isAdvanceFilterClicked, setIsAdvanceFilterClicked] = useState(false)
+  const [entriesPerPage, setEntriesPerPage] = useState(10)
+  const [searchInput, setSearchInput] = useState("")
+  const slugPermissions = useSelector((state) => state?.permissions);
+  const debouncedSearchTerm = useDebounce(searchInput, 1000);
   // Add separate pagination states for each tab
   const [inboxPage, setInboxPage] = useState(1);
   const [sentPage, setSentPage] = useState(1);
@@ -60,6 +67,13 @@ function Email({ selectedMail }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
   const handleShowNewMail = () => {
     setShowNewMail(true);
     setShowMailList(false);
@@ -72,11 +86,90 @@ function Email({ selectedMail }) {
     // We don't change the activeList here to maintain the current tab context
   };
 
+
+
+  // get send mails
+  // const fetchSendMail = async () => {
+  //   setAllMailLoading(true);
+  //   const result = await generalGetFunction(
+  //     `/emails?type=sent&page=${pageNumber}`
+  //   );
+  //   if (result?.status) {
+  //     setAllSendMails(result.data);
+  //     const newLastPage = Math.ceil(
+  //       result?.data?.totalEmails / result?.data?.emailsPerPage
+  //     );
+  //     setLastPage(newLastPage);
+  //     setSentLastPage(newLastPage);
+  //     setSentPage(pageNumber);
+  //     setAllMailLoading(false);
+  //   } else {
+  //     setAllMailLoading(false);
+  //   }
+  // };
+
+  // get starred mails
+  // const fetchStarredMail = async () => {
+  //   setAllMailLoading(true);
+  //   const result = await generalGetFunction(
+  //     `/emails?type=starred&page=${pageNumber}`
+  //   );
+  //   if (result?.status) {
+  //     setAllStarredMails(result.data);
+  //     const newLastPage = Math.ceil(
+  //       result?.data?.totalEmails / result?.data?.emailsPerPage
+  //     );
+  //     setLastPage(newLastPage);
+  //     setStarredLastPage(newLastPage);
+  //     setStarredPage(pageNumber);
+  //     setAllMailLoading(false);
+  //   } else {
+  //     setAllMailLoading(false);
+  //   }
+  // };
+
+  // get trash mails
+  // const fetchTrashedMail = async () => {
+  //   setAllMailLoading(true);
+  //   const result = await generalGetFunction(
+  //     `/emails?type=trash&page=${pageNumber}`
+  //   );
+  //   if (result?.status) {
+  //     setAllTrashedMails(result.data);
+  //     const newLastPage = Math.ceil(
+  //       result?.data?.totalEmails / result?.data?.emailsPerPage
+  //     );
+  //     setLastPage(newLastPage);
+  //     setTrashLastPage(newLastPage);
+  //     setTrashPage(pageNumber);
+  //     setAllMailLoading(false);
+  //   } else {
+  //     setAllMailLoading(false);
+  //   }
+  // };
+
+  const fetchMailCategory = async (shouldLoad) => {
+    if (shouldLoad) {
+      setAllMailLoading(true)
+    }
+    setLoading(true);
+    const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS);
+    if (result?.status) {
+      setAllCategory(result?.data);
+      setActiveCategory(result?.data[0])
+    } else {
+      // navigate("/");
+    }
+  };
+
   // get all mails
-  const fetchAllMail = async (mail_type) => {
-    setAllMailLoading(true);
+  const fetchAllMail = async (mail_type, shouldLoad, filterData) => {
+    if (shouldLoad) {
+      setAllMailLoading(true);
+    }
+    setLoading(true)
     const result = await generalGetFunction(
-      `/emails?type=${mail_type}&page=${pageNumber}`
+      `/emails?type=${mail_type}&page=${pageNumber}&row_per_page=${entriesPerPage}&search=${searchInput}&from=${filterData?.from || ""}&to=${filterData?.to || ""}&subject=${filterData?.subject || ""}&since=${filterData?.since || ""}&before=${filterData?.before || ""}`
     );
     if (result?.status) {
       setAllMails(result.data);
@@ -87,91 +180,37 @@ function Email({ selectedMail }) {
       setInboxLastPage(newLastPage);
       setInboxPage(pageNumber);
       setAllMailLoading(false);
+      setLoading(false)
     } else {
       setAllMailLoading(false);
-    }
-  };
-
-  // get send mails
-  const fetchSendMail = async () => {
-    setAllMailLoading(true);
-    const result = await generalGetFunction(
-      `/emails?type=sent&page=${pageNumber}`
-    );
-    if (result?.status) {
-      setAllSendMails(result.data);
-      const newLastPage = Math.ceil(
-        result?.data?.totalEmails / result?.data?.emailsPerPage
-      );
-      setLastPage(newLastPage);
-      setSentLastPage(newLastPage);
-      setSentPage(pageNumber);
-      setAllMailLoading(false);
-    } else {
-      setAllMailLoading(false);
-    }
-  };
-
-  // get starred mails
-  const fetchStarredMail = async () => {
-    setAllMailLoading(true);
-    const result = await generalGetFunction(
-      `/emails?type=starred&page=${pageNumber}`
-    );
-    if (result?.status) {
-      setAllStarredMails(result.data);
-      const newLastPage = Math.ceil(
-        result?.data?.totalEmails / result?.data?.emailsPerPage
-      );
-      setLastPage(newLastPage);
-      setStarredLastPage(newLastPage);
-      setStarredPage(pageNumber);
-      setAllMailLoading(false);
-    } else {
-      setAllMailLoading(false);
-    }
-  };
-
-  // get trash mails
-  const fetchTrashedMail = async () => {
-    setAllMailLoading(true);
-    const result = await generalGetFunction(
-      `/emails?type=trash&page=${pageNumber}`
-    );
-    if (result?.status) {
-      setAllTrashedMails(result.data);
-      const newLastPage = Math.ceil(
-        result?.data?.totalEmails / result?.data?.emailsPerPage
-      );
-      setLastPage(newLastPage);
-      setTrashLastPage(newLastPage);
-      setTrashPage(pageNumber);
-      setAllMailLoading(false);
-    } else {
-      setAllMailLoading(false);
+      setLoading(false)
     }
   };
 
   const deleteMail = async (payload) => {
     setAllMailLoading(true);
+    setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value)
+      fetchAllMail(activeCategory?.value, true)
+      fetchMailCategory(true)
+      setCheckedMail([])
       toast.success(result?.message)
-      setAllMailLoading(false);
     } else {
       setAllMailLoading(false);
     }
   }
 
   const mailStatusApiCall = async (shouldLoad, payload) => {
-    if(shouldLoad)
-    setAllMailLoading(false);
+    if (shouldLoad)
+      setAllMailLoading(true);
+    setLoading(true)
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value)
+      fetchAllMail(activeCategory?.value, true)
+      fetchMailCategory(true)
+      setCheckedMail([])
       toast.success(result?.message)
-      setAllMailLoading(false);
     } else {
       setAllMailLoading(false);
     }
@@ -181,7 +220,7 @@ function Email({ selectedMail }) {
     setCurrentMail(mail);
     const shouldLoad = true
     mailStatusApiCall(shouldLoad, {
-      uid: mail?.uid,
+      uid: [mail?.uid],
       action: "seen",
       type: activeCategory?.value
     })
@@ -190,10 +229,20 @@ function Email({ selectedMail }) {
   const handleUnSeenMail = (mail) => {
     const shouldLoad = true
     mailStatusApiCall(shouldLoad, {
-      uid: mail?.uid,
+      uid: [mail?.uid],
       action: "unseen",
       type: activeCategory?.value
     })
+  }
+
+  const handleStarrClicked = (item) => {
+    const shouldLoad = true;
+    mailStatusApiCall(shouldLoad, {
+      uid: [item?.uid],
+      action: "starred",
+      type: activeCategory?.value
+    })
+
   }
 
   const fetchData = async (shouldLoad) => {
@@ -210,127 +259,81 @@ function Email({ selectedMail }) {
     }
   };
 
-  const fetchMailCategory = async (shouldLoad) => {
-    if (shouldLoad) setLoading(true);
-    const result = await generalGetFunction("/get-labels");
-    if (result?.status) {
-      setAllCategory(result?.data);
-      setActiveCategory(result?.data[0])
-      setLoading(false);
-      setRefreshState(false);
-    } else {
-      setLoading(false);
-      setRefreshState(false);
-      // navigate("/");
-    }
-  };
-
+  // all useEffect stuff start here ===============
   useEffect(() => {
     const shouldLoad = true;
     fetchMailCategory(shouldLoad)
     setRefreshState(true);
     fetchData(shouldLoad);
     const mailType = "INBOX"
-    fetchAllMail(mailType);
+    fetchAllMail(mailType, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // Only fetch mails if we're in list view mode and not returning from mail reply
-    // if (showMailList && !mailReplay) {
-    //   // Always fetch data when page number changes
-    //   if (activeList === "inbox") {
-    //     fetchAllMail();
-    //   } else if (activeList === "sent") {
-    //     fetchSendMail();
-    //   } else if (activeList === "starred") {
-    //     fetchStarredMail();
-    //   } else if (activeList === "deleted") {
-    //     fetchTrashedMail();
-    //   }
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    if (pageNumber !== 1) {
-      fetchAllMail(activeCategory?.value)
-    }
-  }, [pageNumber]);
+    if (activeCategory)
+      fetchAllMail(activeCategory?.value, true)
+  }, [pageNumber, entriesPerPage, debouncedSearchTerm]);
 
   // Add a new useEffect to handle initial data load
-  useEffect(() => {
-    // Only fetch mails if we're in list view mode and not returning from mail reply
-    if (showMailList && !mailReplay) {
-      // Check if we need to fetch data based on active tab and existing data
-      const shouldFetch = (() => {
-        switch (activeList) {
-          case "inbox":
-            return !allMails?.emails?.length;
-          case "sent":
-            return !allSendMails?.emails?.length;
-          case "starred":
-            return !allStarredMails?.emails?.length;
-          case "deleted":
-            return !allTrashedMails?.emails?.length;
-          default:
-            return true;
-        }
-      })();
+  // useEffect(() => {
+  //   // Only fetch mails if we're in list view mode and not returning from mail reply
+  //   if (showMailList && !mailReplay) {
+  //     // Check if we need to fetch data based on active tab and existing data
+  //     const shouldFetch = (() => {
+  //       switch (activeList) {
+  //         case "inbox":
+  //           return !allMails?.emails?.length;
+  //         case "sent":
+  //           return !allSendMails?.emails?.length;
+  //         case "starred":
+  //           return !allStarredMails?.emails?.length;
+  //         case "deleted":
+  //           return !allTrashedMails?.emails?.length;
+  //         default:
+  //           return true;
+  //       }
+  //     })();
 
-      if (shouldFetch) {
-        // Fetch mails based on active tab
-        if (activeList === "inbox") {
-          // fetchAllMail();
-        } else if (activeList === "sent") {
-          fetchSendMail();
-        } else if (activeList === "starred") {
-          fetchStarredMail();
-        } else if (activeList === "deleted") {
-          fetchTrashedMail();
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeList, showMailList, mailReplay]);
+  //     if (shouldFetch) {
+  //       // Fetch mails based on active tab
+  //       if (activeList === "inbox") {
+  //         // fetchAllMail();
+  //       } else if (activeList === "sent") {
+  //         fetchSendMail();
+  //       } else if (activeList === "starred") {
+  //         fetchStarredMail();
+  //       } else if (activeList === "deleted") {
+  //         fetchTrashedMail();
+  //       }
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [activeList, showMailList, mailReplay]);
 
-  const handleRefreshBtnClicked = () => {
-    setRefreshState(true);
-    const shouldLoad = false;
-    fetchData(shouldLoad);
-  };
+  // const handleRefreshBtnClicked = () => {
+  //   setRefreshState(true);
+  //   const shouldLoad = false;
+  //   fetchData(shouldLoad);
+  // };
+
+  // all useEffect stuff end here ================
 
   const handleListingClick = (category) => {
     setActiveList(category?.label);
     setActiveCategory(category)
-    fetchAllMail(category?.value)
-    // Reset pagination for the selected tab
-    // switch (formatCategoryName) {
-    //   case "inbox":
-    //     setPageNumber(inboxPage);
-    //     setLastPage(inboxLastPage);
-    //     break;
-    //   case "sent":
-    //     setPageNumber(sentPage);
-    //     setLastPage(sentLastPage);
-    //     break;
-    //   case "starred":
-    //     setPageNumber(starredPage);
-    //     setLastPage(starredLastPage);
-    //     break;
-    //   case "deleted":
-    //     setPageNumber(trashPage);
-    //     setLastPage(trashLastPage);
-    //     break;
-    // }
+    fetchAllMail(category?.value, true)
     setShowMailList(true);
     setShowNewMail(false);
     setMailReplay(false);
+    setPageNumber(1)
   };
 
   const handleMailDelete = (item) => {
     deleteMail({
-      uid: item?.uid?.toString(),
+      uid: [item?.uid?.toString()],
       type: activeCategory?.value,
-      action: "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
     })
   }
 
@@ -339,12 +342,28 @@ function Email({ selectedMail }) {
     deleteMail({
       uid: listOfMessageId,
       type: activeCategory?.value,
-      action: "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
     })
   }
 
   const handleMultipleView = () => {
+    const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    const shouldLoad = true;
+    mailStatusApiCall(shouldLoad, {
+      uid: listOfMessageId,
+      action: "seen",
+      type: activeCategory?.value
+    })
+  }
 
+  const handleMultipleStarred = () => {
+    const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    const shouldLoad = true;
+    mailStatusApiCall(shouldLoad, {
+      uid: listOfMessageId,
+      action: "starred",
+      type: activeCategory?.value
+    })
   }
 
   const getCategoryIconClass = (name) => {
@@ -371,7 +390,12 @@ function Email({ selectedMail }) {
     return "text-dark";
   };
 
-
+  const onSubmit = (data) => {
+    console.log("Form submitted with:", data);
+    setIsAdvanceFilterClicked(false)
+    fetchAllMail(activeCategory?.value, true, data)
+    reset("")
+  };
 
 
   return (
@@ -391,7 +415,10 @@ function Email({ selectedMail }) {
               title={"E-Mail"}
               loading={loading}
               setLoading={setLoading}
-              refreshApi={() => featureUnderdevelopment()}
+              refreshApi={() => {
+                fetchAllMail(activeCategory?.value)
+                fetchMailCategory(false)
+              }}
             />
           </div>
           <div className="container-fluid">
@@ -414,8 +441,19 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() => {
+                        setIsAdvanceFilterClicked(true)
+                      }}
+                    >
+                      <i class="fa-regular fa-filter me-2"></i> Advance Filter
+                    </button>
                     <h5 className="card-title mb-0 text_dark">
-                      <i class="fa-regular fa-star me-3"></i>
+                      <i class="fa-regular fa-star me-3"
+                        onClick={() => handleMultipleStarred()}
+                      ></i>
                       <i
                         class="fa-solid fa-trash me-3"
                         onClick={() => handleMultipleDelete()}
@@ -530,6 +568,11 @@ function Email({ selectedMail }) {
                             setCheckedMail={setCheckedMail}
                             checkedMail={checkedMail}
                             handleUnSeenMail={handleUnSeenMail}
+                            handleStarrClicked={handleStarrClicked}
+                            setEntriesPerPage={setEntriesPerPage}
+                            setSearchInput={setSearchInput}
+                            account={account}
+                            slugPermissions={slugPermissions}
                           />
                         )}
 
@@ -674,6 +717,98 @@ function Email({ selectedMail }) {
             </div>
           </div>
         </section>
+        {
+          isAdvanceFilterClicked && (
+            <div
+              className="popup loggedPopupSm"
+              style={{ backgroundColor: "#000000e0" }}
+            >
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
+
+                      <div className="row">
+                        <div className="col-4">From</div>
+                        <div className="col-4">
+                          <input
+                            {...register("from")}
+                            className="form-control"
+                            type="text"
+                            placeholder="Sender email"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mt-2">
+                        <div className="col-4">To</div>
+                        <div className="col-4">
+                          <input
+                            {...register("to")}
+                            className="form-control"
+                            type="text"
+                            placeholder="Recipient email"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mt-2">
+                        <div className="col-4">Subject</div>
+                        <div className="col-4">
+                          <input
+                            {...register("subject")}
+                            className="form-control"
+                            type="text"
+                            placeholder="Subject"
+                          />
+                        </div>
+                      </div>
+
+
+                      <div className="row mt-2">
+                        <div className="col-4">Date within</div>
+                        <div className="col-4">
+                          <input
+                            {...register("since")}
+                            className="form-control"
+                            type="date"
+                          />
+                        </div>
+                        <div className="col-4">
+                          <input
+                            {...register("before")}
+                            className="form-control"
+                            type="date"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-3 logoutPopup d-flex justify-content-center">
+                        <button
+                          type="submit"
+                          className="btn btn_info"
+                        >
+                          <span>Apply</span>
+                          <i className="fa-solid fa-filter ms-2"></i>
+                        </button>
+
+                        <button
+                          type="submit"
+                          className="btn btn_info ms-3"
+                          onClick={() => setIsAdvanceFilterClicked(false)}
+                        >
+                          <span>Cancel</span>
+                          <i className="fa-solid fa-times ms-2"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          )
+        }
       </main>
     </>
   );

@@ -318,39 +318,65 @@ function FportalCampaignCreate() {
   }))
 
   const formatDateTime = (input) => {
-    if (!input?.includes(':00')) {
+    if (!input?.includes('T') && !input?.includes(':')) {
+      input += 'T00:00:00';
+    } else if (!input?.includes(':00')) {
       input += ':00';
     }
+
     const date = new Date(input);
     if (isNaN(date)) {
       console.error('Invalid date:', input);
       return '';
     }
+
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, '0');
     const day = `${date.getDate()}`.padStart(2, '0');
     const hours = `${date.getHours()}`.padStart(2, '0');
     const minutes = `${date.getMinutes()}`.padStart(2, '0');
     const seconds = `${date.getSeconds()}`.padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
 
-  const convertTimeToDateTime = (timeStr, dateStr = '2025-06-02', timeOffsetHours = -7) => {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    const date = new Date(dateStr);
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  const convertTimeToDateTime = (timeStr, timeOffsetHours = -7, full_day, isStartDate) => {
+    if (full_day) {
+      return isStartDate ? "00:00:00" : "23:59:59";
+    }
+
+    if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) {
+      console.error("Invalid timeStr provided:", timeStr);
+      return null;
+    }
+
+    const [hoursStr, minutesStr] = timeStr.split(':');
+    const hours = parseInt(hoursStr, 10);
+    const minutes = parseInt(minutesStr, 10);
+
+    if (isNaN(hours) || isNaN(minutes)) {
+      console.error("Invalid time components in timeStr:", timeStr);
+      return null;
+    }
+
+    const date = new Date();
+
     date.setHours(hours);
     date.setMinutes(minutes);
     date.setSeconds(0);
+    date.setMilliseconds(0);
     date.setHours(date.getHours() + timeOffsetHours);
+
     const pad = (n) => String(n).padStart(2, '0');
-    const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-    return formatted;
-  }
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  };
 
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const startDate = formatDateTime(watch()?.start_date)
-    const endDate = formatDateTime(watch()?.end_date)
+    const startDate = formatDateTime(data?.start_date)
+    const endDate = formatDateTime(data?.end_date)
+    delete data?.start_date
+    delete data?.end_date
     setLoading(true);
     const payload = {
       ...data,
@@ -369,16 +395,33 @@ function FportalCampaignCreate() {
       })),
       dids: selectedItems,
       active_hours: isActiveHour ? "1" : "0",
-      schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
-        end_time: convertTimeToDateTime(item?.end_time),
-        full_day: item?.full_day,
-        name: item?.name,
-        recurring_day: item?.recurring_day,
-        start_time: convertTimeToDateTime(item?.start_time),
-        status: item?.status,
-        start_date: startDate,
-        end_date: endDate,
-      }))
+      ...(isActiveHour && {
+        schedulars: (schedulerInfo?.filter(data => data?.status === true) || []).length > 0
+          ? schedulerInfo
+            ?.filter(data => data?.status === true)
+            ?.map(item => ({
+              end_time: convertTimeToDateTime(item?.end_time, "", item?.full_day, false),
+              full_day: item?.full_day ? "1" : "0",
+              name: item?.name,
+              recurring_day: item?.recurring_day,
+              start_time: convertTimeToDateTime(item?.start_time, "", item?.full_day, true),
+              status: item?.status,
+              start_date: startDate,
+              end_date: endDate,
+            }))
+          : (startDate && endDate
+            ? [{
+              end_time: convertTimeToDateTime("", "", true, false),
+              full_day: "0",
+              name: "",
+              recurring_day: "",
+              start_time: convertTimeToDateTime("", "", true, true),
+              status: false,
+              start_date: startDate,
+              end_date: endDate
+            }]
+            : [])
+      }),
     };
     const apiData = await generalPostFunction("/fcampaign/store", payload);
     if (apiData?.status) {
@@ -926,14 +969,16 @@ function FportalCampaignCreate() {
                           <div className="formRow col-xl-3">
                             <div className='formLabel'>
                               <label>
-                                Tag
+                                Tag <span className="text-danger">*</span>
                               </label>
                             </div>
                             <div className='col-6'>
                               <input
                                 type="text"
                                 className="formItem"
-                                {...register("agent_name")}
+                                {...register("agent_name", {
+                                  ...requiredValidator,
+                                })}
                               />
                               {errors.agent_name && (
                                 <ErrorMessage text={errors.agent_name.message} />

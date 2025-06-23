@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PaginationComponent from "../../../CommonComponents/PaginationComponent";
-import { generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import { checkViewSidebar } from "../../../GlobalFunction/globalFunction";
 import ThreeDotedLoader from "../../../Loader/ThreeDotedLoader";
 
 const EmailList = ({
@@ -17,8 +17,14 @@ const EmailList = ({
   handleMailDelete,
   setCheckedMail,
   checkedMail,
-  handleUnSeenMail
+  handleUnSeenMail,
+  handleStarrClicked,
+  setEntriesPerPage,
+  setSearchInput,
+  account,
+  slugPermissions
 }) => {
+  
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
 
@@ -36,9 +42,43 @@ const EmailList = ({
 
     return `${formattedDate} ${formattedTime}`;
   };
+
   return (
     <>
       <div className="overviewTableWrapper p-0">
+        <div className="tableHeader">
+          <div className="showEntries">
+            <label>Show</label>
+            <select
+              className="formItem"
+              onChange={(e) => setEntriesPerPage(e?.target?.value)}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+            <label>entries</label>
+          </div>
+          {checkViewSidebar(
+            "DidDetail",
+            slugPermissions,
+            account?.sectionPermissions,
+            account?.permissions,
+            "search"
+          ) &&
+            <div className="searchBox position-relative">
+              <label>Search:</label>
+              <input
+                type="search"
+                name="Search"
+                className="formItem"
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+            </div>
+          }
+        </div>
         <div
           className="tableContainer e mail_table mt-0 w-100 border-0 mb-0"
           style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
@@ -59,13 +99,12 @@ const EmailList = ({
               <tbody>
                 {allMails?.emails?.map((item, index) => (
                   <tr key={index}>
-                    {console.log('first', item)}
                     <td
                       onClick={() => {
                         setCheckedMail((prev) => {
-                          const alreadyChecked = prev.some((checked) => checked?.message_id === item?.message_id);
+                          const alreadyChecked = prev.some((checked) => checked?.uid === item?.uid);
                           if (alreadyChecked) {
-                            return prev.filter((checked) => checked?.message_id !== item?.message_id);
+                            return prev.filter((checked) => checked?.uid !== item?.uid);
                           } else {
                             return [...prev, item];
                           }
@@ -74,7 +113,7 @@ const EmailList = ({
                     >
                       <input
                         type="checkbox"
-                        checked={checkedMail?.some((checked) => checked?.message_id === item?.message_id)}
+                        checked={checkedMail?.some((checked) => checked?.uid === item?.uid)}
                       />
                     </td>
                     <td
@@ -107,11 +146,11 @@ const EmailList = ({
                         <strong>
                           {" "}
                           {item?.subject.length > 15
-                            ? item?.subject.slice(0, 15) + "..."
+                            ? item?.subject?.slice(0, 15) + "..."
                             : item?.subject}{" "}
                         </strong>
                         <span className="text_muted">
-                          {item?.snippet.length > 50
+                          {item?.snippet?.length > 50
                             ? item?.snippet.slice(0, 50) + "..."
                             : item?.snippet}
                         </span>
@@ -128,23 +167,13 @@ const EmailList = ({
                       </p>
                     </td>
                     <td>
-                      <i class="fa-regular fa-star me-2"></i> 
-                      {
-                        item?.status?.toLowerCase() == "seen" ?
-                          <i class="fa-solid fa-envelope-open me-2"
-                            onClick={() => {
-                              // handleMailReplay(mailType);
-                              handleUnSeenMail(item);
-                            }}
-                          ></i>
-                          :
-                          <i class="fa-solid fa-envelope me-2"
-                            onClick={() => {
-                              handleMailReplay(mailType);
-                              handleShowMail(item);
-                            }}
-                          ></i>
-                      }
+                      <i
+                        class={item?.status_flags?.starred ? `fa fa-star me-2` : `fa-regular fa-star me-2`}
+                        onClick={() => handleStarrClicked(item)}
+                      ></i>
+                      <i class={item?.status_flags?.seen ? `fa-solid fa-envelope-open me-2` : `fa-solid fa-envelope me-2`}
+                        onClick={() => handleUnSeenMail(item)}
+                      ></i>
 
                       <i class="fa-solid fa-trash me-4"
                         onClick={() => {
