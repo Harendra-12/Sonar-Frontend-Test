@@ -111,8 +111,23 @@
     border: 1px solid var(--me-border1);
     border-radius: 5px;
     transition: all 0.4s ease-in-out;
-    color: var(--ui-accent);
+    color: var(--color-subtext);
     font-size: 0.813rem;
+}
+
+.aitable_button.info {
+    border: 1px solid #62a7f861;
+    color: #0075ffa6;
+}
+
+.aitable_button.delete {
+    border: 1px solid #f8626261;
+    color: #b71d1da6;
+}
+
+.aitable_button.delete:hover {
+    border: 1px solid #f86262c4;
+    color: #b71d1dd9;
 }
 
 .aitable_button:hover {
@@ -251,6 +266,7 @@
 .transcription_accordion .accordion-button::after {
     font-size: 12px;
 }
+
 
 .dataBox {
     background: #00000024;
@@ -616,7 +632,7 @@
 }
 
 .noticeMessageBox {
-    background: #00000024;
+    background: #7c8fa724;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -703,33 +719,48 @@
 }
 
 .accordion.FlowAccordion_content .accordion-button {
-    color: var(--immortalBlack);
-    background: #b2d4ff69;
-    border-radius: 10px !important;
+    color: var(--color-subtext);
+    background: #b7c6d959 !important;
+    /* border-radius: 10px; */
 }
-.TestCallMessage{
+.accordion-flush .accordion-item .accordion-button, .accordion-flush .accordion-item .accordion-button.collapsed{
+    border-radius: 10px;
+}
+.accordion .accordion-button:not(.collapsed) {
+    color: var(--form-input-text);
+    background: var(--accordion-active);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.TestCallMessage {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
 }
-.messageContent.heightAuto{
+
+.messageContent.heightAuto {
     flex: 1;
     max-height: calc(100vh - 398px);
 }
+
 .TestCallMessage .messageItem.sender .messageDetails {
-   border: none !important;
-   background: #3caeff5c;
+    border: none !important;
+    background: #3caeff5c;
 }
+
 .TestCallMessage .messageItem.receiver .messageDetails {
     background-color: #7888b154;
     border: none !important;
 }
-.messageFooter{
+
+.messageFooter {
     border-top: 1px solid var(--me-border1);
     padding: 10px;
 }
-.callBtn{
+
+.callBtn {
     background-color: #0047ff4a;
     border-radius: 5px;
     padding: 8px 10px;
@@ -740,34 +771,42 @@
     border: none;
     width: 100%;
 }
-.text_info{
+
+.text_info {
     color: var(--textInfo);
 }
-.textCall{
+
+.textCall {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100%;
 }
-.select__option{
+
+.select__option {
     cursor: pointer !important;
 }
+
 .css-1dimb5e-singleValue {
     color: var(--black) !important;
 }
+
 .select__option--is-focused {
     color: #000 !important;
 }
-.select__control--is-focused{
+
+.select__control--is-focused {
     background: var(--ele-color) !important;
 }
-.FlowAccordion_content .dropdown-menu{
-      background: var(--ele-color) !important;
-      color: var(--form-input-text) !important;
+
+.FlowAccordion_content .dropdown-menu {
+    background: var(--ele-color) !important;
+    color: var(--form-input-text) !important;
 }
-.FlowAccordion_content .dropdown-menu .dropdown-item{
-      color: var(--form-input-text) !important;
+
+.FlowAccordion_content .dropdown-menu .dropdown-item {
+    color: var(--form-input-text) !important;
 }
 
 .onlyModulePopup .popup {
@@ -776,26 +815,72 @@
     left: unset;
     width: calc(100vw - 250px) !important;
 }
-.clearColorButton.add{
+
+.clearColorButton.add {
     background: #6462f8;
 }
-.clearColorButton.primary:hover{
+
+.clearColorButton.primary:hover {
     background-color: #066ed7;
 }
-.clearColorButton.add:hover{
+
+.clearColorButton.add:hover {
     background-color: #1e1bff;
 }
-.popup-border > div.d-flex > div:nth-of-type(1),
-.popup-border > div.d-flex > div:nth-of-type(3){
+
+.popup-border>div.d-flex>div:nth-of-type(1),
+.popup-border>div.d-flex>div:nth-of-type(3) {
     border: 1px solid #97a3b95e !important;
 }
-.popup_box .text2{
+
+.popup_box .text2 {
     display: block;
     margin-top: 5px;
 }
-.popup_box button{
+
+.popup_box button {
     margin-bottom: 8px;
 }
+
 .aiAgentTab .panelButton.transparentText:hover .text {
     color: transparent !important;
+}
+
+.FlowAccordion_content.accordion .accordion-item {
+    border-color: transparent !important;
+}
+
+.iconBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--me-border1);
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 1.20rem;
+    color: var(--color-subtext);
+}
+
+.efaxListing {
+    font-size: 0.875rem !important;
+    color: var(--form-label);
+    margin-bottom: 0;
+}
+
+
+ #inputVoiceSpeed{
+  /* border-radius: 8px; */
+  height: 4px;
+  width: 150px;
+  outline: none;
+  -webkit-appearance: none;
+  background: #dce0ed;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+    border-radius: 50%;
+  -webkit-appearance: none;
+  background: #0458b9;
 }

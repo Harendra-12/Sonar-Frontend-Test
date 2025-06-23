@@ -270,7 +270,7 @@
   --svg-color: #c1c1c1;
   --tab-active: #62a7f82e;
   --active-text: #2c2c2c;
-  --knowledge-leftinfo: #f9f9f9;
+  --knowledge-leftinfo: rgb(243,246,248);
   --bg_1: #dbedff;
   --bg-form1: #0c54a117;
   --muted-text-color: rgb(143, 140, 140);

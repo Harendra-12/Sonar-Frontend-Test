@@ -456,6 +456,37 @@ const FlowAccordionContent = ({
       };
     }
   };
+
+  const getBackground = (val) => {
+    const minVal = 0.5;
+    const maxVal = 2;
+
+    // Normalize `val` to a 0–100 scale
+    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
+
+    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
+  };
+  const getBackgroundVoiceTemperature = (val) => {
+    const minVal = 0;
+    const maxVal = 2;
+
+    // Normalize `val` to a 0–100 scale
+    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
+
+    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
+  };
+  const getBackgroundVoiceVolume = (val) => {
+    const minVal = 0;
+    const maxVal = 2;
+
+    // Normalize `val` to a 0–100 scale
+    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
+
+    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
+  };
+
+
+
   return (
     <>
       <div
@@ -795,14 +826,14 @@ const FlowAccordionContent = ({
                     </select>
                     <div className="col-12 d-flex align-items-center gap-2 mt-2">
                       <button
-                        className="aitable_button static  w-100"
+                        className="aitable_button static"
                         onClick={SetSelectVoice}
                       >
                         {" "}
                         {voice_id
                           ? allVoices.find(
-                              (voice) => voice.voice_id === voice_id
-                            )?.voice_name
+                            (voice) => voice.voice_id === voice_id
+                          )?.voice_name
                           : "Please select a voice"}
                       </button>
                       <div className="dropdown">
@@ -811,6 +842,7 @@ const FlowAccordionContent = ({
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
+                          data-bs-auto-close="outside"
                         >
                           <i class="fa-regular fa-gear"></i>
                         </button>
@@ -818,7 +850,7 @@ const FlowAccordionContent = ({
                           <div className="card-body aiAgentTab p-3">
                             <div className=" mb-4">
                               <div className="formLabel w-100">
-                                <label className="fs-5 mb-2">
+                                <label className="fs-14 mb-2">
                                   {" "}
                                   Voice Model
                                 </label>
@@ -994,51 +1026,81 @@ const FlowAccordionContent = ({
                                 <div class="formLabel">
                                   <label>Voice Speed:</label>
                                 </div>
-                                <input
-                                  type="range"
-                                  defaultValue={voice_speed}
-                                  max={2}
-                                  step={0.1}
-                                  min={0.5}
-                                  style={{ width: "100%" }}
-                                  onChange={(e) =>
-                                    setVoiceSpeed(e.target.value)
-                                  }
-                                />{" "}
-                                <span className="textGray">{voice_speed}</span>
+                                <div className="d-flex align-items-center gap-2">
+                                  <input
+                                    id="inputVoiceSpeed"
+                                    type="range"
+                                    defaultValue={voice_speed}
+                                    max={2}
+                                    step={0.1}
+                                    min={0.5}
+                                    // onChange={(e) =>
+                                    //   setVoiceSpeed(e.target.value)
+                                    // }
+                                    onChange={(e) => setVoiceSpeed(parseFloat(e.target.value))}
+                                    style={{
+                                      background: getBackground(voice_speed),
+                                      width: "100%",
+                                      height: "7px",
+                                      borderRadius: "5px",
+                                      appearance: "none",
+                                      outline: "none",
+                                    }}
+                                  />{" "}
+                                  <span className="textGray">{voice_speed}</span>
+                                </div>
                               </div>
                               <div className="mb-2">
                                 <div class="formLabel">
                                   <label>Voice Temperature:</label>
                                 </div>
-                                <input
-                                  type="range"
-                                  defaultValue={voice_temperature}
-                                  max={2}
-                                  step={0.1}
-                                  min={0}
-                                  style={{ width: "100%" }}
-                                  onChange={(e) =>
-                                    setVoiceTemperature(e.target.value)
-                                  }
-                                />{" "}
-                                <span className="textGray">
-                                  {voice_temperature}
-                                </span>
+                                <div className="d-flex align-items-center gap-2">
+                                  <input
+                                    id="inputVoiceSpeed"
+                                    type="range"
+                                    defaultValue={voice_temperature}
+                                    max={2}
+                                    step={0.1}
+                                    min={0}
+                                    style={{
+                                      background: getBackgroundVoiceTemperature(voice_temperature),
+                                      width: "100%",
+                                      height: "7px",
+                                      borderRadius: "5px",
+                                      appearance: "none",
+                                      outline: "none",
+                                    }}
+                                    onChange={(e) =>
+                                      setVoiceTemperature(parseFloat(e.target.value))
+                                    }
+                                  />{" "}
+                                  <span className="textGray">
+                                    {voice_temperature}
+                                  </span>
+                                </div>
                               </div>
                               <div className="mb-2">
                                 <div class="formLabel">
                                   <label>Voice Volume:</label>
                                 </div>
+                                 <div className="d-flex align-items-center gap-2">
                                 <input
                                   type="range"
                                   defaultValue={volume}
                                   max={2}
                                   step={0.1}
-                                  style={{ width: "100%" }}
-                                  onChange={(e) => setVolume(e.target.value)}
+                                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                                  style={{
+                                    background: getBackgroundVoiceVolume(voice_temperature),
+                                    width: "100%",
+                                    height: "7px",
+                                    borderRadius: "5px",
+                                    appearance: "none",
+                                    outline: "none",
+                                  }}
                                 />{" "}
                                 <span className="textGray">{volume}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -1803,9 +1865,8 @@ const FlowAccordionContent = ({
                         <li class="nav-item" role="presentation">
                           <button
                             onClick={() => setTransferType("predefined")}
-                            class={`nav-link ${
-                              transferType === "predefined" ? "active" : ""
-                            } `}
+                            class={`nav-link ${transferType === "predefined" ? "active" : ""
+                              } `}
                             id="webPAge-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#webPAge"
@@ -1820,9 +1881,8 @@ const FlowAccordionContent = ({
                         <li class="nav-item" role="inferred">
                           <button
                             onClick={() => setTransferType("inferred")}
-                            class={`nav-link ${
-                              transferType === "inferred" ? "active" : ""
-                            } `}
+                            class={`nav-link ${transferType === "inferred" ? "active" : ""
+                              } `}
                             id="upload-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#upload"
@@ -1837,9 +1897,8 @@ const FlowAccordionContent = ({
                       </ul>
                       <div class="tab-content" id="pills-tabContent">
                         <div
-                          class={`tab-pane fade ${
-                            transferType === "predefined" ? "show active" : ""
-                          } `}
+                          class={`tab-pane fade ${transferType === "predefined" ? "show active" : ""
+                            } `}
                           id="webPAge"
                           role="tabpanel"
                           aria-labelledby="webPAge-tab"
@@ -1865,9 +1924,8 @@ const FlowAccordionContent = ({
                           </form>
                         </div>
                         <div
-                          class={`tab-pane fade pb-3 ${
-                            transferType === "inferred" ? "show active" : ""
-                          } `}
+                          class={`tab-pane fade pb-3 ${transferType === "inferred" ? "show active" : ""
+                            } `}
                           id="upload"
                           role="tabpanel"
                           aria-labelledby="upload-tab"
@@ -1976,11 +2034,10 @@ const FlowAccordionContent = ({
                             >
                               <li className="nav-item" role="presentation">
                                 <button
-                                  className={`nav-link ${
-                                    publicHandoffType === "prompt"
-                                      ? "active"
-                                      : ""
-                                  } `}
+                                  className={`nav-link ${publicHandoffType === "prompt"
+                                    ? "active"
+                                    : ""
+                                    } `}
                                   id="tab01-tab"
                                   data-bs-toggle="pill"
                                   data-bs-target="#tab01"
@@ -1993,11 +2050,10 @@ const FlowAccordionContent = ({
                               </li>
                               <li className="nav-item" role="presentation">
                                 <button
-                                  className={`nav-link ${
-                                    publicHandoffType === "static_message"
-                                      ? "active"
-                                      : ""
-                                  } `}
+                                  className={`nav-link ${publicHandoffType === "static_message"
+                                    ? "active"
+                                    : ""
+                                    } `}
                                   id="tab02-tab"
                                   data-bs-toggle="pill"
                                   data-bs-target="#tab02"
@@ -2013,11 +2069,10 @@ const FlowAccordionContent = ({
 
                             <div className="tab-content" id="pills-tabContent">
                               <div
-                                className={`tab-pane fade ${
-                                  publicHandoffType === "prompt"
-                                    ? "show active"
-                                    : ""
-                                } `}
+                                className={`tab-pane fade ${publicHandoffType === "prompt"
+                                  ? "show active"
+                                  : ""
+                                  } `}
                                 id="tab01"
                                 role="tabpanel"
                                 aria-labelledby="tab01-tab"
@@ -2038,11 +2093,10 @@ const FlowAccordionContent = ({
                               </div>
 
                               <div
-                                className={`tab-pane fade pb-3 ${
-                                  publicHandoffType === "static_message"
-                                    ? "show active"
-                                    : ""
-                                } `}
+                                className={`tab-pane fade pb-3 ${publicHandoffType === "static_message"
+                                  ? "show active"
+                                  : ""
+                                  } `}
                                 id="tab02"
                                 role="tabpanel"
                                 aria-labelledby="tab02-tab"
@@ -2084,33 +2138,33 @@ const FlowAccordionContent = ({
                                 transfer_destination:
                                   transferType === "predefined"
                                     ? {
-                                        type: "predefined",
-                                        number: transferNumber,
-                                      }
+                                      type: "predefined",
+                                      number: transferNumber,
+                                    }
                                     : {
-                                        type: "inferred",
-                                        prompt: transferPrompt,
-                                      },
+                                      type: "inferred",
+                                      prompt: transferPrompt,
+                                    },
                                 transfer_option:
                                   transferOptionType === "cold_transfer"
                                     ? {
-                                        type: "cold_transfer",
-                                        show_transferee_as_caller:
-                                          show_transferee_as_caller,
-                                      }
+                                      type: "cold_transfer",
+                                      show_transferee_as_caller:
+                                        show_transferee_as_caller,
+                                    }
                                     : {
-                                        type: "warm_transfer",
-                                        public_handoff_option:
-                                          publicHandoffType === "prompt"
-                                            ? {
-                                                type: "prompt",
-                                                prompt: publicHandOffPrompt,
-                                              }
-                                            : {
-                                                type: "static_message",
-                                                message: publicHandOffMessage,
-                                              },
-                                      },
+                                      type: "warm_transfer",
+                                      public_handoff_option:
+                                        publicHandoffType === "prompt"
+                                          ? {
+                                            type: "prompt",
+                                            prompt: publicHandOffPrompt,
+                                          }
+                                          : {
+                                            type: "static_message",
+                                            message: publicHandOffMessage,
+                                          },
+                                    },
                               };
 
                               if (

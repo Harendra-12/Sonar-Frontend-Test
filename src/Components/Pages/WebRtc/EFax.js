@@ -38,6 +38,7 @@ function EFax({ did }) {
   const [showUserHistory, setShowUserHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [uploadPopup, setUploadPopup] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -196,10 +197,17 @@ function EFax({ did }) {
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
-                    onClick={() => setShowUserHistory(false)}
+                    onClick={() => setUploadPopup(true)}
                   >
-                    <i className="fa-light fa-fax" /> New Fax
+                    <i className="fa-duotone fa-upload" /> Upload
                   </button>
+                  {/* <div
+                    onClick={() => setUploadPopup(true)}
+                    style={{ cursor: "pointer" }}
+                    className="clearButton fw-bold"
+                  >
+                    Upload <i className="fa-duotone fa-upload"></i>
+                  </div> */}
                 </div>
                 <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
                   <input
@@ -345,24 +353,27 @@ function EFax({ did }) {
                           <div data-bell="" className="contactListItem">
                             <div className="row justify-content-between">
                               <div className="col-xl-6 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id="profileOnline"
-                                >
-                                  {/* <i className="fa-light fa-user fs-5"></i> */}
-                                  <img
-                                    src={file.file_path}
-                                    alt="profile"
-                                    className="profileImg"
-                                  />
+                                <div className="iconBox">
+                                  <i class="fa-regular fa-file-pdf"></i>
+
                                 </div>
                                 <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>{file.file_name}</h4>
+                                  <h3 className="ellipsisText efaxListing">{file.file_name}</h3>
                                   {/* <h5>{file.file_path}</h5> */}
                                 </div>
                               </div>
-                              <div className="col-10 col-xl-4">
-                                <div style={{ cursor: "pointer" }}>
+                              <div className="col-10 col-xl-4 d-flex align-items-center gap-2 justify-content-end">
+                                <button class="aitable_button bg-transparent"
+                                  onClick={() =>
+                                    downloadImage(
+                                      file?.file_path,
+                                      file?.file_name
+                                    )
+                                  }>
+                                  <i class="fa-regular fa-arrow-down-to-line"></i>
+                                </button>
+
+                                {/* <div style={{ cursor: "pointer" }}>
                                   <div
                                     className="clearButton"
                                     onClick={() =>
@@ -375,23 +386,30 @@ function EFax({ did }) {
                                     <i className="fa-solid fa-file-arrow-down"></i>{" "}
                                     Download
                                   </div>
+                                </div> */}
+                                <div className=" ">
+                                  <a
+                                    href={file?.file_path}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="aitable_button info "
+                                    style={{ padding: "0.20rem 0.3rem" }}
+                                  >
+                                    <i className="fa-sharp fa-solid fa-eye fs-12"></i>{" "}
+                                  </a>
                                 </div>
-                                <div style={{ cursor: "pointer" }}>
-                                  <div className="clearButton">
-                                    <a
-                                      href={file?.file_path}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                    >
-                                      <i className="fa-sharp fa-solid fa-eye"></i>{" "}
-                                      View
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                 <button
-                                  className="border-0 bg-transparent"
+                                  className="aitable_button delete bg-transparent"
+                                  onClick={() => {
+                                    setDeletePopup(true);
+                                    setDeleteFile(file);
+                                  }}
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
+                                {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                                <button
+                                  className="aitable_button bg-transparent"
                                   onClick={() => {
                                     setDeletePopup(true);
                                     setDeleteFile(file);
@@ -399,6 +417,7 @@ function EFax({ did }) {
                                 >
                                   <i className="fa-solid fa-trash text-danger"></i>
                                 </button>
+                              </div> */}
                               </div>
                             </div>
                           </div>

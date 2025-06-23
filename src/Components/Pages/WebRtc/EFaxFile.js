@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
 
-const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
+const EFaxFile = ({ newFileUpload, eFaxFileLoadingState,  }) => {
   const [uploadPopup, setUploadPopup] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
