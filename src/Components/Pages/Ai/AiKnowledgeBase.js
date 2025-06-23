@@ -411,7 +411,7 @@ const AiKnowledgeBase = () => {
                                 role="tabpanel"
                                 aria-labelledby="v-pills-home-tab"
                               >
-                                <div className="heading px-0">
+                                <div className="heading">
                                   <div className="content">
                                     <h4>{activeFile?.knowledge_base_name}</h4>
                                     <p className="mb-0">
