@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
 import { Link } from "react-router-dom";
 import {
   aiGeneralDeleteFunction,
@@ -11,7 +10,6 @@ import {
   aiGeneralPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiPhoneNumber = () => {
@@ -34,10 +32,11 @@ const AiPhoneNumber = () => {
   const [inboundCallAgent, setInboundCallAgent] = useState();
   const [outboundCallAgent, setOutboundCallAgent] = useState();
   const [numberProvider, setNumberProvider] = useState("twilio");
-  const [showUrlField, setShowUrlField] = useState(false);
+  const [showUrlField, setShowUrlField] = useState(null);
   const [availableAgents, setAvailableAgents] = useState([]);
   const [availableNumbers, setAvailableNumbers] = useState([]);
 
+  console.log("showUrlField: ", showUrlField);
   useEffect(() => {
     fetchAvailableAgents();
     fetchAvailableNumbers();
@@ -86,6 +85,7 @@ const AiPhoneNumber = () => {
         setDefaultName(firstNumber.nickname || firstNumber.phone_number || "");
         setAreaCode(firstNumber.area_code || "");
         setWebhookUrl(firstNumber.inbound_webhook_url || "");
+        setShowUrlField(firstNumber.inbound_webhook_url ? true : false);
         setInboundCallAgent(firstNumber.inbound_agent_id || "");
         setOutboundCallAgent(firstNumber.outbound_agent_id || "");
         setNumberProvider(firstNumber.number_provider || "twilio");
@@ -175,7 +175,10 @@ const AiPhoneNumber = () => {
       outbound_agent_version: outboundAgent ? outboundAgent.version : null,
       area_code: parsedAreaCode,
       nickname: updatedData.defaultName || defaultName || null,
-      inbound_webhook_url: updatedData.webhookUrl || webhookUrl || null,
+      inbound_webhook_url:
+        showUrlField && updatedData.webhookUrl
+          ? updatedData.webhookUrl || webhookUrl
+          : null,
       number_provider: updatedData.numberProvider || numberProvider || "twilio",
     };
 
@@ -240,7 +243,7 @@ const AiPhoneNumber = () => {
   };
 
   if (createNumberLoading) {
-    return <CircularLoader />;
+    return <ThreeDotedLoader />;
   }
 
   return (
@@ -495,6 +498,7 @@ const AiPhoneNumber = () => {
                                               type="checkbox"
                                               className="form-check-input"
                                               id="toggleWebhook"
+                                              checked={showUrlField}
                                               onClick={() => {
                                                 setShowUrlField(!showUrlField);
                                               }}
@@ -518,6 +522,7 @@ const AiPhoneNumber = () => {
                                                     type="text"
                                                     className="formItem"
                                                     placeholder="Enter url"
+                                                    value={webhookUrl}
                                                     onChange={(e) =>
                                                       setWebhookUrl(
                                                         e.target.value
@@ -539,18 +544,6 @@ const AiPhoneNumber = () => {
                                               <label>Outbound Call Agent</label>
                                             </div>
                                             <div className="col-12">
-                                              {/* <Select
-                                            className="basic-single"
-                                            classNamePrefix="select"
-                                            // defaultValue={colourOptions[0]}
-                                            isDisabled={isDisabled}
-                                            isLoading={isLoading}
-                                            isClearable={isClearable}
-                                            isRtl={isRtl}
-                                            isSearchable={isSearchable}
-                                            name="color"
-                                            // options={colourOptions}
-                                          /> */}
                                               <Select
                                                 className="basic-single"
                                                 classNamePrefix="select"

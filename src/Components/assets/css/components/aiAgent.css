@@ -12,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    height: 100%;
 
 }
 
@@ -60,6 +61,7 @@
 .heightAuto {
     max-height: calc(100vh - 280px);
     overflow: auto;
+    /* height: 100%; */
 }
 
 .info_header {
@@ -325,10 +327,10 @@
 
 }
 
-.panelButton.exportGroupBtn {
+/* .panelButton.exportGroupBtn {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-}
+} */
 
 .listingDorp .dropdown-menu.show {
     min-width: 450px;
@@ -621,6 +623,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 10px;
+    margin-bottom: 10px;
 }
 
 .noticeMessageBox p,
@@ -712,7 +715,7 @@
 }
 .messageContent.heightAuto{
     flex: 1;
-    max-height: calc(100vh - 355px);
+    max-height: calc(100vh - 398px);
 }
 .TestCallMessage .messageItem.sender .messageDetails {
    border: none !important;
@@ -746,4 +749,39 @@
     align-items: center;
     flex-direction: column;
     height: 100%;
+}
+.select__option{
+    cursor: pointer !important;
+}
+.css-1dimb5e-singleValue {
+    color: var(--black) !important;
+}
+.select__option--is-focused {
+    color: #000 !important;
+}
+.select__control--is-focused{
+    background: var(--ele-color) !important;
+}
+.FlowAccordion_content .dropdown-menu{
+      background: var(--ele-color) !important;
+      color: var(--form-input-text) !important;
+}
+.FlowAccordion_content .dropdown-menu .dropdown-item{
+      color: var(--form-input-text) !important;
+}
+
+.onlyModulePopup .popup {
+    top: 0;
+    right: 0;
+    left: unset;
+    width: calc(100vw - 250px) !important;
+}
+.clearColorButton.add{
+    background: #6462f8;
+}
+.clearColorButton.primary:hover{
+    background-color: #066ed7;
+}
+.clearColorButton.add:hover{
+    background-color: #1e1bff;
 }

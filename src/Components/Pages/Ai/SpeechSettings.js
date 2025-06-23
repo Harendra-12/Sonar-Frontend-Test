@@ -36,7 +36,7 @@ const SpeechSettings = ({ambient_sound,setAmbientSounds,ambient_sound_volume,set
                                         </div>
                                         <input type="range"  defaultValue={ambient_sound_volume}
                               max={2}
-                              step={0.1} onChange={(e) => setAmbientSoundVolume(e.target.value)} style={{ width: '80%' }} /> <span className='textGray'>{ambient_sound_volume}</span>
+                              step={0.1} onChange={(e) => setAmbientSoundVolume(e.target.value)} style={{ width: '100%' }} /> <span className='textGray'>{ambient_sound_volume}</span>
                                     </div>
 
                                 </div>
@@ -52,18 +52,22 @@ const SpeechSettings = ({ambient_sound,setAmbientSounds,ambient_sound_volume,set
                         <label>Responsiveness: </label><br />
                         <span className='iconGray'>Controls how responsive is the agent.</span>
                     </div>
+                    <div className='d-flex align-items-center gap-1'>
                     <input type="range" defaultValue={responsiveness}
                       max={1}
-                      step={0.1} onChange={(e) => setResponsiveness(e.target.value)} style={{ width: '80%' }} /> <span className='textGray'>{responsiveness}</span>
+                      step={0.1} onChange={(e) => setResponsiveness(e.target.value)} style={{ width: '100%' }} /> <span className='textGray'>{responsiveness}</span>
+                    </div>
                 </div>
                 <div className="mb-2">
                     <div class="formLabel mw-100">
                         <label>Interruption Sensitivity</label><br/>
                         <span className='iconGray'>Controls how sensitive the agent is to user interruptions</span>
                     </div>
+                     <div className='d-flex align-items-center gap-1'>
                     <input type="range" defaultValue={interruption_sensitivity}
                       max={1}
-                      step={0.1} onChange={(e) => setInterruptionSensitivity(e.target.value)} style={{ width: '60%' }} /> <span className='textGray'>{interruption_sensitivity}</span>
+                      step={0.1} onChange={(e) => setInterruptionSensitivity(e.target.value)} style={{ width: '100%' }} /> <span className='textGray'>{interruption_sensitivity}</span>
+                      </div>
                 </div>
                 <div className="mb-2">
                     <div class="formLabel mw-100">
@@ -120,7 +124,7 @@ const SpeechSettings = ({ambient_sound,setAmbientSounds,ambient_sound_volume,set
                             className="formItem"
                             placeholder='Enter Name'
                             value={boosted_keywords}
-                    onChange={(e) => setBoostedKeywords(e.target.value)}
+                    onChange={(e) => setBoostedKeywords([e.target.value])}
                         />
                     </div>
                 </div>
