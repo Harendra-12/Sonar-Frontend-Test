@@ -23,7 +23,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   // const state = useSelector((state) => state)
-  const isWhatsAppAvailable = useSelector((state) =>state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null);
+  const isWhatsAppAvailable = useSelector((state) => state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null);
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -196,17 +196,24 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>{" "}
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("call")}
-                  className={activePage === "call" ? "navItem active" : "navItem"}
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-phone" />
+              {checkViewSidebar(
+                "ChannelHangupComplete",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse") &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("call")}
+                    className={activePage === "call" ? "navItem active" : "navItem"}
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-phone" />
+                    </div>
+                    <div className="itemTitle">Calls</div>
                   </div>
-                  <div className="itemTitle">Calls</div>
-                </div>
-              </li>
+                </li>
+              }
 
               <li style={{ cursor: "pointer" }}>
                 <div
@@ -222,24 +229,36 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </div>
               </li>
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("all-voice-mails")}
-                  className={
-                    activePage === "all-voice-mails"
-                      ? "navItem active"
-                      : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-voicemail" />
+              {checkViewSidebar(
+                "voicemail",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "read") &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("all-voice-mails")}
+                    className={
+                      activePage === "all-voice-mails"
+                        ? "navItem active"
+                        : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-voicemail" />
+                    </div>
+                    <div className="itemTitle">Voicemails</div>
                   </div>
-                  <div className="itemTitle">Voicemails</div>
-                </div>
-              </li>
+                </li>
+              }
 
               {
-                account?.user_role == null &&
+                checkViewSidebar(
+                  "Fax",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("e-fax")}
@@ -254,8 +273,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                   </div>
                 </li>
               }
-              {
-                account?.user_role == null &&
+              {checkViewSidebar(
+                "MailSetting",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("email")}
@@ -269,21 +292,33 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </li>
               }
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("all-contacts")}
-                  className={
-                    activePage === "all-contacts" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-address-book" />
+              {checkViewSidebar(
+                "Contact",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse") &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("all-contacts")}
+                    className={
+                      activePage === "all-contacts" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-address-book" />
+                    </div>
+                    <div className="itemTitle">Contacts</div>
                   </div>
-                  <div className="itemTitle">Contacts</div>
-                </div>
-              </li>
+                </li>
+              }
 
-              {account?.user_role?.roles?.name != "Agent" &&
+              {checkViewSidebar(
+                "ActiveCall",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
@@ -300,27 +335,39 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </li>
               }
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  // to="/call-center"
-                  onClick={() => setactivePage("call-center")}
-                  className={
-                    activePage === "call-center" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i className="fa-light fa-circle-user" />
+              {checkViewSidebar(
+                "CallCenterQueue",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "browse") && checkViewSidebar(
+                  "CallCenterAgent",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse") ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    // to="/call-center"
+                    onClick={() => setactivePage("call-center")}
+                    className={
+                      activePage === "call-center" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-circle-user" />
+                    </div>
+                    <div className="itemTitle">Call Center</div>
                   </div>
-                  <div className="itemTitle">Call Center</div>
-                </div>
-              </li>
+                </li>
+                : ""}
 
               {checkViewSidebar(
                 "Campaign",
                 slugPermissions,
                 account?.sectionPermissions,
                 account?.permissions,
-                "read") &&
+                "browse") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/campaign-login"
@@ -336,16 +383,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                   </div>
                 </li>
               }
-
-
-
               {
-                checkViewSidebar(
-                  "Conference",
-                  slugPermissions,
-                  account?.sectionPermissions,
-                  account?.permissions,
-                  "read") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("conference")}
@@ -375,24 +413,34 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </li>
               }
               {
-                account?.user_role == null &&
-                isWhatsAppAvailable != null &&
-                <li style={{ cursor: "pointer" }}>
-                  <div
-                    onClick={() => setactivePage("whatsapp-chartbox")}
-                    className={
-                      activePage === "whatsapp" ? "navItem active" : "navItem"
-                    }
-                  >
-                    <div className="iconHolder">
-                      <i className="fa-brands fa-whatsapp"></i>
+                checkViewSidebar(
+                  "Whatsapp",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse") &&
+                  isWhatsAppAvailable != null ?
+                  <li style={{ cursor: "pointer" }}>
+                    <div
+                      onClick={() => setactivePage("whatsapp-chartbox")}
+                      className={
+                        activePage === "whatsapp" ? "navItem active" : "navItem"
+                      }
+                    >
+                      <div className="iconHolder">
+                        <i className="fa-brands fa-whatsapp"></i>
+                      </div>
+                      <div className="itemTitle">WhatsApp</div>
                     </div>
-                    <div className="itemTitle">WhatsApp</div>
-                  </div>
-                </li>
-              }
+                  </li>
+                  : ""}
               {
-                account?.user_role == null &&
+                checkViewSidebar(
+                  "Sms",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("sms-chatbox")}
