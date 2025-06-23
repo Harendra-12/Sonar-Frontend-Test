@@ -49,13 +49,16 @@ function MeetingEdit() {
       const response = await generalGetFunction(`/conference/${id}`);
       if (response.status) {
         const data = response.data;
-        if (data.conf_start_time && data.conf_end_time) {
+        if (data.conf_start_time || data.conf_end_time) {
           setValue("conf_scheduled", "1")
+        }
+        if (Array.isArray(data.users) && data.users.length === 0) {
+          delete data.users;
         }
         reset(data);
 
         // setAddedUsers(data.users);
-        setParticipants(data.emails.length == 0 ? [""] : data.emails);
+        setParticipants(data.emails.length == 0 ? [""] : data.emails.map((email) => email.email));
       }
     } catch (err) {
       console.log(err);
@@ -66,10 +69,10 @@ function MeetingEdit() {
   }
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    // if (participants.length == 1 && participants[0].length == 0) {
-    //   toast.error("Please add participants");
-    //   return;
-    // }
+    if (participants.length == 1 && participants[0].length == 0) {
+      toast.error("Please add participants");
+      return;
+    }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")
@@ -77,11 +80,18 @@ function MeetingEdit() {
       toast.error("Please enter number of members");
     } else {
       setLoading(true);
+
+      const initialData = data;
+      if (watch().conf_scheduled !== "1") {
+        delete initialData.conf_start_time;
+        delete initialData.conf_end_time;
+      }
+
       const parsedData = {
-        ...data,
-        ...(watch().conf_type === "internal"
+        ...initialData,
+        ...(watch().conf_type == "internal" && addedUsers.length > 0
           ? { users: addedUsers.map((user) => user.id) }
-          : ""),
+          : {}),
         emails: participants
       };
       const apiData = await generalPutFunction(

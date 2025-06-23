@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  checkModulePerm,
   generalPostFunction,
 } from "../GlobalFunction/globalFunction";
 import DarkModeToggle from "./DarkModeToggle";
@@ -24,6 +25,7 @@ function Header(props) {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const permissions = useSelector((state) => state.permissions);
 
   async function handleSubmit() {
     if (oldPassword === "") {
@@ -109,6 +111,11 @@ function Header(props) {
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
+              checkModulePerm(
+                "Webrtc",
+                permissions,
+                account?.sections,
+              ) ?
               <div className="my-auto mx-3">
                 <Tippy content="Click here to open dialer!">
                   <a
@@ -124,14 +131,15 @@ function Header(props) {
                   </a>
                 </Tippy>
               </div>
-            }
+              : ""}
             <div>
               <Tippy content="Your available balance, click to know more!">
                 <div
                   onClick={() => navigate("/card-details")}
-                  style={{ cursor: "pointer",
+                  style={{
+                    cursor: "pointer",
                     //  minWidth: '140px' 
-                    }}
+                  }}
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
