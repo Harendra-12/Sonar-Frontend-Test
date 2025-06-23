@@ -785,3 +785,17 @@
 .clearColorButton.add:hover{
     background-color: #1e1bff;
 }
+.popup-border > div.d-flex > div:nth-of-type(1),
+.popup-border > div.d-flex > div:nth-of-type(3){
+    border: 1px solid #97a3b95e !important;
+}
+.popup_box .text2{
+    display: block;
+    margin-top: 5px;
+}
+.popup_box button{
+    margin-bottom: 8px;
+}
+.aiAgentTab .panelButton.transparentText:hover .text {
+    color: transparent !important;
+}
