@@ -253,11 +253,8 @@ const AllAgent = () => {
                               <>
                                 {filteredAgents.map((item, index) => {
                                   return (
-                                    <tr
-                                      key={index}
-                                      onClick={() => handleEditClick(item)}
-                                    >
-                                      <td>
+                                    <tr key={index}>
+                                      <td onClick={() => handleEditClick(item)}>
                                         <div className="d-flex align-items-center">
                                           <div className="tableProfilePicHolder">
                                             <i className="fa-light fa-user" />
@@ -268,16 +265,22 @@ const AllAgent = () => {
                                           </div>
                                         </div>
                                       </td>
-                                      <td>{item.response_engine?.["type"]}</td>
-                                      <td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.response_engine?.["type"]}
+                                      </td>
+                                      <td onClick={() => handleEditClick(item)}>
                                         {item?.agent_id &&
                                           (finePhoneNumber(item.agent_id)
                                             ?.length > 0
                                             ? finePhoneNumber(item.agent_id)
                                             : "-")}
                                       </td>
-                                      <td>{item.language}</td>
-                                      <td>{item.voice_id}</td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.language}
+                                      </td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.voice_id}
+                                      </td>
                                       <td>
                                         <div className="dropdown">
                                           <button
