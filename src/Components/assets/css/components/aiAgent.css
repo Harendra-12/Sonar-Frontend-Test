@@ -12,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    height: 100%;
 
 }
 
@@ -767,4 +768,20 @@
 }
 .FlowAccordion_content .dropdown-menu .dropdown-item{
       color: var(--form-input-text) !important;
+}
+
+.onlyModulePopup .popup {
+    top: 0;
+    right: 0;
+    left: unset;
+    width: calc(100vw - 250px) !important;
+}
+.clearColorButton.add{
+    background: #6462f8;
+}
+.clearColorButton.primary:hover{
+    background-color: #066ed7;
+}
+.clearColorButton.add:hover{
+    background-color: #1e1bff;
 }

@@ -245,7 +245,7 @@ const NewGetDid = () => {
                         <div className="row">
                             <Header title="DID Management" />
                             <div className='overviewTableWrapper'>
-                                <div className='overviewTableChild'>
+                                <div className='overviewTableChild position-relative onlyModulePopup'>
                                     <div className='d-flex flex-wrap'>
                                         <div className='col-12'>
                                             <div className="heading">
@@ -731,6 +731,46 @@ const NewGetDid = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* {
+                                        <div className="popup ">
+                                            <div className="container h-100 ">
+                                                <div className="row h-100 justify-content-center align-items-center">
+                                                    <div className="row content col-xl-5 py-5">
+                                                        <div className="col-12 px-0">
+                                                            <div className="iconWrapper mb-2">
+                                                                <i class="fa-regular fa-phone-plus"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 text-center">
+
+                                                            <p className='fs-5 text-orange'>
+                                                                Choose Your Preferences
+                                                            </p>
+                                                            <div className="mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                                                                <button
+                                                                    className="clearColorButton primary m-0 w-auto text-nowrap "
+                                                                    onClick={() => handlePayment()}
+                                                                >
+                                                                    <span className="text">Buy Number</span>
+                                                                    <span className="icon "><i class="fa-regular fa-phone ms-2 f-s-14 text-white"></i></span>
+                                                                </button>
+                                                                <button
+                                                                    className="clearColorButton add w-auto text-nowrap "
+                                                                    onClick={() => {
+                                                                        setPopUp(false);
+                                                                    }}
+                                                                >
+                                                                    <span className="text">Buy Number for Ai</span>
+                                                                    <span className="icon"><i class="fa-regular fa-user-robot ms-2 f-s-14"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    } */}
+
                                 </div>
                             </div>
                         </div>
@@ -938,6 +978,9 @@ const NewGetDid = () => {
                     ""
                 )
             }
+
+
+
         </>
     )
 }

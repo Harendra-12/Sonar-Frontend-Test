@@ -952,7 +952,7 @@ const AiKnowledgeBase = () => {
                               </span> */}
                             </button>
                           </div>
-                          <div className="d-flex justify-content-end">
+                          <div className="card-footer d-flex justify-content-end">
                             <button
                               className="panelButton m-0"
                               type="button"
