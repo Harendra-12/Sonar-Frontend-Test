@@ -789,7 +789,7 @@ export function formatTimeInHHMMSS(time) {
 }
 
 export const useDebounce = (value, delay) => {
-  const afterTrimVal = value.trim();
+  const afterTrimVal = value?.trim();
   const [debouncedValue, setDebouncedValue] = useState(afterTrimVal);
 
   useEffect(() => {

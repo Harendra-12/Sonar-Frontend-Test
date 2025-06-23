@@ -108,11 +108,7 @@ function FportalCampaignEdit() {
     setValue,
     watch,
 
-  } = useForm({
-    defaultValues: {
-      sticky_agent_enable: "false",
-    },
-  });
+  } = useForm();
 
   // const {
   //   register: registerStep1,
@@ -252,8 +248,11 @@ function FportalCampaignEdit() {
       const updatedRes = {
         ...response?.data,
         sticky_agent_enable: response?.data?.sticky_agent_enable == 0 ? false : true,
-        record: response?.data?.record == 0 ? false : true
+        record: response?.data?.record == 0 ? false : true,
+        start_date: response?.data?.fportal_shedulars[0]?.start_date,
+        end_date: response?.data?.fportal_shedulars[0]?.end_date
       }
+
       setSelectedCampaign(updatedRes);
       if (response.data?.did_details?.length > 0) {
         setSelectedItems(response.data?.did_details?.map((item) => item.id) || []);
@@ -325,7 +324,7 @@ function FportalCampaignEdit() {
     const adjustedDate = new Date(date.getTime() + offsetMs);
 
     const pad = (n) => String(n).padStart(2, '0');
-    const formatted = `${adjustedDate.getFullYear()}-${pad(adjustedDate.getMonth() + 1)}-${pad(adjustedDate.getDate())}T${pad(adjustedDate.getHours())}:${pad(adjustedDate.getMinutes())}`;
+    const formatted = `${adjustedDate.getFullYear()}-${pad(adjustedDate.getMonth() + 1)}-${pad(adjustedDate.getDate())}`;
     return formatted;
   };
 
@@ -450,7 +449,7 @@ function FportalCampaignEdit() {
   };
 
 
-  const convertTimeToDateTime = (timeStr, timeOffsetHours = -7, full_day = false, isStartDate = true) => {
+  const convertTimeToDateTime = (timeStr, timeOffsetHours = -7, full_day, isStartDate) => {
     if (full_day) {
       return isStartDate ? "00:00:00" : "23:59:59";
     }
@@ -492,6 +491,9 @@ function FportalCampaignEdit() {
     }
     delete data?.fportal_shedulars
     delete data?.buyer_numbers
+    delete data?.start_date
+    delete data?.end_date
+
     const rawPayload = {
       ...data,
       buyers: bulkAddBuyersList.map(item => ({
@@ -503,17 +505,33 @@ function FportalCampaignEdit() {
       active_hours: isActiveHour ? "1" : "0",
       sticky_agent_enable: data?.sticky_agent_enable == false ? 0 : 1,
       ...(isActiveHour && {
-        schedulars: schedulerInfo?.filter((data) => data?.status == true)?.map((item) => ({
-          end_time: convertTimeToDateTime(item?.end_time, "", item?.full_day, false),
-          full_day: item?.full_day ? "1" : "0",
-          name: item?.name,
-          recurring_day: item?.recurring_day,
-          start_time: convertTimeToDateTime(item?.start_time, "", item?.full_day, true),
-          status: item?.status,
-          start_date: startDate,
-          end_date: endDate,
-        }))
+        schedulars: (schedulerInfo?.filter(data => data?.status === true) || []).length > 0
+          ? schedulerInfo
+            ?.filter(data => data?.status === true)
+            ?.map(item => ({
+              end_time: convertTimeToDateTime(item?.end_time, "", item?.full_day, false),
+              full_day: item?.full_day ? "1" : "0",
+              name: item?.name,
+              recurring_day: item?.recurring_day,
+              start_time: convertTimeToDateTime(item?.start_time, "", item?.full_day, true),
+              status: item?.status,
+              start_date: startDate,
+              end_date: endDate,
+            }))
+          : (startDate && endDate
+            ? [{
+              end_time: convertTimeToDateTime("", "", true, false),
+              full_day: "0",
+              name: "",
+              recurring_day: "",
+              start_time: convertTimeToDateTime("", "", true, true),
+              status: false,
+              start_date: startDate,
+              end_date: endDate
+            }]
+            : [])
       }),
+
     };
     const payload = Object.fromEntries(
       Object.entries(rawPayload).filter(([_, v]) => v !== null && v !== undefined)
@@ -1038,14 +1056,16 @@ function FportalCampaignEdit() {
                           <div className="formRow col-xl-3">
                             <div className='formLabel'>
                               <label>
-                                Tag
+                                Tag <span className="text-danger">*</span>
                               </label>
                             </div>
                             <div className='col-6'>
                               <input
                                 type="text"
                                 className="formItem"
-                                {...register("agent_name")}
+                                {...register("agent_name", {
+                                  ...requiredValidator,
+                                })}
                               />
                               {errors.agent_name && (
                                 <ErrorMessage text={errors.agent_name.message} />
@@ -2128,7 +2148,6 @@ function FportalCampaignEdit() {
                                 </button>
                               </div>
                             </div>
-                            {console.log('bulkAddBuyersList', bulkAddBuyersList)}
                             {bulkAddBuyersList && bulkAddBuyersList?.length > 0 ? bulkAddBuyersList?.map((buyer, index) => {
                               return (
                                 <div className="row">

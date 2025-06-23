@@ -29,10 +29,15 @@ const MailReply = ({
 
   const formatEmailSnippet = (snippet) => {
     // Remove unwanted escape sequences
-    return snippet
-      .replace(/\r\n/g, " ") // Remove line breaks
-      .replace(/\s+/g, " ") // Collapse extra spaces
-      .replace(/[*{}]/g, ""); // Remove stray symbols like '*' and '{}'
+    if (snippet) {
+      return snippet
+        .replace(/\r\n/g, " ") // Remove line breaks
+        .replace(/\s+/g, " ") // Collapse extra spaces
+        .replace(/[*{}]/g, ""); // Remove stray symbols like '*' and '{}'
+    } else {
+      return ""
+    }
+
   };
 
   const formatFileSize = (bytes) => {
@@ -152,10 +157,10 @@ const MailReply = ({
                     </li>
 
                     <li className="mailList_menu">
-                      <button 
+                      <button
                         className="dropdown-item text-danger"
                         onClick={() => handleMailDelete(currentMail)}
-                        >
+                      >
                         <i class="fa-duotone fa-solid fa-trash me-2 "></i>{" "}
                         Deleted
                       </button>
@@ -165,7 +170,7 @@ const MailReply = ({
               </div>
             </div>
           </div>
-          <div className="mailBox_body p-3">
+          {/* <div className="mailBox_body p-3">
             <div className="mail_header">
               <p class="fs-20 fw-semibold mb-0 text_dark">
                 {currentMail?.subject}
@@ -173,7 +178,7 @@ const MailReply = ({
               <div class="float-end">
                 {" "}
                 <span class="me-2 fs-12 text_gray">
-                  {formatDateTime(currentMail?.date)}
+                  {currentMail?.date ? formatDateTime(currentMail?.date) : ""}
                 </span>{" "}
               </div>
             </div>
@@ -220,11 +225,11 @@ const MailReply = ({
                                 src={require("../../../assets/images/file.webp")}
                               />
                             ) : attachmentType(attachment?.filename) ===
-                                "jpg" ||
+                              "jpg" ||
                               attachmentType(attachment?.filename) === "jpeg" ||
                               attachmentType(attachment?.filename) === "png" ||
                               attachmentType(attachment?.filename) ===
-                                "webp" ? (
+                              "webp" ? (
                               <img
                                 alt="file-icon"
                                 src={require("../../../assets/images/jpg.webp")}
@@ -251,7 +256,7 @@ const MailReply = ({
                   </div>
                 )}
             </div>
-          </div>
+          </div> */}
           <div class="mail-info-footer p-2 position-relative">
             {showResults ? (
               <div className="text_message">
