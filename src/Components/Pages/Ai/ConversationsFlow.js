@@ -5,7 +5,7 @@ import WelcomeMessage from "./WelcomeMessage";
 import FlowAccordionContent from "./FlowAccordionContent";
 import { useLocation, useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
-import TestCallChat from './TestCallChat'
+import TestCallChat from "./TestCallChat";
 
 const ConversationsFlow = () => {
   const [idCopy, setIdCopy] = useState(false);
@@ -173,7 +173,7 @@ const ConversationsFlow = () => {
                         <div className="col-xxl-3 ">
                           <div className="KnowledgeLeftinfo">
                             <div className="heightAuto">
-                              <TestCallChat />
+                              <TestCallChat agentData={agentData} />
                             </div>
                           </div>
                         </div>
