@@ -1331,7 +1331,7 @@ const FlowAccordionContent = ({
                         </button>
                         <button onClick={() => {
                                 setPostCallAnalysisData((prev) =>
-                                  prev.filter((data) => data.name !== item.name)
+                                  prev?.filter((data) => data.name !== item.name)
                                 );
                               }} className="clearButton text-align-start text-danger">
                           <i class="fa-regular fa-trash-can"></i>
