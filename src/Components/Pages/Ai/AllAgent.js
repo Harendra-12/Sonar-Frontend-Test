@@ -239,11 +239,11 @@ const AllAgent = () => {
                           <thead>
                             <tr>
                               <th>Agent Name</th>
-                             
+
                               <th>Phone</th>
                               <th>Language</th>
                               <th>Voice</th>
-                               <th>Voice Model</th>
+                              <th>Voice Model</th>
                               <th></th>
                             </tr>
                           </thead>
@@ -267,16 +267,22 @@ const AllAgent = () => {
                                         </div>
                                       </td>
                                       {/* <td>{item.response_engine?.["type"]}</td> */}
-                                      <td>
+                                      <td onClick={() => handleEditClick(item)}>
                                         {item?.agent_id &&
                                           (finePhoneNumber(item.agent_id)
                                             ?.length > 0
                                             ? finePhoneNumber(item.agent_id)
                                             : "-")}
                                       </td>
-                                      <td>{item.language}</td>
-                                      <td>{item.voice_id}</td>
-                                      <td>{item.voice_model}</td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.language}
+                                      </td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.voice_id}
+                                      </td>
+                                      <td onClick={() => handleEditClick(item)}>
+                                        {item.voice_model}
+                                      </td>
                                       <td>
                                         <div className="dropdown">
                                           <button
@@ -438,7 +444,8 @@ const AllAgent = () => {
                                 </div>
                               </div>
                               <div className="popup_box">
-                                <button  type="button"
+                                <button
+                                  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
@@ -470,8 +477,9 @@ const AllAgent = () => {
                                   </span>
                                 </div>
                               </div>
-                               <div className="popup_box">
-                                <button  type="button"
+                              <div className="popup_box">
+                                <button
+                                  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
@@ -503,8 +511,9 @@ const AllAgent = () => {
                                   </span>
                                 </div>
                               </div>
-                               <div className="popup_box">
-                                <button  type="button"
+                              <div className="popup_box">
+                                <button
+                                  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
