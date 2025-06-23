@@ -167,6 +167,35 @@
     }
 }
 
+@media (max-width: 1399px) {
+    .progressStepWrapper {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .progress-bar {
+        height: 4px;
+    }
+
+    .progressStepWrapper .stepWrapper {
+        flex-direction: column;
+    }
+
+    .profileView .baseDetails.wrpDetails__box {
+        padding-left: 0;
+        justify-content: center;
+    }
+    .wrpDetails__box .progress {
+    width: 90%;
+    box-shadow: none;
+    height: 4px;
+    position: absolute;
+    top: 28px;
+    margin: unset;
+    margin-left: 20px;
+}
+}
+
 @media (max-device-width: 1366px) {
     /* h3 {
         font-size: 22px;
@@ -580,6 +609,9 @@
 
     .tangoNavs.store__nav .nav-tabs {
         flex-direction: column-reverse;
+    }
+    .progressStepWrapper{
+        gap: 10px;
     }
 }
 

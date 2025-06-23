@@ -6,9 +6,10 @@ const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
-const aiBaseName = "https://ai.webvio.in/backend/backend";
-// const aiToken = "key_a083999b0156a43721cc1b5942a1";
-const aiToken = "key_f3f8d64a285120a16182f6add20d";
+// const aiBaseName = "https://ai.webvio.in/backend/backend";
+const aiBaseName = "http://localhost:8000/backend";
+const aiToken = "key_a083999b0156a43721cc1b5942a1"; // bip key
+// const aiToken = "key_f3f8d64a285120a16182f6add20d"; // prod key
 
 // ai axios instance
 const aiAxiosInstance = axios.create({
@@ -676,7 +677,7 @@ export function formatTimeWithAMPM(timeString) {
 // Formate date for time stamp to get time when message arrives
 export function formatRelativeTime(dateString) {
   const account = localStorage.getItem("account");
-  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+  const timeZone = JSON.parse(account)?.timezone?.name || "UTC";
 
   try {
     const now = new Date();
@@ -695,10 +696,12 @@ export function formatRelativeTime(dateString) {
     // For "Yesterday" or date format, convert date to target timezone for display
     if (diffDays >= 1) {
       if (diffDays === 1) return "Yesterday";
-      return new Date(date.toLocaleString('en-US', { timeZone })).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: diffDays >= 365 ? 'numeric' : undefined
+      return new Date(
+        date.toLocaleString("en-US", { timeZone })
+      ).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: diffDays >= 365 ? "numeric" : undefined,
       });
     } else if (diffHours >= 1) {
       return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
@@ -709,12 +712,11 @@ export function formatRelativeTime(dateString) {
     }
   } catch (error) {
     console.error("Error formatting time:", error);
-    return new Date(dateString).toLocaleDateString('en-US');
+    return new Date(dateString).toLocaleDateString("en-US");
   }
 }
 
-
-// Format date to get today date OR YYYY-MM-DD H:M:I in YYYY-MM-DD H:M:I according to timezone 
+// Format date to get today date OR YYYY-MM-DD H:M:I in YYYY-MM-DD H:M:I according to timezone
 export function formatDateTime(dateInput) {
   // Parse account timezone
   const account = localStorage.getItem("account");
@@ -820,7 +822,7 @@ export const handleCsvDownload = (data) => {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
-}
+};
 
 export const isoToYYMMDDFormat = (isoString) => {
   const date = new Date(isoString);
@@ -835,7 +837,7 @@ export const isoToTimeFormat = (isoString) => {
     second: "2-digit",
     hour12: true,
   }); // e.g., "3:23:16 PM"
-}
+};
 
 export const formatTimeSecondsToHHMMSS = (seconds) => {
   const hours = Math.floor(seconds / 3600)
@@ -846,19 +848,19 @@ export const formatTimeSecondsToHHMMSS = (seconds) => {
     .padStart(2, "0");
   const secs = (seconds % 60).toString().padStart(2, "0");
   return `${hours}:${minutes}:${secs}`;
-}
+};
 export function secondsToHHMMSS(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600)
     .toString()
-    .padStart(2, '0');
+    .padStart(2, "0");
 
   const minutes = Math.floor((totalSeconds % 3600) / 60)
     .toString()
-    .padStart(2, '0');
+    .padStart(2, "0");
 
   const seconds = Math.floor(totalSeconds % 60)
     .toString()
-    .padStart(2, '0');
+    .padStart(2, "0");
 
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -866,7 +868,7 @@ export function secondsToHHMMSS(totalSeconds) {
 export function checkTimeDifference(targetDateTime) {
   // Parse account timezone
   const account = localStorage.getItem("account");
-  const timeZone = JSON.parse(account)?.timezone?.name || 'UTC';
+  const timeZone = JSON.parse(account)?.timezone?.name || "UTC";
 
   // Get current time in desired timezone
   const currentTime = new Date(
@@ -891,6 +893,6 @@ export function checkTimeDifference(targetDateTime) {
 
   // If difference is 5 mins or less, log it
   if (diffMinutes <= 5) {
-    return diffMinutes.toFixed(2)
+    return diffMinutes.toFixed(2);
   }
 }

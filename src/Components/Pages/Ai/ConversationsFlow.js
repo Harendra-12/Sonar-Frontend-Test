@@ -5,7 +5,7 @@ import WelcomeMessage from "./WelcomeMessage";
 import FlowAccordionContent from "./FlowAccordionContent";
 import { useLocation, useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
-import TestCallChat from './TestCallChat'
+import TestCallChat from "./TestCallChat";
 
 const ConversationsFlow = () => {
   const [idCopy, setIdCopy] = useState(false);
@@ -20,6 +20,7 @@ const ConversationsFlow = () => {
   const [loading, setLoading] = useState(false);
   const [beginMessage, setBeginMessage] = useState("");
   const [generalPrompt, setGeneralPrompt] = useState("");
+  const [agentId,setAgentId] = useState();
 
   useEffect(() => {
     if (locationState?.agentName) {
@@ -29,6 +30,12 @@ const ConversationsFlow = () => {
       navigate(-1);
     }
   }, []);
+
+   useEffect(() => {
+      if (agentData?.agent_id) {
+        setAgentId(agentData?.agent_id);
+      }
+    }, [agentData?.agent_id]);
 
   return (
     <>
@@ -54,36 +61,51 @@ const ConversationsFlow = () => {
                                 autoFocus
                               />
                             ) : (
-                              <h4>{defaultName}</h4>
+                              <h4 className="mb-0">{defaultName}</h4>
                             )}
 
                             <button
-                              className="aitable_button bg-transparent"
-                              onClick={() => setIsEditing(true)}
+                              variant={"outline"}
+                              size={"icon"}
+                              className={"clearButton2 ms-2 f-s-14"}
+                              onClick={() => setIsEditing(!isEditing)}
+                              // onClick={() => setIsEditing(true)}
                             >
-                              <i className="fa-regular fa-pen"></i>
+                              <i
+                                className={`fa-solid fa-${!isEditing
+                                  ? "pen-to-square"
+                                  : "floppy-disk"
+                                  }`}
+                              />
                             </button>
                           </div>
-                          <div className="d-flex justify-content-start align-items-center gap-3">
-                            <p className="mb-0">
-                              Agent ID:{" "}
-                              <span>agent_90ea9449c2e5e7c51f5bd7e80e</span>
-                              <button
-                                className="clearButton"
-                                onClick={() => {
-                                  setIdCopy(!idCopy);
-                                }}
-                              >
-                                <i
-                                  className={
-                                    idCopy
-                                      ? "fa-solid fa-check text_success"
-                                      : "fa-solid fa-clone"
-                                  }
-                                ></i>
-                              </button>
-                            </p>
-                            <p className="mb-0">
+                          {locationState.unique ? (
+                            ""
+                          ) : (
+                            <div className="d-flex justify-content-start align-items-center gap-3">
+                              <p className="mb-0">
+                                Agent ID: <span>{agentData?.agent_id}</span>
+                                <button
+                                  className="clearButton"
+                                  onClick={() => {
+                                    setIdCopy(!idCopy);
+                                  }}
+                                >
+                                  <i
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(
+                                        agentData?.agent_id || ""
+                                      );
+                                    }}
+                                    className={
+                                      idCopy
+                                        ? "fa-solid fa-check text_success"
+                                        : "fa-solid fa-clone"
+                                    }
+                                  ></i>
+                                </button>
+                              </p>
+                              {/* <p className="mb-0">
                               {" "}
                               <span>$0.12/min</span>
                               <Tippy
@@ -109,8 +131,9 @@ const ConversationsFlow = () => {
                                   <i class="fa-regular fa-chart-pie-simple"></i>
                                 </button>
                               </Tippy>
-                            </p>
-                          </div>
+                            </p> */}
+                            </div>
+                          )}
                         </div>
                         <div className="buttonGroup">
                           <button
@@ -127,8 +150,36 @@ const ConversationsFlow = () => {
                             </span>
                           </button>
 
-                          <div effect="ripple" className="panelButton">
-                            <span className="text">Save</span>
+                          <div
+                            effect="ripple"
+                            className="panelButton"
+                            onClick={() => setSaveClicked(saveClicked + 1)}
+                          >
+                            {locationState.unique ? (
+                              <>
+                                {loading ? (
+                                  <>
+                                    <span className="text">Saving..</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="text">Save</span>
+                                  </>
+                                )}
+                              </>
+                            ) : (
+                              <>
+                                {loading ? (
+                                  <>
+                                    <span className="text">Updating..</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="text">Update</span>
+                                  </>
+                                )}{" "}
+                              </>
+                            )}
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
                             </span>
@@ -138,7 +189,7 @@ const ConversationsFlow = () => {
                     </div>
                     <div className="col-12">
                       <div className="row p-3">
-                        <div className="col-xxl-6 ">
+                        <div className="col-xxl-5 col-xl-12 mb-2">
                           <div className="KnowledgeLeftinfo">
                             <div className="heightAuto">
                               <WelcomeMessage
@@ -150,7 +201,7 @@ const ConversationsFlow = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xxl-3 ">
+                        <div className="col-xxl-4 col-xl-6 mb-2">
                           <div className="KnowledgeLeftinfo">
                             <div className="heightAuto">
                               <FlowAccordionContent
@@ -166,14 +217,16 @@ const ConversationsFlow = () => {
                                 generalPrompt={generalPrompt}
                                 setBeginMessage={setBeginMessage}
                                 setGeneralPrompt={setGeneralPrompt}
+                                agentId={agentId}
+                                setAgentId={setAgentId}
                               />
                             </div>
                           </div>
                         </div>
-                        <div className="col-xxl-3 ">
+                        <div className="col-xxl-3 col-xl-6 mb-2 ">
                           <div className="KnowledgeLeftinfo">
-                            <div className="heightAuto">
-                              <TestCallChat />
+                            <div className="heightAuto h-100">
+                              <TestCallChat agentId={agentId} />
                             </div>
                           </div>
                         </div>

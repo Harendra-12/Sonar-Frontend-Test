@@ -7,13 +7,11 @@ const MailReply = ({
   handleMailReplay,
   currentMail,
   activeList,
+  handleMailDelete
 }) => {
   const navigate = useNavigate();
   const [showResults, setShowResults] = React.useState(false);
   const onClick = () => setShowResults(true);
-
-  console.log("activeList", activeList);
-
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-GB", {
@@ -154,7 +152,10 @@ const MailReply = ({
                     </li>
 
                     <li className="mailList_menu">
-                      <button className="dropdown-item text-danger">
+                      <button 
+                        className="dropdown-item text-danger"
+                        onClick={() => handleMailDelete(currentMail)}
+                        >
                         <i class="fa-duotone fa-solid fa-trash me-2 "></i>{" "}
                         Deleted
                       </button>
@@ -184,7 +185,7 @@ const MailReply = ({
                 }}
                 className="email-content"
               />
-              {/* {formatEmailSnippet(currentMail?.body)} */}
+              {formatEmailSnippet(currentMail?.body)}
               {currentMail?.attachments[0] &&
                 currentMail?.attachments[0].length > 0 && (
                   <div class="mail-attachments mb-4 mt-5">

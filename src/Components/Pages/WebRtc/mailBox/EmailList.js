@@ -4,19 +4,21 @@ import { generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import ThreeDotedLoader from "../../../Loader/ThreeDotedLoader";
 
 const EmailList = ({
-  handleShowNewMail,
-  handleListingClick,
+  // handleShowNewMail,
+  // handleListingClick,
   handleMailReplay,
-  showMailHandler,
+  handleShowMail,
   loading,
   allMails,
   pageNumber,
   setPageNumber,
   lastPage,
   mailType = "inbox",
+  handleMailDelete,
+  setCheckedMail,
+  checkedMail,
+  handleUnSeenMail
 }) => {
-  console.log("loading: ", loading);
-
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
 
@@ -47,27 +49,40 @@ const EmailList = ({
             <table>
               <thead>
                 <tr>
-                  <th></th>
+                  <th>Select</th>
                   <th>{mailType === "sent" ? "To" : "From"}</th>
                   <th>Subject</th>
                   <th>{mailType === "sent" ? "Sent" : "Received"}</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {allMails?.emails?.map((item, index) => (
-                  <tr
-                    key={index}
-                    onClick={() => {
-                      // Pass the current mail type to preserve context
-                      handleMailReplay(mailType);
-                      showMailHandler(item);
-                    }}
-                  >
-                    <td>
-                      {" "}
-                      <input type="checkbox" />
+                  <tr key={index}>
+                    {console.log('first', item)}
+                    <td
+                      onClick={() => {
+                        setCheckedMail((prev) => {
+                          const alreadyChecked = prev.some((checked) => checked?.message_id === item?.message_id);
+                          if (alreadyChecked) {
+                            return prev.filter((checked) => checked?.message_id !== item?.message_id);
+                          } else {
+                            return [...prev, item];
+                          }
+                        });
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checkedMail?.some((checked) => checked?.message_id === item?.message_id)}
+                      />
                     </td>
-                    <td>
+                    <td
+                      onClick={() => {
+                        handleMailReplay(mailType);
+                        handleShowMail(item);
+                      }}
+                    >
                       <div className="d-flex align-items-center">
                         <div className="tableProfilePicHolder">
                           <img
@@ -82,7 +97,12 @@ const EmailList = ({
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td
+                      onClick={() => {
+                        handleMailReplay(mailType);
+                        handleShowMail(item);
+                      }}
+                    >
                       <p className="ellipsisText300 mb-0">
                         <strong>
                           {" "}
@@ -97,10 +117,40 @@ const EmailList = ({
                         </span>
                       </p>
                     </td>
-                    <td>
+                    <td
+                      onClick={() => {
+                        handleMailReplay(mailType);
+                        handleShowMail(item);
+                      }}
+                    >
                       <p className="mb-0 fw-semibold">
                         {formatDateTime(item?.date)}
                       </p>
+                    </td>
+                    <td>
+                      <i class="fa-regular fa-star me-2"></i> 
+                      {
+                        item?.status?.toLowerCase() == "seen" ?
+                          <i class="fa-solid fa-envelope-open me-2"
+                            onClick={() => {
+                              // handleMailReplay(mailType);
+                              handleUnSeenMail(item);
+                            }}
+                          ></i>
+                          :
+                          <i class="fa-solid fa-envelope me-2"
+                            onClick={() => {
+                              handleMailReplay(mailType);
+                              handleShowMail(item);
+                            }}
+                          ></i>
+                      }
+
+                      <i class="fa-solid fa-trash me-4"
+                        onClick={() => {
+                          handleMailDelete(item)
+                        }}
+                      ></i>
                     </td>
                   </tr>
                 ))}
@@ -112,7 +162,6 @@ const EmailList = ({
           {!loading && allMails && allMails?.emails?.length > 0 ? (
             <PaginationComponent
               pageNumber={(e) => setPageNumber(e)}
-              // custom to and last page concept because no data came form api
               totalPage={lastPage}
               from={(pageNumber - 1) * allMails?.emailsPerPage + 1}
               to={

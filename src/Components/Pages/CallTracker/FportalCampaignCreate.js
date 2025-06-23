@@ -299,7 +299,7 @@ function FportalCampaignCreate() {
   }, [])
 
   useEffect(() => {
-    getAllBuyers()
+    fetchAllBuyerNumber()
   }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   const allDidOptions = did.map((item) => ({
@@ -2068,10 +2068,10 @@ function FportalCampaignCreate() {
                 <div className="tableHeader mb-3">
                   <PaginationComponent
                     pageNumber={(e) => setPageNumber(e)}
-                    totalPage={allBuyers?.last_page}
-                    from={allBuyers?.from}
-                    to={allBuyers?.to}
-                    total={allBuyers?.total}
+                    totalPage={allBuyersNumbers?.last_page}
+                    from={allBuyersNumbers?.from}
+                    to={allBuyersNumbers?.to}
+                    total={allBuyersNumbers?.total}
                   />
                 </div>
               </div>

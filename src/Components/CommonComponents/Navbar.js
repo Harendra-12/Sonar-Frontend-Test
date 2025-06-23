@@ -1247,6 +1247,7 @@ function Navbar() {
                             "/ai-batch-call",
                             "/ai-agent-add",
                             "/ai-agent-edit",
+                            "/ai-phone-number"
                           ])
                             ? "true"
                             : "false"
@@ -1272,6 +1273,7 @@ function Navbar() {
                           "/ai-batch-call",
                           "/ai-agent-add",
                           "/ai-agent-edit",
+                           "/ai-phone-number"
                         ])
                           ? "show"
                           : ""

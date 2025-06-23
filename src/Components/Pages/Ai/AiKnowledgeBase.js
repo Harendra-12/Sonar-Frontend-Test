@@ -7,19 +7,17 @@ import {
   aiGeneralPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage"; // use this to display form validation errors
-import { requiredValidator, urlValidator } from "../../validations/validation";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const AiKnowledgeBase = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [addKnowledgeBase, setKnowledgeBase] = useState(false);
-  const [dataCopy, setDataCopy] = useState(false);
-  const [idCopy, setIdCopy] = useState(false);
   const [linkCopy, setLinkCopy] = useState(null);
   const [deletePopup, setShowDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [createFileLoading, setCreateFileLoading] = useState(false);
   const [initialData, setInitialData] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
   const [currentTab, setCurrentTab] = useState("webPage");
@@ -54,7 +52,13 @@ const AiKnowledgeBase = () => {
   };
 
   const downloadFile = (link) => {
-    window.open(link, "_blank");
+    // window.open(link, "_blank");
+    const a = document.createElement("a");
+    a.href = link;
+    a.setAttribute("download", ""); // Or set a specific filename like 'example.pdf'
+    document.body.appendChild(a); // Needed for Firefox
+    a.click();
+    document.body.removeChild(a);
   };
 
   // Clear errors when switching tabs
@@ -94,7 +98,7 @@ const AiKnowledgeBase = () => {
       return;
     }
 
-    setLoading(true);
+    setCreateFileLoading(true);
     try {
       const res = await aiGeneralDeleteFunction(
         `/knowledgebase/delete/${activeFile?.knowledge_base_id}`
@@ -102,19 +106,19 @@ const AiKnowledgeBase = () => {
 
       if (res.status) {
         toast.success("Knowledge base deleted successfully");
-        setLoading(false);
+        setCreateFileLoading(false);
         setShowDeleteDialog(false);
         setActiveFile(null);
         fetchInitialData(); // Refresh the list after deletion
       } else {
         toast.error("Failed to delete knowledge base");
-        setLoading(false);
+        setCreateFileLoading(false);
         setShowDeleteDialog(false);
       }
     } catch (error) {
       console.error("Error deleting knowledge base: ", error);
       toast.error("Failed to delete knowledge base");
-      setLoading(false);
+      setCreateFileLoading(false);
       setShowDeleteDialog(false);
     }
   };
@@ -220,7 +224,7 @@ const AiKnowledgeBase = () => {
     if (!isValids || addedFiles.length === 0) return;
 
     // toast.loading("Saving files...");
-    setLoading(true);
+    setCreateFileLoading(true);
     const name = getValues("name").trim();
     const texts = [];
     const urls = [];
@@ -264,7 +268,7 @@ const AiKnowledgeBase = () => {
 
       if (res.status) {
         toast.success("Knowledge base saved successfully");
-        setLoading(false);
+        setCreateFileLoading(false);
         setIsValids(false);
         setKnowledgeBase(false);
         setAddedFiles([]);
@@ -272,12 +276,12 @@ const AiKnowledgeBase = () => {
         fetchInitialData();
       } else {
         toast.error("Failed to save knowledge base");
-        setLoading(false);
+        setCreateFileLoading(false);
       }
     } catch (error) {
       console.error("Error saving knowledge base:", error);
       toast.error("Failed to save knowledge base");
-      setLoading(false);
+      setCreateFileLoading(false);
     }
   };
 
@@ -285,7 +289,7 @@ const AiKnowledgeBase = () => {
     fetchInitialData();
   };
 
-  if (loading) return <CircularLoader />;
+  if (createFileLoading) return <ThreeDotedLoader />;
   return (
     <>
       <main className="mainContent">
@@ -295,7 +299,12 @@ const AiKnowledgeBase = () => {
               <Header title="Knowledge Base" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
+                  <div
+                    className="d-flex flex-wrap position-relative"
+                    style={
+                      loading ? { height: "calc(100vh - 200px)" } : undefined
+                    }
+                  >
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
@@ -319,172 +328,209 @@ const AiKnowledgeBase = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-12">
-                      <div className="row p-3">
-                        <div className="col-xxl-4 col-xl-5 col-lg-12 ">
-                          <div className="KnowledgeLeftinfo">
-                            <div className="info_header">
-                              <h5 className="mb-0">Uploaded files</h5>
-                              <button
-                                className={`tableButton`}
-                                onClick={setKnowledgeBase}
-                              >
-                                <i className="fa-regular fa-plus" />
-                              </button>
-                            </div>
-                            <div className="knowledge__list">
-                              <div
-                                className="nav flex-column nav-pills me-3"
-                                id="v-pills-tab"
-                                role="tablist"
-                                aria-orientation="vertical"
-                              >
-                                {initialData &&
-                                  initialData.map((item) => (
-                                    <button
-                                      key={item.knowledge_base_id}
-                                      className={`nav-link ${
-                                        item.knowledge_base_id ===
-                                        activeFile?.knowledge_base_id
-                                          ? "active"
-                                          : ""
-                                      }`}
-                                      id="v-pills-home-tab"
-                                      data-bs-toggle="pill"
-                                      data-bs-target="#v-pills-home"
-                                      type="button"
-                                      role="tab"
-                                      aria-controls="v-pills-home"
-                                      aria-selected="true"
-                                      onClick={() => {
-                                        setActiveFile(item);
-                                      }}
-                                    >
-                                      <p className="mb-0">
-                                        <i className="fa-duotone fa-solid fa-folder-open me-2"></i>{" "}
-                                        {item?.knowledge_base_name}
-                                      </p>
-                                      <p className="mb-0">
-                                        added on{" "}
-                                        <span>
-                                          {" "}
-                                          {new Date(
-                                            item?.user_modified_timestamp
-                                          ).toLocaleDateString()}
-                                        </span>
-                                      </p>
-                                    </button>
-                                  ))}
+                    {loading ? (
+                      <ThreeDotedLoader />
+                    ) : (
+                      <div className="col-12">
+                        <div className="row p-3">
+                          <div className="col-xxl-4 col-xl-5 col-lg-12 ">
+                            <div className="KnowledgeLeftinfo">
+                              <div className="info_header">
+                                <h5 className="mb-0">Uploaded files</h5>
+                                <button
+                                  className={`tableButton`}
+                                  onClick={setKnowledgeBase}
+                                >
+                                  <i className="fa-regular fa-plus" />
+                                </button>
+                              </div>
+                              <div className="knowledge__list">
+                                <div
+                                  className="nav flex-column nav-pills me-3"
+                                  id="v-pills-tab"
+                                  role="tablist"
+                                  aria-orientation="vertical"
+                                >
+                                  {initialData &&
+                                    initialData.map((item) => (
+                                      <button
+                                        key={item.knowledge_base_id}
+                                        className={`nav-link ${
+                                          item.knowledge_base_id ===
+                                          activeFile?.knowledge_base_id
+                                            ? "active"
+                                            : ""
+                                        }`}
+                                        id="v-pills-home-tab"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#v-pills-home"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="v-pills-home"
+                                        aria-selected="true"
+                                        onClick={() => {
+                                          setActiveFile(item);
+                                        }}
+                                      >
+                                        <p className="mb-0">
+                                          <i
+                                            className="fa-duotone fa-solid fa-folder-open me-2"
+                                            style={{
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          ></i>{" "}
+                                          {item?.knowledge_base_name}
+                                        </p>
+                                        <p className="mb-0">
+                                          <span
+                                            style={{
+                                              fontSize: "0.75rem",
+                                              color: "var(--color-subtext)",
+                                            }}
+                                          >
+                                            {" "}
+                                            {new Date(
+                                              item?.user_modified_timestamp
+                                            ).toLocaleDateString()}
+                                          </span>
+                                        </p>
+                                      </button>
+                                    ))}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="col-xxl-8 col-xl-7 col-lg-12 ">
-                          <div
-                            className="tab-content KnowledgeRightinfo"
-                            id="v-pills-tabContent"
-                          >
+                          <div className="col-xxl-8 col-xl-7 col-lg-12 ">
                             <div
-                              className="tab-pane fade show active"
-                              id="v-pills-home"
-                              role="tabpanel"
-                              aria-labelledby="v-pills-home-tab"
+                              className="tab-content KnowledgeRightinfo"
+                              id="v-pills-tabContent"
                             >
-                              <div className="heading">
-                                <div className="content">
-                                  <h4>{activeFile?.knowledge_base_name}</h4>
-                                  <p className="mb-0">
-                                    ID:{" "}
-                                    <span>{activeFile?.knowledge_base_id}</span>
-                                    <button
-                                      className="clearButton"
-                                      onClick={() => {
-                                        copyLink(activeFile?.knowledge_base_id);
-                                      }}
-                                    >
-                                      <i
-                                        className={
-                                          linkCopy ===
-                                          activeFile?.knowledge_base_id
-                                            ? "fa-solid fa-check text_success"
-                                            : "fa-solid fa-clone"
-                                        }
-                                      ></i>
-                                    </button>
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="text-end mb-2 f-s-14">
-                                    Last Update on :{" "}
-                                    <strong>
-                                      {new Date(
-                                        activeFile?.user_modified_timestamp
-                                      ).toLocaleDateString()}
-                                    </strong>
-                                  </p>
-                                  <div className="buttonGroup">
-                                    <button
-                                      className="panelButton danger"
-                                      onClick={setShowDeleteDialog}
-                                    >
-                                      <span className="text">Delete</span>
-                                      <span className="icon">
-                                        <i className="fa-solid fa-trash"></i>
+                              <div
+                                className="tab-pane fade show active"
+                                id="v-pills-home"
+                                role="tabpanel"
+                                aria-labelledby="v-pills-home-tab"
+                              >
+                                <div className="heading px-0">
+                                  <div className="content">
+                                    <h4>{activeFile?.knowledge_base_name}</h4>
+                                    <p className="mb-0">
+                                      ID:{" "}
+                                      <span>
+                                        {activeFile?.knowledge_base_id}
                                       </span>
-                                    </button>
+                                      <button
+                                        className="clearButton"
+                                        onClick={() => {
+                                          copyLink(
+                                            activeFile?.knowledge_base_id
+                                          );
+                                        }}
+                                      >
+                                        <i
+                                          className={
+                                            linkCopy ===
+                                            activeFile?.knowledge_base_id
+                                              ? "fa-solid fa-check text_success"
+                                              : "fa-solid fa-clone"
+                                          }
+                                        ></i>
+                                      </button>
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <p className="text-end mb-2 f-s-14">
+                                      Last Update on :{" "}
+                                      <strong>
+                                        {new Date(
+                                          activeFile?.user_modified_timestamp
+                                        ).toLocaleDateString()}
+                                      </strong>
+                                    </p>
+                                    <div className="buttonGroup">
+                                      <button
+                                        className="panelButton danger"
+                                        onClick={setShowDeleteDialog}
+                                      >
+                                        <span className="text">Delete</span>
+                                        <span className="icon">
+                                          <i className="fa-solid fa-trash"></i>
+                                        </span>
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="k_body px-2">
-                                <div className="tableContainer">
-                                  <table>
-                                    <tbody className="">
-                                      <>
-                                        {activeFile &&
-                                          activeFile?.knowledge_base_sources?.map(
-                                            (data) => (
-                                              <tr key={data?.source_id}>
-                                                <td colSpan={12}>
-                                                  <div className="d-flex align-items-center">
-                                                    <div className="table__icon">
-                                                      {data.type === "text" && (
-                                                        <i className="fa-solid fa-file-lines" />
-                                                      )}
-                                                      {data.type ===
-                                                        "document" && (
-                                                        <i className="fa-solid fa-file" />
-                                                      )}
-                                                      {data.type === "url" && (
-                                                        <i className="fa-solid fa-link" />
-                                                      )}
+                                <div className="k_body">
+                                  <div className="tableContainer">
+                                    <table>
+                                      <tbody className="">
+                                        <>
+                                          {activeFile &&
+                                            activeFile?.knowledge_base_sources?.map(
+                                              (data) => (
+                                                <tr key={data?.source_id}>
+                                                  <td colSpan={12}>
+                                                    <div className="d-flex align-items-center">
+                                                      <div className="table__icon">
+                                                        {data.type ===
+                                                          "text" && (
+                                                          <i className="fa-solid fa-file-lines" />
+                                                        )}
+                                                        {data.type ===
+                                                          "document" && (
+                                                          <i className="fa-solid fa-file" />
+                                                        )}
+                                                        {data.type ===
+                                                          "url" && (
+                                                          <i className="fa-solid fa-link" />
+                                                        )}
+                                                      </div>
+                                                      <div className="ms-2 detailsTable">
+                                                        <h5 className="mb-0">
+                                                          {(data?.type ===
+                                                            "text" &&
+                                                            data.title) ||
+                                                            (data?.type ===
+                                                              "url" &&
+                                                              data?.url) ||
+                                                            (data?.type ===
+                                                              "document" &&
+                                                              data?.filename)}
+                                                        </h5>
+                                                        <p className="mb-0">
+                                                          {data?.type.toUpperCase()}
+                                                        </p>
+                                                      </div>
                                                     </div>
-                                                    <div className="ms-2 detailsTable">
-                                                      <h5 className="mb-0">
-                                                        {(data?.type ===
-                                                          "text" &&
-                                                          data.title) ||
-                                                          (data?.type ===
-                                                            "url" &&
-                                                            data?.url) ||
-                                                          (data?.type ===
-                                                            "document" &&
-                                                            data?.filename)}
-                                                      </h5>
-                                                      <p className="mb-0">
-                                                        {data?.type.toUpperCase()}
-                                                      </p>
-                                                    </div>
-                                                  </div>
-                                                </td>
-                                                <td>
-                                                  <div className="d-flex justify-content-end align-items-center gap-2">
-                                                    {(data.type === "text" ||
-                                                      data.type ===
-                                                        "document") && (
+                                                  </td>
+                                                  <td>
+                                                    <div className="d-flex justify-content-end align-items-center gap-2">
+                                                      {(data.type === "text" ||
+                                                        data.type ===
+                                                          "document") && (
+                                                        <button
+                                                          className="aitable_button bg-transparent"
+                                                          onClick={() =>
+                                                            downloadFile(
+                                                              data.type ===
+                                                                "text"
+                                                                ? data?.content_url
+                                                                : data.type ===
+                                                                  "document"
+                                                                ? data?.file_url
+                                                                : data.type ===
+                                                                    "url" &&
+                                                                  data.url
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa-regular fa-arrow-down-to-line"></i>
+                                                        </button>
+                                                      )}
                                                       <button
                                                         className="aitable_button bg-transparent"
                                                         onClick={() =>
-                                                          downloadFile(
+                                                          copyLink(
                                                             data.type === "text"
                                                               ? data?.content_url
                                                               : data.type ===
@@ -496,73 +542,57 @@ const AiKnowledgeBase = () => {
                                                           )
                                                         }
                                                       >
-                                                        <i className="fa-regular fa-arrow-down-to-line"></i>
+                                                        <i
+                                                          className={
+                                                            linkCopy ===
+                                                            (data.type ===
+                                                            "text"
+                                                              ? data?.content_url
+                                                              : data.type ===
+                                                                "document"
+                                                              ? data?.file_url
+                                                              : data.type ===
+                                                                  "url" &&
+                                                                data.url)
+                                                              ? "fa-solid fa-check text_success"
+                                                              : "fa-solid fa-clone"
+                                                          }
+                                                        ></i>
                                                       </button>
-                                                    )}
-                                                    <button
-                                                      className="aitable_button bg-transparent"
-                                                      onClick={() =>
-                                                        copyLink(
-                                                          data.type === "text"
-                                                            ? data?.content_url
-                                                            : data.type ===
-                                                              "document"
-                                                            ? data?.file_url
-                                                            : data.type ===
-                                                                "url" &&
-                                                              data.url
-                                                        )
-                                                      }
-                                                    >
-                                                      <i
-                                                        className={
-                                                          linkCopy ===
-                                                          (data.type === "text"
-                                                            ? data?.content_url
-                                                            : data.type ===
-                                                              "document"
-                                                            ? data?.file_url
-                                                            : data.type ===
-                                                                "url" &&
-                                                              data.url)
-                                                            ? "fa-solid fa-check text_success"
-                                                            : "fa-solid fa-clone"
-                                                        }
-                                                      ></i>
-                                                    </button>
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            )
-                                          )}
-                                      </>
-                                    </tbody>
-                                  </table>
+                                                    </div>
+                                                  </td>
+                                                </tr>
+                                              )
+                                            )}
+                                        </>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </div>
                               </div>
+                              <div
+                                className="tab-pane fade"
+                                id="v-pills-profile"
+                                role="tabpanel"
+                                aria-labelledby="v-pills-profile-tab"
+                              ></div>
+                              <div
+                                className="tab-pane fade"
+                                id="v-pills-messages"
+                                role="tabpanel"
+                                aria-labelledby="v-pills-messages-tab"
+                              ></div>
+                              <div
+                                className="tab-pane fade"
+                                id="v-pills-settings"
+                                role="tabpanel"
+                                aria-labelledby="v-pills-settings-tab"
+                              ></div>
                             </div>
-                            <div
-                              className="tab-pane fade"
-                              id="v-pills-profile"
-                              role="tabpanel"
-                              aria-labelledby="v-pills-profile-tab"
-                            ></div>
-                            <div
-                              className="tab-pane fade"
-                              id="v-pills-messages"
-                              role="tabpanel"
-                              aria-labelledby="v-pills-messages-tab"
-                            ></div>
-                            <div
-                              className="tab-pane fade"
-                              id="v-pills-settings"
-                              role="tabpanel"
-                              aria-labelledby="v-pills-settings-tab"
-                            ></div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -603,15 +633,29 @@ const AiKnowledgeBase = () => {
                     <div className="card-body aiAgentTab p-3">
                       <div className="addFile_box">
                         <h5 className="card-title fs14 border-bootm fw700 mb-3">
-                          Added Files
+                          Added Files List
                         </h5>
+                        {addedFiles.length === 0 && (
+                          <h5 className="sub_text mb-3">No files added yet</h5>
+                        )}
                         {addedFiles.map((file) => (
                           <div
                             key={file.id}
                             className="addFile_box p-2 d-flex justify-content-between align-items-center gap-1 mb-2"
                           >
                             <div className="d-flex align-items-center gap-1">
-                              <i className="fa-regular fa-file me-2"></i>
+                              <i
+                                className={
+                                  file.type === "addText"
+                                    ? "fa-solid fa-file-lines"
+                                    : file.type === "uploadFile"
+                                    ? "fa-solid fa-file"
+                                    : file.type === "webPage"
+                                    ? "fa-solid fa-link"
+                                    : "fa-solid fa-file-circle-question"
+                                }
+                              />
+
                               <h5 className="card-title fs14 border-bootm fw700 mb-0">
                                 {file.displayName}
                               </h5>
@@ -889,13 +933,13 @@ const AiKnowledgeBase = () => {
                             </div>
                           </div>
                         </div>
-                        <div className=" d-flex justify-content-between">
+                        <div className=" d-flex justify-content-between px-2">
                           <div className="d-flex justify-content-start">
                             <button
-                              className="panelButton add m-0"
+                              className="panelButton static add m-0"
                               type="submit"
                             >
-                              <span className="text">
+                              <span className="text text-white">
                                 Add
                                 {currentTab === "webPage"
                                   ? " Web Page"
@@ -903,21 +947,21 @@ const AiKnowledgeBase = () => {
                                   ? " File"
                                   : currentTab === "addText" && " Text"}
                               </span>
-                              <span className="icon">
+                              {/* <span className="icon">
                                 <i className="fa-regular fa-plus"></i>
-                              </span>
+                              </span> */}
                             </button>
                           </div>
                           <div className="d-flex justify-content-end">
                             <button
-                              className="panelButton  m-0"
+                              className="panelButton m-0"
                               type="button"
                               onClick={handleSaveChanges}
                               disabled={
                                 !isValids || addedFiles.length === 0 || loading
                               }
                             >
-                              <span className="text">Save Changes</span>
+                              <span className="text text-white">Save</span>
                               <span className="icon">
                                 <i className="fa-solid fa-check"></i>
                               </span>
@@ -929,7 +973,7 @@ const AiKnowledgeBase = () => {
                                 setKnowledgeBase(false);
                               }}
                             >
-                              <span className="text">Cancel</span>
+                              <span className="text text-white">Cancel</span>
                               <span className="icon">
                                 <i className="fa-solid fa-xmark"></i>
                               </span>

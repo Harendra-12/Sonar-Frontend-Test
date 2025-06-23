@@ -53,8 +53,19 @@ const AllAgent = () => {
     setUpdateListing(true);
     const apiData = await aiGeneralGetFunction("/agent/all");
     if (apiData.status) {
+      // setAllAgents(apiData.data);
+      // Remove duplicates based on agent_id
+      const seen = new Set();
+      const uniqueAgents = [];
+
+      for (const agent of apiData.data) {
+        if (!seen.has(agent.agent_id)) {
+          seen.add(agent.agent_id);
+          uniqueAgents.push(agent);
+        }
+      }
+      setAllAgents(uniqueAgents);
       setUpdateListing(false);
-      setAllAgents(apiData.data);
       setLoading(false);
     } else {
       setUpdateListing(false);
@@ -125,6 +136,27 @@ const AllAgent = () => {
       },
     });
   };
+
+  async function handleEditClick(item) {
+    setLoading(true);
+    const apiData = await aiGeneralGetFunction(`/agent/get/${item.agent_id}`);
+    if (apiData.status) {
+      const llmData = await aiGeneralGetFunction(
+        `/llm/get/${apiData.data.response_engine.llm_id}`
+      );
+      if (llmData.status) {
+        // setLoading(false);
+        navigate("/conversations-flow", {
+          state: {
+            unique: false,
+            agentName: item.agent_name,
+            agentData: apiData.data,
+            llmData: llmData.data,
+          },
+        });
+      }
+    }
+  }
   return (
     <>
       <main className="mainContent">
@@ -207,10 +239,11 @@ const AllAgent = () => {
                           <thead>
                             <tr>
                               <th>Agent Name</th>
-                              <th>Agent Type</th>
+                             
                               <th>Phone</th>
                               <th>Language</th>
                               <th>Voice</th>
+                               <th>Voice Model</th>
                               <th></th>
                             </tr>
                           </thead>
@@ -221,8 +254,8 @@ const AllAgent = () => {
                               <>
                                 {filteredAgents.map((item, index) => {
                                   return (
-                                    <tr>
-                                      <td>
+                                    <tr key={index}>
+                                      <td onClick={() => handleEditClick(item)}>
                                         <div className="d-flex align-items-center">
                                           <div className="tableProfilePicHolder">
                                             <i className="fa-light fa-user" />
@@ -233,7 +266,7 @@ const AllAgent = () => {
                                           </div>
                                         </div>
                                       </td>
-                                      <td>{item.response_engine?.["type"]}</td>
+                                      {/* <td>{item.response_engine?.["type"]}</td> */}
                                       <td>
                                         {item?.agent_id &&
                                           (finePhoneNumber(item.agent_id)
@@ -243,6 +276,7 @@ const AllAgent = () => {
                                       </td>
                                       <td>{item.language}</td>
                                       <td>{item.voice_id}</td>
+                                      <td>{item.voice_model}</td>
                                       <td>
                                         <div className="dropdown">
                                           <button
@@ -403,7 +437,7 @@ const AllAgent = () => {
                                   </h5>
                                 </div>
                               </div>
-                              {/* <div className="popup_box">
+                              <div className="popup_box">
                                 <button  type="button"
                                   className="popup-border bg-transparent text-center p-2"
                                   onClick={() => {
@@ -430,15 +464,78 @@ const AllAgent = () => {
                                   </div>
                                 </button>
                                 <div className=" text-center">
-                                  <h5 className="mb-0 mt-2 text-center">
-                                    Healthcare Check-in
-                                  </h5>
                                   <span className="text2">
                                     Lorem Ipsum has been the industry's standard
                                     dummy text ever
                                   </span>
                                 </div>
-                              </div> */}
+                              </div>
+                               <div className="popup_box">
+                                <button  type="button"
+                                  className="popup-border bg-transparent text-center p-2"
+                                  onClick={() => {
+                                    setCreateNewAgentToggle(true);
+                                  }}
+                                >
+                                  <div className="d-block">
+                                    <div className="p-2 text-center">
+                                      <i
+                                        className="fa-solid fa-phone-arrow-up-right"
+                                        style={{
+                                          fontSize: 20,
+                                          color: "#03c2f4",
+                                        }}
+                                      />
+                                      <h5 className="mb-0 mt-2 text-center">
+                                        Healthcare Check-in <br />
+                                        <span className="text2">
+                                          {" "}
+                                          Transfer Call
+                                        </span>
+                                      </h5>
+                                    </div>
+                                  </div>
+                                </button>
+                                <div className=" text-center">
+                                  <span className="text2">
+                                    Lorem Ipsum has been the industry's standard
+                                    dummy text ever
+                                  </span>
+                                </div>
+                              </div>
+                               <div className="popup_box">
+                                <button  type="button"
+                                  className="popup-border bg-transparent text-center p-2"
+                                  onClick={() => {
+                                    setCreateNewAgentToggle(true);
+                                  }}
+                                >
+                                  <div className="d-block">
+                                    <div className="p-2 text-center">
+                                      <i
+                                        className="fa-solid fa-phone-arrow-up-right"
+                                        style={{
+                                          fontSize: 20,
+                                          color: "#03c2f4",
+                                        }}
+                                      />
+                                      <h5 className="mb-0 mt-2 text-center">
+                                        Healthcare Check-in <br />
+                                        <span className="text2">
+                                          {" "}
+                                          Transfer Call
+                                        </span>
+                                      </h5>
+                                    </div>
+                                  </div>
+                                </button>
+                                <div className=" text-center">
+                                  <span className="text2">
+                                    Lorem Ipsum has been the industry's standard
+                                    dummy text ever
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div

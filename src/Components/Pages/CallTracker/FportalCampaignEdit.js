@@ -315,7 +315,7 @@ function FportalCampaignEdit() {
   }, [])
 
   useEffect(() => {
-    getAllBuyers()
+    fetchAllBuyerNumber()
   }, [itemsPerPage, debouncedSearchTerm, pageNumber])
 
   const convertDateFormat = (dateStr) => {
@@ -2456,10 +2456,10 @@ function FportalCampaignEdit() {
                   <div className="tableHeader mb-3">
                     <PaginationComponent
                       pageNumber={(e) => setPageNumber(e)}
-                      totalPage={allBuyers?.last_page}
-                      from={allBuyers?.from}
-                      to={allBuyers?.to}
-                      total={allBuyers?.total}
+                      totalPage={allBuyersNumbers?.last_page}
+                      from={allBuyersNumbers?.from}
+                      to={allBuyersNumbers?.to}
+                      total={allBuyersNumbers?.total}
                     />
                   </div>
                 </div>
