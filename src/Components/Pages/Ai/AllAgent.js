@@ -23,6 +23,7 @@ const AllAgent = () => {
   const [deletedItem, setDeletedItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [agentName, setAgentName] = useState("");
+  const [template,setTemplate] = useState();
   const navigate = useNavigate();
 
   const filteredAgents = allAgents
@@ -133,6 +134,7 @@ const AllAgent = () => {
       state: {
         unique: true,
         agentName: agentName,
+        template:template,
       },
     });
   };
@@ -379,6 +381,7 @@ const AllAgent = () => {
                                 className="popup-border text-center bg-transparent p-2"
                                 onClick={() => {
                                   setCreateNewAgentToggle(true);
+                                  setTemplate(null)
                                 }}
                                 style={{ borderColor: "var(--ui-accent)" }}
                               >
@@ -444,6 +447,7 @@ const AllAgent = () => {
                                   className=" border-0 bg-transparent text-center p-0"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
+                                    setTemplate("ticketBook")
                                   }}
                                 >
                                   <div className=" popup-border p-3 ">
@@ -501,11 +505,10 @@ const AllAgent = () => {
                                 </button>
                                 <div className=" text-center">
                                   <h5 className="mb-0 mt-2 text-center">
-                                    Patient Screening
+                                   Ticket Booking Assistant
                                   </h5>
                                   <span className="text2">
-                                    Lorem Ipsum has been the industry's standard
-                                    dummy text ever
+                                    Guides users to book or reschedule tickets easily.
                                   </span>
                                 </div>
                               </div>
@@ -519,6 +522,7 @@ const AllAgent = () => {
                                   className=" border-0 bg-transparent text-center p-0"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
+                                    setTemplate("receptionist")
                                   }}
                                 >
                                   <div className=" popup-border p-3 ">
@@ -576,11 +580,10 @@ const AllAgent = () => {
                                 </button>
                                 <div className=" text-center">
                                   <h5 className="mb-0 mt-2 text-center">
-                                    Patient Screening
+                                    Receptionist
                                   </h5>
                                   <span className="text2">
-                                    Lorem Ipsum has been the industry's standard
-                                    dummy text ever
+                                    Answers queries and directs users to the right team.
                                   </span>
                                 </div>
                               </div>
@@ -594,6 +597,7 @@ const AllAgent = () => {
                                   className=" border-0 bg-transparent text-center p-0"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
+                                    setTemplate("hr")
                                   }}
                                 >
                                   <div className=" popup-border p-3 ">
@@ -651,11 +655,10 @@ const AllAgent = () => {
                                 </button>
                                 <div className=" text-center">
                                   <h5 className="mb-0 mt-2 text-center">
-                                    Patient Screening
+                                    HR Assistant
                                   </h5>
                                   <span className="text2">
-                                    Lorem Ipsum has been the industry's standard
-                                    dummy text ever
+                                    Supports job seekers and employees with HR queries.
                                   </span>
                                 </div>
                               </div>
@@ -669,6 +672,7 @@ const AllAgent = () => {
                                   className=" border-0 bg-transparent text-center p-0"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
+                                    setTemplate("techSupport");
                                   }}
                                 >
                                   <div className=" popup-border p-3 ">
@@ -726,11 +730,10 @@ const AllAgent = () => {
                                 </button>
                                 <div className=" text-center">
                                   <h5 className="mb-0 mt-2 text-center">
-                                    Patient Screening
+                                    Technical Support Assistant
                                   </h5>
                                   <span className="text2">
-                                    Lorem Ipsum has been the industry's standard
-                                    dummy text ever
+                                    Helps users fix issues or connect with tech support.
                                   </span>
                                 </div>
                               </div>
@@ -744,6 +747,7 @@ const AllAgent = () => {
                                   className=" border-0 bg-transparent text-center p-0"
                                   onClick={() => {
                                     setCreateNewAgentToggle(true);
+                                    setTemplate("healthSupport");
                                   }}
                                 >
                                   <div className=" popup-border p-3 ">
@@ -804,8 +808,7 @@ const AllAgent = () => {
                                     Patient Screening
                                   </h5>
                                   <span className="text2">
-                                    Lorem Ipsum has been the industry's standard
-                                    dummy text ever
+                                    Helps patients prepare for checkups and gathers health info.
                                   </span>
                                 </div>
                               </div>
