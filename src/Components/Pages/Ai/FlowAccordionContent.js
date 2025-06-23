@@ -26,8 +26,10 @@ const FlowAccordionContent = ({
   generalPrompt,
   setBeginMessage,
   setGeneralPrompt,
+  agentId,
+  setAgentId
 }) => {
-  const [agentId, setAgentId] = useState(agentData?.agent_id);
+  // const [agentId, setAgentId] = useState(agentData?.agent_id);
   const [endCallPopup, setEndCallPopup] = useState();
   const [callTransferPopup, setCallTransferPopup] = useState();
   const [checkCalendarAvailabilityPopup, setCheckCalendarAvailabilityPopup] =
@@ -213,7 +215,7 @@ const FlowAccordionContent = ({
     if (newAgent) {
       const llmParsedData = {
         model: model,
-        model_temperature: model_temperature,
+        model_temperature: Number(model_temperature),
         model_high_priority: model_high_priority,
         general_prompt: generalPrompt,
         begin_message: beginMessage,
@@ -232,8 +234,8 @@ const FlowAccordionContent = ({
           voice_temperature: voice_temperature,
           voice_speed: voice_speed,
           volume: volume,
-          responsiveness: responsiveness,
-          interruption_sensitivity: interruption_sensitivity,
+          responsiveness: Number(responsiveness),
+          interruption_sensitivity: Number(interruption_sensitivity),
           enable_backchannel: enable_backchannel,
           backchannel_frequency: backchannel_frequency,
           backchannel_words: backchannel_words,
@@ -287,7 +289,7 @@ const FlowAccordionContent = ({
     } else {
       const llmParsedData = {
         model: model,
-        model_temperature: model_temperature,
+        model_temperature: Number(model_temperature),
         model_high_priority: model_high_priority,
         general_prompt: generalPrompt,
         begin_message: beginMessage,
@@ -309,8 +311,8 @@ const FlowAccordionContent = ({
           voice_temperature: voice_temperature,
           voice_speed: voice_speed,
           volume: volume,
-          responsiveness: responsiveness,
-          interruption_sensitivity: interruption_sensitivity,
+          responsiveness: Number(responsiveness),
+          interruption_sensitivity: Number(interruption_sensitivity),
           enable_backchannel: enable_backchannel,
           backchannel_frequency: backchannel_frequency,
           backchannel_words: backchannel_words,
@@ -1184,7 +1186,7 @@ const FlowAccordionContent = ({
             data-bs-parent="#accordionFlushExample"
           >
             <div class="accordion-body">
-              <SpeechSettings ambient_sound={ambient_sound} setAmbientSounds={setAmbientSounds} ambient_sound_volume={ambient_sound_volume} setAmbientSoundVolume={setAmbientSoundVolume} setResponsiveness={setResponsiveness} responsiveness={responsiveness} interruption_sensitivity={interruption_sensitivity} setInterruptionSensitivity={setInterruptionSensitivity} enable_backchannel={enable_backchannel} setEnableBackchannel={setEnableBackchannel} stt_mode={stt_mode} setSttMode={setSttModel} setBoostedKeywords={setBoostedKeywords} boosted_keywords={boosted_keywords} setNormalizeForSpeech={setNormalizeForSpeech} normalize_for_speech={normalize_for_speech} enable_transcription_formatting={enable_transcription_formatting} setEnableTranscriptionFormatting={setEnableTranscriptionFormatting} setReminderTriggerMs={setReminderTriggerMs} reminder_trigger_ms={reminder_trigger_ms} />
+              <SpeechSettings ambient_sound={ambient_sound} setAmbientSounds={setAmbientSounds} ambient_sound_volume={ambient_sound_volume} setAmbientSoundVolume={setAmbientSoundVolume} setResponsiveness={setResponsiveness} responsiveness={responsiveness} interruption_sensitivity={interruption_sensitivity} setInterruptionSensitivity={setInterruptionSensitivity} enable_backchannel={enable_backchannel} setEnableBackchannel={setEnableBackchannel} stt_mode={stt_mode} setSttModel={setSttModel} setBoostedKeywords={setBoostedKeywords} boosted_keywords={boosted_keywords} setNormalizeForSpeech={setNormalizeForSpeech} normalize_for_speech={normalize_for_speech} enable_transcription_formatting={enable_transcription_formatting} setEnableTranscriptionFormatting={setEnableTranscriptionFormatting} setReminderTriggerMs={setReminderTriggerMs} reminder_trigger_ms={reminder_trigger_ms} />
             </div>
           </div>
         </div>

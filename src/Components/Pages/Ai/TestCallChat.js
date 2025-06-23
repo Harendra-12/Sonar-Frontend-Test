@@ -6,12 +6,11 @@ import { toast } from "react-toastify";
 
 const retellWebClient = new RetellWebClient();
 
-const TestCallChat = ({ agentData }) => {
+const TestCallChat = ({ agentId }) => {
   const [isCalling, setIsCalling] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [transcript, setTranscript] = useState([]);
   const transcriptRef = useRef([]); // Holds the latest value always
-  const [agentId, setAgentId] = useState();
   const [testCallToken, setTestCallToken] = useState(null);
 
   useEffect(() => {
@@ -60,11 +59,6 @@ const TestCallChat = ({ agentData }) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (agentData?.agent_id) {
-      setAgentId(agentData?.agent_id);
-    }
-  }, [agentData?.agent_id]);
 
   const toggleConversation = async () => {
     setIsLoading(true);

@@ -120,7 +120,7 @@ const SpeechSettings = ({ambient_sound,setAmbientSounds,ambient_sound_volume,set
                             className="formItem"
                             placeholder='Enter Name'
                             value={boosted_keywords}
-                    onChange={(e) => setBoostedKeywords(e.target.value)}
+                    onChange={(e) => setBoostedKeywords([e.target.value])}
                         />
                     </div>
                 </div>
