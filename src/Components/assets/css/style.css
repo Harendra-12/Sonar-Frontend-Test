@@ -196,7 +196,8 @@
   --me-body-bg2: #fff;
   --me-video-bg: #f3f6f8;
   --me-input-bg: #fff;
-  --me-border1: #ababab29;
+  /* --me-border1: #ababab29; */
+  --me-border1: var(--border-color);
   --me-text-color: #333335;
   --me-text-color2: #535b71;
   --me-text-color3: #212529bf;
@@ -381,7 +382,8 @@
   --me-body-bg2: #262a33;
   --me-video-bg: #1d2326ba;
   --me-input-bg: #293341;
-  --me-border1: #4a4a4aa6;
+  /* --me-border1: #4a4a4aa6; */
+    --me-border1: var(--border-color);
   --me-text-color: #c9c8c8;
   --me-text-color2: #b4b8c3;
   --me-text-color3: #212529bf;
