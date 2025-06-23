@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "../../CommonComponents/Header";
-import Transcription from "./Transcription";
-import Data from "./Data";
-import DetailLogs from "./DetailLogs";
-import { Link } from "react-router-dom";
 import {
   aiGeneralDeleteFunction,
   aiGeneralGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import { setRef } from "@mui/material";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 const CallHistory = () => {
@@ -27,6 +22,11 @@ const CallHistory = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCall, setSelectedCall] = useState(null);
   const [refreshData, setRefreshData] = useState(0);
+  const [linkCopy, setLinkCopy] = useState(null);
+  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+
+  const audioRef = useRef(null);
+
   useEffect(() => {
     async function getData() {
       setRefreshState(true);
@@ -44,6 +44,44 @@ const CallHistory = () => {
     }
     getData();
   }, [refreshData]);
+
+  useEffect(() => {
+    if (!isOffcanvasOpen && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [isOffcanvasOpen]);
+
+  // Pause audio when offcanvas is closed
+  useEffect(() => {
+    const offcanvas = document.getElementById("offcanvasRight");
+    const handleHide = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+    if (offcanvas) {
+      offcanvas.addEventListener("hide.bs.offcanvas", handleHide);
+    }
+    return () => {
+      if (offcanvas) {
+        offcanvas.removeEventListener("hide.bs.offcanvas", handleHide);
+      }
+    };
+  }, []);
+
+  // link copy function with dynamically state change
+  const copyLink = (link) => {
+    if (!link) return;
+    setLinkCopy(link);
+    navigator.clipboard.writeText(link);
+
+    setTimeout(() => {
+      setLinkCopy(null);
+    }, 1000);
+  };
+
   function formatTimestampToDateTime(timestamp) {
     const date = new Date(timestamp);
 
@@ -145,6 +183,17 @@ const CallHistory = () => {
       setDeleteLoading(false);
     }
   }
+
+  const ignoreResizeObserverError = (e) => {
+    if (
+      e.message ===
+      "ResizeObserver loop completed with undelivered notifications."
+    ) {
+      e.stopImmediatePropagation();
+    }
+  };
+  window.addEventListener("error", ignoreResizeObserverError);
+
   return (
     <>
       <main className="mainContent">
@@ -291,7 +340,8 @@ const CallHistory = () => {
                                           <>
                                             {"$"}
                                             {(
-                                              call.call_cost.combined_cost / 100
+                                              call?.call_cost?.combined_cost /
+                                              100
                                             ).toFixed(2)}
                                           </>
                                         )}
@@ -371,13 +421,13 @@ const CallHistory = () => {
                 <span className="fs-12"> {selectedCall?.agent_id}</span>
                 <button
                   className="clearButton"
-                  //   onClick={() => {
-                  //     setIdCopy(!idCopy);
-                  //   }}
+                  onClick={() => {
+                    copyLink(selectedCall?.agent_id);
+                  }}
                 >
                   <i
                     className={
-                      true //   idCopy
+                      linkCopy === selectedCall?.agent_id
                         ? "fa-solid fa-check text_success"
                         : "fa-solid fa-clone"
                     }
@@ -393,7 +443,7 @@ const CallHistory = () => {
               <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
                 <strong>Cost:</strong>{" "}
                 <span className="fs-12">
-                  $ {(selectedCall.call_cost.combined_cost / 100).toFixed(2)}
+                  $ {(selectedCall?.call_cost?.combined_cost / 100).toFixed(2)}
                 </span>
               </p>
             </div>
@@ -402,6 +452,7 @@ const CallHistory = () => {
               style={{ border: "1px solid var(--me-border1)" }}
             >
               <audio
+                ref={audioRef}
                 src={selectedCall?.recording_url}
                 controls
                 className="w-[300px] h-10"
@@ -475,7 +526,10 @@ const CallHistory = () => {
               </p>
               {selectedCall?.transcript_object?.map((item, index) => {
                 return (
-                  <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                  <div
+                    className="d-flex justify-content-start align-items-start gap-2 mb-3"
+                    key={index}
+                  >
                     <p className="status_text" style={{ maxWidth: "50px" }}>
                       {" "}
                       <span>{item.role}:</span>
