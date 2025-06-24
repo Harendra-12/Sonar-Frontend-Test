@@ -95,8 +95,8 @@ const EmailList = ({
           }
         </div>
         <div
-          className="tableContainer e mail_table mt-0 w-100 border-0 mb-0"
-          style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
+          className="tableContainer e mail_table"
+          // style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
         >
           {loading ? (
             <ThreeDotedLoader />

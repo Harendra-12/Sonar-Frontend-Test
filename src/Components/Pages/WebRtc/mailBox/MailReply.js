@@ -142,7 +142,7 @@ const MailReply = ({
                                     </div> */}
                     <div className="ms-3 ">
                       <p className="text_dark mb-0">{currentMail?.from}</p>
-                      <p className="mb-0 text_gray">To: {currentMail?.to}</p>
+                      <p className="mb-0 text_gray fs-12">To: {currentMail?.to}</p>
                     </div>
                   </div>
                   <div className="dropdown">
@@ -190,7 +190,7 @@ const MailReply = ({
                 </div>
               </div>
 
-              <div class="main-mail-content mb-4 mt-5">
+              <div class="main-mail-content mb-4 mt-5" style={{fontSize: "0.9rem "}}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHTML(currentMail?.rawData),

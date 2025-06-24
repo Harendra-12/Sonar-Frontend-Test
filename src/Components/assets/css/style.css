@@ -276,6 +276,8 @@
   --muted-text-color: rgb(143, 140, 140);
   --filter: invert(1) grayscale(0) brightness(0);
   --batch_bg: #f5f7fa;
+  --active-mail-list: #e8eff3;
+  --active-mail-list-text: #235489;
 
 }
 
@@ -441,6 +443,8 @@
   --bg-form1: #00000030;
   --filter: invert(1) grayscale(100%) brightness(200%);
   --batch_bg: #2d3a4f69;
+  --active-mail-list: #5e88a14d;
+  --active-mail-list-text: #aed5ff;
 
 }
 

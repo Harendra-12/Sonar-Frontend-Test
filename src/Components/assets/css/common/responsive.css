@@ -93,7 +93,12 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
-
+    .ellipsisText300{
+        max-width: 100%;
+    }
+    .table tbody tr td{
+        width: 100%;
+    }
     /* table th {
         text-wrap: nowrap;
     } */
@@ -233,6 +238,12 @@
     .itemWrapper .data-number2 h5 {
         font-size: 1.125rem;
     }
+    .ellipsisText300{
+        max-width: 100%;
+    }
+    .table tbody tr td{
+        width: 100%;
+    }
 
     /* .itemWrapperb .label2 {
         font-size: 11px;
@@ -368,7 +379,12 @@
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
-
+    .ellipsisText300{
+        max-width: 100%;
+    }
+    .table tbody tr td{
+        width: 100%;
+    }
 }
 
 /* 
