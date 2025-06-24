@@ -84,7 +84,7 @@ function DestinationEdit() {
         if (apidataUser.status) {
           setUsers(apidataUser.data);
         } else {
-          navigate("/");
+          // navigate("/");
         }
       }
       getDomain();
@@ -115,7 +115,7 @@ function DestinationEdit() {
         }));
       } else {
         setLoading(false);
-        navigate("/");
+        navigate(-1);
       }
     }
   }, [account, navigate, value]);

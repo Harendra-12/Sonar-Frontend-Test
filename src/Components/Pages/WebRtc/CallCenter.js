@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  checkViewSidebar,
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
@@ -36,6 +37,8 @@ const CallCenter = ({ initial }) => {
   const [allLogOut, setAllLogOut] = useState(false);
   const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
+  const slugPermissions = useSelector((state) => state?.permissions);
+
 
   useEffect(() => {
     const getData = async () => {
@@ -163,33 +166,45 @@ const CallCenter = ({ initial }) => {
                       style={{ padding: "20px 20px 10px" }}
                     >
                       <div className="tableContainer mt-0">
-                        <table className="callCenter">
-                          <thead>
-                            <tr>
-                              <th className="sl">#</th>
-                              <th>Name</th>
-                              <th className="extension">Extension</th>
-                              <th className="options">Options</th>
-                              <th className="options">Break-Timer</th>
-                              <th className="options">Total-Break</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {assignerCallcenter.length > 0 &&
-                              assignerCallcenter.map((item, index) => {
-                                return (
-                                  <CallCenterListItem
-                                    key={index}
-                                    index={index}
-                                    item={item}
-                                    Id={Id}
-                                    setRefreshCenter={setRefreshCenter}
-                                    callCenterDetailData={callCenterDetailData}
-                                  />
-                                );
-                              })}
-                          </tbody>
-                        </table>
+                        {!(checkViewSidebar(
+                          "CallCenterQueue",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read") && checkViewSidebar(
+                            "CallCenterAgent",
+                            slugPermissions,
+                            account?.sectionPermissions,
+                            account?.permissions,
+                            "read")) ? <div>You dont have permission to view this section!</div> :
+                          <table className="callCenter">
+                            <thead>
+                              <tr>
+                                <th className="sl">#</th>
+                                <th>Name</th>
+                                <th className="extension">Extension</th>
+                                <th className="options">Options</th>
+                                <th className="options">Break-Timer</th>
+                                <th className="options">Total-Break</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {assignerCallcenter.length > 0 &&
+                                assignerCallcenter.map((item, index) => {
+                                  return (
+                                    <CallCenterListItem
+                                      key={index}
+                                      index={index}
+                                      item={item}
+                                      Id={Id}
+                                      setRefreshCenter={setRefreshCenter}
+                                      callCenterDetailData={callCenterDetailData}
+                                    />
+                                  );
+                                })}
+                            </tbody>
+                          </table>
+                        }
                       </div>
                     </div>
                   </div>

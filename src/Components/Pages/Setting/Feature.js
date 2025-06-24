@@ -23,7 +23,7 @@ function Feature() {
 
   useEffect(() => {
     if (location.state === null) {
-      navigate("/");
+      navigate(-1);
     } else {
       setFeature(location.state.feature);
     }

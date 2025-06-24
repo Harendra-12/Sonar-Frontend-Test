@@ -205,6 +205,7 @@ import AlgeriaCompliance from "./Components/Pages/NumberManagement/NumberComplia
 import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
+import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -868,6 +869,7 @@ function App() {
           <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
+          <Route path="/number-for-ai" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}
@@ -909,6 +911,12 @@ function App() {
               ) ?
                 <CdrFilterReport page="ringgroup" /> :
                 <Navigate to="/dashboard" replace />
+            }
+          />
+          <Route 
+            path="/click-to-call-report"
+            element={
+              <ClickToCallReport/>
             }
           />
           <Route

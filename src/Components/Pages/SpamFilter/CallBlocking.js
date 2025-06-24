@@ -46,11 +46,11 @@ const CallBlocking = () => {
         setLoading(false);
         setRefreshState(false)
       } else {
-        navigate("/");
+        // navigate("/");
         setRefreshState(false)
       }
     } else {
-      navigate("/");
+      // navigate("/");
       setRefreshState(false)
     }
   };

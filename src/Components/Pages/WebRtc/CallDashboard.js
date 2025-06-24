@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { featureUnderdevelopment, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, featureUnderdevelopment, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -41,6 +41,8 @@ function CallDashboard() {
   const logonUser = useSelector((state) => state.loginUser);
   const [onlineUser, setOnlineUSer] = useState([0]);
   const [loading, setLoading] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+
 
   // Search All Users
   async function getData() {
@@ -222,7 +224,14 @@ function CallDashboard() {
                   </div>
                 </div>
               </div> */}
-              <ActiveCallsPage isParentWebRtc={true} />
+
+              {!checkViewSidebar(
+                "ActiveCall",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "read") ? <div className="col-12">You dont have permission to view this section!</div> :
+                <ActiveCallsPage isParentWebRtc={true} />}
 
               {/* Ex Parked Calls (Now merged into ActiveCallsPage) */}
               {/* <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>

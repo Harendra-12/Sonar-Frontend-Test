@@ -288,7 +288,7 @@ function CallBlockingAdd() {
           setCallBlock(apidata?.data);
           setLoading(false);
         } else {
-          navigate("/");
+          // navigate("/");
         }
       } else {
         navigate("/");

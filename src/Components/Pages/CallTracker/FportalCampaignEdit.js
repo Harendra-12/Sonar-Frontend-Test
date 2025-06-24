@@ -289,7 +289,7 @@ function FportalCampaignEdit() {
           setValue("hold_music", uploadedMusic.id);
         }
       } else {
-        navigate("/");
+        // navigate("/");
       }
     }
   }

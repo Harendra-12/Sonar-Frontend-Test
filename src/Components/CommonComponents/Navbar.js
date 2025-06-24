@@ -380,6 +380,7 @@ function Navbar() {
                             "/port-number-edit",
                             "/did-listing",
                             "/management-get-did",
+                            "/number-for-ai",
                           ])
                             ? "true"
                             : "false"
@@ -400,6 +401,7 @@ function Navbar() {
                           "/port-number-edit",
                           "/did-listing",
                           "/management-get-did",
+                          "/number-for-ai",
                         ])
                           ? "show"
                           : ""
@@ -424,6 +426,15 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
+                               <li className="tabItem">
+                                  <NavLink
+                                    to="/number-for-ai"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">Number for AI</div>
+                                  </NavLink>
+                                </li>
                             {checkViewSidebar(
                               ["Number Management", "Port"],
                               permissions,
@@ -1273,7 +1284,7 @@ function Navbar() {
                           "/ai-batch-call",
                           "/ai-agent-add",
                           "/ai-agent-edit",
-                           "/ai-phone-number"
+                          "/ai-phone-number"
                         ])
                           ? "show"
                           : ""
@@ -1563,6 +1574,7 @@ function Navbar() {
                             "/call-center-report",
                             "/ring-group-report",
                             "/agent-report",
+                            "/click-to-call-report"
                           ])
                             ? "true"
                             : "false"
@@ -1583,6 +1595,7 @@ function Navbar() {
                           "/call-center-report",
                           "/ring-group-report",
                           "/agent-report",
+                          "/click-to-call-report"
                         ])
                           ? "show"
                           : ""
@@ -1748,6 +1761,21 @@ function Navbar() {
                                 <div className="itemTitle">Meeting Reports</div>
                               </Link>
                             </li> */}
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/click-to-call-report"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/click-to-call-report"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Click To Call </div>
+                              </NavLink>
+                            </li>
                           </ul>
                         </div>
                       </div>

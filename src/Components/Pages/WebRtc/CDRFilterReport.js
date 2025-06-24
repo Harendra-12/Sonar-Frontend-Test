@@ -263,7 +263,7 @@ function CdrFilterReport({ page }) {
           setCallBlock(apidata?.data);
           setLoading(false);
         } else {
-          navigate("/");
+          // navigate("/");
         }
       } else {
         navigate("/");

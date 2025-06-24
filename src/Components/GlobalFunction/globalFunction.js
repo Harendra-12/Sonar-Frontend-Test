@@ -156,7 +156,7 @@ export async function generalGetFunction(endpoint) {
           sessionExpiredToastShown = true;
           toast.error(
             err?.response?.data?.message ||
-              "Session expired. Please login again."
+            "Session expired. Please login again."
           );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
@@ -779,14 +779,18 @@ export function formatTime(seconds) {
 }
 
 export function formatTimeInHHMMSS(time) {
-  const [hours, minutes] = time.split(":");
-  const dateObj = new Date();
-  dateObj.setHours(parseInt(hours));
-  dateObj.setMinutes(parseInt(minutes));
-  dateObj.setSeconds(0);
-  dateObj.setMilliseconds(0);
+  if (time) {
+    const [hours, minutes] = time?.split(":");
+    const dateObj = new Date();
+    dateObj?.setHours(parseInt(hours));
+    dateObj?.setMinutes(parseInt(minutes));
+    dateObj?.setSeconds(0);
+    dateObj?.setMilliseconds(0);
+    return dateObj?.toTimeString()?.slice(0, 8);
+  } else {
+    return ""
+  }
 
-  return dateObj.toTimeString().slice(0, 8);
 }
 
 export const useDebounce = (value, delay) => {
@@ -895,4 +899,47 @@ export function checkTimeDifference(targetDateTime) {
   if (diffMinutes <= 5) {
     return diffMinutes.toFixed(2);
   }
+}
+
+export function convertDateTimeLocalToIST(dateTimeString) {
+  // Create Date object from datetime-local string
+  const localDate = new Date(dateTimeString);
+
+  // Format to IST using toLocaleString with timeZone option
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Kolkata"
+  };
+
+  const istString = localDate.toLocaleString("en-GB", options);
+
+  // Format the string to YYYY-MM-DD HH:MM:SS
+  const [datePart, timePart] = istString.split(", ");
+  const [day, month, year] = datePart.split("/");
+
+  return `${year}-${month}-${day} ${timePart}`;
+}
+
+export function convertDateToIST(dateString) {
+  // dateString should be in "YYYY-MM-DD" format
+  const [year, month, day] = dateString.split("-").map(Number);
+
+  // Create Date object at midnight UTC for that date
+  const utcDate = new Date(Date.UTC(year, month - 1, day));
+
+  // Format to IST date string (YYYY-MM-DD) using toLocaleDateString
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: "Asia/Kolkata"
+  };
+
+  return utcDate.toLocaleDateString("en-CA", options); // en-CA gives YYYY-MM-DD
 }

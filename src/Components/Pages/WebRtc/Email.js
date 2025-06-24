@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
+  const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false)
   const [refreshState, setRefreshState] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
@@ -80,7 +81,7 @@ function Email({ selectedMail }) {
     setMailReplay(false);
   };
   const handleMailReplay = () => {
-    setMailReplay(true);
+    // setMailReplay(true);
     setShowMailList(false);
     setShowNewMail(false);
     // We don't change the activeList here to maintain the current tab context
@@ -156,12 +157,16 @@ function Email({ selectedMail }) {
     const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS);
     if (result?.status) {
       setAllCategory(result?.data);
-      setActiveCategory(result?.data[0])
+      if (activeCategory) {
+        setActiveCategory(activeCategory)
+      } else {
+        setActiveCategory(result?.data[0])
+      }
     } else {
       // navigate("/");
     }
   };
-
+  
   // get all mails
   const fetchAllMail = async (mail_type, shouldLoad, filterData) => {
     if (shouldLoad) {
@@ -216,14 +221,30 @@ function Email({ selectedMail }) {
     }
   }
 
+  const mailBodyMessageApi = async (shouldLoad, payload) => {
+    if (shouldLoad)
+      setAllMailLoading(true);
+    setLoading(true)
+    const result = await generalGetFunction(api_url?.GET_EMAIL_BY_UID(payload));
+    if (result?.status) {
+      setCurrentMail(result?.data)
+      setMailReplay(true);
+      setCheckedMail([])
+      toast.success(result?.message)
+    } else {
+      setAllMailLoading(false);
+    }
+  }
+
   const handleShowMail = async (mail) => {
-    setCurrentMail(mail);
+    setLoading(true)
     const shouldLoad = true
     mailStatusApiCall(shouldLoad, {
       uid: [mail?.uid],
       action: "seen",
       type: activeCategory?.value
     })
+    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
   };
 
   const handleUnSeenMail = (mail) => {
@@ -239,7 +260,7 @@ function Email({ selectedMail }) {
     const shouldLoad = true;
     mailStatusApiCall(shouldLoad, {
       uid: [item?.uid],
-      action: "starred",
+      action: item?.status_flags?.starred ? "unstarred" : "starred",
       type: activeCategory?.value
     })
 
@@ -256,6 +277,17 @@ function Email({ selectedMail }) {
       setLoading(false);
       setRefreshState(false);
       // navigate("/");
+    }
+  };
+
+  const callDownloadAllAtachmentApi = async (payload) => {
+    setLoadingForDownLoadAtachment(true);
+    const result = await generalGetFunction(api_url?.DOWNLOAD_MAIL_ATACHMENT(payload));
+    if (result?.status) {
+      setLoadingForDownLoadAtachment(false)
+      toast.success(result?.message)
+    } else {
+      setLoadingForDownLoadAtachment(false)
     }
   };
 
@@ -366,6 +398,10 @@ function Email({ selectedMail }) {
     })
   }
 
+  const downloadAllAtachment = (mail) => {
+    callDownloadAllAtachmentApi({ uid: mail?.uid, type: activeCategory?.value })
+  }
+
   const getCategoryIconClass = (name) => {
     const formatted = name.toLowerCase();
 
@@ -391,7 +427,6 @@ function Email({ selectedMail }) {
   };
 
   const onSubmit = (data) => {
-    console.log("Form submitted with:", data);
     setIsAdvanceFilterClicked(false)
     fetchAllMail(activeCategory?.value, true, data)
     reset("")
@@ -583,7 +618,11 @@ function Email({ selectedMail }) {
                             handleMailReplay={handleMailReplay}
                             currentMail={currentMail}
                             activeList={activeList}
+                            activeCategory={activeCategory}
                             handleMailDelete={handleMailDelete}
+                            loading={loading}
+                            downloadAllAtachment={downloadAllAtachment}
+                            loadingForDownloadAtachment={loadingForDownloadAtachment}
                           />
                         )}
 

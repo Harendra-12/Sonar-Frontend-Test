@@ -1050,3 +1050,19 @@ h2.titleName {
     justify-content: space-between;
     height: 45px;
 }
+
+.lk-button[data-lk-source="microphone"][data-lk-enabled="false"] {
+    background-color: #f92762 !important;
+    color: #fff !important;
+}
+
+.lk-button[data-lk-source="camera"][data-lk-enabled="true"] {
+    background-color: #f92762 !important;
+    color: #fff !important;
+}
+
+.lk-button[data-lk-source="screen_share"][data-lk-enabled="true"],
+.hand-raise-button[data-lk-enabled="true"] {
+    background-color: #f92762 !important;
+    color: #fff !important;
+}

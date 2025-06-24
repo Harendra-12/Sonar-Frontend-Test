@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  aiGeneralPostFunction,
   backToTop,
   checkViewSidebar,
   featureUnderdevelopment,
@@ -21,6 +22,7 @@ import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function DidListing({ page }) {
   const [did, setDid] = useState();
+  const terminationUri = process.env.REACT_APP_TERMINATION_URI;
   const [didWithPagination, setDidWithPagination] = useState()
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ function DidListing({ page }) {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const ivrArr = useSelector((state) => state.ivr);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
-
+  const [selectedDid, setSelectedDid] = useState();
   const [allUserArr, setAllUserArr] = useState([]);
 
   const getUserData = async () => {
@@ -233,7 +235,8 @@ function DidListing({ page }) {
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
       if (usages == "ai") {
-        navigate('/ai-phone-number')
+        aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid,"termination_uri":terminationUri});
+        // navigate('/ai-phone-number')
       }
     } else {
       setLoading(false);
@@ -1117,6 +1120,7 @@ function DidListing({ page }) {
                                                             );
                                                             setUsagesPopup(true);
                                                             setId(item.id);
+                                                            setSelectedDid(item.did)
                                                             setUsages(item.usages);
                                                           }}
                                                         >
@@ -1236,6 +1240,7 @@ function DidListing({ page }) {
                         onClick={() => {
                           setUsagesPopup(false);
                           setId("");
+                          setSelectedDid("")
                         }}
                       >
                         <span className="text">Cancel</span>

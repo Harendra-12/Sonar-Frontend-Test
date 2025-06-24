@@ -222,7 +222,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                       const isLessThan5Minutes = item?.conf_start_time ? checkTimeDifference(formatDateTime(item?.conf_start_time)) : false;
                                       const isAllDay = item?.conf_start_time == null ? true : false;
                                       return (
-                                        <tr>
+                                        <tr key={item.id}>
                                           <td>{item.conf_name}</td>
                                           <td>{item.conf_url}</td>
                                           <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>

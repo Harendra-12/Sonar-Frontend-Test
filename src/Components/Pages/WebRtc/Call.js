@@ -11,6 +11,7 @@ import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
 import { useSIPProvider } from "modify-react-sipjs";
 import {
+  checkViewSidebar,
   convertDateToCurrentTimeZone,
   featureUnderdevelopment,
   formatTimeWithAMPM,
@@ -121,6 +122,8 @@ function Call({
   const [allLogOut, setAllLogOut] = useState(false);
   const callListRef = useRef(null);
   const [showComments, setShowComment] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+
   const handleScroll = () => {
     const div = callListRef.current;
     if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
@@ -894,7 +897,7 @@ function Call({
                         type="search"
                         name="Search"
                         id="headerSearch"
-                        className="searchStyle"
+                        className="searchStyle w-100 mx-0"
                         placeholder="Search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -963,52 +966,59 @@ function Call({
                       onScroll={handleScroll}
                       onClick={() => setSelectedModule("callDetails")}
                     >
-                      {loading ? (
-                        <ContentLoader />
-                      ) :
-                        Object.keys(groupedCalls).length > 0 ? (
-                          sortKeys(Object.keys(groupedCalls)).map((date, key) => (
-                            <div key={key}>
-                              <div key={date} className="dateHeader">
-                                <p>{date}</p>
+                      {!checkViewSidebar(
+                        "ChannelHangupComplete",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read"
+                      ) ? <div>You dont have permission to view this section!</div> :
+                        loading ? (
+                          <ContentLoader />
+                        ) :
+                          Object.keys(groupedCalls).length > 0 ? (
+                            sortKeys(Object.keys(groupedCalls)).map((date, key) => (
+                              <div key={key}>
+                                <div key={date} className="dateHeader">
+                                  <p>{date}</p>
+                                </div>
+                                {sortedGroupedCalls[date].map(renderCallItem)}
                               </div>
-                              {sortedGroupedCalls[date].map(renderCallItem)}
-                            </div>
-                          ))
-                        )
-                          // data.length > 0 ? (
-                          //   <>
-                          //     {data.map((item) => {
-                          //       return renderCallItem(item);
-                          //     })}
-                          //   </>
-                          // )
-                          : (
-                            <div className="startAJob">
-                              <div className="text-center mt-3">
-                                <img
-                                  src={require("../../assets/images/empty-box.png")}
-                                  alt="Empty"
-                                ></img>
-                                <div>
-                                  <h5>
-                                    No{" "}
-                                    <span>
-                                      <b>
-                                        {clickStatus === "all"
-                                          ? "calls"
-                                          : clickStatus}
-                                      </b>
-                                    </span>{" "}
-                                    {clickStatus != "all" ? "calls" : ""} available.
-                                  </h5>
-                                  <h5>
-                                    Please start a <b>call</b> to see them here.
-                                  </h5>
+                            ))
+                          )
+                            // data.length > 0 ? (
+                            //   <>
+                            //     {data.map((item) => {
+                            //       return renderCallItem(item);
+                            //     })}
+                            //   </>
+                            // )
+                            : (
+                              <div className="startAJob">
+                                <div className="text-center mt-3">
+                                  <img
+                                    src={require("../../assets/images/empty-box.png")}
+                                    alt="Empty"
+                                  ></img>
+                                  <div>
+                                    <h5>
+                                      No{" "}
+                                      <span>
+                                        <b>
+                                          {clickStatus === "all"
+                                            ? "calls"
+                                            : clickStatus}
+                                        </b>
+                                      </span>{" "}
+                                      {clickStatus != "all" ? "calls" : ""} available.
+                                    </h5>
+                                    <h5>
+                                      Please start a <b>call</b> to see them here.
+                                    </h5>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                       {/* {isCallLoading ? (
                         <ContentLoader />
                       ) : (

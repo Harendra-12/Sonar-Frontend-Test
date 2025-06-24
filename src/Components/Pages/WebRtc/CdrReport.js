@@ -189,7 +189,7 @@ function CdrReport({ page }) {
           setCallBlock(apidata.data);
           // setLoading(false);
         } else {
-          navigate("/");
+          // navigate("/");
         }
       } else {
         navigate("/");

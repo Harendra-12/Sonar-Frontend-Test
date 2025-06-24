@@ -43,6 +43,21 @@ const EmailList = ({
     return `${formattedDate} ${formattedTime}`;
   };
 
+  function formatDateString(inputDate) {
+  const date = new Date(inputDate);
+
+  const options = {
+    weekday: 'short', 
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true 
+  }
+  return date.toLocaleString('en-US', options).replace(',', '');
+}
+
   return (
     <>
       <div className="overviewTableWrapper p-0">
@@ -98,7 +113,7 @@ const EmailList = ({
               </thead>
               <tbody>
                 {allMails?.emails?.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={index} className={item?.status_flags?.seen ? `seen-message` : `unseen-message`}>
                     <td
                       onClick={() => {
                         setCheckedMail((prev) => {
@@ -163,7 +178,7 @@ const EmailList = ({
                       }}
                     >
                       <p className="mb-0 fw-semibold">
-                        {formatDateTime(item?.date)}
+                        {formatDateString(item?.date)}
                       </p>
                     </td>
                     <td>
