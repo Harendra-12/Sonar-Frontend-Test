@@ -6,6 +6,7 @@ import FlowAccordionContent from "./FlowAccordionContent";
 import { useLocation, useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
 import TestCallChat from "./TestCallChat";
+import { healthCareCheckInPrompt, healthCareCheckInTitle, hrPrompt, hrTitle, receptionistPrompt, receptionistTitle, techSupportPrompt, techSupportTitle, ticketBookingPrompt, ticketBookingTitle } from "./TemplateData";
 
 const ConversationsFlow = () => {
   const [idCopy, setIdCopy] = useState(false);
@@ -28,6 +29,28 @@ const ConversationsFlow = () => {
       setAgentData(locationState.agentData);
     } else {
       navigate(-1);
+    }
+    if(locationState?.template){
+      if(locationState?.template==="ticketBook"){
+        setBeginMessage(ticketBookingTitle);
+        setGeneralPrompt(ticketBookingPrompt);
+      }
+      if(locationState?.template==="receptionist"){
+        setBeginMessage(receptionistTitle);
+        setGeneralPrompt(receptionistPrompt);
+      }
+      if(locationState?.template==="hr"){
+        setBeginMessage(hrTitle);
+        setGeneralPrompt(hrPrompt);
+      }
+      if(locationState?.template==="techSupport"){
+        setBeginMessage(techSupportTitle);
+        setGeneralPrompt(techSupportPrompt);
+      }
+      if(locationState?.template==="healthSupport"){
+        setBeginMessage(healthCareCheckInTitle);
+        setGeneralPrompt(healthCareCheckInPrompt);
+      }
     }
   }, []);
 
@@ -153,7 +176,7 @@ const ConversationsFlow = () => {
                           <div
                             effect="ripple"
                             className="panelButton"
-                            onClick={() => setSaveClicked(saveClicked + 1)}
+                            onClick={() => !loading && setSaveClicked(saveClicked + 1)}
                           >
                             {locationState.unique ? (
                               <>
@@ -219,6 +242,7 @@ const ConversationsFlow = () => {
                                 setGeneralPrompt={setGeneralPrompt}
                                 agentId={agentId}
                                 setAgentId={setAgentId}
+                                template={locationState?.template}
                               />
                             </div>
                           </div>

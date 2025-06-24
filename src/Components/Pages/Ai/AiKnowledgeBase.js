@@ -411,7 +411,7 @@ const AiKnowledgeBase = () => {
                                 role="tabpanel"
                                 aria-labelledby="v-pills-home-tab"
                               >
-                                <div className="heading px-0">
+                                <div className="heading">
                                   <div className="content">
                                     <h4>{activeFile?.knowledge_base_name}</h4>
                                     <p className="mb-0">
@@ -933,7 +933,7 @@ const AiKnowledgeBase = () => {
                             </div>
                           </div>
                         </div>
-                        <div className=" d-flex justify-content-between px-2">
+                        <div className=" d-flex justify-content-between px-2 pt-3">
                           <div className="d-flex justify-content-start">
                             <button
                               className="panelButton static add m-0"
@@ -952,9 +952,9 @@ const AiKnowledgeBase = () => {
                               </span> */}
                             </button>
                           </div>
-                          <div className="card-footer d-flex justify-content-end">
+                          <div className="d-flex justify-content-end">
                             <button
-                              className="panelButton m-0"
+                              className="panelButton transparentText m-0"
                               type="button"
                               onClick={handleSaveChanges}
                               disabled={
@@ -967,7 +967,7 @@ const AiKnowledgeBase = () => {
                               </span>
                             </button>
                             <button
-                              className="panelButton gray"
+                              className="panelButton gray transparentText"
                               type="button"
                               onClick={() => {
                                 setKnowledgeBase(false);

@@ -27,7 +27,8 @@ const FlowAccordionContent = ({
   setBeginMessage,
   setGeneralPrompt,
   agentId,
-  setAgentId
+  setAgentId,
+  template,
 }) => {
   // const [agentId, setAgentId] = useState(agentData?.agent_id);
   const [endCallPopup, setEndCallPopup] = useState();
@@ -157,6 +158,15 @@ const FlowAccordionContent = ({
       }
     }
     getData();
+    if (template) {
+      setGeneralTools([
+        {
+          type: "end_call",
+          name: "end_call",
+          description: "Hang up the call",
+        },
+      ]);
+    }
   }, []);
 
   useEffect(() => {
@@ -479,137 +489,139 @@ const FlowAccordionContent = ({
 
               <ul>
                 {general_tools.length > 0 &&
-                    general_tools.map((item, key) => {
-                      return (
-                <li key={key}>
-                  <div class="noticeMessageBox justify-content-between">
-                    <div className="d-flex align-items-center gap-2">
-                      <i class="fa-regular fa-phone-arrow-up-right iconGray"></i>
-                      <p class="mb-0 f-s-14">{item.type}</p>
-                    </div>
-                    <div className="d-flex align-items-center gap-1">
-                      <button
-                        className="clearButton text-align-start"
-                         onClick={() => {
-                                  setOpenTrigger(item.type);
-                                  setEditableKey(key);
-                                  if (item.type === "end_call") {
-                                    setEndCallPopup(true);
-                                    setType("end_call");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                  } else if (item.type === "transfer_call") {
-                                    setCallTransferPopup(true);
-                                    setType("transfer_call");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                    if (
-                                      item.transfer_destination.type ===
-                                      "inferred"
-                                    ) {
-                                      setTransferType("inferred");
-                                      setTransferPrompt(
-                                        item.transfer_destination.prompt
-                                      );
-                                    } else {
-                                      setTransferType("predefined");
-                                      setTransferNumber(
-                                        item.transfer_destination.number
-                                      );
-                                    }
-                                    if (
-                                      item.transfer_option.type ===
-                                      "cold_transfer"
-                                    ) {
-                                      setTransferOptionType("cold_transfer");
-                                      setShowTransfereeAsCaller(
-                                        item.transfer_option
-                                          .show_transferee_as_caller
-                                      );
-                                    } else {
-                                      setTransferOptionType("warm_transfer");
-                                      if (
-                                        item.transfer_option
-                                          .public_handoff_option.type ===
-                                        "prompt"
-                                      ) {
-                                        setPublicHandoffOptionType("prompt");
-                                        setPublicHandOffPrompt(
-                                          item.transfer_option
-                                            .public_handoff_option.prompt
-                                        );
-                                      } else {
-                                        setPublicHandoffOptionType(
-                                          "static_message"
-                                        );
-                                        setPublicHandOffMessage(
-                                          item.transfer_option
-                                            .public_handoff_option.message
-                                        );
-                                      }
-                                    }
-                                  } else if (
-                                    item.type === "check_availability_cal"
+                  general_tools.map((item, key) => {
+                    return (
+                      <li key={key}>
+                        <div class="noticeMessageBox justify-content-between">
+                          <div className="d-flex align-items-center gap-2">
+                            <i class="fa-regular fa-phone-arrow-up-right iconGray"></i>
+                            <p class="mb-0 f-s-14">{item.type}</p>
+                          </div>
+                          <div className="d-flex align-items-center gap-1">
+                            <button
+                              className="clearButton text-align-start"
+                              onClick={() => {
+                                setOpenTrigger(item.type);
+                                setEditableKey(key);
+                                if (item.type === "end_call") {
+                                  setEndCallPopup(true);
+                                  setType("end_call");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                } else if (item.type === "transfer_call") {
+                                  setCallTransferPopup(true);
+                                  setType("transfer_call");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                  if (
+                                    item.transfer_destination.type ===
+                                    "inferred"
                                   ) {
-                                    setCheckCalendarAvailabilityPopup(true);
-                                    setType("check_availability_cal");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                    setCalApiKey(item.cal_api_key);
-                                    setEventTypeId(Number(item.event_type_id));
-                                    setTimezone(item.timezone);
-                                  } else if (
-                                    item.type === "book_appointment_cal"
-                                  ) {
-                                    setBookCalendarPopup(true);
-                                    setType("book_appointment_cal");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                    setCalApiKey(item.cal_api_key);
-                                    setEventTypeId(Number(item.event_type_id));
-                                    setTimezone(item.timezone);
-                                  } else if (item.type === "press_digit") {
-                                    setPressDigitsPopup(true);
-                                    setType("press_digit");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                    setDelayMs(item.delay_ms);
-                                  } else if (item.type === "custom") {
-                                    setCustomFunctionPopup(true);
-                                    setType("custom");
-                                    setName(item.name);
-                                    setDescription(item.description);
-                                    setUrl(item.url);
-                                    setSpeakDuringExecution(
-                                      item.speak_during_execution
+                                    setTransferType("inferred");
+                                    setTransferPrompt(
+                                      item.transfer_destination.prompt
                                     );
-                                    setSpeakAfterExecution(
-                                      item.speak_after_execution
+                                  } else {
+                                    setTransferType("predefined");
+                                    setTransferNumber(
+                                      item.transfer_destination.number
                                     );
-                                    setParameters(
-                                      JSON.stringify(item.parameters) || {}
-                                    );
-                                    setExecutionMessageDescription(
-                                      item.execution_message_description
-                                    );
-                                    setCustomTimeoutMs(item.custom_timeout_ms);
                                   }
-                                }}
-                      >
-                        <i class="fa-regular fa-pen-to-square"></i>
-                      </button>
-                      <button onClick={() => {
-                                  setGeneralTools((prev) =>
-                                    prev.filter((tool, index) => key !== index)
+                                  if (
+                                    item.transfer_option.type ===
+                                    "cold_transfer"
+                                  ) {
+                                    setTransferOptionType("cold_transfer");
+                                    setShowTransfereeAsCaller(
+                                      item.transfer_option
+                                        .show_transferee_as_caller
+                                    );
+                                  } else {
+                                    setTransferOptionType("warm_transfer");
+                                    if (
+                                      item.transfer_option.public_handoff_option
+                                        .type === "prompt"
+                                    ) {
+                                      setPublicHandoffOptionType("prompt");
+                                      setPublicHandOffPrompt(
+                                        item.transfer_option
+                                          .public_handoff_option.prompt
+                                      );
+                                    } else {
+                                      setPublicHandoffOptionType(
+                                        "static_message"
+                                      );
+                                      setPublicHandOffMessage(
+                                        item.transfer_option
+                                          .public_handoff_option.message
+                                      );
+                                    }
+                                  }
+                                } else if (
+                                  item.type === "check_availability_cal"
+                                ) {
+                                  setCheckCalendarAvailabilityPopup(true);
+                                  setType("check_availability_cal");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                  setCalApiKey(item.cal_api_key);
+                                  setEventTypeId(Number(item.event_type_id));
+                                  setTimezone(item.timezone);
+                                } else if (
+                                  item.type === "book_appointment_cal"
+                                ) {
+                                  setBookCalendarPopup(true);
+                                  setType("book_appointment_cal");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                  setCalApiKey(item.cal_api_key);
+                                  setEventTypeId(Number(item.event_type_id));
+                                  setTimezone(item.timezone);
+                                } else if (item.type === "press_digit") {
+                                  setPressDigitsPopup(true);
+                                  setType("press_digit");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                  setDelayMs(item.delay_ms);
+                                } else if (item.type === "custom") {
+                                  setCustomFunctionPopup(true);
+                                  setType("custom");
+                                  setName(item.name);
+                                  setDescription(item.description);
+                                  setUrl(item.url);
+                                  setSpeakDuringExecution(
+                                    item.speak_during_execution
                                   );
-                                }} className="clearButton text-align-start text-danger">
-                        <i class="fa-regular fa-trash-can"></i>
-                      </button>
-                    </div>
-                  </div>
-                </li>
-                      );
-                    })}
+                                  setSpeakAfterExecution(
+                                    item.speak_after_execution
+                                  );
+                                  setParameters(
+                                    JSON.stringify(item.parameters) || {}
+                                  );
+                                  setExecutionMessageDescription(
+                                    item.execution_message_description
+                                  );
+                                  setCustomTimeoutMs(item.custom_timeout_ms);
+                                }
+                              }}
+                            >
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setGeneralTools((prev) =>
+                                  prev.filter((tool, index) => key !== index)
+                                );
+                              }}
+                              className="clearButton text-align-start text-danger"
+                            >
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
               </ul>
               <div class="dropdown">
                 <button
@@ -764,7 +776,8 @@ const FlowAccordionContent = ({
                     <div className="formLabel mw-100">
                       <label>Voice & Language</label>
                     </div>
-                    <select className="formItem"
+                    <select
+                      className="formItem"
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                     >
@@ -1189,7 +1202,32 @@ const FlowAccordionContent = ({
             data-bs-parent="#accordionFlushExample"
           >
             <div class="accordion-body">
-              <SpeechSettings ambient_sound={ambient_sound} setAmbientSounds={setAmbientSounds} ambient_sound_volume={ambient_sound_volume} setAmbientSoundVolume={setAmbientSoundVolume} setResponsiveness={setResponsiveness} responsiveness={responsiveness} interruption_sensitivity={interruption_sensitivity} setInterruptionSensitivity={setInterruptionSensitivity} enable_backchannel={enable_backchannel} setEnableBackchannel={setEnableBackchannel} stt_mode={stt_mode} setSttModel={setSttModel} setBoostedKeywords={setBoostedKeywords} boosted_keywords={boosted_keywords} setNormalizeForSpeech={setNormalizeForSpeech} normalize_for_speech={normalize_for_speech} enable_transcription_formatting={enable_transcription_formatting} setEnableTranscriptionFormatting={setEnableTranscriptionFormatting} setReminderTriggerMs={setReminderTriggerMs} reminder_trigger_ms={reminder_trigger_ms} />
+              <SpeechSettings
+                ambient_sound={ambient_sound}
+                setAmbientSounds={setAmbientSounds}
+                ambient_sound_volume={ambient_sound_volume}
+                setAmbientSoundVolume={setAmbientSoundVolume}
+                setResponsiveness={setResponsiveness}
+                responsiveness={responsiveness}
+                interruption_sensitivity={interruption_sensitivity}
+                setInterruptionSensitivity={setInterruptionSensitivity}
+                enable_backchannel={enable_backchannel}
+                setEnableBackchannel={setEnableBackchannel}
+                stt_mode={stt_mode}
+                setSttModel={setSttModel}
+                setBoostedKeywords={setBoostedKeywords}
+                boosted_keywords={boosted_keywords}
+                setNormalizeForSpeech={setNormalizeForSpeech}
+                normalize_for_speech={normalize_for_speech}
+                enable_transcription_formatting={
+                  enable_transcription_formatting
+                }
+                setEnableTranscriptionFormatting={
+                  setEnableTranscriptionFormatting
+                }
+                setReminderTriggerMs={setReminderTriggerMs}
+                reminder_trigger_ms={reminder_trigger_ms}
+              />
             </div>
           </div>
         </div>
@@ -1223,7 +1261,14 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="cl-toggle-switch">
                   <label className="cl-switch">
-                    <input type="checkbox" checked={enable_voicemail_detection} onChange={(e) => setEnableVoicemailDetection(e.target.checked)} id="showAllCheck" />
+                    <input
+                      type="checkbox"
+                      checked={enable_voicemail_detection}
+                      onChange={(e) =>
+                        setEnableVoicemailDetection(e.target.checked)
+                      }
+                      id="showAllCheck"
+                    />
                     <span></span>
                   </label>
                 </div>
@@ -1244,7 +1289,9 @@ const FlowAccordionContent = ({
                         class="formItem"
                         placeholder="1000"
                         value={end_call_after_silence_ms}
-                      onChange={(e) => setEndCallAfterSilenceMs(e.target.value)}
+                        onChange={(e) =>
+                          setEndCallAfterSilenceMs(e.target.value)
+                        }
                       />
                     </div>
                     <div class="col-3">
@@ -1269,7 +1316,7 @@ const FlowAccordionContent = ({
                         class="formItem"
                         placeholder="3600000"
                         value={max_call_duration_ms}
-                      onChange={(e) => setMaxCallDurationMs(e.target.value)}
+                        onChange={(e) => setMaxCallDurationMs(e.target.value)}
                       />
                     </div>
                     <div class="col-3">
@@ -1312,116 +1359,121 @@ const FlowAccordionContent = ({
                 </div>
                 <ul>
                   {post_call_analysis_data?.map((item, index) => {
-                      return (
-                  <li key={index}>
-                    <div class="noticeMessageBox justify-content-between">
-                      <div className="d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-arrow-up-right iconGray"></i>
-                        <p class="mb-0 f-s-14">{item.name}</p>
-                      </div>
-                      <div className="d-flex align-items-center gap-1">
-                        <button
-                          className="clearButton text-align-start"
-                           onClick={() => {
-                                  setPostCallName(item.name);
-                                  setPostCallDescription(item.description);
-                                  setPostCallExample(item.example);
-                                  setPostCallDataEdit(index);
-                                  setEditPostCallPopup(true);
-                                }}
-                        >
-                          <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button onClick={() => {
+                    return (
+                      <li key={index}>
+                        <div class="noticeMessageBox justify-content-between">
+                          <div className="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-arrow-up-right iconGray"></i>
+                            <p class="mb-0 f-s-14">{item.name}</p>
+                          </div>
+                          <div className="d-flex align-items-center gap-1">
+                            <button
+                              className="clearButton text-align-start"
+                              onClick={() => {
+                                setPostCallName(item.name);
+                                setPostCallDescription(item.description);
+                                setPostCallExample(item.example);
+                                setPostCallDataEdit(index);
+                                setEditPostCallPopup(true);
+                              }}
+                            >
+                              <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button
+                              onClick={() => {
                                 setPostCallAnalysisData((prev) =>
-                                  prev?.filter((data) => data.name !== item.name)
+                                  prev?.filter(
+                                    (data) => data.name !== item.name
+                                  )
                                 );
-                              }} className="clearButton text-align-start text-danger">
-                          <i class="fa-regular fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                      )
+                              }}
+                              className="clearButton text-align-start text-danger"
+                            >
+                              <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
                   })}
                 </ul>
               </div>
               <div className="d-flex align-items-center gap-1 flex-wrap">
-              <div class="dropdown mb-1">
-                <button
-                  className="panelButton static dropdown-toggle"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  onClick={()=>setPostCallDataEdit(null)}
-                >
-                  <span class="text">
-                    <i class="fa-regular fa-plus me-2"></i> Add
-                  </span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      onClick={setEditPostCallPopup}
-                    >
-                      <i class="fa-solid fa-align-left me-2"></i> Text
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      onClick={setEditPostCallPopup}
-                    >
-                      <i class="fa-solid fa-list-ul me-2"></i> Selector
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      onClick={setEditPostCallPopup}
-                    >
-                      <i class="fa-solid fa-ban me-2"></i> Boolean
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      onClick={setEditPostCallPopup}
-                    >
-                      <i class="fa-solid fa-arrow-up-9-1 me-2"></i> Number
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <div class="dropdown ms-2 mb-1">
-                <button
-                  class="aitable_button static  w-100 dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {post_call_analysis_model}
-                </button>
-                <ul class="dropdown-menu">
-                  <li onClick={()=>setPostCallAnalysisModel("gpt-4o-mini")}>
-                    <a class="dropdown-item" href="#">
-                     GPT-4o Mini{" "}
-                                <span className="text-xs text-muted-foreground">
-                                  (free)
-                                </span>
-                    </a>
-                  </li>
-                  <li onClick={()=>setPostCallAnalysisModel("gpt-4o")}>
-                    <a class="dropdown-item" href="#">
-                      GPT-4o{" "}
-                                <span className="text-xs text-muted-foreground">
-                                  ($0.017/session)
-                                </span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                <div class="dropdown mb-1">
+                  <button
+                    className="panelButton static dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    onClick={() => setPostCallDataEdit(null)}
+                  >
+                    <span class="text">
+                      <i class="fa-regular fa-plus me-2"></i> Add
+                    </span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        onClick={setEditPostCallPopup}
+                      >
+                        <i class="fa-solid fa-align-left me-2"></i> Text
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        onClick={setEditPostCallPopup}
+                      >
+                        <i class="fa-solid fa-list-ul me-2"></i> Selector
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        onClick={setEditPostCallPopup}
+                      >
+                        <i class="fa-solid fa-ban me-2"></i> Boolean
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        onClick={setEditPostCallPopup}
+                      >
+                        <i class="fa-solid fa-arrow-up-9-1 me-2"></i> Number
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dropdown ms-2 mb-1">
+                  <button
+                    class="aitable_button static  w-100 dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {post_call_analysis_model}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li onClick={() => setPostCallAnalysisModel("gpt-4o-mini")}>
+                      <a class="dropdown-item" href="#">
+                        GPT-4o Mini{" "}
+                        <span className="text-xs text-muted-foreground">
+                          (free)
+                        </span>
+                      </a>
+                    </li>
+                    <li onClick={() => setPostCallAnalysisModel("gpt-4o")}>
+                      <a class="dropdown-item" href="#">
+                        GPT-4o{" "}
+                        <span className="text-xs text-muted-foreground">
+                          ($0.017/session)
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -1458,7 +1510,14 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="cl-toggle-switch">
                   <label className="cl-switch">
-                    <input type="checkbox" checked={opt_out_sensitive_data_storage} onChange={(e) => setOptOutSensitiveDataStorage(e.target.checked)} id="showAllCheck" />
+                    <input
+                      type="checkbox"
+                      checked={opt_out_sensitive_data_storage}
+                      onChange={(e) =>
+                        setOptOutSensitiveDataStorage(e.target.checked)
+                      }
+                      id="showAllCheck"
+                    />
                     <span></span>
                   </label>
                 </div>
@@ -1474,7 +1533,12 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="cl-toggle-switch">
                   <label className="cl-switch">
-                    <input type="checkbox" checked={opt_in_signed_url} onChange={(e) => setOptInSignedUrl(e.target.checked)} id="showAllCheck" />
+                    <input
+                      type="checkbox"
+                      checked={opt_in_signed_url}
+                      onChange={(e) => setOptInSignedUrl(e.target.checked)}
+                      id="showAllCheck"
+                    />
                     <span></span>
                   </label>
                 </div>
@@ -1538,8 +1602,13 @@ const FlowAccordionContent = ({
                 </div>
                 <div className="formRow flex-column align-items-start px-0">
                   <div className="col-12">
-                    <input type="text" className="formItem" placeholder="" value={webhook_url}
-                    onChange={(e) => setWebhookUrl(e.target.value)} />
+                    <input
+                      type="text"
+                      className="formItem"
+                      placeholder=""
+                      value={webhook_url}
+                      onChange={(e) => setWebhookUrl(e.target.value)}
+                    />
                   </div>
                 </div>
               </div>
@@ -2004,7 +2073,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
-                           setCallTransferPopup(false);
+                          setCallTransferPopup(false);
                           setOpenTrigger(null);
                           if (name) {
                             setGeneralTools((prev) => {
@@ -2368,7 +2437,7 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton  m-0"
                         onClick={() => {
-                           setBookCalendarPopup(false);
+                          setBookCalendarPopup(false);
                           if (name) {
                             setGeneralTools((prev) => {
                               const newTool = {
@@ -3208,8 +3277,8 @@ const FlowAccordionContent = ({
                           type="text"
                           className="formItem"
                           placeholder="detailed_call_summary"
-                           value={postCallName}
-                            onChange={(e) => setPostCallName(e.target.value)}
+                          value={postCallName}
+                          onChange={(e) => setPostCallName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -3224,9 +3293,9 @@ const FlowAccordionContent = ({
                           rows={3}
                           placeholder="Detailed summary of the call before you transfer the call to a human agent so that the human agent can understand the context of the call"
                           value={postCallDescription}
-                            onChange={(e) =>
-                              setPostCallDescription(e.target.value)
-                            }
+                          onChange={(e) =>
+                            setPostCallDescription(e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -3249,16 +3318,21 @@ const FlowAccordionContent = ({
                           </div>
                         </div>
                       </div>
-                      <button  onClick={() => {
-                              setPostCallExample("");
-                            }} class="aitable_button bg-transparent text-danger">
+                      <button
+                        onClick={() => {
+                          setPostCallExample("");
+                        }}
+                        class="aitable_button bg-transparent text-danger"
+                      >
                         <i class="fa-regular fa-trash-can"></i>
                       </button>
                     </div>
                   </div>
                   <div className=" card-footer d-flex justify-content-end">
                     <div className="d-flex justify-content-end">
-                      <button className="panelButton  m-0"  onClick={() => {
+                      <button
+                        className="panelButton  m-0"
+                        onClick={() => {
                           if (postCallDataEdit === null) {
                             setPostCallAnalysisData((prev) => [
                               ...prev,
@@ -3289,9 +3363,9 @@ const FlowAccordionContent = ({
                             setPostCallDescription("");
                             setPostCallExample("");
                             setPostCallDataEdit(null);
-                             
                           }
-                        }} >
+                        }}
+                      >
                         <span className="text">Confirm</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
@@ -3300,10 +3374,10 @@ const FlowAccordionContent = ({
                       <button
                         className="panelButton gray"
                         onClick={() => {
-                           setPostCallName("");
-                            setPostCallDescription("");
-                            setPostCallExample("");
-                            setPostCallDataEdit(null);
+                          setPostCallName("");
+                          setPostCallDescription("");
+                          setPostCallExample("");
+                          setPostCallDataEdit(null);
                           setEditPostCallPopup(false);
                         }}
                       >

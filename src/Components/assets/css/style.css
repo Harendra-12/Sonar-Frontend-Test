@@ -196,7 +196,8 @@
   --me-body-bg2: #fff;
   --me-video-bg: #f3f6f8;
   --me-input-bg: #fff;
-  --me-border1: #ababab29;
+  /* --me-border1: #ababab29; */
+  --me-border1: var(--border-color);
   --me-text-color: #333335;
   --me-text-color2: #535b71;
   --me-text-color3: #212529bf;
@@ -266,7 +267,7 @@
   --balance-box-bg: linear-gradient(90deg, rgb(10 20 201 / 0%) 0%, rgb(223 116 115 / 13%) 50%, rgb(237 219 255 / 6%) 100%);
   --border20: #e5e5e5;
   --loader-bg: #ffffff17;
-  --svg-color: #e1e1e1;
+  --svg-color: #c1c1c1;
   --tab-active: #62a7f82e;
   --active-text: #2c2c2c;
   --knowledge-leftinfo: #f9f9f9;
@@ -381,7 +382,8 @@
   --me-body-bg2: #262a33;
   --me-video-bg: #1d2326ba;
   --me-input-bg: #293341;
-  --me-border1: #4a4a4aa6;
+  /* --me-border1: #4a4a4aa6; */
+    --me-border1: var(--border-color);
   --me-text-color: #c9c8c8;
   --me-text-color2: #b4b8c3;
   --me-text-color3: #212529bf;

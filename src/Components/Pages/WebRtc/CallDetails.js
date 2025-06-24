@@ -634,7 +634,7 @@ function CallDetails({
                                   </td>
 
                                   {account?.user_role?.roles?.name != "Agent" && <td>
-                                    {item.variable_billsec > 0 && <button
+                                    {item.recording_path !== null && <button
                                       className="tableButton px-2 mx-0"
                                       onClick={() => {
                                         if (item?.recording_path === currentPlaying) {
