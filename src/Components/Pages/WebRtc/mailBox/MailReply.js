@@ -117,9 +117,9 @@ const MailReply = ({
     <>
       {loading ?
         <ThreeDotedLoader /> :
-        <div className="read_message">
+        <div className="read_message h-100">
           <div
-            className="card shadow-none rounded-3"
+            className="card shadow-none rounded-3 h-100"
             style={{ borderColor: "var(--me-border1)" }}
           >
             <div

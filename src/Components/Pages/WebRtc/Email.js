@@ -521,16 +521,16 @@ function Email({ selectedMail }) {
                     style={{ borderColor: "var(--me-border1)" }}
                   >
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    <select
+                    {/* <select
                       onChange={(event) => handleMailFromAddressChange(event)}
                     >
                       {availableFromMailAddresses?.map((item) => {
                         return (<option value={item?.id}>{item?.mail_from_address}</option>)
                       })}
 
-                    </select>
+                    </select> */}
                     {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -539,9 +539,49 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
-                    </button>
+                    </button> */}
+                     <div className="d-flex align-items-center justify-content-end gap-2">
+                          <select className="formItem"
+                      onChange={(event) => handleMailFromAddressChange(event)}
+                    >
+                      {availableFromMailAddresses?.map((item) => {
+                        return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                      })}
 
-                    <button
+                    </select>
+                      <button
+                        type="button"
+                        class=" panelButton static text-nowrap text-white "
+                        onClick={() => {
+                          setIsAdvanceFilterClicked(true)
+                        }}
+                      >
+                        <i class="fa-regular fa-filter me-2"></i> Advance Filter
+                      </button>
+                      <div className="d-flex align-items-center justify-content-end gap-2">
+                        {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
+                          <i class="fa-regular fa-star" ></i>
+                        </button> */}
+                        <button className="clearButton2" 
+                          style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleDelete()
+                        }
+                        }
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                        {/* <button className="clearButton2" onClick={() => handleMultipleView()}>
+                          <i class="fa-solid fa-envelope-open" ></i>
+                        </button> */}
+                      </div>
+
+                    </div>
+
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -549,8 +589,8 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
-                    </button>
-                    <h5 className="card-title mb-0 text_dark">
+                    </button> */}
+                    {/* <h5 className="card-title mb-0 text_dark"> */}
                       {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
@@ -561,7 +601,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                      <i
+                      {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -571,7 +611,7 @@ function Email({ selectedMail }) {
                             handleMultipleDelete()
                         }
                         }
-                      ></i>{" "}
+                      ></i>{" "} */}
                       {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
@@ -583,11 +623,11 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i> */}
-                    </h5>
+                    {/* </h5> */}
                   </div>
                   <div
                     className="card-body"
-                    style={{ height: "calc(100vh - 135px)" , padding: '10px'}}
+                    style={{ height: "calc(100vh - 140px)" , padding: '10px'}}
                   >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
