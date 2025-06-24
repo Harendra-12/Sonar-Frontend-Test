@@ -4,6 +4,7 @@ import { formatChatMessageLinks, LiveKitRoom, useRoomContext, VideoConference } 
 import SettingsMenu from "./SettingsMenu";
 import Members from "./Members";
 import { RecordingIndicator } from "./RecordingIndicator";
+import GoConferenceSocket from "../../../GlobalFunction/GoConferenceSocket";
 
 
 const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize, isConferenceCall }) => {
@@ -12,6 +13,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
     const handleClickMinimize = () => {
         setIsMinimize(!isMinimize);
     };
+    const { sendConferenceMessage } = GoConferenceSocket();
     return (
         <>
 
@@ -53,6 +55,7 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                         setIsCurrentUserStartRecording={setIsCurrentUserStartRecording}
                         setCalling={setCalling}
                         isConferenceCall={isConferenceCall}
+                        socketMessage={sendConferenceMessage}
                     />
                     <RecordingIndicator
                         manualRecording={manualRecording}
