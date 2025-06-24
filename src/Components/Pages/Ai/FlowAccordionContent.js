@@ -457,34 +457,6 @@ const FlowAccordionContent = ({
     }
   };
 
-  const getBackground = (val) => {
-    const minVal = 0.5;
-    const maxVal = 2;
-
-    // Normalize `val` to a 0–100 scale
-    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
-
-    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
-  };
-  const getBackgroundVoiceTemperature = (val) => {
-    const minVal = 0;
-    const maxVal = 2;
-
-    // Normalize `val` to a 0–100 scale
-    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
-
-    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
-  };
-  const getBackgroundVoiceVolume = (val) => {
-    const minVal = 0;
-    const maxVal = 2;
-
-    // Normalize `val` to a 0–100 scale
-    const percentage = ((val - minVal) / (maxVal - minVal)) * 100;
-
-    return `linear-gradient(to right, #62a7f8 0%, #62a7f8 ${percentage}%, #DEE2E6 ${percentage}%, #DEE2E6 100%)`;
-  };
-
 
 
   return (
@@ -1034,18 +1006,10 @@ const FlowAccordionContent = ({
                                     max={2}
                                     step={0.1}
                                     min={0.5}
-                                    // onChange={(e) =>
-                                    //   setVoiceSpeed(e.target.value)
-                                    // }
-                                    onChange={(e) => setVoiceSpeed(parseFloat(e.target.value))}
-                                    style={{
-                                      background: getBackground(voice_speed),
-                                      width: "100%",
-                                      height: "7px",
-                                      borderRadius: "5px",
-                                      appearance: "none",
-                                      outline: "none",
-                                    }}
+                                    onChange={(e) =>
+                                      setVoiceSpeed(e.target.value)
+                                    }
+                                  
                                   />{" "}
                                   <span className="textGray">{voice_speed}</span>
                                 </div>
@@ -1062,17 +1026,10 @@ const FlowAccordionContent = ({
                                     max={2}
                                     step={0.1}
                                     min={0}
-                                    style={{
-                                      background: getBackgroundVoiceTemperature(voice_temperature),
-                                      width: "100%",
-                                      height: "7px",
-                                      borderRadius: "5px",
-                                      appearance: "none",
-                                      outline: "none",
-                                    }}
+                                    
                                     onChange={(e) =>
-                                      setVoiceTemperature(parseFloat(e.target.value))
-                                    }
+                                      setVoiceTemperature(e.target.value)     
+                                      }
                                   />{" "}
                                   <span className="textGray">
                                     {voice_temperature}
@@ -1089,15 +1046,8 @@ const FlowAccordionContent = ({
                                   defaultValue={volume}
                                   max={2}
                                   step={0.1}
-                                  onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                  style={{
-                                    background: getBackgroundVoiceVolume(voice_temperature),
-                                    width: "100%",
-                                    height: "7px",
-                                    borderRadius: "5px",
-                                    appearance: "none",
-                                    outline: "none",
-                                  }}
+                                  onChange={(e) => setVolume(e.target.value)}
+                                  
                                 />{" "}
                                 <span className="textGray">{volume}</span>
                                 </div>
@@ -1168,6 +1118,7 @@ const FlowAccordionContent = ({
                                     results.
                                   </label>
                                 </div>
+                                <div className="d-flex align-items-center gap-2">
                                 <input
                                   type="range"
                                   defaultValue={model_temperature}
@@ -1181,6 +1132,8 @@ const FlowAccordionContent = ({
                                 <span className="textGray">
                                   {model_temperature}
                                 </span>
+
+                                </div>
                               </div>
                               <div className="mb-2">
                                 <div class="formLabel">

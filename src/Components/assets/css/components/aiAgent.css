@@ -870,17 +870,38 @@
 
  #inputVoiceSpeed{
   /* border-radius: 8px; */
-  height: 4px;
+  height: 8px;
   width: 150px;
   outline: none;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   background: #dce0ed;
+  border: none !important;
+}
+input[type="range"]::-moz-range-track {
+    border: none! important;
 }
 
-input[type='range']::-webkit-slider-thumb {
+/* input[type='range']::-webkit-slider-thumb {
   width: 15px;
   height: 15px;
     border-radius: 50%;
   -webkit-appearance: none;
-  background: #0458b9;
+  background: #023a7a;
+} */
+/***** Thumb Styles *****/
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-thumb {
+   -webkit-appearance: none; /* Override default look */
+   appearance: none;
+   background-color: #5cd5eb;
+   
+}
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: #ff5722; /* 🔴 Change dot color here */
+  border: 2px solid white;
+  margin-top: -6px; /* aligns thumb with track */
 }
