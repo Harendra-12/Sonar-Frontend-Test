@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  aiGeneralDeleteFunction,
   aiGeneralPostFunction,
   backToTop,
   checkViewSidebar,
@@ -234,10 +235,13 @@ function DidListing({ page }) {
       setPreviousUsages("");
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
-      if (usages == "ai") {
-        aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid,"termination_uri":terminationUri});
-        // navigate('/ai-phone-number')
-      }
+      // if (usages == "ai") {
+      //   aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid.did,"termination_uri":terminationUri});
+      //   // navigate('/ai-phone-number')
+      // }
+      // else if(selectedDid.usages === "ai"){
+      //   aiGeneralDeleteFunction(`/phonenumber/delete/${selectedDid.id}`);
+      // }
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -1120,7 +1124,7 @@ function DidListing({ page }) {
                                                             );
                                                             setUsagesPopup(true);
                                                             setId(item.id);
-                                                            setSelectedDid(item.did)
+                                                            setSelectedDid(item)
                                                             setUsages(item.usages);
                                                           }}
                                                         >
