@@ -57,6 +57,7 @@ function Members({
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
+  const handRaises = useSelector((state) => state.handRaises);
 
   useEffect(() => {
     setCurentCallRoom(
@@ -482,6 +483,7 @@ function Members({
       setToggleHandRaise(prev => {
         const updatedValue = !prev;
         const payload = {
+          action: "handRaise",
           room_id: roomName,
           username: username,
           hand_raised: updatedValue,
@@ -573,7 +575,7 @@ function Members({
           <ul className="noScrollbar">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
-                <div className="d-flex align-items-center">
+                <div className={`d-flex align-items-center ${handRaises?.some((user) => user.username == participant.identity)?.hand_raised ? 'handRaise' : ''}`}>
                   <div className="profileHolder">
                     <i className="fa-light fa-user"></i>
                   </div>
