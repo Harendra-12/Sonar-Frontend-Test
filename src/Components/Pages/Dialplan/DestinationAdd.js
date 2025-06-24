@@ -59,7 +59,7 @@ function DestinationAdd() {
         if (apidataUser.status) {
           setUsers(apidataUser.data);
         } else {
-          navigate("/");
+          // navigate("/");
         }
       }
       getDomain();

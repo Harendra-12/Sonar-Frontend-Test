@@ -37,7 +37,8 @@ function Members({
   isCurrentUserStartRecording,
   setIsCurrentUserStartRecording,
   setCalling,
-  isConferenceCall
+  isConferenceCall,
+  socketMessage
 }) {
   const room = useRoomContext();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
@@ -54,6 +55,8 @@ function Members({
   // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
   const [searchTerm, setSearchTerm] = useState(""); // State to track the search input
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
+  const [toggleHandRaise, setToggleHandRaise] = useState(false);
+  const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
 
   useEffect(() => {
     setCurentCallRoom(
@@ -346,10 +349,31 @@ function Members({
 
         // Create the "All Members" button
         const allMembersButton = document.createElement("button");
+
         allMembersButton.className = "lk-button all-members-button";
-        allMembersButton.innerHTML =
-          '<i className="fa-light fa-users"></i> All Members';
+        allMembersButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:5px;">
+            <circle cx="12" cy="9" r="3" stroke="#000" stroke-width="1.5" />
+            <circle cx="12" cy="12" r="10" stroke="#000" stroke-width="1.5" />
+            <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#000" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          All Members
+        `;
         allMembersButton.onclick = () => setParticipantList((prev) => !prev);
+
+        // Create the "Hand Raise" button
+        const handRaiseButton = document.createElement("button");
+
+        handRaiseButton.className = "lk-button hand-raise-button";
+        handRaiseButton.setAttribute("data-lk-enabled", "false");
+        handRaiseButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="18px" height="18px" viewBox="0 0 32 32" version="1.1">
+            <path d="M20.903 24.014l2.959-3.984 3.475-3.32c0 0-1.158-1.381-2.59-1.381-0.643 0-1.232 0.184-1.77 0.552-0.535 0.367-1.023 0.918-1.463 1.655-0.615 0.215-1.094 0.42-1.438 0.615-0.076-0.766-0.168-1.333-0.275-1.7l1.996-7.748c0.473-1.868 0.586-2.812-0.539-3.312s-2.275 0.879-2.867 2.637l-1.893 5.983 0.057-7.694c0-1.889-0.596-2.833-1.788-2.833-1.204 0-1.805 0.837-1.805 2.51v7.692l-1.936-6.738c-0.48-1.192-1.325-2.366-2.45-1.991s-1.072 2.226-0.76 3.411l1.725 6.569-2.782-4.595c-0.851-1.475-2.319-1.76-2.651-1.416-0.529 0.549-0.883 1.717 0.077 3.394l3.069 5.343 2.74 9.492v1.845h8v-2.379c0.929-0.637 1.732-1.506 2.909-2.607v0z"/>
+            <script xmlns=""/>
+          </svg>
+          Raise Hand
+        `;
+        handRaiseButton.onclick = () => handRaise();
 
         // Create the "Record" button
         if (isAdmin) {
@@ -359,6 +383,9 @@ function Members({
         }
         // Append the buttons to the custom div
         customDiv.appendChild(allMembersButton);
+
+        // Append the buttons to the custom div
+        customDiv.appendChild(handRaiseButton);
 
         // Insert the custom div before the disconnect button
         disconnectButton.parentNode.insertBefore(customDiv, disconnectButton);
@@ -371,14 +398,29 @@ function Members({
     const recordButton = document.querySelector(".record-button");
     if (recordButton && isAdmin) {
       recordButton.innerHTML = processingRecRequest
-        ? '<i className="fa-solid fa-spinner fa-spin"></i> Record'
+        ? `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="18px" height="18px" viewBox="0 0 1920 1920">
+              <path d="M1190.725 1368.395c77.93 63.247 151.68 122.993 191.096 252.763l22.25 72.96H515.336l22.137-72.96c39.416-129.77 113.167-189.516 191.21-252.763l169.524-137.675c35.577-28.913 87.304-29.026 122.993.113l169.525 137.562Zm142.306-641.393c135.529-109.891 304.263-246.663 304.263-670.531V0H282v56.47c0 423.869 168.734 560.64 304.264 670.532 88.884 72.057 147.5 119.605 147.5 232.998 0 113.393-58.616 160.941-147.5 232.885C450.734 1302.889 282 1439.66 282 1863.529V1920h1355.294v-56.47c0-423.869-168.734-560.64-304.263-670.645-88.772-71.944-147.502-119.492-147.502-232.885 0-113.393 58.73-160.941 147.502-232.998Z" fill-rule="evenodd"/>
+            <script xmlns=""/>
+          </svg> Record`
         : isCurrentUserStartRecording
           ? manualRecording
-            ? '<i className="fa-light fa-stop"></i> Stop Recording'
-            : '<i className="fa-light fa-circle"></i> Record'
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"/>
+                <path d="M14.5 8H9.5C8.67157 8 8 8.67157 8 9.5V14.5C8 15.3284 8.67157 16 9.5 16H14.5C15.3284 16 16 15.3284 16 14.5V9.5C16 8.67157 15.3284 8 14.5 8Z" fill="#000000"/>
+                <script xmlns=""/>
+              </svg> Stop Recording`
+            : `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="16px" height="16px" viewBox="0 0 1920 1920">
+                  <path d="M960 0c529.36 0 960 430.645 960 960 0 529.36-430.64 960-960 960-529.355 0-960-430.64-960-960C0 430.645 430.645 0 960 0Zm0 112.941c-467.125 0-847.059 379.934-847.059 847.059 0 467.12 379.934 847.06 847.059 847.06 467.12 0 847.06-379.94 847.06-847.06 0-467.125-379.94-847.059-847.06-847.059Zm0 313.726c294.55 0 533.33 238.781 533.33 533.333 0 294.55-238.78 533.33-533.33 533.33-294.552 0-533.333-238.78-533.333-533.33 0-294.552 238.781-533.333 533.333-533.333Z" fill-rule="evenodd"/>
+              <script xmlns=""/></svg> Record`
           : isRecording
-            ? '<i className="fa-light fa-stop"></i> Stop Recording'
-            : '<i className="fa-light fa-circle"></i> Record';
+            ? `<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21C10.22 21 8.47991 20.4722 6.99987 19.4832C5.51983 18.4943 4.36628 17.0887 3.68509 15.4442C3.0039 13.7996 2.82567 11.99 3.17294 10.2442C3.5202 8.49836 4.37737 6.89472 5.63604 5.63604C6.89472 4.37737 8.49836 3.5202 10.2442 3.17294C11.99 2.82567 13.7996 3.0039 15.4442 3.68509C17.0887 4.36628 18.4943 5.51983 19.4832 6.99987C20.4722 8.47991 21 10.22 21 12C21 14.387 20.0518 16.6761 18.364 18.364C16.6761 20.0518 14.387 21 12 21ZM12 4.5C10.5166 4.5 9.0666 4.93987 7.83323 5.76398C6.59986 6.58809 5.63856 7.75943 5.07091 9.12988C4.50325 10.5003 4.35473 12.0083 4.64411 13.4632C4.9335 14.918 5.64781 16.2544 6.6967 17.3033C7.7456 18.3522 9.08197 19.0665 10.5368 19.3559C11.9917 19.6453 13.4997 19.4968 14.8701 18.9291C16.2406 18.3614 17.4119 17.4001 18.236 16.1668C19.0601 14.9334 19.5 13.4834 19.5 12C19.5 10.0109 18.7098 8.10323 17.3033 6.6967C15.8968 5.29018 13.9891 4.5 12 4.5Z" fill="#000000"/>
+                <path d="M14.5 8H9.5C8.67157 8 8 8.67157 8 9.5V14.5C8 15.3284 8.67157 16 9.5 16H14.5C15.3284 16 16 15.3284 16 14.5V9.5C16 8.67157 15.3284 8 14.5 8Z" fill="#000000"/>
+                <script xmlns=""/>
+              </svg> Stop Recording`
+            : `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="16px" height="16px" viewBox="0 0 1920 1920">
+                  <path d="M960 0c529.36 0 960 430.645 960 960 0 529.36-430.64 960-960 960-529.355 0-960-430.64-960-960C0 430.645 430.645 0 960 0Zm0 112.941c-467.125 0-847.059 379.934-847.059 847.059 0 467.12 379.934 847.06 847.059 847.06 467.12 0 847.06-379.94 847.06-847.06 0-467.125-379.94-847.059-847.06-847.059Zm0 313.726c294.55 0 533.33 238.781 533.33 533.333 0 294.55-238.78 533.33-533.33 533.33-294.552 0-533.333-238.78-533.333-533.33 0-294.552 238.781-533.333 533.333-533.333Z" fill-rule="evenodd"/>
+                <script xmlns=""/></svg> Record`;
     }
   }, [isRecording, processingRecRequest]);
 
@@ -433,6 +475,61 @@ function Members({
     }
 
   }
+
+  // Raise Hand Fucntion
+  async function handRaise() {
+    try {
+      setToggleHandRaise(prev => {
+        const updatedValue = !prev;
+        const payload = {
+          room_id: roomName,
+          username: username,
+          hand_raised: updatedValue,
+        };
+        socketMessage(payload);
+        return updatedValue;
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // State Check of Raise Hand Button
+  useEffect(() => {
+    const handRaiseButton = document.querySelector(".hand-raise-button");
+    if (handRaiseButton) {
+      const textNode = handRaiseButton.childNodes[1];
+      if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+        textNode.textContent = toggleHandRaise ? "Lower Hand" : "Raise Hand";
+      }
+    }
+    handRaiseButton.setAttribute("data-lk-enabled", toggleHandRaise);
+  }, [toggleHandRaise])
+
+  useEffect(() => {
+    if (microphoneButton) {
+      const updateButtonText = () => {
+        const isEnabled = microphoneButton.getAttribute("data-lk-enabled") === "true";
+        microphoneButton.childNodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = isEnabled ? "Mute" : "Unmute";
+          }
+        });
+      };
+
+      // Initial set
+      updateButtonText();
+
+      // Observe attribute changes
+      const observer = new MutationObserver(updateButtonText);
+      observer.observe(microphoneButton, { attributes: true, attributeFilter: ['data-lk-enabled'] });
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [microphoneButton, roomName]);
+
 
   return (
     <>

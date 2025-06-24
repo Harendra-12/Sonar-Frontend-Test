@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  checkViewSidebar,
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
@@ -37,6 +38,8 @@ function AllContact({
   const extension = account?.extension?.extension || "";
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+
   // useEffect(() => {
   //   const getContact = async () => {
   //     const apiData = await generalGetFunction("/contact/all");
@@ -209,80 +212,86 @@ function AllContact({
                       className="callList"
                       style={{ height: "calc(100vh - 215px)" }}
                     >
-                      {allContactLoading ? (
-                        <div colSpan={99}>
-                          <ContentLoader />
-                        </div>
-                      ) : (
-                        Object.keys(groupedContacts)
-                          .sort()
-                          .map((initial) => (
-                            <div key={initial}>
-                              <div className="dateHeader">
-                                <p>{initial}</p>
-                              </div>
-                              {groupedContacts[initial].map((contact) => (
-                                <div className="callListItem wertc_iconBox border-bottom-0 border-end-0" key={contact.id}>
-                                  <div className="row justify-content-between">
-                                    <div className="col-xl-7 col-xxl-5 d-flex">
-                                      <div className="profileHolder">
-                                        <i className="fa-light fa-user fs-5" />
-                                      </div>
-                                      <div className="my-auto ms-2 ms-xl-3">
-                                        <h4>{contact.name}</h4>
-                                        <h5 className="mt-2">{contact.did}</h5>
-                                      </div>
-                                    </div>
-                                    <div className="col-10 col-xl-4 col-xxl-5">
-                                      <div className="contactTags">
-                                        <span data-id="2">Office</span>
-                                      </div>
-                                    </div>
-                                    <div className="col-2 text-end d-flex justify-content-center align-items-center">
-                                      <i
-                                        className="fa-sharp fa-thin fa-star"
-                                        style={{ fontSize: 18 }}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="contactPopup">
-                                    <button
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      <i className="fa-light fa-phone" />
-                                    </button>
-                                    <button
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      <i className="fa-light fa-message" />
-                                    </button>
-                                    <button
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      <i className="fa-light fa-star" />
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        handleEditContact(contact.id);
-                                      }}
-                                    >
-                                      <i className="fa-light fa-pen-to-square" />
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        // deleteContactByIt(contact.id)
-                                        setPopUp(true);
-                                        setSelectedDeleteId(contact.id);
-                                      }}
-                                    >
-                                      <i className="fa-light fa-trash" />
-                                    </button>
-                                  </div>
+                      {!checkViewSidebar(
+                        "Contact",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read") ? <div>You dont have permission to view this section!</div> :
+                        allContactLoading ? (
+                          <div colSpan={99}>
+                            <ContentLoader />
+                          </div>
+                        ) : (
+                          Object.keys(groupedContacts)
+                            .sort()
+                            .map((initial) => (
+                              <div key={initial}>
+                                <div className="dateHeader">
+                                  <p>{initial}</p>
                                 </div>
-                              ))}
-                            </div>
-                          ))
-                      )}
+                                {groupedContacts[initial].map((contact) => (
+                                  <div className="callListItem wertc_iconBox border-bottom-0 border-end-0" key={contact.id}>
+                                    <div className="row justify-content-between">
+                                      <div className="col-xl-7 col-xxl-5 d-flex">
+                                        <div className="profileHolder">
+                                          <i className="fa-light fa-user fs-5" />
+                                        </div>
+                                        <div className="my-auto ms-2 ms-xl-3">
+                                          <h4>{contact.name}</h4>
+                                          <h5 className="mt-2">{contact.did}</h5>
+                                        </div>
+                                      </div>
+                                      <div className="col-10 col-xl-4 col-xxl-5">
+                                        <div className="contactTags">
+                                          <span data-id="2">Office</span>
+                                        </div>
+                                      </div>
+                                      <div className="col-2 text-end d-flex justify-content-center align-items-center">
+                                        <i
+                                          className="fa-sharp fa-thin fa-star"
+                                          style={{ fontSize: 18 }}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="contactPopup">
+                                      <button
+                                        onClick={() => featureUnderdevelopment()}
+                                      >
+                                        <i className="fa-light fa-phone" />
+                                      </button>
+                                      <button
+                                        onClick={() => featureUnderdevelopment()}
+                                      >
+                                        <i className="fa-light fa-message" />
+                                      </button>
+                                      <button
+                                        onClick={() => featureUnderdevelopment()}
+                                      >
+                                        <i className="fa-light fa-star" />
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          handleEditContact(contact.id);
+                                        }}
+                                      >
+                                        <i className="fa-light fa-pen-to-square" />
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          // deleteContactByIt(contact.id)
+                                          setPopUp(true);
+                                          setSelectedDeleteId(contact.id);
+                                        }}
+                                      >
+                                        <i className="fa-light fa-trash" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ))
+                        )}
                     </div>
                     {/* <div className="callList">
                       <div className="text-center callListItem">

@@ -213,7 +213,7 @@ const RingGroupEdit = () => {
         setLoading(false);
       } else {
         setLoading(false);
-        navigate("/");
+        // navigate("/");
       }
     };
     getRingBackData();

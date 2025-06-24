@@ -42,7 +42,7 @@ const ClickToCallListing = () => {
         setLoading(false);
         setRefreshState(false)
       } else {
-        navigate("/");
+        // navigate("/");
         setRefreshState(false)
       }
     } else {

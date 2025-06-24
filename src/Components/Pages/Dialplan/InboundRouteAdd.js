@@ -40,7 +40,7 @@ function InboundRouteAdd() {
       if (apidata?.status) {
         setRingGroup(apidata.data);
       } else {
-        navigate("/");
+        // navigate("/");
       }
     }
     getData();

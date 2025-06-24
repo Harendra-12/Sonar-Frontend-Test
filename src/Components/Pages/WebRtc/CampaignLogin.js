@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import LogOutPopUp from './LogOutPopUp';
-import { featureUnderdevelopment, formatTimeInHHMMSS, generalGetFunction, generalPutFunction, logout, secondsToHHMMSS } from '../../GlobalFunction/globalFunction';
+import { checkViewSidebar, featureUnderdevelopment, formatTimeInHHMMSS, generalGetFunction, generalPutFunction, logout, secondsToHHMMSS } from '../../GlobalFunction/globalFunction';
 import { useSIPProvider } from 'modify-react-sipjs';
 import DarkModeToggle from '../../CommonComponents/DarkModeToggle';
 import HeaderApp from './HeaderApp';
@@ -20,6 +20,8 @@ function CampaignLogin({ initial }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isOnBreak, setIsOnBreak] = useState(false);
     const [getAgentDataForCampaign, setGetAgentDataForCampaign] = useState([]);
+    const slugPermissions = useSelector((state) => state?.permissions);
+
 
 
     // Function to handle logout
@@ -143,69 +145,76 @@ function CampaignLogin({ initial }) {
                                     // style={{ padding: "25px 20px 0px" }}
                                     >
                                         <div className="tableContainer mt-0 mb-0">
-                                            <table className="callCenter">
-                                                <thead>
-                                                    <tr>
-                                                        <th className="sl">#</th>
-                                                        <th>Name</th>
-                                                        <th>Mode</th>
-                                                        <th className="options">Options</th>
-                                                        <th className="options">Break-Timer</th>
-                                                        <th className="options">Total-Break</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        assignedCampaigns && assignedCampaigns.length > 0 ? assignedCampaigns.map((item, index) => (
-                                                            <tr id={item.id}>
-                                                                <td>{index + 1}</td>
-                                                                <td>{item.title}</td>
-                                                                <td>{item.dialer.type}</td>
-                                                                <td>
-                                                                    {isLoggedIn ? (
-                                                                        <div className="d-flex gap-2">
+                                            {!checkViewSidebar(
+                                                "Campaign",
+                                                slugPermissions,
+                                                account?.sectionPermissions,
+                                                account?.permissions,
+                                                "read") ? <div>You do not have permission to view this page.</div> :
+                                                <table className="callCenter">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="sl">#</th>
+                                                            <th>Name</th>
+                                                            <th>Mode</th>
+                                                            <th className="options">Options</th>
+                                                            <th className="options">Break-Timer</th>
+                                                            <th className="options">Total-Break</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            assignedCampaigns && assignedCampaigns.length > 0 ? assignedCampaigns.map((item, index) => (
+                                                                <tr id={item.id}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{item.title}</td>
+                                                                    <td>{item.dialer.type}</td>
+                                                                    <td>
+                                                                        {isLoggedIn ? (
+                                                                            <div className="d-flex gap-2">
+                                                                                <label
+                                                                                    className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
+                                                                                    onClick={() => {
+                                                                                        if (!isOnBreak)
+                                                                                            handleLoginLogout("On Break", item.id);
+                                                                                        else if (isOnBreak)
+                                                                                            handleLoginLogout("Available", item.id);
+                                                                                    }}
+                                                                                >
+                                                                                    {isOnBreak ? "Resume" : "Break"}
+                                                                                </label>
+                                                                                <label
+                                                                                    className="tableLabel fail"
+                                                                                    onClick={() =>
+                                                                                        handleLoginLogout("Logged Out", item.id)
+                                                                                    }
+                                                                                >
+                                                                                    Logout
+                                                                                </label>
+                                                                            </div>
+                                                                        ) : (
                                                                             <label
-                                                                                className={`tableLabel ${isOnBreak ? "pending" : "success"}`}
-                                                                                onClick={() => {
-                                                                                    if (!isOnBreak)
-                                                                                        handleLoginLogout("On Break", item.id);
-                                                                                    else if (isOnBreak)
-                                                                                        handleLoginLogout("Available", item.id);
-                                                                                }}
-                                                                            >
-                                                                                {isOnBreak ? "Resume" : "Break"}
-                                                                            </label>
-                                                                            <label
-                                                                                className="tableLabel fail"
+                                                                                className="tableLabel success"
                                                                                 onClick={() =>
-                                                                                    handleLoginLogout("Logged Out", item.id)
+                                                                                    handleLoginLogout("Available", item.id)
                                                                                 }
                                                                             >
-                                                                                Logout
+                                                                                Login
                                                                             </label>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <label
-                                                                            className="tableLabel success"
-                                                                            onClick={() =>
-                                                                                handleLoginLogout("Available", item.id)
-                                                                            }
-                                                                        >
-                                                                            Login
-                                                                        </label>
-                                                                    )}
-                                                                </td>
-                                                                <td>
-                                                                    00:00:00
-                                                                </td>
-                                                                <td>
-                                                                    {getAgentDataForCampaign ? secondsToHHMMSS(getAgentDataForCampaign?.break?.[0]?.total_break_time || '0') : "0"}
-                                                                </td>
-                                                            </tr>
-                                                        )) : ""
-                                                    }
-                                                </tbody>
-                                            </table>
+                                                                        )}
+                                                                    </td>
+                                                                    <td>
+                                                                        00:00:00
+                                                                    </td>
+                                                                    <td>
+                                                                        {getAgentDataForCampaign ? secondsToHHMMSS(getAgentDataForCampaign?.break?.[0]?.total_break_time || '0') : "0"}
+                                                                    </td>
+                                                                </tr>
+                                                            )) : ""
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
                                         </div>
                                     </div>
                                 </div>

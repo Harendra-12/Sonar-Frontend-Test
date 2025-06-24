@@ -281,8 +281,8 @@ function CampaignEditNEW() {
         active_hours: editState.active_hours,
         ...(watch().active_hours ?
           {
-            start_date: editState?.scheduler_info[0]?.start_date?.replace(" ", "T"),
-            end_date: editState?.scheduler_info[0]?.end_date?.replace(" ", "T")
+            start_date: editState?.scheduler_info?.start_date?.replace(" ", "T"),
+            end_date: editState?.scheduler_info?.end_date?.replace(" ", "T")
           } : ""),
         timezone: editState.timezone,
       };

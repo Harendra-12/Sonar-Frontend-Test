@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
@@ -22,6 +22,8 @@ function SmsChat({ setLoading, loading, did }) {
 
   const [allSmsLogs, setAllSmsLogs] = useState([]);
   const [iconLoading, setIconLoading] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
+
 
   const {
     formState: { errors },
@@ -137,75 +139,82 @@ function SmsChat({ setLoading, loading, did }) {
                 <div className="col-12">
                   <div className="tab-content">
                     <div className="callList">
-                      <div className="dateHeader">
+                      {/* <div className="dateHeader">
                         <p className="fw-semibold">Today</p>
-                      </div>
-                      {allSmsLogs?.map((item, index) => {
-                        return (
-                          <>
-                            <div data-bell="" className="callListItem incomingm wertc_iconBox border-0" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
-                              <div className="row justify-content-between">
-                                <div className="col-xl-12 d-flex align-items-center">
-                                  <div className="profileHolder">
-                                    <i className="fa-light fa-user fs-5" />
-                                  </div>
-                                  <div
-                                    className="col-3 my-auto ms-2 ms-xl-3"
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    <h4>{item?.from_did}</h4>
-                                  </div>
-                                  <div className="callIconAdmin">
-                                    <i className={`fa-solid fa-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: "#fff" }}></i>
-                                  </div>
-                                  <div
-                                    className="col-3 my-auto ms-2 ms-xl-3"
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    <h4>{item?.to_did}</h4>
+                      </div> */}
+                      {!checkViewSidebar(
+                        "Sms",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read"
+                      ) ? <div>You do not have permission to view this page</div> :
+                        allSmsLogs?.map((item, index) => {
+                          return (
+                            <>
+                              <div data-bell="" className="callListItem incomingm wertc_iconBox border-0" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
+                                <div className="row justify-content-between">
+                                  <div className="col-xl-12 d-flex align-items-center">
+                                    <div className="profileHolder">
+                                      <i className="fa-light fa-user fs-5" />
+                                    </div>
+                                    <div
+                                      className="col-3 my-auto ms-2 ms-xl-3"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <h4>{item?.from_did}</h4>
+                                    </div>
+                                    <div className="callIconAdmin">
+                                      <i className={`fa-solid fa-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: "#fff" }}></i>
+                                    </div>
+                                    <div
+                                      className="col-3 my-auto ms-2 ms-xl-3"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <h4>{item?.to_did}</h4>
 
-                                    <div className=" mx-auto my-auto">
-                                      {item?.additional_info && <Tippy content={item?.additional_info || ''}>
-                                        <div className="contactTags">
-                                          <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
-                                        </div>
-                                      </Tippy>}
-                                      {/* {item?.additional_info &&
+                                      <div className=" mx-auto my-auto">
+                                        {item?.additional_info && <Tippy content={item?.additional_info || ''}>
+                                          <div className="contactTags">
+                                            <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
+                                          </div>
+                                        </Tippy>}
+                                        {/* {item?.additional_info &&
                                       <h5 className="mt-2" style={{ fontWeight: 400 }}>
                                         <i className="fa-light fa-info" /> {item?.additional_info}
                                       </h5>
                                     } */}
+                                      </div>
+                                    </div>
+                                    <div className="col-auto text-end ms-auto">
+                                      <p className="timeAgo">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</p>
+                                      {item?.message && <button className="clearButton2"><i className="fa-regular fa-comment" /></button>}
                                     </div>
                                   </div>
-                                  <div className="col-auto text-end ms-auto">
-                                    <p className="timeAgo">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</p>
-                                    {item?.message && <button className="clearButton2"><i className="fa-regular fa-comment" /></button>}
-                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            {item?.message &&
-                              <div className="collapse p-2" id={`messageCollapse${index}`}>
-                                <div className="back-comment">
-                                  <span>
-                                    <img
-                                      src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                      alt="img"
-                                      height={30}
-                                      width={30}
-                                    />
-                                  </span>
-                                  <span className="username-cmt ms-2"> {item?.from_did}</span>
-                                  <div className="d-flex align-items-end justify-content-between mt-1">
-                                    <span className="name-comment ms-1"> {item?.message}</span>
-                                    <span className="date-small">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</span>
+                              {item?.message &&
+                                <div className="collapse p-2" id={`messageCollapse${index}`}>
+                                  <div className="back-comment">
+                                    <span>
+                                      <img
+                                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                        alt="img"
+                                        height={30}
+                                        width={30}
+                                      />
+                                    </span>
+                                    <span className="username-cmt ms-2"> {item?.from_did}</span>
+                                    <div className="d-flex align-items-end justify-content-between mt-1">
+                                      <span className="name-comment ms-1"> {item?.message}</span>
+                                      <span className="date-small">{formatTimeWithAMPM(item?.created_at.split("T")[1].split(".")[0])}</span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            }
-                          </>
-                        )
-                      })}
+                              }
+                            </>
+                          )
+                        })}
                     </div>
                   </div>
                 </div>
