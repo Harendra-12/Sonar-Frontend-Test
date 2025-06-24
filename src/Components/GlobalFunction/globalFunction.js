@@ -156,7 +156,7 @@ export async function generalGetFunction(endpoint) {
           sessionExpiredToastShown = true;
           toast.error(
             err?.response?.data?.message ||
-              "Session expired. Please login again."
+            "Session expired. Please login again."
           );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
@@ -779,14 +779,18 @@ export function formatTime(seconds) {
 }
 
 export function formatTimeInHHMMSS(time) {
-  const [hours, minutes] = time.split(":");
-  const dateObj = new Date();
-  dateObj.setHours(parseInt(hours));
-  dateObj.setMinutes(parseInt(minutes));
-  dateObj.setSeconds(0);
-  dateObj.setMilliseconds(0);
+  if (time) {
+    const [hours, minutes] = time?.split(":");
+    const dateObj = new Date();
+    dateObj?.setHours(parseInt(hours));
+    dateObj?.setMinutes(parseInt(minutes));
+    dateObj?.setSeconds(0);
+    dateObj?.setMilliseconds(0);
+    return dateObj?.toTimeString()?.slice(0, 8);
+  } else {
+    return ""
+  }
 
-  return dateObj.toTimeString().slice(0, 8);
 }
 
 export const useDebounce = (value, delay) => {

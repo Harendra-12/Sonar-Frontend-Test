@@ -1284,7 +1284,7 @@ function Navbar() {
                           "/ai-batch-call",
                           "/ai-agent-add",
                           "/ai-agent-edit",
-                           "/ai-phone-number"
+                          "/ai-phone-number"
                         ])
                           ? "show"
                           : ""
@@ -1574,6 +1574,7 @@ function Navbar() {
                             "/call-center-report",
                             "/ring-group-report",
                             "/agent-report",
+                            "/click-to-call-report"
                           ])
                             ? "true"
                             : "false"
@@ -1594,6 +1595,7 @@ function Navbar() {
                           "/call-center-report",
                           "/ring-group-report",
                           "/agent-report",
+                          "/click-to-call-report"
                         ])
                           ? "show"
                           : ""
@@ -1759,6 +1761,21 @@ function Navbar() {
                                 <div className="itemTitle">Meeting Reports</div>
                               </Link>
                             </li> */}
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/click-to-call-report"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/click-to-call-report"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Click To Call </div>
+                              </NavLink>
+                            </li>
                           </ul>
                         </div>
                       </div>
