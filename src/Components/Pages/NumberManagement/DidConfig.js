@@ -267,13 +267,13 @@ const DidConfig = () => {
     }
   }, [newAddDid]);
 
-  const handleSelectChange = (e) => {
-    const value = e.target.value;
+  // const handleSelectChange = (e) => {
+  //   const value = e.target.value;
 
-    if (value === "add_new_agent") {
-      navigate("/ai-all-agent");
-    }
-  };
+  //   if (value === "add_new_agent") {
+  //     navigate("/ai-all-agent");
+  //   }
+  // };
 
   // Getting all agents and ai number details from db
   useEffect(() => {
@@ -446,7 +446,7 @@ const DidConfig = () => {
                                 className="formItem"
                                 name="forward"
                                 id="selectFormRow"
-                                onChange={handleSelectChange}
+                                // onChange={handleSelectChange}
                                 value={watch().action}
                                 {...register("action")}
                               >
@@ -457,12 +457,12 @@ const DidConfig = () => {
                                   );
                                 })}
 
-                                <option
+                                {/* <option
                                   value="add_new_agent"
                                   className="bg-primary text-center text-white"
                                 >
                                   Add New Agent
-                                </option>
+                                </option> */}
                               </select>
                             </div>
                           )}
