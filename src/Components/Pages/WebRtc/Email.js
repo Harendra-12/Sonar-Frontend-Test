@@ -20,7 +20,8 @@ import { useForm } from "react-hook-form";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
-  const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false)
+  const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
+  const [loadingForActions, setLoadingForActions] = useState([])
   const [refreshState, setRefreshState] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
@@ -28,9 +29,8 @@ function Email({ selectedMail }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
-  const [availableFromMailAddresses, setAvailableFromMailAddresses] = useState(
-    []
-  );
+  const [availableFromMailAddresses, setAvailableFromMailAddresses] = useState([]);
+  const [selectedFromMailAddressId, setSelectedFromMailAddressId] = useState("")
   const [allCategory, setAllCategory] = useState()
   const [showMailList, setShowMailList] = useState(true);
   const [mailReplay, setMailReplay] = useState(false);
@@ -149,12 +149,12 @@ function Email({ selectedMail }) {
   //   }
   // };
 
-  const fetchMailCategory = async (shouldLoad) => {
+  const fetchMailCategory = async (shouldLoad, id) => {
     if (shouldLoad) {
       setAllMailLoading(true)
     }
     setLoading(true);
-    const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS);
+    const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS(id));
     if (result?.status) {
       setAllCategory(result?.data);
       if (activeCategory) {
@@ -168,13 +168,13 @@ function Email({ selectedMail }) {
   };
 
   // get all mails
-  const fetchAllMail = async (mail_type, shouldLoad, filterData) => {
+  const fetchAllMail = async (mail_type, shouldLoad, filterData, id) => {
     if (shouldLoad) {
       setAllMailLoading(true);
     }
     setLoading(true)
     const result = await generalGetFunction(
-      `/emails?type=${mail_type}&page=${pageNumber}&row_per_page=${entriesPerPage}&search=${searchInput}&from=${filterData?.from || ""}&to=${filterData?.to || ""}&subject=${filterData?.subject || ""}&since=${filterData?.since || ""}&before=${filterData?.before || ""}`
+      `/emails?type=${mail_type}&page=${pageNumber}&row_per_page=${entriesPerPage}&search=${searchInput}&from=${filterData?.from || ""}&to=${filterData?.to || ""}&subject=${filterData?.subject || ""}&since=${filterData?.since || ""}&before=${filterData?.before || ""}&id=${id}`
     );
     if (result?.status) {
       setAllMails(result.data);
@@ -193,12 +193,11 @@ function Email({ selectedMail }) {
   };
 
   const deleteMail = async (payload) => {
-    setAllMailLoading(true);
     setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, true)
-      fetchMailCategory(true)
+      fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
+      fetchMailCategory(true, selectedFromMailAddressId)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -212,8 +211,8 @@ function Email({ selectedMail }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, true)
-      fetchMailCategory(true)
+      fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
+      fetchMailCategory(false, selectedFromMailAddressId)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -236,39 +235,9 @@ function Email({ selectedMail }) {
     }
   }
 
-  const handleShowMail = async (mail) => {
-    setLoading(true)
-    const shouldLoad = true
-    mailStatusApiCall(shouldLoad, {
-      uid: [mail?.uid],
-      action: "seen",
-      type: activeCategory?.value
-    })
-    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
-  };
-
-  const handleUnSeenMail = (mail) => {
-    const shouldLoad = true
-    mailStatusApiCall(shouldLoad, {
-      uid: [mail?.uid],
-      action: "unseen",
-      type: activeCategory?.value
-    })
-  }
-
-  const handleStarrClicked = (item) => {
-    const shouldLoad = true;
-    mailStatusApiCall(shouldLoad, {
-      uid: [item?.uid],
-      action: item?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
-    })
-
-  }
-
   const fetchData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
-    const result = await generalGetFunction("/mail-setting/all");
+    const result = await generalGetFunction(api_url?.ALL_MAIL_SETTINGS);
     if (result?.status) {
       setAvailableFromMailAddresses(result.data);
       setLoading(false);
@@ -294,17 +263,27 @@ function Email({ selectedMail }) {
   // all useEffect stuff start here ===============
   useEffect(() => {
     const shouldLoad = true;
-    fetchMailCategory(shouldLoad)
+    // fetchMailCategory(shouldLoad)
     setRefreshState(true);
     fetchData(shouldLoad);
-    const mailType = "INBOX"
-    fetchAllMail(mailType, true);
+    // const mailType = "INBOX"
+    // fetchAllMail(mailType, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    const shouldLoad = true;
+    const mailType = "INBOX";
+    if (availableFromMailAddresses?.length > 0) {
+      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id)
+      fetchAllMail(mailType, true, "", availableFromMailAddresses[0]?.id);
+      setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
+    }
+  }, [availableFromMailAddresses])
+
+  useEffect(() => {
     if (activeCategory)
-      fetchAllMail(activeCategory?.value, true)
+      fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
   }, [pageNumber, entriesPerPage, debouncedSearchTerm]);
 
   // Add a new useEffect to handle initial data load
@@ -354,7 +333,7 @@ function Email({ selectedMail }) {
   const handleListingClick = (category) => {
     setActiveList(category?.label);
     setActiveCategory(category)
-    fetchAllMail(category?.value, true)
+    fetchAllMail(category?.value, true, "", selectedFromMailAddressId)
     setShowMailList(true);
     setShowNewMail(false);
     setMailReplay(false);
@@ -362,40 +341,110 @@ function Email({ selectedMail }) {
   };
 
   const handleMailDelete = (item) => {
+    setLoadingForActions(prev => [...prev, item]);
     deleteMail({
       uid: [item?.uid?.toString()],
       type: activeCategory?.value,
       action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== item.uid)
+      )
+    });
   }
 
   const handleMultipleDelete = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
     deleteMail({
       uid: listOfMessageId,
       type: activeCategory?.value,
       action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
   }
 
   const handleMultipleView = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
-    const shouldLoad = true;
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
-      action: "seen",
+      action: checkedMail[0]?.status_flags?.seen ? "unseen" : "seen",
       type: activeCategory?.value
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
   }
 
   const handleMultipleStarred = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
-    const shouldLoad = true;
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
-      action: "starred",
+      action: checkedMail[0]?.status_flags?.starred ? "unstarred" : "starred",
       type: activeCategory?.value
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
+  }
+
+  const handleShowMail = async (mail) => {
+    setLoadingForActions(prev => [...prev, mail]);
+    setLoading(true)
+    const shouldLoad = false
+    mailStatusApiCall(shouldLoad, {
+      uid: [mail?.uid],
+      action: mail?.status_flags?.seen ? "unseen" : "seen",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== mail?.uid)
+      )
+    });
+    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
+  };
+
+  const handleUnSeenMail = (mail) => {
+    setLoadingForActions(prev => [...prev, mail]);
+    const shouldLoad = false
+    mailStatusApiCall(shouldLoad, {
+      uid: [mail?.uid],
+      action: mail?.status_flags?.seen ? "unseen" : "seen",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== mail?.uid)
+      )
+    });
+  }
+
+  const handleStarrClicked = (item) => {
+    const shouldLoad = false;
+    setLoadingForActions(prev => [...prev, item]);
+    mailStatusApiCall(shouldLoad, {
+      uid: [item?.uid],
+      action: item?.status_flags?.starred ? "unstarred" : "starred",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== item.uid)
+      );
+    });
   }
 
   const downloadAllAtachment = (mail) => {
@@ -428,10 +477,16 @@ function Email({ selectedMail }) {
 
   const onSubmit = (data) => {
     setIsAdvanceFilterClicked(false)
-    fetchAllMail(activeCategory?.value, true, data)
+    fetchAllMail(activeCategory?.value, true, data, selectedFromMailAddressId)
     reset("")
   };
 
+  const handleMailFromAddressChange = (event) => {
+    const shouldLoad = false;
+    fetchMailCategory(shouldLoad, event?.target?.value)
+    fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
+    setSelectedFromMailAddressId(event?.target?.value)
+  }
 
   return (
     <>
@@ -451,8 +506,9 @@ function Email({ selectedMail }) {
               loading={loading}
               setLoading={setLoading}
               refreshApi={() => {
-                fetchAllMail(activeCategory?.value)
-                fetchMailCategory(false)
+                fetchAllMail(activeCategory?.value, "", "", selectedFromMailAddressId)
+                fetchMailCategory(false, selectedFromMailAddressId)
+                fetchData()
               }}
             />
           </div>
@@ -465,31 +521,69 @@ function Email({ selectedMail }) {
                     style={{ borderColor: "var(--me-border1)" }}
                   >
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
+                    <select
+                      onChange={(event) => handleMailFromAddressChange(event)}
+                    >
+                      {availableFromMailAddresses?.map((item) => {
+                        return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                      })}
+
+                    </select>
                     {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() => {
+                        setShowNewMail(true);
+                        setMailReplay(false);
+                      }}
+                    >
+                      <i class="fa-regular fa-envelope me-2"></i> New Email
+                    </button>
 
-                    <div className="d-flex align-items-center justify-content-end gap-2">
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        onClick={() => {
-                          setIsAdvanceFilterClicked(true)
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={() => {
+                        setIsAdvanceFilterClicked(true)
+                      }}
+                    >
+                      <i class="fa-regular fa-filter me-2"></i> Advance Filter
+                    </button>
+                    <h5 className="card-title mb-0 text_dark">
+                      {/* <i
+                        class="fa-regular fa-star me-3"
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
                         }}
-                      >
-                        <i class="fa-regular fa-filter me-2"></i> Advance Filter
-                      </button>
-                      <div className="d-flex align-items-center justify-content-end gap-2">
-                        <button className="clearButton2" onClick={() => handleMultipleStarred()}>
-                          <i class="fa-regular fa-star" ></i>
-                        </button>
-                        <button className="clearButton2" onClick={() => handleMultipleDelete()}>
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                        <button className="clearButton2" onClick={() => handleMultipleView()}>
-                          <i class="fa-solid fa-envelope-open" ></i>
-                        </button>
-                      </div>
-
-                    </div>
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleStarred()
+                        }}
+                      ></i> */}
+                      <i
+                        class="fa-solid fa-trash me-3"
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleDelete()
+                        }
+                        }
+                      ></i>{" "}
+                      {/* <i
+                        class="fa-solid fa-envelope-open me-3"
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleView()
+                        }
+                        }
+                      ></i> */}
+                    </h5>
                   </div>
                   <div
                     className="card-body"
@@ -610,6 +704,7 @@ function Email({ selectedMail }) {
                             setSearchInput={setSearchInput}
                             account={account}
                             slugPermissions={slugPermissions}
+                            loadingForActions={loadingForActions}
                           />
                         )}
 
