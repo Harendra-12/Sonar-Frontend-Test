@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  aiGeneralGetFunction,
   backToTop,
   generalGetFunction,
   generalPostFunction,
@@ -23,9 +24,6 @@ import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-
-
-
 const DidConfig = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,6 +36,7 @@ const DidConfig = () => {
   const [loading, setLoading] = useState(true);
   const [showMusic, setShowMusic] = useState(false);
   const [uploadedMusic, setUploadedMusic] = useState();
+  const [availableAgents, setAvailableAgents] = useState([]);
   const [musicRefresh, setMusicRefresh] = useState(0);
   const {
     register,
@@ -126,7 +125,7 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
-  
+
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
@@ -267,6 +266,34 @@ const DidConfig = () => {
       });
     }
   }, [newAddDid]);
+
+  const handleSelectChange = (e) => {
+    const value = e.target.value;
+
+    if (value === "add_new_agent") {
+      navigate("/ai-all-agent");
+    }
+  };
+
+  // Getting all agents and ai number details from db
+  useEffect(() => {
+    async function getData() {
+      const allAgents = await aiGeneralGetFunction("/agent/all");
+      const aiNumber = await aiGeneralGetFunction("/phonenumber/all");
+
+      if (allAgents.status && aiNumber.status) {
+        aiNumber.data.map((item) => {
+          allAgents.data.map((agent) => {
+            if (item.inbound_agent_id === agent.agent_id) {
+              agent["number"] = item.phone_number.replace("+", "");
+              setAvailableAgents((prev) => [...prev, agent]);
+            }
+          });
+        });
+      }
+    }
+    getData();
+  },[]);
   return (
     <>
       <main className="mainContent">
@@ -364,7 +391,11 @@ const DidConfig = () => {
                               Set how the Destination will be used.
                             </label>
                           </div>
-                          <div className="col-3 pe-2 ms-auto">
+                          <div
+                            className={`${
+                              watch().usages === "none" ? "col-6" : "col-3"
+                            } pe-2 ms-auto`}
+                          >
                             <select
                               className="formItem"
                               name="forward"
@@ -389,22 +420,50 @@ const DidConfig = () => {
                               <option value="call center">Call Center</option>
                               <option value="ring group">Ring Group</option>
                               <option value="ivr">IVR</option>
-                              <option value="aiagent">AI Agent</option>
+                              <option value="aiagent">AI Agents</option>
                             </select>
                           </div>
-                          {watch().usages && watch().usages?.length !== 0 && (
-                            <div className="col-3">
-                              <ActionList
-                                category={watch().usages}
-                                title={null}
-                                label={null}
-                                getDropdownValue={actionListValue}
-                                value={watch().action}
-                                {...register("action")}
-                              />
-                              {/* {errors.action && (
+                          {watch().usages &&
+                            watch().usages !== "none" &&
+                            watch().usages !== "aiagent" && (
+                              <div className="col-3">
+                                <ActionList
+                                  category={watch().usages}
+                                  title={null}
+                                  label={null}
+                                  getDropdownValue={actionListValue}
+                                  value={watch().action}
+                                  {...register("action")}
+                                />
+                                {/* {errors.action && (
                               <ErrorMessage text={errors.action.message} />
                             )} */}
+                              </div>
+                            )}
+                          {watch().usages && watch().usages === "aiagent" && (
+                            <div className="col-3">
+                              <select
+                                className="formItem"
+                                name="forward"
+                                id="selectFormRow"
+                                onChange={handleSelectChange}
+                                value={watch().action}
+                                {...register("action")}
+                              >
+                                <option value="">Select Agent</option>
+                                {availableAgents.map((agent, key) => {
+                                  return (
+                                    <option key={key} value={agent.number}>{agent.agent_name}</option>
+                                  );
+                                })}
+
+                                <option
+                                  value="add_new_agent"
+                                  className="bg-primary text-center text-white"
+                                >
+                                  Add New Agent
+                                </option>
+                              </select>
                             </div>
                           )}
                         </div>
@@ -417,10 +476,11 @@ const DidConfig = () => {
                             </label>
                           </div>
                           <div
-                            className={`col-${forwardStatus != "disabled"
-                              ? "3 pe-2 ms-auto"
-                              : "6"
-                              }`}
+                            className={`col-${
+                              forwardStatus != "disabled"
+                                ? "3 pe-2 ms-auto"
+                                : "6"
+                            }`}
                           >
                             {forwardStatus != "disabled" && (
                               <div className="formLabel">
@@ -448,36 +508,37 @@ const DidConfig = () => {
                               <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          {forwardStatus === "pstn" && forwardStatus != "disabled" && (
-                            <div className="col-3">
-                              <div className="formLabel">
-                                <label>PSTN</label>
-                              </div>
-                              <input
-                                type="number"
-                                name="forward_to"
-                                className="formItem"
-                                {...register("forward_to", {
-                                  required: "PSTN is required",
-                                  pattern: {
-                                    value: /^[0-9]*$/,
-                                    message: "Only digits are allowed",
-                                  },
-                                  minLength: {
-                                    value: 10,
-                                    message: "Must be at least 10 digits",
-                                  },
+                          {forwardStatus === "pstn" &&
+                            forwardStatus != "disabled" && (
+                              <div className="col-3">
+                                <div className="formLabel">
+                                  <label>PSTN</label>
+                                </div>
+                                <input
+                                  type="number"
+                                  name="forward_to"
+                                  className="formItem"
+                                  {...register("forward_to", {
+                                    required: "PSTN is required",
+                                    pattern: {
+                                      value: /^[0-9]*$/,
+                                      message: "Only digits are allowed",
+                                    },
+                                    minLength: {
+                                      value: 10,
+                                      message: "Must be at least 10 digits",
+                                    },
 
-                                  ...noSpecialCharactersValidator,
-                                })}
-                              />
-                              {errors.forward_to && (
-                                <ErrorMessage
-                                  text={errors.forward_to.message}
+                                    ...noSpecialCharactersValidator,
+                                  })}
                                 />
-                              )}
-                            </div>
-                          )}
+                                {errors.forward_to && (
+                                  <ErrorMessage
+                                    text={errors.forward_to.message}
+                                  />
+                                )}
+                              </div>
+                            )}
 
                           {/* {forwardStatus === "direct" && (
                             <div className="col-3">
@@ -501,44 +562,48 @@ const DidConfig = () => {
                             </div>
                           )} */}
 
-                          {forwardStatus !== "pstn" && forwardStatus != "disabled" && (
-                            <div className="col-3">
-                              {watch().forward && watch().forward?.length !== 0 && (
-                                <>
-                                  <div className="formLabel">
-                                    <label>Extension</label>
-                                  </div>
-                                  <ActionList
-                                    category={watch().forward}
-                                    title={null}
-                                    label={null}
-                                    getDropdownValue={actionListValueForForward}
-                                    value={watch().forward_action}
-                                    {...register("forward_action")}
-                                  />
-                                </>
-                              )}
-                            </div>
-                            // <div className="col-3">
-                            // <div className="formLabel">
-                            //   <label>Extension</label>
-                            // </div>
-                            // <ActionList
-                            //   getDropdownValue={directListValue}
-                            //   value={watch().direct_extension}
-                            //   title={null}
-                            //   label={null}
-                            //   {...register("direct_extension", {
-                            //     requiredValidator,
-                            //   })}
-                            // />
-                            // {errors.direct_extension && (
-                            //   <ErrorMessage
-                            //     text={errors.direct_extension.message}
-                            //   />
-                            // )}
-                            // </div>
-                          )}
+                          {forwardStatus !== "pstn" &&
+                            forwardStatus != "disabled" && (
+                              <div className="col-3">
+                                {watch().forward &&
+                                  watch().forward?.length !== 0 && (
+                                    <>
+                                      <div className="formLabel">
+                                        <label>Extension</label>
+                                      </div>
+                                      <ActionList
+                                        category={watch().forward}
+                                        title={null}
+                                        label={null}
+                                        getDropdownValue={
+                                          actionListValueForForward
+                                        }
+                                        value={watch().forward_action}
+                                        {...register("forward_action")}
+                                      />
+                                    </>
+                                  )}
+                              </div>
+                              // <div className="col-3">
+                              // <div className="formLabel">
+                              //   <label>Extension</label>
+                              // </div>
+                              // <ActionList
+                              //   getDropdownValue={directListValue}
+                              //   value={watch().direct_extension}
+                              //   title={null}
+                              //   label={null}
+                              //   {...register("direct_extension", {
+                              //     requiredValidator,
+                              //   })}
+                              // />
+                              // {errors.direct_extension && (
+                              //   <ErrorMessage
+                              //     text={errors.direct_extension.message}
+                              //   />
+                              // )}
+                              // </div>
+                            )}
                         </div>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -654,16 +719,19 @@ const DidConfig = () => {
                           <div className="col-6">
                             <div className="row gx-2">
                               <div
-                                className={`col-${watch().sticky_agent_enable == "true" ||
+                                className={`col-${
+                                  watch().sticky_agent_enable == "true" ||
                                   watch().sticky_agent_enable == 1
-                                  ? "3"
-                                  : "12"
-                                  }`}
+                                    ? "3"
+                                    : "12"
+                                }`}
                               >
                                 {watch().sticky_agent_enable === "true" ||
-                                  watch().sticky_agent_enable === 1 ? (
+                                watch().sticky_agent_enable === 1 ? (
                                   <div className="formLabel">
-                                    <label className="formItemDesc">Status</label>
+                                    <label className="formItemDesc">
+                                      Status
+                                    </label>
                                   </div>
                                 ) : (
                                   ""
@@ -682,83 +750,85 @@ const DidConfig = () => {
 
                               {(watch().sticky_agent_enable == true ||
                                 watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
-                                    <div className="formLabel">
-                                      <Tippy content="Check the duration of sticky agent">
-                                        <label className="formItemDesc">
-                                          Duration{" "}
-                                        </label>
-                                      </Tippy>
-                                    </div>
-                                    <input
-                                      type="number"
-                                      name="forward_to"
-                                      className="formItem"
-                                      {...register(
-                                        "stick_agent_expires",
-                                        rangeValidator(1, 99), {
-                                        requiredValidator
-                                      }
-                                      )}
-                                    />
-                                    {errors.stick_agent_expires && (
-                                      <ErrorMessage
-                                        text={errors.stick_agent_expires.message}
-                                      />
-                                    )}
-                                  </div>
-                                )}
-                              {(watch().sticky_agent_enable == true ||
-                                watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
-                                    <div className="formLabel">
+                                <div className="col-3">
+                                  <div className="formLabel">
+                                    <Tippy content="Check the duration of sticky agent">
                                       <label className="formItemDesc">
-                                        Agent Type
+                                        Duration{" "}
                                       </label>
-                                    </div>
-                                    <select
-                                      className="formItem"
-                                      name=""
-                                      id="selectFormRow"
-                                      {...register("stick_agent_type")}
-                                    >
-                                      <option selected="" value="last_spoken">
-                                        Last Spoken
-                                      </option>
-                                      <option value="longest_time">
-                                        Longest Time
-                                      </option>
-                                    </select>
+                                    </Tippy>
                                   </div>
-                                )}
+                                  <input
+                                    type="number"
+                                    name="forward_to"
+                                    className="formItem"
+                                    {...register(
+                                      "stick_agent_expires",
+                                      rangeValidator(1, 99),
+                                      {
+                                        requiredValidator,
+                                      }
+                                    )}
+                                  />
+                                  {errors.stick_agent_expires && (
+                                    <ErrorMessage
+                                      text={errors.stick_agent_expires.message}
+                                    />
+                                  )}
+                                </div>
+                              )}
                               {(watch().sticky_agent_enable == true ||
                                 watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
-                                    <div className="formLabel">
-                                      <Tippy content="Timout for the sticky agent and return to normal routing">
-                                        <label className="formItemDesc">
-                                          Timeout(Sec.){" "}
-                                        </label>
-                                      </Tippy>
-                                    </div>
-                                    <input
-                                      type="number"
-                                      name="forward_to"
-                                      className="formItem"
-                                      {...register(
-                                        "sticky_agent_timeout",
-                                        rangeValidator(1, 99), {
-                                        requiredValidator
-                                      }
-                                      )}
-                                    />
-                                    {errors.stick_agent_expires && (
-                                      <ErrorMessage
-                                        text={errors.stick_agent_expires.message}
-                                      />
-                                    )}
+                                <div className="col-3">
+                                  <div className="formLabel">
+                                    <label className="formItemDesc">
+                                      Agent Type
+                                    </label>
                                   </div>
-                                )}
+                                  <select
+                                    className="formItem"
+                                    name=""
+                                    id="selectFormRow"
+                                    {...register("stick_agent_type")}
+                                  >
+                                    <option selected="" value="last_spoken">
+                                      Last Spoken
+                                    </option>
+                                    <option value="longest_time">
+                                      Longest Time
+                                    </option>
+                                  </select>
+                                </div>
+                              )}
+                              {(watch().sticky_agent_enable == true ||
+                                watch().sticky_agent_enable == "true") && (
+                                <div className="col-3">
+                                  <div className="formLabel">
+                                    <Tippy content="Timout for the sticky agent and return to normal routing">
+                                      <label className="formItemDesc">
+                                        Timeout(Sec.){" "}
+                                      </label>
+                                    </Tippy>
+                                  </div>
+                                  <input
+                                    type="number"
+                                    name="forward_to"
+                                    className="formItem"
+                                    {...register(
+                                      "sticky_agent_timeout",
+                                      rangeValidator(1, 99),
+                                      {
+                                        requiredValidator,
+                                      }
+                                    )}
+                                  />
+                                  {errors.stick_agent_expires && (
+                                    <ErrorMessage
+                                      text={errors.stick_agent_expires.message}
+                                    />
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -773,10 +843,11 @@ const DidConfig = () => {
                           <div className="col-6">
                             <div className="row">
                               <div
-                                className={`col-${watch().spam_filter_type === "3"
-                                  ? "4 pe-1 ms-auto"
-                                  : "12"
-                                  }`}
+                                className={`col-${
+                                  watch().spam_filter_type === "3"
+                                    ? "4 pe-1 ms-auto"
+                                    : "12"
+                                }`}
                               >
                                 {watch().spam_filter_type != "1" && (
                                   <div className="formLabel">
@@ -924,12 +995,17 @@ const DidConfig = () => {
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Missed Call</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Select in which medium you want to receive missed call notification
+                              Select in which medium you want to receive missed
+                              call notification
                             </label>
                           </div>
                           <div className="col-6">
                             <div className="row">
-                              <div className={`col-${watch().missed_call == 'disabled' ? '12' : '6'}`}>
+                              <div
+                                className={`col-${
+                                  watch().missed_call == "disabled" ? "12" : "6"
+                                }`}
+                              >
                                 <select
                                   className="formItem"
                                   defaultValue="disabled"
@@ -941,25 +1017,27 @@ const DidConfig = () => {
                                   <option value="sms">SMS</option>
                                 </select>
                               </div>
-                              {watch().missed_call == 'sms' && <div className={`col-6`}>
-                                <input
-                                  type="number"
-                                  className="formItem"
-                                  {...register(
-                                    "missed_call_sms",
-                                    ...noSpecialCharactersValidator,
-                                  )}
-                                />
-                              </div>}
-                              {watch().missed_call == 'email' && <div className={`col-6`}>
-                                <input
-                                  type="email"
-                                  className="formItem"
-                                  {...register(
-                                    "missed_call_email",
-                                  )}
-                                />
-                              </div>}
+                              {watch().missed_call == "sms" && (
+                                <div className={`col-6`}>
+                                  <input
+                                    type="number"
+                                    className="formItem"
+                                    {...register(
+                                      "missed_call_sms",
+                                      ...noSpecialCharactersValidator
+                                    )}
+                                  />
+                                </div>
+                              )}
+                              {watch().missed_call == "email" && (
+                                <div className={`col-6`}>
+                                  <input
+                                    type="email"
+                                    className="formItem"
+                                    {...register("missed_call_email")}
+                                  />
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>

@@ -380,6 +380,7 @@ function Navbar() {
                             "/port-number-edit",
                             "/did-listing",
                             "/management-get-did",
+                            "/number-for-ai",
                           ])
                             ? "true"
                             : "false"
@@ -400,6 +401,7 @@ function Navbar() {
                           "/port-number-edit",
                           "/did-listing",
                           "/management-get-did",
+                          "/number-for-ai",
                         ])
                           ? "show"
                           : ""
@@ -424,6 +426,15 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
+                               <li className="tabItem">
+                                  <NavLink
+                                    to="/number-for-ai"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">Number for AI</div>
+                                  </NavLink>
+                                </li>
                             {checkViewSidebar(
                               ["Number Management", "Port"],
                               permissions,

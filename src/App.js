@@ -868,6 +868,7 @@ function App() {
           <Route path="/all-users" element={<AllUser />} />
           <Route path="/ai-knowledge-base" element={<AiKnowledgeBase />} />
           <Route path="/ai-phone-number" element={<AiPhoneNumber />} />
+          <Route path="/number-for-ai" element={<AiPhoneNumber />} />
           {/* --------------- ai path end */}
 
           {/* WebRtc path start */}
