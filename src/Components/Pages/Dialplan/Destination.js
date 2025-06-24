@@ -31,7 +31,7 @@ function Destination() {
           setLoading(false);
         } else {
           setLoading(false);
-          navigate("/");
+          // navigate("/");
         }
         // if (domainData.status) {
         //   setDomain(

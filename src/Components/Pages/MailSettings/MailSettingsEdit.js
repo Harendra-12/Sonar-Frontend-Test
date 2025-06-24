@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   generalGetFunction,
   generalPutFunction,
@@ -48,7 +48,7 @@ const MailSettingsEdit = ({
           setLoading(false);
         } else {
           setLoading(false);
-          navigate("/");
+          // navigate("/");
         }
       };
 

@@ -119,7 +119,7 @@ const RingGroupAdd = () => {
             setValue("ring_back", uploadedMusic.id);
           }
         } else {
-          navigate("/");
+          // navigate("/");
         }
       }
       getData();

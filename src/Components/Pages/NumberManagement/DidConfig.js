@@ -117,7 +117,7 @@ const DidConfig = () => {
             setValue("hold_music", uploadedMusic.id);
           }
         } else {
-          navigate("/");
+          // navigate("/");
         }
       }
       getData();
@@ -126,7 +126,7 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
-  
+
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
