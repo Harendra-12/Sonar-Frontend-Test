@@ -61,7 +61,14 @@ function GoConferenceSocket() {
 
             socket.onmessage = (event) => {
                 const parsedData = JSON.parse(event.data);
-                console.log(parsedData);
+                switch (parsedData.action) {
+                    case "handRaise":
+                        dispatch({ type: "SET_HAND_RAISE", handRaises: parsedData });
+                        break;
+                    default:
+                        console.log("Unknown action:", parsedData);
+                        break;
+                }
             }
 
             socket.onerror = (err) => {
