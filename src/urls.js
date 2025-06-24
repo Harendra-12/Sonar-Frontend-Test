@@ -9,5 +9,7 @@ export const api_url = {
     FCAMPAIGN_CDR_GRAPH_REPORT: (hours, start_date, end_date) => `fcampaign/cdr-report?hours=${hours}&start_date=${start_date}&end_date=${end_date}`,
     MOVE_TO_TRASH: `/move-to-trash`,
     EMAIL_STATUS: `email-status`,
-    GET_EMAIL_LABELS: `get-labels`
+    GET_EMAIL_LABELS: `get-labels`,
+    GET_EMAIL_BY_UID: (payload) => `get-emails-by-uid?type=${payload?.type}&uid=${payload?.uid}`,
+    DOWNLOAD_MAIL_ATACHMENT: (payload) => `download-attachment?type=${payload?.type}&uid=${payload?.uid}`
 }

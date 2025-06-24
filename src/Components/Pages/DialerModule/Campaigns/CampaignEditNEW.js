@@ -281,8 +281,8 @@ function CampaignEditNEW() {
         active_hours: editState.active_hours,
         ...(watch().active_hours ?
           {
-            start_date: editState.start_date.replace(" ", "T"),
-            end_date: editState.end_date.replace(" ", "T")
+            start_date: editState?.scheduler_info[0]?.start_date?.replace(" ", "T"),
+            end_date: editState?.scheduler_info[0]?.end_date?.replace(" ", "T")
           } : ""),
         timezone: editState.timezone,
       };
@@ -395,7 +395,7 @@ function CampaignEditNEW() {
       toast.error("Please select at least one did");
       return;
     }
-    if (matchIdAgent.length === 0) {
+    if (matchIdAgent?.length === 0 && selectedAgent?.length == 0) {
       toast.error("Please select at least one agent");
       return
     }
@@ -411,17 +411,43 @@ function CampaignEditNEW() {
     }
 
     setLoading(true);
+    delete data?.start_date
+    delete data?.end_date
+    const isSchedulerInfoSelected = schedulerInfo.filter(day => day.status === true);
+
+    const startDateTime = watch().start_date
+      ? `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`
+      : null;
+
+    const endDateTime = watch().end_date
+      ? `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`
+      : null;
+
     const payload = {
       ...data,
       business_numbers: selectedItems,
       account_id: account.account_id,
       status: editState.status,
       user_id: selectedAgent,
-      ...(watch().active_hours ? {
-        scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })),
-        start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
-        end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`
-      } : {}),
+      ...(watch().active_hours
+        ? {
+          scheduler_info:
+            isSchedulerInfoSelected?.length > 0
+              ? isSchedulerInfoSelected?.map(day => ({
+                ...day,
+                start_time: formatTimeInHHMMSS(day?.start_time),
+                end_time: formatTimeInHHMMSS(day?.end_time),
+                ...(startDateTime && { start_date: startDateTime }),
+                ...(endDateTime && { end_date: endDateTime }),
+              }))
+              : [
+                {
+                  ...(startDateTime && { start_date: startDateTime }),
+                  ...(endDateTime && { end_date: endDateTime }),
+                },
+              ],
+        }
+        : {}),
     };
 
     const apiData = await generalPutFunction(
@@ -1031,7 +1057,7 @@ function CampaignEditNEW() {
                                               <input
                                                 type="datetime-local"
                                                 className="formItem"
-                                                {...register("start_date", { ...requiredValidator })}
+                                                {...register("start_date")}
                                                 min={new Date().toISOString().slice(0, 16)}
                                               />
                                             </div>
@@ -1053,7 +1079,7 @@ function CampaignEditNEW() {
                                               <input
                                                 type="datetime-local"
                                                 className="formItem"
-                                                {...register("end_date", { ...requiredValidator })}
+                                                {...register("end_date")}
                                                 min={watch().start_date}
                                               />
                                             </div>

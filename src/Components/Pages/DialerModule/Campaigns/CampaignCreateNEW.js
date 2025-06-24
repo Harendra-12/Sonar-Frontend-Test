@@ -168,7 +168,7 @@ function CampaignCreateNEW() {
       toast.error("Please select at least one did");
       return
     }
-    if (selectedAgent.length === 0) {
+    if (selectedAgent?.length === 0) {
       toast.error("Please select at least one agent");
       return
     }
@@ -185,18 +185,44 @@ function CampaignCreateNEW() {
 
     const isChangeInSchedulerInfo = schedulerInfo?.find((data) => data?.status === true)
     setLoading(true);
-    const payload = {
-      ...data,
-      business_numbers: selectedItems,
-      account_id: account.account_id,
-      status: "Scheduled",
-      user_id: selectedAgent,
-      ...(watch().active_hours ? {
-        scheduler_info: schedulerInfo.filter(day => day.status === true).map(day => ({ ...day, start_time: formatTimeInHHMMSS(day.start_time), end_time: formatTimeInHHMMSS(day.end_time) })),
-        start_date: `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`,
-        end_date: `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`
-      } : {}),
-    };
+    delete data?.start_date
+    delete data?.end_date
+    const isSchedulerInfoSelected = schedulerInfo.filter(day => day.status === true);
+    
+        const startDateTime = watch().start_date
+          ? `${watch().start_date.split("T")[0]} ${formatTimeInHHMMSS(watch().start_date.split("T")[1])}`
+          : null;
+    
+        const endDateTime = watch().end_date
+          ? `${watch().end_date.split("T")[0]} ${formatTimeInHHMMSS(watch().end_date.split("T")[1])}`
+          : null;
+    
+        const payload = {
+          ...data,
+          business_numbers: selectedItems,
+          account_id: account.account_id,
+          status: "Scheduled",
+          user_id: selectedAgent,
+          ...(watch().active_hours
+            ? {
+              scheduler_info:
+                isSchedulerInfoSelected?.length > 0
+                  ? isSchedulerInfoSelected?.map(day => ({
+                    ...day,
+                    start_time: formatTimeInHHMMSS(day?.start_time),
+                    end_time: formatTimeInHHMMSS(day?.end_time),
+                    ...(startDateTime && { start_date: startDateTime }),
+                    ...(endDateTime && { end_date: endDateTime }),
+                  }))
+                  : [
+                    {
+                      ...(startDateTime && { start_date: startDateTime }),
+                      ...(endDateTime && { end_date: endDateTime }),
+                    },
+                  ],
+            }
+            : {}),
+        };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
       setLoading(false);
