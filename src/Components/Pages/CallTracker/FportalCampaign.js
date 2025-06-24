@@ -13,8 +13,10 @@ function FportalCampaign() {
   const navigate = useNavigate();
 
   const [allFCampaigns, setAllFCampaigns] = useState([]);
-  const [CampaignDetailsData, setCampaignDetailsData] = useState()
+  const [CampaignDetailsData, setCampaignDetailsData] = useState();
   const [loading, setLoading] = useState(false);
+  const [modalTask, setModalTask] = useState("")
+  const [activateInactivateLoading, setActivateInactivateLoading] = useState(null)
   const [refreshState, setRefreshState] = useState(false)
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -54,6 +56,7 @@ function FportalCampaign() {
 
   // Handle Delete Buyer
   const handleDeleteConfig = async (id) => {
+    setModalTask("delete")
     const userConfirmed = await confirm();
     if (userConfirmed) {
       setLoading(true);
@@ -88,10 +91,12 @@ function FportalCampaign() {
     const response = await generalGetFunction(`fcampaign/start/${id}`);
     if (response?.status) {
       toast?.success(response?.message)
+      setActivateInactivateLoading(null)
       const shouldLoad = false
       getAllCampaigns(shouldLoad)
     } else {
       // toast.error(response.message);
+      setActivateInactivateLoading(null)
     }
   }
 
@@ -101,8 +106,23 @@ function FportalCampaign() {
       toast?.success(response?.message)
       const shouldLoad = false
       getAllCampaigns(shouldLoad)
+      setActivateInactivateLoading(null)
     } else {
       // toast.error(response.message);
+      setActivateInactivateLoading(null)
+    }
+  }
+
+  const handleActivateInActivateClicked = async (campaign) => {
+    setModalTask(campaign?.status === "active" ? "Inactivate" : "Activate")
+    const userConfirmed = await confirm();
+    if (userConfirmed) {
+      setActivateInactivateLoading(campaign?.id)
+      if (campaign?.status === "active") {
+        inactivateFCampaign(campaign?.id)
+      } else {
+        activateFCampaign(campaign?.id)
+      }
     }
   }
 
@@ -181,6 +201,7 @@ function FportalCampaign() {
                       <table>
                         <thead>
                           <tr>
+                            <th>Activate/Inactivate</th>
                             <th>Status</th>
                             <th>Name</th>
                             <th>Phone Code</th>
@@ -201,10 +222,20 @@ function FportalCampaign() {
                               allFCampaigns?.map((campaign, index) => (
                                 <tr key={index}>
                                   <td>
-                                    <div className="d-flex align-items-center justify-content-start ">
-                                      <div className="phone-call">
-                                        <i className={`fa-solid fa-${campaign?.status == 'active' ? 'play' : 'pause'}`} />
-                                      </div>
+                                    <div className="phone-call">
+                                      <i
+                                        className={`fa-solid fa-${campaign?.status == 'active' ? 'play' : 'pause'}`}
+                                        style={{
+                                          cursor: activateInactivateLoading === campaign?.id ? 'not-allowed' : 'pointer',
+                                          opacity: activateInactivateLoading === campaign?.id ? 0.5 : 1,
+                                          pointerEvents: activateInactivateLoading === campaign?.id ? 'none' : 'auto'
+                                        }}
+                                        onClick={() => handleActivateInActivateClicked(campaign)}
+                                      />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="d-flex align-items-center justify-content-start">
                                       <div>
                                         <span className="ms-1">{campaign?.status}</span>
                                       </div>
@@ -359,8 +390,11 @@ function FportalCampaign() {
                                         <i className="fa-solid fa-ellipsis-vertical" />
                                       </div>
                                       <ul className="dropdown-menu actionBtnDropdowns">
-                                        <li className='dropdown-item' onClick={() => activateFCampaign(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Activate</div></li>
-                                        <li className='dropdown-item' onClick={() => inactivateFCampaign(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Inactivate</div></li>
+                                        {campaign?.status == 'active' ?
+                                          <li className='dropdown-item' onClick={() => handleActivateInActivateClicked(campaign)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Inactivate</div></li>
+                                          :
+                                          <li className='dropdown-item' onClick={() => handleActivateInActivateClicked(campaign)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Activate</div></li>
+                                        }
                                         <li className='dropdown-item' onClick={() => handleConfigEdit(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>
                                         <li className='dropdown-item' onClick={() => handleDeleteConfig(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>
                                       </ul>
@@ -387,7 +421,7 @@ function FportalCampaign() {
             </div>
           </div>
         </div>
-        <ModalComponent task={"delete"} reference={"Campaign"} />
+        <ModalComponent task={modalTask} reference={"Campaign"} />
       </section>
     </main>
 
