@@ -98,7 +98,7 @@ const EmailList = ({
               </thead>
               <tbody>
                 {allMails?.emails?.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={index} className={item?.status_flags?.seen ? `seen-message` : `unseen-message`}>
                     <td
                       onClick={() => {
                         setCheckedMail((prev) => {
