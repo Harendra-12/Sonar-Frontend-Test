@@ -17,6 +17,7 @@ import NewMail from "./mailBox/NewMail";
 import { toast } from "react-toastify";
 import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
@@ -149,7 +150,7 @@ function Email({ selectedMail }) {
   //   }
   // };
 
-  const fetchMailCategory = async (shouldLoad, id) => {
+  const fetchMailCategory = async (shouldLoad, id, isInitial) => {
     if (shouldLoad) {
       setAllMailLoading(true)
     }
@@ -157,6 +158,8 @@ function Email({ selectedMail }) {
     const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS(id));
     if (result?.status) {
       setAllCategory(result?.data);
+      if (isInitial)
+        fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
       if (activeCategory) {
         setActiveCategory(activeCategory)
       } else {
@@ -196,8 +199,8 @@ function Email({ selectedMail }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
-      fetchMailCategory(true, selectedFromMailAddressId)
+      fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
+      fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -212,7 +215,7 @@ function Email({ selectedMail }) {
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
       fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
-      fetchMailCategory(false, selectedFromMailAddressId)
+      fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -263,20 +266,15 @@ function Email({ selectedMail }) {
   // all useEffect stuff start here ===============
   useEffect(() => {
     const shouldLoad = true;
-    // fetchMailCategory(shouldLoad)
     setRefreshState(true);
     fetchData(shouldLoad);
-    // const mailType = "INBOX"
-    // fetchAllMail(mailType, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const shouldLoad = true;
-    const mailType = "INBOX";
     if (availableFromMailAddresses?.length > 0) {
-      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id)
-      fetchAllMail(mailType, true, "", availableFromMailAddresses[0]?.id);
+      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
+
       setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
     }
   }, [availableFromMailAddresses])
@@ -490,7 +488,7 @@ function Email({ selectedMail }) {
 
   const handleMailFromAddressChange = (event) => {
     const shouldLoad = false;
-    fetchMailCategory(shouldLoad, event?.target?.value)
+    fetchMailCategory(shouldLoad, event?.target?.value, false)
     fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
   }
@@ -514,7 +512,7 @@ function Email({ selectedMail }) {
               setLoading={setLoading}
               refreshApi={() => {
                 fetchAllMail(activeCategory?.value, "", "", selectedFromMailAddressId)
-                fetchMailCategory(false, selectedFromMailAddressId)
+                fetchMailCategory(false, selectedFromMailAddressId, false)
                 fetchData()
               }}
             />
@@ -547,15 +545,15 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button> */}
-                     <div className="d-flex align-items-center justify-content-end gap-2">
-                          <select className="formItem"
-                      onChange={(event) => handleMailFromAddressChange(event)}
-                    >
-                      {availableFromMailAddresses?.map((item) => {
-                        return (<option value={item?.id}>{item?.mail_from_address}</option>)
-                      })}
+                    <div className="d-flex align-items-center justify-content-end gap-2">
+                      <select className="formItem"
+                        onChange={(event) => handleMailFromAddressChange(event)}
+                      >
+                        {availableFromMailAddresses?.map((item) => {
+                          return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                        })}
 
-                    </select>
+                      </select>
                       <button
                         type="button"
                         class=" panelButton static text-nowrap text-white "
@@ -569,15 +567,15 @@ function Email({ selectedMail }) {
                         {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
                           <i class="fa-regular fa-star" ></i>
                         </button> */}
-                        <button className="clearButton2" 
+                        <button className="clearButton2"
                           style={{
-                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
-                        }}
-                        onClick={() => {
-                          if (!loadingForActions?.length > 0)
-                            handleMultipleDelete()
-                        }
-                        }
+                            opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                          }}
+                          onClick={() => {
+                            if (!loadingForActions?.length > 0)
+                              handleMultipleDelete()
+                          }
+                          }
                         >
                           <i class="fa-solid fa-trash"></i>
                         </button>
@@ -598,7 +596,7 @@ function Email({ selectedMail }) {
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
                     </button> */}
                     {/* <h5 className="card-title mb-0 text_dark"> */}
-                      {/* <i
+                    {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -608,7 +606,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                      {/* <i
+                    {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -619,7 +617,7 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i>{" "} */}
-                      {/* <i
+                    {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -634,7 +632,7 @@ function Email({ selectedMail }) {
                   </div>
                   <div
                     className="card-body"
-                    style={{ height: "calc(100vh - 140px)" , padding: '10px'}}
+                    style={{ height: "calc(100vh - 140px)", padding: '10px' }}
                   >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
@@ -781,6 +779,8 @@ function Email({ selectedMail }) {
                             activeList={activeList}
                           />
                         )}
+
+                        {!showMailList && !mailReplay && !showNewMail && <ThreeDotedLoader />}
                       </div>
                       {/* {activeList === "sent" && (
                         <div className="table_card">
@@ -951,7 +951,7 @@ function Email({ selectedMail }) {
                             </div>
                           </div>
 
-                               {/* <div className="row">
+                          {/* <div className="row">
                             <div className="col-12">From</div>
                             <div className="col-12">
                               <input
