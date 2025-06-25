@@ -528,16 +528,16 @@ function Email({ selectedMail }) {
                     style={{ borderColor: "var(--me-border1)" }}
                   >
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    <select
+                    {/* <select
                       onChange={(event) => handleMailFromAddressChange(event)}
                     >
                       {availableFromMailAddresses?.map((item) => {
                         return (<option value={item?.id}>{item?.mail_from_address}</option>)
                       })}
 
-                    </select>
+                    </select> */}
                     {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -546,9 +546,49 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
-                    </button>
+                    </button> */}
+                     <div className="d-flex align-items-center justify-content-end gap-2">
+                          <select className="formItem"
+                      onChange={(event) => handleMailFromAddressChange(event)}
+                    >
+                      {availableFromMailAddresses?.map((item) => {
+                        return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                      })}
 
-                    <button
+                    </select>
+                      <button
+                        type="button"
+                        class=" panelButton static text-nowrap text-white "
+                        onClick={() => {
+                          setIsAdvanceFilterClicked(true)
+                        }}
+                      >
+                        <i class="fa-regular fa-filter me-2"></i> Advance Filter
+                      </button>
+                      <div className="d-flex align-items-center justify-content-end gap-2">
+                        {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
+                          <i class="fa-regular fa-star" ></i>
+                        </button> */}
+                        <button className="clearButton2" 
+                          style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleDelete()
+                        }
+                        }
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                        {/* <button className="clearButton2" onClick={() => handleMultipleView()}>
+                          <i class="fa-solid fa-envelope-open" ></i>
+                        </button> */}
+                      </div>
+
+                    </div>
+
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -556,8 +596,8 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
-                    </button>
-                    <h5 className="card-title mb-0 text_dark">
+                    </button> */}
+                    {/* <h5 className="card-title mb-0 text_dark"> */}
                       {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
@@ -568,7 +608,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                      <i
+                      {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -578,7 +618,7 @@ function Email({ selectedMail }) {
                             handleMultipleDelete()
                         }
                         }
-                      ></i>{" "}
+                      ></i>{" "} */}
                       {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
@@ -590,15 +630,25 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i> */}
-                    </h5>
+                    {/* </h5> */}
                   </div>
                   <div
                     className="card-body"
-                    style={{ height: "calc(100vh - 135px)" }}
+                    style={{ height: "calc(100vh - 140px)" , padding: '10px'}}
                   >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
-                        <div className="card-body ps-0">
+                        <div className="card-body ps-0 pe-2 pt-0">
+                          <button
+                            type="button"
+                            class="btn composeBtn w-100 mb-2"
+                            onClick={() => {
+                              setShowNewMail(true);
+                              setMailReplay(false);
+                            }}
+                          >
+                            <i class="fa-regular fa-envelope me-2"></i> Compose
+                          </button>
                           <ul>
                             {allCategory?.map((category) => {
                               const iconClass = getCategoryIconClass(category?.label);
@@ -610,12 +660,12 @@ function Email({ selectedMail }) {
                                   onClick={() => handleListingClick(category)}
                                 >
                                   {" "}
-                                  <p className={`mb-0 d-flex align-items-center ${colorClass}`}>
+                                  <p className={`mb-0 d-flex align-items-center `}>
                                     <i className={`${iconClass} me-2`}></i>{" "}
                                     {category?.label}
                                   </p>
                                   <div className="">
-                                    <span style={{ color: 'black' }}>{category?.totalMessages}/{category?.unseenMessages}</span>
+                                    <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
                                   </div>
                                 </button>
                               </li>)
@@ -852,27 +902,68 @@ function Email({ selectedMail }) {
         </section>
         {
           isAdvanceFilterClicked && (
-            <div
-              className="popup loggedPopupSm"
-              style={{ backgroundColor: "#000000e0" }}
-            >
+
+            <div className="popup">
               <div className="container h-100">
-                <div className="row h-100 justify-content-center align-items-center">
+                <div className="row h-100 justify-content-center align-items-center ">
+                  <div className="row content col-xl-4 col-md-5 px-0">
+                    <div className="col-12">
 
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className=" ">
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>From</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("from")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Sender email"
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>To</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("to")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Recipient email"
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>Subject</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("subject")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Subject"
+                              />
+                            </div>
+                          </div>
 
-                      <div className="row">
-                        <div className="col-4">From</div>
-                        <div className="col-4">
-                          <input
-                            {...register("from")}
-                            className="form-control"
-                            type="text"
-                            placeholder="Sender email"
-                          />
-                        </div>
-                      </div>
+                               {/* <div className="row">
+                            <div className="col-12">From</div>
+                            <div className="col-12">
+                              <input
+                                {...register("from")}
+                                className="form-control"
+                                type="text"
+                                placeholder="Sender email"
+                              />
+                            </div>
+                          </div>
+
+                     
 
                       <div className="row mt-2">
                         <div className="col-4">To</div>
@@ -915,31 +1006,184 @@ function Email({ selectedMail }) {
                             type="date"
                           />
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-3 logoutPopup d-flex justify-content-center">
-                        <button
-                          type="submit"
-                          className="btn btn_info"
-                        >
-                          <span>Apply</span>
-                          <i className="fa-solid fa-filter ms-2"></i>
-                        </button>
+                          <div className="d-flex justify-content-end gap-2 mt-4">
+                            <button
+                              type="button"
+                              className="panelButton m-0"
+                              
+                            >
+                              <span className="text">Apply</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-filter"></i>
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              className="panelButton gray m-0 float-end"
+                              onClick={() => {
+                                setIsAdvanceFilterClicked(false);
+                              }}
+                            >
+                              <span className="text">Cancel</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-xmark"></i>
+                              </span>
+                            </button>
+                          </div>
 
-                        <button
-                          type="submit"
-                          className="btn btn_info ms-3"
-                          onClick={() => setIsAdvanceFilterClicked(false)}
-                        >
-                          <span>Cancel</span>
-                          <i className="fa-solid fa-times ms-2"></i>
-                        </button>
-                      </div>
+
+
+                        </div>
+                      </form>
                     </div>
-                  </form>
+
+                  </div>
                 </div>
               </div>
             </div>
+
+            //             <div
+            //               className="popup loggedPopupSm"
+            //               style={{ backgroundColor: "#000000e0" }}
+            //             >
+            //               <div className="container h-100">
+            //                 <div className="row h-100 ">
+
+            //                   <form onSubmit={handleSubmit(onSubmit)} className="col-12 ">
+            //                     <div className=" content col-5 ">
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>From</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("from")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Sender email"
+            //                           />
+            //                         </div>
+            //                       </div>
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>To</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("to")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Recipient email"
+            //                           />
+            //                         </div>
+            //                       </div>
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>Subject</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("subject")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Subject"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            //                       <div className="row">
+            //                         <div className="col-12">From</div>
+            //                         <div className="col-12">
+            //                           <input
+            //                             {...register("from")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Sender email"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            // {/* 
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">To</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("to")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Recipient email"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">Subject</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("subject")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Subject"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">Date within</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("since")}
+            //                             className="form-control"
+            //                             type="date"
+            //                           />
+            //                         </div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("before")}
+            //                             className="form-control"
+            //                             type="date"
+            //                           />
+            //                         </div>
+            //                       </div> */}
+
+            //                       <div className="mt-3 logoutPopup d-flex justify-content-center">
+            //                         <button
+            //                           type="submit"
+            //                           className="btn btn_info"
+            //                         >
+            //                           <span>Apply</span>
+            //                           <i className="fa-solid fa-filter ms-2"></i>
+            //                         </button>
+
+            //                         <button
+            //                           type="submit"
+            //                           className="btn btn_info ms-3"
+            //                           onClick={() => setIsAdvanceFilterClicked(false)}
+            //                         >
+            //                           <span>Cancel</span>
+            //                           <i className="fa-solid fa-times ms-2"></i>
+            //                         </button>
+            //                       </div>
+            //                     </div>
+            //                   </form>
+            //                 </div>
+            //               </div>
+            //             </div>
+
+
+
+
+
+
+
+
+
+
+
           )
         }
       </main>

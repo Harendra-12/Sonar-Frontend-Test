@@ -565,7 +565,7 @@
 }
 .ellipsisText300 {
     display: block;
-    width: 300px;
+    max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -1924,9 +1924,14 @@ input[type=number] {
     color: #ff6600;
 }
 
+.main-mail-content {
+    word-break: break-word;
+}
+
 .mail_leftbar {
     max-width: 200px;
     width: 100%;
+    min-width: 170px;
     /* background: #f6f6f6; */
     border: 0;
     height: 100%;
@@ -1953,16 +1958,50 @@ input[type=number] {
     background: transparent;
 }
 
+.mail_list p,
+.mail_list span {
+    color: var(--color-subtext);
+}
+
 .mail_leftbar .mail_list:hover {
     color: #0411a1;
     background-color: rgba(106, 118, 137, 0.188);
 }
 
 .mail_leftbar .mail_list.active {
-    /* color: #0016ff47; */
     color: var(--billing-icon);
-    background-color: rgba(106, 118, 137, 0.188);
-    box-shadow: rgba(0, 0, 0, .1) 0 0 10px;
+    background-color: var(--active-mail-list);
+    /* box-shadow: rgba(0, 0, 0, .1) 0 0 10px; */
+}
+
+.mail_table table tbody tr:nth-child(even) {
+    background-color: var(--table-even-bg);
+}
+
+.mail_leftbar .mail_list.active p,
+.mail_leftbar .mail_list.active span {
+    color: var(--active-mail-list-text);
+}
+
+tr.seen-message {
+    /* background: #b6d1e196 !important; */
+    background: var(--table-odd-color) !important;
+}
+
+tr.seen-message td,
+tr.seen-message td p {
+    color: #7d7d7d;
+    font-weight: 300 !important;
+}
+
+.composeBtn {
+    background: #5794d5;
+    color: #fff;
+}
+
+.composeBtn:hover {
+    background: #3f7ec0;
+    color: #fff;
 }
 
 .mail_table thead tr th {
@@ -1972,14 +2011,22 @@ input[type=number] {
     padding: 10px !important;
 }
 
+i.fa.fa-star {
+    color: #ff7800;
+}
+
 .mail_table tbody tr {
     border-bottom: 1px solid var(--me-border1);
 }
 
+.tableContainer.e.mail_table {
+    border: none !important;
+}
+
 .table_card {
     width: 100%;
-    background: rgba(75, 78, 99, 0.102);
-    padding: 20px;
+    background: var(--knowledge-leftinfo);
+    padding: 10px;
     border-radius: 10px;
     height: calc(100vh - 165px);
 }
@@ -2063,9 +2110,10 @@ input[type=number] {
     box-sizing: border-box !important;
     position: relative;
     display: block;
-    height: calc(100vh - 337px);
+    /* height: calc(100vh - 337px); */
     scrollbar-width: none;
     -ms-overflow-style: none;
+    flex: 1 auto;
 }
 
 .mail-info-footer {
