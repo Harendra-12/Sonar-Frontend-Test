@@ -22,9 +22,10 @@ const EmailList = ({
   setEntriesPerPage,
   setSearchInput,
   account,
-  slugPermissions
+  slugPermissions,
+  loadingForActions
 }) => {
-  
+  const [isCheckedAll, setIsCheckedAll] = useState(false)
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
 
@@ -44,19 +45,42 @@ const EmailList = ({
   };
 
   function formatDateString(inputDate) {
-  const date = new Date(inputDate);
+    const date = new Date(inputDate);
 
-  const options = {
-    weekday: 'short', 
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true 
+    const options = {
+      weekday: 'short',
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }
+    return date.toLocaleString('en-US', options).replace(',', '');
   }
-  return date.toLocaleString('en-US', options).replace(',', '');
-}
+
+  const handleAllCheck = () => {
+    setCheckedMail((prev) => {
+      const allChecked = allMails?.emails?.every(email =>
+        prev.some(checked => checked.uid === email.uid)
+      );
+      const updatedCheckedMail = allChecked
+        ? prev.filter(checked =>
+          !allMails.emails.some(email => email.uid === checked.uid)
+        )
+        : [
+          ...prev,
+          ...allMails.emails.filter(email =>
+            !prev.some(checked => checked.uid === email.uid)
+          )
+        ];
+
+      setIsCheckedAll(!allChecked);
+
+      return updatedCheckedMail;
+    });
+  };
+
 
   return (
     <>
@@ -104,7 +128,21 @@ const EmailList = ({
             <table>
               <thead>
                 <tr>
-                  <th>Select</th>
+                  <th>
+                    <div className="" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+                      <div>
+                        <input
+                          type="checkbox"
+                          checked={isCheckedAll}
+                          onClick={() => handleAllCheck()}
+                        />
+                      </div>
+                      <div>
+                        Select
+                      </div>
+                    </div>
+
+                  </th>
                   <th>{mailType === "sent" ? "To" : "From"}</th>
                   <th>Subject</th>
                   <th>{mailType === "sent" ? "Sent" : "Received"}</th>
@@ -113,7 +151,11 @@ const EmailList = ({
               </thead>
               <tbody>
                 {allMails?.emails?.map((item, index) => (
-                  <tr key={index} className={item?.status_flags?.seen ? `seen-message` : `unseen-message`}>
+                  <tr key={index} className={`
+                    ${item?.status_flags?.seen ? 'seen-message' : 'unseen-message'} 
+                    ${item?.status_flags?.starred ? 'starred-message' : 'unstarred-message'}
+                  `.trim()}
+                  >
                     <td
                       onClick={() => {
                         setCheckedMail((prev) => {
@@ -184,15 +226,34 @@ const EmailList = ({
                     <td>
                       <i
                         class={item?.status_flags?.starred ? `fa fa-star me-2` : `fa-regular fa-star me-2`}
-                        onClick={() => handleStarrClicked(item)}
-                      ></i>
-                      <i class={item?.status_flags?.seen ? `fa-solid fa-envelope-open me-2` : `fa-solid fa-envelope me-2`}
-                        onClick={() => handleUnSeenMail(item)}
+                        style={{
+                          opacity: loadingForActions?.some(i => i.uid === item.uid) ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.some(i => i.uid === item.uid))
+                            handleStarrClicked(item)
+                        }}
+                      >
+                      </i>
+                      <i
+                        class={item?.status_flags?.seen ? `fa-solid fa-envelope-open me-2` : `fa-solid fa-envelope me-2`}
+                        style={{
+                          opacity: loadingForActions?.some(i => i.uid === item.uid) ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.some(i => i.uid === item.uid))
+                            handleUnSeenMail(item)
+                        }}
                       ></i>
 
-                      <i class="fa-solid fa-trash me-4"
+                      <i
+                        class="fa-solid fa-trash me-4"
+                        style={{
+                          opacity: loadingForActions?.some(i => i.uid === item.uid) ? 0.5 : 1
+                        }}
                         onClick={() => {
-                          handleMailDelete(item)
+                          if (!loadingForActions?.some(i => i.uid === item.uid))
+                            handleMailDelete(item)
                         }}
                       ></i>
                     </td>
