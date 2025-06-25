@@ -57,6 +57,7 @@ function Members({
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
+  const chatButton = document.querySelector(".lk-chat-toggle");
   const handRaises = useSelector((state) => state.handRaises);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationText, setNotificationText] = useState(false);
@@ -510,6 +511,7 @@ function Members({
     handRaiseButton.setAttribute("data-lk-enabled", toggleHandRaise);
   }, [toggleHandRaise])
 
+  // Replace Microphone with Mute / Unmute
   useEffect(() => {
     if (microphoneButton) {
       const updateButtonText = () => {
@@ -534,6 +536,35 @@ function Members({
     }
   }, [microphoneButton, roomName]);
 
+  // Handle chat panel visibility based on chat button state
+  useEffect(() => {
+    const chatPanel = document.querySelector(".lk-chat");
+
+    if (!chatButton) return;
+
+    const toggleParticipants = () => {
+      const isEnabled = chatButton.getAttribute("aria-pressed") === "true";
+      // if chat is open and participants is showing → hide participants
+      if (showParticipants && isEnabled) {
+        chatPanel.style.right = '350px'
+      } else {
+        chatPanel.style.right = '0px'
+      }
+    };
+
+    // Observe attribute changes
+    const observer = new MutationObserver(toggleParticipants);
+    observer.observe(chatButton, { attributes: true, attributeFilter: ['aria-pressed'] });
+
+    // Also check immediately in case both are already active
+    toggleParticipants();
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [chatButton, showParticipants]);
+
+
   // Raise Hand Notification
   useEffect(() => {
     if (handRaises && handRaises.length > 0) {
@@ -555,6 +586,13 @@ function Members({
 
   return (
     <>
+      {!isConferenceCall && <style>
+        {`
+        .messageMeetingWrap .lk-chat {
+          display: none !important;
+        }
+      `}
+      </style>}
       {showNotification && <div className="NotificationBell">
         <i className="fa-solid fa-bell"></i>
         <div className="content">

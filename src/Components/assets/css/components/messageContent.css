@@ -1596,10 +1596,6 @@
     background: var(--me-body-bg2);
 }
 
-.messageMeetingWrap .lk-chat {
-    display: none !important;
-}
-
 .showHideColumn .dropdown-menu {
     max-height: 300px;
     overflow-y: auto;
