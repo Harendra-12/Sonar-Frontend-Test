@@ -20,7 +20,8 @@ import { useForm } from "react-hook-form";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
-  const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false)
+  const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
+  const [loadingForActions, setLoadingForActions] = useState([])
   const [refreshState, setRefreshState] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
@@ -166,7 +167,7 @@ function Email({ selectedMail }) {
       // navigate("/");
     }
   };
-  
+
   // get all mails
   const fetchAllMail = async (mail_type, shouldLoad, filterData) => {
     if (shouldLoad) {
@@ -193,7 +194,6 @@ function Email({ selectedMail }) {
   };
 
   const deleteMail = async (payload) => {
-    setAllMailLoading(true);
     setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
@@ -212,8 +212,8 @@ function Email({ selectedMail }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, true)
-      fetchMailCategory(true)
+      fetchAllMail(activeCategory?.value, false)
+      fetchMailCategory(false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -234,36 +234,6 @@ function Email({ selectedMail }) {
     } else {
       setAllMailLoading(false);
     }
-  }
-
-  const handleShowMail = async (mail) => {
-    setLoading(true)
-    const shouldLoad = true
-    mailStatusApiCall(shouldLoad, {
-      uid: [mail?.uid],
-      action: "seen",
-      type: activeCategory?.value
-    })
-    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
-  };
-
-  const handleUnSeenMail = (mail) => {
-    const shouldLoad = true
-    mailStatusApiCall(shouldLoad, {
-      uid: [mail?.uid],
-      action: "unseen",
-      type: activeCategory?.value
-    })
-  }
-
-  const handleStarrClicked = (item) => {
-    const shouldLoad = true;
-    mailStatusApiCall(shouldLoad, {
-      uid: [item?.uid],
-      action: item?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
-    })
-
   }
 
   const fetchData = async (shouldLoad) => {
@@ -362,40 +332,111 @@ function Email({ selectedMail }) {
   };
 
   const handleMailDelete = (item) => {
+    setLoadingForActions(prev => [...prev, item]);
     deleteMail({
       uid: [item?.uid?.toString()],
       type: activeCategory?.value,
       action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== item.uid)
+      )
+    });
   }
 
   const handleMultipleDelete = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
     deleteMail({
       uid: listOfMessageId,
       type: activeCategory?.value,
       action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
   }
 
   const handleMultipleView = () => {
+    debugger
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
-    const shouldLoad = true;
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
-      action: "seen",
+      action: checkedMail[0]?.status_flags?.seen ? "unseen" : "seen",
       type: activeCategory?.value
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
   }
 
   const handleMultipleStarred = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
-    const shouldLoad = true;
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
-      action: "starred",
+      action: checkedMail[0]?.status_flags?.starred ? "unstarred" : "starred",
       type: activeCategory?.value
-    })
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
+  }
+
+  const handleShowMail = async (mail) => {
+    setLoadingForActions(prev => [...prev, mail]);
+    setLoading(true)
+    const shouldLoad = false
+    mailStatusApiCall(shouldLoad, {
+      uid: [mail?.uid],
+      action: mail?.status_flags?.seen ? "unseen" : "seen",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== mail?.uid)
+      )
+    });
+    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
+  };
+
+  const handleUnSeenMail = (mail) => {
+    setLoadingForActions(prev => [...prev, mail]);
+    const shouldLoad = false
+    mailStatusApiCall(shouldLoad, {
+      uid: [mail?.uid],
+      action: mail?.status_flags?.seen ? "unseen" : "seen",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== mail?.uid)
+      )
+    });
+  }
+
+  const handleStarrClicked = (item) => {
+    const shouldLoad = false;
+    setLoadingForActions(prev => [...prev, item]);
+    mailStatusApiCall(shouldLoad, {
+      uid: [item?.uid],
+      action: item?.status_flags?.starred ? "unstarred" : "starred",
+      type: activeCategory?.value
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem => actionItem.uid !== item.uid)
+      );
+    });
   }
 
   const downloadAllAtachment = (mail) => {
@@ -486,16 +527,37 @@ function Email({ selectedMail }) {
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
                     </button>
                     <h5 className="card-title mb-0 text_dark">
-                      <i class="fa-regular fa-star me-3"
-                        onClick={() => handleMultipleStarred()}
+                      <i
+                        class="fa-regular fa-star me-3"
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleStarred()
+                        }}
                       ></i>
                       <i
                         class="fa-solid fa-trash me-3"
-                        onClick={() => handleMultipleDelete()}
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleDelete()
+                        }
+                        }
                       ></i>{" "}
                       <i
                         class="fa-solid fa-envelope-open me-3"
-                        onClick={() => handleMultipleView()}
+                        style={{
+                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                        }}
+                        onClick={() => {
+                          if (!loadingForActions?.length > 0)
+                            handleMultipleView()
+                        }
+                        }
                       ></i>
                     </h5>
                   </div>
@@ -608,6 +670,7 @@ function Email({ selectedMail }) {
                             setSearchInput={setSearchInput}
                             account={account}
                             slugPermissions={slugPermissions}
+                            loadingForActions={loadingForActions}
                           />
                         )}
 
