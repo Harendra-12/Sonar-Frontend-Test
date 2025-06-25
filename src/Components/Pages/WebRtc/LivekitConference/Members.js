@@ -546,7 +546,7 @@ function Members({
       const isEnabled = chatButton.getAttribute("aria-pressed") === "true";
       // if chat is open and participants is showing → hide participants
       if (showParticipants && isEnabled) {
-        chatPanel.style.right = '350px'
+        chatPanel.style.right = '300px'
       } else {
         chatPanel.style.right = '0px'
       }
@@ -639,7 +639,7 @@ function Members({
           <ul className="noScrollbar">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
-                <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaise' : ''} `}>
+                <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaiseIcon' : ''} `}>
                   <div className="profileHolder">
                     <i className="fa-light fa-user"></i>
                   </div>

@@ -1145,3 +1145,22 @@ ul.lk-list.lk-chat-messages {
     border-color: var(--ui-accent) !important;
 
 }
+
+.handRaiseIcon {
+    position: relative;
+}
+
+.handRaiseIcon::before {
+    content: '\270B';
+    position: absolute;
+    top: 4px;
+    right: -27px;
+    font-size: 14px;
+    border: 1px solid #ff6800;
+    border-radius: 5px;
+    padding: 1px;
+}
+
+.lk-room-container .participantMemberList ul li {
+    border-bottom: 1px solid #857f7f38;
+}
