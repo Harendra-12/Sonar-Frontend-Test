@@ -6,6 +6,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { useSelector } from "react-redux";
 
 const CallHistory = () => {
   const [endDateFlag, setEndDateFlag] = useState(
@@ -24,6 +25,7 @@ const CallHistory = () => {
   const [refreshData, setRefreshData] = useState(0);
   const [linkCopy, setLinkCopy] = useState(null);
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+  const account = useSelector((state) => state.account);
 
   const audioRef = useRef(null);
 
@@ -84,8 +86,10 @@ const CallHistory = () => {
 
   function formatTimestampToDateTime(timestamp) {
     const date = new Date(timestamp);
+    const timeZone = account?.timezone?.name || "UTC"; // Use user's time zone or default to UTC
 
     return date.toLocaleString("en-GB", {
+      timeZone,
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -337,14 +341,14 @@ const CallHistory = () => {
                                       <td>
                                         {call?.call_cost?.combined_cost !=
                                           null && (
-                                          <>
-                                            {"$"}
-                                            {(
-                                              call?.call_cost?.combined_cost /
-                                              100
-                                            ).toFixed(2)}
-                                          </>
-                                        )}
+                                            <>
+                                              {"$"}
+                                              {(
+                                                call?.call_cost?.combined_cost /
+                                                100
+                                              ).toFixed(2)}
+                                            </>
+                                          )}
                                       </td>
                                       <td> {call?.call_id}</td>
                                       <td>
