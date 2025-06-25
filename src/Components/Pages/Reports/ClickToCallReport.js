@@ -2,17 +2,32 @@ import React, { useState } from 'react'
 import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import { Navigate } from 'react-router-dom';
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
+import ExportPopUp from '../WebRtc/ExportPopUp';
+import { useSelector } from 'react-redux';
+import Comments from '../WebRtc/Comments';
+import Duplicates from '../WebRtc/Duplicates';
 
 const ClickToCallReport = () => {
-    const [exportPopup, setExportPopup] = useState(false)
-    const [popUp, setPopUp] = useState(false)
-    const [selectedNumberToBlock, setSelectedNumberToBlock] = useState()
+    const [exportPopup, setExportPopup] = useState(false);
+    const [popUp, setPopUp] = useState(false);
+    const [selectedNumberToBlock, setSelectedNumberToBlock] = useState();
+    const [advanceSearch, setAdvanceSearch] = useState();
+    const [filteredKeys, setFilteredKeys] = useState([]);
+    const [filteredColumnForTable, setFilteredColumnForTable] = useState([]);
+    const [selectedCdr, setSelectedCdr] = useState("");
+    const [showComment, setShowComment] = useState(false);
+    const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false);
+    const [duplicatePopUpData, setDuplicatePopUpData] = useState({});
 
+    const [circularLoader, setCircularLoader] = useState(true);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [loading, setLoading] = useState(false);
     const [refreshState, setRefreshState] = useState(false);
     const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false)
+
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
 
     const handleBlockNumber = () => {
 
@@ -25,6 +40,15 @@ const ClickToCallReport = () => {
     const handleRefreshBtnClicked = () => {
 
     }
+
+    const getAdvanceSearch = () => {
+
+    }
+
+    const exportToCSV = () => {
+
+    }
+
     return (
         <>
             {loading && <CircularLoader />}
@@ -967,10 +991,10 @@ const ClickToCallReport = () => {
                 ) : (
                     ""
                 )}
-                {/* {exportPopup && (
+                {exportPopup && (
                     <ExportPopUp
                         filteredKeys={filteredKeys}
-                        page={page}
+                        page={{}}
                         setExportPopup={setExportPopup}
                         setLoading={setLoading}
                         exportToCSV={exportToCSV}
@@ -979,10 +1003,10 @@ const ClickToCallReport = () => {
                         setCircularLoader={setCircularLoader}
                         filteredColumnForTable={filteredColumnForTable}
                     />
-                )} */}
+                )}
             </main>
             {/* Note Popup */}
-            {/* {selectedCdr !== "" && (
+            {selectedCdr !== "" && (
                 <Comments
                     id={selectedCdr}
                     setId={setSelectedCdr}
@@ -1074,7 +1098,7 @@ const ClickToCallReport = () => {
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
         </>
     )
 }
