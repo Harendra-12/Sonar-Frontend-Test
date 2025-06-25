@@ -345,7 +345,8 @@ function Email({ selectedMail }) {
     deleteMail({
       uid: [item?.uid?.toString()],
       type: activeCategory?.value,
-      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move",
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== item.uid)
@@ -359,7 +360,8 @@ function Email({ selectedMail }) {
     deleteMail({
       uid: listOfMessageId,
       type: activeCategory?.value,
-      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move",
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -376,7 +378,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
       action: checkedMail[0]?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -393,7 +396,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
       action: checkedMail[0]?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -410,13 +414,14 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== mail?.uid)
       )
     });
-    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
+    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid, id: selectedFromMailAddressId })
   };
 
   const handleUnSeenMail = (mail) => {
@@ -425,7 +430,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== mail?.uid)
@@ -439,7 +445,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [item?.uid],
       action: item?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== item.uid)
@@ -448,7 +455,7 @@ function Email({ selectedMail }) {
   }
 
   const downloadAllAtachment = (mail) => {
-    callDownloadAllAtachmentApi({ uid: mail?.uid, type: activeCategory?.value })
+    callDownloadAllAtachmentApi({ uid: mail?.uid, type: activeCategory?.value, id: selectedFromMailAddressId })
   }
 
   const getCategoryIconClass = (name) => {
