@@ -58,6 +58,8 @@ function Members({
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
   const handRaises = useSelector((state) => state.handRaises);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationText, setNotificationText] = useState(false);
 
   useEffect(() => {
     setCurentCallRoom(
@@ -532,9 +534,33 @@ function Members({
     }
   }, [microphoneButton, roomName]);
 
+  // Raise Hand Notification
+  useEffect(() => {
+    if (handRaises && handRaises.length > 0) {
+      const latestRaise = handRaises[handRaises.length - 1];
+
+      setNotificationText(`${latestRaise.username} ${latestRaise.hand_raised ? 'raised' : 'lowered'} their hand ✋`);
+      setShowNotification(true);
+
+      const timer = setTimeout(() => {
+        setShowNotification(false);
+        setNotificationText("");
+      }, 5000);
+
+      return () => clearTimeout(timer);
+
+    }
+  }, [handRaises]);
+
 
   return (
     <>
+      {showNotification && <div className="NotificationBell">
+        <i className="fa-solid fa-bell"></i>
+        <div className="content">
+          {notificationText}
+        </div>
+      </div>}
       {showParticipants && (
         <div className="participantMemberList">
           <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
@@ -575,11 +601,11 @@ function Members({
           <ul className="noScrollbar">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
-                <div className={`d-flex align-items-center ${handRaises?.some((user) => user.username == participant.identity)?.hand_raised ? 'handRaise' : ''}`}>
+                <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaise' : ''} `}>
                   <div className="profileHolder">
                     <i className="fa-light fa-user"></i>
                   </div>
-                  <span className="ms-2">{participant.identity}</span>
+                  <span className="ms-2">{participant.identity.split('-')[0]}</span>
                 </div>
                 <div className="d-flex">
                   {/* <button

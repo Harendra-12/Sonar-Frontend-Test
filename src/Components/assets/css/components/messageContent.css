@@ -828,7 +828,8 @@
     100% {
         padding: 0 15px 0 10px;
         height: auto;
-        max-width: 170px;
+        max-width: max-content;
+        min-width: 150px;
     }
 }
 

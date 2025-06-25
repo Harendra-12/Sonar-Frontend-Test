@@ -470,16 +470,14 @@ const counterReducer = (state = initialState, action) => {
         return {
           ...state,
           handRaises: state.handRaises.map((item, index) =>
-            index === existingIndex
-              ? { ...item, hand_raised }
-              : item
-          )
+            index === existingIndex ? { ...item, hand_raised } : item
+          ),
         };
       } else {
         // add new entry
         return {
           ...state,
-          handRaises: [...state.handRaises, action.payload]
+          handRaises: [...state.handRaises, action.payload],
         };
       }
     }
