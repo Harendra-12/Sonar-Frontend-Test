@@ -1,18 +1,302 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
-import { Navigate } from 'react-router-dom';
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { backToTop, checkViewSidebar, featureUnderdevelopment, formatTime, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import ExportPopUp from '../WebRtc/ExportPopUp';
+import { useSelector } from 'react-redux';
+import Comments from '../WebRtc/Comments';
+import Duplicates from '../WebRtc/Duplicates';
+import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
+import Tippy from '@tippyjs/react';
+import AudioWaveformCommon from '../../CommonComponents/AudioWaveformCommon';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
+import PaginationComponent from '../../CommonComponents/PaginationComponent';
+import { api_url } from '../../../urls';
 
-const ClickToCallReport = () => {
-    const [exportPopup, setExportPopup] = useState(false)
-    const [popUp, setPopUp] = useState(false)
-    const [selectedNumberToBlock, setSelectedNumberToBlock] = useState()
+const callDirectionOptions = [
+    {
+        value: "inbound",
+        label: "Inbound Calls",
+    },
+    {
+        value: "outbound",
+        label: "Outbound Calls",
+    },
+    {
+        value: "internal",
+        label: "Internal Calls",
+    },
+];
 
+const callTypeOptions = [
+    {
+        value: "extension",
+        label: "Extension",
+    },
+    {
+        value: "voicemail",
+        label: "Voice Mail",
+    },
+    {
+        value: "callcenter",
+        label: "Call Center",
+    },
+    {
+        value: "ringgroup",
+        label: "Ring Group",
+    },
+    {
+        value: "clicktocall",
+        label: "Click To Call",
+    },
+];
+
+const hangupCauseOptions = [
+    {
+        value: "Answered",
+        label: "Answer",
+    },
+    {
+        value: "Missed",
+        label: "Missed",
+    },
+    {
+        value: "Voicemail",
+        label: "Voicemail",
+    },
+    {
+        value: "Cancelled",
+        label: "Cancelled",
+    },
+    {
+        value: "Failed",
+        label: "Failed",
+    },
+    {
+        value: "Transfer",
+        label: "Transfer",
+    },
+];
+
+const hangupStatusOptions = [
+    { value: "NORMAL_CLEARING", label: "Normal Clearing" },
+    { value: "ORIGINATOR_CANCEL", label: "Originator Cancel" },
+    { value: "MANAGER_REQUEST", label: "Manager Request" },
+    { value: "NO_ANSWER", label: "No Answe" },
+    { value: "INVALID_GATEWAY", label: "Invalid Gateway" },
+    { value: "SERVICE_UNAVAILABLE", label: "Service Unavailable" },
+    { value: "INCOMPATIBLE_DESTINATION", label: "Incompatible Destination" },
+    { value: "NO_USER_RESPONSE", label: "No User Response" },
+    { value: "MEDIA_TIMEOUT", label: "Media Timeout" },
+    { value: "LOSE_RACE", label: "Lose Race" },
+    { value: "NORMAL_UNSPECIFIED", label: "Normal Unspecified" },
+    { value: "USER_BUSY", label: "User Busy" },
+    { value: "RECOVERY_ON_TIMER_EXPIRE", label: "Recovery On Timer Expire" },
+    { value: "USER_NOT_REGISTERED", label: "User Not Registered" },
+    { value: "CALL_REJECTED", label: "Call Rejected" },
+    { value: "SUBSCRIBER_ABSENT", label: "Subscriber Absent" },
+    { value: "CHAN_NOT_IMPLEMENTED", label: "Chan Not Implemented" },
+    { value: "DESTINATION_OUT_OF_ORDER", label: "Destination Out Of Order" },
+    { value: "NORMAL_TEMPORARY_FAILURE", label: "Normal Temporary Failure" },
+    { value: "NO_ROUTE_DESTINATION", label: "No Route Destination" },
+    { value: "ALLOTTED_TIMEOUT", label: "Allotted Timeout" },
+    { value: "INVALID_NUMBER_FORMAT", label: "Invalid Number Format" },
+];
+
+const ClickToCallReport = ({ page }) => {
+    const [exportPopup, setExportPopup] = useState(false);
+    const [popUp, setPopUp] = useState(false);
+    const [selectedNumberToBlock, setSelectedNumberToBlock] = useState();
+    const [advanceSearch, setAdvanceSearch] = useState();
+    const [filteredKeys, setFilteredKeys] = useState([]);
+    const [filteredColumnForTable, setFilteredColumnForTable] = useState([]);
+    const [selectedCdr, setSelectedCdr] = useState("");
+    const [showComment, setShowComment] = useState(false);
+    const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false);
+    const [duplicatePopUpData, setDuplicatePopUpData] = useState({});
+
+    const [circularLoader, setCircularLoader] = useState(true);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [loading, setLoading] = useState(false);
     const [refreshState, setRefreshState] = useState(false);
     const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false)
+
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
+
+
+    const [filterBy, setFilterBy] = useState("date");
+    const [startDateFlag, setStartDateFlag] = useState("");
+    const [debounceCallOriginFlag, setDebounceCallOriginFlag] = useState("");
+    const [debounceCallDestinationFlag, setDebounceCallDestinationFlag] = useState("");
+    const [callDirection, setCallDirection] = useState("");
+    const [callType, setCallType] = useState("");
+    const [callOrigin, setCallOrigin] = useState("");
+    const [debounceCallOrigin, setDebounceCallOrigin] = useState("");
+    const [callDestination, setCallDestination] = useState("");
+    const [debounceCallDestination, setDebounceCallDestination] = useState("");
+    const [clickToCallData, setClickToCallData] = useState();
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hangupCause, setHagupCause] = useState("");
+    const [hangupStatus, setHangupStatus] = useState([]);
+    const [timeFlag, setTimeFlag] = useState({
+        startTime: "",
+        endTime: "",
+    });
+    const [timeFilter, setTimeFilter] = useState({
+        startTime: "",
+        endTime: "",
+    });
+    const [startDate, setStartDate] = useState("");
+    const [createdAt, setCreatedAt] = useState("");
+    const [endDateFlag, setEndDateFlag] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [contentLoader, setContentLoader] = useState(false);
+    const [refresh, setRefrehsh] = useState(1);
+    const [callBlock, setCallBlock] = useState([]);
+    const [callBlockRefresh, setCallBlockRefresh] = useState(0);
+    const [updatedQueryparams, setUpdatedQueryparams] = useState("");
+    const [audioURL, setAudioURL] = useState("");
+    const [comment, setComment] = useState("");
+    const [calendarStartDate, setCalendarStartDate] = useState(new Date());
+    const [error, setError] = useState("");
+    const [showAudio, setShowAudio] = useState(false);
+    // const [transcribeLink, setTranscribeLink] = useState()
+    const [showDropDown, setShowDropdown] = useState(false);
+    const [filteredColumns, setFilteredColumns] = useState([]);
+    const [originalColumnSequenceForTable, setOriginalColumnSequenceForTable] =
+        useState([]);
+    const [columnsOptions, setColumnsOptions] = useState([]);
+    const [columnOriginalSequence, setColumnOriginalSequence] = useState([]);
+    const [selectedColumn, setSelectedColumn] = useState("");
+    const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+    const [currentPlaying, setCurrentPlaying] = useState("");
+    const [showKeys, setShowKeys] = useState([
+        "Call-Direction",
+        "Caller-Orig-Caller-ID-Name",
+        "variable_sip_from_user",
+        "tag",
+        "variable_sip_to_user",
+        "application_state",
+        "application_state_to_ext",
+        "e_name",
+        "Date",
+        "Time",
+        "recording_path",
+        "variable_billsec",
+        // "variable_sip_to_user",
+        "Hangup-Cause",
+        "variable_DIALSTATUS",
+        "start_date",
+        "end_date",
+        "call_cost",
+        "id",
+    ]);
+
+    const navigate = useNavigate();
+
+    const fetchClickToCallApi = async () => {
+        const result = await generalGetFunction(api_url?.CLICK_TO_CALL_REPORT_URL);
+        if (result?.status) {
+            setClickToCallData(result?.data);
+            setFilteredKeys([...result.filteredKeys, "id"]);
+            setLoading(false);
+        } else {
+            // navigate("/");
+        }
+    }
+
+    // ========================= useEffect stuff start here 
+
+    useEffect(() => {
+        fetchClickToCallApi()
+    }, [])
+
+      useEffect(() => {
+        const columns = [];
+        const originKeys = [];
+        {
+          showKeys.map((key) => {
+            if (clickToCallData?.data[0]?.hasOwnProperty(key) && key !== "id") {
+              let formattedKey = "";
+              if (key === "variable_sip_from_user") {
+                formattedKey = "Caller No.";
+              } else if (key === "variable_sip_to_user") {
+                formattedKey = "Destination";
+              } else if (key === "Caller-Orig-Caller-ID-Name") {
+                formattedKey = "Caller Name";
+              } else if (key === "recording_path") {
+                formattedKey = "Recording";
+              } else if (key === "variable_billsec") {
+                formattedKey = "Duration";
+              } else if (key === "application_state") {
+                formattedKey = "Via/Route";
+              } else if (key === "application_state_to_ext") {
+                formattedKey = "Ext";
+              } else if (key === "e_name") {
+                formattedKey = "User Name";
+              } else if (key === "variable_DIALSTATUS") {
+                formattedKey = "Hangup Status";
+              } else if (key === "Hangup-Cause") {
+                formattedKey = "Hangup Cause";
+              } else if (key === "call_cost") {
+                formattedKey = "Charge";
+              } else {
+                formattedKey = key
+                  .replace(/[-_]/g, " ")
+                  .toLowerCase()
+                  .replace(/\b\w/g, (char) => char.toUpperCase());
+              }
+              columns.push(formattedKey);
+              originKeys.push({ key: key, formattedKey: formattedKey });
+              setSelectedColumn(columns);
+            }
+            return null;
+          });
+        }
+        if (page !== "billing") {
+          columns.push("Block");
+          columns.push("Note");
+          columns.push("Duplicate");
+          originKeys.push({ key: "Block", formattedKey: "Block" });
+          originKeys.push({ key: "Note", formattedKey: "Note" });
+          originKeys.push({ key: "Duplicate", formattedKey: "Duplicate" });
+          setSelectedColumn((prev) => [...prev, "Block", "note", "Duplicate"]);
+        }
+        const indexOfOriginKey = originKeys?.findIndex(
+          (data) => data?.key == "recording_path"
+        );
+        if (indexOfOriginKey !== -1) {
+          let removedItem = originKeys?.splice(indexOfOriginKey, 1)[0];
+          let insertIndex = originKeys?.length - 3;
+          originKeys.splice(insertIndex, 0, removedItem);
+        }
+        setFilteredColumnForTable(originKeys);
+        setOriginalColumnSequenceForTable(originKeys);
+        let columnIndex = columns?.findIndex((val) => val === "Recording");
+        if (columnIndex !== -1) {
+          let removedItem = columns?.splice(columnIndex, 1)[0];
+          let insertIndex = columns?.length - 3;
+          columns?.splice(insertIndex, 0, removedItem);
+        }
+        setFilteredColumns(columns);
+        const optionsCol = columns?.map((data, index) => ({
+          value: data,
+          label: data,
+        }));
+        optionsCol.shift();
+        const index = optionsCol?.findIndex((data) => data?.value == "Recording");
+        if (index !== -1) {
+          let removedItem = optionsCol?.splice(index, 1)[0];
+          let insertIndex = optionsCol?.length - 3;
+          optionsCol?.splice(insertIndex, 0, removedItem);
+        }
+        setColumnsOptions(optionsCol);
+        setColumnOriginalSequence(columns);
+      }, [showKeys, clickToCallData?.data?.length]);
+    // ======================== useEffect stuff end here
+
 
     const handleBlockNumber = () => {
 
@@ -25,6 +309,31 @@ const ClickToCallReport = () => {
     const handleRefreshBtnClicked = () => {
 
     }
+
+    const getAdvanceSearch = () => {
+
+    }
+
+    const exportToCSV = () => {
+
+    }
+
+    const handleCallOriginChange = () => {
+
+    }
+
+    const handleCallDestinationChange = () => {
+
+    }
+
+    const handlePlaying = () => {
+
+    }
+
+    const duplicateColumn = () => {
+
+    }
+
     return (
         <>
             {loading && <CircularLoader />}
@@ -131,7 +440,7 @@ const ClickToCallReport = () => {
                                                 </button>
                                             </div>
                                         </div>
-                                        {/* <div className="tableHeader">
+                                        <div className="tableHeader">
                                             <div className="d-flex justify-content-start flex-wrap">
                                                 {filteredKeys.includes("variable_start_stamp") && (
                                                     <>
@@ -177,14 +486,14 @@ const ClickToCallReport = () => {
                                                                     <input
                                                                         type="time"
                                                                         className="formItem ms-2"
-                                                                        // value={timeFlag.startTime}
-                                                                        // onChange={(e) => {
-                                                                        //     setTimeFlag((prev) => ({
-                                                                        //         ...prev,
-                                                                        //         startTime: `${e.target.value}:00`,
-                                                                        //     }));
-                                                                        //     setPageNumber(1);
-                                                                        // }}
+                                                                    // value={timeFlag.startTime}
+                                                                    // onChange={(e) => {
+                                                                    //     setTimeFlag((prev) => ({
+                                                                    //         ...prev,
+                                                                    //         startTime: `${e.target.value}:00`,
+                                                                    //     }));
+                                                                    //     setPageNumber(1);
+                                                                    // }}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -202,23 +511,23 @@ const ClickToCallReport = () => {
                                                                             max={
                                                                                 new Date()?.toISOString()?.split("T")[0]
                                                                             }
-                                                                            // value={startDateFlag}
-                                                                            // onChange={(e) => {
-                                                                            //     setStartDateFlag(e.target.value);
-                                                                            //     setPageNumber(1);
-                                                                            // }}
+                                                                        // value={startDateFlag}
+                                                                        // onChange={(e) => {
+                                                                        //     setStartDateFlag(e.target.value);
+                                                                        //     setPageNumber(1);
+                                                                        // }}
                                                                         />
                                                                         <input
                                                                             type="time"
                                                                             className="formItem ms-2"
-                                                                            // value={timeFlag.startTime}
-                                                                            // onChange={(e) => {
-                                                                            //     setTimeFlag((prev) => ({
-                                                                            //         ...prev,
-                                                                            //         startTime: `${e.target.value}:00`,
-                                                                            //     }));
-                                                                            //     setPageNumber(1);
-                                                                            // }}
+                                                                        // value={timeFlag.startTime}
+                                                                        // onChange={(e) => {
+                                                                        //     setTimeFlag((prev) => ({
+                                                                        //         ...prev,
+                                                                        //         startTime: `${e.target.value}:00`,
+                                                                        //     }));
+                                                                        //     setPageNumber(1);
+                                                                        // }}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -233,24 +542,24 @@ const ClickToCallReport = () => {
                                                                             max={
                                                                                 new Date()?.toISOString()?.split("T")[0]
                                                                             }
-                                                                            // value={endDateFlag}
-                                                                            // onChange={(e) => {
-                                                                            //     setEndDateFlag(e.target.value);
-                                                                            //     setPageNumber(1);
-                                                                            // }}
-                                                                            // min={startDateFlag} // Prevent selecting an end date before the start date
+                                                                        // value={endDateFlag}
+                                                                        // onChange={(e) => {
+                                                                        //     setEndDateFlag(e.target.value);
+                                                                        //     setPageNumber(1);
+                                                                        // }}
+                                                                        // min={startDateFlag} // Prevent selecting an end date before the start date
                                                                         />
                                                                         <input
                                                                             type="time"
                                                                             className="formItem ms-2"
-                                                                            // value={timeFlag.endTime}
-                                                                            // onChange={(e) => {
-                                                                            //     setTimeFlag((prev) => ({
-                                                                            //         ...prev,
-                                                                            //         endTime: `${e.target.value}:00`,
-                                                                            //     }));
-                                                                            //     setPageNumber(1);
-                                                                            // }}
+                                                                        // value={timeFlag.endTime}
+                                                                        // onChange={(e) => {
+                                                                        //     setTimeFlag((prev) => ({
+                                                                        //         ...prev,
+                                                                        //         endTime: `${e.target.value}:00`,
+                                                                        //     }));
+                                                                        //     setPageNumber(1);
+                                                                        // }}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -553,7 +862,7 @@ const ClickToCallReport = () => {
                                                 <ThreeDotedLoader />
                                             ) :
                                                 <table>
-                                                    {cdr?.data?.length > 0 ? (
+                                                    {clickToCallData?.data?.length > 0 ? (
                                                         <>
                                                             <thead>
                                                                 <tr style={{ whiteSpace: "nowrap" }}>
@@ -573,7 +882,7 @@ const ClickToCallReport = () => {
                                                                         account?.permissions,
                                                                         "read"
                                                                     ) || noPermissionToRead ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                                                                        cdr?.data?.map((item, index) => {
+                                                                        clickToCallData?.data?.map((item, index) => {
                                                                             const isBlocked = callBlock?.some(
                                                                                 (block) => {
                                                                                     if (
@@ -888,7 +1197,7 @@ const ClickToCallReport = () => {
                                                                 </>
                                                             </tbody>
                                                         </>
-                                                    ) : cdr?.data?.length === 0 && !loading ? (
+                                                    ) : clickToCallData?.data?.length === 0 && !loading ? (
                                                         <div>
                                                             <EmptyPrompt type="generic" />
                                                         </div>
@@ -899,19 +1208,19 @@ const ClickToCallReport = () => {
                                             }
                                         </div>
                                         <div className="tableHeader mb-3">
-                                            {!loading && cdr && cdr?.data?.length > 0 ? (
+                                            {!loading && clickToCallData && clickToCallData?.data?.length > 0 ? (
                                                 <PaginationComponent
                                                     pageNumber={(e) => setPageNumber(e)}
-                                                    totalPage={cdr?.last_page}
-                                                    from={(pageNumber - 1) * cdr?.per_page + 1}
-                                                    to={cdr?.to}
-                                                    total={cdr?.total}
+                                                    totalPage={clickToCallData?.last_page}
+                                                    from={(pageNumber - 1) * clickToCallData?.per_page + 1}
+                                                    to={clickToCallData?.to}
+                                                    total={clickToCallData?.total}
                                                     defaultPage={pageNumber}
                                                 />
                                             ) : (
                                                 ""
                                             )}
-                                        </div> */}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -967,10 +1276,10 @@ const ClickToCallReport = () => {
                 ) : (
                     ""
                 )}
-                {/* {exportPopup && (
+                {exportPopup && (
                     <ExportPopUp
                         filteredKeys={filteredKeys}
-                        page={page}
+                        page={{}}
                         setExportPopup={setExportPopup}
                         setLoading={setLoading}
                         exportToCSV={exportToCSV}
@@ -979,10 +1288,10 @@ const ClickToCallReport = () => {
                         setCircularLoader={setCircularLoader}
                         filteredColumnForTable={filteredColumnForTable}
                     />
-                )} */}
+                )}
             </main>
             {/* Note Popup */}
-            {/* {selectedCdr !== "" && (
+            {selectedCdr !== "" && (
                 <Comments
                     id={selectedCdr}
                     setId={setSelectedCdr}
@@ -1074,7 +1383,7 @@ const ClickToCallReport = () => {
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
         </>
     )
 }

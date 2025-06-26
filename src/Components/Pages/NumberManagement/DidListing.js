@@ -235,13 +235,13 @@ function DidListing({ page }) {
       setPreviousUsages("");
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
-      // if (usages == "ai") {
-      //   aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid.did,"termination_uri":terminationUri});
-      //   // navigate('/ai-phone-number')
-      // }
-      // else if(selectedDid.usages === "ai"){
-      //   aiGeneralDeleteFunction(`/phonenumber/delete/${selectedDid.id}`);
-      // }
+      if (usages == "ai") {
+        aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid.did,"termination_uri":terminationUri});
+        // navigate('/ai-phone-number')
+      }
+      else if(selectedDid.usages === "ai"){
+        aiGeneralDeleteFunction(`/phonenumber/delete/${selectedDid.did}`);
+      }
     } else {
       setLoading(false);
       toast.error(apiData.message);

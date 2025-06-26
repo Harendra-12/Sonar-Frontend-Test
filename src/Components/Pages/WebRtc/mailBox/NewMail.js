@@ -54,15 +54,9 @@ const NewMail = ({
 
   return (
     <>
-      <div className="read_message">
-        <div
-          className="card shadow-none rounded-3"
-          style={{ borderColor: "var(--me-border1)" }}
-        >
-          <div
-            className="card-header"
-            style={{ borderColor: "var(--me-border1)" }}
-          >
+      <div className="read_message h-100">
+        <div className="card shadow-none rounded-3 h-100" style={{ borderColor: "var(--me-border1)" }}>
+          <div className="card-body d-flex justify-content-between flex-column" style={{ borderColor: "var(--me-border1)" }}>
             <div className="d-flex align-items-center gap-3">
               <button
                 className="back_pev"
@@ -109,8 +103,8 @@ const NewMail = ({
                 </div>
               </div>
             </div>
-            <form onSubmit={handleSubmit(handleComposeMail)}>
-              <div className="mailBox_body p-3">
+            <form onSubmit={handleSubmit(handleComposeMail)} className="d-flex justify-content-between flex-column h-100">
+              <div className="mailBox_body p-3 ">
                 <div className="row ">
                   <div className=" col-12">
                     <div className="from-group">
@@ -209,7 +203,7 @@ const NewMail = ({
                       <textarea
                         type="text"
                         name="content"
-                        rows={15}
+                        rows={13}
                         className="formItem h-auto"
                         placeholder="Please enter your message"
                         {...register("content", { ...requiredValidator })}
