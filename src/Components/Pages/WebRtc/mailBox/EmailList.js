@@ -119,8 +119,8 @@ const EmailList = ({
           }
         </div>
         <div
-          className="tableContainer e mail_table mt-0 w-100 border-0 mb-0"
-          style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
+          className="tableContainer e mail_table"
+        // style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
         >
           {loading ? (
             <ThreeDotedLoader />
@@ -129,15 +129,15 @@ const EmailList = ({
               <thead>
                 <tr>
                   <th>
-                    <div className="" style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-                      <div>
-                        <input
-                          type="checkbox"
-                          checked={isCheckedAll}
-                          onClick={() => handleAllCheck()}
-                        />
-                      </div>
-                      <div>
+                    <div className="" style={{ display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center" }}>
+                      {/* <div> */}
+                      <input
+                        type="checkbox"
+                        checked={isCheckedAll}
+                        onClick={() => handleAllCheck()}
+                      />
+                      {/* </div> */}
+                      <div className="ms-2">
                         Select
                       </div>
                     </div>
@@ -150,7 +150,7 @@ const EmailList = ({
                 </tr>
               </thead>
               <tbody>
-                {allMails?.emails?.map((item, index) => (
+                {allMails?.emails?.length > 0 ? allMails?.emails?.map((item, index) => (
                   <tr key={index} className={`
                     ${item?.status_flags?.seen ? 'seen-message' : 'unseen-message'} 
                     ${item?.status_flags?.starred ? 'starred-message' : 'unstarred-message'}
@@ -258,7 +258,13 @@ const EmailList = ({
                       ></i>
                     </td>
                   </tr>
-                ))}
+                )) : <tr style={{ height: "calc(100vh - 385px)", borderBottom: "none" }}>
+                  <td colSpan={9} >
+                    <div className="d-flex justify-content-center align-items-center gap-2 flex-column">No data found</div>
+                  </td>
+                </tr>
+
+                }
               </tbody>
             </table>
           )}

@@ -17,6 +17,7 @@ import NewMail from "./mailBox/NewMail";
 import { toast } from "react-toastify";
 import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
@@ -149,7 +150,7 @@ function Email({ selectedMail }) {
   //   }
   // };
 
-  const fetchMailCategory = async (shouldLoad, id) => {
+  const fetchMailCategory = async (shouldLoad, id, isInitial) => {
     if (shouldLoad) {
       setAllMailLoading(true)
     }
@@ -157,6 +158,8 @@ function Email({ selectedMail }) {
     const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS(id));
     if (result?.status) {
       setAllCategory(result?.data);
+      if (isInitial)
+        fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
       if (activeCategory) {
         setActiveCategory(activeCategory)
       } else {
@@ -196,8 +199,8 @@ function Email({ selectedMail }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
-      fetchMailCategory(true, selectedFromMailAddressId)
+      fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
+      fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -212,7 +215,7 @@ function Email({ selectedMail }) {
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
       fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
-      fetchMailCategory(false, selectedFromMailAddressId)
+      fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
@@ -263,20 +266,15 @@ function Email({ selectedMail }) {
   // all useEffect stuff start here ===============
   useEffect(() => {
     const shouldLoad = true;
-    // fetchMailCategory(shouldLoad)
     setRefreshState(true);
     fetchData(shouldLoad);
-    // const mailType = "INBOX"
-    // fetchAllMail(mailType, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const shouldLoad = true;
-    const mailType = "INBOX";
     if (availableFromMailAddresses?.length > 0) {
-      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id)
-      fetchAllMail(mailType, true, "", availableFromMailAddresses[0]?.id);
+      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
+
       setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
     }
   }, [availableFromMailAddresses])
@@ -345,7 +343,8 @@ function Email({ selectedMail }) {
     deleteMail({
       uid: [item?.uid?.toString()],
       type: activeCategory?.value,
-      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move",
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== item.uid)
@@ -359,7 +358,8 @@ function Email({ selectedMail }) {
     deleteMail({
       uid: listOfMessageId,
       type: activeCategory?.value,
-      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move"
+      action: activeCategory?.value == "[Gmail]/Trash" ? "delete" : "move",
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -376,7 +376,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
       action: checkedMail[0]?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -393,7 +394,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: listOfMessageId,
       action: checkedMail[0]?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem =>
@@ -410,13 +412,14 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== mail?.uid)
       )
     });
-    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid })
+    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid, id: selectedFromMailAddressId })
   };
 
   const handleUnSeenMail = (mail) => {
@@ -425,7 +428,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== mail?.uid)
@@ -439,7 +443,8 @@ function Email({ selectedMail }) {
     mailStatusApiCall(shouldLoad, {
       uid: [item?.uid],
       action: item?.status_flags?.starred ? "unstarred" : "starred",
-      type: activeCategory?.value
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
     }).finally(() => {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== item.uid)
@@ -448,7 +453,7 @@ function Email({ selectedMail }) {
   }
 
   const downloadAllAtachment = (mail) => {
-    callDownloadAllAtachmentApi({ uid: mail?.uid, type: activeCategory?.value })
+    callDownloadAllAtachmentApi({ uid: mail?.uid, type: activeCategory?.value, id: selectedFromMailAddressId })
   }
 
   const getCategoryIconClass = (name) => {
@@ -483,7 +488,7 @@ function Email({ selectedMail }) {
 
   const handleMailFromAddressChange = (event) => {
     const shouldLoad = false;
-    fetchMailCategory(shouldLoad, event?.target?.value)
+    fetchMailCategory(shouldLoad, event?.target?.value, false)
     fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
   }
@@ -507,7 +512,7 @@ function Email({ selectedMail }) {
               setLoading={setLoading}
               refreshApi={() => {
                 fetchAllMail(activeCategory?.value, "", "", selectedFromMailAddressId)
-                fetchMailCategory(false, selectedFromMailAddressId)
+                fetchMailCategory(false, selectedFromMailAddressId, false)
                 fetchData()
               }}
             />
@@ -521,16 +526,16 @@ function Email({ selectedMail }) {
                     style={{ borderColor: "var(--me-border1)" }}
                   >
                     <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    <select
+                    {/* <select
                       onChange={(event) => handleMailFromAddressChange(event)}
                     >
                       {availableFromMailAddresses?.map((item) => {
                         return (<option value={item?.id}>{item?.mail_from_address}</option>)
                       })}
 
-                    </select>
+                    </select> */}
                     {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    <button
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -539,9 +544,49 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
-                    </button>
+                    </button> */}
+                    <div className="d-flex align-items-center justify-content-end gap-2">
+                      <select className="formItem"
+                        onChange={(event) => handleMailFromAddressChange(event)}
+                      >
+                        {availableFromMailAddresses?.map((item) => {
+                          return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                        })}
 
-                    <button
+                      </select>
+                      <button
+                        type="button"
+                        class=" panelButton static text-nowrap text-white "
+                        onClick={() => {
+                          setIsAdvanceFilterClicked(true)
+                        }}
+                      >
+                        <i class="fa-regular fa-filter me-2"></i> Advance Filter
+                      </button>
+                      <div className="d-flex align-items-center justify-content-end gap-2">
+                        {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
+                          <i class="fa-regular fa-star" ></i>
+                        </button> */}
+                        <button className="clearButton2"
+                          style={{
+                            opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                          }}
+                          onClick={() => {
+                            if (!loadingForActions?.length > 0)
+                              handleMultipleDelete()
+                          }
+                          }
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                        {/* <button className="clearButton2" onClick={() => handleMultipleView()}>
+                          <i class="fa-solid fa-envelope-open" ></i>
+                        </button> */}
+                      </div>
+
+                    </div>
+
+                    {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -549,9 +594,9 @@ function Email({ selectedMail }) {
                       }}
                     >
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
-                    </button>
-                    <h5 className="card-title mb-0 text_dark">
-                      {/* <i
+                    </button> */}
+                    {/* <h5 className="card-title mb-0 text_dark"> */}
+                    {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -561,7 +606,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                      <i
+                    {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -571,8 +616,8 @@ function Email({ selectedMail }) {
                             handleMultipleDelete()
                         }
                         }
-                      ></i>{" "}
-                      {/* <i
+                      ></i>{" "} */}
+                    {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -583,15 +628,25 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i> */}
-                    </h5>
+                    {/* </h5> */}
                   </div>
                   <div
                     className="card-body"
-                    style={{ height: "calc(100vh - 135px)" }}
+                    style={{ height: "calc(100vh - 140px)", padding: '10px' }}
                   >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
-                        <div className="card-body ps-0">
+                        <div className="card-body ps-0 pe-2 pt-0">
+                          <button
+                            type="button"
+                            class="btn composeBtn w-100 mb-2"
+                            onClick={() => {
+                              setShowNewMail(true);
+                              setMailReplay(false);
+                            }}
+                          >
+                            <i class="fa-regular fa-envelope me-2"></i> Compose
+                          </button>
                           <ul>
                             {allCategory?.map((category) => {
                               const iconClass = getCategoryIconClass(category?.label);
@@ -603,12 +658,12 @@ function Email({ selectedMail }) {
                                   onClick={() => handleListingClick(category)}
                                 >
                                   {" "}
-                                  <p className={`mb-0 d-flex align-items-center ${colorClass}`}>
+                                  <p className={`mb-0 d-flex align-items-center `}>
                                     <i className={`${iconClass} me-2`}></i>{" "}
                                     {category?.label}
                                   </p>
                                   <div className="">
-                                    <span style={{ color: 'black' }}>{category?.totalMessages}/{category?.unseenMessages}</span>
+                                    <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
                                   </div>
                                 </button>
                               </li>)
@@ -724,6 +779,8 @@ function Email({ selectedMail }) {
                             activeList={activeList}
                           />
                         )}
+
+                        {!showMailList && !mailReplay && !showNewMail && <ThreeDotedLoader />}
                       </div>
                       {/* {activeList === "sent" && (
                         <div className="table_card">
@@ -845,27 +902,68 @@ function Email({ selectedMail }) {
         </section>
         {
           isAdvanceFilterClicked && (
-            <div
-              className="popup loggedPopupSm"
-              style={{ backgroundColor: "#000000e0" }}
-            >
+
+            <div className="popup">
               <div className="container h-100">
-                <div className="row h-100 justify-content-center align-items-center">
+                <div className="row h-100 justify-content-center align-items-center ">
+                  <div className="row content col-xl-4 col-md-5 px-0">
+                    <div className="col-12">
 
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className=" ">
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>From</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("from")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Sender email"
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>To</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("to")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Recipient email"
+                              />
+                            </div>
+                          </div>
+                          <div className="formRow flex-column align-items-start">
+                            <div className="formLabel">
+                              <label>Subject</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("subject")}
+                                type="text"
+                                className="formItem"
+                                placeholder="Subject"
+                              />
+                            </div>
+                          </div>
 
-                      <div className="row">
-                        <div className="col-4">From</div>
-                        <div className="col-4">
-                          <input
-                            {...register("from")}
-                            className="form-control"
-                            type="text"
-                            placeholder="Sender email"
-                          />
-                        </div>
-                      </div>
+                          {/* <div className="row">
+                            <div className="col-12">From</div>
+                            <div className="col-12">
+                              <input
+                                {...register("from")}
+                                className="form-control"
+                                type="text"
+                                placeholder="Sender email"
+                              />
+                            </div>
+                          </div>
+
+                     
 
                       <div className="row mt-2">
                         <div className="col-4">To</div>
@@ -908,31 +1006,184 @@ function Email({ selectedMail }) {
                             type="date"
                           />
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-3 logoutPopup d-flex justify-content-center">
-                        <button
-                          type="submit"
-                          className="btn btn_info"
-                        >
-                          <span>Apply</span>
-                          <i className="fa-solid fa-filter ms-2"></i>
-                        </button>
+                          <div className="d-flex justify-content-end gap-2 mt-4">
+                            <button
+                              type="button"
+                              className="panelButton m-0"
+                              
+                            >
+                              <span className="text">Apply</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-filter"></i>
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              className="panelButton gray m-0 float-end"
+                              onClick={() => {
+                                setIsAdvanceFilterClicked(false);
+                              }}
+                            >
+                              <span className="text">Cancel</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-xmark"></i>
+                              </span>
+                            </button>
+                          </div>
 
-                        <button
-                          type="submit"
-                          className="btn btn_info ms-3"
-                          onClick={() => setIsAdvanceFilterClicked(false)}
-                        >
-                          <span>Cancel</span>
-                          <i className="fa-solid fa-times ms-2"></i>
-                        </button>
-                      </div>
+
+
+                        </div>
+                      </form>
                     </div>
-                  </form>
+
+                  </div>
                 </div>
               </div>
             </div>
+
+            //             <div
+            //               className="popup loggedPopupSm"
+            //               style={{ backgroundColor: "#000000e0" }}
+            //             >
+            //               <div className="container h-100">
+            //                 <div className="row h-100 ">
+
+            //                   <form onSubmit={handleSubmit(onSubmit)} className="col-12 ">
+            //                     <div className=" content col-5 ">
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>From</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("from")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Sender email"
+            //                           />
+            //                         </div>
+            //                       </div>
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>To</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("to")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Recipient email"
+            //                           />
+            //                         </div>
+            //                       </div>
+            //                       <div className="formRow flex-column">
+            //                         <div className="formLabel">
+            //                           <label>Subject</label>
+            //                         </div>
+            //                         <div className="col-8">
+            //                           <input
+            //                             {...register("subject")}
+            //                             type="text"
+            //                             className="formItem"
+            //                             placeholder="Subject"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            //                       <div className="row">
+            //                         <div className="col-12">From</div>
+            //                         <div className="col-12">
+            //                           <input
+            //                             {...register("from")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Sender email"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            // {/* 
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">To</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("to")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Recipient email"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">Subject</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("subject")}
+            //                             className="form-control"
+            //                             type="text"
+            //                             placeholder="Subject"
+            //                           />
+            //                         </div>
+            //                       </div>
+
+
+            //                       <div className="row mt-2">
+            //                         <div className="col-4">Date within</div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("since")}
+            //                             className="form-control"
+            //                             type="date"
+            //                           />
+            //                         </div>
+            //                         <div className="col-4">
+            //                           <input
+            //                             {...register("before")}
+            //                             className="form-control"
+            //                             type="date"
+            //                           />
+            //                         </div>
+            //                       </div> */}
+
+            //                       <div className="mt-3 logoutPopup d-flex justify-content-center">
+            //                         <button
+            //                           type="submit"
+            //                           className="btn btn_info"
+            //                         >
+            //                           <span>Apply</span>
+            //                           <i className="fa-solid fa-filter ms-2"></i>
+            //                         </button>
+
+            //                         <button
+            //                           type="submit"
+            //                           className="btn btn_info ms-3"
+            //                           onClick={() => setIsAdvanceFilterClicked(false)}
+            //                         >
+            //                           <span>Cancel</span>
+            //                           <i className="fa-solid fa-times ms-2"></i>
+            //                         </button>
+            //                       </div>
+            //                     </div>
+            //                   </form>
+            //                 </div>
+            //               </div>
+            //             </div>
+
+
+
+
+
+
+
+
+
+
+
           )
         }
       </main>

@@ -10,7 +10,10 @@ export const api_url = {
     MOVE_TO_TRASH: `/move-to-trash`,
     EMAIL_STATUS: `email-status`,
     GET_EMAIL_LABELS: (id) => `get-labels?id=${id}`,
-    GET_EMAIL_BY_UID: (payload) => `get-emails-by-uid?type=${payload?.type}&uid=${payload?.uid}`,
+    GET_EMAIL_BY_UID: (payload) => `get-emails-by-uid?type=${payload?.type}&uid=${payload?.uid}&id=${payload?.id}`,
     DOWNLOAD_MAIL_ATACHMENT: (payload) => `download-attachment?type=${payload?.type}&uid=${payload?.uid}`,
-    ALL_MAIL_SETTINGS: `mail-setting/all`
+    ALL_MAIL_SETTINGS: `mail-setting/all`,
+    
+    // report -> click to call api's list start here
+    CLICK_TO_CALL_REPORT_URL: `click-to-call-report`,
 }
