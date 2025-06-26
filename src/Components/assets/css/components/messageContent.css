@@ -1650,3 +1650,7 @@
     padding: unset;
     margin-block: unset;
 }
+.mail_leftbar ul {
+    height: calc(100vh - 208px);
+    overflow: auto;
+}
