@@ -665,7 +665,6 @@ function DidListing({ page }) {
                             <>
                               {did &&
                                 did.map((item) => {
-                                  console.log('diddddddd', did)
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
