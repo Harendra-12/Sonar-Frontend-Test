@@ -146,6 +146,8 @@ function Members({
         incomingCall.filter((item) => item?.room_id === roomName),
         incomingCall
       );
+      // Reset Hand Raise State
+      dispatch({ type: "RESET_HAND_RAISES" })
 
       if (
         incomingCall.filter((item) => item?.room_id === roomName)[0]
