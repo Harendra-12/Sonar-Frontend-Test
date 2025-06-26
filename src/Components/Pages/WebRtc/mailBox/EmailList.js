@@ -119,7 +119,7 @@ const EmailList = ({
         </div>
         <div
           className="tableContainer e mail_table"
-        // style={{ height: "calc(100vh - 204px)", overflow: "auto" }}
+        style={{ height: "calc(100vh - 257px)", overflow: "auto" }}
         >
           {loading ? (
             <ThreeDotedLoader />
