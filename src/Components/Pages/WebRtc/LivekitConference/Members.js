@@ -444,6 +444,9 @@ function Members({
 
       allMembersButton.style.display = isConferenceCall ? "block" : "none";
     }
+
+    // Detect speaking participants
+    detectSpeakingParticipants();
   }, [showParticipants, isConferenceCall]);
 
   // Attach the toggleRecording function to the "Record" button
@@ -596,6 +599,36 @@ function Members({
       }
     }
   }, [handRaises]);
+
+  function detectSpeakingParticipants() {
+    const observer = new MutationObserver((mutationsList) => {
+      mutationsList.forEach((mutation) => {
+        if (mutation.attributeName === 'data-lk-speaking') {
+          const tile = mutation.target;
+          const isSpeaking = tile.getAttribute('data-lk-speaking') === 'true';
+
+          if (isSpeaking) {
+            const nameEl = tile.querySelector('[data-lk-participant-name]');
+            const participantName = nameEl ? nameEl.getAttribute('data-lk-participant-name') : 'Unknown';
+
+            if (participantName == username) {
+              if (handRaises?.find((user) => user.username == participantName)?.hand_raised) {
+                handRaise();
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Select all participant tiles
+    const participantTiles = document.querySelectorAll('.lk-participant-tile');
+    participantTiles.forEach((tile) => {
+      observer.observe(tile, { attributes: true });
+    });
+
+    return observer;
+  }
 
 
   return (
