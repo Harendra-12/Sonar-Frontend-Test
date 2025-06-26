@@ -92,7 +92,6 @@ const EmailList = ({
               className="formItem"
               onChange={(e) => setEntriesPerPage(e?.target?.value)}
             >
-              <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
               <option value={50}>50</option>
@@ -176,7 +175,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false);
                       }}
                     >
                       <div className="d-flex align-items-center">
@@ -196,7 +195,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false );
                       }}
                     >
                       <p className="ellipsisText300 mb-0">
@@ -216,7 +215,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false);
                       }}
                     >
                       <p className="mb-0 fw-semibold">

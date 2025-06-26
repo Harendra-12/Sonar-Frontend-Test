@@ -23,12 +23,9 @@ function Email({ selectedMail }) {
   const [loading, setLoading] = useState(false);
   const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
   const [loadingForActions, setLoadingForActions] = useState([])
-  const [refreshState, setRefreshState] = useState(false);
+  const [labelLoader, setLabelLoader] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
-  const extension = account?.extension?.extension || "";
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
   const [availableFromMailAddresses, setAvailableFromMailAddresses] = useState([]);
   const [selectedFromMailAddressId, setSelectedFromMailAddressId] = useState("")
@@ -48,7 +45,7 @@ function Email({ selectedMail }) {
   const [allMailLoading, setAllMailLoading] = useState(false);
   const [checkedMail, setCheckedMail] = useState([])
   const [isAdvanceFilterClicked, setIsAdvanceFilterClicked] = useState(false)
-  const [entriesPerPage, setEntriesPerPage] = useState(10)
+  const [entriesPerPage, setEntriesPerPage] = useState(20)
   const [searchInput, setSearchInput] = useState("")
   const slugPermissions = useSelector((state) => state?.permissions);
   const debouncedSearchTerm = useDebounce(searchInput, 1000);
@@ -153,10 +150,12 @@ function Email({ selectedMail }) {
   const fetchMailCategory = async (shouldLoad, id, isInitial) => {
     if (shouldLoad) {
       setAllMailLoading(true)
+      setLabelLoader(true)
     }
     setLoading(true);
     const result = await generalGetFunction(api_url?.GET_EMAIL_LABELS(id));
     if (result?.status) {
+      setLabelLoader(false)
       setAllCategory(result?.data);
       if (isInitial)
         fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
@@ -208,7 +207,7 @@ function Email({ selectedMail }) {
     }
   }
 
-  const mailStatusApiCall = async (shouldLoad, payload) => {
+  const mailStatusApiCall = async (shouldLoad, shouldToast, payload) => {
     if (shouldLoad)
       setAllMailLoading(true);
     setLoading(true)
@@ -217,7 +216,8 @@ function Email({ selectedMail }) {
       fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
       fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
-      toast.success(result?.message)
+      if (shouldToast)
+        toast.success(result?.message)
     } else {
       setAllMailLoading(false);
     }
@@ -244,10 +244,8 @@ function Email({ selectedMail }) {
     if (result?.status) {
       setAvailableFromMailAddresses(result.data);
       setLoading(false);
-      setRefreshState(false);
     } else {
       setLoading(false);
-      setRefreshState(false);
       // navigate("/");
     }
   };
@@ -266,16 +264,19 @@ function Email({ selectedMail }) {
   // all useEffect stuff start here ===============
   useEffect(() => {
     const shouldLoad = true;
-    setRefreshState(true);
     fetchData(shouldLoad);
   }, []);
 
   useEffect(() => {
     const shouldLoad = true;
     if (availableFromMailAddresses?.length > 0) {
-      fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
-
-      setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
+      if (!selectedFromMailAddressId) {
+        fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
+        setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
+      } else {
+        fetchMailCategory(false, selectedFromMailAddressId, true)
+        setSelectedFromMailAddressId(selectedFromMailAddressId)
+      }
     }
   }, [availableFromMailAddresses])
 
@@ -369,13 +370,41 @@ function Email({ selectedMail }) {
     });
   }
 
-  const handleMultipleView = () => {
+  const handleMultipleSeen = () => {
+    const isAllMailUnseen = checkedMail?.every(item => !item?.status_flags?.seen);
+    if (!isAllMailUnseen) {
+      toast.warning("Please select only unseen mails!");
+      return;
+    }
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
     setLoadingForActions(prev => [...prev, ...checkedMail]);
     const shouldLoad = false;
-    mailStatusApiCall(shouldLoad, {
+    mailStatusApiCall(shouldLoad, true, {
       uid: listOfMessageId,
-      action: checkedMail[0]?.status_flags?.seen ? "unseen" : "seen",
+      action: "seen",
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
+  }
+
+  const handleMultipleUnSeen = () => {
+    const isAllMailSeen = checkedMail?.every(item => item?.status_flags?.seen);
+    if (!isAllMailSeen) {
+      toast.warning("Please select only seen mails!");
+      return;
+    }
+    const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
+    mailStatusApiCall(shouldLoad, true, {
+      uid: listOfMessageId,
+      action: "unseen",
       type: activeCategory?.value,
       id: selectedFromMailAddressId
     }).finally(() => {
@@ -388,12 +417,39 @@ function Email({ selectedMail }) {
   }
 
   const handleMultipleStarred = () => {
+    const isAllMailUnseen = checkedMail?.every(item => !item?.status_flags?.starred);
+    if (!isAllMailUnseen) {
+      toast.warning("Please select only unseen mails!");
+      return;
+    }
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
     setLoadingForActions(prev => [...prev, ...checkedMail]);
     const shouldLoad = false;
-    mailStatusApiCall(shouldLoad, {
+    mailStatusApiCall(shouldLoad, true, {
       uid: listOfMessageId,
-      action: checkedMail[0]?.status_flags?.starred ? "unstarred" : "starred",
+      action: "starred",
+      type: activeCategory?.value,
+      id: selectedFromMailAddressId
+    }).finally(() => {
+      setLoadingForActions(prev =>
+        prev.filter(actionItem =>
+          !checkedMail.some(checked => checked.uid === actionItem.uid)
+        )
+      );
+    });
+  }
+  const handleMultipleUnStarred = () => {
+    const isAllMailSeen = checkedMail?.every(item => item?.status_flags?.starred);
+    if (!isAllMailSeen) {
+      toast.warning("Please select only seen mails!");
+      return;
+    }
+    const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
+    setLoadingForActions(prev => [...prev, ...checkedMail]);
+    const shouldLoad = false;
+    mailStatusApiCall(shouldLoad, true, {
+      uid: listOfMessageId,
+      action: "unstarred",
       type: activeCategory?.value,
       id: selectedFromMailAddressId
     }).finally(() => {
@@ -405,11 +461,11 @@ function Email({ selectedMail }) {
     });
   }
 
-  const handleShowMail = async (mail) => {
+  const handleShowMail = async (mail, shouldToast) => {
     setLoadingForActions(prev => [...prev, mail]);
     setLoading(true)
     const shouldLoad = false
-    mailStatusApiCall(shouldLoad, {
+    mailStatusApiCall(shouldLoad, shouldToast, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
       type: activeCategory?.value,
@@ -425,7 +481,7 @@ function Email({ selectedMail }) {
   const handleUnSeenMail = (mail) => {
     setLoadingForActions(prev => [...prev, mail]);
     const shouldLoad = false
-    mailStatusApiCall(shouldLoad, {
+    mailStatusApiCall(shouldLoad, true, {
       uid: [mail?.uid],
       action: mail?.status_flags?.seen ? "unseen" : "seen",
       type: activeCategory?.value,
@@ -440,7 +496,7 @@ function Email({ selectedMail }) {
   const handleStarrClicked = (item) => {
     const shouldLoad = false;
     setLoadingForActions(prev => [...prev, item]);
-    mailStatusApiCall(shouldLoad, {
+    mailStatusApiCall(shouldLoad, true, {
       uid: [item?.uid],
       action: item?.status_flags?.starred ? "unstarred" : "starred",
       type: activeCategory?.value,
@@ -511,22 +567,21 @@ function Email({ selectedMail }) {
               loading={loading}
               setLoading={setLoading}
               refreshApi={() => {
-                fetchAllMail(activeCategory?.value, "", "", selectedFromMailAddressId)
-                fetchMailCategory(false, selectedFromMailAddressId, false)
-                fetchData()
+                fetchData(false)
               }}
             />
           </div>
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
               <div className="p-0">
-                <div className="card mb-0 border-0">
-                  <div
-                    className="card-header d-flex justify-content-between align-items-center"
-                    style={{ borderColor: "var(--me-border1)" }}
-                  >
-                    <h5 className="card-title mb-0 text_dark">Mailbox</h5>
-                    {/* <select
+                {availableFromMailAddresses?.length > 0 ?
+                  <div className="card mb-0 border-0">
+                    <div
+                      className="card-header d-flex justify-content-between align-items-center"
+                      style={{ borderColor: "var(--me-border1)" }}
+                    >
+                      <h5 className="card-title mb-0 text_dark">Mailbox</h5>
+                      {/* <select
                       onChange={(event) => handleMailFromAddressChange(event)}
                     >
                       {availableFromMailAddresses?.map((item) => {
@@ -534,8 +589,8 @@ function Email({ selectedMail }) {
                       })}
 
                     </select> */}
-                    {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
-                    {/* <button
+                      {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
+                      {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -545,48 +600,85 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button> */}
-                    <div className="d-flex align-items-center justify-content-end gap-2">
-                      <select className="formItem"
-                        onChange={(event) => handleMailFromAddressChange(event)}
-                      >
-                        {availableFromMailAddresses?.map((item) => {
-                          return (<option value={item?.id}>{item?.mail_from_address}</option>)
-                        })}
-
-                      </select>
-                      <button
-                        type="button"
-                        class=" panelButton static text-nowrap text-white "
-                        onClick={() => {
-                          setIsAdvanceFilterClicked(true)
-                        }}
-                      >
-                        <i class="fa-regular fa-filter me-2"></i> Advance Filter
-                      </button>
                       <div className="d-flex align-items-center justify-content-end gap-2">
-                        {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
-                          <i class="fa-regular fa-star" ></i>
-                        </button> */}
-                        <button className="clearButton2"
-                          style={{
-                            opacity: loadingForActions?.length > 1 ? 0.5 : 1
-                          }}
-                          onClick={() => {
-                            if (!loadingForActions?.length > 0)
-                              handleMultipleDelete()
-                          }
-                          }
+                        <select className="formItem"
+                          onChange={(event) => handleMailFromAddressChange(event)}
                         >
-                          <i class="fa-solid fa-trash"></i>
+                          {availableFromMailAddresses?.map((item) => {
+                            return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                          })}
+
+                        </select>
+                        <button
+                          type="button"
+                          class=" panelButton static text-nowrap text-white "
+                          onClick={() => {
+                            setIsAdvanceFilterClicked(true)
+                          }}
+                        >
+                          <i class="fa-regular fa-filter me-2"></i> Advance Filter
                         </button>
-                        {/* <button className="clearButton2" onClick={() => handleMultipleView()}>
-                          <i class="fa-solid fa-envelope-open" ></i>
-                        </button> */}
+                        <div className="d-flex align-items-center justify-content-end gap-2">
+                          <button className="clearButton2"
+                            style={{
+                              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                            }}
+                            onClick={() => {
+                              if (!loadingForActions?.length > 0)
+                                handleMultipleUnStarred()
+                            }}
+                          >
+                            <i class="fa-regular fa-star" ></i>
+                          </button>
+                          <button className="clearButton2"
+                            style={{
+                              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                            }}
+                            onClick={() => {
+                              if (!loadingForActions?.length > 0)
+                                handleMultipleStarred()
+                            }}
+                          >
+                            <i class="fa fa-star" ></i>
+                          </button>
+                          <button className="clearButton2"
+                            style={{
+                              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                            }}
+                            onClick={() => {
+                              if (!loadingForActions?.length > 0)
+                                handleMultipleDelete()
+                            }}
+                          >
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                          <button
+                            className="clearButton2"
+                            style={{
+                              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                            }}
+                            onClick={() => {
+                              if (!loadingForActions?.length > 0)
+                                handleMultipleSeen()
+                            }}>
+                            <i class="fa-solid fa-envelope-open" ></i>
+                          </button>
+                          <button
+                            className="clearButton2"
+                            style={{
+                              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                            }}
+                            onClick={() => {
+                              if (!loadingForActions?.length > 0)
+                                handleMultipleUnSeen()
+                            }}>
+                            <i class="fa-solid fa-envelope" ></i>
+                          </button>
+                        </div>
+
                       </div>
 
-                    </div>
-
-                    {/* <button
+                      {/* <button
                       type="button"
                       class="btn btn-primary"
                       onClick={() => {
@@ -595,8 +687,8 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
                     </button> */}
-                    {/* <h5 className="card-title mb-0 text_dark"> */}
-                    {/* <i
+                      {/* <h5 className="card-title mb-0 text_dark"> */}
+                      {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -606,7 +698,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                    {/* <i
+                      {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -617,59 +709,68 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i>{" "} */}
-                    {/* <i
+                      {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
                         }}
                         onClick={() => {
                           if (!loadingForActions?.length > 0)
-                            handleMultipleView()
+                            handleMultipleSeen()
                         }
                         }
                       ></i> */}
-                    {/* </h5> */}
-                  </div>
-                  <div
-                    className="card-body"
-                    style={{ height: "calc(100vh - 140px)", padding: '10px' }}
-                  >
-                    <div className="d-flex ">
-                      <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
-                        <div className="card-body ps-0 pe-2 pt-0">
-                          <button
-                            type="button"
-                            class="btn composeBtn w-100 mb-2"
-                            onClick={() => {
-                              setShowNewMail(true);
-                              setMailReplay(false);
-                            }}
-                          >
-                            <i class="fa-regular fa-envelope me-2"></i> Compose
-                          </button>
-                          <ul>
-                            {allCategory?.map((category) => {
-                              const iconClass = getCategoryIconClass(category?.label);
-                              const colorClass = getCategoryColorClass(category?.label);
-                              const isActive = activeList?.toLocaleLowerCase() === category?.label.toLowerCase();
-                              return (<li>
-                                <button
-                                  className={`mail_list d-flex align-items-center ${isActive ? "active" : ""}`}
-                                  onClick={() => handleListingClick(category)}
-                                >
-                                  {" "}
-                                  <p className={`mb-0 d-flex align-items-center `}>
-                                    <i className={`${iconClass} me-2`}></i>{" "}
-                                    {category?.label}
-                                  </p>
-                                  <div className="">
-                                    <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
-                                  </div>
-                                </button>
-                              </li>)
-                            }
-                            )}
-                            {/* <li className=" ">
+                      {/* </h5> */}
+                    </div>
+                    <div
+                      className="card-body"
+                      style={{ height: "calc(100vh - 140px)", padding: '10px' }}
+                    >
+                      <div className="d-flex ">
+                        <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
+                          <div className="card-body ps-0 pe-2 pt-0">
+                            <button
+                              type="button"
+                              class="btn composeBtn w-100 mb-2"
+                              onClick={() => {
+                                setShowNewMail(true);
+                                setMailReplay(false);
+                              }}
+                            >
+                              <i class="fa-regular fa-envelope me-2"></i> Compose
+                            </button>
+                            <ul className="postion-relative"
+                              style={labelLoader ? {
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "calc(100vh - 234px)"
+                              } : undefined}>
+                              {labelLoader ? <div class="spinner-border text-dark" role="status" >
+                                <span class="sr-only">Loading...</span>
+                              </div> :
+                                (allCategory?.map((category) => {
+                                  const iconClass = getCategoryIconClass(category?.label);
+                                  const colorClass = getCategoryColorClass(category?.label);
+                                  const isActive = activeList?.toLocaleLowerCase() === category?.label.toLowerCase();
+                                  return (<li>
+                                    <button
+                                      className={`mail_list d-flex align-items-center ${isActive ? "active" : ""}`}
+                                      onClick={() => handleListingClick(category)}
+                                    >
+                                      {" "}
+                                      <p className={`mb-0 d-flex align-items-center `}>
+                                        <i className={`${iconClass} me-2`}></i>{" "}
+                                        {category?.label}
+                                      </p>
+                                      <div className="">
+                                        <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
+                                      </div>
+                                    </button>
+                                  </li>)
+                                }
+                                ))}
+                              {/* <li className=" ">
                               <button
                                 // className={`mail_list ${activeList === "inbox" ? "active" : ""}`}
                                 //   onClick={handleListingClick}
@@ -725,64 +826,65 @@ function Email({ selectedMail }) {
                                 </p>
                               </button>
                             </li> */}
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                      <div className="table_card">
-                        {showMailList && !mailReplay && !showNewMail && (
-                          <EmailList
-                            // handleShowNewMail={handleShowNewMail}
-                            // handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                            handleShowMail={handleShowMail}
-                            loading={allMailLoading}
-                            allMails={allMails}
-                            pageNumber={pageNumber}
-                            setPageNumber={setPageNumber}
-                            lastPage={lastPage}
-                            handleMailDelete={handleMailDelete}
-                            setCheckedMail={setCheckedMail}
-                            checkedMail={checkedMail}
-                            handleUnSeenMail={handleUnSeenMail}
-                            handleStarrClicked={handleStarrClicked}
-                            setEntriesPerPage={setEntriesPerPage}
-                            setSearchInput={setSearchInput}
-                            account={account}
-                            slugPermissions={slugPermissions}
-                            loadingForActions={loadingForActions}
-                          />
-                        )}
+                        <div className="table_card">
+                          {showMailList && !mailReplay && !showNewMail && (
+                            <EmailList
+                              // handleShowNewMail={handleShowNewMail}
+                              // handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                              handleShowMail={handleShowMail}
+                              loading={allMailLoading}
+                              allMails={allMails}
+                              pageNumber={pageNumber}
+                              setPageNumber={setPageNumber}
+                              lastPage={lastPage}
+                              handleMailDelete={handleMailDelete}
+                              setCheckedMail={setCheckedMail}
+                              checkedMail={checkedMail}
+                              handleUnSeenMail={handleUnSeenMail}
+                              handleStarrClicked={handleStarrClicked}
+                              setEntriesPerPage={setEntriesPerPage}
+                              setSearchInput={setSearchInput}
+                              account={account}
+                              slugPermissions={slugPermissions}
+                              loadingForActions={loadingForActions}
+                            />
+                          )}
 
-                        {mailReplay && !showMailList && !showNewMail && (
-                          <MailReply
-                            handleShowNewMail={handleShowNewMail}
-                            handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                            currentMail={currentMail}
-                            activeList={activeList}
-                            activeCategory={activeCategory}
-                            handleMailDelete={handleMailDelete}
-                            loading={loading}
-                            downloadAllAtachment={downloadAllAtachment}
-                            loadingForDownloadAtachment={loadingForDownloadAtachment}
-                          />
-                        )}
+                          {mailReplay && !showMailList && !showNewMail && (
+                            <MailReply
+                              handleShowNewMail={handleShowNewMail}
+                              handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                              currentMail={currentMail}
+                              activeList={activeList}
+                              activeCategory={activeCategory}
+                              handleMailDelete={handleMailDelete}
+                              loading={loading}
+                              downloadAllAtachment={downloadAllAtachment}
+                              loadingForDownloadAtachment={loadingForDownloadAtachment}
+                            />
+                          )}
 
-                        {showNewMail && !mailReplay && (
-                          <NewMail
-                            handleShowNewMail={handleShowNewMail}
-                            handleListingClick={handleListingClick}
-                            handleMailReplay={handleMailReplay}
-                            availableFromMailAddresses={
-                              availableFromMailAddresses
-                            }
-                            activeList={activeList}
-                          />
-                        )}
+                          {showNewMail && !mailReplay && (
+                            <NewMail
+                              handleShowNewMail={handleShowNewMail}
+                              handleListingClick={handleListingClick}
+                              handleMailReplay={handleMailReplay}
+                              availableFromMailAddresses={
+                                availableFromMailAddresses
+                              }
+                              activeList={activeList}
+                              selectedFromMailAddressId={selectedFromMailAddressId}
+                            />
+                          )}
 
-                        {!showMailList && !mailReplay && !showNewMail && <ThreeDotedLoader />}
-                      </div>
-                      {/* {activeList === "sent" && (
+                          {!showMailList && !mailReplay && !showNewMail && <ThreeDotedLoader />}
+                        </div>
+                        {/* {activeList === "sent" && (
                         <div className="table_card">
                           {showMailList && !mailReplay && !showNewMail && (
                             <EmailList
@@ -893,9 +995,13 @@ function Email({ selectedMail }) {
                           )}
                         </div>
                       )} */}
+                      </div>
                     </div>
+                  </div> :
+                  <div style={{textAlign: "center"}}>
+                    You don't have permission for this module! Please connect with admin!
                   </div>
-                </div>
+                }
               </div>
             </div>
           </div>
