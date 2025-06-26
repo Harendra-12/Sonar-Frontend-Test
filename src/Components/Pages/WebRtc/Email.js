@@ -777,6 +777,7 @@ function Email({ selectedMail }) {
                               availableFromMailAddresses
                             }
                             activeList={activeList}
+                            selectedFromMailAddressId={selectedFromMailAddressId}
                           />
                         )}
 
