@@ -97,6 +97,7 @@ var recipient_to_remove_notification = null;
 var allLeadList = []
 var allLeadFileList = []
 var leadDataRefresh = 0
+var handRaises = []
 
 const initialState = {
   account,
@@ -194,7 +195,7 @@ const initialState = {
   allLeadList,
   allLeadFileList,
   leadDataRefresh,
-  handRaises: []
+  handRaises
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -461,26 +462,22 @@ const counterReducer = (state = initialState, action) => {
     case "SET_HAND_RAISE": {
       const { room_id, username, hand_raised } = action.payload;
 
-      const existingIndex = state.handRaises.findIndex(
-        (item) => item.room_id === room_id && item.username === username
+      // Remove existing entry for same room_id & username
+      const updatedHandRaises = state.handRaises.filter(
+        (item) => !(item.room_id === room_id && item.username === username)
       );
 
-      if (existingIndex !== -1) {
-        // immutably update existing
-        return {
-          ...state,
-          handRaises: state.handRaises.map((item, index) =>
-            index === existingIndex ? { ...item, hand_raised } : item
-          ),
-        };
-      } else {
-        // add new entry
-        return {
-          ...state,
-          handRaises: [...state.handRaises, action.payload],
-        };
-      }
+      // Add new entry at the end
+      return {
+        ...state,
+        handRaises: [...updatedHandRaises, action.payload],
+      };
     }
+    case "RESET_HAND_RAISES":
+      return {
+        ...state,
+        handRaises: [],
+      };
     default:
       return state;
   }

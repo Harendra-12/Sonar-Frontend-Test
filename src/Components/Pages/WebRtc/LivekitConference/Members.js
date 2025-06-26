@@ -58,9 +58,12 @@ function Members({
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
   const chatButton = document.querySelector(".lk-chat-toggle");
+
+  // State to manage hand raise functionality
   const handRaises = useSelector((state) => state.handRaises);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationText, setNotificationText] = useState(false);
+  const lastProcessedRaise = useRef(null);
 
   useEffect(() => {
     setCurentCallRoom(
@@ -146,6 +149,8 @@ function Members({
         incomingCall.filter((item) => item?.room_id === roomName),
         incomingCall
       );
+      // Reset Hand Raise State
+      dispatch({ type: "RESET_HAND_RAISES" })
 
       if (
         incomingCall.filter((item) => item?.room_id === roomName)[0]
@@ -570,16 +575,25 @@ function Members({
     if (handRaises && handRaises.length > 0) {
       const latestRaise = handRaises[handRaises.length - 1];
 
-      setNotificationText(`${latestRaise.username} ${latestRaise.hand_raised ? 'raised' : 'lowered'} their hand ✋`);
-      setShowNotification(true);
+      // Avoid showing toast for the same action again
+      if (
+        !lastProcessedRaise.current ||
+        lastProcessedRaise.current.room_id !== latestRaise.room_id ||
+        lastProcessedRaise.current.username !== latestRaise.username ||
+        lastProcessedRaise.current.hand_raised !== latestRaise.hand_raised
+      ) {
+        setNotificationText(`${latestRaise.username} ${latestRaise.hand_raised ? 'raised' : 'lowered'} their hand ✋`);
+        setShowNotification(true);
 
-      const timer = setTimeout(() => {
-        setShowNotification(false);
-        setNotificationText("");
-      }, 5000);
+        lastProcessedRaise.current = latestRaise;
 
-      return () => clearTimeout(timer);
+        const timer = setTimeout(() => {
+          setShowNotification(false);
+          setNotificationText("");
+        }, 5000);
 
+        return () => clearTimeout(timer);
+      }
     }
   }, [handRaises]);
 
