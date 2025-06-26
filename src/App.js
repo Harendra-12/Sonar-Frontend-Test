@@ -206,6 +206,7 @@ import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
+import Recorder from "./Components/Pages/Recorder/Recorder";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -281,7 +282,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
-
+          <Route path="/recorder" element = {<Recorder />} />
           <Route element={<ProtectedRoute />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/ai-dashboard" element={<AIDashboard />} />
