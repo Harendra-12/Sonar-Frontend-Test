@@ -259,8 +259,8 @@ function PortNumber() {
                                 account?.permissions,
                                 "read"
                               ) ? (
-                                <tr>
-                                  <td colSpan={99}>No Permission</td>
+                                <tr style={{ cursor: "default", height: "578px" }}>
+                                  <td colSpan={99} className="text-center">No Permission</td>
                                 </tr>
                               ) : (
                                 <>

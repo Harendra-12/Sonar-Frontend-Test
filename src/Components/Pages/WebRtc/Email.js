@@ -540,15 +540,15 @@ function Email({ selectedMail }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button> */}
-                     <div className="d-flex align-items-center justify-content-end gap-2">
-                          <select className="formItem"
-                      onChange={(event) => handleMailFromAddressChange(event)}
-                    >
-                      {availableFromMailAddresses?.map((item) => {
-                        return (<option value={item?.id}>{item?.mail_from_address}</option>)
-                      })}
+                    <div className="d-flex align-items-center justify-content-end gap-2">
+                      <select className="formItem"
+                        onChange={(event) => handleMailFromAddressChange(event)}
+                      >
+                        {availableFromMailAddresses?.map((item) => {
+                          return (<option value={item?.id}>{item?.mail_from_address}</option>)
+                        })}
 
-                    </select>
+                      </select>
                       <button
                         type="button"
                         class=" panelButton static text-nowrap text-white "
@@ -562,15 +562,15 @@ function Email({ selectedMail }) {
                         {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
                           <i class="fa-regular fa-star" ></i>
                         </button> */}
-                        <button className="clearButton2" 
+                        <button className="clearButton2"
                           style={{
-                          opacity: loadingForActions?.length > 1 ? 0.5 : 1
-                        }}
-                        onClick={() => {
-                          if (!loadingForActions?.length > 0)
-                            handleMultipleDelete()
-                        }
-                        }
+                            opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                          }}
+                          onClick={() => {
+                            if (!loadingForActions?.length > 0)
+                              handleMultipleDelete()
+                          }
+                          }
                         >
                           <i class="fa-solid fa-trash"></i>
                         </button>
@@ -591,7 +591,7 @@ function Email({ selectedMail }) {
                       <i class="fa-regular fa-filter me-2"></i> Advance Filter
                     </button> */}
                     {/* <h5 className="card-title mb-0 text_dark"> */}
-                      {/* <i
+                    {/* <i
                         class="fa-regular fa-star me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -601,7 +601,7 @@ function Email({ selectedMail }) {
                             handleMultipleStarred()
                         }}
                       ></i> */}
-                      {/* <i
+                    {/* <i
                         class="fa-solid fa-trash me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -612,7 +612,7 @@ function Email({ selectedMail }) {
                         }
                         }
                       ></i>{" "} */}
-                      {/* <i
+                    {/* <i
                         class="fa-solid fa-envelope-open me-3"
                         style={{
                           opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -627,7 +627,7 @@ function Email({ selectedMail }) {
                   </div>
                   <div
                     className="card-body"
-                    style={{ height: "calc(100vh - 140px)" , padding: '10px'}}
+                    style={{ height: "calc(100vh - 140px)", padding: '10px' }}
                   >
                     <div className="d-flex ">
                       <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
@@ -943,8 +943,46 @@ function Email({ selectedMail }) {
                               />
                             </div>
                           </div>
+                          <div className="formRow flex-row align-items-start gap-2">
+                            <div className="formLabel mw-100 w-100">
+                              <label>Date within</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("since")}
+                                type="date"
+                                className="formItem"
+                                // placeholder="Subject"
+                              />
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("before")}
+                                type="date"
+                                className="formItem"
+                                // placeholder="Subject"
+                              />
+                            </div>
+                          </div>
+                          {/* <div className="row mt-2">
+                            <div className="col-4">Date within</div>
+                            <div className="col-4">
+                              <input
+                                {...register("since")}
+                                className="form-control"
+                                type="date"
+                              />
+                            </div>
+                            <div className="col-4">
+                              <input
+                                {...register("before")}
+                                className="form-control"
+                                type="date"
+                              />
+                            </div>
+                          </div> */}
 
-                               {/* <div className="row">
+                          {/* <div className="row">
                             <div className="col-12">From</div>
                             <div className="col-12">
                               <input
@@ -1005,7 +1043,7 @@ function Email({ selectedMail }) {
                             <button
                               type="button"
                               className="panelButton m-0"
-                              
+
                             >
                               <span className="text">Apply</span>
                               <span className="icon">
