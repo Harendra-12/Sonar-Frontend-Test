@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
 
-function Email({ selectedMail }) {
+function Email({ selectedMail,   }) {
   const [loading, setLoading] = useState(false);
   const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
   const [loadingForActions, setLoadingForActions] = useState([])
@@ -62,9 +62,7 @@ function Email({ selectedMail }) {
   const [trashLastPage, setTrashLastPage] = useState(1);
 
   const fetchMail = () => { };
-
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -368,6 +366,7 @@ function Email({ selectedMail }) {
       );
     });
   }
+  
 
   const handleMultipleView = () => {
     const listOfMessageId = checkedMail?.map((item) => item?.uid?.toString())
@@ -562,7 +561,7 @@ function Email({ selectedMail }) {
                         {/* <button className="clearButton2" onClick={() => handleMultipleStarred()}>
                           <i class="fa-regular fa-star" ></i>
                         </button> */}
-                        <button className="clearButton2"
+                        {/* <button className="clearButton2"
                           style={{
                             opacity: loadingForActions?.length > 1 ? 0.5 : 1
                           }}
@@ -573,7 +572,7 @@ function Email({ selectedMail }) {
                           }
                         >
                           <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button> */}
                         {/* <button className="clearButton2" onClick={() => handleMultipleView()}>
                           <i class="fa-solid fa-envelope-open" ></i>
                         </button> */}
@@ -745,6 +744,7 @@ function Email({ selectedMail }) {
                             account={account}
                             slugPermissions={slugPermissions}
                             loadingForActions={loadingForActions}
+                              handleMultipleDelete={handleMultipleDelete}
                           />
                         )}
 
