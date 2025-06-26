@@ -950,6 +950,44 @@ function Email({ selectedMail }) {
                               />
                             </div>
                           </div>
+                          <div className="formRow flex-row align-items-start gap-2">
+                            <div className="formLabel mw-100 w-100">
+                              <label>Date within</label>
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("since")}
+                                type="date"
+                                className="formItem"
+                                // placeholder="Subject"
+                              />
+                            </div>
+                            <div className="col-12">
+                              <input
+                                {...register("before")}
+                                type="date"
+                                className="formItem"
+                                // placeholder="Subject"
+                              />
+                            </div>
+                          </div>
+                          {/* <div className="row mt-2">
+                            <div className="col-4">Date within</div>
+                            <div className="col-4">
+                              <input
+                                {...register("since")}
+                                className="form-control"
+                                type="date"
+                              />
+                            </div>
+                            <div className="col-4">
+                              <input
+                                {...register("before")}
+                                className="form-control"
+                                type="date"
+                              />
+                            </div>
+                          </div> */}
 
                           {/* <div className="row">
                             <div className="col-12">From</div>
@@ -1012,7 +1050,7 @@ function Email({ selectedMail }) {
                             <button
                               type="button"
                               className="panelButton m-0"
-                              
+
                             >
                               <span className="text">Apply</span>
                               <span className="icon">

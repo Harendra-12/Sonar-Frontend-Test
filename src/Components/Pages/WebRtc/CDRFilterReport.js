@@ -2095,6 +2095,7 @@ function CdrFilterReport({ page }) {
             account={account}
             setCircularLoader={setCircularLoader}
             filteredColumnForTable={filteredColumnForTable}
+            url={"cdr"}
           />
         )}
       </main>
