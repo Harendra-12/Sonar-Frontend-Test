@@ -206,6 +206,7 @@ import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
+import GoConferenceNotificationSocket from "./Components/GlobalFunction/GoConferencenNotificationSocket";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -238,6 +239,7 @@ function App() {
   // const { sendMessage } = Socket();
   Socket();
   const { sendMessage } = GoMessageSocket()
+  GoConferenceNotificationSocket();
   GoSocket();
   GoSocketActiveCall();
   useEffect(() => {
@@ -913,10 +915,10 @@ function App() {
                 <Navigate to="/dashboard" replace />
             }
           />
-          <Route 
+          <Route
             path="/click-to-call-report"
             element={
-              <ClickToCallReport/>
+              <ClickToCallReport />
             }
           />
           <Route
