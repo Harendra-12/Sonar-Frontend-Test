@@ -237,7 +237,7 @@ const CallBlocking = () => {
                               : (
                                 <>
                                   {callBlock &&
-                                    callBlock.data?.map((item, index) => {
+                                    callBlock?.data?.map((item, index) => {
                                       return (
                                         <tr key={index}>
                                           <td>{item.type}</td>
@@ -265,7 +265,7 @@ const CallBlocking = () => {
                                         </tr>
                                       );
                                     })}
-                                  {callBlock && callBlock.length === 0 ? (
+                                  {callBlock && callBlock?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Blocking"
