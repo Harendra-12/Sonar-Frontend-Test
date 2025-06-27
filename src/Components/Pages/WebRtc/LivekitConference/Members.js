@@ -41,7 +41,8 @@ function Members({
   setIsCurrentUserStartRecording,
   setCalling,
   isConferenceCall,
-  socketMessage
+  socketMessage,
+  conferenceInfo
 }) {
   const room = useRoomContext();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
@@ -60,13 +61,15 @@ function Members({
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
-  const chatButton = document.querySelector(".lk-chat-toggle");
+  const chatButton = document.querySelector('.lk-chat-toggle:not(.lk-close-button)');
 
   // State to manage hand raise functionality
   const handRaises = useSelector((state) => state.handRaises);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationText, setNotificationText] = useState(false);
   const lastProcessedRaise = useRef(null);
+
+  const [toggleMeetingInfo, setToggleMeetingInfo] = useState(false);
 
   useEffect(() => {
     setCurentCallRoom(
@@ -358,15 +361,16 @@ function Members({
         customDiv.className = "custom-controls-container";
         customDiv.style.display = "flex";
         customDiv.style.alignItems = "center";
-        // customDiv.style.marginRight = '10px';
         customDiv.style.gap = "10px"; // Add spacing between buttons
+        customDiv.style.position = "fixed";
+        customDiv.style.right = "20px"; // Adjust as needed
 
         // Create the "All Members" button
         const allMembersButton = document.createElement("button");
 
-        allMembersButton.className = "lk-button all-members-button";
+        allMembersButton.className = "lk-button all-members-button d-flex align-items-center";
         allMembersButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:5px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="9" r="3" stroke="#000" stroke-width="1.5" />
             <circle cx="12" cy="12" r="10" stroke="#000" stroke-width="1.5" />
             <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#000" stroke-width="1.5" stroke-linecap="round" />
@@ -389,23 +393,37 @@ function Members({
         `;
         handRaiseButton.onclick = () => handRaise();
 
+        // Create the "Meeting Info" button
+        const meetingInfoButon = document.createElement("button");
+        meetingInfoButon.className = "lk-button meeting-info-button";
+        meetingInfoButon.innerHTML =
+          `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="16px" height="16px" viewBox="0 0 32 32" version="1.1">
+            <title>info</title>
+            <path d="M22 28.75h-4.75v-18.75c0-0.69-0.56-1.25-1.25-1.25v0h-4c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h2.75v17.5h-4.75c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h12c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0zM16 6.25c1.243 0 2.25-1.007 2.25-2.25s-1.007-2.25-2.25-2.25c-1.243 0-2.25 1.007-2.25 2.25v0c0.002 1.242 1.008 2.248 2.25 2.25h0zM16 3.75c0.138 0 0.25 0.112 0.25 0.25v0c0 0.275-0.5 0.275-0.5 0 0-0.138 0.112-0.25 0.25-0.25h0z"/>
+            <script xmlns=""/>
+          </svg>
+          <span>Meeting Info</span>`;
+        meetingInfoButon.onclick = () => setToggleMeetingInfo((prev) => !prev);
+
         // Create the "Record" button
         if (isAdmin) {
           const recordButton = document.createElement("button");
           recordButton.className = "lk-button record-button";
-          customDiv.appendChild(recordButton);
+          disconnectButton.parentNode.insertBefore(recordButton, disconnectButton);
         }
         // Append the buttons to the custom div
         customDiv.appendChild(allMembersButton);
 
-        // Append the buttons to the custom div
-        customDiv.appendChild(handRaiseButton);
+        customDiv.appendChild(meetingInfoButon);
 
         // Insert the custom div before the disconnect button
         disconnectButton.parentNode.insertBefore(customDiv, disconnectButton);
+
+        // Insert the hand raise button before the disconnect button
+        disconnectButton.parentNode.insertBefore(handRaiseButton, disconnectButton);
       }
     }
-  }, [setParticipantList, roomName]);
+  }, [setParticipantList, roomName, chatButton]);
 
   // Use a separate useEffect to dynamically update the "Record" button text based on isRecording
   useEffect(() => {
@@ -553,6 +571,7 @@ function Members({
   // Handle chat panel visibility based on chat button state
   useEffect(() => {
     const chatPanel = document.querySelector(".lk-chat");
+    const customDiv = document.querySelector(".custom-controls-container")
 
     if (!chatButton) return;
 
@@ -572,6 +591,8 @@ function Members({
 
     // Also check immediately in case both are already active
     toggleParticipants();
+
+    customDiv.prepend(chatButton);
 
     return () => {
       observer.disconnect();
@@ -653,8 +674,8 @@ function Members({
         </div>
       </div>}
       {showParticipants && (
-        <div className="participantMemberList">
-          <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
+        <div className="participantMemberList p-0">
+          <div className="lk-chat-header">
             <div
               style={{
                 color: "#000",
@@ -672,7 +693,7 @@ function Members({
             </button>
           </div>
           <div></div>
-          <div className="col-12 mt-3">
+          <div className="col-12 mt-3 p-2">
             <input
               type="search"
               name="Search"
@@ -689,7 +710,7 @@ function Members({
             />
           </div>
 
-          <ul className="noScrollbar">
+          <ul className="noScrollbar p-2">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
                 <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaiseIcon' : ''} `}>
@@ -757,6 +778,43 @@ function Members({
                 <i className="fa-light fa-user" />
               </div>
               <span className="ms-2">{username}</span>
+            </div>
+          </div>
+        </div>
+      )}
+      {toggleMeetingInfo && (
+        <div className="participantMemberList  p-0">
+          <div className="lk-chat-header " style={{ borderBottom: "1px solid var(--border-color)" }}>
+            <div
+              style={{
+                color: "rgb(19, 19, 19)",
+                fontSize: "14px",
+                fontWeight: "600",
+              }}
+            >
+              Meeting details
+            </div>
+
+            <button
+              className="clearButton2 xl ms-auto"
+              onClick={() => setToggleMeetingInfo(false)}
+            >
+              <i className={`fa-regular fa-xmark`}></i>
+            </button>
+
+          </div>
+          <div className="meeting-card p-3">
+            <div className="meeting-section mt-3">
+              <h5 className="fs-5 mb-3" style={{ textTransform: 'capitalize' }}>{conferenceInfo?.conf_name}</h5>
+              <h3>Joining info</h3>
+              <div className="meeting-link">{conferenceInfo?.conf_url}</div>
+              <button className="btn btn-outline-secondary" onClick={() => { navigator.clipboard.writeText(conferenceInfo?.conf_url); toast.success("Copied to clipboard!") }}>
+                <i class="fa-solid fa-clone me-2"></i>
+                Copy joining info
+              </button>
+            </div>
+            <div className="attachments">
+              <p>Start Time and Date: <span className="text-dark fw-semibold">{conferenceInfo?.conf_start_time || "All Day"}</span></p>
             </div>
           </div>
         </div>

@@ -112,6 +112,7 @@ const WebrtcWrapper = () => {
   const [internalCaller, setInternalCaller] = useState(account.id);
   const [isConferenceCall, setIsConferenceCall] = useState(false);
   const [isConferenceAdmin, setIsConferenceAdmin] = useState(false);
+  const [conferenceInfo, setConferenceInfo] = useState([]);
 
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
@@ -617,6 +618,7 @@ const WebrtcWrapper = () => {
             setCalling={setCalling}
             setIsConferenceCall={setIsConferenceCall}
             setIsConferenceAdmin={setIsConferenceAdmin}
+            setConferenceInfo={setConferenceInfo}
           />
         )}
         {/* {activePage == "videocall" && <VideoCall />} */}
@@ -947,6 +949,7 @@ const WebrtcWrapper = () => {
               setSelectedChat={setSelectedChat}
               isConferenceCall={isConferenceCall}
               isConferenceAdmin={isConferenceAdmin}
+              conferenceInfo={conferenceInfo}
             />
           </div>
         </Rnd>

@@ -23,6 +23,11 @@
   padding: 0;
   flex-shrink: 0;
 }
+.clearButton2.sm{
+    width: 30px;
+  height: 30px;
+   font-size: 0.875rem;
+}
 
 
 .clearButton2.white {
