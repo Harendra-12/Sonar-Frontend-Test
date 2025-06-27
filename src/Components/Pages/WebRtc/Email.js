@@ -156,12 +156,27 @@ function Email({ selectedMail, }) {
     if (result?.status) {
       setLabelLoader(false)
       setAllCategory(result?.data);
-      if (isInitial)
+      if (isInitial) {
+        //  const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
+        //  if(isCategoryExistInAnotherCagetory){
+        //   fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId);
+        //  }
         fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
-      if (activeCategory) {
-        setActiveCategory(activeCategory)
       } else {
+        fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId);
+      }
+
+      if (activeCategory && !isInitial) {
+        setActiveCategory(activeCategory)
+        setActiveList(activeCategory?.label)
+      } else {
+        // const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
+        // if (isCategoryExistInAnotherCagetory) {
+        //   setActiveCategory(activeCategory)
+        //   setActiveList(activeCategory?.label)
+        // }
         setActiveCategory(result?.data[0])
+        setActiveList(result?.data[0]?.label)
       }
     } else {
       // navigate("/");
@@ -273,7 +288,7 @@ function Email({ selectedMail, }) {
         fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
         setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
       } else {
-        fetchMailCategory(false, selectedFromMailAddressId, true)
+        fetchMailCategory(false, selectedFromMailAddressId, false)
         setSelectedFromMailAddressId(selectedFromMailAddressId)
       }
     }
@@ -543,9 +558,9 @@ function Email({ selectedMail, }) {
   };
 
   const handleMailFromAddressChange = (event) => {
-    const shouldLoad = false;
-    fetchMailCategory(shouldLoad, event?.target?.value, false)
-    fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
+    const shouldLoad = true;
+    fetchMailCategory(shouldLoad, event?.target?.value, true)
+    // fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
   }
 
