@@ -98,6 +98,7 @@ var allLeadList = []
 var allLeadFileList = []
 var leadDataRefresh = 0
 var handRaises = []
+var confNotif = []
 
 const initialState = {
   account,
@@ -195,7 +196,8 @@ const initialState = {
   allLeadList,
   allLeadFileList,
   leadDataRefresh,
-  handRaises
+  handRaises,
+  confNotif
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -478,6 +480,9 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         handRaises: [],
       };
+    case "SET_CONF_NOTIF": {
+      return { ...state, confNotif: action.confNotif }
+    }
     default:
       return state;
   }

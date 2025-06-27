@@ -1990,7 +1990,7 @@ tr.seen-message {
 
 tr.seen-message td,
 tr.seen-message td p {
-    color: #64696f;
+    color: var(--mail-seen);
     font-weight: 300 !important;
 }
 

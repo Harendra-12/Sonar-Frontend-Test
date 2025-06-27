@@ -54,7 +54,7 @@ function DarkModeToggle({ marginLeft }) {
             <div className="col-auto mx-2">
                 <button className="clearButton2 xl" effect="ripple">
                     <i className={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
-                    <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: '0' }} />
+                    <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: '0', zIndex: "3", cursor: "pointer" }} />
                 </button>
             </div>
 

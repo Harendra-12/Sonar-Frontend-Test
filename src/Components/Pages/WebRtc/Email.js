@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import NoPermission from "../../CommonComponents/NoPermission";
 
 function Email({ selectedMail, }) {
   const [loading, setLoading] = useState(false);
@@ -385,7 +386,7 @@ function Email({ selectedMail, }) {
       );
     });
   }
-  
+
 
   const handleMultipleSeen = () => {
     const isAllMailUnseen = checkedMail?.every(item => !item?.status_flags?.seen);
@@ -635,7 +636,7 @@ function Email({ selectedMail, }) {
                         >
                           <i class="fa-regular fa-filter me-2"></i> Advance Filter
                         </button>
-                        <div className="d-flex align-items-center justify-content-end gap-2">
+                        {/* <div className="d-flex align-items-center justify-content-end gap-2">
                           <button className="clearButton2"
                             style={{
                               opacity: loadingForActions?.length > 1 ? 0.5 : 1
@@ -691,7 +692,7 @@ function Email({ selectedMail, }) {
                             }}>
                             <i class="fa-solid fa-envelope" ></i>
                           </button>
-                        </div>
+                        </div> */}
 
                       </div>
 
@@ -868,6 +869,11 @@ function Email({ selectedMail, }) {
                               account={account}
                               slugPermissions={slugPermissions}
                               loadingForActions={loadingForActions}
+                              handleMultipleSeen={handleMultipleSeen}
+                              handleMultipleUnSeen={handleMultipleUnSeen}
+                              handleMultipleStarred={handleMultipleStarred}
+                              handleMultipleUnStarred={handleMultipleUnStarred}
+                              handleMultipleDelete={handleMultipleDelete}
                             />
                           )}
 
@@ -1015,9 +1021,7 @@ function Email({ selectedMail, }) {
                       </div>
                     </div>
                   </div> :
-                  <div style={{ textAlign: "center" }}>
-                    You don't have permission for this module! Please connect with admin!
-                  </div>
+                  <NoPermission />
                 }
               </div>
             </div>
