@@ -24,9 +24,7 @@ function IncomingCallPopup({
   const audioRef = useRef(null);
   const audio = new Audio(ringtone);
   const backgrounAudio = new Audio(backgroundTone);
-  const state = useSelector((state) => state);
   const previewDialer = useSelector((state) => state.previewDialer);
-  const volume = state?.volume;
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
