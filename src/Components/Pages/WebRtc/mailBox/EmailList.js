@@ -23,7 +23,8 @@ const EmailList = ({
   setSearchInput,
   account,
   slugPermissions,
-  loadingForActions
+  loadingForActions,
+  handleMultipleDelete
 }) => {
   const [isCheckedAll, setIsCheckedAll] = useState(false)
   const formatDateTime = (dateString) => {
@@ -92,7 +93,6 @@ const EmailList = ({
               className="formItem"
               onChange={(e) => setEntriesPerPage(e?.target?.value)}
             >
-              <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
               <option value={50}>50</option>
@@ -100,6 +100,7 @@ const EmailList = ({
             </select>
             <label>entries</label>
           </div>
+          <div className="d-flex align-items-center justify-content-end gap-2">
           {checkViewSidebar(
             "DidDetail",
             slugPermissions,
@@ -117,10 +118,23 @@ const EmailList = ({
               />
             </div>
           }
+          <button className="clearButton2 bg-danger-subtle"
+            style={{
+              opacity: loadingForActions?.length > 1 ? 0.5 : 1
+            }}
+            onClick={() => {
+              if (!loadingForActions?.length > 0)
+                handleMultipleDelete()
+            }
+            }
+          >
+            <i class="fa-solid fa-trash text-danger"></i>
+          </button>
+          </div>
         </div>
         <div
           className="tableContainer e mail_table"
-        style={{ height: "calc(100vh - 257px)", overflow: "auto" }}
+          style={{ height: "calc(100vh - 257px)", overflow: "auto" }}
         >
           {loading ? (
             <ThreeDotedLoader />
@@ -176,7 +190,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false);
                       }}
                     >
                       <div className="d-flex align-items-center">
@@ -196,7 +210,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false );
                       }}
                     >
                       <p className="ellipsisText300 mb-0">
@@ -216,7 +230,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item);
+                        handleShowMail(item, false);
                       }}
                     >
                       <p className="mb-0 fw-semibold">
