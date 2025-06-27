@@ -19,7 +19,7 @@ import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
-function Email({ selectedMail }) {
+function Email({ selectedMail,   }) {
   const [loading, setLoading] = useState(false);
   const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
   const [loadingForActions, setLoadingForActions] = useState([])
@@ -60,9 +60,7 @@ function Email({ selectedMail }) {
   const [trashLastPage, setTrashLastPage] = useState(1);
 
   const fetchMail = () => { };
-
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -384,6 +382,7 @@ function Email({ selectedMail }) {
       );
     });
   }
+  
 
   const handleMultipleSeen = () => {
     const isAllMailUnseen = checkedMail?.every(item => !item?.status_flags?.seen);
