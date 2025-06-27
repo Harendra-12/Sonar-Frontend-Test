@@ -113,7 +113,7 @@ function ActiveCallSidePanel({
         type: "SET_CALLREFRESH",
         refreshCalls: refreshCalls + 1,
       });
-    }, 1500);
+    }, 3000);
 
     const updatedVideoCallMode = globalSession.find(
       (item) => item.id === callProgressId
