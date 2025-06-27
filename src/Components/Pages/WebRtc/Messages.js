@@ -1978,7 +1978,7 @@ function Messages({
                       type="search"
                       name="Search"
                       id="headerSearch"
-                      className="searchStyle"
+                      className="searchStyle mt-2 mb-2"
                       placeholder="Search"
                       value={searchValueForMessage}
                       onChange={(event) => handleMessageSearchChange(event)}
@@ -2047,7 +2047,7 @@ function Messages({
                             type="search"
                             name="Search"
                             id="headerSearch"
-                            className="searchStyle"
+                            className="searchStyle mb-2"
                             placeholder="Search"
                             value={searchValueForMessage}
                             onChange={(event) => handleMessageSearchChange(event)}
@@ -2216,7 +2216,7 @@ function Messages({
                             type="search"
                             name="Search"
                             id="headerSearch"
-                            className="searchStyle"
+                            className="searchStyle mb-2"
                             placeholder="Search"
                             value={searchValueForGroup}
                             onChange={(event) => handleGroupSearchChange(event)}
