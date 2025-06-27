@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 
 import {
+  awsGeneralPostFunction,
   backToTop,
   checkViewSidebar,
   convertDateToCurrentTimeZone,
@@ -32,6 +33,7 @@ import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import Select from "react-select";
 import axios from "axios";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { api_url } from "../../../urls";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -781,18 +783,24 @@ function CdrFilterReport({ page }) {
     getData(shouldLoad);
   };
 
-  function getAdvanceSearch() {
+  async function getAdvanceSearch() {
     if (advanceSearch) {
-      axios
-        .post(
-          "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
-          { querry: advanceSearch }
-        )
-        .then((res) => {
-          console.log("Response", res);
-        });
-    } else {
-      toast.error("Please enter some data to search");
+      //   axios
+      //     .post(
+      //       "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
+      //       { querry: advanceSearch }
+      //     )
+      //     .then((res) => {
+      //       console.log("Response", res);
+      //     });
+      // } else {
+      //   toast.error("Please enter some data to search");
+      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { querry: advanceSearch });
+      if (res?.statue) {
+        console.log("Response", res);
+      } else {
+
+      }
     }
   }
   return (

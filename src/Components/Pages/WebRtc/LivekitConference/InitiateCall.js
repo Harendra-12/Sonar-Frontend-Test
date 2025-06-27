@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import LiveKitConference from "./LiveKitConference";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { meetGeneralGetFunction } from "../../../GlobalFunction/globalFunction";
 
 function InitiateCall({
   from,
@@ -42,17 +43,24 @@ function InitiateCall({
 
   useEffect(() => {
     async function getToken() {
-      axios
-        .get(
-          `https://meet.webvio.in/backend/get-token?room=${roomName}&username=${name}&isAdmin=${isAdmin}`
-        )
-        .then((res) => {
-          setToken(res.data.token);
-          setServerUrl(res.data.serverUrl);
-        })
-        .catch((err) => {
-          console.log("This error coming from conference", err);
-        });
+      // axios
+      //   .get(
+      //     `https://meet.webvio.in/backend/get-token?room=${roomName}&username=${name}&isAdmin=${isAdmin}`
+      //   )
+      //   .then((res) => {
+      //     setToken(res.data.token);
+      //     setServerUrl(res.data.serverUrl);
+      //   })
+      //   .catch((err) => {
+      //     console.log("This error coming from conference", err);
+      //   });
+      const res = await meetGeneralGetFunction(`/get-token?room=${roomName}&username=${name}&isAdmin=${isAdmin}`)
+      if (res?.status) {
+        setToken(res?.data?.token);
+        setServerUrl(res?.data?.serverUrl);
+      } else {
+        console.log("This error coming from conference", res?.err);
+      }
     }
     if (roomName) {
       getToken();

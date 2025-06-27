@@ -8,6 +8,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generatePreSignedUrl,
+  meetGeneralGetFunction,
   useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -18,6 +19,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import { api_url } from "../../../urls";
 
 /**
  * This component renders the meeting rooms page
@@ -96,15 +98,22 @@ function Meeting() {
 
   async function handleGetRecord(id) {
     setdataLoader(true);
-    axios
-      .get(`https://meet.webvio.in/backend/recordings?roomName=${id}`)
-      .then((res) => {
-        setRecorddata(res.data.recordings);
-        setdataLoader(false);
-      })
-      .catch((err) => {
-        setdataLoader(false);
-      });
+    // axios
+    //   .get(`https://meet.webvio.in/backend/recordings?roomName=${id}`)
+    //   .then((res) => {
+    //     setRecorddata(res.data.recordings);
+    //     setdataLoader(false);
+    //   })
+    //   .catch((err) => {
+    //     setdataLoader(false);
+    //   });
+    const res = await meetGeneralGetFunction(api_url?.MEET_RECORDING(id))
+    if (res?.status) {
+      setRecorddata(res.data.recordings);
+      setdataLoader(false);
+    } else {
+      setdataLoader(false);
+    }
   }
 
   // console.log(recordData, "recordData");

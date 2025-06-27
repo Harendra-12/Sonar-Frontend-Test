@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { generalPostFunction, generatePreSignedUrl, useDebounce } from '../GlobalFunction/globalFunction';
+import { awsGeneralPostFunction, generalPostFunction, generatePreSignedUrl, useDebounce } from '../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -16,14 +16,25 @@ function AudioTranscribe({ url, setTranscribeLink }) {
         const newUrl = url.split(".com/").pop();
         const presignData = await generatePreSignedUrl(newUrl);
         if (presignData?.status && presignData?.url) {
-            axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: presignData?.url }).then((res) => {
+            // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: presignData?.url }).then((res) => {
+            //     setTranscribeLoading(false)
+            //     setTranscript(res?.data?.tagged_transcript);
+            // }).catch((err) => {
+            //     setTranscribeLoading(false)
+            //     setTranscript()
+            //     // toast.error(trnascriptData?.errors[Object.keys(trnascriptData?.errors)[0]][0])
+            // })
+
+            const res = awsGeneralPostFunction("/dev2/transcribe", { audio_url: presignData?.url })
+            if (res?.status) {
                 setTranscribeLoading(false)
                 setTranscript(res?.data?.tagged_transcript);
-            }).catch((err) => {
+            } else {
                 setTranscribeLoading(false)
                 setTranscript()
-                // toast.error(trnascriptData?.errors[Object.keys(trnascriptData?.errors)[0]][0])
-            })
+                // toast.error(res?.message)
+            }
+
             // if (trnascriptData?.status) {
             //     setTranscribeLoading(false)
             //     setTranscript(trnascriptData?.data);

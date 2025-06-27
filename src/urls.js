@@ -16,4 +16,14 @@ export const api_url = {
     
     // report -> click to call api's list start here
     CLICK_TO_CALL_REPORT_URL: `click-to-call-report`,
+
+    // aws related api's
+    AI_SEARCH: `/dev2/ai-search`,
+    CHAT_BOT: `/dev2/chat_bot`,
+    AI_REPLY: `/dev2/ai-reply`,
+
+    // meet related api's
+    MEET_STOP_RECORDING: (name) => `/stop-recording?roomName=${name}`,
+    MEET_START_RECORDING: (name) =>  `/start-recording?roomName=${name}`,
+    MEET_RECORDING: (id) => `/recordings?roomName=${id}`
 }
