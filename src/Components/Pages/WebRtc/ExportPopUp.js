@@ -16,6 +16,7 @@ export default function ExportPopUp({
   account,
   setCircularLoader,
   filteredColumnForTable,
+  url
 }) {
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
@@ -226,7 +227,7 @@ export default function ExportPopUp({
       }
     } else {
       try {
-        const res = await generalGetFunction(`cdr?${queryParams}&export=true`);
+        const res = await generalGetFunction(`${url}?${queryParams}&export=true`);
         if (res.status) {
           // const updatedData = res?.data?.map(obj => {
           //   return Object.fromEntries(

@@ -359,9 +359,9 @@ function Members({
         // Create the "All Members" button
         const allMembersButton = document.createElement("button");
 
-        allMembersButton.className = "lk-button all-members-button";
+        allMembersButton.className = "lk-button all-members-button d-flex align-items-center";
         allMembersButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:5px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="9" r="3" stroke="#000" stroke-width="1.5" />
             <circle cx="12" cy="12" r="10" stroke="#000" stroke-width="1.5" />
             <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#000" stroke-width="1.5" stroke-linecap="round" />
@@ -647,8 +647,8 @@ function Members({
         </div>
       </div>}
       {showParticipants && (
-        <div className="participantMemberList">
-          <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
+        <div className="participantMemberList p-0">
+          <div className="lk-chat-header">
             <div
               style={{
                 color: "#000",
@@ -666,7 +666,7 @@ function Members({
             </button>
           </div>
           <div></div>
-          <div className="col-12 mt-3">
+          <div className="col-12 mt-3 p-2">
             <input
               type="search"
               name="Search"
@@ -683,7 +683,7 @@ function Members({
             />
           </div>
 
-          <ul className="noScrollbar">
+          <ul className="noScrollbar p-2">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
                 <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaiseIcon' : ''} `}>

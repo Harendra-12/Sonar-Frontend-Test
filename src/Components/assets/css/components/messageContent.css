@@ -1650,3 +1650,31 @@
     padding: unset;
     margin-block: unset;
 }
+
+.mail_leftbar ul {
+    height: calc(100vh - 208px);
+    overflow: auto;
+}
+
+.permissionImgBox {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noDataBg {
+    text-align: center;
+    height: calc(100vh - 81px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.noDataBg p{
+    font-size: 0.875rem;
+    color: var(--clr-permission-text);
+    font-weight: 500;
+}

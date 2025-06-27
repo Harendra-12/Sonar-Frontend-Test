@@ -14,6 +14,7 @@ const NewMail = ({
   handleMailReplay,
   availableFromMailAddresses,
   activeList,
+  selectedFromMailAddressId
 }) => {
   const [loading, setLoading] = useState(false);
   const {
@@ -33,8 +34,8 @@ const NewMail = ({
         to: data.mailTo,
         subject: data.subjects,
         content: data.content,
+        id: selectedFromMailAddressId
       };
-      console.log(payload);
       const apiData = await generalPostFunction("/send-mail", payload);
       if (apiData.status) {
         setLoading(false);
@@ -104,7 +105,7 @@ const NewMail = ({
               </div>
             </div>
             <form onSubmit={handleSubmit(handleComposeMail)} className="d-flex justify-content-between flex-column h-100">
-              <div className="mailBox_body p-3 ">
+              <div className="mailBox_body p-3 " style={{    height: "calc(100vh - 337px)"}}>
                 <div className="row ">
                   <div className=" col-12">
                     <div className="from-group">

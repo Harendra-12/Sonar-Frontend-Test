@@ -41,3 +41,115 @@
     margin-left: auto;
     margin-bottom: 10px;
 }
+
+
+.handRaiseIcon {
+    position: relative;
+}
+ 
+.handRaiseIcon::before {
+    content: '\270B';
+    position: absolute;
+    top: 4px;
+    right: -27px;
+    font-size: 14px;
+    border: 1px solid #ff6800;
+    border-radius: 5px;
+    padding: 1px;
+}
+ 
+.lk-room-container .participantMemberList ul li {
+    border-bottom: 1px solid #857f7f38;
+}
+.lk-chat-toggle[data-lk-unread-msgs]:not([data-lk-unread-msgs="0"]):after {
+    font-size: .6rem;
+    color: #ffff;
+    text-indent: 0;
+}
+
+.lk-button,
+.lk-disconnect-button {
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+}
+
+.lk-button,
+.lk-disconnect-button {
+    text-indent: -9999px;
+}
+
+.lk-button i, .lk-button i {
+    text-indent: 0;
+}
+
+/* .meeting-card {
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+} */
+
+.meeting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.meeting-header h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.close-btn {
+    font-size: 20px;
+    font-weight: 300;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.meeting-section h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 5px;
+}
+
+.meeting-link {
+    font-size: 14px;
+    color: #1a73e8;
+    word-break: break-word;
+    margin-bottom: 10px;
+}
+
+.copy-link {
+    font-size: 14px;
+    color: #1a73e8;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.copy-link svg {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+.attachments {
+    font-size: 14px;
+    color: #5f6368;
+    margin-top: 20px;
+}
+.lk-start-audio-button {
+    display: none !important;
+}
+.lk-video-conference .lk-chat{
+    z-index: 999;
+}
+button.lk-button.lk-chat-form-button{
+    text-indent: 0;
+}
