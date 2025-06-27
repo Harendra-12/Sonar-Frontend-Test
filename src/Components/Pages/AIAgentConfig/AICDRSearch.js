@@ -358,7 +358,7 @@ function AICDRSearch({ page }) {
             //         setLoading(false);
             //         setCircularLoader(false);
             //     });
-            const res = await awsGeneralPostFunction(api_url?.AI_SEARCH)
+            const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { query: advanceSearch })
             if (res?.status) {
                 const matches = res.data.matches;
                 setCdrAIRes(matches);
