@@ -54,6 +54,7 @@
 @import url("./components/globalPermissions.css");
 @import url("./components/livechat.css");
 @import url("./components/reactflow/base.css");
+@import url("./components/recorder.css");
 /* Responsive CSS */
 @import url("./common/responsive.css");
 

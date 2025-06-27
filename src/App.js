@@ -206,6 +206,7 @@ import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
+import RecordingPage from "./Components/RecordingPage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -275,13 +276,12 @@ function App() {
         <OfflineNotice />
         {/* <MissedCallPopup /> */}
         <Routes>
-
+          <Route path="/layout" element ={<RecordingPage />} />
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
-
           <Route element={<ProtectedRoute />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/ai-dashboard" element={<AIDashboard />} />

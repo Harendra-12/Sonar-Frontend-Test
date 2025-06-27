@@ -14,6 +14,7 @@ const NewMail = ({
   handleMailReplay,
   availableFromMailAddresses,
   activeList,
+  selectedFromMailAddressId
 }) => {
   const [loading, setLoading] = useState(false);
   const {
@@ -33,8 +34,8 @@ const NewMail = ({
         to: data.mailTo,
         subject: data.subjects,
         content: data.content,
+        id: selectedFromMailAddressId
       };
-      console.log(payload);
       const apiData = await generalPostFunction("/send-mail", payload);
       if (apiData.status) {
         setLoading(false);

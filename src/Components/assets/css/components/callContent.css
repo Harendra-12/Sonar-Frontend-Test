@@ -1066,3 +1066,101 @@ h2.titleName {
     background-color: #f92762 !important;
     color: #fff !important;
 }
+
+.lk-chat {
+    width: 352px;
+    padding: 15px;
+    background-color: #f5f5f5 !important;
+    color: #000;
+    border-left: 1px solid #ddd !important;
+}
+
+.lk-chat {
+    padding: 0;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.lk-chat-header {
+    justify-content: start;
+    font-weight: 600;
+}
+
+.lk-close-button.lk-button.lk-chat-toggle {
+    background: transparent !important;
+    color: #000;
+}
+
+.lk-close-button.lk-button.lk-chat-toggle svg path {
+    fill: #000;
+}
+
+button.lk-button.lk-chat-form-button {
+    background: #025ea7 !important;
+    color: #fff !important;
+    font-weight: 600;
+    /* padding: 10px !important; */
+}
+
+.lk-chat-entry[data-lk-message-origin=local] .lk-message-body {
+    background-color: #e0d2ff !important;
+    margin-left: auto;
+}
+
+.lk-chat-entry .lk-meta-data {
+    font-size: .75rem;
+    color: #6e7071 !important;
+}
+
+ul.lk-list.lk-chat-messages {
+    padding: 0 10px;
+}
+
+.lk-chat-entry[data-lk-message-origin=remote] .lk-message-body {
+    background-color: #b5ebff !important;
+}
+
+.lk-chat-entry .lk-meta-data .lk-timestamp {
+    margin-left: 10px !important;
+}
+
+.lk-chat-entry[data-lk-message-origin=local] .lk-meta-data {
+    margin-left: auto;
+}
+
+.lk-form-control {
+    font-family: var(--lk-font-family);
+    padding: .35rem 1rem !important;
+    background-color: #ffffff !important;
+    border: 1px solid var(--border-color) !important;
+    color: #000 !important;
+    outline: none !important;
+}
+
+.lk-form-control:hover {
+    border-color: var(--ui-accent) !important;
+}
+
+.lk-form-control:focus-visible {
+    outline: none !important;
+    border-color: var(--ui-accent) !important;
+
+}
+
+.handRaiseIcon {
+    position: relative;
+}
+
+.handRaiseIcon::before {
+    content: '\270B';
+    position: absolute;
+    top: 4px;
+    right: -27px;
+    font-size: 14px;
+    border: 1px solid #ff6800;
+    border-radius: 5px;
+    padding: 1px;
+}
+
+.lk-room-container .participantMemberList ul li {
+    border-bottom: 1px solid #857f7f38;
+}

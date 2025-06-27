@@ -57,7 +57,13 @@ function Members({
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
   const [toggleHandRaise, setToggleHandRaise] = useState(false);
   const microphoneButton = document.querySelector(".lk-button[data-lk-source='microphone']");
+  const chatButton = document.querySelector(".lk-chat-toggle");
+
+  // State to manage hand raise functionality
   const handRaises = useSelector((state) => state.handRaises);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationText, setNotificationText] = useState(false);
+  const lastProcessedRaise = useRef(null);
 
   useEffect(() => {
     setCurentCallRoom(
@@ -143,6 +149,8 @@ function Members({
         incomingCall.filter((item) => item?.room_id === roomName),
         incomingCall
       );
+      // Reset Hand Raise State
+      dispatch({ type: "RESET_HAND_RAISES" })
 
       if (
         incomingCall.filter((item) => item?.room_id === roomName)[0]
@@ -436,6 +444,9 @@ function Members({
 
       allMembersButton.style.display = isConferenceCall ? "block" : "none";
     }
+
+    // Detect speaking participants
+    detectSpeakingParticipants();
   }, [showParticipants, isConferenceCall]);
 
   // Attach the toggleRecording function to the "Record" button
@@ -508,6 +519,7 @@ function Members({
     handRaiseButton.setAttribute("data-lk-enabled", toggleHandRaise);
   }, [toggleHandRaise])
 
+  // Replace Microphone with Mute / Unmute
   useEffect(() => {
     if (microphoneButton) {
       const updateButtonText = () => {
@@ -532,9 +544,108 @@ function Members({
     }
   }, [microphoneButton, roomName]);
 
+  // Handle chat panel visibility based on chat button state
+  useEffect(() => {
+    const chatPanel = document.querySelector(".lk-chat");
+
+    if (!chatButton) return;
+
+    const toggleParticipants = () => {
+      const isEnabled = chatButton.getAttribute("aria-pressed") === "true";
+      // if chat is open and participants is showing → hide participants
+      if (showParticipants && isEnabled) {
+        chatPanel.style.right = '300px'
+      } else {
+        chatPanel.style.right = '0px'
+      }
+    };
+
+    // Observe attribute changes
+    const observer = new MutationObserver(toggleParticipants);
+    observer.observe(chatButton, { attributes: true, attributeFilter: ['aria-pressed'] });
+
+    // Also check immediately in case both are already active
+    toggleParticipants();
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [chatButton, showParticipants]);
+
+
+  // Raise Hand Notification
+  useEffect(() => {
+    if (handRaises && handRaises.length > 0) {
+      const latestRaise = handRaises[handRaises.length - 1];
+
+      // Avoid showing toast for the same action again
+      if (
+        !lastProcessedRaise.current ||
+        lastProcessedRaise.current.room_id !== latestRaise.room_id ||
+        lastProcessedRaise.current.username !== latestRaise.username ||
+        lastProcessedRaise.current.hand_raised !== latestRaise.hand_raised
+      ) {
+        setNotificationText(`${latestRaise.username} ${latestRaise.hand_raised ? 'raised' : 'lowered'} their hand ✋`);
+        setShowNotification(true);
+
+        lastProcessedRaise.current = latestRaise;
+
+        const timer = setTimeout(() => {
+          setShowNotification(false);
+          setNotificationText("");
+        }, 5000);
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [handRaises]);
+
+  function detectSpeakingParticipants() {
+    const observer = new MutationObserver((mutationsList) => {
+      mutationsList.forEach((mutation) => {
+        if (mutation.attributeName === 'data-lk-speaking') {
+          const tile = mutation.target;
+          const isSpeaking = tile.getAttribute('data-lk-speaking') === 'true';
+
+          if (isSpeaking) {
+            const nameEl = tile.querySelector('[data-lk-participant-name]');
+            const participantName = nameEl ? nameEl.getAttribute('data-lk-participant-name') : 'Unknown';
+
+            if (participantName == username) {
+              if (handRaises?.find((user) => user.username == participantName)?.hand_raised) {
+                handRaise();
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Select all participant tiles
+    const participantTiles = document.querySelectorAll('.lk-participant-tile');
+    participantTiles.forEach((tile) => {
+      observer.observe(tile, { attributes: true });
+    });
+
+    return observer;
+  }
+
 
   return (
     <>
+      {!isConferenceCall && <style>
+        {`
+        .messageMeetingWrap .lk-chat {
+          display: none !important;
+        }
+      `}
+      </style>}
+      {showNotification && <div className="NotificationBell">
+        <i className="fa-solid fa-bell"></i>
+        <div className="content">
+          {notificationText}
+        </div>
+      </div>}
       {showParticipants && (
         <div className="participantMemberList">
           <div className="mb-3 d-flex align-items-center justify-content-between gap-1">
@@ -575,11 +686,11 @@ function Members({
           <ul className="noScrollbar">
             {filteredParticipants.map((participant, index) => (
               <li key={index}>
-                <div className={`d-flex align-items-center ${handRaises?.some((user) => user.username == participant.identity)?.hand_raised ? 'handRaise' : ''}`}>
+                <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaiseIcon' : ''} `}>
                   <div className="profileHolder">
                     <i className="fa-light fa-user"></i>
                   </div>
-                  <span className="ms-2">{participant.identity}</span>
+                  <span className="ms-2">{participant.identity.split('-')[0]}</span>
                 </div>
                 <div className="d-flex">
                   {/* <button

@@ -426,15 +426,15 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
-                               <li className="tabItem">
-                                  <NavLink
-                                    to="/number-for-ai"
-                                    onClick={backToTop}
-                                    className="nav-link"
-                                  >
-                                    <div className="itemTitle">Number for AI</div>
-                                  </NavLink>
-                                </li>
+                            <li className="tabItem">
+                              <NavLink
+                                to="/number-for-ai"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="itemTitle">Number for AI</div>
+                              </NavLink>
+                            </li>
                             {checkViewSidebar(
                               ["Number Management", "Port"],
                               permissions,
@@ -1250,6 +1250,7 @@ function Navbar() {
                             "/all-ai-agent",
                             "/ai-dashboard",
                             "/ai-all-agent",
+                            "/conversations-flow",
                             "/all-users",
                             "/ai-knowledge-base",
                             '  /ai-phone-number',
@@ -1276,6 +1277,7 @@ function Navbar() {
                           "/ai-agent-dashboard",
                           "/all-ai-agent",
                           "/ai-all-agent",
+                          "/conversations-flow",
                           "/all-users",
                           "/ai-knowledge-base",
                           '/ai-phone-number',
@@ -1322,6 +1324,7 @@ function Navbar() {
                                   isActive ||
                                     [
                                       "/ai-all-agent",
+                                      "/conversations-flow",
 
                                     ].some((path) =>
                                       window.location.pathname.includes(path)

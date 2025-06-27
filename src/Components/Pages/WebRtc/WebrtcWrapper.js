@@ -71,6 +71,7 @@ const WebrtcWrapper = () => {
   const videoCall = useSelector((state) => state.videoCall);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
   const [hangupRefresh, setHangupRefresh] = useState(0);
   const [selectedModule, setSelectedModule] = useState("");
   const [activePage, setactivePage] = useState("call");
@@ -199,6 +200,10 @@ const WebrtcWrapper = () => {
       dispatch({
         type: "SET_CALLCENTERREFRESH",
         callCenterRefresh: callCenterRefresh + 1,
+      });
+      dispatch({
+        type: "SET_ACCOUNTDETAILSREFRESH",
+        accountDetailsRefresh: accountDetailsRefresh + 1,
       });
     }, []);
 
