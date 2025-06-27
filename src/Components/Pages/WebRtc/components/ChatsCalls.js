@@ -79,15 +79,6 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    doomScrollLoading &&
-                                    <div className="text-center">
-                                        <i
-                                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                            style={{ color: "var(--webUtilGray)" }}
-                                        ></i>
-                                    </div>
-                                }
                             </>
                         )
                     })
@@ -143,6 +134,15 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                             </div>
                         </>
                     ) : <EmptyPrompt generic={true} />}
+                {
+                    doomScrollLoading &&
+                    <div className="text-center">
+                        <i
+                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            style={{ color: "var(--webUtilGray)" }}
+                        ></i>
+                    </div>
+                }
             </div>
         </>
     )
