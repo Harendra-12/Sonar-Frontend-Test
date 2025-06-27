@@ -88,6 +88,7 @@ function CdrFilterReport({ page }) {
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
+  const [selectBlockDirection, setSelectBlockDirection] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
@@ -500,12 +501,17 @@ function CdrFilterReport({ page }) {
       const parsedData = {
         type: "DID",
         number: blockNumber,
+        direction:selectBlockDirection,
+        name:"Block from cdr report",
+        action:"reject",
+        block_type:"did"
       };
       const apidata = await generalPostFunction(`/spam/store`, parsedData);
       if (apidata.status) {
         setLoading(false);
 
         setSelectedNumberToBlock(null);
+        setSelectBlockDirection(null)
         setCallBlock([...callBlock, apidata?.data]);
         toast.success("Number added to block list");
       } else {
@@ -1886,6 +1892,9 @@ function CdrFilterReport({ page }) {
                                                             width: "34px",
                                                           }}
                                                           onClick={() => {
+                                                            setSelectBlockDirection(item[
+                                                                "Call-Direction"
+                                                              ])
                                                             setSelectedNumberToBlock(
                                                               item[
                                                                 "Call-Direction"
@@ -2068,6 +2077,7 @@ function CdrFilterReport({ page }) {
                         onClick={() => {
                           setPopUp(false);
                           setSelectedNumberToBlock(null);
+                          setSelectBlockDirection(null);
                         }}
                       >
                         <span className="text">Cancel</span>
