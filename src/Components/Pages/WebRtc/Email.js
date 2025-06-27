@@ -19,7 +19,7 @@ import { api_url } from "../../../urls";
 import { useForm } from "react-hook-form";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
-function Email({ selectedMail,   }) {
+function Email({ selectedMail, }) {
   const [loading, setLoading] = useState(false);
   const [loadingForDownloadAtachment, setLoadingForDownLoadAtachment] = useState(false);
   const [loadingForActions, setLoadingForActions] = useState([])
@@ -156,11 +156,12 @@ function Email({ selectedMail,   }) {
       setLabelLoader(false)
       setAllCategory(result?.data);
       if (isInitial) {
-        //  const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
-        //  if(isCategoryExistInAnotherCagetory){
-        //   fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId);
-        //  }
-        fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
+        const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
+        if (isCategoryExistInAnotherCagetory) {
+          fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId);
+        } else {
+          fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
+        }
       } else {
         fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId);
       }
@@ -169,13 +170,14 @@ function Email({ selectedMail,   }) {
         setActiveCategory(activeCategory)
         setActiveList(activeCategory?.label)
       } else {
-        // const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
-        // if (isCategoryExistInAnotherCagetory) {
-        //   setActiveCategory(activeCategory)
-        //   setActiveList(activeCategory?.label)
-        // }
-        setActiveCategory(result?.data[0])
-        setActiveList(result?.data[0]?.label)
+        const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
+        if (isCategoryExistInAnotherCagetory) {
+          setActiveCategory(activeCategory)
+          setActiveList(activeCategory?.label)
+        } else {
+          setActiveCategory(result?.data[0])
+          setActiveList(result?.data[0]?.label)
+        }
       }
     } else {
       // navigate("/");
@@ -211,12 +213,13 @@ function Email({ selectedMail,   }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.MOVE_TO_TRASH, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
+      // fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
       fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       toast.success(result?.message)
     } else {
       setAllMailLoading(false);
+      setLoading(false)
     }
   }
 
@@ -226,7 +229,7 @@ function Email({ selectedMail,   }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
-      fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
+      // fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
       fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       if (shouldToast)
@@ -1168,7 +1171,7 @@ function Email({ selectedMail,   }) {
 
                           <div className="d-flex justify-content-end gap-2 mt-4">
                             <button
-                              type="button"
+                              type="submit"
                               className="panelButton m-0"
 
                             >

@@ -4,9 +4,10 @@ import "@livekit/components-styles"; // Importing LiveKit styles
 import { useRoomContext, TrackToggle, MediaDeviceMenu } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import { useDispatch } from "react-redux";
-import { generalGetFunction } from "../../../GlobalFunction/globalFunction";
+import { generalGetFunction, meetGeneralGetFunction } from "../../../GlobalFunction/globalFunction";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { api_url } from "../../../../urls";
 // import { generalGetFunction } from "./GlobalFunction/globalFunction";
 
 const SettingsMenu = () => {
@@ -106,7 +107,8 @@ const SettingsMenu = () => {
     async function toggleRoomRecording() {
         if (isRecording) {
             // const apiData = await generalGetFunction(`/stop-recording?roomName=${room.name}`);
-            const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            // const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            const response = await meetGeneralGetFunction(api_url?.MEET_STOP_RECORDING(room?.name))
             if (response.data.success) {
                 toast.success(response.data.message);
                 setIsRecording(false);
@@ -121,7 +123,8 @@ const SettingsMenu = () => {
             // stopRecording();
         } else {
             // const apiData = await generalGetFunction(`/start-recording?roomName=${room.name}`);
-            const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            // const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+            const response = await meetGeneralGetFunction(api_url?.MEET_STOP_RECORDING(room?.name))
             if (response.data.success) {
                 toast.success(response.data.message);
                 setIsRecording(true);

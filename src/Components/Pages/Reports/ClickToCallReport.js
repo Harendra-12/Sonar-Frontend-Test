@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import {
+    awsGeneralPostFunction,
     backToTop,
     checkViewSidebar,
     convertDateToCurrentTimeZone,
@@ -24,6 +25,7 @@ import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import Comments from "../WebRtc/Comments";
 import Duplicates from "../WebRtc/Duplicates";
 import ExportPopUp from "../WebRtc/ExportPopUp";
+import { api_url } from "../../../urls";
 
 /**
  * ClickToCallReport is a React component that manages and displays Call Detail Records (CDR)
@@ -765,20 +767,27 @@ const ClickToCallReport = ({ page }) => {
         getData(shouldLoad);
     };
 
-    function getAdvanceSearch() {
+    const getAdvanceSearch = async () => {
         if (advanceSearch) {
-            axios
-                .post(
-                    "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
-                    { querry: advanceSearch }
-                )
-                .then((res) => {
-                    console.log("Response", res);
-                });
+            // axios
+            //     .post(
+            //         "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
+            //         { querry: advanceSearch }
+            //     )
+            //     .then((res) => {
+            //         console.log("Response", res);
+            //     });
+            const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { querry: advanceSearch });
+            if (res?.statue) {
+                console.log("Response", res);
+            } else {
+
+            }
         } else {
             toast.error("Please enter some data to search");
         }
     }
+
     return (
         <>
             {circularLoader && <CircularLoader />}
