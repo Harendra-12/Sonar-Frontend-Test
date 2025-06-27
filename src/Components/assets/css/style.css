@@ -279,6 +279,7 @@
   --batch_bg: #f5f7fa;
   --active-mail-list: #e8eff3;
   --active-mail-list-text: #235489;
+   --clr-permission-text: #333849;
 
 }
 
@@ -446,6 +447,7 @@
   --batch_bg: #2d3a4f69;
   --active-mail-list: #5e88a14d;
   --active-mail-list-text: #aed5ff;
+  --clr-permission-text: #a5b2dd;
 
 }
 
