@@ -19,7 +19,7 @@ import PaginationComponent from "../../../CommonComponents/PaginationComponent";
 import HeaderApp from "../HeaderApp";
 import CircularLoader from "../../../Loader/CircularLoader";
 
-const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, pin, calling, setCalling, setIsConferenceCall, setIsConferenceAdmin }) => {
+const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, pin, calling, setCalling, setIsConferenceCall, setIsConferenceAdmin, setConferenceInfo }) => {
   const [loading, setLoading] = useState(false);
   const [spinLoading, setSpinLoading] = useState(false);
   const [allConferences, setAllConferences] = useState([]);
@@ -76,11 +76,11 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   };
 
   // Conference Join Function
-  const handleConferenceJoin = async (roomId) => {
+  const handleConferenceJoin = async (item) => {
     setSpinLoading(true)
     setIsConferenceCall(true);
     try {
-      const urlObj = new URL(roomId)
+      const urlObj = new URL(item.conf_url)
       const param = urlObj.searchParams.get("id");
       dispatch({
         type: "SET_ROOMID",
@@ -89,6 +89,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
     } catch (err) {
       console.log(err)
     } finally {
+      setConferenceInfo(item)
       setTimeout(() => {
         setCalling(true);
         setSpinLoading(false);
@@ -233,7 +234,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                   <i className="fa-solid fa-send"></i>
                                                 </div>
                                                 <ul className="dropdown-menu actionBtnDropdowns">
-                                                  <li className="dropdown-item" onClick={() => handleConferenceJoin(item.conf_url)}>
+                                                  <li className="dropdown-item" onClick={() => handleConferenceJoin(item)}>
                                                     <div className="clearButton text-align-start">
                                                       <i className="fa-regular fa-user me-2" /> Join
                                                     </div>
@@ -267,7 +268,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                                   <i className="fa-solid fa-xmark" />
                                                                 </span>
                                                               </button>
-                                                              <button className="panelButton m-0" onClick={() => checkModeratorPassword(item?.moderator_pin) ? handleConferenceJoin(item.conf_url) : ""}>
+                                                              <button className="panelButton m-0" onClick={() => checkModeratorPassword(item?.moderator_pin) ? handleConferenceJoin(item) : ""}>
                                                                 <span className="text">Join</span>
                                                                 <span className="icon">
                                                                   <i className="fa-solid fa-send" />
@@ -282,7 +283,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                 )}
                                               </div>
                                             ) : !isUser ? (
-                                              <div className="tableButton" onClick={() => { handleConferenceJoin(item.conf_url); setIsConferenceAdmin(true) }}>
+                                              <div className="tableButton" onClick={() => { handleConferenceJoin(item); setIsConferenceAdmin(true) }}>
                                                 <i className="fa-solid fa-send"></i>
                                               </div>
                                             ) : ""}
