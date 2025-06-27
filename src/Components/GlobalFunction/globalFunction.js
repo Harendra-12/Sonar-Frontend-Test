@@ -7,7 +7,7 @@ let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
 const aiBaseName = process.env.REACT_APP_AI_BASE_URL;
-const awsBaseUrl = process.env.REACT_APP_AI_BASE_URL;
+const awsBaseUrl = process.env.REACT_APP_AWS_BASE_URL;
 const meetBaseUrl = process.env.REACT_APP_MEETING_BASE_URL
 // const aiToken = "key_a083999b0156a43721cc1b5942a1"; // bip key
 const aiToken = "key_f3f8d64a285120a16182f6add20d"; // prod key
