@@ -153,3 +153,9 @@
 button.lk-button.lk-chat-form-button{
     text-indent: 0;
 }
+
+/* ------------- attachements */
+
+.lk-message-attachements{
+    margin: 0;
+}
