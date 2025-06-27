@@ -206,6 +206,7 @@ import ConversationsFlow from "./Components/Pages/Ai/ConversationsFlow";
 import ActiveCall from "./Components/Pages/CallTracker/ActiveCall";
 import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
+import GoConferenceNotificationSocket from "./Components/GlobalFunction/GoConferencenNotificationSocket";
 import RecordingPage from "./Components/RecordingPage";
 
 // Unlock this if want push notification
@@ -239,6 +240,7 @@ function App() {
   // const { sendMessage } = Socket();
   Socket();
   const { sendMessage } = GoMessageSocket()
+  // GoConferenceNotificationSocket();
   GoSocket();
   GoSocketActiveCall();
   useEffect(() => {
@@ -276,7 +278,7 @@ function App() {
         <OfflineNotice />
         {/* <MissedCallPopup /> */}
         <Routes>
-          <Route path="/layout" element ={<RecordingPage />} />
+          <Route path="/layout" element={<RecordingPage />} />
           <Route path="/click-to-call" element={<ClickToCall />} />
           <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
@@ -913,10 +915,10 @@ function App() {
                 <Navigate to="/dashboard" replace />
             }
           />
-          <Route 
+          <Route
             path="/click-to-call-report"
             element={
-              <ClickToCallReport/>
+              <ClickToCallReport />
             }
           />
           <Route

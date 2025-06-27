@@ -24,7 +24,11 @@ const EmailList = ({
   account,
   slugPermissions,
   loadingForActions,
-  handleMultipleDelete
+  handleMultipleDelete,
+  handleMultipleUnStarred,
+  handleMultipleStarred,
+  handleMultipleSeen,
+  handleMultipleUnSeen
 }) => {
   const [isCheckedAll, setIsCheckedAll] = useState(false)
   const formatDateTime = (dateString) => {
@@ -87,49 +91,98 @@ const EmailList = ({
     <>
       <div className="overviewTableWrapper p-0">
         <div className="tableHeader">
-          <div className="showEntries">
-            <label>Show</label>
-            <select
-              className="formItem"
-              onChange={(e) => setEntriesPerPage(e?.target?.value)}
-            >
-              <option value={20}>20</option>
-              <option value={30}>30</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-            <label>entries</label>
-          </div>
-          <div className="d-flex align-items-center justify-content-end gap-2">
-          {checkViewSidebar(
-            "DidDetail",
-            slugPermissions,
-            account?.sectionPermissions,
-            account?.permissions,
-            "search"
-          ) &&
-            <div className="searchBox position-relative">
-              <label>Search:</label>
-              <input
-                type="search"
-                name="Search"
+          <div className="">
+            <div className="showEntries mb-2">
+              <label>Show</label>
+              <select
                 className="formItem"
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
+                onChange={(e) => setEntriesPerPage(e?.target?.value)}
+              >
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+              <label>entries</label>
             </div>
-          }
-          <button className="clearButton2 bg-danger-subtle"
-            style={{
-              opacity: loadingForActions?.length > 1 ? 0.5 : 1
-            }}
-            onClick={() => {
-              if (!loadingForActions?.length > 0)
-                handleMultipleDelete()
-            }
-            }
-          >
-            <i class="fa-solid fa-trash text-danger"></i>
-          </button>
+          </div>
+          <div className="mb-2">
+            <div className="d-flex align-items-center justify-content-end gap-2 flex-wrap">
+              {checkViewSidebar(
+                "DidDetail",
+                slugPermissions,
+                account?.sectionPermissions,
+                account?.permissions,
+                "search"
+              ) &&
+                <div className="searchBox position-relative">
+                  <label>Search:</label>
+                  <input
+                    type="search"
+                    name="Search"
+                    className="formItem"
+                    onChange={(e) => setSearchInput(e.target.value)}
+                  />
+                </div>
+              }
+              <div className="d-flex align-items-center justify-content-end gap-2">
+                <button className="clearButton2 sm"
+                  style={{
+                    opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                  }}
+                  onClick={() => {
+                    if (!loadingForActions?.length > 0)
+                      handleMultipleUnStarred()
+                  }}
+                >
+                  <i class="fa-regular fa-star" ></i>
+                </button>
+                <button className="clearButton2 sm"
+                  style={{
+                    opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                  }}
+                  onClick={() => {
+                    if (!loadingForActions?.length > 0)
+                      handleMultipleStarred()
+                  }}
+                >
+                  <i class="fa fa-star" ></i>
+                </button>
+                <button className="clearButton2 sm"
+                  style={{
+                    opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                  }}
+                  onClick={() => {
+                    if (!loadingForActions?.length > 0)
+                      handleMultipleDelete()
+                  }}
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <button
+                  className="clearButton2 sm"
+                  style={{
+                    opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                  }}
+                  onClick={() => {
+                    if (!loadingForActions?.length > 0)
+                      handleMultipleSeen()
+                  }}>
+                  <i class="fa-solid fa-envelope-open" ></i>
+                </button>
+                <button
+                  className="clearButton2 sm"
+                  style={{
+                    opacity: loadingForActions?.length > 1 ? 0.5 : 1
+                  }}
+                  onClick={() => {
+                    if (!loadingForActions?.length > 0)
+                      handleMultipleUnSeen()
+                  }}>
+                  <i class="fa-solid fa-envelope" ></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -210,7 +263,7 @@ const EmailList = ({
                     <td
                       onClick={() => {
                         handleMailReplay(mailType);
-                        handleShowMail(item, false );
+                        handleShowMail(item, false);
                       }}
                     >
                       <p className="ellipsisText300 mb-0">

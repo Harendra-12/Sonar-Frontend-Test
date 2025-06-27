@@ -19,7 +19,8 @@ function InitiateCall({
   selectedChat,
   setSelectedChat,
   isConferenceCall,
-  isConferenceAdmin
+  isConferenceAdmin,
+  conferenceInfo
 }) {
   const [token, setToken] = useState(null);
   const [serverUrl, setServerUrl] = useState(null);
@@ -135,6 +136,7 @@ function InitiateCall({
           isMinimize={interCallMinimize}
           setIsMinimize={setInterCallMinimize}
           isConferenceCall={isConferenceCall}
+          conferenceInfo={conferenceInfo}
         />
       ) : (
         ""
