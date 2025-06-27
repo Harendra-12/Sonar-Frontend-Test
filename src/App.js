@@ -240,7 +240,7 @@ function App() {
   // const { sendMessage } = Socket();
   Socket();
   const { sendMessage } = GoMessageSocket()
-  GoConferenceNotificationSocket();
+  // GoConferenceNotificationSocket();
   GoSocket();
   GoSocketActiveCall();
   useEffect(() => {
