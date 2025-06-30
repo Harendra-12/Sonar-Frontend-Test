@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 
 import {
+    awsGeneralPostFunction,
     backToTop,
     convertDateToCurrentTimeZone,
     featureUnderdevelopment,
@@ -28,6 +29,7 @@ import ExportPopUp from "../WebRtc/ExportPopUp";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import axios from "axios";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { api_url } from "../../../urls";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -339,23 +341,36 @@ function AICDRSearch({ page }) {
         }
     }, [cdrSearchAI]);
 
-    function getAdvanceSearch() {
+    async function getAdvanceSearch() {
         if (advanceSearch) {
             setLoading(true);
             setCircularLoader(true);
-            axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { query: advanceSearch }).then((res) => {
+            // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { query: advanceSearch }).then((res) => {
+            //     const matches = res.data.matches;
+            //     setCdrAIRes(matches);
+            //     if (matches.length > 0) {
+            //         const cdrIds = matches.map(match => match.cdr_id);
+            //         setCdrSearchAI(cdrIds);
+            //     }
+            // })
+            //     .catch((err) => {
+            //         toast.error(err);
+            //         setLoading(false);
+            //         setCircularLoader(false);
+            //     });
+            const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { query: advanceSearch })
+            if (res?.status) {
                 const matches = res.data.matches;
                 setCdrAIRes(matches);
                 if (matches.length > 0) {
                     const cdrIds = matches.map(match => match.cdr_id);
                     setCdrSearchAI(cdrIds);
                 }
-            })
-                .catch((err) => {
-                    toast.error(err);
-                    setLoading(false);
-                    setCircularLoader(false);
-                });
+            } else {
+                toast.error(res?.err);
+                setLoading(false);
+                setCircularLoader(false);
+            }
         } else {
             toast.error("Please enter some data to search");
             setLoading(false);

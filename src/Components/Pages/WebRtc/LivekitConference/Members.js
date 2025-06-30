@@ -6,10 +6,13 @@ import { createLocalVideoTrack } from "livekit-client";
 import {
   generalGetFunction,
   generalPostFunction,
+  meetGeneralGetFunction,
+  meetGeneralPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { api_url } from "../../../../urls";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -313,7 +316,8 @@ function Members({
 
       if (!isRecordingRef.current) {
         try {
-          const response = await axios.get(`https://meet.webvio.in/backend/start-recording?roomName=${room.name}`);
+          // const response = await axios.get(`https://meet.webvio.in/backend/start-recording?roomName=${room.name}`);
+          const response = await meetGeneralGetFunction(api_url?.MEET_START_RECORDING(room?.name))
           if (response.data.success) {
             toast.success(response.data.message);
             setManualRecording(true); // Set manual recording state to true
@@ -327,7 +331,8 @@ function Members({
       } else {
         // Stop recording
         try {
-          const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+          // const response = await axios.get(`https://meet.webvio.in/backend/stop-recording?roomName=${room.name}`);
+          const response = await meetGeneralGetFunction(api_url?.MEET_STOP_RECORDING(room?.name))
           if (response.data.success) {
             toast.success(response.data.message);
             setManualRecording(false); // Set manual recording state to false
@@ -497,7 +502,8 @@ function Members({
     //   room: roomName,
     //   participantId: participant,
     // });
-    const response = await axios.post(`https://meet.webvio.in/backend/remove-participant`, payload);
+    // const response = await axios.post(`https://meet.webvio.in/backend/remove-participant`, payload);
+    const response = await meetGeneralPostFunction(`/remove-participant`, payload)
     if (response.data.success) {
       toast.success(response.data.message);
     } else {

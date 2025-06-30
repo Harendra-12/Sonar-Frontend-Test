@@ -7,6 +7,8 @@ let sessionExpiredToastShown = false;
 const token = localStorage.getItem("token");
 
 const aiBaseName = process.env.REACT_APP_AI_BASE_URL;
+const awsBaseUrl = process.env.REACT_APP_AWS_BASE_URL;
+const meetBaseUrl = process.env.REACT_APP_MEETING_BASE_URL
 // const aiToken = "key_a083999b0156a43721cc1b5942a1"; // bip key
 const aiToken = "key_f3f8d64a285120a16182f6add20d"; // prod key
 
@@ -18,6 +20,22 @@ const aiAxiosInstance = axios.create({
     Authorization: `Bearer ${aiToken}`,
   },
 });
+// aws axios instance
+const awsAxiosInstance = axios.create({
+  // baseURL: awsBaseUrl,
+  baseURL: awsBaseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+const meetAxiosInstance = axios.create({
+  // baseURL: awsBaseUrl,
+  baseURL: meetBaseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 
 // AI General Get function
 export const aiGeneralGetFunction = async (endpoint) => {
@@ -59,6 +77,63 @@ export const aiGeneralDeleteFunction = async (endpoint) => {
     return error.response.data;
   }
 };
+
+// Aws General Get function
+export const awsGeneralGetFunction = async (endpoint) => {
+  try {
+    const response = await awsAxiosInstance.get(endpoint);
+    return response;
+  } catch (error) {
+    return error
+  }
+};
+// Aws General Post function
+export const awsGeneralPostFunction = async (endpoint, data) => {
+  try {
+    const response = await awsAxiosInstance.post(endpoint, data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+// Aws General Put function
+export const awsGeneralPutFunction = async (endpoint, data) => {
+  try {
+    const response = await awsAxiosInstance.put(endpoint, data);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+// Aws General Delete function
+export const awsGeneralDeleteFunction = async (endpoint) => {
+  try {
+    const response = await awsAxiosInstance.delete(endpoint);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// meet General Get function
+export const meetGeneralGetFunction = async (endpoint) => {
+  try {
+    const response = await meetAxiosInstance.get(endpoint);
+    return response;
+  } catch (error) {
+    return error
+  }
+};
+// meet General Post function
+export const meetGeneralPostFunction = async (endpoint, data) => {
+  try {
+    const response = await meetAxiosInstance.post(endpoint, data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 // AI General File upload function
 export const aiFileUploadFunction = async (endpoint, data) => {
   return aiAxiosInstance

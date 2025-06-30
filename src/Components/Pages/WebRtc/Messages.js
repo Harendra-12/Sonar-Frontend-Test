@@ -9,6 +9,7 @@ import { useSIPProvider, CONNECT_STATUS } from "modify-react-sipjs";
 import AgentSearch from "./AgentSearch";
 import InitiateCall from "./LivekitConference/InitiateCall";
 import {
+  awsGeneralPostFunction,
   featureUnderdevelopment,
   formatDateTime,
   formatRelativeTime,
@@ -47,6 +48,7 @@ import ChatsCalls from "./components/ChatsCalls";
 import axios from "axios";
 import { set } from "date-fns";
 import { ActionType } from "../../Redux/reduxActionType";
+import { api_url } from "../../../urls";
 
 function Messages({
   setSelectedModule,
@@ -660,7 +662,7 @@ function Messages({
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
-  useEffect(() => {
+  useEffect(async () => {
     if (incomingMessage) {
 
       const from = incomingMessage?.sender_id;
@@ -672,20 +674,33 @@ function Messages({
           ...prev,
           [recipient[0]]: "Generating Ai response..."
         }));
-        axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
+        // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
 
-          if (res.data) {
+        //   if (res.data) {
+        //     setMessageInput((prev) => ({
+        //       ...prev,
+        //       [recipient[0]]: res.data.reply
+        //     }));
+        //     setAiProcessing(false);
+        //   }
+        // }).catch((err) => {
+
+        //   console.log(err);
+        //   setMessageInput("");
+        // })
+        const res = await awsGeneralPostFunction(api_url?.AI_REPLY, { message: body, user_id: account.id })
+        if (res?.status) {
+          if (res?.data) {
             setMessageInput((prev) => ({
               ...prev,
               [recipient[0]]: res.data.reply
             }));
             setAiProcessing(false);
           }
-        }).catch((err) => {
-
-          console.log(err);
+        } else {
+          console.log(res?.err);
           setMessageInput("");
-        })
+        }
       }
 
       setIsFreeSwitchMessage(true);

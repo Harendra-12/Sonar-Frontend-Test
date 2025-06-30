@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 
 import {
+  awsGeneralPostFunction,
   backToTop,
   checkViewSidebar,
   convertDateToCurrentTimeZone,
@@ -32,6 +33,7 @@ import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import Select from "react-select";
 import axios from "axios";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { api_url } from "../../../urls";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -88,6 +90,7 @@ function CdrFilterReport({ page }) {
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
+  const [selectBlockDirection, setSelectBlockDirection] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
@@ -500,12 +503,17 @@ function CdrFilterReport({ page }) {
       const parsedData = {
         type: "DID",
         number: blockNumber,
+        direction:selectBlockDirection,
+        name:"Block from cdr report",
+        action:"reject",
+        block_type:"did"
       };
       const apidata = await generalPostFunction(`/spam/store`, parsedData);
       if (apidata.status) {
         setLoading(false);
 
         setSelectedNumberToBlock(null);
+        setSelectBlockDirection(null)
         setCallBlock([...callBlock, apidata?.data]);
         toast.success("Number added to block list");
       } else {
@@ -775,18 +783,24 @@ function CdrFilterReport({ page }) {
     getData(shouldLoad);
   };
 
-  function getAdvanceSearch() {
+  async function getAdvanceSearch() {
     if (advanceSearch) {
-      axios
-        .post(
-          "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
-          { querry: advanceSearch }
-        )
-        .then((res) => {
-          console.log("Response", res);
-        });
-    } else {
-      toast.error("Please enter some data to search");
+      //   axios
+      //     .post(
+      //       "https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search",
+      //       { querry: advanceSearch }
+      //     )
+      //     .then((res) => {
+      //       console.log("Response", res);
+      //     });
+      // } else {
+      //   toast.error("Please enter some data to search");
+      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { querry: advanceSearch });
+      if (res?.statue) {
+        console.log("Response", res);
+      } else {
+
+      }
     }
   }
   return (
@@ -1886,6 +1900,9 @@ function CdrFilterReport({ page }) {
                                                             width: "34px",
                                                           }}
                                                           onClick={() => {
+                                                            setSelectBlockDirection(item[
+                                                                "Call-Direction"
+                                                              ])
                                                             setSelectedNumberToBlock(
                                                               item[
                                                                 "Call-Direction"
@@ -2068,6 +2085,7 @@ function CdrFilterReport({ page }) {
                         onClick={() => {
                           setPopUp(false);
                           setSelectedNumberToBlock(null);
+                          setSelectBlockDirection(null);
                         }}
                       >
                         <span className="text">Cancel</span>

@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { Navigate, useLocation } from 'react-router-dom';
-import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
+import { awsGeneralGetFunction, backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { api_url } from '../../../urls';
 
 function LiveChat() {
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ function LiveChat() {
   const [aiMessageLog, setAiMessageLog] = useState([]);
   const locationState = useLocation();
 
-  const handleSendMessageToAI = () => {
+  const handleSendMessageToAI = async () => {
     if (!sendMessage || sendMessage.trim() === "") {
       toast.error("Please enter a message");
     } else {
@@ -28,16 +29,26 @@ function LiveChat() {
         "message": sendMessage,
         "crm_data_used": false,
       }
-      axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/chat_bot", payload).then((res) => {
+      // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/chat_bot", payload).then((res) => {
+      //   setLoading(false);
+      //   setAiMessageLog((prev) => {
+      //     return [...prev, { ...res.data, time: new Date().toLocaleTimeString(), status: 'success' }];
+      //   });
+      // })
+      //   .catch((err) => {
+      //     toast.error(err.message);
+      //     setLoading(false);
+      //   }); 
+      const res = await awsGeneralGetFunction(api_url?.CHAT_BOT)
+      if (res?.status) {
         setLoading(false);
         setAiMessageLog((prev) => {
           return [...prev, { ...res.data, time: new Date().toLocaleTimeString(), status: 'success' }];
         });
-      })
-        .catch((err) => {
-          toast.error(err.message);
-          setLoading(false);
-        });
+      }else{
+        toast.error(res?.message)
+        setLoading(false);
+      }
     }
   }
 
