@@ -31,6 +31,7 @@ function MeetingEdit() {
   const [allInternalUsers, setAllInternalUsers] = useState([]);
   const [addedUsers, setAddedUsers] = useState([]);
   const navigate = useNavigate();
+  const [isAllSelected, setIsAllSelected] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const { register, formState: { errors }, reset, handleSubmit, watch, setValue } = useForm();
@@ -135,7 +136,7 @@ function MeetingEdit() {
     if (allInternalUsers?.length == 0) {
       getInternalUsers();
     }
-  }, [watch().conf_type]);
+  }, []);
 
   function handleChecked(userId) {
     if (selectedUser.includes(userId)) {
@@ -145,14 +146,28 @@ function MeetingEdit() {
     }
   }
 
-  function handleSelectAll() {
-    const availableUsers = allInternalUsers.filter(
-      (user) => !addedUsers.includes(user)
-    );
+function handleSelectAll() {
+  const availableUsers = allInternalUsers.filter(
+    (user) => !addedUsers.includes(user)
+  );
 
-    const newSelectedUsers = availableUsers.map((user) => user.id);
-    setSelectedUser(newSelectedUsers);
+  const availableUserIds = availableUsers.map((user) => user.id);
+
+  if (isAllSelected) {
+    // Deselect all available users
+    const newSelected = selectedUser.filter(
+      (id) => !availableUserIds.includes(id)
+    );
+    setSelectedUser(newSelected);
+  } else {
+    // Select all available users
+    const newSelected = [
+      ...selectedUser,
+      ...availableUserIds.filter((id) => !selectedUser.includes(id)),
+    ];
+    setSelectedUser(newSelected);
   }
+}
 
   function handleAddUser() {
     if (selectedUser.length === 0) {
@@ -169,6 +184,20 @@ function MeetingEdit() {
   function handleRemoveUser(userId) {
     setAddedUsers(addedUsers.filter((user) => user.id !== userId));
   }
+
+   useEffect(() => {
+      const availableUsers = allInternalUsers.filter(
+        (user) => !addedUsers.includes(user)
+      );
+  
+      const availableUserIds = availableUsers.map((user) => user.id);
+  
+      const allSelected = availableUserIds.every((id) =>
+        selectedUser.includes(id)
+      );
+  
+      setIsAllSelected(allSelected);
+    }, [selectedUser, allInternalUsers, addedUsers]);
   return (
     <main className="mainContent">
       <section>
@@ -352,6 +381,7 @@ function MeetingEdit() {
                         </label>
                       </div>
                     </div>
+                     {watch().conf_type !== "internal" && (
                     <div className="formRow align-items-start">
                       <div className="formLabel">
                         <label htmlFor="">Add participants</label>
@@ -376,7 +406,7 @@ function MeetingEdit() {
                                 newParticipants[index] = e.target.value;
                                 setParticipants(newParticipants);
                               }}
-                              value={participant.email}
+                              value={participant}
                             />
                             <button
                               onClick={() => {
@@ -407,6 +437,7 @@ function MeetingEdit() {
                         ))}
                       </div>
                     </div>
+                     )}
                   </form>
                 </div>
                 {watch().conf_type == "internal" && (
@@ -545,10 +576,12 @@ function MeetingEdit() {
                           </div>
                           <div className="d-flex justify-content-between align-items-center my-2">
                             <button
-                              onClick={() => handleSelectAll()}
+                              onClick={handleSelectAll}
                               className="panelButton edit static ms-2"
                             >
-                              <span class="text">Select All</span>
+                              <span className="text">
+                                {isAllSelected ? "Remove All" : "Select All"}
+                              </span>
                             </button>
                             <button
                               className="panelButton ms-2"
