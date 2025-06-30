@@ -29,12 +29,18 @@ function MeetingAdd() {
   const [addedUsers, setAddedUsers] = useState([]);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAllSelected, setIsAllSelected] = useState(false);
   const [isScheduled, setIsScheduled] = useState(false);
   const [confStartDate, setConfStartDate] = useState("");
   const [confEndDate, setConfEndDate] = useState("");
 
-
-  const { register, formState: { errors }, reset, handleSubmit, watch } = useForm();
+  const {
+    register,
+    formState: { errors },
+    reset,
+    handleSubmit,
+    watch,
+  } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
     if (participants.length == 1 && participants[0].length == 0) {
@@ -54,7 +60,7 @@ function MeetingAdd() {
           ? { users: addedUsers.map((user) => user.id) }
           : ""),
         // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
-        emails: participants
+        emails: participants,
       };
       const apiData = await generalPostFunction(
         "/conference/store",
@@ -68,15 +74,16 @@ function MeetingAdd() {
         setLoading(false);
       }
     }
-  })
+  });
 
   async function getInternalUsers() {
     setLoading(true);
     try {
       const response = await generalGetFunction(
-        `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-          ? "&section=Accounts"
-          : ""
+        `/user/search?account=${account.account_id}${
+          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+            ? "&section=Accounts"
+            : ""
         }`
       );
       if (response.status) {
@@ -93,7 +100,7 @@ function MeetingAdd() {
     if (allInternalUsers?.length == 0) {
       getInternalUsers();
     }
-  }, [watch().conf_type]);
+  }, []);
 
   function handleChecked(userId) {
     if (selectedUser.includes(userId)) {
@@ -103,14 +110,29 @@ function MeetingAdd() {
     }
   }
 
-  function handleSelectAll() {
-    const availableUsers = allInternalUsers.filter(
-      (user) => !addedUsers.includes(user)
-    );
+function handleSelectAll() {
+  const availableUsers = allInternalUsers.filter(
+    (user) => !addedUsers.includes(user)
+  );
 
-    const newSelectedUsers = availableUsers.map((user) => user.id);
-    setSelectedUser(newSelectedUsers);
+  const availableUserIds = availableUsers.map((user) => user.id);
+
+  if (isAllSelected) {
+    // Deselect all available users
+    const newSelected = selectedUser.filter(
+      (id) => !availableUserIds.includes(id)
+    );
+    setSelectedUser(newSelected);
+  } else {
+    // Select all available users
+    const newSelected = [
+      ...selectedUser,
+      ...availableUserIds.filter((id) => !selectedUser.includes(id)),
+    ];
+    setSelectedUser(newSelected);
   }
+}
+
 
   function handleAddUser() {
     if (selectedUser.length === 0) {
@@ -127,6 +149,21 @@ function MeetingAdd() {
   function handleRemoveUser(userId) {
     setAddedUsers(addedUsers.filter((user) => user.id !== userId));
   }
+
+  useEffect(() => {
+    const availableUsers = allInternalUsers.filter(
+      (user) => !addedUsers.includes(user)
+    );
+
+    const availableUserIds = availableUsers.map((user) => user.id);
+
+    const allSelected = availableUserIds.every((id) =>
+      selectedUser.includes(id)
+    );
+
+    setIsAllSelected(allSelected);
+  }, [selectedUser, allInternalUsers, addedUsers]);
+
   return (
     <main className="mainContent">
       <section>
@@ -198,7 +235,7 @@ function MeetingAdd() {
                           type="text"
                           name="extension"
                           className="formItem"
-                          {...register("conf_name", { ...requiredValidator, })}
+                          {...register("conf_name", { ...requiredValidator })}
                         />
                         {errors.conf_name && (
                           <ErrorMessage text={errors.conf_name.message} />
@@ -216,7 +253,7 @@ function MeetingAdd() {
                       <div className="col-xl-6 col-12">
                         <select
                           className="formItem"
-                          {...register("conf_type", { ...requiredValidator, })}
+                          {...register("conf_type", { ...requiredValidator })}
                         >
                           <option value="public">Public</option>
                           <option value="private">Private</option>
@@ -239,10 +276,14 @@ function MeetingAdd() {
                           type="number"
                           name="extension"
                           className="formItem"
-                          {...register("conf_max_members", { ...requiredValidator, })}
+                          {...register("conf_max_members", {
+                            ...requiredValidator,
+                          })}
                         />
                         {errors.conf_max_members && (
-                          <ErrorMessage text={errors.conf_max_members.message} />
+                          <ErrorMessage
+                            text={errors.conf_max_members.message}
+                          />
                         )}
                       </div>
                     </div>
@@ -256,39 +297,42 @@ function MeetingAdd() {
                       <div className="col-xl-6 col-12">
                         <div className="row">
                           <div className="col-12">
-                            <select className="formItem" {...register("conf_scheduled")}>
-                              <option value={"0"}>
-                                Disabled
-                              </option>
-                              <option value={"1"}>
-                                Enabled
-                              </option>
+                            <select
+                              className="formItem"
+                              {...register("conf_scheduled")}
+                            >
+                              <option value={"0"}>Disabled</option>
+                              <option value={"1"}>Enabled</option>
                             </select>
                           </div>
-                          {watch().conf_scheduled == "1" ? <>
-                            <div className="col-6 mt-2">
-                              <label htmlFor="data" className="formItemDesc">
-                                Start Date & Time
-                              </label>
-                              <input
-                                type="datetime-local"
-                                name="extension"
-                                className="formItem"
-                                {...register("conf_start_time")}
-                              />
-                            </div>
-                            <div className="col-6 mt-2">
-                              <label htmlFor="data" className="formItemDesc">
-                                End Date & Time
-                              </label>
-                              <input
-                                type="datetime-local"
-                                name="extension"
-                                className="formItem"
-                                {...register("conf_end_time")}
-                              />
-                            </div>
-                          </> : ""}
+                          {watch().conf_scheduled == "1" ? (
+                            <>
+                              <div className="col-6 mt-2">
+                                <label htmlFor="data" className="formItemDesc">
+                                  Start Date & Time
+                                </label>
+                                <input
+                                  type="datetime-local"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("conf_start_time")}
+                                />
+                              </div>
+                              <div className="col-6 mt-2">
+                                <label htmlFor="data" className="formItemDesc">
+                                  End Date & Time
+                                </label>
+                                <input
+                                  type="datetime-local"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("conf_end_time")}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>
@@ -310,61 +354,64 @@ function MeetingAdd() {
                         </label>
                       </div>
                     </div>
-                    <div className="formRow align-items-start">
-                      <div className="formLabel">
-                        <label htmlFor="">Add participants</label>
-                        <label htmlFor="data" className="formItemDesc">
-                          Enter the participants email who will be joining this
-                          meeting
-                        </label>
-                      </div>
-                      <div className="col-xl-6 col-12">
-                        {participants.map((participant, index) => (
-                          <div
-                            key={index}
-                            className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
+                    {watch().conf_type !== "internal" && (
+                      <div className="formRow align-items-start">
+                        <div className="formLabel">
+                          <label htmlFor="">Add participants</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Enter the participants email who will be joining
+                            this meeting
+                          </label>
+                        </div>
+                        <div className="col-xl-6 col-12">
+                          {participants.map((participant, index) => (
+                            <div
+                              key={index}
+                              className={`d-flex justify-content-between align-items-center ${
+                                participants?.length > 1 && "mb-2"
                               }`}
-                          >
-                            <input
-                              type="email"
-                              name={`participant-${index}`}
-                              className="formItem"
-                              onChange={(e) => {
-                                const newParticipants = [...participants];
-                                newParticipants[index] = e.target.value;
-                                setParticipants(newParticipants);
-                              }}
-                              value={participant}
-                            />
-                            <button
-                              onClick={() => {
-                                if (participants.includes("")) {
-                                  toast.error("Please fill all the fields");
-                                } else {
-                                  setParticipants([...participants, ""]);
-                                }
-                              }}
-                              type="button"
-                              className="tableButton ms-2"
                             >
-                              <i className="fa-solid fa-plus" />
-                            </button>
-                            {participants.length > 1 && (
+                              <input
+                                type="email"
+                                name={`participant-${index}`}
+                                className="formItem"
+                                onChange={(e) => {
+                                  const newParticipants = [...participants];
+                                  newParticipants[index] = e.target.value;
+                                  setParticipants(newParticipants);
+                                }}
+                                value={participant}
+                              />
                               <button
-                                onClick={() =>
-                                  setParticipants(
-                                    participants.filter((_, i) => i !== index)
-                                  )
-                                }
-                                className="tableButton delete ms-2"
+                                onClick={() => {
+                                  if (participants.includes("")) {
+                                    toast.error("Please fill all the fields");
+                                  } else {
+                                    setParticipants([...participants, ""]);
+                                  }
+                                }}
+                                type="button"
+                                className="tableButton ms-2"
                               >
-                                <i className="fa-solid fa-trash" />
+                                <i className="fa-solid fa-plus" />
                               </button>
-                            )}
-                          </div>
-                        ))}
+                              {participants.length > 1 && (
+                                <button
+                                  onClick={() =>
+                                    setParticipants(
+                                      participants.filter((_, i) => i !== index)
+                                    )
+                                  }
+                                  className="tableButton delete ms-2"
+                                >
+                                  <i className="fa-solid fa-trash" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </form>
                 </div>
                 {watch().conf_type == "internal" && (
@@ -503,11 +550,14 @@ function MeetingAdd() {
                           </div>
                           <div className="d-flex justify-content-between align-items-center my-2">
                             <button
-                              onClick={() => handleSelectAll()}
+                              onClick={handleSelectAll}
                               className="panelButton edit static ms-2"
                             >
-                              <span class="text">Select All</span>
+                              <span className="text">
+                                {isAllSelected ? "Remove All" : "Select All"}
+                              </span>
                             </button>
+
                             <button
                               className="panelButton ms-2"
                               disabled={selectedUser.length === 0}
