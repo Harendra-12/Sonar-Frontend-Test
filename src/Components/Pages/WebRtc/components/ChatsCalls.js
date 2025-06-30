@@ -19,7 +19,7 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
 
     return (
         <>
-            <div className="chatCalls_wrap callList" ref={callListRef} onScroll={handleScroll}>
+            <div className="chatCalls_wrap callList" ref={callListRef} onScroll={handleScroll} style={{ height: "calc(100vh - 266px)" }}>
                 {callHistory && callHistory.length > 0 ?
                     callHistory.map((item, index) => {
                         const alternateUser = (item.room_id.split("-")[0] == account.id) ? item.receiver : item.sender;

@@ -2253,7 +2253,7 @@ i.fa.fa-star {
 }
 
 .mail_table table tbody tr:hover {
-    background: var(--table-bg-active);
+    background: var(--table-bg-active) !important;
 }
 
 .mail_table table tbody tr.active {
