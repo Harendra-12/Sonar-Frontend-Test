@@ -93,12 +93,15 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
-    .ellipsisText300{
+
+    .ellipsisText300 {
         max-width: 100%;
     }
-    .table tbody tr td{
+
+    .table tbody tr td {
         width: 100%;
     }
+
     /* table th {
         text-wrap: nowrap;
     } */
@@ -190,15 +193,16 @@
         padding-left: 0;
         justify-content: center;
     }
+
     .wrpDetails__box .progress {
-    width: 90%;
-    box-shadow: none;
-    height: 4px;
-    position: absolute;
-    top: 28px;
-    margin: unset;
-    margin-left: 20px;
-}
+        width: 90%;
+        box-shadow: none;
+        height: 4px;
+        position: absolute;
+        top: 28px;
+        margin: unset;
+        margin-left: 20px;
+    }
 }
 
 @media (max-device-width: 1366px) {
@@ -238,10 +242,12 @@
     .itemWrapper .data-number2 h5 {
         font-size: 1.125rem;
     }
-    .ellipsisText300{
+
+    .ellipsisText300 {
         max-width: 100%;
     }
-    .table tbody tr td{
+
+    .table tbody tr td {
         width: 100%;
     }
 
@@ -379,10 +385,12 @@
     .customRow {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
-    .ellipsisText300{
+
+    .ellipsisText300 {
         max-width: 100%;
     }
-    .table tbody tr td{
+
+    .table tbody tr td {
         width: 100%;
     }
 }
@@ -598,6 +606,14 @@
     .batchCallCanvas {
         width: 100% !important;
     }
+
+    .custom-controls-container {
+        position: static !important;
+    }
+
+    .lk-settings-menu-modal {
+        min-width: 90vw;
+    }
 }
 
 @media (max-width: 767px) {
@@ -626,8 +642,15 @@
     .tangoNavs.store__nav .nav-tabs {
         flex-direction: column-reverse;
     }
-    .progressStepWrapper{
+
+    .progressStepWrapper {
         gap: 10px;
+    }
+
+    .sin-testiImage {
+        width: 124px;
+        height: 124px;
+
     }
 }
 
