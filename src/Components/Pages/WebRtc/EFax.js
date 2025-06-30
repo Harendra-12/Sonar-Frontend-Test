@@ -351,8 +351,8 @@ function EFax({ did }) {
                         // <div className="callList">
                         <div style={{ cursor: "unset" }}>
                           <div data-bell="" className="contactListItem">
-                            <div className="row justify-content-between">
-                              <div className="col-xl-6 d-flex">
+                            <div className="d-flex flex-wrap justify-content-between gap-2">
+                              <div className="d-flex">
                                 <div className="iconBox">
                                   <i class="fa-regular fa-file-pdf"></i>
 
@@ -362,7 +362,7 @@ function EFax({ did }) {
                                   {/* <h5>{file.file_path}</h5> */}
                                 </div>
                               </div>
-                              <div className="col-10 col-xl-4 d-flex align-items-center gap-2 justify-content-end">
+                              <div className="d-flex align-items-center gap-2 justify-content-end">
                                 <button class="aitable_button bg-transparent"
                                   onClick={() =>
                                     downloadImage(

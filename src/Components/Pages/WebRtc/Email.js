@@ -782,7 +782,8 @@ function Email({ selectedMail, }) {
                                         {category?.label}
                                       </p>
                                       <div className="">
-                                        <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
+                                        <span className="fs-10 badge badge-soft-secondary rounded-pill" >{category?.unseenMessages}</span>
+                                        {/* <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span> */}
                                       </div>
                                     </button>
                                   </li>)
