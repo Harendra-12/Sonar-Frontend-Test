@@ -2397,7 +2397,7 @@ function Messages({
                     <div className="tab-content">
                       <div
                         className="callList"
-                        style={{ height: "calc(100vh - 230px)" }}
+                        style={{ height: "calc(100vh - 266px)" }}
                       >
                         <div className="chatHeading">
                           <h5
@@ -2482,7 +2482,7 @@ function Messages({
                     <div className="tab-content">
                       <div
                         className="callList"
-                        style={{ height: "calc(100vh - 230px)" }}
+                        style={{ height: "calc(100vh - 266px)" }}
                       >
                         <div className="chatHeading" data-bell={""}>
                           <h5>
@@ -2627,7 +2627,7 @@ function Messages({
                     <div className="tab-content">
                       <div
                         className="callList groupCall_list"
-                        style={{ height: "calc(100vh - 230px)" }}
+                        style={{ height: "calc(100vh - 266px)" }}
                       >
                         <div
                           className="chatHeading d-flex justify-content-between align-items-center"
