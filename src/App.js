@@ -208,6 +208,7 @@ import MeetingEdit from "./Components/Pages/Meeting/MeetingEdit";
 import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
 import GoConferenceNotificationSocket from "./Components/GlobalFunction/GoConferencenNotificationSocket";
 import RecordingPage from "./Components/RecordingPage";
+import ErrorBoundary from "./ErrorBoundaryWithoutNavigate";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -277,6 +278,7 @@ function App() {
         <Navbar />
         <OfflineNotice />
         {/* <MissedCallPopup /> */}
+        <ErrorBoundary>
         <Routes>
           <Route path="/layout" element={<RecordingPage />} />
           <Route path="/click-to-call" element={<ClickToCall />} />
@@ -1680,6 +1682,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
           {/* 404 Redirection */}
         </Routes>
+        </ErrorBoundary>
         <ToastContainer
           position="bottom-right"
           autoClose={3000}
