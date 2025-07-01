@@ -26,7 +26,6 @@ import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
-
 function CdrReport({ page }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -62,11 +61,11 @@ function CdrReport({ page }) {
   });
 
   const [isSorting, setIsSorting] = useState("");
-  const [sortingValue, setSortingValue] = useState("")
+  const [sortingValue, setSortingValue] = useState("");
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
   const [callBlock, setCallBlock] = useState([]);
   const [callBlockRefresh, setCallBlockRefresh] = useState(0);
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
@@ -77,16 +76,20 @@ function CdrReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [storageInformation, setStorageInformation] = useState([]);
-  const accountStorageInfo = useSelector((state) => state?.accountDetails?.package?.device_storage);
+  const accountStorageInfo = useSelector(
+    (state) => state?.accountDetails?.package?.device_storage
+  );
   const { confirm, ModalComponent } = PromptFunctionPopup();
-  const [showDropDown, setShowDropdown] = useState(false)
-  const [showAudio, setShowAudio] = useState(false)
+  const [showDropDown, setShowDropdown] = useState(false);
+  const [showAudio, setShowAudio] = useState(false);
   const [showCdrReport, setShowCdrReport] = useState(true);
   const [selectedCdrToDelete, setSelectedCdrToDelete] = useState([]);
   const slugPermissions = useSelector((state) => state?.permissions);
 
-
   const thisAudioRef = useRef(null);
+  // Use a ref to persist the resetting state across renders and filter changes
+  const isResettingRef = useRef(false);
+
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -112,8 +115,7 @@ function CdrReport({ page }) {
       setTimeFilter((prev) => ({
         ...prev,
         startTime: timeFlag.startTime,
-      }))
-
+      }));
     } else if (filterBy === "date_range") {
       if (timeFlag.startTime !== "" && timeFlag.endTime !== "") {
         setTimeFilter((prev) => ({
@@ -123,7 +125,7 @@ function CdrReport({ page }) {
         }));
       }
     }
-  }, [timeFlag])
+  }, [timeFlag]);
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -198,6 +200,7 @@ function CdrReport({ page }) {
     getRingGroupDashboardData();
   }, [callBlockRefresh]);
   useEffect(() => {
+    if (isResettingRef.current) return; // Skip API call if resetting
     setLoading(true);
     // build a dynamic url which include only the available params to make API call easy
     const buildUrl = (baseApiUrl, params) => {
@@ -219,10 +222,10 @@ function CdrReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-              ? "pstn"
-              : page === "callrecording"
-                ? callType
-                : page,
+            ? "pstn"
+            : page === "callrecording"
+            ? callType
+            : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -232,8 +235,12 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        variable_billsec: page == "callrecording" && isSorting === "duration" ? sortingValue : "",
-        recording_size: page == "callrecording" && isSorting === "record" ? sortingValue : ""
+        variable_billsec:
+          page == "callrecording" && isSorting === "duration"
+            ? sortingValue
+            : "",
+        recording_size:
+          page == "callrecording" && isSorting === "record" ? sortingValue : "",
       }
     );
 
@@ -244,7 +251,7 @@ function CdrReport({ page }) {
           setLoading(false);
           setContentLoader(false);
           setCdr(apiData.data);
-          setRefreshState(false)
+          setRefreshState(false);
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -253,12 +260,12 @@ function CdrReport({ page }) {
           }
         } else {
           setLoading(false);
-          setRefreshState(false)
+          setRefreshState(false);
           setContentLoader(false);
         }
       } else {
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
         setContentLoader(false);
         navigate("/");
       }
@@ -280,8 +287,29 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-    sortingValue
+    sortingValue,
+    // Remove isResetting state if present
   ]);
+
+  // Fetch CDR data with only base URL (no filters)
+  const fetchBaseCdrData = async () => {
+    setLoading(true);
+    setContentLoader(true);
+    setCurrentPlaying("");
+    try {
+      const baseUrl = `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}&recording=true`;
+      const apiData = await generalGetFunction(baseUrl);
+      if (apiData?.status) {
+        setCdr(apiData.data);
+      }
+    } catch (err) {
+      console.error("Error fetching CDR data:", err);
+    } finally {
+      setLoading(false);
+      setContentLoader(false);
+      setRefreshState(false);
+    }
+  };
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -327,7 +355,7 @@ function CdrReport({ page }) {
     setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
-    const shouldLoad = true
+    const shouldLoad = true;
     getStorageInformation(shouldLoad);
   }
 
@@ -464,7 +492,9 @@ function CdrReport({ page }) {
     if (userConfirmed) {
       setLoading(true);
       try {
-        const apiCall = await generalDeleteFunction(`/cdr-record-remove/${selectedCdr}`);
+        const apiCall = await generalDeleteFunction(
+          `/cdr-record-remove/${selectedCdr}`
+        );
         if (apiCall.status) {
           setLoading(false);
           toast.success("Call Recording Deleted Successfully.");
@@ -475,7 +505,7 @@ function CdrReport({ page }) {
         setLoading(false);
       }
     }
-  }
+  };
 
   // Fetch Storage Information
   const getStorageInformation = async (shouldLoad) => {
@@ -485,27 +515,27 @@ function CdrReport({ page }) {
       if (apiCall) {
         setStorageInformation(apiCall);
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       }
     } catch (err) {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
-    setRefreshState(true)
-    const shouldLoad = true
+    setRefreshState(true);
+    const shouldLoad = true;
     getStorageInformation(shouldLoad);
-  }, [])
+  }, []);
 
   function convertToGB(param) {
     const units = {
       KB: 1 / (1024 * 1024),
       MB: 1 / 1024,
       GB: 1,
-      TB: 1024
+      TB: 1024,
     };
 
     let unit = param?.split(" ")[1]?.toUpperCase();
@@ -520,6 +550,7 @@ function CdrReport({ page }) {
 
   // Reset All Filters
   const resetAllFilters = () => {
+    isResettingRef.current = true;
     setHagupCause("");
     setHangupStatus("");
     setCallDirection("");
@@ -537,8 +568,10 @@ function CdrReport({ page }) {
     setSortingValue("");
 
     setTimeout(() => {
-      refreshCallData();
-    })
+      fetchBaseCdrData().then(() => {
+        isResettingRef.current = false;
+      });
+    });
   };
 
   // Select CDR - Call Recording Item for delete
@@ -559,7 +592,7 @@ function CdrReport({ page }) {
         return [...prevSelected, item];
       }
     });
-  }
+  };
 
   // Delete selected CDR - Call Recordings
   const deleteSelectedCallRecording = async () => {
@@ -586,31 +619,32 @@ function CdrReport({ page }) {
         refreshCallData();
       }
     }
-  }
+  };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     setCurrentPlaying("");
     setContentLoader(true);
     // setRefrehsh(refresh + 1);
-    const shouldLoad = false
+    const shouldLoad = false;
     getStorageInformation(shouldLoad);
-  }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0 position-relative">
           <Header
-            title={`${page === "billing"
-              ? "Billing Reports"
-              : page === "callcenter"
+            title={`${
+              page === "billing"
+                ? "Billing Reports"
+                : page === "callcenter"
                 ? "Call Center Reports"
                 : page === "ringgroup"
-                  ? "Ring Group Reports"
-                  : page === "callrecording"
-                    ? "Call Recordings"
-                    : "CDR Reports"
-              }`}
+                ? "Ring Group Reports"
+                : page === "callrecording"
+                ? "Call Recordings"
+                : "CDR Reports"
+            }`}
           />
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
@@ -622,12 +656,12 @@ function CdrReport({ page }) {
                         {page === "billing"
                           ? "Billing"
                           : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                              ? "Ring Group Reports"
-                              : page === "callrecording"
-                                ? "Call Recordings"
-                                : "CDR Reports"}
+                          ? "Call Center Reports"
+                          : page === "ringgroup"
+                          ? "Ring Group Reports"
+                          : page === "callrecording"
+                          ? "Call Recordings"
+                          : "CDR Reports"}
                         <button
                           className="clearButton"
                           onClick={handleRefreshBtnClicked}
@@ -647,12 +681,12 @@ function CdrReport({ page }) {
                         {page === "billing"
                           ? "Billing Reports"
                           : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                              ? "Ring Group Reports"
-                              : page === "callrecording"
-                                ? "Call Recordings"
-                                : "CDR Reports"}
+                          ? "Call Center Reports"
+                          : page === "ringgroup"
+                          ? "Ring Group Reports"
+                          : page === "callrecording"
+                          ? "Call Recordings"
+                          : "CDR Reports"}
                       </p>
                     </div>
                     <div className="buttonGroup">
@@ -733,16 +767,61 @@ function CdrReport({ page }) {
                       <label>entries</label>
                     </div>
                     {page === "callrecording" && (
-                      <div style={{ width: '200px' }}>
+                      <div style={{ width: "200px" }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>{storageInformation?.total_size} / {accountStorageInfo} GB</label>
+                          <label>Storage</label>
+                          <label>
+                            {storageInformation?.total_size} /{" "}
+                            {accountStorageInfo} GB
+                          </label>
                         </div>
                         <div className="progress">
-                          <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
-                            <div className="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <Tippy
+                            content={`Storage Used: ${
+                              storageInformation?.total_size || "N/A"
+                            }`}
+                          >
+                            <div
+                              className="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                              role="progressbar"
+                              aria-label="Segment one"
+                              style={{
+                                width: `${
+                                  (convertToGB(storageInformation?.total_size) /
+                                    accountStorageInfo) *
+                                  100
+                                }%`,
+                              }}
+                              aria-valuenow="100"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
                           </Tippy>
-                          <Tippy content={`Storage Left: ${accountStorageInfo - convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
-                            <div className="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${((accountStorageInfo - convertToGB(storageInformation?.total_size)) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <Tippy
+                            content={`Storage Left: ${
+                              accountStorageInfo -
+                                convertToGB(storageInformation?.total_size) +
+                                " GB" || "N/A"
+                            }`}
+                          >
+                            <div
+                              className="progress-bar bg-info progress-bar-striped progress-bar-animated"
+                              role="progressbar"
+                              aria-label="Segment one"
+                              style={{
+                                width: `${
+                                  ((accountStorageInfo -
+                                    convertToGB(
+                                      storageInformation?.total_size
+                                    )) /
+                                    accountStorageInfo) *
+                                  100
+                                }%`,
+                              }}
+                              aria-valuenow="100"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
                           </Tippy>
                         </div>
                       </div>
@@ -791,7 +870,10 @@ function CdrReport({ page }) {
                               className="formItem ms-2"
                               value={timeFlag.startTime}
                               onChange={(e) => {
-                                setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                setTimeFlag((prev) => ({
+                                  ...prev,
+                                  startTime: `${e.target.value}:00`,
+                                }));
                                 setPageNumber(1);
                               }}
                             />
@@ -820,7 +902,10 @@ function CdrReport({ page }) {
                                 className="formItem ms-2"
                                 value={timeFlag.startTime}
                                 onChange={(e) => {
-                                  setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                  setTimeFlag((prev) => ({
+                                    ...prev,
+                                    startTime: `${e.target.value}:00`,
+                                  }));
                                   setPageNumber(1);
                                 }}
                               />
@@ -847,7 +932,10 @@ function CdrReport({ page }) {
                                 className="formItem ms-2"
                                 value={timeFlag.endTime}
                                 onChange={(e) => {
-                                  setTimeFlag((prev) => ({ ...prev, endTime: `${e.target.value}:00` }));
+                                  setTimeFlag((prev) => ({
+                                    ...prev,
+                                    endTime: `${e.target.value}:00`,
+                                  }));
                                   setPageNumber(1);
                                 }}
                               />
@@ -923,7 +1011,7 @@ function CdrReport({ page }) {
                                 setPageNumber(1);
                               }}
                               value={callDirection}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                             >
                               <option value={""}>All Calls</option>
                               <option value={"inbound"}>Inbound Calls</option>
@@ -965,8 +1053,8 @@ function CdrReport({ page }) {
                               className="formItem"
                               value={isSorting}
                               onChange={(e) => {
-                                setIsSorting(e.target.value)
-                                setSortingValue("")
+                                setIsSorting(e.target.value);
+                                setSortingValue("");
                               }}
                             >
                               <option value="">Choose Sorting</option>
@@ -974,24 +1062,35 @@ function CdrReport({ page }) {
                               <option value={"duration"}>Duration</option>
                             </select>
                           </div>
-                          {isSorting && <div className="formRow border-0 ps-xl-0">
-                            <label className="formLabel text-start mb-0 w-100">
-                              {isSorting === "record" ? "Select Size" : "Select Duration"}
-                            </label>
-                            <select
-                              className="formItem"
-                              value={sortingValue}
-                              onChange={(e) => {
-                                setSortingValue(e.target.value)
-                              }}
-                            >
-                              <option value="">Choose Method</option>
-                              <option value={"asc"}>{isSorting === "record" ? 'Size' : 'Duration'} - Low to High</option>
-                              <option value={"desc"}>{isSorting === "record" ? 'Size' : 'Duration'} - High to Low</option>
-                            </select>
-                          </div>}
-                          {selectedCdrToDelete.length > 1 &&
-                            <button className="panelButton delete mt-auto mb-2"
+                          {isSorting && (
+                            <div className="formRow border-0 ps-xl-0">
+                              <label className="formLabel text-start mb-0 w-100">
+                                {isSorting === "record"
+                                  ? "Select Size"
+                                  : "Select Duration"}
+                              </label>
+                              <select
+                                className="formItem"
+                                value={sortingValue}
+                                onChange={(e) => {
+                                  setSortingValue(e.target.value);
+                                }}
+                              >
+                                <option value="">Choose Method</option>
+                                <option value={"asc"}>
+                                  {isSorting === "record" ? "Size" : "Duration"}{" "}
+                                  - Low to High
+                                </option>
+                                <option value={"desc"}>
+                                  {isSorting === "record" ? "Size" : "Duration"}{" "}
+                                  - High to Low
+                                </option>
+                              </select>
+                            </div>
+                          )}
+                          {selectedCdrToDelete.length > 1 && (
+                            <button
+                              className="panelButton delete mt-auto mb-2"
                               onClick={deleteSelectedCallRecording}
                             >
                               <span className="text">Delete</span>
@@ -999,7 +1098,7 @@ function CdrReport({ page }) {
                                 <i className="fa-solid fa-trash"></i>
                               </span>
                             </button>
-                          }
+                          )}
                         </>
                       ) : (
                         <>
@@ -1115,25 +1214,31 @@ function CdrReport({ page }) {
                       //   row={12}
                       // />
                       <ThreeDotedLoader />
-                    ) :
+                    ) : (
                       <table>
                         <thead>
                           <tr>
-                            {page === "callrecording" &&
-                              <th style={{ width: '20px' }}>
+                            {page === "callrecording" && (
+                              <th style={{ width: "20px" }}>
                                 <input
                                   type="checkbox"
                                   ref={(el) => {
                                     if (el) {
-                                      el.indeterminate = selectedCdrToDelete.length > 0 && selectedCdrToDelete.length < cdr.data.length;
+                                      el.indeterminate =
+                                        selectedCdrToDelete.length > 0 &&
+                                        selectedCdrToDelete.length <
+                                          cdr.data.length;
                                     }
                                   }}
                                   onChange={handleSelectAll}
-                                  checked={selectedCdrToDelete?.length === cdr?.data?.length}
+                                  checked={
+                                    selectedCdrToDelete?.length ===
+                                    cdr?.data?.length
+                                  }
                                 />
                               </th>
-                            }
-                            <th style={{ width: '20px' }}>#</th>
+                            )}
+                            <th style={{ width: "20px" }}>#</th>
                             <th>Direction</th>
                             {/* {page === "billing" ? "" : <th>Call Type</th>} */}
                             <th>Caller Name</th>
@@ -1178,314 +1283,357 @@ function CdrReport({ page }) {
                             account?.sectionPermissions,
                             account?.permissions,
                             "read"
-                          ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                            (
-                              <>
-                                {cdr?.data &&
-                                  cdr?.data?.map((item, index) => {
-                                    const isBlocked = callBlock?.some((block) => {
-                                      if (item["Call-Direction"] == "inbound") {
-                                        return (
-                                          item["Caller-Caller-ID-Number"] ==
-                                          block.number
-                                        );
-                                      } else if (
-                                        item["Call-Direction"] == "outbound"
-                                      ) {
-                                        return (
-                                          item["Caller-Callee-ID-Number"] ==
-                                          block.number
-                                        );
-                                      }
-                                    });
+                          ) ? (
+                            <tr>
+                              <td colSpan={99} className="text-center">
+                                You dont have any permission
+                              </td>
+                            </tr>
+                          ) : (
+                            <>
+                              {cdr?.data &&
+                                cdr?.data?.map((item, index) => {
+                                  const isBlocked = callBlock?.some((block) => {
+                                    if (item["Call-Direction"] == "inbound") {
+                                      return (
+                                        item["Caller-Caller-ID-Number"] ==
+                                        block.number
+                                      );
+                                    } else if (
+                                      item["Call-Direction"] == "outbound"
+                                    ) {
+                                      return (
+                                        item["Caller-Callee-ID-Number"] ==
+                                        block.number
+                                      );
+                                    }
+                                  });
 
-                                    // Map File Storage Sizes To CDR
-                                    const matchedStorage = storageInformation?.file_details?.find(
+                                  // Map File Storage Sizes To CDR
+                                  const matchedStorage =
+                                    storageInformation?.file_details?.find(
                                       (storage) => {
-                                        if (item["recording_path"] && item["variable_billsec"] > 0) {
-                                          if (storage.url === item["recording_path"].replace('s3.', '')) {
+                                        if (
+                                          item["recording_path"] &&
+                                          item["variable_billsec"] > 0
+                                        ) {
+                                          if (
+                                            storage.url ===
+                                            item["recording_path"].replace(
+                                              "s3.",
+                                              ""
+                                            )
+                                          ) {
                                             return storage.size;
                                           }
                                         }
                                       }
                                     );
-                                    const storageSize = matchedStorage?.size || "N/A";
+                                  const storageSize =
+                                    matchedStorage?.size || "N/A";
 
-                                    return (
-                                      <>
-                                        <tr key={index} className="cdrTableRow">
-                                          {page === "callrecording" && <td style={{ width: '20px' }}>
+                                  return (
+                                    <>
+                                      <tr key={index} className="cdrTableRow">
+                                        {page === "callrecording" && (
+                                          <td style={{ width: "20px" }}>
                                             <input
                                               type="checkbox"
                                               onChange={() =>
                                                 handleSelectUserToEdit(item)
                                               }
                                               checked={selectedCdrToDelete.some(
-                                                (cdr) =>
-                                                  cdr.id == item.id
+                                                (cdr) => cdr.id == item.id
                                               )}
                                             ></input>
-                                          </td>}
-                                          <td style={{ width: '20px' }}>
-                                            {(pageNumber - 1) *
-                                              Number(itemsPerPage) +
-                                              (index + 1)}
                                           </td>
-                                          <td>
-                                            {item["Call-Direction"] ===
-                                              "inbound" ? (
-                                              <span>
-                                                <i
-                                                  className="fa-solid fa-phone-arrow-down-left me-1"
-                                                  style={{
-                                                    color: "var(--funky-boy3)",
-                                                  }}
-                                                ></i>{" "}
-                                                Inbound
-                                              </span>
-                                            ) : item["Call-Direction"] ===
-                                              "outbound" ? (
-                                              <span>
-                                                <i
-                                                  className="fa-solid fa-phone-arrow-up-right me-1"
-                                                  style={{ color: "var(--color3)" }}
-                                                ></i>{" "}
-                                                Outbound
-                                              </span>
-                                            ) : item["Call-Direction"] ===
-                                              "missed" ? (
-                                              <span>
-                                                <i
-                                                  className="fa-solid fa-phone-missed me-1"
-                                                  style={{
-                                                    color: "var(--funky-boy3)",
-                                                  }}
-                                                ></i>{" "}
-                                                Missed
-                                              </span>
-                                            ) : item["Call-Direction"] ===
-                                              "transfer" ? (
-                                              <span>
-                                                <i
-                                                  className="fa-solid fa-phone-missed me-1"
-                                                  style={{
-                                                    color: "var(--funky-boy3)",
-                                                  }}
-                                                ></i>{" "}
-                                                Transfer
-                                              </span>
-                                            ) : (
-                                              <span>
-                                                <i
-                                                  className="fa-solid fa-headset me-1"
-                                                  style={{ color: "var(--color2)" }}
-                                                ></i>{" "}
-                                                Internal
-                                              </span>
-                                            )}
-                                          </td>
-                                          {/* {page === "billing" ? (
+                                        )}
+                                        <td style={{ width: "20px" }}>
+                                          {(pageNumber - 1) *
+                                            Number(itemsPerPage) +
+                                            (index + 1)}
+                                        </td>
+                                        <td>
+                                          {item["Call-Direction"] ===
+                                          "inbound" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-arrow-down-left me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Inbound
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "outbound" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-arrow-up-right me-1"
+                                                style={{
+                                                  color: "var(--color3)",
+                                                }}
+                                              ></i>{" "}
+                                              Outbound
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "missed" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Missed
+                                            </span>
+                                          ) : item["Call-Direction"] ===
+                                            "transfer" ? (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Transfer
+                                            </span>
+                                          ) : (
+                                            <span>
+                                              <i
+                                                className="fa-solid fa-headset me-1"
+                                                style={{
+                                                  color: "var(--color2)",
+                                                }}
+                                              ></i>{" "}
+                                              Internal
+                                            </span>
+                                          )}
+                                        </td>
+                                        {/* {page === "billing" ? (
                                         ""
                                       ) : (
                                         <td>{item["application_state"]}</td>
                                       )} */}
-                                          <td>
-                                            {item["Caller-Orig-Caller-ID-Name"]}
-                                          </td>
-                                          <td>{item["variable_sip_from_user"]}</td>
-                                          <td>{item["tag"]}</td>
-                                          <td>{item["variable_sip_to_user"]}</td>
-                                          <td>
-                                            {item["application_state"] ===
-                                              "intercept" ||
-                                              item["application_state"] ===
-                                              "eavesdrop" ||
-                                              item["application_state"] ===
-                                              "whisper" ||
-                                              item["application_state"] === "barge"
-                                              ? item["other_leg_destination_number"]
-                                              : item[
-                                              "Caller-Callee-ID-Number"
+                                        <td>
+                                          {item["Caller-Orig-Caller-ID-Name"]}
+                                        </td>
+                                        <td>
+                                          {item["variable_sip_from_user"]}
+                                        </td>
+                                        <td>{item["tag"]}</td>
+                                        <td>{item["variable_sip_to_user"]}</td>
+                                        <td>
+                                          {item["application_state"] ===
+                                            "intercept" ||
+                                          item["application_state"] ===
+                                            "eavesdrop" ||
+                                          item["application_state"] ===
+                                            "whisper" ||
+                                          item["application_state"] === "barge"
+                                            ? item[
+                                                "other_leg_destination_number"
+                                              ]
+                                            : item[
+                                                "Caller-Callee-ID-Number"
                                               ]}{" "}
-                                            {item["application_state_name"] &&
-                                              `(${item["application_state_name"]})`}
-                                          </td>
-                                          {page === "callrecording" ? (
-                                            ""
-                                          ) : (
-                                            <>
-                                              <td>
-                                                {item["application_state_to_ext"]}
-                                              </td>
-                                              {/* time */}
-                                              <td>{item["e_name"]}</td>
-                                              <td>
-                                                {
-                                                  item[
-                                                    "variable_start_stamp"
-                                                  ]?.split(" ")[0]
-                                                }
-                                              </td>
-                                              <td>
-                                                {
-                                                  item[
-                                                    "variable_start_stamp"
-                                                  ]?.split(" ")[1]
-                                                }
-                                              </td>
-                                            </>
-                                          )}
-                                          <td>
-                                            {item["recording_path"] &&
-                                              item["variable_billsec"] > 0 && (
-                                                <>
-                                                  <div className="d-flex justify-content-start align-items-center">
-                                                    <button
-                                                      className="tableButton px-2 mx-0"
-                                                      onClick={() => {
-                                                        if (
-                                                          item[
-                                                          "recording_path"
-                                                          ] ===
-                                                          currentPlaying
-                                                        ) {
-                                                          setCurrentPlaying(
-                                                            ""
-                                                          );
-                                                          setAudioURL("");
-                                                        } else {
-                                                          handlePlaying(
-                                                            item[
-                                                            "recording_path"
-                                                            ]
-                                                          );
-                                                        }
-                                                      }}
-                                                    >
-                                                      {currentPlaying ===
+                                          {item["application_state_name"] &&
+                                            `(${item["application_state_name"]})`}
+                                        </td>
+                                        {page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <>
+                                            <td>
+                                              {item["application_state_to_ext"]}
+                                            </td>
+                                            {/* time */}
+                                            <td>{item["e_name"]}</td>
+                                            <td>
+                                              {
+                                                item[
+                                                  "variable_start_stamp"
+                                                ]?.split(" ")[0]
+                                              }
+                                            </td>
+                                            <td>
+                                              {
+                                                item[
+                                                  "variable_start_stamp"
+                                                ]?.split(" ")[1]
+                                              }
+                                            </td>
+                                          </>
+                                        )}
+                                        <td>
+                                          {item["recording_path"] &&
+                                            item["variable_billsec"] > 0 && (
+                                              <>
+                                                <div className="d-flex justify-content-start align-items-center">
+                                                  <button
+                                                    className="tableButton px-2 mx-0"
+                                                    onClick={() => {
+                                                      if (
                                                         item[
-                                                        "recording_path"
-                                                        ] ? (
-                                                        <i className="fa-solid fa-chevron-up"></i>
-                                                      ) : (
-                                                        <i className="fa-solid fa-chevron-down"></i>
-                                                      )}
-                                                    </button>
-                                                    <label className="ms-2">{item?.recording_size}</label>
-                                                  </div>
-                                                </>
+                                                          "recording_path"
+                                                        ] === currentPlaying
+                                                      ) {
+                                                        setCurrentPlaying("");
+                                                        setAudioURL("");
+                                                      } else {
+                                                        handlePlaying(
+                                                          item["recording_path"]
+                                                        );
+                                                      }
+                                                    }}
+                                                  >
+                                                    {currentPlaying ===
+                                                    item["recording_path"] ? (
+                                                      <i className="fa-solid fa-chevron-up"></i>
+                                                    ) : (
+                                                      <i className="fa-solid fa-chevron-down"></i>
+                                                    )}
+                                                  </button>
+                                                  <label className="ms-2">
+                                                    {item?.recording_size}
+                                                  </label>
+                                                </div>
+                                              </>
 
-                                                // <MusicPlayer
-                                                //   audioSrc={item["recording_path"]}
-                                                //   isPlaying={
-                                                //     currentPlaying ===
-                                                //     item["recording_path"]
-                                                //   }
-                                                //   onPlay={() => setCurrentPlaying(item["recording_path"])}
-                                                //   onStop={() => setCurrentPlaying(null)}
-                                                // />
-                                              )}
-                                          </td>
-                                          <td>
-                                            {formatTime(item["variable_billsec"])}
-                                          </td>
-                                          {page === "billing" ||
-                                            page === "callrecording" ? (
-                                            ""
-                                          ) : (
-                                            <>
-                                              <td>
-                                                {item["Hangup-Cause"]}
-                                                {/* {item["variable_DIALSTATUS"] === null
+                                              // <MusicPlayer
+                                              //   audioSrc={item["recording_path"]}
+                                              //   isPlaying={
+                                              //     currentPlaying ===
+                                              //     item["recording_path"]
+                                              //   }
+                                              //   onPlay={() => setCurrentPlaying(item["recording_path"])}
+                                              //   onStop={() => setCurrentPlaying(null)}
+                                              // />
+                                            )}
+                                        </td>
+                                        <td>
+                                          {formatTime(item["variable_billsec"])}
+                                        </td>
+                                        {page === "billing" ||
+                                        page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <>
+                                            <td>
+                                              {item["Hangup-Cause"]}
+                                              {/* {item["variable_DIALSTATUS"] === null
                                           ? item["Hangup-Cause"]
                                           : item["variable_DIALSTATUS"] ===
                                             "NO_USER_RESPONSE"
                                           ? "BUSY"
                                           : item["variable_DIALSTATUS"]} */}
-                                              </td>
-                                              <td>{item["variable_DIALSTATUS"]}</td>
-                                            </>
-                                          )}
-                                          {page === "callrecording" ? (
-                                            ""
-                                          ) : (
-                                            <td>{item["call_cost"]}</td>
-                                          )}
-                                          {page === "billing" ||
-                                            page === "callrecording" ? (
-                                            ""
-                                          ) : (
+                                            </td>
                                             <td>
-                                              {" "}
-                                              {
-                                                (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
-                                                  <button
-                                                    disabled={isBlocked}
-                                                    effect="ripple"
-                                                    className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                      } ms-0`}
-                                                    // style={{ height: "34px" }}
-                                                    onClick={() => {
-                                                      setSelectedNumberToBlock(
-                                                        item["Call-Direction"] ===
-                                                          "inbound"
-                                                          ? item[
+                                              {item["variable_DIALSTATUS"]}
+                                            </td>
+                                          </>
+                                        )}
+                                        {page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <td>{item["call_cost"]}</td>
+                                        )}
+                                        {page === "billing" ||
+                                        page === "callrecording" ? (
+                                          ""
+                                        ) : (
+                                          <td>
+                                            {" "}
+                                            {item["Call-Direction"] ===
+                                              "inbound" ||
+                                            item["Call-Direction"] ===
+                                              "outbound" ? (
+                                              <button
+                                                disabled={isBlocked}
+                                                effect="ripple"
+                                                className={`tableButton ${
+                                                  isBlocked
+                                                    ? "delete"
+                                                    : "warning"
+                                                } ms-0`}
+                                                // style={{ height: "34px" }}
+                                                onClick={() => {
+                                                  setSelectedNumberToBlock(
+                                                    item["Call-Direction"] ===
+                                                      "inbound"
+                                                      ? item[
                                                           "Caller-Caller-ID-Number"
-                                                          ]
-                                                          : item["Call-Direction"] ===
-                                                            "outbound"
-                                                            ? item[
-                                                            "Caller-Callee-ID-Number"
-                                                            ]
-                                                            : "N/A"
-                                                      );
-                                                      setPopUp(true);
-                                                    }}
-                                                  >
-
-                                                    {/* <span className="text">
+                                                        ]
+                                                      : item[
+                                                          "Call-Direction"
+                                                        ] === "outbound"
+                                                      ? item[
+                                                          "Caller-Callee-ID-Number"
+                                                        ]
+                                                      : "N/A"
+                                                  );
+                                                  setPopUp(true);
+                                                }}
+                                              >
+                                                {/* <span className="text">
                                             {isBlocked ? "Blocked" : "Block"}
                                           </span> */}
-                                                    {/* <span className="icon"> */}
-                                                    <Tippy
-                                                      content={
-                                                        isBlocked ? "Blocked" : "Block"
-                                                      }
-                                                    >
-                                                      <i className="fa-solid fa-ban"></i>
-                                                    </Tippy>
-                                                    {/* </span> */}
-                                                  </button>
-                                                  : ""}
-                                            </td>
-                                          )}
-                                          <td>
-                                            <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
-                                              <Tippy content={'View Note'}
+                                                {/* <span className="icon"> */}
+                                                <Tippy
+                                                  content={
+                                                    isBlocked
+                                                      ? "Blocked"
+                                                      : "Block"
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-ban"></i>
+                                                </Tippy>
+                                                {/* </span> */}
+                                              </button>
+                                            ) : (
+                                              ""
+                                            )}
+                                          </td>
+                                        )}
+                                        <td>
+                                          <button
+                                            className={`tableButton ms-0`}
+                                            onClick={() =>
+                                              setSelectedCdr(item.id)
+                                            }
+                                          >
+                                            <Tippy content={"View Note"}>
+                                              <i className="fa-solid fa-comment-dots"></i>
+                                            </Tippy>
+                                          </button>
+                                        </td>
+                                        <td>
+                                          {item["recording_path"] &&
+                                            item["variable_billsec"] > 0 && (
+                                              <button
+                                                className={`tableButton delete ms-0`}
+                                                onClick={() =>
+                                                  handleDeleteCallRecording(
+                                                    item.id
+                                                  )
+                                                }
                                               >
-                                                <i className="fa-solid fa-comment-dots"></i>
-                                              </Tippy>
-                                            </button>
-                                          </td>
-                                          <td>
-                                            {item["recording_path"] &&
-                                              item["variable_billsec"] > 0 && (
-                                                <button className={`tableButton delete ms-0`} onClick={() => handleDeleteCallRecording(item.id)}>
-                                                  <Tippy content={'Delete Recording'}
-                                                  >
-                                                    <i className="fa-solid fa-trash"></i>
-                                                  </Tippy>
-                                                </button>
-                                              )}
-                                          </td>
-                                        </tr>
-                                        {/* {currentPlaying ===
+                                                <Tippy
+                                                  content={"Delete Recording"}
+                                                >
+                                                  <i className="fa-solid fa-trash"></i>
+                                                </Tippy>
+                                              </button>
+                                            )}
+                                        </td>
+                                      </tr>
+                                      {/* {currentPlaying ===
                                       item["recording_path"] &&
                                       item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2"> */}
-                                        {/* <audio
+                                      {/* <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
                                                 autoPlay={true}
@@ -1499,8 +1647,8 @@ function CdrReport({ page }) {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                        {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
-                                        {/* <button
+                                      {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
+                                      {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
@@ -1510,29 +1658,34 @@ function CdrReport({ page }) {
                                               >
                                                 <i className="fa-sharp fa-solid fa-download" />
                                               </button> */}
-                                        {/* <button className="audioCustomButton ms-1">
+                                      {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                        {/* </div>
+                                      {/* </div>
                                           </td>
                                         </tr>
                                       )} */}
-                                        {currentPlaying ===
-                                          item["recording_path"] &&
-                                          item["recording_path"] && (
-                                            <tr>
-                                              <td colSpan={99}>
-                                                <div className="audio-container mx-2">
-                                                  <AudioWaveformCommon audioUrl={audioURL} peaksData={JSON.parse(item?.peak_json)} />
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          )}
-                                      </>
-                                    );
-                                  })}
-                              </>
-                            )}
+                                      {currentPlaying ===
+                                        item["recording_path"] &&
+                                        item["recording_path"] && (
+                                          <tr>
+                                            <td colSpan={99}>
+                                              <div className="audio-container mx-2">
+                                                <AudioWaveformCommon
+                                                  audioUrl={audioURL}
+                                                  peaksData={JSON.parse(
+                                                    item?.peak_json
+                                                  )}
+                                                />
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )}
+                                    </>
+                                  );
+                                })}
+                            </>
+                          )}
 
                           {!loading && cdr && cdr.data?.length === 0 ? (
                             <td colSpan={99}>
@@ -1542,7 +1695,8 @@ function CdrReport({ page }) {
                             ""
                           )}
                         </tbody>
-                      </table>}
+                      </table>
+                    )}
                   </div>
                   <div className="tableHeader mb-3">
                     {!loading && cdr && cdr.data?.length > 0 ? (
@@ -1616,13 +1770,13 @@ function CdrReport({ page }) {
       ) : (
         ""
       )}
-      {selectedCdr !== "" &&
+      {selectedCdr !== "" && (
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
           showCdrReport={showCdrReport}
         />
-      }
+      )}
       <ModalComponent task={"delete"} reference={"cdr recording"} />
     </main>
   );
