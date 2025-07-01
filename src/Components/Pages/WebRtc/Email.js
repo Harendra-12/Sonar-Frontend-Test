@@ -156,25 +156,26 @@ function Email({ selectedMail, }) {
     if (result?.status) {
       setLabelLoader(false)
       setAllCategory(result?.data);
+      // setSelectedFromMailAddressId(id)
       if (isInitial) {
-        const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
-        if (isCategoryExistInAnotherCagetory) {
-          fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId);
+        const isInboxCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == "inbox"?.toLocaleLowerCase())
+        if (isInboxCategoryExistInAnotherCagetory) {
+          fetchAllMail(isInboxCategoryExistInAnotherCagetory?.value, true, "", id);
         } else {
-          fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
+          fetchAllMail(result?.data[0]?.value, true, "", id);
         }
       } else {
-        fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId);
+        fetchAllMail(activeCategory?.value, false, "", id);
       }
 
       if (activeCategory && !isInitial) {
         setActiveCategory(activeCategory)
         setActiveList(activeCategory?.label)
       } else {
-        const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
-        if (isCategoryExistInAnotherCagetory) {
-          setActiveCategory(activeCategory)
-          setActiveList(activeCategory?.label)
+        const isInboxCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == "inbox")
+        if (isInboxCategoryExistInAnotherCagetory) {
+          setActiveCategory(isInboxCategoryExistInAnotherCagetory)
+          setActiveList(isInboxCategoryExistInAnotherCagetory?.label)
         } else {
           setActiveCategory(result?.data[0])
           setActiveList(result?.data[0]?.label)
@@ -230,7 +231,6 @@ function Email({ selectedMail, }) {
     setLoading(true)
     const result = await generalPostFunction(api_url?.EMAIL_STATUS, payload);
     if (result?.status) {
-      // fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId)
       fetchMailCategory(false, selectedFromMailAddressId, false)
       setCheckedMail([])
       if (shouldToast)
@@ -279,11 +279,13 @@ function Email({ selectedMail, }) {
   };
 
   // all useEffect stuff start here ===============
+  // intial use effect 
   useEffect(() => {
     const shouldLoad = true;
     fetchData(shouldLoad);
   }, []);
-
+  
+  // whenever email type will change
   useEffect(() => {
     const shouldLoad = true;
     if (availableFromMailAddresses?.length > 0) {
@@ -297,53 +299,11 @@ function Email({ selectedMail, }) {
     }
   }, [availableFromMailAddresses])
 
+  // to handle pagination
   useEffect(() => {
     if (activeCategory)
       fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
   }, [pageNumber, entriesPerPage, debouncedSearchTerm]);
-
-  // Add a new useEffect to handle initial data load
-  // useEffect(() => {
-  //   // Only fetch mails if we're in list view mode and not returning from mail reply
-  //   if (showMailList && !mailReplay) {
-  //     // Check if we need to fetch data based on active tab and existing data
-  //     const shouldFetch = (() => {
-  //       switch (activeList) {
-  //         case "inbox":
-  //           return !allMails?.emails?.length;
-  //         case "sent":
-  //           return !allSendMails?.emails?.length;
-  //         case "starred":
-  //           return !allStarredMails?.emails?.length;
-  //         case "deleted":
-  //           return !allTrashedMails?.emails?.length;
-  //         default:
-  //           return true;
-  //       }
-  //     })();
-
-  //     if (shouldFetch) {
-  //       // Fetch mails based on active tab
-  //       if (activeList === "inbox") {
-  //         // fetchAllMail();
-  //       } else if (activeList === "sent") {
-  //         fetchSendMail();
-  //       } else if (activeList === "starred") {
-  //         fetchStarredMail();
-  //       } else if (activeList === "deleted") {
-  //         fetchTrashedMail();
-  //       }
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeList, showMailList, mailReplay]);
-
-  // const handleRefreshBtnClicked = () => {
-  //   setRefreshState(true);
-  //   const shouldLoad = false;
-  //   fetchData(shouldLoad);
-  // };
-
   // all useEffect stuff end here ================
 
   const handleListingClick = (category) => {
@@ -560,11 +520,14 @@ function Email({ selectedMail, }) {
     reset("")
   };
 
+  // handling mail category change like email or yahoo
   const handleMailFromAddressChange = (event) => {
     const shouldLoad = true;
     fetchMailCategory(shouldLoad, event?.target?.value, true)
     // fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
+    setMailReplay(false)
+    setShowMailList(true)
   }
 
   return (
@@ -887,7 +850,7 @@ function Email({ selectedMail, }) {
                               activeList={activeList}
                               activeCategory={activeCategory}
                               handleMailDelete={handleMailDelete}
-                              loading={loading}
+                              loading={allMailLoading}
                               downloadAllAtachment={downloadAllAtachment}
                               loadingForDownloadAtachment={loadingForDownloadAtachment}
                             />

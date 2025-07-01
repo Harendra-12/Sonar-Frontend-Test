@@ -72,6 +72,7 @@ function CdrFilterReport({ page }) {
   const [hangupStatus, setHangupStatus] = useState([]);
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
+  console.log(startDateFlag)
   const [timeFlag, setTimeFlag] = useState({
     startTime: "",
     endTime: "",
@@ -169,14 +170,12 @@ function CdrFilterReport({ page }) {
   }, [selectedCdrFilter]);
 
   useEffect(() => {
-    if (filterBy === "date" && startDateFlag !== "") {
+    if (filterBy === "date" ) {
       setCreatedAt(startDateFlag);
       setStartDate("");
       setEndDate("");
     } else if (
-      filterBy === "date_range" &&
-      endDateFlag !== "" &&
-      startDateFlag !== ""
+      filterBy === "date_range"
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);
@@ -795,7 +794,7 @@ function CdrFilterReport({ page }) {
       //     });
       // } else {
       //   toast.error("Please enter some data to search");
-      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { querry: advanceSearch });
+      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { query: advanceSearch });
       if (res?.statue) {
         console.log("Response", res);
       } else {
