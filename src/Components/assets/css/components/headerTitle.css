@@ -195,6 +195,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: capitalize;
 }
 
 .profilePhotoAddIcon {
@@ -244,4 +245,20 @@
   right: -7px;
   height: 20px;
   width: 20px;
+}
+.dorpInfo{
+  border-bottom: 1px solid #475177;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-radius: 0 !important;
+}
+.dorpInfo .fa-wallet{
+  color: var(--ui-accent);
+}
+.dorpInfo .balanceText{
+  color: #00ceff;
 }

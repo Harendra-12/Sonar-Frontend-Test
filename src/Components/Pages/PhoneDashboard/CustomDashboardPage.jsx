@@ -344,7 +344,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                                 <div className="col-3 numberActive_box">
 
                                                                                     <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
-                                                                                        {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                        {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                         {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
@@ -375,7 +375,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                                 <div className="col-3 numberActive_box">
 
                                                                                     <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700, }}>
-                                                                                        {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                        {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                     </h4>
                                                                                     <p>Missed</p>
                                                                                     {/* <img className=" " src={require('../../assets/images/missed.png')} alt='logout' /> */}

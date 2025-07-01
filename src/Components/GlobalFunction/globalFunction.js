@@ -8,7 +8,7 @@ const token = localStorage.getItem("token");
 
 const aiBaseName = process.env.REACT_APP_AI_BASE_URL;
 const awsBaseUrl = process.env.REACT_APP_AWS_BASE_URL;
-const meetBaseUrl = process.env.REACT_APP_MEETING_BASE_URL
+const meetBaseUrl = process.env.REACT_APP_MEETING_BASE_URL;
 // const aiToken = "key_a083999b0156a43721cc1b5942a1"; // bip key
 const aiToken = "key_f3f8d64a285120a16182f6add20d"; // prod key
 
@@ -36,7 +36,6 @@ const meetAxiosInstance = axios.create({
   },
 });
 
-
 // AI General Get function
 export const aiGeneralGetFunction = async (endpoint) => {
   try {
@@ -44,7 +43,7 @@ export const aiGeneralGetFunction = async (endpoint) => {
     return response.data;
   } catch (error) {
     // console.error("Error: ", error);
-    return error.response.data;
+    return error.response?.data;
   }
 };
 // AI General Post function
@@ -84,7 +83,7 @@ export const awsGeneralGetFunction = async (endpoint) => {
     const response = await awsAxiosInstance.get(endpoint);
     return response;
   } catch (error) {
-    return error
+    return error;
   }
 };
 // Aws General Post function
@@ -121,7 +120,7 @@ export const meetGeneralGetFunction = async (endpoint) => {
     const response = await meetAxiosInstance.get(endpoint);
     return response;
   } catch (error) {
-    return error
+    return error;
   }
 };
 // meet General Post function
@@ -230,7 +229,7 @@ export async function generalGetFunction(endpoint) {
           sessionExpiredToastShown = true;
           toast.error(
             err?.response?.data?.message ||
-            "Session expired. Please login again."
+              "Session expired. Please login again."
           );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
@@ -862,9 +861,8 @@ export function formatTimeInHHMMSS(time) {
     dateObj?.setMilliseconds(0);
     return dateObj?.toTimeString()?.slice(0, 8);
   } else {
-    return ""
+    return "";
   }
-
 }
 
 export const useDebounce = (value, delay) => {
@@ -988,7 +986,7 @@ export function convertDateTimeLocalToIST(dateTimeString) {
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
-    timeZone: "Asia/Kolkata"
+    timeZone: "Asia/Kolkata",
   };
 
   const istString = localDate.toLocaleString("en-GB", options);
@@ -1012,7 +1010,7 @@ export function convertDateToIST(dateString) {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    timeZone: "Asia/Kolkata"
+    timeZone: "Asia/Kolkata",
   };
 
   return utcDate.toLocaleDateString("en-CA", options); // en-CA gives YYYY-MM-DD

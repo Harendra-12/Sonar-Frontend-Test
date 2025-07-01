@@ -16,7 +16,11 @@
     font-weight: 300;
     color: var(--immortalBlack);
     background: none;
-    right: 10px;
+    top: 13px;
+}
+.activeCallstag .accordion-button::after {
+    right: 0;
+    top: 0;
 }
 
 .accordion-button:focus {
