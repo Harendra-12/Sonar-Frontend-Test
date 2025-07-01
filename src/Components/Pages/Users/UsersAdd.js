@@ -25,6 +25,9 @@ import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 const UsersAdd = () => {
+  const pratima = null;
+  console.log(pratima.length);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
