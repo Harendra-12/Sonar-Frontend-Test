@@ -373,7 +373,7 @@ const AiKnowledgeBase = () => {
                                           setActiveFile(item);
                                         }}
                                       >
-                                        <p className="mb-0">
+                                        <p className="mb-0 ellipsisText300 f-s-14">
                                           <i
                                             className="fa-duotone fa-solid fa-folder-open me-2"
                                             style={{

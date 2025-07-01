@@ -72,6 +72,7 @@ function CdrFilterReport({ page }) {
   const [hangupStatus, setHangupStatus] = useState([]);
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
+  console.log(startDateFlag)
   const [timeFlag, setTimeFlag] = useState({
     startTime: "",
     endTime: "",
@@ -169,14 +170,12 @@ function CdrFilterReport({ page }) {
   }, [selectedCdrFilter]);
 
   useEffect(() => {
-    if (filterBy === "date" && startDateFlag !== "") {
+    if (filterBy === "date" ) {
       setCreatedAt(startDateFlag);
       setStartDate("");
       setEndDate("");
     } else if (
-      filterBy === "date_range" &&
-      endDateFlag !== "" &&
-      startDateFlag !== ""
+      filterBy === "date_range"
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);

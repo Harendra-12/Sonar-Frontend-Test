@@ -156,15 +156,16 @@ function Email({ selectedMail, }) {
     if (result?.status) {
       setLabelLoader(false)
       setAllCategory(result?.data);
+      setSelectedFromMailAddressId(id)
       if (isInitial) {
         const isCategoryExistInAnotherCagetory = result?.data?.find((item) => item?.label?.toLocaleLowerCase() == activeCategory?.label?.toLocaleLowerCase())
         if (isCategoryExistInAnotherCagetory) {
-          fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId);
+          fetchAllMail(activeCategory?.value, true, "", id);
         } else {
           fetchAllMail(result?.data[0]?.value, true, "", availableFromMailAddresses[0]?.id);
         }
       } else {
-        fetchAllMail(activeCategory?.value, false, "", selectedFromMailAddressId);
+        fetchAllMail(activeCategory?.value, false, "", id);
       }
 
       if (activeCategory && !isInitial) {
@@ -289,18 +290,18 @@ function Email({ selectedMail, }) {
     if (availableFromMailAddresses?.length > 0) {
       if (!selectedFromMailAddressId) {
         fetchMailCategory(shouldLoad, availableFromMailAddresses[0]?.id, true)
-        setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
+        // setSelectedFromMailAddressId(availableFromMailAddresses[0]?.id)
       } else {
         fetchMailCategory(false, selectedFromMailAddressId, false)
-        setSelectedFromMailAddressId(selectedFromMailAddressId)
+        // setSelectedFromMailAddressId(selectedFromMailAddressId)
       }
     }
   }, [availableFromMailAddresses])
 
-  useEffect(() => {
-    if (activeCategory)
-      fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
-  }, [pageNumber, entriesPerPage, debouncedSearchTerm]);
+  // useEffect(() => {
+  //   if (activeCategory)
+  //     fetchAllMail(activeCategory?.value, true, "", selectedFromMailAddressId)
+  // }, [activeCategory]);
 
   // Add a new useEffect to handle initial data load
   // useEffect(() => {
@@ -564,7 +565,7 @@ function Email({ selectedMail, }) {
     const shouldLoad = true;
     fetchMailCategory(shouldLoad, event?.target?.value, true)
     // fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
-    setSelectedFromMailAddressId(event?.target?.value)
+    // setSelectedFromMailAddressId(event?.target?.value)
   }
 
   return (
@@ -782,7 +783,8 @@ function Email({ selectedMail, }) {
                                         {category?.label}
                                       </p>
                                       <div className="">
-                                        <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span>
+                                        <span className="fs-10 badge badge-soft-secondary rounded-pill" >{category?.unseenMessages}</span>
+                                        {/* <span className="fs-10" >{category?.unseenMessages}/{category?.totalMessages}</span> */}
                                       </div>
                                     </button>
                                   </li>)
