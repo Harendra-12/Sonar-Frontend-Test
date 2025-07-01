@@ -794,7 +794,7 @@ function CdrFilterReport({ page }) {
       //     });
       // } else {
       //   toast.error("Please enter some data to search");
-      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { querry: advanceSearch });
+      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { query: advanceSearch });
       if (res?.statue) {
         console.log("Response", res);
       } else {
