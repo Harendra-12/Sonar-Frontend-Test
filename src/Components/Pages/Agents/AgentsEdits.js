@@ -21,7 +21,7 @@ function AgentsEdits() {
           <div className="container-fluid px-0">
             <Header title="Agents" />
           </div>
-          <div className="col-xl-12" style={{ overflow: "auto" }}>
+          {/* <div className="col-xl-12" > */}
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -150,7 +150,7 @@ function AgentsEdits() {
                 </div>
               </div>
             </div>
-          </div>
+          {/* </div> */}
         </section>
       </main>
     </>

@@ -82,6 +82,10 @@
     .smBlock {
         display: block !important;
     }
+
+    .clickToCall .clickToCallModule {
+        width: 100%;
+    }
 }
 
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
@@ -444,9 +448,9 @@
         padding: 0 !important;
     }
 
-    .formItem {
+    /* .formItem {
         padding-right: 0;
-    }
+    } */
 
     .circularLoader {
         width: 100vw;
@@ -614,6 +618,31 @@
     .lk-settings-menu-modal {
         min-width: 90vw;
     }
+
+    /* ---active calls */
+
+    .leftPanel {
+        flex: 1;
+        /* overflow: auto; */
+    }
+
+    .responsivePAnel {
+        display: block !important;
+    }
+
+    .responsivePAnel .clearButton2.z-2 {
+        display: none !important;
+    }
+
+    .rightPanel .resBottom {
+        flex-wrap: wrap;
+    }
+
+    .tawk-wizard-chat-form {
+        /* max-width: 800px !important; */
+        margin-top: 0 !important;
+        padding: 0 13px 30px !important;
+    }
 }
 
 @media (max-width: 767px) {
@@ -650,7 +679,14 @@
     .sin-testiImage {
         width: 124px;
         height: 124px;
+    }
 
+    .badgeGroup {
+        justify-content: flex-start;
+    }
+
+    .clickToCall .clickToCallModule {
+        width: 100%;
     }
 }
 
@@ -664,5 +700,25 @@
     } */
     .overviewTableWrapper .heading {
         flex-wrap: wrap;
+    }
+
+    #detailsHeader h4 {
+        font-size: 1rem !important;
+    }
+
+    .headingExtraInfo .ms-auto {
+        margin-left: unset !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .clickToCall .clickToCallModule .clickToCallHeader .wrapper {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .clickToCall .clickToCallModule .clickToCallHeader {
+        padding: 15px 12px;
+        text-align: center;
     }
 }

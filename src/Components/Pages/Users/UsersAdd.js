@@ -25,6 +25,9 @@ import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import { PermissionConfigTable } from "../../CommonComponents/PermissionConfigForUser";
 const UsersAdd = () => {
+  const pratima = null;
+  console.log(pratima.length);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
@@ -1021,7 +1024,7 @@ const UsersAdd = () => {
           <div className="popup music">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <div className="card px-0 col-xl-4 col-md-6">
+                <div className="card px-0 col-xl-4 col-md-6 col-11">
                   <div className="header">
                     <h5 className="card-title fs14 border-bootm fw700">
                       Upload Profile Picture

@@ -713,7 +713,7 @@ const DidConfig = () => {
                               Select the status of Sticky Agent
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-12">
                             <div className="row gx-2">
                               <div
                                 className={`col-${watch().sticky_agent_enable == "true" ||

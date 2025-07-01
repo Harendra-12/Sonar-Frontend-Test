@@ -1077,3 +1077,10 @@
 .knowledgeDetails .itemWrapper .heading{
   height: auto;
 }
+.badgeGroup{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-end;
+}
