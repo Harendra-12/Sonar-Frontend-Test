@@ -61,7 +61,7 @@ const AddMusic = ({
       {loading && <CircularLoader />}
       <div className="container h-100">
         <div className="row h-100 justify-content-center align-items-center">
-          <div className="card px-0 col-xl-6 col-md-7 col-sm-9">
+          <div className="card px-0 col-xl-6 col-md-7 col-sm-9 col-11">
             <div className="header">
               <h5 className="card-title fs14 border-bootm fw700">
                 Upload Documents

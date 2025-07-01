@@ -90,13 +90,13 @@ const CallQueueDetails = () => {
         <div className="overviewTableChild">
           <div className="d-flex flex-wrap">
             <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnes" aria-expanded="true" aria-controls="collapseOnes">
-              <div className="heading col-12">
-                <div className="content col-xxl-6 col-xl-5">
+              <div className="row p-3 w-100">
+                <div className="content col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                   <h4>Call Queue</h4>
                   <p>You can see a brief analysis of all the call queues</p>
                 </div>
-                <div className="d-flex col gap-2">
-                  <div className="col-6">
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
+                  <div className="badgeGroup">
                     <div className="headingExtraInfo">
                       <div className="ms-auto">
                         <span className="badge badge-soft-primary rounded-pill"
@@ -107,7 +107,7 @@ const CallQueueDetails = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="headingExtraInfo mt-1">
+                    <div className="headingExtraInfo ">
                       <div className="ms-auto">
                         <span className="badge badge-soft-danger rounded-pill"
                           style={{ minWidth: '7vw', }}>
@@ -121,8 +121,8 @@ const CallQueueDetails = () => {
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-6">
+                  {/* </div> */}
+                  {/* <div className="col-6"> */}
                     <div className="headingExtraInfo">
                       <div className="me-auto">
                         <span className="badge badge-soft-success rounded-pill "
@@ -137,7 +137,7 @@ const CallQueueDetails = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="headingExtraInfo mt-1">
+                    <div className="headingExtraInfo ">
                       <div className="me-auto">
                         <span className="badge badge-soft-secondary rounded-pill"
                           style={{ minWidth: '7vw', }}>
