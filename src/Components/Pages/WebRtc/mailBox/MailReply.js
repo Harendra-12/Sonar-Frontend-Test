@@ -157,11 +157,11 @@ const MailReply = ({
                     <ul className="dropdown-menu light">
                       {/* {
                                             item.is_admin ? */}
-                      <li className="mailList_menu">
+                      {/* <li className="mailList_menu">
                         <button className="dropdown-item">
                           <i class="fa-duotone fa-light fa-star me-2"></i> Starred
                         </button>
-                      </li>
+                      </li> */}
 
                       <li className="mailList_menu">
                         <button
@@ -169,7 +169,7 @@ const MailReply = ({
                           onClick={() => handleMailDelete(currentMail)}
                         >
                           <i class="fa-duotone fa-solid fa-trash me-2 "></i>{" "}
-                          Deleted
+                          Delete
                         </button>
                       </li>
                     </ul>
@@ -190,7 +190,7 @@ const MailReply = ({
                 </div>
               </div>
 
-              <div class="main-mail-content mb-4 mt-5" style={{fontSize: "0.9rem "}}>
+              <div class="main-mail-content mb-4 mt-5" style={{ fontSize: "0.9rem " }}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHTML(currentMail?.rawData),
