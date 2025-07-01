@@ -109,7 +109,7 @@ const WebrtcWrapper = () => {
   const [calling, setCalling] = useState(false);
   const [meetingPage, setMeetingPage] = useState();
   const [toUser, setToUser] = useState(null);
-  const [internalCaller, setInternalCaller] = useState(account.id);
+  const [internalCaller, setInternalCaller] = useState(account?.id);
   const [isConferenceCall, setIsConferenceCall] = useState(false);
   const [isConferenceAdmin, setIsConferenceAdmin] = useState(false);
   const [conferenceInfo, setConferenceInfo] = useState([]);
@@ -212,6 +212,7 @@ const WebrtcWrapper = () => {
       connectWebSocket();
     }, [options.webSocketServer]);
   };
+
   let globalUserAgent = null; // Global reference
   const options = {
     domain: account?.domain?.domain_name,
@@ -257,6 +258,15 @@ const WebrtcWrapper = () => {
         setIsVideoOn(false);
       });
   };
+
+  const callSocketForMeetingRoomNotification = () => {
+    const socket = new WebSocket(`wss://testing.webvio.in:8084/ws?user_id=${account?.id}`);
+    socket.addEventListener('message', (data) => {
+      console.log('WebSocket connection opened cccccccccc', data);
+    });
+  }
+
+  callSocketForMeetingRoomNotification()
 
   useEffect(() => {
     checkMicrophoneStatus(); // Check mic status when component mounts
