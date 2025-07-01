@@ -95,7 +95,7 @@ function Messages({
   const [activeTab, setActiveTab] = useState("all");
   // const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
-  const [originalOnlineUser, setOriginalOnlineUser] = useState([])
+  const [originalOnlineUser, setOriginalOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [addNewTag, setAddNewTag] = useState(false);
@@ -114,11 +114,11 @@ function Messages({
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [originalGroupsList, setOriginalGroupsList] = useState([])
+  const [originalGroupsList, setOriginalGroupsList] = useState([]);
   const [groupRefresh, setGroupRefresh] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchValueForMessage, setSearchValueForMessage] = useState("")
-  const [searchValueForGroup, setSearchValueForGroup] = useState("")
+  const [searchValueForMessage, setSearchValueForMessage] = useState("");
+  const [searchValueForGroup, setSearchValueForGroup] = useState("");
   const [allAgents, setAllAgents] = useState([]);
   const [agent, setAgent] = useState([]);
   const [groupname, setGroupName] = useState("");
@@ -153,8 +153,9 @@ function Messages({
   const [filteredTags, setFilteredTags] = useState();
   const [tagFilterInput, setTagFilterInput] = useState("");
   const [internalCallHistory, setInternalCallHistory] = useState([]);
-  const [origInalinternalCallHistory, setOriginalInternalCallHistory] = useState([])
-  const [rawInternalCallHistory, setRawInternalCallHistory] = useState([])
+  const [origInalinternalCallHistory, setOriginalInternalCallHistory] =
+    useState([]);
+  const [rawInternalCallHistory, setRawInternalCallHistory] = useState([]);
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
@@ -178,7 +179,7 @@ function Messages({
   const handleEmojiClick = (emojiData) => {
     setMessageInput((prev) => ({
       ...prev,
-      [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji
+      [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji,
     }));
   };
   const {
@@ -284,14 +285,14 @@ function Messages({
           ...data?.last_message_data,
           message_text:
             checkMessageType(data?.last_message_data?.message_text) ===
-              "text/plain"
+            "text/plain"
               ? data?.last_message_data?.message_text
               : checkMessageType(data?.last_message_data?.message_text),
         },
       }));
 
       setContact(updatedFilteredData);
-      setOriginalContact(updatedFilteredData)
+      setOriginalContact(updatedFilteredData);
       // ENABLE THIS TO SELECT CHAT ON PAGE LOAD
       // if (!extensionFromCdrMessage) {
       //   const profile_img = allAgents?.find(
@@ -429,7 +430,7 @@ function Messages({
         if (
           chatHistory[recipient?.[0]]?.total &&
           chatHistory[recipient?.[0]].pageNumber * 40 <
-          chatHistory[recipient?.[0]].total
+            chatHistory[recipient?.[0]].total
         ) {
           getData(chatHistory[recipient?.[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
@@ -546,16 +547,14 @@ function Messages({
       newContact?.splice(contactIndex, 1);
       newContact.unshift(contact[contactIndex]);
       setContact(newContact);
-      setOriginalContact(newContact)
+      setOriginalContact(newContact);
     }
     setActiveTab("all");
 
     const extensionExists = contact.some(
       (contact) => contact.extension === recipient?.[0]
     );
-    const agentDetails = agents.find(
-      (agent) => agent.id === recipient?.[1]
-    );
+    const agentDetails = agents.find((agent) => agent.id === recipient?.[1]);
 
     if (!extensionExists) {
       contact.unshift({
@@ -662,151 +661,61 @@ function Messages({
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
-  useEffect(async () => {
-    if (incomingMessage) {
+  useEffect(() => {
+    let isMounted = true; // Track if component is mounted
 
-      const from = incomingMessage?.sender_id;
-      const body = incomingMessage?.message_text;
+    async function handleIncomingMessage() {
+      if (incomingMessage) {
+        const from = incomingMessage?.sender_id;
+        const body = incomingMessage?.message_text;
 
-      if (from === recipient?.[1] && autoReply) {
-        setAiProcessing(true);
-        setMessageInput((prev) => ({
-          ...prev,
-          [recipient[0]]: "Generating Ai response..."
-        }));
-        // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
-
-        //   if (res.data) {
-        //     setMessageInput((prev) => ({
-        //       ...prev,
-        //       [recipient[0]]: res.data.reply
-        //     }));
-        //     setAiProcessing(false);
-        //   }
-        // }).catch((err) => {
-
-        //   console.log(err);
-        //   setMessageInput("");
-        // })
-        const res = await awsGeneralPostFunction(api_url?.AI_REPLY, { message: body, user_id: account.id })
-        if (res?.status) {
-          if (res?.data) {
+        if (from === recipient?.[1] && autoReply) {
+          if (isMounted) setAiProcessing(true);
+          if (isMounted)
             setMessageInput((prev) => ({
               ...prev,
-              [recipient[0]]: res.data.reply
+              [recipient[0]]: "Generating Ai response...",
             }));
-            setAiProcessing(false);
+          // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-reply", { message: body, user_id: account.id }).then((res) => {
+
+          //   if (res.data) {
+          //     setMessageInput((prev) => ({
+          //       ...prev,
+          //       [recipient[0]]: res.data.reply
+          //     }));
+          //     setAiProcessing(false);
+          //   }
+          // }).catch((err) => {
+
+          //   console.log(err);
+          //   setMessageInput("");
+          // })
+          const res = await awsGeneralPostFunction(api_url?.AI_REPLY, {
+            message: body,
+            user_id: account.id,
+          });
+          if (res?.status) {
+            if (res?.data) {
+              setMessageInput((prev) => ({
+                ...prev,
+                [recipient[0]]: res.data.reply,
+              }));
+              setAiProcessing(false);
+            }
+          } else {
+            console.log(res?.err);
+            setMessageInput("");
           }
-        } else {
-          console.log(res?.err);
-          setMessageInput("");
-        }
-      }
-
-      setIsFreeSwitchMessage(true);
-      const extensionExists = contact.some((contact) => contact?.id === from);
-      const agentDetails = agents.find((agent) => agent?.id === from);
-
-      const time = formatDateTime(new Date());
-
-      const contactIndex = contact.findIndex(
-        (contact) => contact.id === agentDetails?.id
-      );
-      if (contactIndex !== -1) {
-        const newContact = [...contact];
-        newContact[contactIndex].last_message_data.message_text = body;
-        newContact[contactIndex].last_message_data.created_at = time;
-        setContact(newContact);
-        setOriginalContact(newContact)
-      }
-      if (!extensionExists) {
-        contact.unshift({
-          name: agentDetails?.username,
-          email: agentDetails?.email,
-          id: agentDetails?.id,
-          extension_id: agentDetails?.extension_id,
-          extension: from,
-          last_message_data: { message_text: body, created_at: time },
-        });
-      } else {
-        // Move the extension object to the beginning of the array
-        const index = contact.findIndex((contact) => contact?.id === from);
-        const extensionObject = contact.splice(index, 1)[0];
-        contact.unshift(extensionObject);
-        const newContact = [...contact];
-        newContact[index].last_message_data.message_text = body;
-        newContact[index].last_message_data.created_at = time;
-        setContact(newContact);
-        setOriginalContact(newContact)
-      }
-      // Check Content-Type for the incoming message
-      const contentType = incomingMessage?.message_type;
-
-      // Get the current time when the message is received
-      // Or use .toISOString() for UTC format
-
-      // Check if the content is an image
-
-      const audio = new Audio(
-        require("../../assets/music/message-notification.mp3")
-      );
-      if (contentType == "image") {
-        // If it's an image, create a URL for the Base64 image to render it in <img>
-        // const imageUrl = `${body}`;
-
-        // Update the state to include the image
-        setAllMessage((prevState) => ({
-          ...prevState,
-          [from]: [
-            ...(prevState[from] || []),
-            {
-              from,
-              body,
-              time,
-              user_id: agentDetails?.id,
-              user_name: agentDetails?.username,
-              profile_picture: agentDetails?.profile_picture,
-              message_type: contentType,
-            },
-          ],
-        }));
-
-        // Add number of unread messaeg based on extension
-        setUnreadMessage((prevState) => ({
-          ...prevState,
-          [from]: (prevState[from] || 0) + 1,
-        }));
-      } else {
-        // If it's a text message or other type, render as text
-        setAllMessage((prevState) => ({
-          ...prevState,
-          [from]: [
-            ...(prevState[from] || []),
-            {
-              from,
-              body,
-              time,
-              user_id: agentDetails?.id,
-              user_name: agentDetails?.name,
-              profile_picture: agentDetails?.profile_picture,
-              message_type: contentType,
-            },
-          ],
-        }));
-
-        // Play music when message is received
-
-        if (recipient?.[0] !== from) {
-          setUnreadMessage((prevState) => ({
-            ...prevState,
-            [from]: (prevState[from] || 0) + 1,
-          }));
-          audio.play();
         }
 
-        // Update contact last message
+        setIsFreeSwitchMessage(true);
+        const extensionExists = contact.some((contact) => contact?.id === from);
+        const agentDetails = agents.find((agent) => agent?.id === from);
+
+        const time = formatDateTime(new Date());
+
         const contactIndex = contact.findIndex(
-          (contact) => contact.extension === recipient?.[0]
+          (contact) => contact.id === agentDetails?.id
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
@@ -815,21 +724,127 @@ function Messages({
           setContact(newContact);
           setOriginalContact(newContact);
         }
-      }
+        if (!extensionExists) {
+          contact.unshift({
+            name: agentDetails?.username,
+            email: agentDetails?.email,
+            id: agentDetails?.id,
+            extension_id: agentDetails?.extension_id,
+            extension: from,
+            last_message_data: { message_text: body, created_at: time },
+          });
+        } else {
+          // Move the extension object to the beginning of the array
+          const index = contact.findIndex((contact) => contact?.id === from);
+          const extensionObject = contact.splice(index, 1)[0];
+          contact.unshift(extensionObject);
+          const newContact = [...contact];
+          newContact[index].last_message_data.message_text = body;
+          newContact[index].last_message_data.created_at = time;
+          setContact(newContact);
+          setOriginalContact(newContact);
+        }
+        // Check Content-Type for the incoming message
+        const contentType = incomingMessage?.message_type;
 
-      if (recipient?.length > 0) {
-        setUnreadMessage((prevState) => {
-          const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
-            prevState;
-          return newState;
-        });
-        dispatch({
-          type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-          recipient: [...recipient]
-        })
-      }
+        // Get the current time when the message is received
+        // Or use .toISOString() for UTC format
 
+        // Check if the content is an image
+
+        const audio = new Audio(
+          require("../../assets/music/message-notification.mp3")
+        );
+        if (contentType == "image") {
+          // If it's an image, create a URL for the Base64 image to render it in <img>
+          // const imageUrl = `${body}`;
+
+          // Update the state to include the image
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [from]: [
+              ...(prevState[from] || []),
+              {
+                from,
+                body,
+                time,
+                user_id: agentDetails?.id,
+                user_name: agentDetails?.username,
+                profile_picture: agentDetails?.profile_picture,
+                message_type: contentType,
+              },
+            ],
+          }));
+
+          // Add number of unread messaeg based on extension
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+        } else {
+          // If it's a text message or other type, render as text
+          setAllMessage((prevState) => ({
+            ...prevState,
+            [from]: [
+              ...(prevState[from] || []),
+              {
+                from,
+                body,
+                time,
+                user_id: agentDetails?.id,
+                user_name: agentDetails?.name,
+                profile_picture: agentDetails?.profile_picture,
+                message_type: contentType,
+              },
+            ],
+          }));
+
+          // Play music when message is received
+
+          if (recipient?.[0] !== from) {
+            setUnreadMessage((prevState) => ({
+              ...prevState,
+              [from]: (prevState[from] || 0) + 1,
+            }));
+            audio.play();
+          }
+
+          // Update contact last message
+          const contactIndex = contact.findIndex(
+            (contact) => contact.extension === recipient?.[0]
+          );
+          if (contactIndex !== -1) {
+            const newContact = [...contact];
+            newContact[contactIndex].last_message_data.message_text = body;
+            newContact[contactIndex].last_message_data.created_at = time;
+            setContact(newContact);
+            setOriginalContact(newContact);
+          }
+        }
+
+        if (recipient?.length > 0) {
+          setUnreadMessage((prevState) => {
+            const {
+              [recipient?.[2] == "singleChat"
+                ? recipient?.[1]
+                : recipient?.[0]]: _,
+              ...newState
+            } = prevState;
+            return newState;
+          });
+          dispatch({
+            type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+            recipient: [...recipient],
+          });
+        }
+      }
     }
+
+    handleIncomingMessage();
+
+    return () => {
+      isMounted = false; // Cleanup: mark as unmounted
+    };
   }, [incomingMessage]);
 
   // ===========================================================
@@ -1002,11 +1017,11 @@ function Messages({
         .filter((user) => user !== undefined);
       if (updatedOnlineUsers?.length !== originalOnlineUser?.length) {
         setOnlineUser(updatedOnlineUsers);
-        setOriginalOnlineUser(updatedOnlineUsers)
+        setOriginalOnlineUser(updatedOnlineUsers);
       }
     } else {
       setOnlineUser([]);
-      setOriginalOnlineUser([])
+      setOriginalOnlineUser([]);
     }
   }, [loginUser]);
 
@@ -1062,13 +1077,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
                   },
-                  optional: [{ facingMode: "user" }],
-                },
           },
         }
       );
@@ -1135,8 +1150,6 @@ function Messages({
     }
   }
 
-
-
   // Filter out the user from selcted group
   useEffect(() => {
     // ===========
@@ -1162,7 +1175,7 @@ function Messages({
             ...data?.last_message_data,
             message_text:
               checkMessageType(data?.last_message_data?.message_text) ===
-                "text/plain"
+              "text/plain"
                 ? data?.last_message_data?.message_text
                 : checkMessageType(data?.last_message_data?.message_text),
           },
@@ -1209,7 +1222,7 @@ function Messages({
     //   )
     // );
     const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
-    const defaultTag = allTags?.filter((data) => data?.default == 1)
+    const defaultTag = allTags?.filter((data) => data?.default == 1);
 
     const tag = defaultTag?.filter((tag) =>
       userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
@@ -1232,9 +1245,8 @@ function Messages({
         setFilteredTags(filteredTag);
       }
     } else {
-      setFilteredTags(filteredTag)
+      setFilteredTags(filteredTag);
     }
-
   }, [allTags, contact, tagFilterInput, recipient]);
 
   // Add new Tag
@@ -1303,7 +1315,7 @@ function Messages({
     if (apiData.status) {
       setContactRefresh(contactRefresh + 1);
       const shouldLoad = true;
-      getContactAndAllTagData(shouldLoad)
+      getContactAndAllTagData(shouldLoad);
       // setLoading(false);
       toast.success("Tag assigned successfully");
       // setIsAssignmentClicked(true);
@@ -1319,7 +1331,7 @@ function Messages({
     if (apiData.status) {
       setContactRefresh(contactRefresh + 1);
       const shouldLoad = true;
-      getContactAndAllTagData(shouldLoad)
+      getContactAndAllTagData(shouldLoad);
       // setLoading(false);
       toast.success("Tag unassigned successfully");
       // setIsAssignmentClicked(true);
@@ -1416,7 +1428,7 @@ function Messages({
   }
 
   const handleEditGroupName = async () => {
-    if (groupNameEdit.trim() === '') {
+    if (groupNameEdit.trim() === "") {
       toast.error("Group name cannot be empty");
       return;
     }
@@ -1488,7 +1500,7 @@ function Messages({
     } else {
       messageContent = messageInput[recipient[0]].trim();
     }
-    if (messageContent === '') return;
+    if (messageContent === "") return;
     const messageType = checkMessageType(messageContent);
     socketSendMessage({
       action: "broadcastGroupMessage",
@@ -1538,7 +1550,7 @@ function Messages({
       newGroups?.splice(contactIndex, 1);
       newGroups.unshift(groups[contactIndex]);
       setGroups(newGroups);
-      setOriginalGroupsList(newGroups)
+      setOriginalGroupsList(newGroups);
     }
     setActiveTab("all");
 
@@ -1584,7 +1596,7 @@ function Messages({
           newGroups?.splice(contactIndex, 1);
           newGroups.unshift(groups[contactIndex]);
           setGroups(newGroups);
-          setOriginalGroupsList(newGroups)
+          setOriginalGroupsList(newGroups);
         }
         setActiveTab("all");
         setUnreadMessage((prevState) => ({
@@ -1598,18 +1610,18 @@ function Messages({
 
     if (recipient?.length > 0) {
       setUnreadMessage((prevState) => {
-        const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
-          prevState;
+        const {
+          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
+          ...newState
+        } = prevState;
         return newState;
       });
       dispatch({
         type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-        recipient: [...recipient]
-      })
+        recipient: [...recipient],
+      });
     }
-
   }, [groupMessage]);
-
 
   // Handle logic to make any user admin or remove any user from admin
   async function manageAdmin(id, groupId, userId, isAdmin) {
@@ -1694,24 +1706,30 @@ function Messages({
   const getAllInternalCallsHistory = async () => {
     setLoading(true);
     try {
-      const response = await generalGetFunction(`/chatcall/calls?page=${internalCallsPageNumber}`);
+      const response = await generalGetFunction(
+        `/chatcall/calls?page=${internalCallsPageNumber}`
+      );
       if (response.status) {
         const sortedArr = response.data.data;
 
         // setInternalCallHistory(sortedArr);
 
-        setOriginalInternalCallHistory(prev => {
-          const existingIds = new Set(prev.map(item => item.id));
+        setOriginalInternalCallHistory((prev) => {
+          const existingIds = new Set(prev.map((item) => item.id));
 
-          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+          const newItems = sortedArr.filter(
+            (item) => !existingIds.has(item.id)
+          );
 
           return [...prev, ...newItems];
         });
 
-        setInternalCallHistory(prev => {
-          const existingIds = new Set(prev.map(item => item.id));
+        setInternalCallHistory((prev) => {
+          const existingIds = new Set(prev.map((item) => item.id));
 
-          const newItems = sortedArr.filter(item => !existingIds.has(item.id));
+          const newItems = sortedArr.filter(
+            (item) => !existingIds.has(item.id)
+          );
 
           return [...prev, ...newItems];
         });
@@ -1737,46 +1755,59 @@ function Messages({
   };
 
   const handleGroupSearchChange = (event) => {
-    setSearchValueForGroup(event?.target?.value)
-    const filteredGroup = originalGroupsList?.filter((item) => item?.group_name?.toLowerCase()?.includes(event?.target?.value?.toLowerCase()))
-    setGroups(filteredGroup)
-  }
+    setSearchValueForGroup(event?.target?.value);
+    const filteredGroup = originalGroupsList?.filter((item) =>
+      item?.group_name
+        ?.toLowerCase()
+        ?.includes(event?.target?.value?.toLowerCase())
+    );
+    setGroups(filteredGroup);
+  };
 
   const handleMessageSearchChange = (event) => {
     setSearchValueForMessage(event?.target?.value);
     if (activeTab == "all") {
-      const filteredContact = originalContact?.filter((item) => item?.name?.toLowerCase().includes(event?.target?.value?.toLowerCase()));
-      setContact(filteredContact)
+      const filteredContact = originalContact?.filter((item) =>
+        item?.name?.toLowerCase().includes(event?.target?.value?.toLowerCase())
+      );
+      setContact(filteredContact);
     }
 
     if (activeTab == "online") {
-      const filteredOnlineUser = originalOnlineUser?.filter((item) => item?.name?.toLowerCase()?.includes(event?.target?.value))
-      setOnlineUser(filteredOnlineUser)
+      const filteredOnlineUser = originalOnlineUser?.filter((item) =>
+        item?.name?.toLowerCase()?.includes(event?.target?.value)
+      );
+      setOnlineUser(filteredOnlineUser);
     }
 
     if (activeTab === "group") {
-      const filteredGroup = originalGroupsList?.filter((item) => item?.group_name?.toLowerCase()?.includes(event?.target?.value?.toLowerCase()))
-      setGroups(filteredGroup)
+      const filteredGroup = originalGroupsList?.filter((item) =>
+        item?.group_name
+          ?.toLowerCase()
+          ?.includes(event?.target?.value?.toLowerCase())
+      );
+      setGroups(filteredGroup);
     }
 
     if (activeTab === "call") {
-      const filteredCallHistory = origInalinternalCallHistory?.filter((item) =>
-        item?.receiver?.name?.toLowerCase()?.includes(event?.target?.value) ||
-        item?.sender?.name?.toLowerCase()?.includes(event?.target?.value)
-      )
-      setInternalCallHistory(filteredCallHistory)
+      const filteredCallHistory = origInalinternalCallHistory?.filter(
+        (item) =>
+          item?.receiver?.name?.toLowerCase()?.includes(event?.target?.value) ||
+          item?.sender?.name?.toLowerCase()?.includes(event?.target?.value)
+      );
+      setInternalCallHistory(filteredCallHistory);
     }
-  }
+  };
 
   const hanldeTabLinkClick = (tab) => {
-    setActiveTab(tab)
-    setSearchValueForMessage("")
-    setSearchValueForGroup("")
-    setGroups(originalGroupsList)
-    setContact(originalContact)
-    setOnlineUser(originalOnlineUser)
-    setInternalCallHistory(origInalinternalCallHistory)
-  }
+    setActiveTab(tab);
+    setSearchValueForMessage("");
+    setSearchValueForGroup("");
+    setGroups(originalGroupsList);
+    setContact(originalContact);
+    setOnlineUser(originalOnlineUser);
+    setInternalCallHistory(origInalinternalCallHistory);
+  };
 
   return (
     <>
@@ -1851,10 +1882,7 @@ function Messages({
             sessions.length > 0 && Object.keys(sessions).length > 0
               ? "250px"
               : "0",
-          marginLeft:
-            pathSegments === "/messages"
-              ? "0px"
-              : "210px",
+          marginLeft: pathSegments === "/messages" ? "0px" : "210px",
         }}
       >
         <section>
@@ -1868,7 +1896,8 @@ function Messages({
           </div>
           <div className="container-fluid ">
             <div className="row webrtc_newMessageUi">
-              <div className="col-12 col-xl-3 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
+              <div
+                className="col-12 col-xl-3 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"
                 style={
                   {
                     // height: "100%",
@@ -1975,7 +2004,8 @@ function Messages({
                         // effect="ripple"
                         data-category="incoming"
                       >
-                        <i className="fa-regular fa-phone"></i> <span>Calls</span>
+                        <i className="fa-regular fa-phone"></i>{" "}
+                        <span>Calls</span>
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -1987,8 +2017,7 @@ function Messages({
                       </button> */}
                     </div>
                   </nav>
-                  {
-                    activeTab !== "all" &&
+                  {activeTab !== "all" && (
                     <input
                       type="search"
                       name="Search"
@@ -1998,7 +2027,7 @@ function Messages({
                       value={searchValueForMessage}
                       onChange={(event) => handleMessageSearchChange(event)}
                     />
-                  }
+                  )}
 
                   {activeTab === "all" ? (
                     <div className="tab-content">
@@ -2008,7 +2037,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                      // style={{ height: "calc(100vh - 270px)" }}
+                        // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -2054,9 +2083,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                        // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
-                        // }}
+                          // style={{
+                          //   borderBottom: "1px solid var(--border-color)",
+                          // }}
                         >
                           <input
                             type="search"
@@ -2065,7 +2094,9 @@ function Messages({
                             className="searchStyle mb-2"
                             placeholder="Search"
                             value={searchValueForMessage}
-                            onChange={(event) => handleMessageSearchChange(event)}
+                            onChange={(event) =>
+                              handleMessageSearchChange(event)
+                            }
                           />
                           {contact.map((item) => {
                             return (
@@ -2102,15 +2133,17 @@ function Messages({
                                     });
                                     dispatch({
                                       type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-                                      recipient: [item?.extension,
-                                      item.id,
+                                      recipient: [
+                                        item?.extension,
+                                        item.id,
                                         "singleChat",
-                                      item?.name,
-                                      item?.email,
-                                        profile_picture,]
-                                    })
+                                        item?.name,
+                                        item?.email,
+                                        profile_picture,
+                                      ],
+                                    });
                                     setManageGroupChat(false);
-                                    setAllMessage([])
+                                    setAllMessage([]);
                                   }}
                                   className="w-100 "
                                 >
@@ -2150,9 +2183,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -2166,7 +2199,10 @@ function Messages({
                                           ?.slice(0, 2)
                                           ?.map((tag, key) => {
                                             return (
-                                              <span data-id={key} className="ellipsisText">
+                                              <span
+                                                data-id={key}
+                                                className="ellipsisText"
+                                              >
                                                 {tag.tag?.[0]?.name}
                                               </span>
                                             );
@@ -2225,7 +2261,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                        // style={{ borderBottom: "1px solid #ddd" }}
+                          // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           <input
                             type="search"
@@ -2279,14 +2315,15 @@ function Messages({
                                       "groupChat",
                                       item?.group_name,
                                       item?.email,
-                                      null,]
-                                  })
+                                      null,
+                                    ],
+                                  });
                                   item.message_groupusers.map((user) => {
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin);
                                     }
                                   });
-                                  setAllMessage([])
+                                  setAllMessage([]);
                                 }}
                               >
                                 <div className="w-100">
@@ -2313,9 +2350,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data?.created_at
                                               ? formatRelativeTime(
-                                                item?.last_message_data
-                                                  ?.created_at
-                                              )
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
                                               : ""}
                                           </p>
                                         </span>
@@ -2327,11 +2364,25 @@ function Messages({
                                       {/* here we are showing recent group message */}
                                       <h5 className="f-s-14 text-gray">
                                         {/* here showing last send message below of contact name for group*/}
-                                        {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name &&
+                                        {allAgents?.find(
+                                          (data) =>
+                                            data?.id ==
+                                            item?.last_message_data?.user_id
+                                        )?.name && (
                                           <span className="text-info fw-normal f-s-14">
-                                            {allAgents?.find((data) => data?.id == item?.last_message_data?.user_id)?.name}
-                                          </span>}
-                                        {item?.last_message_data?.message_text && ":"} {item?.last_message_data?.message_text}
+                                            {
+                                              allAgents?.find(
+                                                (data) =>
+                                                  data?.id ==
+                                                  item?.last_message_data
+                                                    ?.user_id
+                                              )?.name
+                                            }
+                                          </span>
+                                        )}
+                                        {item?.last_message_data
+                                          ?.message_text && ":"}{" "}
+                                        {item?.last_message_data?.message_text}
                                       </h5>
                                     </div>
                                   </div>{" "}
@@ -2594,117 +2645,112 @@ function Messages({
                             </Tippy>
                           )}
                         </div>
-                        {(
-                          groups.map((item, index) => {
-                            return (
-                              <div
-                                className={
-                                  recipient?.[1] === item.id
-                                    ? "contactListItem selected"
-                                    : "contactListItem"
-                                }
-                                data-bell={
-                                  unreadMessage[item.group_name]
-                                    ? unreadMessage[item.group_name]
-                                    : ""
-                                }
-                                onClick={() => {
-                                  const profile_picture = allAgents?.find(
-                                    (data) => data?.id == item?.id
-                                  )?.profile_picture;
-                                  setRecipient([
+                        {groups.map((item, index) => {
+                          return (
+                            <div
+                              className={
+                                recipient?.[1] === item.id
+                                  ? "contactListItem selected"
+                                  : "contactListItem"
+                              }
+                              data-bell={
+                                unreadMessage[item.group_name]
+                                  ? unreadMessage[item.group_name]
+                                  : ""
+                              }
+                              onClick={() => {
+                                const profile_picture = allAgents?.find(
+                                  (data) => data?.id == item?.id
+                                )?.profile_picture;
+                                setRecipient([
+                                  item.group_name,
+                                  item.id,
+                                  "groupChat",
+                                  item?.group_name,
+                                  item?.email,
+                                  profile_picture,
+                                ]);
+
+                                setSelectedChat("groupChat");
+                                setGroupNameEdit(item.group_name);
+                                setSelectedgroupUsers(item.message_groupusers);
+                                setUnreadMessage((prevState) => {
+                                  const { [item.group_name]: _, ...newState } =
+                                    prevState;
+                                  return newState;
+                                });
+                                dispatch({
+                                  type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                                  recipient: [
                                     item.group_name,
                                     item.id,
                                     "groupChat",
                                     item?.group_name,
                                     item?.email,
                                     profile_picture,
-                                  ]);
-
-                                  setSelectedChat("groupChat");
-                                  setGroupNameEdit(item.group_name);
-                                  setSelectedgroupUsers(
-                                    item.message_groupusers
-                                  );
-                                  setUnreadMessage((prevState) => {
-                                    const {
-                                      [item.group_name]: _,
-                                      ...newState
-                                    } = prevState;
-                                    return newState;
-                                  });
-                                  dispatch({
-                                    type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-                                    recipient: [
-                                      item.group_name,
-                                      item.id,
-                                      "groupChat",
-                                      item?.group_name,
-                                      item?.email,
-                                      profile_picture,]
-                                  })
-                                  item.message_groupusers.map((user) => {
-                                    if (user.user_id === account.id) {
-                                      setIsAdmin(user.is_admin);
-                                    }
-                                  });
-                                }}
-                              >
-                                <div className="w-100">
-                                  <div className=" d-flex align-items-start justify-content-between">
-                                    <div className="d-flex">
-                                      <div
-                                        className="profileHolder"
-                                        id={"profileOfflineNav"}
-                                      >
-                                        <i className="fa-light fa-users fs-5"></i>
-                                      </div>
-                                      <div className=" ms-3 ">
-                                        <p>{item.group_name}</p>
-                                        {/* <h5>Alright</h5>
+                                  ],
+                                });
+                                item.message_groupusers.map((user) => {
+                                  if (user.user_id === account.id) {
+                                    setIsAdmin(user.is_admin);
+                                  }
+                                });
+                              }}
+                            >
+                              <div className="w-100">
+                                <div className=" d-flex align-items-start justify-content-between">
+                                  <div className="d-flex">
+                                    <div
+                                      className="profileHolder"
+                                      id={"profileOfflineNav"}
+                                    >
+                                      <i className="fa-light fa-users fs-5"></i>
+                                    </div>
+                                    <div className=" ms-3 ">
+                                      <p>{item.group_name}</p>
+                                      {/* <h5>Alright</h5>
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
                                       </div> */}
-                                        {item?.last_message_data
-                                          ?.message_text && (
-                                            <p className="fs-14 text-gray">
-                                              <span className="text-info fw-normal">
-                                                {allAgents.find(
-                                                  (data) =>
-                                                    data.id ==
-                                                    item?.last_message_data
-                                                      ?.user_id
-                                                )?.username || "N/A"}{" "}
-                                                : &nbsp;
-                                              </span>{" "}
-                                              {
-                                                item?.last_message_data
-                                                  ?.message_text
-                                              }
-                                            </p>
-                                          )}
-                                      </div>
+                                      {item?.last_message_data
+                                        ?.message_text && (
+                                        <p className="fs-14 text-gray">
+                                          <span className="text-info fw-normal">
+                                            {allAgents.find(
+                                              (data) =>
+                                                data.id ==
+                                                item?.last_message_data?.user_id
+                                            )?.username || "N/A"}{" "}
+                                            : &nbsp;
+                                          </span>{" "}
+                                          {
+                                            item?.last_message_data
+                                              ?.message_text
+                                          }
+                                        </p>
+                                      )}
                                     </div>
-                                    <div className=" text-end">
-                                      <div className="col text-end d-flex justify-content-end align-items-end flex-column">
-                                        {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
-                                        <p className="timeAgo">
-                                          {item?.last_message_data?.created_at
-                                            ? formatRelativeTime(
+                                  </div>
+                                  <div className=" text-end">
+                                    <div className="col text-end d-flex justify-content-end align-items-end flex-column">
+                                      {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
+                                      <p className="timeAgo">
+                                        {item?.last_message_data?.created_at
+                                          ? formatRelativeTime(
                                               item?.last_message_data
                                                 ?.created_at
                                             )
-                                            : ""}
-                                        </p>
-                                        {unreadMessage[item.group_name] ? (
-                                          ""
-                                        ) : (
-                                          <span className="chat-read-icon readsms ">
-                                            <i className="fa-solid fa-check-double"></i>
-                                          </span>
-                                        )}
-                                      </div>
-                                      {/* <div className="dropdown">
+                                          : ""}
+                                      </p>
+                                      {unreadMessage[item.group_name] ? (
+                                        ""
+                                      ) : (
+                                        <span className="chat-read-icon readsms ">
+                                          <i className="fa-solid fa-check-double"></i>
+                                        </span>
+                                      )}
+                                    </div>
+                                    {/* <div className="dropdown">
                                         <button
                                           className="clearButton2 "
                                           type="button"
@@ -2736,20 +2782,20 @@ function Messages({
                                           </li>
                                         </ul>
                                       </div> */}
-                                    </div>
-                                  </div>{" "}
-                                </div>
+                                  </div>
+                                </div>{" "}
                               </div>
-                            );
-                          })
-                        )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                 </div>
                 {/* </div> */}
               </div>
-              <div className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
+              <div
+                className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
@@ -2840,8 +2886,11 @@ function Messages({
                                   </span>
                                 ))}
 
-                              {contact.find((contact) => contact.id == recipient?.[1])?.tags?.length > 8 && (
-                                <Tippy trigger="click"
+                              {contact.find(
+                                (contact) => contact.id == recipient?.[1]
+                              )?.tags?.length > 8 && (
+                                <Tippy
+                                  trigger="click"
                                   content={
                                     <ul
                                       className="contactTags"
@@ -2851,15 +2900,20 @@ function Messages({
                                         flexWrap: "wrap",
                                         maxWidth: "300px",
                                         gap: "5px",
-                                        zIndex: "99999"
+                                        zIndex: "99999",
                                       }}
                                     >
                                       {contact
-                                        .find((contact) => contact.id == recipient?.[1])
+                                        .find(
+                                          (contact) =>
+                                            contact.id == recipient?.[1]
+                                        )
                                         // ?.tags?.slice(2)
                                         ?.tags?.map((tag, key) => (
                                           // <li key={key}  data-id={key}>
-                                          <span key={key} data-id={key}>{tag.tag?.[0]?.name}</span>
+                                          <span key={key} data-id={key}>
+                                            {tag.tag?.[0]?.name}
+                                          </span>
                                           // </li>
                                         ))}
                                     </ul>
@@ -2868,15 +2922,12 @@ function Messages({
                                 >
                                   <span className="viewAllTagBtn">
                                     View All +
-                                    {
-                                      contact.find((contact) => contact.id == recipient?.[1])?.tags
-                                        ?.length - 8
-                                    }
+                                    {contact.find(
+                                      (contact) => contact.id == recipient?.[1]
+                                    )?.tags?.length - 8}
                                   </span>
                                 </Tippy>
                               )}
-
-
 
                               {/* <span data-id="1">Work</span> */}
                               {selectedChat === "groupChat" ? (
@@ -2934,7 +2985,7 @@ function Messages({
                                                 recipient?.[1]
                                               )
                                             }
-                                          // className="removableTag"
+                                            // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -2987,7 +3038,7 @@ function Messages({
                                                     onClick={() =>
                                                       handleAssignTask(
                                                         item?.id,
-                                                        recipient?.[1]
+                                                        recipient?.[0]
                                                       )
                                                     }
                                                   ><i className="fa-regular fa-check" /></button>
@@ -3037,11 +3088,6 @@ function Messages({
                                             // </li>
                                           );
                                         })} */}
-                                    {/* <li className="mt-4">
-                                      <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton text-white static">
-                                        Create New Tag
-                                      </button>
-                                    </li> */}
                                   </ul>
                                 </div>
                               )}
@@ -3157,7 +3203,7 @@ function Messages({
                                 {selectedChat === "groupChat" && (
                                   <li>
                                     <div
-                                      className="dropdown-item"
+                                      className="dropdown-item text-danger"
                                       href="#"
                                       onClick={() => {
                                         setGroupLeaveId(
@@ -3175,9 +3221,9 @@ function Messages({
                                 )}
 
                                 {selectedChat === "groupChat" &&
-                                  groups?.find(
-                                    (group) => group.group_name == recipient?.[0]
-                                  )?.created_by == account?.id ? (
+                                groups?.find(
+                                  (group) => group.group_name == recipient?.[0]
+                                )?.created_by == account?.id ? (
                                   <li>
                                     <div
                                       className="dropdown-item text-danger"
@@ -3223,12 +3269,14 @@ function Messages({
                                   : recipient?.[1]
                               ]?.map((item, index, arr) => {
                                 const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                const todayDate = formatDateTime(new Date()).split(" ")[0]; // Get today's date in "YYYY-MM-DD" format
+                                const todayDate = formatDateTime(
+                                  new Date()
+                                ).split(" ")[0]; // Get today's date in "YYYY-MM-DD" format
 
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                  arr[index - 1].time?.split(" ")[0];
+                                    arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -3492,9 +3540,12 @@ function Messages({
                                       value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
                                         const value = e.target.value;
-                                        const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+                                        const wordCount = value
+                                          .trim()
+                                          .split(/\s+/)
+                                          .filter(Boolean).length;
 
-                                        if (value.trim() === '') {
+                                        if (value.trim() === "") {
                                           setMessageInput((prev) => {
                                             const updated = { ...prev };
                                             delete updated[recipient[0]];
@@ -3509,15 +3560,14 @@ function Messages({
                                             [recipient[0]]: value,
                                           }));
                                         } else {
-                                          toast.warn("Text is too long!")
+                                          toast.warn("Text is too long!");
                                         }
                                         // setUnreadMessage((prevState) => {
                                         //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
                                         //     prevState;
                                         //   return newState;
                                         // });
-                                      }
-                                      }
+                                      }}
                                       // onClick={() => {
                                       //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
                                       //   setUnreadMessage((prevState) => {
@@ -3560,12 +3610,13 @@ function Messages({
                                 <div className="d-flex gap-1 align-items-center">
                                   <Tippy content="Auto Reply with AI">
                                     <button
-                                      className={`clearButton2 eraser ${autoReply ? "active" : ""}`}
+                                      className={`clearButton2 eraser ${
+                                        autoReply ? "active" : ""
+                                      }`}
                                       onClick={() => setAutoReply(!autoReply)}
                                     >
                                       <i className="fa-solid fa-message-bot"></i>
                                     </button>
-
                                   </Tippy>
                                   <button
                                     className="clearButton2 gallery"
@@ -3617,8 +3668,8 @@ function Messages({
                       </div>
                     </div>
                   </div>
-                  {/* </Panel> */}
-                  {/* <PanelResizeHandle className="resizeHandle">
+                  {/* </Panel>
+                  <PanelResizeHandle className="resizeHandle">
                       <Tippy content={
                         <button className='tableButton delete' onClick={resetResizeContent}>
                           <i className="fa-regular fa-arrows-rotate"></i>
@@ -3646,7 +3697,10 @@ function Messages({
                           style={{ height: "71px" }}
                         >
                           <div className="col">
-                            <h4 className="my-0" style={{ fontSize: "18px", fontWeight: 500 }}>
+                            <h4
+                              className="my-0"
+                              style={{ fontSize: "18px", fontWeight: 500 }}
+                            >
                               {groupNameEdit}
                             </h4>
                           </div>
@@ -3660,8 +3714,7 @@ function Messages({
                               <i className="fa-regular fa-pen"></i>
                             </button>
                           </div>
-                          {
-                            saveEditToggleGroupNameChange &&
+                          {saveEditToggleGroupNameChange && (
                             <div className="popup">
                               <div className="container h-100">
                                 <div className="row h-100 justify-content-center align-items-center">
@@ -3674,7 +3727,8 @@ function Messages({
                                     <div className="col-12">
                                       <div className="mb-2">
                                         <h4 className="text-center text-orange">
-                                          Please type the new name of the group below
+                                          Please type the new name of the group
+                                          below
                                         </h4>
                                       </div>
                                       <div className="my-2">
@@ -3688,13 +3742,24 @@ function Messages({
                                         />
                                       </div>
                                       <div className="d-flex justify-content-center gap-2 mt-3">
-                                        <button className="panelButton m-0" onClick={handleEditGroupName}>
+                                        <button
+                                          className="panelButton m-0"
+                                          onClick={handleEditGroupName}
+                                        >
                                           <span className="text">Confirm</span>
                                           <span className="icon">
                                             <i className="fa-solid fa-check" />
                                           </span>
                                         </button>
-                                        <button className="panelButton gray m-0 float-end" onClick={() => { setSaveEditToggleGroupNameChange(false); setGroupNameEdit(recipient?.[3]) }}>
+                                        <button
+                                          className="panelButton gray m-0 float-end"
+                                          onClick={() => {
+                                            setSaveEditToggleGroupNameChange(
+                                              false
+                                            );
+                                            setGroupNameEdit(recipient?.[3]);
+                                          }}
+                                        >
                                           <span className="text">Cancel</span>
                                           <span className="icon">
                                             <i className="fa-solid fa-xmark" />
@@ -3706,12 +3771,15 @@ function Messages({
                                 </div>
                               </div>
                             </div>
-                          }
+                          )}
                         </div>
                         <div
                           data-bell=""
                           className="contactListItem bg-transparent"
-                          style={{ minHeight: "auto", borderBottom: '1px solid var(--border-color)' }}
+                          style={{
+                            minHeight: "auto",
+                            borderBottom: "1px solid var(--border-color)",
+                          }}
                         >
                           <div className="row justify-content-between">
                             <div
@@ -3781,8 +3849,6 @@ function Messages({
                                     onChange={handleSearchChange}
                                   />
                                   {/* <button
-                                    className="tableButton ms-2"
-                                    onClick={() => navigate("/users-add")}
                                   >
                                     <i className="fa-solid fa-user-plus"></i>
                                   </button> */}
@@ -3799,13 +3865,15 @@ function Messages({
                                     <table>
                                       <thead>
                                         <tr>
-                                          <th style={{ width: '20px' }}>S.No</th>
+                                          <th style={{ width: "20px" }}>
+                                            S.No
+                                          </th>
                                           <th>Name</th>
-                                          <th style={{ width: '20px' }}>
+                                          <th style={{ width: "20px" }}>
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -3850,9 +3918,17 @@ function Messages({
                                           ) // Exclude agents already in `agent`
                                           .map((item, index) => (
                                             <tr key={item.id}>
-                                              <td style={{ width: '20px' }}>{index + 1}.</td>
-                                              <td style={{ whiteSpace: 'break-spaces' }}>{item.name}</td>
-                                              <td style={{ width: '20px' }}>
+                                              <td style={{ width: "20px" }}>
+                                                {index + 1}.
+                                              </td>
+                                              <td
+                                                style={{
+                                                  whiteSpace: "break-spaces",
+                                                }}
+                                              >
+                                                {item.name}
+                                              </td>
+                                              <td style={{ width: "20px" }}>
                                                 <input
                                                   type="checkbox"
                                                   onChange={() =>
@@ -3951,7 +4027,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                          isAdmin ? (
+                                        isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -4044,26 +4120,26 @@ function Messages({
                       style={{
                         width:
                           isActiveAgentsOpen &&
-                            recipient &&
-                            recipient?.length > 0
+                          recipient &&
+                          recipient?.length > 0
                             ? "30%"
                             : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
                           transform:
                             isActiveAgentsOpen &&
-                              recipient &&
-                              recipient?.length > 0
+                            recipient &&
+                            recipient?.length > 0
                               ? "translate(3%, 0%)"
                               : "translate(100%, 0%)",
                         }}
                       >
-                        {recipient && recipient?.length > 0 ?
+                        {recipient && recipient?.length > 0 ? (
                           <button
                             onClick={() =>
                               setIsActiveAgentsOpen(!isActiveAgentsOpen)
@@ -4072,25 +4148,29 @@ function Messages({
                             style={{
                               left:
                                 isActiveAgentsOpen &&
-                                  recipient &&
-                                  recipient?.length > 0
+                                recipient &&
+                                recipient?.length > 0
                                   ? "-15px"
                                   : "-5px",
                               transition: "all 0.4s ease-in-out",
                             }}
                           >
                             <i
-                              className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
+                              className={`fa-solid fa-chevron-${
+                                isActiveAgentsOpen &&
                                 recipient &&
                                 recipient?.length > 0
-                                ? "right"
-                                : "left"
-                                }`}
+                                  ? "right"
+                                  : "left"
+                              }`}
                             />
-                          </button> : ""}
+                          </button>
+                        ) : (
+                          ""
+                        )}
                         <div
                           className=" h-100"
-                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           {recipient && recipient?.length > 0 ? (
@@ -4129,9 +4209,8 @@ function Messages({
                     <i className="fa-light fa-users" />
                     <h5>Create a Group Chat</h5>
                     <p>
-                      Add people to a group chat effortlessly,
-                      keeping your connections organized and
-                      efficient
+                      Add people to a group chat effortlessly, keeping your
+                      connections organized and efficient
                     </p>
                     <div className="border-bottom col-12" />
                   </div>
@@ -4140,8 +4219,7 @@ function Messages({
                     <div className="formRow px-0">
                       <div className="formLabel">
                         <label htmlFor="">
-                          Group Name{" "}
-                          <span className="text-danger">*</span>
+                          Group Name <span className="text-danger">*</span>
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
@@ -4186,7 +4264,7 @@ function Messages({
                                 <input
                                   type="checkbox"
                                   onChange={handleSelectAll} // Call handler on change
-                                // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                  // checked={selectAll ? true : false} // Keep checkbox state in sync
                                 />
                               </th>
                             </tr>
@@ -4197,25 +4275,17 @@ function Messages({
                                 const aMatches =
                                   a.name
                                     .toLowerCase()
-                                    .includes(
-                                      searchQuery.toLowerCase()
-                                    ) ||
+                                    .includes(searchQuery.toLowerCase()) ||
                                   (a?.extension?.extension || "")
                                     .toLowerCase()
-                                    .includes(
-                                      searchQuery.toLowerCase()
-                                    );
+                                    .includes(searchQuery.toLowerCase());
                                 const bMatches =
                                   b.name
                                     .toLowerCase()
-                                    .includes(
-                                      searchQuery.toLowerCase()
-                                    ) ||
+                                    .includes(searchQuery.toLowerCase()) ||
                                   (b?.extension?.extension || "")
                                     .toLowerCase()
-                                    .includes(
-                                      searchQuery.toLowerCase()
-                                    );
+                                    .includes(searchQuery.toLowerCase());
                                 // Items that match come first
                                 return bMatches - aMatches;
                               })
@@ -4236,8 +4306,7 @@ function Messages({
                                         handleCheckboxChange(item)
                                       } // Call handler on change
                                       checked={groupSelecedAgents.some(
-                                        (agent) =>
-                                          agent.name == item.name
+                                        (agent) => agent.name == item.name
                                       )} // Keep checkbox state in sync
                                     />
                                   </td>
@@ -4275,7 +4344,9 @@ function Messages({
                 </div>
               </div>
             </div>
-          ) : ""}
+          ) : (
+            ""
+          )}
           {groupLeavePopUp ? (
             <div className="popup">
               <div className="container h-100">
@@ -4288,7 +4359,9 @@ function Messages({
                     </div>
                     <div className="col-12 ">
                       <h4 className="text-orange text-center">Warning!</h4>
-                      <p className="text-center">Are you sure you want to leave from this group?</p>
+                      <p className="text-center">
+                        Are you sure you want to leave from this group?
+                      </p>
                       <div className="mt-2 d-flex justify-content-center gap-2">
                         <button
                           disabled={loading}
