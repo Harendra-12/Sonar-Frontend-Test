@@ -64,35 +64,52 @@ const AiPhoneNumber = () => {
   const fetchAvailableAgents = async () => {
     setLoading(true);
     const res = await aiGeneralGetFunction("/agent/all");
-    if (res.status) {
-      setAvailableAgents(res.data);
-      // setInboundCallAgent(res.data[0]?.agent_id);
-      // setOutboundCallAgent(res.data[0]?.agent_id);
+    try {
+      if (res?.status) {
+        setAvailableAgents(res.data);
+        // setInboundCallAgent(res.data[0]?.agent_id);
+        // setOutboundCallAgent(res.data[0]?.agent_id);
+        setLoading(false);
+        setRefreshState(false);
+      } else {
+        setLoading(false);
+        console.error("Failed to fetch available LLMs");
+      }
+    } catch (error) {
+      console.error("Error fetching available agents:", error);
+    } finally {
       setLoading(false);
-      setRefreshState(false);
-    } else {
-      setLoading(false);
-      console.error("Failed to fetch available LLMs");
     }
   };
   const fetchAvailableNumbers = async () => {
     const res = await aiGeneralGetFunction("/phonenumber/all");
-    if (res.status) {
-      setAvailableNumbers(res.data);
-      if (res.data[0]) {
-        const firstNumber = res.data[0];
-        setSelectedNumber(firstNumber.phone_number);
-        setDefaultName(firstNumber.nickname || firstNumber.phone_number || "");
-        setAreaCode(firstNumber.area_code || "");
-        setWebhookUrl(firstNumber.inbound_webhook_url || "");
-        setShowUrlField(firstNumber.inbound_webhook_url ? true : false);
-        setInboundCallAgent(firstNumber.inbound_agent_id || "");
-        setOutboundCallAgent(firstNumber.outbound_agent_id || "");
-        setNumberProvider(firstNumber.number_provider || "twilio");
-        setRefreshState(false);
+    setLoading(true);
+    try {
+      if (res.status) {
+        setAvailableNumbers(res.data);
+        if (res?.data[0]) {
+          const firstNumber = res.data[0];
+          setSelectedNumber(firstNumber.phone_number);
+          setDefaultName(
+            firstNumber.nickname || firstNumber.phone_number || ""
+          );
+          setAreaCode(firstNumber.area_code || "");
+          setWebhookUrl(firstNumber.inbound_webhook_url || "");
+          setShowUrlField(firstNumber.inbound_webhook_url ? true : false);
+          setInboundCallAgent(firstNumber.inbound_agent_id || "");
+          setOutboundCallAgent(firstNumber.outbound_agent_id || "");
+          setNumberProvider(firstNumber.number_provider || "twilio");
+          setRefreshState(false);
+          setLoading(false);
+        }
+      } else {
+        console.error("Failed to fetch available phone numbers");
+        setLoading(false);
       }
-    } else {
-      console.error("Failed to fetch available phone numbers");
+    } catch (error) {
+      console.error("Error fetching available phone numbers:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
