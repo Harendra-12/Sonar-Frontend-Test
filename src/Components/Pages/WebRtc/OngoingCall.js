@@ -4,17 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider, useSessionCall } from "modify-react-sipjs";
 import { CallTimer } from "./CallTimer";
-import {
-  SessionState,
-  UserAgent,
-  Inviter,
-} from "sip.js";
+import { SessionState, UserAgent, Inviter } from "sip.js";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Dialpad from "./Dialpad";
-import { formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  formatTimeWithAMPM,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import Comments from "./Comments";
-import 'tippy.js/dist/tippy.css';
+import "tippy.js/dist/tippy.css";
 
 function OngoingCall({
   setHangupRefresh,
@@ -22,11 +21,9 @@ function OngoingCall({
   setSelectedModule,
   allContact,
   accountDetails,
-  didAll
+  didAll,
 }) {
-  const {
-    sessions,
-  } = useSIPProvider();
+  const { sessions } = useSIPProvider();
   const dispatch = useDispatch();
   const [dialpadShow, setDialpadShow] = useState(false);
   const account = useSelector((state) => state.account);
@@ -41,29 +38,25 @@ function OngoingCall({
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [parkingNumber, setParkingNumber] = useState("");
   const [holdProcessing, setHoldProcessing] = useState(false);
-  const callProgressDestination = useSelector((state) => state.callProgressDestination);
+  const callProgressDestination = useSelector(
+    (state) => state.callProgressDestination
+  );
   const [showTranferableList, setShowTranferableList] = useState(false);
   const [showActiveSessions, setShowActiveSessions] = useState(false);
   const activeCall = useSelector((state) => state.activeCall);
-  const {
-    isMuted,
-    hangup,
-    hold,
-    mute,
-    session,
-    unhold,
-    unmute,
-    timer,
-  } = useSessionCall(callProgressId);
+  const { isMuted, hangup, hold, mute, session, unhold, unmute, timer } =
+    useSessionCall(callProgressId);
   const canHold = session && session._state === SessionState.Established;
   const canMute = session && session._state === SessionState.Established;
-  const currentSession = globalSession.find((session) => session.id === callProgressId);
+  const currentSession = globalSession.find(
+    (session) => session.id === callProgressId
+  );
   const isOnHeld = currentSession?.state === "OnHold";
   const attendedDialpadRef = useRef(null);
   const primDialpadRef = useRef(null);
   const [callExtraInfo, setCallExtraInfo] = useState({
     info: "",
-    type: ""
+    type: "",
   });
 
   const tippyRef = useRef();
@@ -93,23 +86,28 @@ function OngoingCall({
 
   // Logic to toggle hold and unhold
   async function holdCall(type) {
-
     if (canHold) {
       if (type === "hold" && !holdProcessing) {
         setHoldProcessing(true);
-        var sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
+        var sessionDescriptionHandlerOptions =
+          session.sessionDescriptionHandlerOptionsReInvite;
         sessionDescriptionHandlerOptions.hold = true;
-        session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+        session.sessionDescriptionHandlerOptionsReInvite =
+          sessionDescriptionHandlerOptions;
         var options = {
           requestDelegate: {
             onAccept: function () {
-              if (session && session.sessionDescriptionHandler && session.sessionDescriptionHandler.peerConnection) {
+              if (
+                session &&
+                session.sessionDescriptionHandler &&
+                session.sessionDescriptionHandler.peerConnection
+              ) {
                 var pc = session.sessionDescriptionHandler.peerConnection;
                 // Stop all the inbound streams
                 pc.getReceivers().forEach(function (RTCRtpReceiver) {
-                  if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = false;
+                  if (RTCRtpReceiver.track)
+                    RTCRtpReceiver.track.enabled = false;
                 });
-
               }
               session.isOnHold = true;
               dispatch({
@@ -123,8 +121,8 @@ function OngoingCall({
             onReject: function () {
               session.isOnHold = false;
               setHoldProcessing(false);
-            }
-          }
+            },
+          },
         };
         session.invite(options).catch(function (error) {
           session.isOnHold = false;
@@ -144,7 +142,8 @@ function OngoingCall({
         setHoldProcessing(true);
 
         try {
-          const options = session.sessionDescriptionHandlerOptionsReInvite || {};
+          const options =
+            session.sessionDescriptionHandlerOptionsReInvite || {};
           options.hold = false;
 
           session.sessionDescriptionHandlerOptionsReInvite = options;
@@ -157,30 +156,40 @@ function OngoingCall({
                   // Re-enable remote audio tracks
                   const remoteStream = new MediaStream();
 
-                  pc.getReceivers().forEach(receiver => {
-                    if (receiver.track?.kind === 'audio') {
+                  pc.getReceivers().forEach((receiver) => {
+                    if (receiver.track?.kind === "audio") {
                       receiver.track.enabled = true;
                       remoteStream.addTrack(receiver.track);
                     }
                   });
 
-                  const audioEl = document.getElementById(`remote-audio-${session.id}`);
+                  const audioEl = document.getElementById(
+                    `remote-audio-${session.id}`
+                  );
                   if (audioEl) {
                     audioEl.srcObject = remoteStream;
-                    audioEl.play().catch(err => console.warn("Playback error:", err));
+                    audioEl
+                      .play()
+                      .catch((err) => console.warn("Playback error:", err));
                   }
                 }
 
                 // Resume AudioContext (required in some browsers)
-                if (window.audioContext?.state === 'suspended') {
-                  window.audioContext.resume().catch(err => console.warn("AudioContext resume failed:", err));
+                if (window.audioContext?.state === "suspended") {
+                  window.audioContext
+                    .resume()
+                    .catch((err) =>
+                      console.warn("AudioContext resume failed:", err)
+                    );
                 }
 
                 session.isOnHold = false;
                 dispatch({
                   type: "SET_SESSIONS",
                   sessions: globalSession.map((item) =>
-                    item.id === session.id ? { ...item, state: "Established" } : item
+                    item.id === session.id
+                      ? { ...item, state: "Established" }
+                      : item
                   ),
                 });
 
@@ -189,8 +198,8 @@ function OngoingCall({
               onReject: () => {
                 session.isOnHold = true;
                 setHoldProcessing(false);
-              }
-            }
+              },
+            },
           });
         } catch (error) {
           console.error("Unhold error:", error);
@@ -200,7 +209,7 @@ function OngoingCall({
     } else {
       toast.warn("Call has not been established");
     }
-  };
+  }
 
   // Logic to toggle mute and unmute
   const muteCall = (type) => {
@@ -212,7 +221,6 @@ function OngoingCall({
         dispatch({
           type: "SET_SESSIONS",
           sessions: globalSession.map((item) =>
-
             item.id === session.id ? { ...item, state: "Mute" } : item
           ),
         });
@@ -265,10 +273,8 @@ function OngoingCall({
 
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
-            onAccept: () => {
-            },
-            onReject: () => {
-            },
+            onAccept: () => {},
+            onReject: () => {},
           };
         } else {
           console.error("Invalid transfer address.");
@@ -311,10 +317,8 @@ function OngoingCall({
 
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
-            onAccept: () => {
-            },
-            onReject: () => {
-            },
+            onAccept: () => {},
+            onReject: () => {},
           };
         } else {
           console.error("Invalid transfer address.");
@@ -329,8 +333,8 @@ function OngoingCall({
 
   // Function to merge two sessions
   const handleMergeCall = async (sessionIds) => {
-    setShowActiveSessions(!showActiveSessions)
-    const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
+    setShowActiveSessions(!showActiveSessions);
+    const activeSessions = sessionIds.map((id) => sessions[id]).filter(Boolean);
     if (activeSessions.length < 2) {
       console.error("At least two sessions are required to merge.");
       return;
@@ -348,56 +352,63 @@ function OngoingCall({
     let localStreams = new Map();
 
     // Unhold each session before merging
-    await Promise.all(activeSessions.map(async (session) => {
-      let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-      sessionDescriptionHandlerOptions.hold = false;
-      session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-      let options = {
-        requestDelegate: {
-          onAccept: function () {
-            if (session?.sessionDescriptionHandler?.peerConnection) {
-              let pc = session.sessionDescriptionHandler.peerConnection;
+    await Promise.all(
+      activeSessions.map(async (session) => {
+        let sessionDescriptionHandlerOptions =
+          session.sessionDescriptionHandlerOptionsReInvite;
+        sessionDescriptionHandlerOptions.hold = false;
+        session.sessionDescriptionHandlerOptionsReInvite =
+          sessionDescriptionHandlerOptions;
+        let options = {
+          requestDelegate: {
+            onAccept: function () {
+              if (session?.sessionDescriptionHandler?.peerConnection) {
+                let pc = session.sessionDescriptionHandler.peerConnection;
 
-              // Restore inbound streams
-              pc.getReceivers().forEach(receiver => {
-                if (receiver.track) receiver.track.enabled = true;
-              });
+                // Restore inbound streams
+                pc.getReceivers().forEach((receiver) => {
+                  if (receiver.track) receiver.track.enabled = true;
+                });
 
-              // Restore outbound streams
-              pc.getSenders().forEach(sender => {
-                if (sender.track) {
-                  sender.track.enabled = true;
-                }
-              });
-            }
-            session.isOnHold = false;
+                // Restore outbound streams
+                pc.getSenders().forEach((sender) => {
+                  if (sender.track) {
+                    sender.track.enabled = true;
+                  }
+                });
+              }
+              session.isOnHold = false;
+            },
+            onReject: function () {
+              session.isOnHold = true;
+            },
           },
-          onReject: function () {
-            session.isOnHold = true;
-          }
-        }
-      };
+        };
 
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Delay before sending re-INVITE
-        session.invite(options);
-      } catch (error) {
-        console.error(`Error unholding session ${session.id}:`, error);
-      }
-    }));
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay before sending re-INVITE
+          session.invite(options);
+        } catch (error) {
+          console.error(`Error unholding session ${session.id}:`, error);
+        }
+      })
+    );
 
     try {
-      const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const myAudioStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
 
       // Retrieve remote audio streams for each session
       activeSessions.forEach((session) => {
-
         let remoteStream = new MediaStream();
-        session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
-          if (receiver.track && receiver.track.kind === "audio") {
-            remoteStream.addTrack(receiver.track);
-          }
-        });
+        session.sessionDescriptionHandler.peerConnection
+          .getReceivers()
+          .forEach((receiver) => {
+            if (receiver.track && receiver.track.kind === "audio") {
+              remoteStream.addTrack(receiver.track);
+            }
+          });
         remoteStreams.set(session.id, remoteStream);
         if (session.incomingInviteRequest) {
           localStreams.set(session.id, remoteStream);
@@ -433,7 +444,8 @@ function OngoingCall({
         const destination = audioContext.createMediaStreamDestination();
 
         // Add user's microphone to the mixed stream
-        const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
+        const sourceMyAudio =
+          audioContext.createMediaStreamSource(myAudioStream);
         sourceMyAudio.connect(destination);
 
         // Add all remote streams except the one that should be excluded
@@ -456,17 +468,18 @@ function OngoingCall({
 
         const mixedAudioTrack = mixedStream.getAudioTracks()[0];
 
-        session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
-          if (sender.track && sender.track.kind === "audio") {
-            sender.replaceTrack(mixedAudioTrack);
-          }
-        });
+        session.sessionDescriptionHandler.peerConnection
+          .getSenders()
+          .forEach((sender) => {
+            if (sender.track && sender.track.kind === "audio") {
+              sender.replaceTrack(mixedAudioTrack);
+            }
+          });
       });
     } catch (err) {
       console.error("Error during call merging:", err);
     }
   };
-
 
   // Function to hide dialpad
   function handleHideDialpad(value) {
@@ -475,7 +488,7 @@ function OngoingCall({
 
   // Logic to transfer call using attendent transfer
   function handleAttendedTransfer2(e) {
-    const previosSession = sessions[currentSession.transferableSessionId]
+    const previosSession = sessions[currentSession.transferableSessionId];
     if (callProgressDestination.length > 3) {
       const dialog = previosSession.dialog;
       const transferTo = `sip:${callProgressDestination}@${account.domain.domain_name}`;
@@ -507,8 +520,7 @@ function OngoingCall({
             onAccept: () => {
               hangup();
             },
-            onReject: () => {
-            },
+            onReject: () => {},
           };
         } else {
           console.error("Invalid transfer address.");
@@ -534,22 +546,24 @@ function OngoingCall({
 
     try {
       if (session.outgoingInviteRequest) {
-        response = await generalGetFunction(`/cdr-comments-user?destination=${globalSession[0].destination}`)
+        response = await generalGetFunction(
+          `/cdr-comments-user?destination=${globalSession[0].destination}`
+        );
       } else {
-        response = await generalGetFunction(`/cdr-comments-user?source=${globalSession[0].destination}`)
+        response = await generalGetFunction(
+          `/cdr-comments-user?source=${globalSession[0].destination}`
+        );
       }
       if (response.status && response.data.length > 0) {
         setDuplicateData(response.data);
         setShowDuplicateData(true);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
     getDuplicateData();
-  }, [globalSession])
+  }, [globalSession]);
 
   // Dialpad Input Field will remain focused when it mounts.
   useEffect(() => {
@@ -559,27 +573,32 @@ function OngoingCall({
     if (primDialpadRef.current) {
       primDialpadRef.current.focus();
     }
-  }, [attendShow, hideDialpad])
+  }, [attendShow, hideDialpad]);
 
   useEffect(() => {
     if (callProgressDestination.length < 5) {
-      const filteredExtension = accountDetails?.extensions?.filter((acc) => acc.extension == callProgressDestination);
-      const username = accountDetails?.users?.filter((acc) => acc?.extension_id == filteredExtension[0]?.id);
+      const filteredExtension = accountDetails?.extensions?.filter(
+        (acc) => acc.extension == callProgressDestination
+      );
+      const username = accountDetails?.users?.filter(
+        (acc) => acc?.extension_id == filteredExtension[0]?.id
+      );
       setCallExtraInfo({
         info: username[0]?.username || callProgressDestination,
         type: "user",
       });
     } else {
-      const isNumberPresent = activeCall.find((item) => (item.cid_num == callProgressDestination || item.did_tag == callProgressDestination));
+      const isNumberPresent = activeCall.find(
+        (item) =>
+          item.cid_num == callProgressDestination ||
+          item.did_tag == callProgressDestination
+      );
       setCallExtraInfo({
         info: isNumberPresent?.did_tag || callProgressDestination,
         type: "did",
       });
     }
-  }, [accountDetails, didAll, activeCall])
-
-
-
+  }, [accountDetails, didAll, activeCall]);
 
   return (
     <>
@@ -612,8 +631,14 @@ function OngoingCall({
                     <i className="fa-solid fa-user" />
                   </div>
                   <div className="col-12 text-center">
-                    <h3 className="number">{callExtraInfo.type == "user" ? callExtraInfo.info : callProgressDestination}</h3>
-                    {callExtraInfo.type == "did" && <h5>{callExtraInfo.info}</h5>}
+                    <h3 className="number">
+                      {callExtraInfo.type == "user"
+                        ? callExtraInfo.info
+                        : callProgressDestination}
+                    </h3>
+                    {callExtraInfo.type == "did" && (
+                      <h5>{callExtraInfo.info}</h5>
+                    )}
                   </div>
                 </div>
               </div>
@@ -648,27 +673,46 @@ function OngoingCall({
             )}
             {showActiveSessions && (
               <div className="parkList">
-                <button className="formItem d-flex justify-content-between align-items-center" onClick={() => setShowActiveSessions(!showActiveSessions)}>
-                  Select to Merge call <i className="fa-solid fa-xmark text-danger"></i>
+                <button
+                  className="formItem d-flex justify-content-between align-items-center"
+                  onClick={() => setShowActiveSessions(!showActiveSessions)}
+                >
+                  Select to Merge call{" "}
+                  <i className="fa-solid fa-xmark text-danger"></i>
                 </button>
                 <div className="mergeCallList">
                   <ul>
                     {globalSession.map((item, index) => {
                       const isCurrent = item.id === session.id;
                       return (
-                        !isCurrent && <li key={index} >{item.destination} <input type="checkbox" value={item.id}
-                          onChange={(e) => {
-                            const { checked, value } = e.target;
-                            setSelectedSessions((prev) =>
-                              checked ? [...prev, value] : prev.filter((id) => id !== value)
-                            );
-                          }} /></li>
-                      )
+                        !isCurrent && (
+                          <li key={index}>
+                            {item.destination}{" "}
+                            <input
+                              type="checkbox"
+                              value={item.id}
+                              onChange={(e) => {
+                                const { checked, value } = e.target;
+                                setSelectedSessions((prev) =>
+                                  checked
+                                    ? [...prev, value]
+                                    : prev.filter((id) => id !== value)
+                                );
+                              }}
+                            />
+                          </li>
+                        )
+                      );
                     })}
                   </ul>
-                  <button onClick={() => handleMergeCall([...selectedSessions, session.id])} ><i className="fa-solid fa-merge me-2"></i> Merge</button>
+                  <button
+                    onClick={() =>
+                      handleMergeCall([...selectedSessions, session.id])
+                    }
+                  >
+                    <i className="fa-solid fa-merge me-2"></i> Merge
+                  </button>
                 </div>
-
 
                 {/* <select
                   defaultValue={""}
@@ -736,33 +780,45 @@ function OngoingCall({
                   <Tippy content="Mute Microphone">
                     <button
                       onClick={
-                        isMuted ? () => muteCall("unmute") : () => muteCall("mute")
+                        isMuted
+                          ? () => muteCall("unmute")
+                          : () => muteCall("mute")
                       }
                       className={
-                        isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                        isMuted
+                          ? "appPanelButtonCaller active"
+                          : "appPanelButtonCaller"
                       }
                       effect="ripple"
                     >
                       <i
-                        className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
+                        className={`fa-solid fa-microphone${
+                          isMuted ? "-slash" : ""
+                        }`}
                       />
                     </button>
                   </Tippy>
-                  {
-                    globalSession.length > 1 &&
+                  {globalSession.length > 1 && (
                     <Tippy content="Merge Call">
                       <button
-                        onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false); setSelectedSessions([]) }}
-                        className={` ${showActiveSessions
-                          ? "appPanelButtonCaller active"
-                          : "appPanelButtonCaller"
-                          } `}
+                        onClick={() => {
+                          setShowActiveSessions(!showActiveSessions);
+                          setAttendShow(false);
+                          setShowTranferableList(false);
+                          setShowParkList(false);
+                          setSelectedSessions([]);
+                        }}
+                        className={` ${
+                          showActiveSessions
+                            ? "appPanelButtonCaller active"
+                            : "appPanelButtonCaller"
+                        } `}
                         effect="ripple"
                       >
                         <i className="fa-solid fa-merge"></i>
                       </button>
                     </Tippy>
-                  }
+                  )}
                   <Tippy content="Toggle Dialpad">
                     <button
                       onClick={() => {
@@ -779,20 +835,23 @@ function OngoingCall({
                     </button>
                   </Tippy>
 
-
                   <Tippy
                     trigger="click"
                     interactive={true}
                     placement="bottom"
-                    onCreate={instance => (tippyRef.current = instance)}
+                    onCreate={(instance) => (tippyRef.current = instance)}
                     // allowHTML={true}
                     maxWidth="fit-content"
                     className="margeCall"
                     content={
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div style={{ display: "flex", gap: "8px" }}>
                         <Tippy content="Attendant Transfer">
                           <button
-                            className={` ${showTranferableList ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                            className={` ${
+                              showTranferableList
+                                ? "appPanelButtonCaller active"
+                                : "appPanelButtonCaller"
+                            }`}
                             onClick={() => {
                               setShowTranferableList(true);
                               setDialpadShow(true);
@@ -802,12 +861,19 @@ function OngoingCall({
                               tippyRef.current?.hide();
                             }}
                           >
-                            <i className="fa fa-exchange" aria-hidden="true"></i>
+                            <i
+                              className="fa fa-exchange"
+                              aria-hidden="true"
+                            ></i>
                           </button>
                         </Tippy>
                         <Tippy content="Blind Transfer">
                           <button
-                            className={` ${attendShow ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                            className={` ${
+                              attendShow
+                                ? "appPanelButtonCaller active"
+                                : "appPanelButtonCaller"
+                            }`}
                             onClick={() => {
                               setAttendShow(!attendShow);
                               setShowTranferableList(false);
@@ -821,16 +887,21 @@ function OngoingCall({
                         </Tippy>
                       </div>
                     }
-                  // content="Attendant Transfer" 
+                    // content="Attendant Transfer"
                   >
                     <button
-                      className={` ${showTranferableList ? "appPanelButtonCaller active" : "appPanelButtonCaller"}`}
+                      className={` ${
+                        showTranferableList
+                          ? "appPanelButtonCaller active"
+                          : "appPanelButtonCaller"
+                      }`}
                     >
-                      <i className="fa-solid fa-code-merge" aria-hidden="true"></i>
+                      <i
+                        className="fa-solid fa-code-merge"
+                        aria-hidden="true"
+                      ></i>
                     </button>
                   </Tippy>
-
-
 
                   {/* <Tippy content="Attendant Transfer">
                     <button
@@ -863,12 +934,18 @@ function OngoingCall({
                   </Tippy> */}
                   <Tippy content="Park Call">
                     <button
-                      className={` ${showParkList
-                        ? "appPanelButtonCaller active"
-                        : "appPanelButtonCaller"
-                        } `}
+                      className={` ${
+                        showParkList
+                          ? "appPanelButtonCaller active"
+                          : "appPanelButtonCaller"
+                      } `}
                       effect="ripple"
-                      onClick={() => { setShowParkList(!showParkList); setAttendShow(false); setShowActiveSessions(false); setShowTranferableList(false); }}
+                      onClick={() => {
+                        setShowParkList(!showParkList);
+                        setAttendShow(false);
+                        setShowActiveSessions(false);
+                        setShowTranferableList(false);
+                      }}
                     >
                       P
                     </button>
@@ -877,7 +954,9 @@ function OngoingCall({
                     <button
                       // onClick={isHeld ? unhold : hold}
                       onClick={
-                        isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                        isOnHeld
+                          ? () => holdCall("unhold")
+                          : () => holdCall("hold")
                       }
                       className={
                         isOnHeld
@@ -908,8 +987,12 @@ function OngoingCall({
                   <div className="mt-4" />
                   <p className="text-center ">Where does it come from</p>
                   <div className="mt-4 d-flex justify-content-center align-items-center">
-                    <Tippy content="Complete Transfer" placement="bottom" visible={true}
-                      trigger="manual" >
+                    <Tippy
+                      content="Complete Transfer"
+                      placement="bottom"
+                      visible={true}
+                      trigger="manual"
+                    >
                       <button
                         className="appPanelButtonCaller "
                         effect="ripple"
@@ -918,7 +1001,6 @@ function OngoingCall({
                         <i className="fa-solid fa-phone-arrow-up-right" />
                       </button>
                     </Tippy>
-
 
                     {/* <Tippy content="Merge Call">
                     <button
@@ -976,14 +1058,13 @@ function OngoingCall({
                 </div>
                 <div>
                   <input
-                    type="text"
+                    type="number"
                     placeholder=""
                     className="dialerInput"
-                    disabled={true}
                     ref={primDialpadRef}
                     value={destNumber}
-                  // onChange={(e) => setDestNumber(e.target.value)}
-                  // onChange={handleInputChange}
+                    onChange={(e) => setDestNumber(e.target.value)}
+                    // onChange={handleInputChange}
                   />
                 </div>
 
@@ -1138,8 +1219,7 @@ function OngoingCall({
                     <i className="fa-regular fa-xmark fs-5 text-white" />
                   </div>
                 </div>
-                <div className="mb-2">
-                </div>
+                <div className="mb-2"></div>
                 <div className="">
                   <input
                     type="text"
@@ -1147,9 +1227,7 @@ function OngoingCall({
                     className="dialerInput"
                     ref={attendedDialpadRef}
                     value={attendedTransferNumber}
-                    onChange={(e) =>
-                      setattendedTransferNumber(e.target.value)
-                    }
+                    onChange={(e) => setattendedTransferNumber(e.target.value)}
                   />
                   <buton
                     className="clearButton"
@@ -1294,21 +1372,19 @@ function OngoingCall({
         ""
       )}
 
-      {showDuplicateData &&
+      {showDuplicateData && (
         <ShowDuplicateCallData duplicateData={duplicateData} />
-      }
-      {
-        dialpadShow && (
-          <Dialpad
-            hideDialpad={handleHideDialpad}
-            setSelectedModule={setSelectedModule}
-            isMicOn={true}
-            isTransfer={true}
-            transferableSessionId={callProgressId}
-            allContact={allContact}
-          />
-        )
-      }
+      )}
+      {dialpadShow && (
+        <Dialpad
+          hideDialpad={handleHideDialpad}
+          setSelectedModule={setSelectedModule}
+          isMicOn={true}
+          isTransfer={true}
+          transferableSessionId={callProgressId}
+          allContact={allContact}
+        />
+      )}
     </>
   );
 }
@@ -1346,19 +1422,19 @@ export function ShowDuplicateCallData({ duplicateData }) {
     };
     const callIcons = {
       inbound: {
-        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+        icon:
+          statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
-          item.variable_DIALSTATUS !==
-            "Answered"
+          item.variable_DIALSTATUS !== "Answered"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
       },
       outbound: {
-        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+        icon:
+          statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
-          item.variable_DIALSTATUS !==
-            "Answered"
+          item.variable_DIALSTATUS !== "Answered"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
@@ -1366,8 +1442,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
       internal: {
         icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
-          item.variable_DIALSTATUS !==
-            "Answered"
+          item.variable_DIALSTATUS !== "Answered"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",
@@ -1395,15 +1470,21 @@ export function ShowDuplicateCallData({ duplicateData }) {
   const handelOpenNotes = (id) => {
     setSelectedId(id);
     setShowComment(true);
-  }
+  };
   return (
     <>
       <div className="duplicateBody">
-        <div className="duplicateWrapper" style={{ width: collapse ? '0' : '700px' }}>
+        <div
+          className="duplicateWrapper"
+          style={{ width: collapse ? "0" : "700px" }}
+        >
           <div className="overviewTableWrapper p-2">
             <div className="overviewTableChild border-0 shadow-none">
               <div className="col-xl-12">
-                <div className="heading p-0 border-0" style={{ whiteSpace: 'nowrap' }}>
+                <div
+                  className="heading p-0 border-0"
+                  style={{ whiteSpace: "nowrap" }}
+                >
                   <h5>Duplicate Call Data</h5>
                 </div>
                 <div className="tableContainer m-0 p-0">
@@ -1452,7 +1533,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
                             break;
                           default:
                           case "variable_DIALSTATUS":
-                            headerText = "Hangup Status"
+                            headerText = "Hangup Status";
                             break;
                         }
 
@@ -1463,77 +1544,86 @@ export function ShowDuplicateCallData({ duplicateData }) {
                     <tbody>
                       {duplicateData?.map((call, index) => {
                         const callIcon = getCallIcon(call); // Call the getCallIcon function
-                        return <React.Fragment key={index}>
-                          <tr
-                          >
-                            <td>
-                              {index + 1}
-                            </td>
-                            {showKeys.map((key, keyIndex) => {
-                              if (key === "Call-Direction") {
-                                return (
-                                  <td>
-                                    <i
-                                      className={`fa-solid ${callIcon.icon} me-1`}
-                                      style={{ color: callIcon.color }}
-                                    ></i>
-                                    {callIcon.label}
-                                  </td>
-                                );
-                              } else if (key === "e_name") {
-                                return <td >{call["e_name"]}</td>;
-                              } else if (key === "variable_sip_from_user") {
-                                return <td >{call["variable_sip_from_user"]}</td>;
-                              } else if (key === "tag") {
-                                return <td >{call["tag"]}</td>;
-                              } else if (key === "application_state") {
-                                return <td>
-                                  {[
-                                    "intercept",
-                                    "eavesdrop",
-                                    "whisper",
-                                    "barge",
-                                  ].includes(
-                                    call["application_state"]
-                                  )
-                                    ? call[
-                                    "other_leg_destination_number"
-                                    ]
-                                    : call[
-                                    "Caller-Callee-ID-Number"
-                                    ]}{" "}
-                                  {call[
-                                    "application_state_name"
-                                  ] &&
-                                    `(${call["application_state_name"]})`}
-                                </td>
-                              } else if (key === "application_state_to_ext") {
-                                return <td>{call["application_state_to_ext"]}</td>;
-                              } else if (key === "Date") {
-                                return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
-                              } else if (key === "Time") {
-                                const time = formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
-                                return <td >{time}</td>;
-                              }
-                              else if (key === "variable_billsec") {
-                                return <td>{formatTime(call["variable_billsec"])}</td>;
-                              } else if (key === "Hangup-Cause") {
-                                return <td>{call["Hangup-Cause"]}</td>
-                              }
-                              else {
-                                return <td>{call[key]}</td>
-                              }
-                            })}
-                            <td>
-                              <button
-                                className="tableButton"
-                                onClick={() => handelOpenNotes(call?.id)}
-                              >
-                                <i className="fa-solid fa-comment-dots"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </React.Fragment>
+                        return (
+                          <React.Fragment key={index}>
+                            <tr>
+                              <td>{index + 1}</td>
+                              {showKeys.map((key, keyIndex) => {
+                                if (key === "Call-Direction") {
+                                  return (
+                                    <td>
+                                      <i
+                                        className={`fa-solid ${callIcon.icon} me-1`}
+                                        style={{ color: callIcon.color }}
+                                      ></i>
+                                      {callIcon.label}
+                                    </td>
+                                  );
+                                } else if (key === "e_name") {
+                                  return <td>{call["e_name"]}</td>;
+                                } else if (key === "variable_sip_from_user") {
+                                  return (
+                                    <td>{call["variable_sip_from_user"]}</td>
+                                  );
+                                } else if (key === "tag") {
+                                  return <td>{call["tag"]}</td>;
+                                } else if (key === "application_state") {
+                                  return (
+                                    <td>
+                                      {[
+                                        "intercept",
+                                        "eavesdrop",
+                                        "whisper",
+                                        "barge",
+                                      ].includes(call["application_state"])
+                                        ? call["other_leg_destination_number"]
+                                        : call["Caller-Callee-ID-Number"]}{" "}
+                                      {call["application_state_name"] &&
+                                        `(${call["application_state_name"]})`}
+                                    </td>
+                                  );
+                                } else if (key === "application_state_to_ext") {
+                                  return (
+                                    <td>{call["application_state_to_ext"]}</td>
+                                  );
+                                } else if (key === "Date") {
+                                  return (
+                                    <td>
+                                      {
+                                        call["variable_start_stamp"]?.split(
+                                          " "
+                                        )[0]
+                                      }
+                                    </td>
+                                  );
+                                } else if (key === "Time") {
+                                  const time = formatTimeWithAMPM(
+                                    call["variable_start_stamp"]?.split(" ")[1]
+                                  );
+                                  return <td>{time}</td>;
+                                } else if (key === "variable_billsec") {
+                                  return (
+                                    <td>
+                                      {formatTime(call["variable_billsec"])}
+                                    </td>
+                                  );
+                                } else if (key === "Hangup-Cause") {
+                                  return <td>{call["Hangup-Cause"]}</td>;
+                                } else {
+                                  return <td>{call[key]}</td>;
+                                }
+                              })}
+                              <td>
+                                <button
+                                  className="tableButton"
+                                  onClick={() => handelOpenNotes(call?.id)}
+                                >
+                                  <i className="fa-solid fa-comment-dots"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </React.Fragment>
+                        );
                       })}
                     </tbody>
                   </table>
@@ -1542,14 +1632,22 @@ export function ShowDuplicateCallData({ duplicateData }) {
             </div>
           </div>
         </div>
-        <button className="collpaseBtn"
+        <button
+          className="collpaseBtn"
           onClick={() => setCollapse(!collapse)}
-          style={{ right: collapse ? '-7px' : '-13px' }}
+          style={{ right: collapse ? "-7px" : "-13px" }}
         >
-          <i className={`fa-solid fa-chevron-${collapse ? 'right' : 'left'}`} />
+          <i className={`fa-solid fa-chevron-${collapse ? "right" : "left"}`} />
         </button>
       </div>
-      {showComment && <Comments id={selectedId} setId={setSelectedId} setShowComment={setShowComment} webrtc={true} />}
+      {showComment && (
+        <Comments
+          id={selectedId}
+          setId={setSelectedId}
+          setShowComment={setShowComment}
+          webrtc={true}
+        />
+      )}
     </>
-  )
+  );
 }
