@@ -310,12 +310,12 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 <i className="fa-light fa-arrows-maximize" />
                                                             </button>
                                                         </Tippy>
-                                                        <div className="content">
+                                                        <div className="content mb-0">
                                                             <h4>Active Calls </h4>
                                                             <p>You can see all of the active calls here</p>
                                                         </div>
                                                     </div>
-                                                    <div className="content">
+                                                    <div className="content mb-0">
                                                         <p className='fw-bold'>Total Calls: {activeState.length}</p>
                                                         {/* <p style={{ height: 21 }}></p> */}
                                                     </div>
@@ -427,12 +427,12 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                     <div className="col-12">
                                                                         <div className="heading">
                                                                             <div className='d-flex'>
-                                                                                <div className="content">
+                                                                                <div className="content mb-0">
                                                                                     <h4>Ringing Calls</h4>
                                                                                     <p>You can see all of the ringing calls here</p>
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="content">
+                                                                            <div className="content mb-0">
                                                                                 <p className='fw-bold'>Total Calls: {ringingState.length}</p>
                                                                                 {/* <p style={{ height: 21 }}></p> */}
                                                                             </div>
@@ -454,7 +454,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                         <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
                                                     </div>
                                                 </nav> */}
-                                                                            <div className="tab-content mt-3" id="nav-tabContent" style={{ paddingTop: '55px' }}>
+                                                                            <div className="tab-content ringingCallsWrap mt-3" id="nav-tabContent" >
                                                                                 <div className="tab-pane fade show active" id="nav-allringing" role="tabpanel" aria-labelledby="nav-allringing-tab" tabIndex="0">
                                                                                     <div className="tableContainer" style={{ height: '50vh' }}>
                                                                                         <table>

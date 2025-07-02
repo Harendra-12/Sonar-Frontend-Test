@@ -484,9 +484,9 @@ const ExtensionsEdit = ({ page, extensionData }) => {
     >
       <section id="phonePage">
         {showHeader && (
-          <div className="container-fluid px-0">
+          // <div className="container-fluid px-0">
             <Header title="Extensions" />
-          </div>
+          // </div>
         )}
 
         <div className="col-xl-12">
@@ -617,7 +617,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Extension</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -669,7 +669,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div> */}
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Select User</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -785,7 +785,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                               </div>
                             </div> */}
-                            <div className="formRow col-xl-3">
+                            <div className=" formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Record</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -859,7 +859,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                               </div>
                             </div> */}
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Description
@@ -885,7 +885,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Outbound Caller ID</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -946,7 +946,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">
                                   Voicemail Password{" "}
@@ -973,7 +973,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Voicemail Enabled
@@ -1002,7 +1002,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12 ">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Voicemail Mail To
@@ -1029,7 +1029,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Voicemail File
@@ -1065,7 +1065,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Voicemail Keep Local
@@ -1105,7 +1105,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           tabIndex="0"
                         >
                           <form className="col-12 mx-auto">
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Address</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -1120,7 +1120,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 />
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Transport</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -1145,7 +1145,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           tabIndex="0"
                         >
                           <form className="row col-12 mx-auto">
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="">Directory Full Name</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -1170,7 +1170,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Directory Extension Visible
@@ -1202,7 +1202,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Max Registrations
@@ -1229,7 +1229,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Limit Max</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -1254,7 +1254,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Limit Destination
@@ -1277,7 +1277,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 />
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12 ">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Missed Call
@@ -1307,7 +1307,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Toll Allow
@@ -1334,7 +1334,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-3 col-md-12 col-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
                                   Call Timeout
@@ -1370,7 +1370,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                             style={{ padding: "25px 23px" }}
                           >
                             <form className="row">
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">On Busy</label>
                                   <label
@@ -1384,8 +1384,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <div
                                   className={
                                     watch().onbusy == "disabled"
-                                      ? "col-6"
-                                      : "col-3 pe-2 ms-auto"
+                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                                      : "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2 ms-auto"
                                   }
                                 >
                                   {watch().onbusy != "disabled" && (
@@ -1420,7 +1420,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 ) : (
                                   <>
                                     {watch("onbusy") !== "pstn" && (
-                                      <div className="col-3">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                         {watch().onbusy && watch().onbusy?.length !== 0 &&
                                           <>
                                             <div className="formLabel">
@@ -1448,7 +1448,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       </div>
                                     )}
                                     {watch("onbusy") === "pstn" && (
-                                      <div className="col-3">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="formLabel">
                                           <label className="formItemDesc">
                                             PSTN
@@ -1482,7 +1482,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </>
                                 )}
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">No Answer</label>
                                   <label
@@ -1496,8 +1496,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <div
                                   className={
                                     watch().noanswer === "Forward"
-                                      ? "col-3 pe-2 ms-auto"
-                                      : "col-6"
+                                      ? "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2 ms-auto"
+                                      : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
                                   }
                                 >
                                   <div className="formLabel">
@@ -1519,7 +1519,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                                 {watch().noanswer === "Forward" ? (
                                   <>
-                                    <div className="col-3">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Destinations
@@ -1546,7 +1546,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   ""
                                 )}
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">
                                     Not Registered
@@ -1562,8 +1562,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <div
                                   className={
                                     watch().notregistered == "disabled"
-                                      ? "col-6"
-                                      : "col-3 pe-2 ms-auto"
+                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                                      : "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2 ms-auto"
                                   }
                                 >
                                   {watch().notregistered != "disabled" && (
@@ -1597,7 +1597,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 ) : (
                                   <>
                                     {watch("notregistered") !== "pstn" && (
-                                      <div className="col-3">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                         {watch().notregistered && watch().notregistered?.length !== 0 &&
                                           <>
                                             <div className="formLabel">
@@ -1625,7 +1625,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       </div>
                                     )}
                                     {watch("notregistered") === "pstn" && (
-                                      <div className="col-3">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="formLabel">
                                           <label className="formItemDesc">
                                             PSTN
@@ -1659,7 +1659,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </>
                                 )}
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">Follow Me</label>
                                   <label
@@ -1669,7 +1669,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     Select and configure the Follow Me Status
                                   </label>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                   <div className="formLabel">
                                     <label className="formItemDesc">
                                       Status
@@ -1691,7 +1691,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   ""
                                 ) : (
                                   <div className="formRow col-xl-12 px-0 border-0">
-                                    <div className="col-3 pe-2">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Destinations Type
@@ -1728,7 +1728,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="col-3 pe-2">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Destination
@@ -1910,7 +1910,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         </>
                                       )}
                                     </div>
-                                    <div className="col-3 pe-2">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Timeout
@@ -1945,7 +1945,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         })()}
                                       </select>
                                     </div>
-                                    <div className="col-3 pe-2">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Prompt
@@ -1980,13 +1980,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </div>
                                 )}
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">
                                     Do Not Disturb Status
                                   </label>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
@@ -1999,13 +1999,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </select>
                                 </div>
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label className="text-dark">
                                     Call Blocking Status
                                   </label>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
@@ -2020,7 +2020,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                               </div>
 
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-3 col-md-12 col-12">
                                 <div className="formLabel">
                                   <label htmlFor="">Forward Extension</label>
                                   <label
@@ -2031,9 +2031,9 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </label>
                                 </div>
                                 <div
-                                  className={`col-${forwardStatus != "disabled"
-                                    ? "3 pe-2 ms-auto"
-                                    : "6"
+                                  className={`${forwardStatus != "disabled"
+                                    ? "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12  pe-2 ms-auto"
+                                    : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
                                     }`}
                                 >
                                   {forwardStatus != "disabled" && (
@@ -2065,7 +2065,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
 
                                 {watch("forward") !== "pstn" &&
                                   watch("forward") !== "disabled" && (
-                                    <div className="col-3">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Extension
@@ -2089,7 +2089,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     </div>
                                   )}
                                 {watch("forward") === "pstn" && (
-                                  <div className="col-3">
+                                  <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         PSTN

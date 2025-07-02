@@ -133,20 +133,20 @@ function UserProfile() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="User Profile" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="User Profile" />
           </div>
           <div className="px-2 pt-2 pb-4">
             <div className="col-12 pt-3" >
               <div className="profileView">
                 <div className="profileDetailsHolder p-0 shadow-none">
-                  <div className="baseDetails d-block ">
+                  <div className="baseDetails d-block pb-3">
                     <div className="pro_bg">
                       <img
                         src={require('../../assets/images/profile-bg1.webp')} alt="profile-bg" />
                     </div>
-                    <div className="card profile_info border-0 ">
+                    <div className="card profile_info border-0 mx-3 mb-0">
                       <div className="card-body ">
                         <div className="row">
                           <div className="col-xl-4 col-lg-5 col-md-5 mb-2">
@@ -162,6 +162,7 @@ function UserProfile() {
                                             cursor: "pointer",
                                             width: "100%",
                                             height: "100%",
+                                            overflow: "hidden",
                                           }}
                                           onClick={(e) => {
                                             e.preventDefault();
@@ -182,13 +183,15 @@ function UserProfile() {
                                                 ? profileImage
                                                 : require('../../assets/images/placeholder-image.webp')
                                             }
+
                                             onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                             alt="profile"
+                                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                           />
                                         </div>
                                       </div>
                                       <div className="w-100 ">
-                                        <h5 className="mb-0 text-center">{account?.name}</h5>
+                                        <h5 className=" text-center text-capitalize">{account?.name}</h5>
                                         {account?.usertype && <div className="content mt-1  d-flex align-items-center justify-content-center">
                                           <div className="profileicons">
                                             <i className="fa-regular me-2 fa-id-card"></i>
@@ -771,7 +774,7 @@ function UserProfile() {
         <div className="popup music">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="card px-0 col-xl-4 col-md-6">
+              <div className="card px-0 col-xl-4 col-md-6 col-11">
                 <div className="header">
                   <h5 className="card-title fs14 border-bootm fw700">
                     Upload Profile Picture

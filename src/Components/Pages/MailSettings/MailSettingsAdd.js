@@ -58,8 +58,8 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
       </style>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
             <Header title="Mail Settings Add" />
+          {/* <div className="container-fluid px-0"> */}
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">Add Mail Settings</p>
@@ -88,7 +88,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                 </div>
               </div>
             </div>*/}
-          </div>
+          {/* </div> */}
 
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             <div className="overviewTableWrapper">
@@ -146,7 +146,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Select Mail Driver Type
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <select
                           type="dropdown"
                           name="mail_driver"
@@ -185,7 +185,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Mail Host
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -209,7 +209,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Mail Port
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="number"
                           name="mail_port"
@@ -234,7 +234,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Mail Username
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="text"
                           name="mail_username"
@@ -258,7 +258,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Password
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="password"
                           name="mail_password"
@@ -283,7 +283,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Select Encryption Type
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <select
                           type="dropdown"
                           name="mail_encryption"
@@ -330,7 +330,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Mail From
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="text"
                           name="mail_from_address"
@@ -360,7 +360,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                           Enter Mail From Name
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                         <input
                           type="text"
                           name="mail_from_name"
