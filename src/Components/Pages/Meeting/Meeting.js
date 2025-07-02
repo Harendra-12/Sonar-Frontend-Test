@@ -65,7 +65,9 @@ function Meeting() {
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/conference/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
+    const apiData = await generalGetFunction(
+      `/conference/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+    );
     if (apiData?.status) {
       setLoading(false);
       setRefreshBooleanState(false);
@@ -107,16 +109,16 @@ function Meeting() {
     //   .catch((err) => {
     //     setdataLoader(false);
     //   });
-    const res = await meetGeneralGetFunction(api_url?.MEET_RECORDING(id))
+    const res = await meetGeneralGetFunction(api_url?.MEET_RECORDING(id));
     if (res?.status) {
       setRecorddata(res.data.recordings);
       setdataLoader(false);
     } else {
+      setRecorddata([]);
       setdataLoader(false);
     }
   }
 
-  // console.log(recordData, "recordData");
   function formatTimestamp(nanoseconds) {
     // console.log(nanoseconds, "nanoseconds");
 
@@ -247,17 +249,17 @@ function Meeting() {
                             account?.permissions,
                             "add"
                           ) && (
-                              <button
-                                type="button"
-                                className="panelButton"
-                                onClick={() => navigate("/meeting-add")}
-                              >
-                                <span className="text">Create</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-plus"></i>
-                                </span>
-                              </button>
-                            )}
+                            <button
+                              type="button"
+                              className="panelButton"
+                              onClick={() => navigate("/meeting-add")}
+                            >
+                              <span className="text">Create</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -287,18 +289,18 @@ function Meeting() {
                           account?.permissions,
                           "search"
                         ) && (
-                            <div className="searchBox position-relative">
-                              <label>Search:</label>
-                              <input
-                                type="text"
-                                name="Search"
-                                placeholder="Search"
-                                value={searchValue}
-                                className="formItem"
-                                onChange={(e) => setSearchValue(e.target.value)}
-                              />
-                            </div>
-                          )}
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="text"
+                              name="Search"
+                              placeholder="Search"
+                              value={searchValue}
+                              className="formItem"
+                              onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                          </div>
+                        )}
                       </div>
                       <div className="tableContainer">
                         {loading ? (
@@ -354,31 +356,42 @@ function Meeting() {
                                         <>
                                           <tr key={key}>
                                             <td>{item.conf_name}</td>
-                                            <td style={{ textTransform: "capitalize" }}>{item.conf_type}</td>
+                                            <td
+                                              style={{
+                                                textTransform: "capitalize",
+                                              }}
+                                            >
+                                              {item.conf_type}
+                                            </td>
                                             <td>{item.conf_max_members}</td>
                                             <td>
-                                              {item?.moderator_pin && <div className="d-flex align-items-center justify-content-start ">
-                                                {moderatorPinId === item.id
-                                                  ? item.moderator_pin
-                                                  : "******"}
-                                                <button
-                                                  onClick={() =>
-                                                    setModeratorPinId(
-                                                      moderatorPinId === item.id
-                                                        ? ""
-                                                        : item.id
-                                                    )
-                                                  }
-                                                  className="clearButton2 edit ms-3"
-                                                >
-                                                  <i
-                                                    className={`fa-solid ${moderatorPinId === item.id
-                                                      ? "fa-eye"
-                                                      : "fa-eye-slash"
+                                              {item?.moderator_pin && (
+                                                <div className="d-flex align-items-center justify-content-start ">
+                                                  {moderatorPinId === item.id
+                                                    ? item.moderator_pin
+                                                    : "******"}
+                                                  <button
+                                                    onClick={() =>
+                                                      setModeratorPinId(
+                                                        moderatorPinId ===
+                                                          item.id
+                                                          ? ""
+                                                          : item.id
+                                                      )
+                                                    }
+                                                    className="clearButton2 edit ms-3"
+                                                  >
+                                                    <i
+                                                      className={`fa-solid ${
+                                                        moderatorPinId ===
+                                                        item.id
+                                                          ? "fa-eye"
+                                                          : "fa-eye-slash"
                                                       }`}
-                                                  ></i>
-                                                </button>
-                                              </div>}
+                                                    ></i>
+                                                  </button>
+                                                </div>
+                                              )}
                                             </td>
                                             <td>
                                               {item?.participate_pin && (
@@ -398,11 +411,12 @@ function Meeting() {
                                                     className="clearButton2 edit ms-3"
                                                   >
                                                     <i
-                                                      className={`fa-solid ${participantPinId ===
+                                                      className={`fa-solid ${
+                                                        participantPinId ===
                                                         item.id
-                                                        ? "fa-eye"
-                                                        : "fa-eye-slash"
-                                                        }`}
+                                                          ? "fa-eye"
+                                                          : "fa-eye-slash"
+                                                      }`}
                                                     ></i>
                                                   </button>
                                                 </div>
@@ -431,7 +445,7 @@ function Meeting() {
                                                   style={{
                                                     opacity:
                                                       item.conf_url ===
-                                                        copyElement
+                                                      copyElement
                                                         ? 1
                                                         : 0,
                                                   }}
@@ -446,7 +460,9 @@ function Meeting() {
                                                 className="tableButton"
                                                 onClick={() => {
                                                   setShowRecordingsPopup(true);
-                                                  handleGetRecord(item.id);
+                                                  handleGetRecord(
+                                                    item.random_str
+                                                  );
                                                 }}
                                               >
                                                 <i className="fa-solid fa-archive"></i>
@@ -459,11 +475,12 @@ function Meeting() {
                                                     !item?.recording_url &&
                                                     !item?.summary
                                                   }
-                                                  className={`tableButton edit ${!item?.recording_url &&
+                                                  className={`tableButton edit ${
+                                                    !item?.recording_url &&
                                                     !item?.summary
-                                                    ? "disabled"
-                                                    : ""
-                                                    }`}
+                                                      ? "disabled"
+                                                      : ""
+                                                  }`}
                                                   onClick={() => {
                                                     setSelectedMeeting(item);
                                                     setSelectedEmails([]);
@@ -482,15 +499,19 @@ function Meeting() {
                                               account?.permissions,
                                               "edit"
                                             ) && (
-                                                <td>
-                                                  <div
-                                                    className="tableButton edit"
-                                                    onClick={() => navigate(`/meeting-edit`, { state: item })}
-                                                  >
-                                                    <i className="fa-solid fa-pen"></i>
-                                                  </div>
-                                                </td>
-                                              )}
+                                              <td>
+                                                <div
+                                                  className="tableButton edit"
+                                                  onClick={() =>
+                                                    navigate(`/meeting-edit`, {
+                                                      state: item,
+                                                    })
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-pen"></i>
+                                                </div>
+                                              </td>
+                                            )}
                                             {checkViewSidebar(
                                               "Conference",
                                               slugPermissions,
@@ -498,18 +519,18 @@ function Meeting() {
                                               account?.permissions,
                                               "delete"
                                             ) && (
-                                                <td>
-                                                  <div
-                                                    className="tableButton delete"
-                                                    onClick={() => {
-                                                      setDeleteId(item.id);
-                                                      setPopUp(true);
-                                                    }}
-                                                  >
-                                                    <i className="fa-solid fa-trash"></i>
-                                                  </div>
-                                                </td>
-                                              )}
+                                              <td>
+                                                <div
+                                                  className="tableButton delete"
+                                                  onClick={() => {
+                                                    setDeleteId(item.id);
+                                                    setPopUp(true);
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-trash"></i>
+                                                </div>
+                                              </td>
+                                            )}
                                           </tr>
                                         </>
                                       );
@@ -626,8 +647,13 @@ function Meeting() {
                           </tr>
                         </thead>
                         <tbody>
-                          {dataLoade ? (
-                            <SkeletonTableLoader col={5} row={5} />
+                          {dataLoade && <SkeletonTableLoader col={5} row={5} />}
+                          {recordData.length === 0 && !dataLoade ? (
+                            <tr>
+                              <td colSpan={5} className="text-center">
+                                No Recordings Found
+                              </td>
+                            </tr>
                           ) : (
                             recordData.map((item, key) => {
                               return (
@@ -808,7 +834,7 @@ function Meeting() {
                           </thead>
                           <tbody>
                             {selectedMeeting &&
-                              selectedMeeting?.emails?.length === 0 ? (
+                            selectedMeeting?.emails?.length === 0 ? (
                               <tr>
                                 <td colSpan={3} className="text-center">
                                   No Emails Found
@@ -876,8 +902,8 @@ function Meeting() {
                             {/* {selectedMeeting?.recording_url && ( */}
                             <li className="dropdown-item">
                               <div className="clearButton text-align-start">
-                                <i className="fa-regular fa-video me-2" />{" "}
-                                Send Recording
+                                <i className="fa-regular fa-video me-2" /> Send
+                                Recording
                               </div>
                             </li>
                             {/* )} */}
@@ -893,8 +919,8 @@ function Meeting() {
                               selectedMeeting?.summary && ( */}
                             <li className="dropdown-item">
                               <div className="clearButton text-align-start">
-                                <i className="fa-regular fa-send me-2" />{" "}
-                                Send Both
+                                <i className="fa-regular fa-send me-2" /> Send
+                                Both
                               </div>
                             </li>
                             {/* )} */}
