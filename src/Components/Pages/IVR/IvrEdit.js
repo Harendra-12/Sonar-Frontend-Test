@@ -128,8 +128,8 @@ function IvrEdit() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
           <Header title="IVR" />
+        {/* <div className="container-fluid px-0"> */}
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto">
               <p className="mb-0">Edit this IVR</p>
@@ -158,7 +158,7 @@ function IvrEdit() {
               </div>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
 
         <div className="col-xl-12" style={{ overflow: "auto" }}>
           {loading ? (

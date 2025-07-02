@@ -348,7 +348,7 @@ function SocialMediaStore({ refreshData }) {
                                 <div className="heading mb-2 px-0 py-1 bg-transparent border-bottom-0">
                                     <h5 className='mb-0'>Order Summary</h5>
                                 </div>
-                                <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2'>
+                                <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2 flex-wrap'>
                                     <div className='d-flex justify-content-start align-items-center gap-2'>
                                         <div className='product_imgAdonsPopup'>
                                             <img

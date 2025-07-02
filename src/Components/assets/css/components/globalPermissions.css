@@ -65,6 +65,16 @@
     text-align: center;
 }
 
+.permissionsConfigWrapper#accordionMainParent .accordion-button::after {
+    right: 37px;
+    top: 0;
+}
+.permissionsConfigWrapper#accordionMainParent .permission_accordionBody .accordion-button::after {
+    right: 0;
+    top: 13px;
+}
+
+
 .permissionsConfigWrapper table tr {
     text-align: left;
 }

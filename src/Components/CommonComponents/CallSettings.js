@@ -610,7 +610,7 @@ const CallSettings = (props) => {
                           Select and configure the Follow Me Status
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-12 col-12 pe-2">
                         <div className="formLabel">
                           <label>Status</label>
                         </div>
@@ -635,7 +635,7 @@ const CallSettings = (props) => {
                         ""
                       ) : (
                         <div className="formRow col-xl-12 px-0 border-0">
-                          <div className="col-3 pe-2">
+                          <div className="col-xxl-3 col-xl-4 col-lg-6 col-12 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Destinations</label>
                               {callSetting.followMeDestinationError ? (
@@ -662,7 +662,7 @@ const CallSettings = (props) => {
                               />
                             </div>
                           </div>
-                          <div className="col-3 pe-2">
+                          <div className="col-xxl-3 col-xl-4 col-lg-6 col-12 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Delay</label>
                             </div>
@@ -693,7 +693,7 @@ const CallSettings = (props) => {
                               })()}
                             </select>
                           </div>
-                          <div className="col-3 pe-2">
+                          <div className="col-xxl-3 col-xl-4 col-lg-6 col-12 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Timeout</label>
                             </div>
@@ -723,7 +723,7 @@ const CallSettings = (props) => {
                               })()}
                             </select>
                           </div>
-                          <div className="col-3 pe-2">
+                          <div className="col-xxl-3 col-xl-4 col-lg-6 col-12 pe-2">
                             <div className="formLabel">
                               <label htmlFor="">Prompt</label>
                             </div>

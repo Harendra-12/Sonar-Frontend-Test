@@ -623,7 +623,7 @@ const RingGroupAdd = () => {
                           Enter a name.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -647,7 +647,7 @@ const RingGroupAdd = () => {
                           Select the ring strategy.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem"
                           {...register("strategy")}
@@ -668,7 +668,7 @@ const RingGroupAdd = () => {
                           Select the timeout destination for this ring group.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <div className="row">
                           <div
                             className={`col-${destinationStatus != "disabled" ? "4 pe-2 ms-auto" : "12"
@@ -796,7 +796,7 @@ const RingGroupAdd = () => {
                           destination is being called.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem"
                           {...register("ring_back")}
@@ -835,7 +835,7 @@ const RingGroupAdd = () => {
                           Enter the description.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -854,7 +854,7 @@ const RingGroupAdd = () => {
                       <div className="formLabel">
                         <label htmlFor="">Recording</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem me-0"
                           {...register("recording_enabled")}
@@ -874,7 +874,7 @@ const RingGroupAdd = () => {
                           Enter the tag.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -898,7 +898,7 @@ const RingGroupAdd = () => {
                         </label>
                       </div>
                       <div
-                        className={`col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                        className={`${forwardStatus != "disabled" ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2 pe-2 ms-auto" : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 "
                           }`}
                       >
                         {forwardStatus != "disabled" && (
@@ -929,7 +929,7 @@ const RingGroupAdd = () => {
                       </div>
                       {forwardStatus === "pstn" &&
                         forwardStatus != "disabled" && (
-                          <div className="col-3">
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2">
                             <div className="formLabel">
                               <label>PSTN</label>
                             </div>
@@ -959,7 +959,7 @@ const RingGroupAdd = () => {
 
                       {forwardStatus !== "pstn" &&
                         forwardStatus != "disabled" && (
-                          <div className="col-3">
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2">
                             {watch().forward &&
                               watch().forward?.length !== 0 && (
                                 <>

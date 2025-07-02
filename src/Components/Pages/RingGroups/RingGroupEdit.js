@@ -423,6 +423,7 @@ const RingGroupEdit = () => {
       });
       return;
     }
+
     if (destination.length === 0) {
       toast.error("Please add at least one destination");
       return;
@@ -445,6 +446,9 @@ const RingGroupEdit = () => {
         setLoading(false);
         return;
       }
+    }
+    if(data.destination_type === "disabled"){
+      delete data.timeout_destination
     }
 
     const payLoad = {
