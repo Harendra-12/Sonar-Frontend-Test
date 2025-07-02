@@ -961,14 +961,14 @@ function CdrFilterReport({ page }) {
                         <label>entries</label>
                       </div>
                       <div>
-                        <button
+                        {/* <button
                           className="ms-2 btn btn-success-light btn-wave new_buttonStyle"
                           style={{ maxWidth: "initial" }}
                           onClick={() => setAdvanceSearchPopup(true)}
                         >
                           <span>Advanced Search</span>
                           <i className="fa-solid fa-magnifying-glass" />
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                     <div className="tableHeader">
@@ -1047,6 +1047,7 @@ function CdrFilterReport({ page }) {
                                         setStartDateFlag(e.target.value);
                                         setPageNumber(1);
                                       }}
+                                      onKeyDown={(e) => e.preventDefault()}
                                     />
                                     <input
                                       type="time"
@@ -1078,6 +1079,8 @@ function CdrFilterReport({ page }) {
                                         setEndDateFlag(e.target.value);
                                         setPageNumber(1);
                                       }}
+                                      onKeyDown={(e) => e.preventDefault()}
+                                      disabled={!startDateFlag}
                                       min={startDateFlag} // Prevent selecting an end date before the start date
                                     />
                                     <input

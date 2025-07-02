@@ -896,6 +896,7 @@ function CdrReport({ page }) {
                                   setStartDateFlag(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                onKeyDown={(e) => e.preventDefault()}
                               />
                               <input
                                 type="time"
@@ -925,6 +926,8 @@ function CdrReport({ page }) {
                                   setEndDateFlag(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                onKeyDown={(e) => e.preventDefault()}
+                                disabled={!startDateFlag}
                                 min={startDateFlag} // Prevent selecting an end date before the start date
                               />
                               <input
