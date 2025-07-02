@@ -89,18 +89,38 @@ function Agents({ type }) {
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
+    // const apiData = await generalGetFunction(
+    //   `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""
+    //   }&search=${userInput}${onlineFilter == "all"
+    //     ? ""
+    //     : onlineFilter == "online"
+    //       ? "&online"
+    //       : "&offline"
+    //   }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+    //     ? "&section=Accounts"
+    //     : ""
+    //   }`
+    // );
+
+    const queryParams = [
+      `usages=${type}`,
+      `row_per_page=${entriesPerPage}`,
+      ...(onlineFilter === "all" ? [`page=${pageNumber}`] : []),
+      `search=${userInput}`,
+      ...(onlineFilter === "online"
+        ? ["online=true"]
+        : onlineFilter === "offline"
+        ? ["online=false"]
+        : []),
+      ...(account.usertype !== "Company" && account.usertype !== "SupreAdmin"
+        ? ["section=Accounts"]
+        : []),
+    ];
+
     const apiData = await generalGetFunction(
-      `/agents?usages=${type}&row_per_page=${entriesPerPage}${onlineFilter === "all" ? `page=${pageNumber}` : ""
-      }&search=${userInput}${onlineFilter == "all"
-        ? ""
-        : onlineFilter == "online"
-          ? "&online"
-          : "&offline"
-      }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-        ? "&section=Accounts"
-        : ""
-      }`
+      `/agents?${queryParams.join("&")}`
     );
+
     if (apiData?.status) {
       setAgents(apiData.data);
       setLoading(false);
@@ -224,7 +244,6 @@ function Agents({ type }) {
       (user) => user?.extension?.extension === extension
     );
 
-
     return user?.usertokens?.length > 0 ? user?.usertokens : null;
   }
   // console.log("LogonUser:", logonUser);
@@ -288,19 +307,19 @@ function Agents({ type }) {
                           account?.permissions,
                           "add"
                         ) && (
-                            <button
-                              onClick={() => {
-                                navigate("/agents-pbx-add");
-                                backToTop();
-                              }}
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                          <button
+                            onClick={() => {
+                              navigate("/agents-pbx-add");
+                              backToTop();
+                            }}
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -330,17 +349,17 @@ function Agents({ type }) {
                         account?.permissions,
                         "search"
                       ) && (
-                          <div className="searchBox position-relative">
-                            <label>Search:</label>
-                            <input
-                              type="search"
-                              name="Search"
-                              className="formItem"
-                              value={userInput}
-                              onChange={(e) => setuserInput(e?.target?.value)}
-                            />
-                          </div>
-                        )}
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            className="formItem"
+                            value={userInput}
+                            onChange={(e) => setuserInput(e?.target?.value)}
+                          />
+                        </div>
+                      )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
@@ -391,13 +410,13 @@ function Agents({ type }) {
                           <tbody className="">
                             <>
                               {noPermissionToRead ||
-                                checkViewSidebar(
-                                  "User",
-                                  slugPermissions,
-                                  account?.sectionPermissions,
-                                  account?.permissions,
-                                  "read"
-                                ) ? (
+                              checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
                                 agents?.data?.length === 0 ? (
                                   <tr>
                                     <td colSpan={99}>
@@ -435,12 +454,12 @@ function Agents({ type }) {
                                           {item.extension.record === "A"
                                             ? "All"
                                             : item.extension.record === "L"
-                                              ? "Local"
-                                              : item.extension.record === "I"
-                                                ? "Inbound"
-                                                : item.extension.record === "O"
-                                                  ? "Outbound"
-                                                  : "Disabled"}
+                                            ? "Local"
+                                            : item.extension.record === "I"
+                                            ? "Inbound"
+                                            : item.extension.record === "O"
+                                            ? "Outbound"
+                                            : "Disabled"}
                                         </td>
                                         <td>
                                           <span
@@ -453,52 +472,51 @@ function Agents({ type }) {
                                             }
                                           ></span>
                                         </td>
-                                        {
-                                          getToken(item.extension.extension) &&
-                                            onlineUsers.includes(
-                                              item.extension.extension
-                                            ) ? (
-                                            <td>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setIsAgentLogoutPopup(true);
-                                                  setLogoutUserId(item.id);
-                                                  setAgentLogOutToken(
-                                                    getToken(
-                                                      item.extension.extension
-                                                    )[0].token
-                                                  );
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-power-off"></i>
-                                              </button>
-                                            </td>
-                                          ) : (
-                                            <td></td>
-                                          )}
+                                        {getToken(item.extension.extension) &&
+                                        onlineUsers.includes(
+                                          item.extension.extension
+                                        ) ? (
+                                          <td>
+                                            <button
+                                              className="tableButton delete mx-auto"
+                                              onClick={() => {
+                                                setIsAgentLogoutPopup(true);
+                                                setLogoutUserId(item.id);
+                                                setAgentLogOutToken(
+                                                  getToken(
+                                                    item.extension.extension
+                                                  )[0].token
+                                                );
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-power-off"></i>
+                                            </button>
+                                          </td>
+                                        ) : (
+                                          <td></td>
+                                        )}
                                         {checkViewSidebar(
                                           "CallCenterAgent",
                                           slugPermissions,
                                           account?.permissions,
                                           "edit"
                                         ) && (
-                                            <td>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() => {
-                                                  navigate(
-                                                    `/agents-edit?id=${item.id}`,
-                                                    {
-                                                      state: item,
-                                                    }
-                                                  );
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-pencil"></i>
-                                              </button>
-                                            </td>
-                                          )}
+                                          <td>
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() => {
+                                                navigate(
+                                                  `/agents-edit?id=${item.id}`,
+                                                  {
+                                                    state: item,
+                                                  }
+                                                );
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
+                                        )}
                                         {/* <td>
                             account?.permissions,"edit")&& <td>
                             <button

@@ -89,7 +89,11 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       async function getDomain() {
         setMusicRefresh(musicRefresh + 1);
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
+          }`
         );
         if (apidataUser?.status) {
           setUsers(apidataUser.data);
@@ -100,7 +104,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
 
     if (value) {
       async function getData() {
-        const apiData = await generalGetFunction(`/extension/${value}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
+        const apiData = await generalGetFunction(
+          `/extension/${value}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "?section=Accounts"
+              : ""
+          }`
+        );
         if (apiData?.status) {
           setLoading(false);
           const resetInfo = {
@@ -320,31 +330,31 @@ const ExtensionsEdit = ({ page, extensionData }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination_type: callSetting.followMeDestinationType,
-                  destination: data?.destination_forward_to,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  id: callSetting.followMeId,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           password: data.password,
           user: data.user,
@@ -396,31 +406,31 @@ const ExtensionsEdit = ({ page, extensionData }) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination_type: callSetting.followMeDestinationType,
-                  destination: data?.destination_forward_to,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  id: callSetting.followMeId,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           description: data.description,
           password: data.password,
           user: data.user,
@@ -435,7 +445,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       );
       if (apiData.status) {
         toast.success(apiData.message);
-        await generalGetFunction(`/user/all${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '?section=Accounts' : ""}`);
+        await generalGetFunction(
+          `/user/all${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "?section=Accounts"
+              : ""
+          }`
+        );
         // navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
@@ -464,11 +480,11 @@ const ExtensionsEdit = ({ page, extensionData }) => {
     setValue("destination_forward_to", value[0]);
   };
   const actionForNotRegistered = (value) => {
-    setValue("notregisteredTo", value[0])
-  }
+    setValue("notregisteredTo", value[0]);
+  };
   const actionForOnBusy = (value) => {
-    setValue("onbusyTo", value[0])
-  }
+    setValue("onbusyTo", value[0]);
+  };
 
   useEffect(() => {
     if (watch().followme == "0") {
@@ -564,11 +580,11 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                             General{" "}
                             {(errors?.password?.message ||
                               errors?.extension?.message) && (
-                                <i
-                                  className="fa fa-exclamation-circle text-danger"
-                                  aria-hidden="true"
-                                ></i>
-                              )}
+                              <i
+                                className="fa fa-exclamation-circle text-danger"
+                                aria-hidden="true"
+                              ></i>
+                            )}
                           </button>
                           <button
                             className="nav-link"
@@ -1409,37 +1425,45 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   >
                                     <option value={"disabled"}>Disabled</option>
                                     <option value={"pstn"}>PSTN</option>
-                                    <option value={"extension"}>Extension</option>
-                                    <option value={"ring group"}>Ring Group</option>
-                                    <option value={"call center"}>Call Center</option>
+                                    <option value={"extension"}>
+                                      Extension
+                                    </option>
+                                    <option value={"ring group"}>
+                                      Ring Group
+                                    </option>
+                                    <option value={"call center"}>
+                                      Call Center
+                                    </option>
                                     <option value={"ivr"}>IVR</option>
                                   </select>
                                 </div>
-                                {(watch().onbusy == "disabled" || watch().onbusy == "1") ? (
+                                {watch().onbusy == "disabled" ||
+                                watch().onbusy == "1" ? (
                                   ""
                                 ) : (
                                   <>
                                     {watch("onbusy") !== "pstn" && (
                                       <div className="col-3">
-                                        {watch().onbusy && watch().onbusy?.length !== 0 &&
-                                          <>
-                                            <div className="formLabel">
-                                              <label className="formItemDesc">
-                                                Extension
-                                              </label>
-                                            </div>
-                                            <ActionList
-                                              category={watch().onbusy}
-                                              title={null}
-                                              label={null}
-                                              getDropdownValue={actionForOnBusy}
-                                              value={watch().onbusyTo}
-                                              {...register(
-                                                "onbusyTo"
-                                              )}
-                                            />
-                                          </>
-                                        }
+                                        {watch().onbusy &&
+                                          watch().onbusy?.length !== 0 && (
+                                            <>
+                                              <div className="formLabel">
+                                                <label className="formItemDesc">
+                                                  Extension
+                                                </label>
+                                              </div>
+                                              <ActionList
+                                                category={watch().onbusy}
+                                                title={null}
+                                                label={null}
+                                                getDropdownValue={
+                                                  actionForOnBusy
+                                                }
+                                                value={watch().onbusyTo}
+                                                {...register("onbusyTo")}
+                                              />
+                                            </>
+                                          )}
                                         {errors.onbusyTo && (
                                           <ErrorMessage
                                             text={errors.onbusyTo.message}
@@ -1462,11 +1486,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                             required: "PSTN is required",
                                             pattern: {
                                               value: /^[0-9]*$/,
-                                              message: "Only digits are allowed",
+                                              message:
+                                                "Only digits are allowed",
                                             },
                                             minLength: {
                                               value: 10,
-                                              message: "Must be at least 10 digits",
+                                              message:
+                                                "Must be at least 10 digits",
                                             },
 
                                             ...noSpecialCharactersValidator,
@@ -1586,9 +1612,15 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   >
                                     <option value={"disabled"}>Disabled</option>
                                     <option value={"pstn"}>PSTN</option>
-                                    <option value={"extension"}>Extension</option>
-                                    <option value={"ring group"}>Ring Group</option>
-                                    <option value={"call center"}>Call Center</option>
+                                    <option value={"extension"}>
+                                      Extension
+                                    </option>
+                                    <option value={"ring group"}>
+                                      Ring Group
+                                    </option>
+                                    <option value={"call center"}>
+                                      Call Center
+                                    </option>
                                     <option value={"ivr"}>IVR</option>
                                   </select>
                                 </div>
@@ -1598,28 +1630,32 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   <>
                                     {watch("notregistered") !== "pstn" && (
                                       <div className="col-3">
-                                        {watch().notregistered && watch().notregistered?.length !== 0 &&
-                                          <>
-                                            <div className="formLabel">
-                                              <label className="formItemDesc">
-                                                Extension
-                                              </label>
-                                            </div>
-                                            <ActionList
-                                              category={watch().notregistered}
-                                              title={null}
-                                              label={null}
-                                              getDropdownValue={actionForNotRegistered}
-                                              value={watch().notregisteredTo}
-                                              {...register(
-                                                "notregisteredTo"
-                                              )}
-                                            />
-                                          </>
-                                        }
+                                        {watch().notregistered &&
+                                          watch().notregistered?.length !==
+                                            0 && (
+                                            <>
+                                              <div className="formLabel">
+                                                <label className="formItemDesc">
+                                                  Extension
+                                                </label>
+                                              </div>
+                                              <ActionList
+                                                category={watch().notregistered}
+                                                title={null}
+                                                label={null}
+                                                getDropdownValue={
+                                                  actionForNotRegistered
+                                                }
+                                                value={watch().notregisteredTo}
+                                                {...register("notregisteredTo")}
+                                              />
+                                            </>
+                                          )}
                                         {errors.notregisteredTo && (
                                           <ErrorMessage
-                                            text={errors.notregisteredTo.message}
+                                            text={
+                                              errors.notregisteredTo.message
+                                            }
                                           />
                                         )}
                                       </div>
@@ -1639,11 +1675,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                             required: "PSTN is required",
                                             pattern: {
                                               value: /^[0-9]*$/,
-                                              message: "Only digits are allowed",
+                                              message:
+                                                "Only digits are allowed",
                                             },
                                             minLength: {
                                               value: 10,
-                                              message: "Must be at least 10 digits",
+                                              message:
+                                                "Must be at least 10 digits",
                                             },
 
                                             ...noSpecialCharactersValidator,
@@ -1651,7 +1689,9 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         />
                                         {errors.notregisteredTo && (
                                           <ErrorMessage
-                                            text={errors.notregisteredTo.message}
+                                            text={
+                                              errors.notregisteredTo.message
+                                            }
                                           />
                                         )}
                                       </div>
@@ -1687,7 +1727,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </select>
                                 </div>
                                 {watch().followme === "0" ||
-                                  watch().followme === 0 ? (
+                                watch().followme === 0 ? (
                                   ""
                                 ) : (
                                   <div className="formRow col-xl-12 px-0 border-0">
@@ -1737,7 +1777,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       {callSetting.followMeDestinationType ? (
                                         <>
                                           {callSetting.followMeDestinationType !==
-                                            "pstn" ? (
+                                          "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={
@@ -1757,14 +1797,14 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                                     required:
                                                       "This field is required",
                                                     ...(callSetting.followMeDestinationType !==
-                                                      "pstn"
+                                                    "pstn"
                                                       ? {
-                                                        minLength: {
-                                                          value: 4,
-                                                          message:
-                                                            "Must be at least 4 digits",
-                                                        },
-                                                      }
+                                                          minLength: {
+                                                            value: 4,
+                                                            message:
+                                                              "Must be at least 4 digits",
+                                                          },
+                                                        }
                                                       : {}),
                                                   }
                                                 )}
@@ -1799,14 +1839,14 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                                         "Only digits are allowed",
                                                     },
                                                     ...(callSetting.followMeDestinationType ===
-                                                      "pstn"
+                                                    "pstn"
                                                       ? {
-                                                        minLength: {
-                                                          value: 10,
-                                                          message:
-                                                            "Must be at least 10 digits",
-                                                        },
-                                                      }
+                                                          minLength: {
+                                                            value: 10,
+                                                            message:
+                                                              "Must be at least 10 digits",
+                                                          },
+                                                        }
                                                       : {}),
                                                   }
                                                 )}
@@ -1835,7 +1875,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       ) : (
                                         <>
                                           {watch("destinationType") !==
-                                            "pstn" ? (
+                                          "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={watch(
@@ -2031,10 +2071,11 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </label>
                                 </div>
                                 <div
-                                  className={`col-${forwardStatus != "disabled"
-                                    ? "3 pe-2 ms-auto"
-                                    : "6"
-                                    }`}
+                                  className={`col-${
+                                    forwardStatus != "disabled"
+                                      ? "3 pe-2 ms-auto"
+                                      : "6"
+                                  }`}
                                 >
                                   {forwardStatus != "disabled" && (
                                     <div className="formLabel">
@@ -2077,9 +2118,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         label={null}
                                         getDropdownValue={forwardToValue}
                                         value={watch().forward_to}
-                                        {...register(
-                                          "forward_to"
-                                        )}
+                                        {...register("forward_to")}
                                       />
                                       {errors.forward_to && (
                                         <ErrorMessage
