@@ -221,7 +221,7 @@ function ClickToCallEdit() {
                                                                     </div>
                                                                 </nav>
                                                                 <div className="row">
-                                                                    <div className="col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
+                                                                    <div className="col-xxl-7 col-xl-7 col-lg-12 col-sm-12">
                                                                         <div className="tab-content" id="nav-tabContent">
                                                                             <div
                                                                                 className="tab-pane fade show active"
@@ -239,7 +239,7 @@ function ClickToCallEdit() {
                                                                                             </label>
                                                                                         </div>
 
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <div className="row">
                                                                                                 <div className="col-auto">
                                                                                                     <div className="imageHolder" style={{ width: '50px', height: '50px', border: '1px solid var(--border-color)', borderRadius: '5px' }}>
@@ -284,7 +284,7 @@ function ClickToCallEdit() {
                                                                                                 Choose your color scheme
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <div className="d-flex align-items-center justify-content-between">
 
                                                                                                 {/* <div className="d-flex align-items-center justify-content-between">
@@ -654,7 +654,7 @@ function ClickToCallEdit() {
                                                                                                 Choose your button color scheme
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <div className="d-flex align-items-center justify-content-between">
                                                                                                 <div className="form-widths d-flex">
                                                                                                     <div className="me-2">
@@ -695,7 +695,7 @@ function ClickToCallEdit() {
                                                                                                 Enter your company name
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <input className="formItem" {...register("name")} />
                                                                                             {errors.did_id && (
                                                                                                 <ErrorMessage text={errors.name} />
@@ -714,7 +714,7 @@ function ClickToCallEdit() {
                                                                                                 Enter your company description
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <input className="formItem"   {...register("description")} />
                                                                                             {errors.did_id && (
                                                                                                 <ErrorMessage text={errors.description} />
@@ -731,7 +731,7 @@ function ClickToCallEdit() {
                                                                                                 Please choose the usage.
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <select
                                                                                                 type="text"
                                                                                                 name="did_id_view"
@@ -772,7 +772,7 @@ function ClickToCallEdit() {
                                                                                                 Please choose the usage.
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             {watch().usages !== "pstn" &&
                                                                                                 watch().usages !== "" ? (
                                                                                                 <ActionList
@@ -826,7 +826,7 @@ function ClickToCallEdit() {
                                                                                                 install click to call widget.
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="col-7">
+                                                                                        <div className="col-xxl-7 col-xl-7 col-lg-7 col-12">
                                                                                             <textarea
                                                                                                 type="text"
                                                                                                 name="did_id_view"
@@ -840,7 +840,7 @@ function ClickToCallEdit() {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-4">
+                                                                    <div className="col-xxl-4 col-xl-4 col-lg-12 col-12">
                                                                         <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
                                                                             <div className="clickToCallButton">
                                                                                 <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>

@@ -96,8 +96,8 @@ function Header(props) {
 
   return (
     <div id="detailsHeader" style={props.style}>
-      <div className="col-4 d-flex align-items-center">
-        <div className="d-xl-none d-block me-3">
+      <div className="col-md-4 col-6  d-flex align-items-center">
+        <div className="d-xl-none d-block me-2">
           <button
             className="clearButton d-flex align-items-center"
             onClick={toggleSideNav}
@@ -107,7 +107,7 @@ function Header(props) {
         </div>
         <h4 className="my-auto">{props.title}</h4>
       </div>
-      <div className="col-8 d-flex justify-content-end align-items-center">
+      <div className="col-md-8 col-6 d-flex justify-content-end align-items-center">
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
@@ -116,7 +116,7 @@ function Header(props) {
                 permissions,
                 account?.sections,
               ) ?
-              <div className="my-auto mx-3">
+              <div className="my-auto">
                 <Tippy content="Click here to open dialer!">
                   <a
                     href="/webrtc"
@@ -124,7 +124,7 @@ function Header(props) {
                     style={{ cursor: "pointer" }}
                     className="clearColorButton"
                   >
-                    <i className="fa-regular fa-phone-office" />{" "}
+                    <i className="fa-regular fa-phone-office me-0" />{" "}
                     <span className="d-none d-xl-inline-block">
                       App
                     </span>
@@ -132,32 +132,30 @@ function Header(props) {
                 </Tippy>
               </div>
               : ""}
-            <div>
+            {/* <div>
               <Tippy content="Your available balance, click to know more!">
                 <div
                   onClick={() => navigate("/card-details")}
                   style={{
                     cursor: "pointer",
-                    //  minWidth: '140px' 
                   }}
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
-                  {/* <span className="d-none d-xl-inline-block"> */}
                   <span className="">
                     ${accountBalance || 0}
                   </span>
                 </div>
               </Tippy>
-            </div>
+            </div> */}
           </div>
         </div>
         <DarkModeToggle marginLeft={"3"} />
         <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
-          <Tippy content={accounName}>
+          {/* <Tippy content={accounName}>
             <div className="profileName">{accounName}</div>
-          </Tippy>
-          &nbsp; &nbsp;
+          </Tippy> */}
+          {/* &nbsp; &nbsp; */}
           {/* <div className="statusProfile" /> */}
           <div
             ref={wrapperRef}
@@ -186,6 +184,29 @@ function Header(props) {
               </label>
               <Link to={"/change-password"}>Change Password</Link>
             </div> */}
+            <div className="dropdown-item dorpInfo">
+              <Tippy content={accounName}>
+                <div className="profileName">{accounName}</div>
+              </Tippy>
+               <div>
+              <Tippy content="Your available balance, click to know more!">
+                <div
+                  onClick={() => navigate("/card-details")}
+                  style={{
+                    cursor: "pointer",
+                    //  minWidth: '140px' 
+                  }}
+                  className=""
+                >
+                  <i className="fa-regular fa-wallet me-2" />{" "}
+                  {/* <span className="d-none d-xl-inline-block"> */}
+                  <span className="balanceText">
+                    ${accountBalance || 0}
+                  </span>
+                </div>
+              </Tippy>
+            </div>
+            </div>
             <div className="dropdown-item">
               <Link to={"/users-profile"} className="clearButton">
                 <i className="fa-regular fa-user me-2" aria-hidden="true"></i>

@@ -300,7 +300,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                         <div className="overviewTableWrapper p-3">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
-                                    <PanelGroup autoSaveId="example" direction="horizontal">
+                                    <PanelGroup className='responsivePAnel' autoSaveId="example" direction="horizontal">
                                         <Panel className='leftPanel' defaultSize={45} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
@@ -317,7 +317,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     </div>
                                                     <div className="content">
                                                         <p className='fw-bold'>Total Calls: {activeState.length}</p>
-                                                        <p style={{ height: 21 }}></p>
+                                                        {/* <p style={{ height: 21 }}></p> */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -413,7 +413,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={55} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className='activeCallsAgentWrapper position-relative'>
-                                                <div className='d-flex'>
+                                                <div className='d-flex resBottom'>
                                                     <Tippy content="Minimize this window">
                                                         <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
                                                             <i className="fa-light fa-arrows-maximize"></i>
@@ -434,7 +434,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                             </div>
                                                                             <div className="content">
                                                                                 <p className='fw-bold'>Total Calls: {ringingState.length}</p>
-                                                                                <p style={{ height: 21 }}></p>
+                                                                                {/* <p style={{ height: 21 }}></p> */}
                                                                             </div>
                                                                         </div>
                                                                     </div>

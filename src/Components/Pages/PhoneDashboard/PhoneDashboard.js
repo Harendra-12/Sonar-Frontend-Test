@@ -367,7 +367,7 @@ function PhoneDashboard() {
                 </svg>
               </div>
             </div>
-            <div className="col-12 mt-3 tangoNavs">
+            <div className="col-12 mt-3 tangoNavs activeCallstag">
               <AllCallsDetails />
               <div className="row ">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-3">

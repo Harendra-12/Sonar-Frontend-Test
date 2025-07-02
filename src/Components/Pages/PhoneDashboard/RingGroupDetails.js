@@ -89,19 +89,19 @@ const RingGroup = () => {
   return (
     <>
       {loading && <CircularLoader />}
-      <div className="overviewTableWrapper p-0" id="rGroupAccordion">
+      <div className="overviewTableWrapper p-0 accordion" id="rGroupAccordion">
         <div className="overviewTableChild">
           <div className="d-flex flex-wrap">
             <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-              <div className="heading col-12">
-                <div className="content col-xxl-6 col-xl-5">
+              <div className="row p-3 w-100">
+                <div className="content col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                   <h4>Ring Groups</h4>
                   <p>You can see a brief analysis of all the ring group</p>
                 </div>
-                <div className="d-flex col gap-2">
-                  <div className="col-6">
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
+                  <div className=" badgeGroup">
                     <div className="headingExtraInfo">
-                      <div className="ms-auto">
+                      <div className="">
                         <span className="badge badge-soft-primary rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}> */}
@@ -114,8 +114,8 @@ const RingGroup = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="headingExtraInfo mt-1">
-                      <div className="ms-auto">
+                    <div className="headingExtraInfo ">
+                      <div className="">
                         <span className="badge  badge-soft-danger rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
@@ -128,10 +128,10 @@ const RingGroup = () => {
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-6">
+                  {/* </div> */}
+                  {/* <div className="col-6"> */}
                     <div className="headingExtraInfo">
-                      <div className="me-auto">
+                      <div className="">
                         <span className="badge badge-soft-success rounded-pill "
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}> */}
@@ -145,8 +145,8 @@ const RingGroup = () => {
                       </div>
                     </div>
 
-                    <div className="headingExtraInfo mt-1">
-                      <div className="me-auto">
+                    <div className="headingExtraInfo ">
+                      <div className="">
                         <span className="badge badge-soft-secondary rounded-pill"
                           style={{ minWidth: '7vw', }}>
                           {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}

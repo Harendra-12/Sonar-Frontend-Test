@@ -2744,3 +2744,15 @@ i.fa.fa-star {
     background-color: #005eff !important;
     color: #ffff !important;
 }
+
+.wrongImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    /* height: 300px; */
+}
+.wrongImg img{
+    width: 100%;
+    height: auto;
+}
