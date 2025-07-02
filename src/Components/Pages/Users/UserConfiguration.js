@@ -391,7 +391,7 @@ function UserConfiguration() {
                                                           id={`collapseHeading${key}`}
                                                         >
                                                           <button
-                                                            className="accordion-button collapsed"
+                                                            className="accordion-button collapsed border-0"
                                                             type="button"
                                                             data-bs-toggle="collapse"
                                                             data-bs-target={`#collapseRole${key}`}
