@@ -16,7 +16,7 @@ export default function ExportPopUp({
   account,
   setCircularLoader,
   filteredColumnForTable,
-  url
+  url,
 }) {
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
@@ -107,8 +107,8 @@ export default function ExportPopUp({
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-            )
+                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+              )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
@@ -122,10 +122,10 @@ export default function ExportPopUp({
         page === "all"
           ? callType
           : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-              ? callType
-              : page,
+          ? "pstn"
+          : page === "callrecording"
+          ? callType
+          : page,
       variable_sip_from_user: debounceCallOriginFlag,
       variable_sip_to_user: debounceCallDestinationFlag,
       start_date: startDate,
@@ -211,9 +211,7 @@ export default function ExportPopUp({
     setIsExcelLoading(true);
     if (exportChecked === "mail") {
       try {
-        const res = await generalGetFunction(
-          `${queryParams}&export_sent=true`
-        );
+        const res = await generalGetFunction(`${queryParams}&export_sent=true`);
         if (res.status) {
           const updatedData = res?.data?.map(({ peak_json, ...rest }) => rest);
           exportToCSV(updatedData);
@@ -227,7 +225,9 @@ export default function ExportPopUp({
       }
     } else {
       try {
-        const res = await generalGetFunction(`${url}?${queryParams}&export=true`);
+        const res = await generalGetFunction(
+          `${url}?${queryParams}&export=true`
+        );
         if (res.status) {
           // const updatedData = res?.data?.map(obj => {
           //   return Object.fromEntries(
@@ -248,6 +248,24 @@ export default function ExportPopUp({
     }
   };
 
+  const handleClearFilter = () => {
+    setFilterBy("date");
+    setStartDateFlag("");
+    setEndDateFlag("");
+    setDebounceCallOriginFlag("");
+    setDebounceCallOrigin("");
+    setDebounceCallDestinationFlag("");
+    setDebounceCallDestination("");
+    setHangupStatus("");
+    setHagupCause("");
+    setCallType("");
+    setCallDirection([]);
+    setCreatedAt("");
+    setStartDate("");
+    setEndDate("");
+    setPageNumber(1);
+  };
+
   return (
     <div className="addNewContactPopup" style={{ width: "500px" }}>
       <div className="row">
@@ -261,8 +279,11 @@ export default function ExportPopUp({
           <div className="row">
             <h5 className="mb-0 d-flex justify-content-between align-items-center">
               CDR Filters{" "}
-              <button className="tableButton delete">
-                <i className="fa-solid fa-trash" />
+              <button
+                className="tableButton delete"
+                onClick={handleClearFilter}
+              >
+                <i className="fa-regular fa-arrows-rotate" />
               </button>
             </h5>
             {filteredKeys.includes("variable_start_stamp") && (
@@ -318,6 +339,7 @@ export default function ExportPopUp({
                         max={new Date().toISOString().split("T")[0]}
                         value={startDateFlag}
                         onChange={handleStartDateChange}
+                        onKeyDown={(e) => e.preventDefault()}
                       />
                     </div>
                     <div className="formRow border-0 col-4">
@@ -331,6 +353,8 @@ export default function ExportPopUp({
                         value={endDateFlag}
                         onChange={handleEndDateChange}
                         min={startDateFlag}
+                        disabled={!startDateFlag}
+                        onKeyDown={(e) => e.preventDefault()}
                       />
                     </div>
                   </>
@@ -438,7 +462,7 @@ export default function ExportPopUp({
               ""
             )}
             {page === "callrecording" &&
-              !filteredKeys.includes("Hangup-Cause") ? (
+            !filteredKeys.includes("Hangup-Cause") ? (
               ""
             ) : (
               <>
@@ -628,7 +652,6 @@ export default function ExportPopUp({
     </div>
   );
 }
-
 
 // Custom styles for react-select
 const customStyles = {
