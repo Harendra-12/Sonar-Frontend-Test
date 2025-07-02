@@ -613,7 +613,7 @@ function CallBlockingAdd() {
                         onChange={handleCallDestinationChange}
                       />
                     </div>
-                    <div className="formRow border-0 flex-column pb-0 pe-0">
+                    <div className="formRow border-0 flex-column pb-0 pe-0 w-auto">
                       <label className="formLabel text-start m-0 w-100">
                         Call Direction
                       </label>

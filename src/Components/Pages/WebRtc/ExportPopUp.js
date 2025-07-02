@@ -267,183 +267,179 @@ export default function ExportPopUp({
   };
 
   return (
-    <div className="addNewContactPopup" style={{ width: "500px" }}>
-      <div className="row">
-        <div className="col-12 heading mb-0">
-          <i className="fa-light fa-file-export" />
-          <h5>Export Options</h5>
-          <p>Choose what and how you want to export the call detail reports</p>
-        </div>
-        <div style={{ borderBottom: "1px solid var(--border-color)" }} />
-        <div className="col-12 my-2">
-          <div className="row">
-            <h5 className="mb-0 d-flex justify-content-between align-items-center">
-              CDR Filters{" "}
-              <button
-                className="tableButton delete"
-                onClick={handleClearFilter}
-              >
-                <i className="fa-regular fa-arrows-rotate" />
-              </button>
-            </h5>
-            {filteredKeys.includes("variable_start_stamp") && (
-              <>
-                {" "}
-                <div className="formRow border-0 col-4">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Date Filter
-                  </label>
-                  <select
-                    className="formItem"
-                    value={filterBy}
-                    onChange={(e) => {
-                      setFilterBy(e.target.value);
-                      setStartDateFlag("");
-                      setEndDateFlag("");
-                    }}
-                  >
-                    <option value={"date"}>Single Date</option>
-                    <option value={"date_range"}>Date Range</option>
-                    <option value={"7_days"}>Last 7 Days</option>
-                    <option value={"1_month"}>Last 1 Month</option>
-                    {/* <option value={"3_month"}>Last 3 Months</option> */}
-                  </select>
-                </div>
-                {filterBy === "date" && (
-                  <div className="formRow border-0 col-4">
+    <div className="backdropContact" >
+    <div className="backdropContact" >
+      <div className="addNewContactPopup" style={{ width: "500px" }}>
+        <div className="row">
+          <div className="col-12 heading mb-0">
+            <i className="fa-light fa-file-export" />
+            <h5>Export Options</h5>
+            <p>Choose what and how you want to export the call detail reports</p>
+          </div>
+          <div style={{ borderBottom: "1px solid var(--border-color)" }} />
+          <div className="col-12 my-2">
+            <div className="row">
+              <h5 className="mb-0 d-flex justify-content-between align-items-center">
+                CDR Filters{" "}
+                <button className="tableButton delete">
+                  <i className="fa-solid fa-trash" />
+                </button>
+              </h5>
+              {filteredKeys.includes("variable_start_stamp") && (
+                <>
+                  {" "}
+                  <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
                     <label className="formLabel text-start mb-0 w-100">
-                      Choose Date
+                      Date Filter
                     </label>
-                    <input
-                      type="date"
+                    <select
                       className="formItem"
-                      max={new Date()?.toISOString()?.split("T")[0]}
-                      value={startDateFlag}
+                      value={filterBy}
                       onChange={(e) => {
-                        setStartDateFlag(e.target.value);
+                        setFilterBy(e.target.value);
+                        setStartDateFlag("");
+                        setEndDateFlag("");
+                      }}
+                    >
+                      <option value={"date"}>Single Date</option>
+                      <option value={"date_range"}>Date Range</option>
+                      <option value={"7_days"}>Last 7 Days</option>
+                      <option value={"1_month"}>Last 1 Month</option>
+                      {/* <option value={"3_month"}>Last 3 Months</option> */}
+                    </select>
+                  </div>
+                  {filterBy === "date" && (
+                    <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                      <label className="formLabel text-start mb-0 w-100">
+                        Choose Date
+                      </label>
+                      <input
+                        type="date"
+                        className="formItem"
+                        max={new Date()?.toISOString()?.split("T")[0]}
+                        value={startDateFlag}
+                        onChange={(e) => {
+                          setStartDateFlag(e.target.value);
+                          setPageNumber(1);
+                        }}
+                      />
+                      {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />; */}
+                    </div>
+                  )}
+                  {filterBy === "date_range" && (
+                    <>
+                      <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                        <label className="formLabel text-start mb-0 w-100">
+                          From
+                        </label>
+                        <input
+                          type="date"
+                          className="formItem"
+                          max={new Date().toISOString().split("T")[0]}
+                          value={startDateFlag}
+                          onChange={handleStartDateChange}
+                        />
+                      </div>
+                      <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                        <label className="formLabel text-start mb-0 w-100">
+                          To
+                        </label>
+                        <input
+                          type="date"
+                          className="formItem"
+                          max={new Date().toISOString().split("T")[0]}
+                          value={endDateFlag}
+                          onChange={handleEndDateChange}
+                          min={startDateFlag}
+                        />
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+              {filteredKeys.includes("variable_sip_from_user") && (
+                <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                  <label className="formLabel text-start mb-0 w-100">
+                    Call Origin
+                  </label>
+                  <input
+                    type="text"
+                    className="formItem"
+                    // value={debounceCallOrigin}
+                    value={debounceCallOriginFlag}
+                    // onChange={(e) => {
+                    //   setDebounceCallOrigin(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    // min={100}
+                    // max={99999}
+                    onChange={handleCallOriginChange}
+                  />
+                </div>
+              )}
+              {filteredKeys.includes("variable_sip_to_user") && (
+                <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                  <label className="formLabel text-start mb-0 w-100">
+                    Call Destination
+                  </label>
+                  <input
+                    type="text"
+                    className="formItem"
+                    value={debounceCallDestinationFlag}
+                    // value={debounceCallDestination}
+                    // onChange={(e) => {
+                    //   setDebounceCallDestination(e.target.value);
+                    //   setPageNumber(1);
+                    // }}
+                    onChange={handleCallDestinationChange}
+                  />
+                </div>
+              )}
+
+              {page === "all" && filteredKeys.includes("variable_sip_to_user") ? (
+                <>
+                  <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Direction
+                    </label>
+                    <Select
+                      isMulti
+                      onChange={(selectedOptions) => {
+                        const values = selectedOptions
+                          ? selectedOptions.map((opt) => opt.value)
+                          : [];
+                        setCallDirection(values);
                         setPageNumber(1);
                       }}
+                      options={callDirectionOptions}
+                      isSearchable
+                      styles={customStyles}
+                      value={callDirectionOptions.filter((opt) =>
+                        callDirection.includes(opt.value)
+                      )}
                     />
-                    {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />; */}
                   </div>
-                )}
-                {filterBy === "date_range" && (
-                  <>
-                    <div className="formRow border-0 col-4">
-                      <label className="formLabel text-start mb-0 w-100">
-                        From
-                      </label>
-                      <input
-                        type="date"
-                        className="formItem"
-                        max={new Date().toISOString().split("T")[0]}
-                        value={startDateFlag}
-                        onChange={handleStartDateChange}
-                        onKeyDown={(e) => e.preventDefault()}
-                      />
-                    </div>
-                    <div className="formRow border-0 col-4">
-                      <label className="formLabel text-start mb-0 w-100">
-                        To
-                      </label>
-                      <input
-                        type="date"
-                        className="formItem"
-                        max={new Date().toISOString().split("T")[0]}
-                        value={endDateFlag}
-                        onChange={handleEndDateChange}
-                        min={startDateFlag}
-                        disabled={!startDateFlag}
-                        onKeyDown={(e) => e.preventDefault()}
-                      />
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-            {filteredKeys.includes("variable_sip_from_user") && (
-              <div className="formRow border-0 col-4">
-                <label className="formLabel text-start mb-0 w-100">
-                  Call Origin
-                </label>
-                <input
-                  type="text"
-                  className="formItem"
-                  // value={debounceCallOrigin}
-                  value={debounceCallOriginFlag}
-                  // onChange={(e) => {
-                  //   setDebounceCallOrigin(e.target.value);
-                  //   setPageNumber(1);
-                  // }}
-                  // min={100}
-                  // max={99999}
-                  onChange={handleCallOriginChange}
-                />
-              </div>
-            )}
-            {filteredKeys.includes("variable_sip_to_user") && (
-              <div className="formRow border-0 col-4">
-                <label className="formLabel text-start mb-0 w-100">
-                  Call Destination
-                </label>
-                <input
-                  type="text"
-                  className="formItem"
-                  value={debounceCallDestinationFlag}
-                  // value={debounceCallDestination}
-                  // onChange={(e) => {
-                  //   setDebounceCallDestination(e.target.value);
-                  //   setPageNumber(1);
-                  // }}
-                  onChange={handleCallDestinationChange}
-                />
-              </div>
-            )}
-
-            {page === "all" && filteredKeys.includes("variable_sip_to_user") ? (
-              <>
-                <div className="formRow border-0 col-4">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Direction
-                  </label>
-                  <Select
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const values = selectedOptions
-                        ? selectedOptions.map((opt) => opt.value)
-                        : [];
-                      setCallDirection(values);
-                      setPageNumber(1);
-                    }}
-                    options={callDirectionOptions}
-                    isSearchable
-                    styles={customStyles}
-                    value={callDirectionOptions.filter((opt) =>
-                      callDirection.includes(opt.value)
-                    )}
-                  />
-                </div>
-                <div className="formRow border-0 col-4">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Call Type
-                  </label>
-                  <Select
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const values = selectedOptions
-                        ? selectedOptions.map((opt) => opt.value)
-                        : [];
-                      setCallType(values);
-                      setPageNumber(1);
-                    }}
-                    options={callTypeOptions}
-                    isSearchable
-                    styles={customStyles}
-                    value={callTypeOptions.filter((opt) =>
-                      callType.includes(opt.value)
-                    )}
-                  />
-                  {/* <select
+                  <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Call Type
+                    </label>
+                    <Select
+                      isMulti
+                      onChange={(selectedOptions) => {
+                        const values = selectedOptions
+                          ? selectedOptions.map((opt) => opt.value)
+                          : [];
+                        setCallType(values);
+                        setPageNumber(1);
+                      }}
+                      options={callTypeOptions}
+                      isSearchable
+                      styles={customStyles}
+                      value={callTypeOptions.filter((opt) =>
+                        callType.includes(opt.value)
+                      )}
+                    />
+                    {/* <select
                     className="formItem"
                     onChange={(e) => {
                       setCallType(e.target.value);
@@ -456,37 +452,37 @@ export default function ExportPopUp({
                     <option value={"callcenter"}>Call Center</option>
                     <option value={"ringgroup"}>Ring Group</option>
                   </select> */}
-                </div>
-              </>
-            ) : (
-              ""
-            )}
-            {page === "callrecording" &&
-            !filteredKeys.includes("Hangup-Cause") ? (
-              ""
-            ) : (
-              <>
-                <div className="formRow border-0 col-4">
-                  <label className="formLabel text-start mb-0 w-100">
-                    Hangup Status
-                  </label>
-                  <Select
-                    isMulti
-                    onChange={(selectedOptions) => {
-                      const values = selectedOptions
-                        ? selectedOptions.map((opt) => opt.value)
-                        : [];
-                      setHagupCause(values);
-                      setPageNumber(1);
-                    }}
-                    options={hangupCauseOptions}
-                    isSearchable
-                    styles={customStyles}
-                    value={hangupCauseOptions.filter((opt) =>
-                      hangupCause.includes(opt.value)
-                    )}
-                  />
-                  {/* <select
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+              {page === "callrecording" &&
+                !filteredKeys.includes("Hangup-Cause") ? (
+                ""
+              ) : (
+                <>
+                  <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                    <label className="formLabel text-start mb-0 w-100">
+                      Hangup Status
+                    </label>
+                    <Select
+                      isMulti
+                      onChange={(selectedOptions) => {
+                        const values = selectedOptions
+                          ? selectedOptions.map((opt) => opt.value)
+                          : [];
+                        setHagupCause(values);
+                        setPageNumber(1);
+                      }}
+                      options={hangupCauseOptions}
+                      isSearchable
+                      styles={customStyles}
+                      value={hangupCauseOptions.filter((opt) =>
+                        hangupCause.includes(opt.value)
+                      )}
+                    />
+                    {/* <select
                     className="formItem"
                     onChange={(e) => {
                       setHagupCause(e.target.value);
@@ -500,30 +496,30 @@ export default function ExportPopUp({
                     <option value={"Cancelled"}>Cancelled</option>
                     <option value={"Failed"}>Failed</option>
                   </select> */}
-                </div>
-                {filteredKeys.includes("Hangup-Cause") && (
-                  <div className="formRow border-0 col-4">
-                    <label className="formLabel text-start mb-0 w-100">
-                      Hangup Cause
-                    </label>
-                    <Select
-                      isMulti
-                      onChange={(selectedOptions) => {
-                        const values = selectedOptions
-                          ? selectedOptions.map((opt) => opt.value)
-                          : [];
-                        setHangupStatus(values);
-                        setPageNumber(1);
-                      }}
-                      options={hangupStatusOptions}
-                      isSearchable
-                      styles={customStyles}
-                      value={hangupStatusOptions.filter((opt) =>
-                        hangupStatus.includes(opt.value)
-                      )}
-                    />
+                  </div>
+                  {filteredKeys.includes("Hangup-Cause") && (
+                    <div className="formRow border-0 col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-12">
+                      <label className="formLabel text-start mb-0 w-100">
+                        Hangup Cause
+                      </label>
+                      <Select
+                        isMulti
+                        onChange={(selectedOptions) => {
+                          const values = selectedOptions
+                            ? selectedOptions.map((opt) => opt.value)
+                            : [];
+                          setHangupStatus(values);
+                          setPageNumber(1);
+                        }}
+                        options={hangupStatusOptions}
+                        isSearchable
+                        styles={customStyles}
+                        value={hangupStatusOptions.filter((opt) =>
+                          hangupStatus.includes(opt.value)
+                        )}
+                      />
 
-                    {/* <select
+                      {/* <select
                       className="formItem"
                       onChange={(e) => {
                         setHangupStatus(e.target.value);
@@ -582,73 +578,75 @@ export default function ExportPopUp({
                         Invalid Number Format
                       </option>
                     </select> */}
-                  </div>
-                )}
-              </>
-            )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        <div style={{ borderBottom: "1px solid var(--border-color)" }} />
-        <div className="col-12 mt-2">
-          <h5 className="mb-0 d-flex justify-content-between align-items-center">
-            Format Options
-          </h5>
-          <div className="form-check mt-2">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              checked={exportChecked === "CSV"}
-            />
-            <label className="formLabel" htmlFor="flexRadioDefault1">
-              Export To CSV
-            </label>
+          <div style={{ borderBottom: "1px solid var(--border-color)" }} />
+          <div className="col-12 mt-2">
+            <h5 className="mb-0 d-flex justify-content-between align-items-center">
+              Format Options
+            </h5>
+            <div className="form-check mt-2">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                checked={exportChecked === "CSV"}
+              />
+              <label className="formLabel" htmlFor="flexRadioDefault1">
+                Export To CSV
+              </label>
+            </div>
+            <div className="form-check mt-2">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault2"
+                checked={exportChecked === "mail"}
+                onChange={(e) =>
+                  e.target.checked
+                    ? setExportChecked("mail")
+                    : setExportChecked("CSV")
+                }
+              />
+              <label className="formLabel" htmlFor="flexRadioDefault2">
+                Send To Mail
+              </label>
+            </div>
           </div>
-          <div className="form-check mt-2">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault2"
-              checked={exportChecked === "mail"}
-              onChange={(e) =>
-                e.target.checked
-                  ? setExportChecked("mail")
-                  : setExportChecked("CSV")
-              }
-            />
-            <label className="formLabel" htmlFor="flexRadioDefault2">
-              Send To Mail
-            </label>
-          </div>
-        </div>
-        <div className="col-xl-12 mt-2">
-          <div className="d-flex justify-content-between">
-            <button
-              className="panelButton gray ms-0"
-              onClick={() => setExportPopup(false)}
-            >
-              <span className="text">Close</span>
-              <span className="icon">
-                <i className="fa-solid fa-caret-left" />
-              </span>
-            </button>
-            <button
-              className="panelButton me-0"
-              onClick={() => {
-                handleExport();
-              }}
-              disabled={isExcelLoading}
-            >
-              <span className="text">Export</span>
-              <span className="icon">
-                <i className="fa-solid fa-file-export" />
-              </span>
-            </button>
+          <div className="col-xl-12 mt-2">
+            <div className="d-flex justify-content-between">
+              <button
+                className="panelButton gray ms-0"
+                onClick={() => setExportPopup(false)}
+              >
+                <span className="text">Close</span>
+                <span className="icon">
+                  <i className="fa-solid fa-caret-left" />
+                </span>
+              </button>
+              <button
+                className="panelButton me-0"
+                onClick={() => {
+                  handleExport();
+                }}
+                disabled={isExcelLoading}
+              >
+                <span className="text">Export</span>
+                <span className="icon">
+                  <i className="fa-solid fa-file-export" />
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

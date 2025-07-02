@@ -471,7 +471,7 @@ const UsersAdd = () => {
                               ""
                             )}
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="text"
                               name="extension"
@@ -496,7 +496,7 @@ const UsersAdd = () => {
                               Required: At least 6 character
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="password"
                               name="extension"
@@ -522,7 +522,7 @@ const UsersAdd = () => {
                               match.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="password"
                               name="extension"
@@ -542,7 +542,7 @@ const UsersAdd = () => {
                               Email <span className="text-danger">*</span>
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="email"
                               name="extension"
@@ -564,7 +564,7 @@ const UsersAdd = () => {
                               First Name <span className="text-danger">*</span>{" "}
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="text"
                               name="extension"
@@ -585,7 +585,7 @@ const UsersAdd = () => {
                           <div className="formLabel">
                             <label htmlFor="">Last Name</label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="text"
                               name="extension"
@@ -604,7 +604,7 @@ const UsersAdd = () => {
                           <div className="formLabel">
                             <label htmlFor="">Alias/Nickname</label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="text"
                               name="extension"
@@ -623,7 +623,7 @@ const UsersAdd = () => {
                           <div className="formLabel">
                             <label htmlFor="">Profile Picture</label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div className="profileView p-0">
                               <button
                                 style={{
@@ -682,7 +682,7 @@ const UsersAdd = () => {
                               Select the default time zone.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -717,7 +717,7 @@ const UsersAdd = () => {
                               Set the user's account status.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -745,7 +745,7 @@ const UsersAdd = () => {
                               the User.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -798,7 +798,7 @@ const UsersAdd = () => {
                               Assign an extension to the newly created user.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             {/* <select
                               className="formItem"
                               name="extension_id"
@@ -897,7 +897,7 @@ const UsersAdd = () => {
                               Assign usage to the newly created user.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <select
                               className="formItem"
                               name="extension_id"

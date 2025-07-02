@@ -211,7 +211,7 @@ function ClickToCallSetup() {
                                           </label>
                                         </div>
 
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <input
                                             type="file"
                                             name="did_id_view"
@@ -244,7 +244,7 @@ function ClickToCallSetup() {
                                             Choose your color scheme
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <div className="d-flex align-items-center justify-content-between">
                                             {/* <div>
                                               <div className="d-flex align-items-center justify-content-between">
@@ -586,7 +586,7 @@ function ClickToCallSetup() {
                                             Choose your text color scheme
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <div className="d-flex align-items-center justify-content-between">
                                             <div className="form-widths d-flex">
                                               <div className="me-2">
@@ -628,7 +628,7 @@ function ClickToCallSetup() {
                                             Choose your button color scheme
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <div className="d-flex align-items-center justify-content-between">
                                             <div className="form-widths d-flex">
                                               <div className="me-2">
@@ -668,7 +668,7 @@ function ClickToCallSetup() {
                                             Enter your company name
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <input className="formItem" defaultValue="AnglePBX"  {...register("name")} />
                                           {errors.did_id && (
                                             <ErrorMessage text={errors.name} />
@@ -687,7 +687,7 @@ function ClickToCallSetup() {
                                             Enter your company description
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <input className="formItem" defaultValue={"Business Phone System | Cloud Contact Center | Cloud PBX"}  {...register("description")} />
                                           {errors.did_id && (
                                             <ErrorMessage text={errors.description} />
@@ -704,7 +704,7 @@ function ClickToCallSetup() {
                                             Please choose the usage.
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           <select
                                             type="text"
                                             name="did_id_view"
@@ -745,7 +745,7 @@ function ClickToCallSetup() {
                                             Please choose the usage.
                                           </label>
                                         </div>
-                                        <div className="col-7">
+                                        <div className="col-12">
                                           {watch().usages !== "pstn" &&
                                             watch().usages !== "" ? (
                                             <ActionList
