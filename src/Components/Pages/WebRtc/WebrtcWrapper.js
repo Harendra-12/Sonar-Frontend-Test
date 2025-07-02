@@ -42,7 +42,6 @@ const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
-  // const state = useSelector((state) => state);
   const volume = useSelector((state) => state?.volume);
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
@@ -259,14 +258,6 @@ const WebrtcWrapper = () => {
       });
   };
 
-  const callSocketForMeetingRoomNotification = () => {
-    const socket = new WebSocket(`wss://testing.webvio.in:8084/ws?user_id=${account?.id}`);
-    socket.addEventListener('message', (data) => {
-      console.log('WebSocket connection opened cccccccccc', data);
-    });
-  }
-
-  callSocketForMeetingRoomNotification()
 
   useEffect(() => {
     checkMicrophoneStatus(); // Check mic status when component mounts

@@ -43,7 +43,7 @@ function MeetingAdd() {
   } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants.length == 1 && participants[0].length == 0) {
+    if (participants?.length == 1 && participants[0].length == 0 && watch()?.conf_type !== "internal") {
       toast.error("Please add participants");
       return;
     }
@@ -62,6 +62,9 @@ function MeetingAdd() {
         // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
         emails: participants,
       };
+      if(watch()?.conf_type == "internal"){
+        delete parsedData?.emails
+      }
       const apiData = await generalPostFunction(
         "/conference/store",
         parsedData

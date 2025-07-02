@@ -524,7 +524,6 @@ function Email({ selectedMail, }) {
   const handleMailFromAddressChange = (event) => {
     const shouldLoad = true;
     fetchMailCategory(shouldLoad, event?.target?.value, true)
-    // fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
     setMailReplay(false)
     setShowMailList(true)
