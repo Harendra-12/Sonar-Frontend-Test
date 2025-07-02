@@ -963,7 +963,7 @@ function CdrFilterReport({ page }) {
                         <button
                           className="ms-2 btn btn-success-light btn-wave new_buttonStyle"
                           style={{ maxWidth: "initial" }}
-                          onClick={() => setAdvanceSearchPopup(true)}
+                          onClick={() =>{ setAdvanceSearchPopup(true); setAdvanceSearch("")}}
                         >
                           <span>Advanced Search</span>
                           <i className="fa-solid fa-magnifying-glass" />
@@ -2137,7 +2137,7 @@ function CdrFilterReport({ page }) {
           <div className="addNewContactPopup">
             <button
               className="clearButton2 xl"
-              onClick={() => setAdvanceSearchPopup(false)}
+              onClick={() => {setAdvanceSearchPopup(false);setAdvanceSearch("")}}
               style={{ position: "absolute", top: "10px", right: "10px" }}
             >
               <i className="fa-light fa-xmark" />
@@ -2157,7 +2157,7 @@ function CdrFilterReport({ page }) {
                   />
                 </div>
               </div>
-              <div className="row mx-auto">
+              {/* <div className="row mx-auto">
                 <div className="formRow border-0">
                   <label className="formLabel text-start mb-0 w-100">From</label>
                   <div className="d-flex w-100">
@@ -2194,7 +2194,7 @@ function CdrFilterReport({ page }) {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="col-xl-12 mt-3">
                 <button
                   className="panelButton mx-auto"
