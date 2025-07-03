@@ -165,6 +165,7 @@ function CdrReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallOrigin("");
       }
@@ -178,6 +179,7 @@ function CdrReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallDestination("");
       }
@@ -840,6 +842,8 @@ function CdrReport({ page }) {
                             setFilterBy(e.target.value);
                             setStartDateFlag("");
                             setEndDateFlag("");
+                            setPageNumber(1);
+                            setItemsPerPage(20);
                           }}
                         >
                           <option value={"date"}>Single Date</option>
@@ -863,6 +867,7 @@ function CdrReport({ page }) {
                               onChange={(e) => {
                                 setStartDateFlag(e.target.value);
                                 setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             />
                             <input
@@ -875,6 +880,7 @@ function CdrReport({ page }) {
                                   startTime: `${e.target.value}:00`,
                                 }));
                                 setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             />
                           </div>
@@ -895,6 +901,7 @@ function CdrReport({ page }) {
                                 onChange={(e) => {
                                   setStartDateFlag(e.target.value);
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                                 onKeyDown={(e) => e.preventDefault()}
                               />
@@ -908,6 +915,7 @@ function CdrReport({ page }) {
                                     startTime: `${e.target.value}:00`,
                                   }));
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                               />
                             </div>
@@ -925,6 +933,7 @@ function CdrReport({ page }) {
                                 onChange={(e) => {
                                   setEndDateFlag(e.target.value);
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                                 onKeyDown={(e) => e.preventDefault()}
                                 disabled={!startDateFlag}
@@ -940,6 +949,7 @@ function CdrReport({ page }) {
                                     endTime: `${e.target.value}:00`,
                                   }));
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                               />
                             </div>
@@ -1058,6 +1068,8 @@ function CdrReport({ page }) {
                               onChange={(e) => {
                                 setIsSorting(e.target.value);
                                 setSortingValue("");
+                                setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             >
                               <option value="">Choose Sorting</option>

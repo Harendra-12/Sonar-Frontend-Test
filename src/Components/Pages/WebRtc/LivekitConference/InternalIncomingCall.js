@@ -22,7 +22,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     socketSendPeerCallMessage({
       action: "peercallUpdate",
       chat_call_id: item.uuid,
-      hangup_cause: "",
+      Hangup_cause: "",
       room_id: item.room_id,
       duration: "",
       status: "started",
@@ -38,7 +38,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     socketSendPeerCallMessage({
       action: "peercallUpdate",
       chat_call_id: item.uuid,
-      hangup_cause: "rejected",
+      Hangup_cause: "rejected",
       room_id: item.room_id,
       duration: "0",
       status: "ended",
@@ -47,7 +47,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
 
   useEffect(() => {
     incomingCall.map((item) => {
-      if (internalCallAction?.room_id === item.room_id && internalCallAction?.hangup_cause === "originator_cancel") {
+      if (internalCallAction?.room_id === item.room_id && internalCallAction?.Hangup_cause === "originator_cancel") {
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null })
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item.room_id });
       }

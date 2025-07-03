@@ -80,8 +80,8 @@ function Members({
   useEffect(() => {
     if (
       internalCallAction &&
-      (internalCallAction?.hangup_cause !== "originator_cancel" ||
-        internalCallAction?.hangup_cause !== "success")
+      (internalCallAction?.Hangup_cause !== "originator_cancel" ||
+        internalCallAction?.Hangup_cause !== "success")
     ) {
       const filterCall = incomingCall.filter(
         (item) => item.room_id === internalCallAction.room_id
@@ -167,7 +167,7 @@ function Members({
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
           )?.[0]?.uuid,
-          hangup_cause: "success",
+          Hangup_cause: "success",
           room_id: roomName,
           duration: 120,
           status: "ended",
@@ -181,7 +181,7 @@ function Members({
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
           )?.[0]?.uuid,
-          hangup_cause: "originator_cancel",
+          Hangup_cause: "originator_cancel",
           room_id: roomName,
           duration: 0,
           status: "ended",
@@ -214,9 +214,9 @@ function Members({
   useEffect(() => {
     if (
       (internalCallAction?.room_id === roomName &&
-        internalCallAction?.hangup_cause === "rejected") ||
-      internalCallAction?.hangup_cause === "success" ||
-      internalCallAction?.hangup_cause === "originator_cancel"
+        internalCallAction?.Hangup_cause === "rejected") ||
+      internalCallAction?.Hangup_cause === "success" ||
+      internalCallAction?.Hangup_cause === "originator_cancel"
     ) {
       handleDisconnect();
     }

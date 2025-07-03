@@ -398,7 +398,7 @@ function CallBlockingAdd() {
                     </div>
                     <div className="col-xl-6 col-12">
                       <div className="row">
-                        <div className="col-6 pe-2">
+                        <div className="col-12 ">
                           <label className="formItemDesc">Type</label>
                           <select
                             className="formItem"
@@ -426,7 +426,7 @@ function CallBlockingAdd() {
                             <ErrorMessage text={errors.block_type.message} />
                           )}
                         </div>
-                        <div className="col-6">
+                        <div className="col-12">
                           <label className="formItemDesc">Extension</label>
                           {/* <Select isMulti options={[]} /> */}
                           <ActionListMulti

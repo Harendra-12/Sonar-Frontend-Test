@@ -18,7 +18,6 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { useSelector } from "react-redux";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
-
 function VoiceMailReport() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -30,8 +29,8 @@ function VoiceMailReport() {
   const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
   const [audioURL, setAudioURL] = useState("");
-  const [showAudio, setShowAudio] = useState(false)
-  const [showDropDown, setShowDropdown] = useState(false)
+  const [showAudio, setShowAudio] = useState(false);
+  const [showDropDown, setShowDropdown] = useState(false);
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
@@ -72,12 +71,12 @@ function VoiceMailReport() {
     if (apiData?.status) {
       setVoiceMail(apiData.data);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     } else {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     }
-  }
+  };
 
   useEffect(() => {
     // if (searchValue.trim().length === 0) {
@@ -93,10 +92,10 @@ function VoiceMailReport() {
   }, [pageNumber, rowPerPage, debouncedSearchTerm]);
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = true;
     getData(shouldLoad);
-  }
+  };
 
   return (
     <>
@@ -110,7 +109,8 @@ function VoiceMailReport() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Voicemail Reports {""}
+                        <h4>
+                          Voicemail Reports {""}
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -128,7 +128,6 @@ function VoiceMailReport() {
                         <p>Here are all the Voicemail Reportsss</p>
                       </div>
                       <div className="buttonGroup">
-
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -168,7 +167,10 @@ function VoiceMailReport() {
                         <label>Show</label>
                         <select
                           className="formItem"
-                          onChange={(e) => setRowPerPage(e.target.value)}
+                          onChange={(e) => {
+                            setRowPerPage(e.target.value);
+                            setPageNumber(1);
+                          }}
                         >
                           <option value={20}>20</option>
                           <option value={30}>30</option>
@@ -186,20 +188,26 @@ function VoiceMailReport() {
                         account?.sectionPermissions,
                         account?.permissions,
                         "search"
-                      ) &&
+                      ) && (
                         <div className="searchBox">
                           <label>Search:</label>
                           <input
                             type="search"
                             value={searchValue}
                             className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            onChange={(e) => {
+                              setSearchValue(e.target.value);
+                              setPageNumber(1);
+                              setRowPerPage(20);
+                            }}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                     <div className="tableContainer">
-                      {loading ? <ThreeDotedLoader /> :
+                      {loading ? (
+                        <ThreeDotedLoader />
+                      ) : (
                         <table>
                           <thead>
                             <tr>
@@ -219,53 +227,54 @@ function VoiceMailReport() {
                               account?.sectionPermissions,
                               account?.permissions,
                               "read"
-                            ) ? <tr><td colSpan={99}>You don't have any permission</td></tr> :
-                              voiceMail && voiceMail.data.length > 0 ?
-                                voiceMail?.data.map((item, index) => {
-                                  return (
-                                    <>
-                                      <tr className="cdrTableRow">
-                                        <td>{index + 1}.</td>
-                                        <td>{item.src}</td>
-                                        <td>{item.dest}</td>
-                                        {/* <td>www.voicemailrecordingpath.com</td> */}
-                                        <td>
-                                          <button
-                                            className="tableButton px-2 mx-0"
-                                            onClick={() => {
-                                              if (
-                                                item[
-                                                "recording_path"
-                                                ] ===
-                                                currentPlaying
-                                              ) {
-                                                setCurrentPlaying(
-                                                  ""
-                                                );
-                                                setAudioURL("");
-                                              } else {
-                                                handlePlaying(
-                                                  item[
-                                                  "recording_path"
-                                                  ]
-                                                );
-                                              }
-                                            }}
-                                          >
-                                            {currentPlaying ===
-                                              item[
-                                              "recording_path"
-                                              ] ? (
-                                              <i className="fa-solid fa-chevron-up"></i>
-                                            ) : (
-                                              <i className="fa-solid fa-chevron-down"></i>
-                                            )}
-                                          </button>
-                                        </td>
-                                        <td>{item.duration}</td>
-                                        <td>{convertDateToCurrentTimeZone(item.created_at.split(" ")[0])}</td>
-                                      </tr>
-                                      {/* {currentPlaying == item["recording_path"] && (
+                            ) ? (
+                              <tr>
+                                <td colSpan={99}>
+                                  You don't have any permission
+                                </td>
+                              </tr>
+                            ) : voiceMail && voiceMail.data.length > 0 ? (
+                              voiceMail?.data.map((item, index) => {
+                                return (
+                                  <>
+                                    <tr className="cdrTableRow">
+                                      <td>{index + 1}.</td>
+                                      <td>{item.src}</td>
+                                      <td>{item.dest}</td>
+                                      {/* <td>www.voicemailrecordingpath.com</td> */}
+                                      <td>
+                                        <button
+                                          className="tableButton px-2 mx-0"
+                                          onClick={() => {
+                                            if (
+                                              item["recording_path"] ===
+                                              currentPlaying
+                                            ) {
+                                              setCurrentPlaying("");
+                                              setAudioURL("");
+                                            } else {
+                                              handlePlaying(
+                                                item["recording_path"]
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          {currentPlaying ===
+                                          item["recording_path"] ? (
+                                            <i className="fa-solid fa-chevron-up"></i>
+                                          ) : (
+                                            <i className="fa-solid fa-chevron-down"></i>
+                                          )}
+                                        </button>
+                                      </td>
+                                      <td>{item.duration}</td>
+                                      <td>
+                                        {convertDateToCurrentTimeZone(
+                                          item.created_at.split(" ")[0]
+                                        )}
+                                      </td>
+                                    </tr>
+                                    {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
@@ -282,7 +291,7 @@ function VoiceMailReport() {
                                             type="audio/mpeg"
                                           />
                                         </audio> */}
-                                      {/* <AudioWaveformCommon audioUrl={audioURL} />
+                                    {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -291,22 +300,29 @@ function VoiceMailReport() {
                                     </td>
                                   </tr>
                                 )} */}
-                                      {currentPlaying ===
-                                        item["recording_path"] &&
-                                        item["recording_path"] && (
-                                          <tr>
-                                            <td colSpan={99}>
-                                              <div className="audio-container mx-2">
-                                                <AudioWaveformCommon audioUrl={audioURL} />
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        )}
-                                    </>
-                                  );
-                                })
-                                : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
-                            }
+                                    {currentPlaying ===
+                                      item["recording_path"] &&
+                                      item["recording_path"] && (
+                                        <tr>
+                                          <td colSpan={99}>
+                                            <div className="audio-container mx-2">
+                                              <AudioWaveformCommon
+                                                audioUrl={audioURL}
+                                              />
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      )}
+                                  </>
+                                );
+                              })
+                            ) : (
+                              <tr>
+                                <td colSpan={99}>
+                                  <EmptyPrompt generic={true} />
+                                </td>
+                              </tr>
+                            )}
 
                             {/* {!loading && cdr && cdr.data.length === 0 ? (
                                                         <td colSpan={99}>
@@ -317,14 +333,17 @@ function VoiceMailReport() {
                                                     )} */}
                           </tbody>
                         </table>
-                      }
+                      )}
                     </div>
                     <div className="tableHeader mb-3">
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={voiceMail?.last_page}
                         from={(pageNumber - 1) * voiceMail?.per_page + 1}
-                        to={voiceMail?.to || (pageNumber - 1) * voiceMail?.per_page + 1}
+                        to={
+                          voiceMail?.to ||
+                          (pageNumber - 1) * voiceMail?.per_page + 1
+                        }
                         total={voiceMail?.total}
                         defaultPage={pageNumber}
                       />
