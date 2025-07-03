@@ -1112,11 +1112,10 @@ const UsersAdd = () => {
                                   "image/jpeg",
                                   "image/jpg",
                                   "image/png",
-                                  "image/gif",
                                 ].includes(file.type)
                               ) {
                                 toast.error(
-                                  "Only JPG, JPEG, PNG & GIF files are allowed."
+                                  "Only JPG, JPEG & PNG files are allowed."
                                 );
                                 return;
                               }
@@ -1145,7 +1144,7 @@ const UsersAdd = () => {
                               Drag and Drop or <span>Click on upload</span>
                             </p>
                             <span>
-                              Supports formats: JPG, JPEG, PNG, GIF (Max Size:
+                              Supports formats: JPG, JPEG, PNG (Max Size:
                               2MB)
                             </span>
                           </div>

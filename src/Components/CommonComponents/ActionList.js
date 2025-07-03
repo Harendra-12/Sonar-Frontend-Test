@@ -35,7 +35,6 @@ const ActionList = ({
   // label = "Set the action to perform when the max wait time is reached.",
 }) => {
   const dispatch = useDispatch();
-
   const [ringGroup, setRingGroup] = useState([]);
   const [extension, setExtension] = useState([]);
   const [callCenter, setCallCenter] = useState([]);

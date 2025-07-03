@@ -515,6 +515,9 @@ const RingGroupAdd = () => {
   const actionListValueForForward = (value) => {
     setValue("forward_to", value[0]);
   };
+  const actionListValueForDestination = (value) => {
+    setValue("timeout_destination", value[0]);
+  };
   const forwardStatus = watch("forward", "disabled");
   const destinationStatus = watch("timeout_destination", "disabled")
   return (
@@ -668,10 +671,10 @@ const RingGroupAdd = () => {
                       <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <div className="row">
                           <div
-                            className={`col-${forwardStatus != "disabled" ? "4 pe-2 ms-auto" : "12"
+                            className={`col-${destinationStatus != "disabled" ? "4 pe-2 ms-auto" : "12"
                               }`}
                           >
-                            {forwardStatus != "disabled" && (
+                            {destinationStatus != "disabled" && (
                               <div className="formLabel">
                                 <label className="formItemDesc">Type</label>
                               </div>
@@ -700,7 +703,7 @@ const RingGroupAdd = () => {
                             <div className="col-4">
                               {watch()?.destination_type === "pstn" &&
                                 watch()?.destination_type != "disabled" && (
-                                  <div className="col-3">
+                                  <div className="col-12">
                                     <div className="formLabel">
                                       <label>PSTN</label>
                                     </div>
@@ -730,16 +733,16 @@ const RingGroupAdd = () => {
 
                               {watch()?.destination_type !== "pstn" &&
                                 watch()?.destination_type != "disabled" && (
-                                  <div className="col-3">
+                                  <div className="col-12">
                                     <>
                                       <div className="formLabel">
                                         <label>Extension</label>
                                       </div>
                                       <ActionList
-                                        category={watch().timeout_destination}
+                                        category={watch().destination_type}
                                         title={null}
                                         label={null}
-                                        getDropdownValue={actionListValueForForward}
+                                        getDropdownValue={actionListValueForDestination}
                                         value={watch().timeout_destination}
                                         {...register("timeout_destination")}
                                       />
