@@ -228,6 +228,7 @@ const ClickToCallReport = ({ page }) => {
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallOrigin("");
       }
@@ -241,6 +242,7 @@ const ClickToCallReport = ({ page }) => {
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallDestination("");
       }
@@ -942,6 +944,8 @@ const ClickToCallReport = ({ page }) => {
                                   setFilterBy(e.target.value);
                                   setStartDateFlag("");
                                   setEndDateFlag("");
+                                  setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                               >
                                 <option value={"date"}>Single Date</option>
@@ -967,6 +971,7 @@ const ClickToCallReport = ({ page }) => {
                                     onChange={(e) => {
                                       setStartDateFlag(e.target.value);
                                       setPageNumber(1);
+                                      setItemsPerPage(20);
                                     }}
                                   />
                                   <input
@@ -979,6 +984,7 @@ const ClickToCallReport = ({ page }) => {
                                         startTime: `${e.target.value}:00`,
                                       }));
                                       setPageNumber(1);
+                                      setItemsPerPage(20);
                                     }}
                                   />
                                 </div>
@@ -1001,6 +1007,7 @@ const ClickToCallReport = ({ page }) => {
                                       onChange={(e) => {
                                         setStartDateFlag(e.target.value);
                                         setPageNumber(1);
+                                        setItemsPerPage(20);
                                       }}
                                       onKeyDown={(e) => e.preventDefault()}
                                     />
@@ -1014,6 +1021,7 @@ const ClickToCallReport = ({ page }) => {
                                           startTime: `${e.target.value}:00`,
                                         }));
                                         setPageNumber(1);
+                                        setItemsPerPage(20);
                                       }}
                                     />
                                   </div>
@@ -1033,6 +1041,7 @@ const ClickToCallReport = ({ page }) => {
                                       onChange={(e) => {
                                         setEndDateFlag(e.target.value);
                                         setPageNumber(1);
+                                        setItemsPerPage(20);
                                       }}
                                       onKeyDown={(e) => e.preventDefault()}
                                       disabled={!startDateFlag}
@@ -1048,6 +1057,7 @@ const ClickToCallReport = ({ page }) => {
                                           endTime: `${e.target.value}:00`,
                                         }));
                                         setPageNumber(1);
+                                        setItemsPerPage(20);
                                       }}
                                     />
                                   </div>
@@ -1216,6 +1226,7 @@ const ClickToCallReport = ({ page }) => {
                                                 : [...prev, option.value]
                                             );
                                             setPageNumber(1);
+                                            setItemsPerPage(20);
                                           }}
                                         />
                                         <span className="text-dark ms-2">
@@ -1261,6 +1272,7 @@ const ClickToCallReport = ({ page }) => {
                                                   : [...prev, option.value]
                                               );
                                               setPageNumber(1);
+                                              setItemsPerPage(20);
                                             }}
                                           />
                                           <span className="text-dark ms-2">
@@ -1331,6 +1343,8 @@ const ClickToCallReport = ({ page }) => {
                                         setFilteredColumnForTable(
                                           filteredVallocal
                                         );
+                                        setPageNumber(1);
+                                        setItemsPerPage(20);
                                       }}
                                     />
                                     <span className="text-dark ms-2">
