@@ -1315,7 +1315,25 @@ function Navbar() {
                               </NavLink>
 
                             </li> */}
+                              <li className="tabItem ">
+                              <NavLink
+                                to="/ai-phone-number"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/ai-phone-number",
 
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">  Phone Number</div>
+                              </NavLink>
+                            </li>
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-all-agent"
@@ -1374,25 +1392,7 @@ function Navbar() {
                                 <div className="itemTitle">Knowledge Base</div>
                               </NavLink>
                             </li>
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/ai-phone-number"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    [
-                                      "/ai-phone-number",
-
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">  Phone Number</div>
-                              </NavLink>
-                            </li>
+                          
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-call-history"

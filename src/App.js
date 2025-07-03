@@ -239,14 +239,14 @@ function App() {
   const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
   // const { sendMessage } = Socket();
-  // Socket();
-  // const { sendMessage } = GoMessageSocket()
-  // GoConferenceNotificationSocket();
-  // GoSocket();
-  // GoSocketActiveCall();
-  // useEffect(() => {
-  //   dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
-  // }, [GoMessageSocket]);
+  Socket();
+  const { sendMessage } = GoMessageSocket()
+  GoConferenceNotificationSocket();
+  GoSocket();
+  GoSocketActiveCall();
+  useEffect(() => {
+    dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
+  }, [GoMessageSocket]);
 
   // Unlock this if want push notification add account edit here if id is available
   // useEffect(()=>{
