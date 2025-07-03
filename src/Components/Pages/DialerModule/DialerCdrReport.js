@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, checkViewSidebar, convertDateToCurrentTimeZone, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  checkViewSidebar,
+  convertDateToCurrentTimeZone,
+  featureUnderdevelopment,
+  formatTime,
+  formatTimeWithAMPM,
+  generalGetFunction,
+  useDebounce,
+} from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -14,7 +23,7 @@ function DialerCdrReport() {
   const [filteredData, setFilteredData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [refreshState, setRefreshState] = useState(false);
   const debouncedSearchTerm = useDebounce(searchQuery, 1000);
@@ -24,18 +33,20 @@ function DialerCdrReport() {
   async function getAllData(shouldLoad) {
     if (shouldLoad) setLoading(true);
     try {
-      const response = await generalGetFunction(`/campaign/cdr?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
+      const response = await generalGetFunction(
+        `/campaign/cdr?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`
+      );
       if (response.status) {
         setFilteredData(response.data);
       } else {
         toast.error(response.message);
       }
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     } catch (err) {
       console.log(err);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     }
   }
 
@@ -50,16 +61,16 @@ function DialerCdrReport() {
 
     //   return () => clearTimeout(delay);
     // }
-    setRefreshState(true)
-    const shouldLoad = true
+    setRefreshState(true);
+    const shouldLoad = true;
     getAllData(shouldLoad);
-  }, [pageNumber, itemsPerPage, debouncedSearchTerm])
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
-    const shouldLoad = false
+    setRefreshState(true);
+    const shouldLoad = false;
     getAllData(shouldLoad);
-  }
+  };
 
   return (
     <main className="mainContent">
@@ -73,7 +84,8 @@ function DialerCdrReport() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Dialer CDR Reports {" "}
+                        <h4>
+                          Dialer CDR Reports{" "}
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -91,7 +103,8 @@ function DialerCdrReport() {
                         <p>Here are all the Dialer CDR Reports</p>
                       </div>
                       <div className="buttonGroup">
-                        <button className="panelButton gray"
+                        <button
+                          className="panelButton gray"
                           onClick={() => {
                             navigate(-1);
                             backToTop();
@@ -109,7 +122,10 @@ function DialerCdrReport() {
                           </span>
                         </button> */}
                         <div className="dropdown">
-                          <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                          <button
+                            className="panelButton"
+                            onClick={() => featureUnderdevelopment()}
+                          >
                             <span className="text">Export</span>
                             <span className="icon">
                               <i className="fa-solid fa-file-export" />
@@ -126,12 +142,16 @@ function DialerCdrReport() {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem"
+                        <select
+                          className="formItem"
                           value={itemsPerPage}
                           onChange={(e) => {
                             setItemsPerPage(e.target.value);
+                            setPageNumber(1);
                           }}
-                        > <option value={10}>10</option>
+                        >
+                          {" "}
+                          <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>
                         </select>
@@ -143,17 +163,22 @@ function DialerCdrReport() {
                         account?.sectionPermissions,
                         account?.permissions,
                         "search"
-                      ) && <div className="searchBox position-relative">
+                      ) && (
+                        <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
                             type="search"
                             name="Search"
                             value={searchQuery}
                             className="formItem"
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                              setPageNumber(1);
+                              setItemsPerPage(10);
+                            }}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                     {/* <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
@@ -303,10 +328,10 @@ function DialerCdrReport() {
                       </div>
                     </div> */}
                     <div className="tableContainer mt-3">
-                      {loading ?
+                      {loading ? (
                         // <SkeletonTableLoader row={15} col={11} />
                         <ThreeDotedLoader />
-                        :
+                      ) : (
                         <table>
                           <thead>
                             <tr style={{ whiteSpace: "nowrap" }}>
@@ -331,34 +356,61 @@ function DialerCdrReport() {
                               account?.sectionPermissions,
                               account?.permissions,
                               "read"
-                            ) ? <tr><td colSpan={99}>You dont have any permission</td></tr> :
-                              filteredData && filteredData?.data?.length > 0 ? (
-                                filteredData?.data?.map((item, index) => (
-                                  <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{item?.agent || 'N/A'}</td>
-                                    <td>{item?.extension || 'N/A'}</td>
-                                    <td>{item?.campaign_title || 'N/A'}</td>
-                                    <td style={{ textTransform: 'capitalize' }}>{item?.camp_type || 'N/A'}</td>
-                                    <td>{item?.customer || 'N/A'}</td>
-                                    <td>{item?.phone_number || 'N/A'}</td>
-                                    <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
-                                    <td style={{ textTransform: 'capitalize' }}>{item.ext_dispo?.replace(/_/g, ' ') || 'N/A'}</td>
-                                    <td>{item?.hangup_cause || 'N/A'}</td>
-                                    <td>{item.created_at ? convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0]) : 'N/A'}</td>
-                                    <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
-                                  </tr>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td colSpan={99} className="text-center">
-                                    <EmptyPrompt generic={true} />
+                            ) ? (
+                              <tr>
+                                <td colSpan={99}>
+                                  You dont have any permission
+                                </td>
+                              </tr>
+                            ) : filteredData &&
+                              filteredData?.data?.length > 0 ? (
+                              filteredData?.data?.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{item?.agent || "N/A"}</td>
+                                  <td>{item?.extension || "N/A"}</td>
+                                  <td>{item?.campaign_title || "N/A"}</td>
+                                  <td style={{ textTransform: "capitalize" }}>
+                                    {item?.camp_type || "N/A"}
+                                  </td>
+                                  <td>{item?.customer || "N/A"}</td>
+                                  <td>{item?.phone_number || "N/A"}</td>
+                                  <td>
+                                    {item.duration
+                                      ? formatTime(item?.duration)
+                                      : "N/A"}
+                                  </td>
+                                  <td style={{ textTransform: "capitalize" }}>
+                                    {item.ext_dispo?.replace(/_/g, " ") ||
+                                      "N/A"}
+                                  </td>
+                                  <td>{item?.hangup_cause || "N/A"}</td>
+                                  <td>
+                                    {item.created_at
+                                      ? convertDateToCurrentTimeZone(
+                                          item?.created_at?.split(" ")[0]
+                                        )
+                                      : "N/A"}
+                                  </td>
+                                  <td>
+                                    {item.created_at
+                                      ? formatTimeWithAMPM(
+                                          item?.created_at?.split(" ")[1]
+                                        )
+                                      : "N/A"}
                                   </td>
                                 </tr>
-                              )}
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={99} className="text-center">
+                                  <EmptyPrompt generic={true} />
+                                </td>
+                              </tr>
+                            )}
                           </tbody>
                         </table>
-                      }
+                      )}
                     </div>
                     <div className="tableHeader mb-3">
                       {filteredData && filteredData?.data?.length > 0 ? (
@@ -368,6 +420,7 @@ function DialerCdrReport() {
                           from={filteredData.from}
                           to={filteredData.to}
                           total={filteredData.total}
+                          defaultPage={pageNumber}
                         />
                       ) : (
                         ""
