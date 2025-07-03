@@ -129,9 +129,9 @@ function FportalCampaign() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Forwarding portal" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Forwarding portal" />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">

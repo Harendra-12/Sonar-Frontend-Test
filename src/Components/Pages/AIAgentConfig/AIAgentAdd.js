@@ -38,9 +38,9 @@ const AIAgentAdd = () => {
           ) : (
             ""
           )}
-          <div className="container-fluid px-0">
             <Header title="AI Agent" />
-          </div>
+          {/* <div className="container-fluid px-0">
+          </div> */}
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

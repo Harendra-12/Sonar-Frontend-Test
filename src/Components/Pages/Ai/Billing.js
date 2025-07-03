@@ -34,9 +34,9 @@ const Billing = () => {
         <>
             <main className="mainContent">
                 <section id="phonePage">
+                            <Header title="Billing" />
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Billing" />
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">
                                     <div className="d-flex flex-wrap">

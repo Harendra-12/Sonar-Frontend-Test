@@ -671,7 +671,7 @@ const RingGroupAdd = () => {
                       <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <div className="row">
                           <div
-                            className={`col-${destinationStatus != "disabled" ? "4 pe-2 ms-auto" : "12"
+                            className={`${destinationStatus != "disabled" ? "col-12 ms-auto" : "col-xxl-6 col-xl-12 col-12 pe-2"
                               }`}
                           >
                             {destinationStatus != "disabled" && (
@@ -700,10 +700,10 @@ const RingGroupAdd = () => {
                             </select>
                           </div>
                           <>
-                            <div className="col-4">
+                            <div className="col-xxl-6 col-xl-12 col-12">
                               {watch()?.destination_type === "pstn" &&
                                 watch()?.destination_type != "disabled" && (
-                                  <div className="col-12">
+                                  <div className=" col-12 pe-2">
                                     <div className="formLabel">
                                       <label>PSTN</label>
                                     </div>
@@ -733,7 +733,7 @@ const RingGroupAdd = () => {
 
                               {watch()?.destination_type !== "pstn" &&
                                 watch()?.destination_type != "disabled" && (
-                                  <div className="col-12">
+                                  <div className=" col-12 pe-2">
                                     <>
                                       <div className="formLabel">
                                         <label>Extension</label>
@@ -750,35 +750,39 @@ const RingGroupAdd = () => {
                                   </div>
                                 )}
                             </div>
-                            <div className="col-4">
-                              <div className="formLabel">
-                                <label className="formItemDesc">
-                                  Call Timeout
-                                </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("call_timeout", {
-                                  ...noSpecialCharactersValidator,
-                                  ...(watch("call_timeout") !== "" &&
-                                    minValidator(
-                                      destination.reduce(
-                                        (max, obj) =>
-                                          Math.max(max, obj.delay),
-                                        0
-                                      )
-                                    )),
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                              {errors.call_timeout && (
-                                <ErrorMessage
-                                  text={errors.call_timeout.message}
-                                />
-                              )}
-                            </div>
+                            {
+                              watch("destination_type") !== "disabled" && (
+                                <div className="col-xxl-6 col-xl-12 col-12 pe-2 pe-2 ">
+                                  <div className="formLabel w-75">
+                                    <label className="formItemDesc">
+                                      Call Timeout
+                                    </label>
+                                  </div>
+                                  <input
+                                    type="text"
+                                    name="extension"
+                                    className="formItem"
+                                    {...register("call_timeout", {
+                                      ...noSpecialCharactersValidator,
+                                      ...(watch("call_timeout") !== "" &&
+                                        minValidator(
+                                          destination.reduce(
+                                            (max, obj) =>
+                                              Math.max(max, obj.delay),
+                                            0
+                                          )
+                                        )),
+                                    })}
+                                    onKeyDown={restrictToNumbers}
+                                  />
+                                  {errors.call_timeout && (
+                                    <ErrorMessage
+                                      text={errors.call_timeout.message}
+                                    />
+                                  )}
+                                </div>
+                              )
+                            }
                           </>
                           {errors?.timeout_destination && (
                             <ErrorMessage

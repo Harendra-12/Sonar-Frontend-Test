@@ -271,8 +271,8 @@ const CallSettings = (props) => {
     <>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
             <Header title="Call Settings" />
+          {/* <div className="container-fluid px-0"> */}
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="p-0 m-0">
@@ -305,7 +305,7 @@ const CallSettings = (props) => {
                 </div>
               </div>
             </div> */}
-          </div>
+          {/* </div> */}
           {loading ? (
             <div colSpan={99}>
               <CircularLoader />

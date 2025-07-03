@@ -7,9 +7,9 @@ function InvoiceList() {
     return (
         <main className="mainContent">
             <section id="phonePage">
+                        <Header title="Invoice List" />
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Invoice List" />
                         <div className="row px-xl-3 py-2" id="detailsHeader">
                             <div className="col-xl-4 my-auto">
                                 <div className="position-relative searchBox">

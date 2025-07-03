@@ -114,9 +114,9 @@ const AiDashboard = () => {
         <>
             <main className="mainContent">
                 <section id="phonePage">
+                            <Header title="Ai Dashboard" />
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Ai Dashboard" />
                             <div className="overviewTableWrapper">
                                 <div className="">
                                     <div className="accordion dashboard" id="accordionPanelsStayOpenExample">
