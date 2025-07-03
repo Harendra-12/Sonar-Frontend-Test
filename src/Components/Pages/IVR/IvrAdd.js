@@ -254,7 +254,7 @@ function IvrAdd() {
                     Select Mail Driver Type
                   </label> */}
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -278,7 +278,7 @@ function IvrAdd() {
                           Select the type of IVR
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           className="formItem"
                           {...register("ivr_type", {
@@ -300,7 +300,7 @@ function IvrAdd() {
                           Upload a greet when entering the menu.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           className="formItem"
                           {...register("greet_long", {
@@ -340,7 +340,7 @@ function IvrAdd() {
                           Upload an invalid sound.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           className="formItem"
                           {...register("invalid_sound", {
@@ -385,7 +385,7 @@ function IvrAdd() {
                           exists.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           className="formItem"
                           {...register("exit_sound", {
@@ -424,7 +424,7 @@ function IvrAdd() {
                     Enter Mail Port
                   </label> */}
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <input
                           type="text"
                           name="mail_host"
@@ -451,7 +451,7 @@ function IvrAdd() {
                           Enter number of confirm attempts
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           type="number"
                           defaultValue=""
@@ -491,7 +491,7 @@ function IvrAdd() {
                           the greeting or the confirm macro.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <input
                           type="number"
                           name="mail_host"
@@ -515,7 +515,7 @@ function IvrAdd() {
                           Enter max failure
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           type="number"
                           // defaultValue="3"
@@ -559,7 +559,7 @@ function IvrAdd() {
                     Enter max timeout in miliseconds
                   </label>
                 </div>
-                <div className="col-6">
+                <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                   <input
                     type="number"
                     name="mail_host"
@@ -583,7 +583,7 @@ function IvrAdd() {
                           playing the prompt again if no input is received.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <input
                           type="number"
                           name="mail_host"
@@ -607,7 +607,7 @@ function IvrAdd() {
                           Enter minimum number of digit
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           type="number"
                           name="mail_host"
@@ -651,7 +651,7 @@ function IvrAdd() {
                           Enter maximum number of digit
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 xol-lg-6 col-sm-6 col-12">
                         <select
                           // defaultValue="1"
                           type="number"

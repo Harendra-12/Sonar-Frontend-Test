@@ -16,16 +16,16 @@ import EmptyPrompt from '../../Loader/EmptyPrompt';
  * The component is connected to the Redux store and listens for changes to the user list and the login user.
  */
 function AllUser() {
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true)
   return (
     <>
-     <main className="mainContent">
+      <main className="mainContent">
         <section id="phonePage">
+          <Header title="Pending Verification" />
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
                 <div className="row px-xl-0" id="detailsHeader">
-                  <Header title="Pending Verification" />
                   {/* <div className="mt-4" /> */}
                   <div className="col-xl-8 mt-3 mt-xl-0">
                     <div className="d-flex justify-content-end flex-wrap gap-2">

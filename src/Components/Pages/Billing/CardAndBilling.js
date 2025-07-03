@@ -421,9 +421,9 @@ function CardAndBilling() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Payment Details" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Payment Details" />
 
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

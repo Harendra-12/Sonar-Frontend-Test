@@ -202,9 +202,9 @@ const CallHistory = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Call History" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Call History" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">

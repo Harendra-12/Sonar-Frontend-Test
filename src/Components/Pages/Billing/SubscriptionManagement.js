@@ -11,9 +11,9 @@ function SubscriptionManagement() {
         <>
             <main className="mainContent">
                 <section id="phonePage">
+                            <Header title="Subscription Management" />
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Subscription Management" />
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">
                                     <div className="row">

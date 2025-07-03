@@ -84,8 +84,8 @@ const CallCenterSettings = () => {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
           <Header title="Call Center Settings" />
+        {/* <div className="container-fluid px-0"> */}
           {/* <div id="subPageHeader">
             <div className="col-xl-9 my-auto"></div>
             <div className="col-xl-3 ps-2">
@@ -105,7 +105,7 @@ const CallCenterSettings = () => {
               </div>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
         <div className="col-xl-12">
           {loading && <SkeletonFormLoader />}
           <div className="overviewTableWrapper">

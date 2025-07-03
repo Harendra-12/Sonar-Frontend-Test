@@ -69,9 +69,10 @@ const CDRTracker = () => {
   return (
     <main className="mainContent">
       <section id="phonePage">
+        <Header title="Buyers" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Buyers" />
+            
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
