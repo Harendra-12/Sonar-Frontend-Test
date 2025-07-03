@@ -29,7 +29,7 @@ function PortNumber() {
   const slugPermissions = useSelector((state) => state?.permissions);
 
   async function getData(shouldLoad) {
-    const apiData = await generalGetFunction(`/ports/all`);
+    const apiData = await generalGetFunction(`/ports/all${account.usertype !== 'Company' && account.usertype !== 'SupreAdmin' ? '?section=Number Management' : ""}`);
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false)

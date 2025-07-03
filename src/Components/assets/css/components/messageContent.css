@@ -741,6 +741,10 @@
     padding-bottom: 0;
 }
 
+.dropdown-item.disabled {
+    background-color: transparent !important;
+}
+
 .videoCallWrapper .videoBody .videoHolder {
     position: relative;
     height: calc(100% - 105px);
@@ -1673,7 +1677,8 @@
     flex-direction: column;
     gap: 10px;
 }
-.noDataBg p{
+
+.noDataBg p {
     font-size: 0.875rem;
     color: var(--clr-permission-text);
     font-weight: 500;
