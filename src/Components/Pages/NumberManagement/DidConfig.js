@@ -52,7 +52,6 @@ const DidConfig = () => {
     if (locationData.configuration !== null) {
       console.log("Location Data: ", locationData.configuration);
       // setDataAvailable(false);
-
       setValue("usages", locationData.configuration.usages || "none");
       setValue("did_id_view", locationData.did || "");
       setValue("forward", locationData.configuration.forward || "");

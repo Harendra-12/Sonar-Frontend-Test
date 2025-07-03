@@ -45,7 +45,7 @@ function Members({
   conferenceInfo
 }) {
   const room = useRoomContext();
-  const socketSendMessage = useSelector((state) => state.socketSendMessage);
+  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
   const isRecording = useIsRecording();
   const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
   const avatarTracks = {}; // Store references for avatars
@@ -162,7 +162,7 @@ function Members({
         incomingCall.filter((item) => item?.room_id === roomName)[0]
           ?.isOtherMember
       ) {
-        socketSendMessage({
+        socketSendPeerCallMessage({
           action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
@@ -176,7 +176,7 @@ function Members({
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         setCalling(false); // Update parent state if needed
       } else {
-        socketSendMessage({
+        socketSendPeerCallMessage({
           action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
