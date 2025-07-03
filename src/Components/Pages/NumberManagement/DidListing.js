@@ -236,10 +236,10 @@ function DidListing({ page }) {
       toast.success(apiData.message);
       setRefreshDid(refreshDid + 1);
       if (usages == "ai") {
-        aiGeneralPostFunction("/phonenumber/import",{"phone_number":selectedDid.did,"termination_uri":terminationUri});
+        aiGeneralPostFunction("/phonenumber/import", { "phone_number": selectedDid.did, "termination_uri": terminationUri });
         // navigate('/ai-phone-number')
       }
-      else if(selectedDid.usages === "ai"){
+      else if (selectedDid.usages === "ai") {
         aiGeneralDeleteFunction(`/phonenumber/delete/${selectedDid.did}`);
       }
     } else {
@@ -571,6 +571,7 @@ function DidListing({ page }) {
                                 <th>E911</th>
                                 <th>Cname</th>
                                 <th>SMS</th>
+                                <th>Vendor</th>
                               </> : ""}
                               {page === "pbx" ? (
                                 <>
@@ -669,6 +670,7 @@ function DidListing({ page }) {
                                     <tr>
                                       <td style={{ cursor: "default" }}>
                                         {item.did}
+                                        {item?.did_vendor_name == 'twillio' && <Tippy content="This number can be configured for AI Agent"><i class="fa-solid fa-microchip-ai ms-2" style={{ color: 'var(--ui-accent)' }}></i></Tippy>}
                                       </td>
                                       {page == "tracker" &&
                                         <>
@@ -692,6 +694,9 @@ function DidListing({ page }) {
                                         </td>
                                         <td style={{ cursor: "default" }}>
                                           {item?.sms}
+                                        </td>
+                                        <td>
+                                          {item?.did_vendor_name}
                                         </td>
                                       </> : ""}
                                       {page === "pbx" ? (
@@ -1216,7 +1221,7 @@ function DidListing({ page }) {
                       <option value="pbx">PBX</option>
                       <option value="dialer">Dialer</option>
                       <option value="tracker">Tracker</option>
-                      <option value="ai">AI</option>
+                      {selectedDid?.did_vendor_name == "twillio" && <option value="ai">AI</option>}
                     </select>
                     <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                       <button
