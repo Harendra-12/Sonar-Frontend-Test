@@ -298,7 +298,7 @@ function Leads() {
                                                                                     </button> : "No Campaigns Available"}
                                                                                     <ul className="dropdown-menu light">
                                                                                         <li className="col-12">
-                                                                                            <div className="dropdown-item fw-bold disabled">Campaigns</div>
+                                                                                            <div className="dropdown-item fw-bold disabled bg-transparent">Campaigns</div>
                                                                                         </li>
                                                                                         <div style={{ columnCount: 1 }}>
                                                                                             {campaign?.map((camp, index) => {
