@@ -174,7 +174,7 @@ const DidListingAdd = () => {
                             Add new DID.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="did"
@@ -202,7 +202,7 @@ const DidListingAdd = () => {
                             Choose DID vendor.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <select
                             value={watch().did_vendor_id}
                             className="formItem"
@@ -239,7 +239,7 @@ const DidListingAdd = () => {
                             Choose Usage for this DID.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <select
                             value={watch().usages}
                             className="formItem"

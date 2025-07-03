@@ -115,8 +115,8 @@ const MailSettingsEdit = ({
       </style>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
             <Header title="Mail Settings Update" />
+          {/* <div className="container-fluid px-0"> */}
             {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="mb-0">Mail Settings Update</p>
@@ -145,7 +145,7 @@ const MailSettingsEdit = ({
                 </div>
               </div>
             </div> */}
-          </div>
+          {/* </div> */}
 
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             <div className="overviewTableWrapper">

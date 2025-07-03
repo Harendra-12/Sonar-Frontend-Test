@@ -497,7 +497,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                     }}
                   >
                     <div className="row gx-5">
-                      <div className="col-xl-6">
+                      <div className="col-xxl-6 col-xl-12 mb-3">
                         <form action="#" className="row px-2">
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
@@ -505,7 +505,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Username <span className="text-danger">*</span>
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -527,7 +527,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Email <span className="text-danger">*</span>
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="email"
                                 name="extension"
@@ -550,7 +550,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 <span className="text-danger">*</span>
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -571,7 +571,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="formLabel">
                               <label htmlFor="">Last Name</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -590,7 +590,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="formLabel">
                               <label htmlFor="">Alias/Nickname</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
                                 name="extension"
@@ -606,7 +606,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="formLabel">
                               <label htmlFor="">Profile Picture</label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <div className="profileView p-0">
                                 <button
                                   style={{
@@ -670,7 +670,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Select the default time zone.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <select
                                 className="formItem"
                                 name=""
@@ -707,7 +707,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Set the user's account status.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <select
                                 className="formItem"
                                 name=""
@@ -728,7 +728,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           </div>
                           {!isCustomerAdmin && (
                             <div className="formRow col-xl-12">
-                              <div className="formLabel">
+                              <div className="formLabel ">
                                 <label htmlFor="selectFormRow">
                                   Role Type{" "}
                                   <span className="text-danger">*</span>
@@ -738,7 +738,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   for the User.
                                 </label>
                               </div>
-                              <div className="col-6">
+                              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                 <select
                                   className="formItem"
                                   name=""
@@ -790,7 +790,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Assign an extension to the newly created user.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <div className="row">
                                 <div
                                   className={
@@ -907,7 +907,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Set usages for the current user
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <select
                                 className="formItem"
                                 value={watch().usages}
@@ -930,7 +930,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 Set new password to user.
                               </label>
                             </div>
-                            <div className="col-6">
+                            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
                                 className="formItem"
@@ -945,7 +945,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
 
                       {selectedRole && (
                         <div
-                          className="col-xl-6"
+                          className="col-xxl-6 col-xl-12 mb-3"
                           style={{
                             borderLeft: "1px solid var(--border-color)",
                             // height: "500px",
@@ -1061,7 +1061,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
           <div className="popup music">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <div className="card px-0 col-xl-4 col-md-6">
+                <div className="card px-0 col-xl-4 col-md-6 col-11">
                   <div className="header">
                     <h5 className="card-title fs14 border-bootm fw700">
                       Upload Profile Picture

@@ -129,7 +129,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                         <div className="d-flex flex-wrap">
                             <div className="col-12">
                                 <div className="heading" style={isActiveCallsPage ? { paddingLeft: '55px' } : undefined}>
-                                    <div className="content">
+                                    <div className="content mb-0">
                                         <h4>{isParentWebRtc ? 'Additional Info' : 'Agent Status'}</h4>
                                         <p>{`You can see all of the ${isParentWebRtc ? 'parked calls & agent activity status' : 'active and inactive agents'} here`}</p>
                                     </div>

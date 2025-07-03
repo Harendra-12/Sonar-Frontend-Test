@@ -108,7 +108,13 @@ function CallCenterQueueEdit() {
     if (account && account.id) {
       async function getData() {
         setLoading(true);
-        const userData = await generalGetFunction(`/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
+        const userData = await generalGetFunction(
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
+          }`
+        );
         const callCenterData = await generalGetFunction(
           `call-center-queues/show/${value}`
         );
@@ -181,7 +187,13 @@ function CallCenterQueueEdit() {
     if (account && account.id) {
       async function getData() {
         setLoading(true);
-        const userData = await generalGetFunction(`/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
+        const userData = await generalGetFunction(
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
+          }`
+        );
         const callCenterData = await generalGetFunction(
           `call-center-queues/show/${value}`
         );
@@ -518,7 +530,9 @@ function CallCenterQueueEdit() {
       try {
         const deletePromises = selectedAgentToEdit.map((item) => {
           if (checkPrevDestination(item.id)) {
-            return generalDeleteFunction(`/call-center-agent/destroy/${item.id}`)
+            return generalDeleteFunction(
+              `/call-center-agent/destroy/${item.id}`
+            )
               .then((deleteGroup) => {
                 if (!deleteGroup.status) {
                   toast.error(deleteGroup.message);
@@ -533,18 +547,19 @@ function CallCenterQueueEdit() {
           return Promise.resolve(null);
         });
         await Promise.all(deletePromises);
-        toast.success("Selected destinations deleted successfully")
+        toast.success("Selected destinations deleted successfully");
       } catch (err) {
         toast.err(err);
       } finally {
-        const updatedDestination = agent.filter((item) => !selectedAgentToEdit.some((agent) => agent.id === item.id))
+        const updatedDestination = agent.filter(
+          (item) => !selectedAgentToEdit.some((agent) => agent.id === item.id)
+        );
         setAgent(updatedDestination);
         setSelectedAgentToEdit([]);
         setLoading(false);
       }
     }
   }
-
 
   // Handle advance click
   function handleAdvance(id) {
@@ -643,7 +658,10 @@ function CallCenterQueueEdit() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name) && (item.usages === "pbx" || item.usages === "both")
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent?.name == item?.name
+          ) &&
+          (item.usages === "pbx" || item.usages === "both")
         ) {
           handleCheckboxChange(item);
         }
@@ -651,7 +669,9 @@ function CallCenterQueueEdit() {
     } else {
       // Remove all visible users from bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
-        if (bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)) {
+        if (
+          bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)
+        ) {
           handleCheckboxChange(item);
         }
       });
@@ -701,8 +721,8 @@ function CallCenterQueueEdit() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
           <Header title="Call Center Queue" />
+        {/* <div className="container-fluid px-0"> */}
           {/* <div id="subPageHeader">
             <div className="col-xl-6 my-auto">
             </div>
@@ -746,7 +766,7 @@ function CallCenterQueueEdit() {
               </div>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
         <div className="col-xl-12">
           {loading ? (
             <div colSpan={99}>
@@ -1162,62 +1182,72 @@ function CallCenterQueueEdit() {
                             </div>
                           </div>
 
-                          <div className="formRow col-xl-3 col-lg-12">
-                            <div className="formLabel">
-                              <label htmlFor="">Tier Rule Wait Second</label>
-                            </div>
-                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              <input
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                {...register("tier_rule_wait_second", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                              />
-                              {errors.tier_rule_wait_second && (
-                                <ErrorMessage
-                                  text={errors.tier_rule_wait_second.message}
-                                />
-                              )}
-                            </div>
-                          </div>
+                          {watch("tier_rules_apply") && (
+                            <>
+                              <div className="formRow col-xl-3 col-lg-12">
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Tier Rule Wait Second
+                                  </label>
+                                </div>
+                                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
+                                  <input
+                                    type="number"
+                                    name="extension"
+                                    className="formItem"
+                                    {...register("tier_rule_wait_second", {
+                                      ...noSpecialCharactersValidator,
+                                    })}
+                                  />
+                                  {errors.tier_rule_wait_second && (
+                                    <ErrorMessage
+                                      text={
+                                        errors.tier_rule_wait_second.message
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              </div>
 
-                          <div className="formRow col-xl-3 col-lg-12">
-                            <div className="formLabel">
-                              <label htmlFor="">
-                                Tier Rule Wait Multiply Level
-                              </label>
-                            </div>
-                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              <select
-                                {...register("tier_rule_wait_multiply_level")}
-                                className="formItem w-100"
-                                defaultValue={0}
-                              >
-                                <option value={1}>True</option>
-                                <option value={0}>False</option>
-                              </select>
-                            </div>
-                          </div>
+                              <div className="formRow col-xl-3 col-lg-12">
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Tier Rule Wait Multiply Level
+                                  </label>
+                                </div>
+                                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
+                                  <select
+                                    {...register(
+                                      "tier_rule_wait_multiply_level"
+                                    )}
+                                    className="formItem w-100"
+                                    defaultValue={0}
+                                  >
+                                    <option value={1}>True</option>
+                                    <option value={0}>False</option>
+                                  </select>
+                                </div>
+                              </div>
 
-                          <div className="formRow col-xl-3 col-lg-12">
-                            <div className="formLabel">
-                              <label htmlFor="">
-                                Tier Rule No Agent No Wait
-                              </label>
-                            </div>
-                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              <select
-                                {...register("tier_rule_no_agent_no_wait")}
-                                className="formItem w-100"
-                                defaultValue={0}
-                              >
-                                <option value={1}>True</option>
-                                <option value={0}>False</option>
-                              </select>
-                            </div>
-                          </div>
+                              <div className="formRow col-xl-3 col-lg-12">
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Tier Rule No Agent No Wait
+                                  </label>
+                                </div>
+                                <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
+                                  <select
+                                    {...register("tier_rule_no_agent_no_wait")}
+                                    className="formItem w-100"
+                                    defaultValue={0}
+                                  >
+                                    <option value={1}>True</option>
+                                    <option value={0}>False</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </form>
                       </div>
                       <div
@@ -1449,27 +1479,31 @@ function CallCenterQueueEdit() {
                         tabIndex="0"
                       >
                         <form className="row col-12 mx-auto mb-0">
-                          <div className="formRow col-xl-3 col-lg-12">
-                            <div className="formLabel">
-                              <label htmlFor="">Ring Progressively Delay</label>
-                            </div>
-                            <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              <input
-                                type="number"
-                                name="extension"
-                                className="formItem"
-                                {...register("ring_progressively_delay", {
-                                  ...noSpecialCharactersValidator,
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                              {errors.ring_progressively_delay && (
-                                <ErrorMessage
-                                  text={errors.ring_progressively_delay}
+                          {watch("strategy") === "ring-progressively" && (
+                            <div className="formRow col-xl-3 col-lg-12">
+                              <div className="formLabel">
+                                <label htmlFor="">
+                                  Ring Progressively Delay
+                                </label>
+                              </div>
+                              <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
+                                <input
+                                  type="number"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("ring_progressively_delay", {
+                                    ...noSpecialCharactersValidator,
+                                  })}
+                                  onKeyDown={restrictToNumbers}
                                 />
-                              )}
+                                {errors.ring_progressively_delay && (
+                                  <ErrorMessage
+                                    text={errors.ring_progressively_delay}
+                                  />
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          )}
 
                           <div className="formRow col-xl-3 col-lg-12">
                             <div className="formLabel">
@@ -1574,48 +1608,70 @@ function CallCenterQueueEdit() {
                       <p>You can see the list of agents in this call center.</p>
                     </div>
                     <div className="buttonGroup">
-                      {checkViewSidebar("CallCenterAgent", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") ?
-                        selectedAgentToEdit.length > 1 &&
-                        <button className="panelButton delete"
-                          onClick={deleteSelectedDestination}
-                        >
-                          <span className="text">Delete</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-trash"></i>
-                          </span>
-                        </button> : ""}
-                      {checkViewSidebar("CallCenterAgent", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") ?
-                        agent.length > 0 &&
-                        (selectedAgentToEdit.length > 0 &&
+                      {checkViewSidebar(
+                        "CallCenterAgent",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "delete"
+                      )
+                        ? selectedAgentToEdit.length > 1 && (
+                            <button
+                              className="panelButton delete"
+                              onClick={deleteSelectedDestination}
+                            >
+                              <span className="text">Delete</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          )
+                        : ""}
+                      {checkViewSidebar(
+                        "CallCenterAgent",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "edit"
+                      )
+                        ? agent.length > 0 &&
+                          (selectedAgentToEdit.length > 0 &&
                           selectedAgentToEdit.length != agent.length ? (
-                          <button
-                            type="button"
-                            className="panelButton"
-                            onClick={() => {
-                              setBulkEditPopup(true);
-                            }}
-                          >
-                            <span className="text">Edit</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className="panelButton edit"
-                            onClick={() => {
-                              setSelectedAgentToEdit(agent);
-                              setBulkEditPopup(true);
-                            }}
-                          >
-                            <span className="text">Edit All</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-pen"></i>
-                            </span>
-                          </button>
-                        )) : ""}
-                      {checkViewSidebar("CallCenterAgent", slugPermissions, account?.sectionPermissions, account?.permissions, "add") &&
+                            <button
+                              type="button"
+                              className="panelButton"
+                              onClick={() => {
+                                setBulkEditPopup(true);
+                              }}
+                            >
+                              <span className="text">Edit</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="panelButton edit"
+                              onClick={() => {
+                                setSelectedAgentToEdit(agent);
+                                setBulkEditPopup(true);
+                              }}
+                            >
+                              <span className="text">Edit All</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-pen"></i>
+                              </span>
+                            </button>
+                          ))
+                        : ""}
+                      {checkViewSidebar(
+                        "CallCenterAgent",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "add"
+                      ) && (
                         <button
                           type="button"
                           className="panelButton"
@@ -1630,13 +1686,22 @@ function CallCenterQueueEdit() {
                             <i className="fa-solid fa-plus"></i>
                           </span>
                         </button>
-                      }
+                      )}
                     </div>
                   </div>
 
-                  {checkViewSidebar("CallCenterAgent", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ? agent.length > 0 &&
-                    (
-                      <form className="row" style={{ padding: "0px 23px 20px" }}>
+                  {checkViewSidebar(
+                    "CallCenterAgent",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "read"
+                  ) ? (
+                    agent.length > 0 && (
+                      <form
+                        className="row"
+                        style={{ padding: "0px 23px 20px" }}
+                      >
                         <div className="formRow col-xl-12 border-0">
                           {agent &&
                             agent.map((item, index) => {
@@ -1644,16 +1709,19 @@ function CallCenterQueueEdit() {
                                 <div
                                   className="row py-2 ps-3 col-12"
                                   key={index}
-                                  style={{ borderBottom: "1px solid #8f8f8f47" }}
+                                  style={{
+                                    borderBottom: "1px solid #8f8f8f47",
+                                  }}
                                 >
-                                  {index === 0 &&
+                                  {index === 0 && (
                                     <style>
                                       {`
                                     #canDo{
                                       margin-top: 30px !important;
                                     }
                                   `}
-                                    </style>}
+                                    </style>
+                                  )}
                                   <div
                                     className="formLabel pe-2 m-0 d-flex justify-content-between"
                                     style={{ width: "40px" }}
@@ -1673,35 +1741,55 @@ function CallCenterQueueEdit() {
                                     <label>{index + 1}.</label>
                                   </div>
                                   <div
-                                    className={`row col-${advance.includes(item?.id)
-                                      ? "11"
-                                      : "xxl-5 col-xl-6"
-                                      }`}
+                                    className={`row col-${
+                                      advance.includes(item?.id)
+                                        ? "11"
+                                        : "xxl-5 col-xl-6"
+                                    }`}
                                   >
                                     <div
-                                      className={`col-${advance.includes(item.id) ? "2" : "6"
-                                        } ps-0 pe-2`}
+                                      className={`col-${
+                                        advance.includes(item.id) ? "2" : "6"
+                                      } ps-0 pe-2`}
                                     >
-                                      {index === 0 && <div className="formLabel">
-                                        <label htmlFor="">
-                                          Choose Agent{" "}
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                      </div>}
+                                      {index === 0 && (
+                                        <div className="formLabel">
+                                          <label htmlFor="">
+                                            Choose Agent{" "}
+                                            <span className="text-danger">
+                                              *
+                                            </span>
+                                          </label>
+                                        </div>
+                                      )}
                                       <div className="position-relative">
-                                        {user && user.filter((user) => user.id == agent[index].name)
-                                          .map((filteredUser) => (
-                                            <div className="formItem">{filteredUser.username} - {filteredUser.extension.extension}</div>
-                                          ))}
+                                        {user &&
+                                          user
+                                            .filter(
+                                              (user) =>
+                                                user.id == agent[index].name
+                                            )
+                                            .map((filteredUser) => (
+                                              <div className="formItem">
+                                                {filteredUser.username} -{" "}
+                                                {
+                                                  filteredUser.extension
+                                                    .extension
+                                                }
+                                              </div>
+                                            ))}
                                       </div>
                                     </div>
                                     <div
-                                      className={`col-${advance.includes(item.id) ? "2" : "2"
-                                        } ps-0 pe-2`}
+                                      className={`col-${
+                                        advance.includes(item.id) ? "2" : "2"
+                                      } ps-0 pe-2`}
                                     >
-                                      {index === 0 && <div className="formLabel">
-                                        <label htmlFor="">Password</label>
-                                      </div>}
+                                      {index === 0 && (
+                                        <div className="formLabel">
+                                          <label htmlFor="">Password</label>
+                                        </div>
+                                      )}
                                       <div className="position-relative">
                                         <input
                                           type="text"
@@ -1716,12 +1804,17 @@ function CallCenterQueueEdit() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`col-${advance.includes(item.id) ? "1" : "2"
-                                        } ps-0 pe-2`}
+                                      className={`col-${
+                                        advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                     >
-                                      {index === 0 && <div className="formLabel">
-                                        <Tippy content="Tier Level"><label htmlFor="">T. Level</label></Tippy>
-                                      </div>}
+                                      {index === 0 && (
+                                        <div className="formLabel">
+                                          <Tippy content="Tier Level">
+                                            <label htmlFor="">T. Level</label>
+                                          </Tippy>
+                                        </div>
+                                      )}
                                       <select
                                         className="formItem me-0"
                                         style={{ width: "100%" }}
@@ -1745,12 +1838,17 @@ function CallCenterQueueEdit() {
                                       </select>
                                     </div>
                                     <div
-                                      className={`col-${advance.includes(item.id) ? "1" : "2"
-                                        } ps-0 pe-2`}
+                                      className={`col-${
+                                        advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                     >
-                                      {index === 0 && <div className="formLabel">
-                                        <Tippy content="Tier Position"><label htmlFor="">T. Pos</label></Tippy>
-                                      </div>}
+                                      {index === 0 && (
+                                        <div className="formLabel">
+                                          <Tippy content="Tier Position">
+                                            <label htmlFor="">T. Pos</label>
+                                          </Tippy>
+                                        </div>
+                                      )}
                                       <select
                                         className="formItem me-0"
                                         style={{ width: "100%" }}
@@ -1776,11 +1874,13 @@ function CallCenterQueueEdit() {
                                     {advance.includes(item.id) && (
                                       <>
                                         <div className="col-2 ps-0 pe-2">
-                                          {index === 0 && <div className="formLabel">
-                                            <label htmlFor="">
-                                              Call Timeout
-                                            </label>
-                                          </div>}
+                                          {index === 0 && (
+                                            <div className="formLabel">
+                                              <label htmlFor="">
+                                                Call Timeout
+                                              </label>
+                                            </div>
+                                          )}
                                           <div className="position-relative">
                                             <input
                                               type="number"
@@ -1800,11 +1900,13 @@ function CallCenterQueueEdit() {
                                         </div>
 
                                         <div className="col-2 ps-0 pe-2">
-                                          {index === 0 && <div className="formLabel">
-                                            <label htmlFor="">
-                                              Reject Delay
-                                            </label>
-                                          </div>}
+                                          {index === 0 && (
+                                            <div className="formLabel">
+                                              <label htmlFor="">
+                                                Reject Delay
+                                              </label>
+                                            </div>
+                                          )}
                                           <div className="position-relative">
                                             <input
                                               type="number"
@@ -1824,11 +1926,13 @@ function CallCenterQueueEdit() {
                                         </div>
 
                                         <div className="col-2 ps-0 pe-2">
-                                          {index === 0 && <div className="formLabel">
-                                            <label htmlFor="">
-                                              Max No Answer
-                                            </label>
-                                          </div>}
+                                          {index === 0 && (
+                                            <div className="formLabel">
+                                              <label htmlFor="">
+                                                Max No Answer
+                                              </label>
+                                            </div>
+                                          )}
                                           <div className="position-relative">
                                             <input
                                               type="number"
@@ -1850,7 +1954,9 @@ function CallCenterQueueEdit() {
                                         <div className="col-2 ps-0 pe-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
-                                              <label htmlFor="">Busy Delay</label>
+                                              <label htmlFor="">
+                                                Busy Delay
+                                              </label>
                                             ) : (
                                               ""
                                             )}
@@ -1888,7 +1994,8 @@ function CallCenterQueueEdit() {
                                               type="number"
                                               name="no_answer_delay_time"
                                               value={
-                                                item.no_answer_delay_time === null
+                                                item.no_answer_delay_time ===
+                                                null
                                                   ? ""
                                                   : item.no_answer_delay_time
                                               }
@@ -1957,7 +2064,7 @@ function CallCenterQueueEdit() {
                                         <div className="col-2 ps-0 pe-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
-                                              <Tippy content='Truncate agents on load'>
+                                              <Tippy content="Truncate agents on load">
                                                 <label htmlFor="">
                                                   Truncate agents
                                                 </label>
@@ -1986,7 +2093,7 @@ function CallCenterQueueEdit() {
                                         <div className="col-2 ps-0 pe-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
-                                              <Tippy content='Truncate tiers on load'>
+                                              <Tippy content="Truncate tiers on load">
                                                 <label htmlFor="">
                                                   Truncate tiers
                                                 </label>
@@ -1999,7 +2106,9 @@ function CallCenterQueueEdit() {
                                             className="formItem me-0"
                                             style={{ width: "100%" }}
                                             name="truncate-tiers-on-load"
-                                            value={item["truncate-tiers-on-load"]}
+                                            value={
+                                              item["truncate-tiers-on-load"]
+                                            }
                                             onChange={(e) =>
                                               handleAgentChange(e, index)
                                             }
@@ -2020,25 +2129,35 @@ function CallCenterQueueEdit() {
                                       >
                                         <button
                                           type="button"
-                                          className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
-                                            }`}
+                                          className={`tableButton edit my-auto ${
+                                            agent.length < 2 ? "me-2" : ""
+                                          }`}
                                         >
                                           <i
-                                            className={`fa-solid fa-${advance.includes(item.id)
-                                              ? "gear"
-                                              : "gears"
-                                              }`}
+                                            className={`fa-solid fa-${
+                                              advance.includes(item.id)
+                                                ? "gear"
+                                                : "gears"
+                                            }`}
                                           ></i>
                                         </button>
                                       </div>
                                     }
 
-                                    {checkViewSidebar("CallCenterAgent", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") ?
+                                    {checkViewSidebar(
+                                      "CallCenterAgent",
+                                      slugPermissions,
+                                      account?.sectionPermissions,
+                                      account?.permissions,
+                                      "delete"
+                                    ) ? (
                                       agent.length === 1 ? (
                                         ""
                                       ) : (
                                         <div
-                                          onClick={() => deleteDestination(item.id)}
+                                          onClick={() =>
+                                            deleteDestination(item.id)
+                                          }
                                           className="col-auto px-0 mt-auto ms-2"
                                         >
                                           <button
@@ -2048,8 +2167,10 @@ function CallCenterQueueEdit() {
                                             <i className="fa-solid fa-trash"></i>
                                           </button>
                                         </div>
-                                      ) : ""
-                                    }
+                                      )
+                                    ) : (
+                                      ""
+                                    )}
                                     {/* {index === agent.length - 1 &&
                                   index !== (user && user.length - 1) ? (
                                   <div
@@ -2078,9 +2199,12 @@ function CallCenterQueueEdit() {
                           )}
                         </div>
                       </form>
-                    ) :
-                    <p style={{ padding: "0px 23px 20px" }}>You do not have permission to read!</p>
-                  }
+                    )
+                  ) : (
+                    <p style={{ padding: "0px 23px 20px" }}>
+                      You do not have permission to read!
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -2188,7 +2312,9 @@ function CallCenterQueueEdit() {
                           return bMatches - aMatches;
                         })
                         .filter(
-                          (user) => !agent.some((agent) => user.id == agent?.name) && (user.usages === "pbx" || user.usages === "both")
+                          (user) =>
+                            !agent.some((agent) => user.id == agent?.name) &&
+                            (user.usages === "pbx" || user.usages === "both")
                         ) // Exclude agents already in `agent`
                         .map((item, index) => (
                           <tr key={item.id || index}>
@@ -2655,17 +2781,42 @@ function CallCenterQueueEdit() {
               </div>
               <div className="px-1 mt-4">
                 <div className="d-flex justify-content-between mb-2 align-items-center">
-                  <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                  <h5
+                    style={{
+                      color: "var(--color-subtext)",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      marginTop: 5,
+                    }}
+                  >
                     Affected user:{" "}
                   </h5>
-                  <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+                  <div className="searchBoxWrapper">
+                    <input
+                      className="searchBar"
+                      type="text"
+                      value={searchEditAllUser}
+                      onChange={(e) => setSearchEditAllUser(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <ul>
-                  {selectedAgentToEdit.length > 0 && selectedAgentToEdit
-                    .map((item) => user?.find((user) => item?.name == user?.id)).filter((item) => item?.name?.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
-                    .map((items) => (
-                      <li><i className="fa-regular fa-user me-2" />{items?.name}</li>
-                    ))}
+                  {selectedAgentToEdit.length > 0 &&
+                    selectedAgentToEdit
+                      .map((item) =>
+                        user?.find((user) => item?.name == user?.id)
+                      )
+                      .filter((item) =>
+                        item?.name
+                          ?.toLowerCase()
+                          .includes(searchEditAllUser.trim().toLowerCase())
+                      )
+                      .map((items) => (
+                        <li>
+                          <i className="fa-regular fa-user me-2" />
+                          {items?.name}
+                        </li>
+                      ))}
                 </ul>
               </div>
               <div className="row g-2 mt-0">
@@ -2731,7 +2882,6 @@ function CallCenterQueueEdit() {
                     <option value={9}>9</option>
                   </select>
                 </div>
-
 
                 <div className="col-3 ">
                   <div className="formLabel">

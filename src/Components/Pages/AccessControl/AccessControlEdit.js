@@ -150,9 +150,9 @@ export default function AccessControlEdit() {
       )}
     <div className="mainContent">
       <section id="phonePage">
+            <Header title="Access List" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Access List" />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -204,7 +204,7 @@ export default function AccessControlEdit() {
                             Enter a name.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="name"
@@ -218,7 +218,7 @@ export default function AccessControlEdit() {
                         <div className="formLabel">
                           <label htmlFor="">Status</label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <select className="formItem" name="status" value={status} onChange={(e) => setStatus(e.target.value)}>
                             <option value="0" >Disable</option>
                             <option value="1">Enable</option>
@@ -229,7 +229,7 @@ export default function AccessControlEdit() {
                         <div className="formLabel">
                           <label htmlFor="">Description</label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="description"
@@ -243,7 +243,7 @@ export default function AccessControlEdit() {
                         <div className="formLabel">
                           <label htmlFor="">Role*</label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           {" "}
                           <select className="formItem" name="role_id" value={roleId} onChange={(e) => setRoleId(e.target.value)}>
                             <option value="" disabled="" selected="">
@@ -271,8 +271,8 @@ export default function AccessControlEdit() {
                         ipAddress.map((item, index) => {
                           return (
                             <div className=" col-xl-12" key={index}>
-                              <div className="formRow justify-content-start">
-                                <div className="col-6" >
+                              <div className="formRow justify-content-start align-items-end ">
+                                <div className="col-xxl-7 col-xl-7 col-lg-7 col-md-7 col-sm-7 col-10 mb-2" >
                                   {
                                     index === 0 &&
                                     <div className="formLabel">
@@ -299,10 +299,10 @@ export default function AccessControlEdit() {
                                     }}
                                   />
                                 </div>
-                                <div className="col-3 mt-4">
+                                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mb-2">
                                   {
                                     ipAddress.length > 1 &&
-                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { 
+                                    <button type="button" className="tableButton delete mx-3" onClick={() => { 
                                       setDeletePopup(true) 
                                       setDeleteId(item?.id)
                                       setIndex(index)}} >
@@ -312,8 +312,8 @@ export default function AccessControlEdit() {
                                 </div>
                                 {
                                   index === ipAddress.length - 1 &&
-                                  <div className="col-3 mt-4" >
-                                    <button type="button" className="panelButton" onClick={() => { 
+                                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 " >
+                                    <button type="button" className="panelButton ms-0" onClick={() => { 
                                       setIpAddress([...ipAddress, ""]) }}>
                                       <span className="text">Add</span>
                                       <span className="icon">

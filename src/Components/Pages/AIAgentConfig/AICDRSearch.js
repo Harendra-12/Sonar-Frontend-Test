@@ -382,8 +382,8 @@ function AICDRSearch({ page }) {
             {circularLoader && <CircularLoader />}
             <main className="mainContent">
                 <section id="phonePage">
-                    <div className="container-fluid px-0 position-relative">
                         <Header title="AI CDR Search" />
+                    <div className="container-fluid px-0 position-relative">
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">

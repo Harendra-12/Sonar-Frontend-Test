@@ -119,9 +119,9 @@ const BuyerAdd = () => {
           ) : (
             ""
           )}
+              <Header title="Add buyer" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Add buyer" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">

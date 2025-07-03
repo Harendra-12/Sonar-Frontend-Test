@@ -515,7 +515,11 @@ const RingGroupAdd = () => {
   const actionListValueForForward = (value) => {
     setValue("forward_to", value[0]);
   };
+  const actionListValueForDestination = (value) => {
+    setValue("timeout_destination", value[0]);
+  };
   const forwardStatus = watch("forward", "disabled");
+  const destinationStatus = watch("timeout_destination", "disabled")
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -619,7 +623,7 @@ const RingGroupAdd = () => {
                           Enter a name.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -643,7 +647,7 @@ const RingGroupAdd = () => {
                           Select the ring strategy.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem"
                           {...register("strategy")}
@@ -664,118 +668,122 @@ const RingGroupAdd = () => {
                           Select the timeout destination for this ring group.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <div className="row">
                           <div
-                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                            className={`${destinationStatus != "disabled" ? "col-12 ms-auto" : "col-xxl-6 col-xl-12 col-12 pe-2"
                               }`}
                           >
-                            {showTimeoutDestinationToggle && (
+                            {destinationStatus != "disabled" && (
                               <div className="formLabel">
                                 <label className="formItemDesc">Type</label>
                               </div>
                             )}
                             <select
                               className="formItem"
-                              {...register("destination_type", {
-                                onChange: (e) => {
-                                  // Custom logic
-                                  if (e.target.value == "Extension") {
-                                    setTimeoutDestPstnToggle(false);
-                                    setShowTimeoutDestinationToggle(true);
-                                    if (watch().call_timeout == "") {
-                                      setValue("call_timeout", `${60}`);
-                                    }
-                                    setValue("timeout_destination", "");
-                                  } else if (e.target.value == "PSTN") {
-                                    setTimeoutDestPstnToggle(true);
-                                    setShowTimeoutDestinationToggle(true);
-                                    if (watch().call_timeout == "") {
-                                      setValue("call_timeout", `${60}`);
-                                    }
-                                    setValue("timeout_destination", "");
-                                  } else if (e.target.value == "Disabled") {
-                                    setTimeoutDestPstnToggle(true);
-                                    setShowTimeoutDestinationToggle(false);
-                                    setValue("timeout_destination", "");
-                                  }
-                                },
-                              })}
+                              name="destination_type"
                               id="selectFormRow"
-                              defaultValue={"Disabled"}
+                              {...register("destination_type")}
+                              defaultValue={"disabled"}
+                              value={watch().destination_type?.toLowerCase()}
+                              onChange={(e) => {
+                                register("destination_type").onChange(e);
+                                setValue("timeout_destination", "");
+                              }}
                             >
-                              <option value="Disabled">Disabled</option>
-                              <option value="Extension">Extension</option>
-                              <option value="PSTN">PSTN</option>
+                              <option value="disabled">Disable</option>
+                              <option value="pstn">PSTN</option>
+                              <option value="extension">Extension</option>
+                              <option value="ring group">Ring Group</option>
+                              <option value="call center">Call Center</option>
+                              <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          {showTimeoutDestinationToggle && (
-                            <>
-                              <div className="col-4">
-                                <div className="formLabel">
-                                  <label className="formItemDesc">
-                                    Destination
-                                  </label>
-                                </div>
-                                {showTimeoutDestinationToggle ? (
-                                  timeoutDestPstnToggle ? (
+                          <>
+                            <div className="col-xxl-6 col-xl-12 col-12">
+                              {watch()?.destination_type === "pstn" &&
+                                watch()?.destination_type != "disabled" && (
+                                  <div className=" col-12 pe-2">
+                                    <div className="formLabel">
+                                      <label>PSTN</label>
+                                    </div>
                                     <input
-                                      placeholder="PSTN"
+                                      type="number"
+                                      name="timeout_destination"
                                       className="formItem"
                                       {...register("timeout_destination", {
-                                        ...numberValidator,
+                                        required: "PSTN is required",
+                                        pattern: {
+                                          value: /^[0-9]*$/,
+                                          message: "Only digits are allowed",
+                                        },
+                                        minLength: {
+                                          value: 10,
+                                          message: "Must be at least 10 digits",
+                                        },
+
+                                        ...noSpecialCharactersValidator,
                                       })}
-                                    ></input>
-                                  ) : (
-                                    <ActionList
-                                      title={null}
-                                      label={null}
-                                      getDropdownValue={actionListValue}
-                                      value={watch().timeout_destination}
                                     />
-                                  )
-                                ) : (
+                                    {errors.timeout_destination && (
+                                      <ErrorMessage text={errors.timeout_destination.message} />
+                                    )}
+                                  </div>
+                                )}
+
+                              {watch()?.destination_type !== "pstn" &&
+                                watch()?.destination_type != "disabled" && (
+                                  <div className=" col-12 pe-2">
+                                    <>
+                                      <div className="formLabel">
+                                        <label>Extension</label>
+                                      </div>
+                                      <ActionList
+                                        category={watch().destination_type}
+                                        title={null}
+                                        label={null}
+                                        getDropdownValue={actionListValueForDestination}
+                                        value={watch().timeout_destination}
+                                        {...register("timeout_destination")}
+                                      />
+                                    </>
+                                  </div>
+                                )}
+                            </div>
+                            {
+                              watch("destination_type") !== "disabled" && (
+                                <div className="col-xxl-6 col-xl-12 col-12 pe-2 pe-2 ">
+                                  <div className="formLabel w-75">
+                                    <label className="formItemDesc">
+                                      Call Timeout
+                                    </label>
+                                  </div>
                                   <input
-                                    placeholder="None"
-                                    disabled
+                                    type="text"
+                                    name="extension"
                                     className="formItem"
-                                    {...register("timeout_destination", {
-                                      ...numberValidator,
+                                    {...register("call_timeout", {
+                                      ...noSpecialCharactersValidator,
+                                      ...(watch("call_timeout") !== "" &&
+                                        minValidator(
+                                          destination.reduce(
+                                            (max, obj) =>
+                                              Math.max(max, obj.delay),
+                                            0
+                                          )
+                                        )),
                                     })}
-                                  ></input>
-                                )}
-                              </div>
-                              <div className="col-4">
-                                <div className="formLabel">
-                                  <label className="formItemDesc">
-                                    Call Timeout
-                                  </label>
-                                </div>
-                                <input
-                                  type="text"
-                                  name="extension"
-                                  className="formItem"
-                                  {...register("call_timeout", {
-                                    ...noSpecialCharactersValidator,
-                                    ...(watch("call_timeout") !== "" &&
-                                      minValidator(
-                                        destination.reduce(
-                                          (max, obj) =>
-                                            Math.max(max, obj.delay),
-                                          0
-                                        )
-                                      )),
-                                  })}
-                                  onKeyDown={restrictToNumbers}
-                                />
-                                {errors.call_timeout && (
-                                  <ErrorMessage
-                                    text={errors.call_timeout.message}
+                                    onKeyDown={restrictToNumbers}
                                   />
-                                )}
-                              </div>
-                            </>
-                          )}
+                                  {errors.call_timeout && (
+                                    <ErrorMessage
+                                      text={errors.call_timeout.message}
+                                    />
+                                  )}
+                                </div>
+                              )
+                            }
+                          </>
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}
@@ -792,7 +800,7 @@ const RingGroupAdd = () => {
                           destination is being called.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem"
                           {...register("ring_back")}
@@ -831,7 +839,7 @@ const RingGroupAdd = () => {
                           Enter the description.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -850,7 +858,7 @@ const RingGroupAdd = () => {
                       <div className="formLabel">
                         <label htmlFor="">Recording</label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <select
                           className="formItem me-0"
                           {...register("recording_enabled")}
@@ -870,7 +878,7 @@ const RingGroupAdd = () => {
                           Enter the tag.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <input
                           type="text"
                           name="extension"
@@ -894,7 +902,7 @@ const RingGroupAdd = () => {
                         </label>
                       </div>
                       <div
-                        className={`col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                        className={`${forwardStatus != "disabled" ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2 pe-2 ms-auto" : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 "
                           }`}
                       >
                         {forwardStatus != "disabled" && (
@@ -925,7 +933,7 @@ const RingGroupAdd = () => {
                       </div>
                       {forwardStatus === "pstn" &&
                         forwardStatus != "disabled" && (
-                          <div className="col-3">
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2">
                             <div className="formLabel">
                               <label>PSTN</label>
                             </div>
@@ -955,7 +963,7 @@ const RingGroupAdd = () => {
 
                       {forwardStatus !== "pstn" &&
                         forwardStatus != "disabled" && (
-                          <div className="col-3">
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2">
                             {watch().forward &&
                               watch().forward?.length !== 0 && (
                                 <>

@@ -104,9 +104,9 @@ const BillingCardAndWallet = () => {
         <>
             <main className="mainContent">
                 <section id="phonePage">
+                            <Header title="Transactions" />
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Transactions" />
 
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">

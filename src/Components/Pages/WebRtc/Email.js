@@ -316,7 +316,7 @@ function Email({ selectedMail, }) {
     setPageNumber(1)
   };
 
-  const handleMailDelete = (item) => {
+  const handleMailDelete = (item, isFromMailReply) => {
     setLoadingForActions(prev => [...prev, item]);
     deleteMail({
       uid: [item?.uid?.toString()],
@@ -327,7 +327,12 @@ function Email({ selectedMail, }) {
       setLoadingForActions(prev =>
         prev.filter(actionItem => actionItem.uid !== item.uid)
       )
+      if (isFromMailReply) {
+        setMailReplay(false)
+        setShowMailList(true)
+      }
     });
+
   }
 
   const handleMultipleDelete = () => {
@@ -443,17 +448,26 @@ function Email({ selectedMail, }) {
     setLoadingForActions(prev => [...prev, mail]);
     setLoading(true)
     const shouldLoad = false
-    mailStatusApiCall(shouldLoad, shouldToast, {
-      uid: [mail?.uid],
-      action: mail?.status_flags?.seen ? "unseen" : "seen",
-      type: activeCategory?.value,
-      id: selectedFromMailAddressId
-    }).finally(() => {
-      setLoadingForActions(prev =>
-        prev.filter(actionItem => actionItem.uid !== mail?.uid)
-      )
-    });
-    mailBodyMessageApi(shouldLoad, { type: activeCategory?.value, uid: mail?.uid, id: selectedFromMailAddressId })
+    debugger
+    if (!mail?.status_flags?.seen) {
+      mailStatusApiCall(shouldLoad, shouldToast, {
+        uid: [mail?.uid],
+        action: mail?.status_flags?.seen ? "unseen" : "seen",
+        type: activeCategory?.value,
+        id: selectedFromMailAddressId
+      }).finally(() => {
+        setLoadingForActions(prev =>
+          prev.filter(actionItem => actionItem.uid !== mail?.uid)
+        )
+      });
+    }
+
+    mailBodyMessageApi(shouldLoad,
+      { type: activeCategory?.value, uid: mail?.uid, id: selectedFromMailAddressId }
+    ).finally(() => {
+      setLoading(false)
+      setAllMailLoading(false)
+    })
   };
 
   const handleUnSeenMail = (mail) => {
@@ -524,7 +538,6 @@ function Email({ selectedMail, }) {
   const handleMailFromAddressChange = (event) => {
     const shouldLoad = true;
     fetchMailCategory(shouldLoad, event?.target?.value, true)
-    // fetchAllMail(activeCategory?.value, true, "", event?.target?.value);
     setSelectedFromMailAddressId(event?.target?.value)
     setMailReplay(false)
     setShowMailList(true)
@@ -838,6 +851,7 @@ function Email({ selectedMail, }) {
                               handleMultipleStarred={handleMultipleStarred}
                               handleMultipleUnStarred={handleMultipleUnStarred}
                               handleMultipleDelete={handleMultipleDelete}
+                              searchInput={searchInput}
                             />
                           )}
 
@@ -864,7 +878,7 @@ function Email({ selectedMail, }) {
                               availableFromMailAddresses={
                                 availableFromMailAddresses
                               }
-                              activeList={activeList}
+                              activeList={activeCategory}
                               selectedFromMailAddressId={selectedFromMailAddressId}
                             />
                           )}

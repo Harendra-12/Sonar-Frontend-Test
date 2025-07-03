@@ -297,7 +297,7 @@ const NewGetDid = () => {
                                 onSubmit={handleSubmit(onSubmit)}
                                 className={`mb-0 row`}
                               >
-                                <div className={`formRow col-2`}>
+                                <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-12`}>
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}

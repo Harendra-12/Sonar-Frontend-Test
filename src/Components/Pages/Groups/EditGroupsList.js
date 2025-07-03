@@ -408,7 +408,7 @@ export default function EditGroupsList() {
                               </div>
                               <label>{index + 1}.</label>
                             </div>
-                            <div className="col-3 pe-2">
+                            <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-10 pe-2">
                               {index === 0 ? (
                                 <div className="formLabel">
                                   <label htmlFor="">

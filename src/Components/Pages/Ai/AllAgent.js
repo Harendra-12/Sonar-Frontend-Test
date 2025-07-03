@@ -163,9 +163,9 @@ const AllAgent = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Agents" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Agents" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
@@ -356,7 +356,7 @@ const AllAgent = () => {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div
-                    className="card px-0 col-5 shadow-none w-75"
+                    className="card px-0 col-xl-9 col-11 shadow-none "
                     style={{
                       border: "1px solid var(--border-color)",
                     }}
@@ -375,12 +375,12 @@ const AllAgent = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="card-body aiAgentTab ">
+                    <div className="card-body aiAgentTab selectTemplate">
                       <div className="d-flex align-items-start">
 
 
                         <div className="row">
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="popup_box" style={{ borderColor: "rgb(0 192 255)" }}>
                               <button
                                 type="button"
@@ -410,7 +410,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div>
-                          {/* <div className="col-lg-4 col-md-6 mb-2">
+                          {/* <div className="col-lg-4 col-md-12 mb-2">
                             <div className="popup_box">
                               <button type="button"
                                 className="popup-border bg-transparent text-center p-2"
@@ -445,7 +445,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div> */}
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
@@ -520,7 +520,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
@@ -595,7 +595,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
@@ -670,7 +670,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button
@@ -745,7 +745,7 @@ const AllAgent = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-lg-4 col-md-6 mb-4">
+                          <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
                             <div className="d-flex gap-2">
                               <div className="popup_box">
                                 <button

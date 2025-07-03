@@ -34,7 +34,6 @@ const CallBlocking = () => {
   const [refreshState, setRefreshState] = useState(false);
   const slugPermissions = useSelector((state) => state?.permissions);
 
-
   const getRingGroupDashboardData = async (shouldLoad) => {
     if (account && account.id) {
       if (shouldLoad) setLoading(true);
@@ -44,22 +43,22 @@ const CallBlocking = () => {
       if (apidata?.status) {
         setCallBlock(apidata.data);
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       } else {
         // navigate("/");
-        setRefreshState(false)
+        setRefreshState(false);
       }
     } else {
       // navigate("/");
-      setRefreshState(false)
+      setRefreshState(false);
     }
   };
 
   useEffect(() => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = true;
     getRingGroupDashboardData(shouldLoad);
-  }, [pageNumber, itemsPerPage, debouncedSearchTerm])
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   // Add number to block list
   async function addBlock() {
@@ -105,10 +104,10 @@ const CallBlocking = () => {
   }
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = false;
     getRingGroupDashboardData(shouldLoad);
-  }
+  };
 
   return (
     <main className="mainContent">
@@ -122,7 +121,8 @@ const CallBlocking = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Block List {" "}
+                        <h4>
+                          Block List{" "}
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -159,7 +159,7 @@ const CallBlocking = () => {
                           account?.sectionPermissions,
                           account?.permissions,
                           "add"
-                        ) &&
+                        ) && (
                           <div
                             effect="ripple"
                             className="panelButton"
@@ -170,7 +170,7 @@ const CallBlocking = () => {
                               <i className="fa-solid fa-plus"></i>
                             </span>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -186,6 +186,7 @@ const CallBlocking = () => {
                           value={itemsPerPage}
                           onChange={(e) => {
                             setItemsPerPage(e.target.value);
+                            setPageNumber(1);
                           }}
                         >
                           <option value={10}>10</option>
@@ -201,29 +202,39 @@ const CallBlocking = () => {
                         account?.sectionPermissions,
                         account?.permissions,
                         "search"
-                      ) &&
+                      ) && (
                         <div className="searchBox">
                           <label>Search:</label>
                           <input
                             type="search"
                             className="formItem"
                             value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            onChange={(e) => {
+                              setSearchValue(e.target.value);
+                              setPageNumber(1);
+                              setItemsPerPage(10);
+                            }}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
                         // <SkeletonTableLoader col={3} row={15} />
                         <ThreeDotedLoader />
-                      ) :
+                      ) : (
                         <table>
                           <thead>
                             <tr>
                               <th>Type</th>
                               <th>Number</th>
-                              {checkViewSidebar("Spam", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Remove</th>}
+                              {checkViewSidebar(
+                                "Spam",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "delete"
+                              ) && <th>Remove</th>}
                             </tr>
                           </thead>
                           <tbody>
@@ -233,53 +244,58 @@ const CallBlocking = () => {
                               account?.sectionPermissions,
                               account?.permissions,
                               "read"
-                            ) ? <tr><td colSpan={99}>You dont have any permission</td></tr>
-                              : (
-                                <>
-                                  {callBlock &&
-                                    callBlock?.data?.map((item, index) => {
-                                      return (
-                                        <tr key={index}>
-                                          <td>{item.type}</td>
-                                          <td>{item.number}</td>
-                                          {checkViewSidebar(
-                                            "Spam",
-                                            slugPermissions,
-                                            account?.sectionPermissions,
-                                            account?.permissions,
-                                            "delete"
-                                          ) &&
-                                            <td>
-                                              <button
-                                                className="tableButton delete"
-                                                onClick={() => {
-                                                  // handleDelete(item.id)
-                                                  setDeletePopup(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </button>
-                                            </td>
-                                          }
-                                        </tr>
-                                      );
-                                    })}
-                                  {callBlock && callBlock?.data?.length === 0 ? (
-                                    <td colSpan={99}>
-                                      <EmptyPrompt
-                                        name="Call Blocking"
-                                        link="call-blocking"
-                                      />
-                                    </td>
-                                  ) : (
-                                    ""
-                                  )}
-                                </>
-                              )}
+                            ) ? (
+                              <tr>
+                                <td colSpan={99}>
+                                  You dont have any permission
+                                </td>
+                              </tr>
+                            ) : (
+                              <>
+                                {callBlock &&
+                                  callBlock?.data?.map((item, index) => {
+                                    return (
+                                      <tr key={index}>
+                                        <td>{item.type}</td>
+                                        <td>{item.number}</td>
+                                        {checkViewSidebar(
+                                          "Spam",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "delete"
+                                        ) && (
+                                          <td>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                // handleDelete(item.id)
+                                                setDeletePopup(true);
+                                                setDeleteId(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                          </td>
+                                        )}
+                                      </tr>
+                                    );
+                                  })}
+                                {callBlock && callBlock?.data?.length === 0 ? (
+                                  <td colSpan={99}>
+                                    <EmptyPrompt
+                                      name="Call Blocking"
+                                      link="call-blocking"
+                                    />
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
+                              </>
+                            )}
                           </tbody>
                         </table>
-                      }
+                      )}
                     </div>
                     <div className="tableHeader mb-3">
                       {callBlock && callBlock?.data?.length > 0 ? (
@@ -289,6 +305,7 @@ const CallBlocking = () => {
                           from={callBlock.from}
                           to={callBlock.to}
                           total={callBlock.total}
+                          defaultPage={pageNumber}
                         />
                       ) : (
                         ""

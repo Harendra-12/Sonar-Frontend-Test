@@ -165,6 +165,7 @@ function CdrReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallOrigin("");
       }
@@ -178,6 +179,7 @@ function CdrReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
         setPageNumber(1);
+        setItemsPerPage(20);
       } else {
         setDebounceCallDestination("");
       }
@@ -828,7 +830,7 @@ function CdrReport({ page }) {
                     )}
                   </div>
                   <div className="tableHeader">
-                    <div className="d-flex justify-content-xl-end">
+                    <div className="d-flex justify-content-xl-start flex-wrap">
                       <div className="formRow border-0 ps-xl-0">
                         <label className="formLabel text-start mb-0 w-100">
                           Date Filter
@@ -840,6 +842,8 @@ function CdrReport({ page }) {
                             setFilterBy(e.target.value);
                             setStartDateFlag("");
                             setEndDateFlag("");
+                            setPageNumber(1);
+                            setItemsPerPage(20);
                           }}
                         >
                           <option value={"date"}>Single Date</option>
@@ -854,7 +858,7 @@ function CdrReport({ page }) {
                           <label className="formLabel text-start mb-0 w-100">
                             Choose Date
                           </label>
-                          <div className="d-flex w-100">
+                          <div className="d-flex w-100  flex-xxl-nowrap flex-xl-nowrap flex-lg-nowrap flex-mb-nowrap flex-sm-wrap flex-wrap gap-2">
                             <input
                               type="date"
                               className="formItem"
@@ -863,11 +867,12 @@ function CdrReport({ page }) {
                               onChange={(e) => {
                                 setStartDateFlag(e.target.value);
                                 setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             />
                             <input
                               type="time"
-                              className="formItem ms-2"
+                              className="formItem"
                               value={timeFlag.startTime}
                               onChange={(e) => {
                                 setTimeFlag((prev) => ({
@@ -875,6 +880,7 @@ function CdrReport({ page }) {
                                   startTime: `${e.target.value}:00`,
                                 }));
                                 setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             />
                           </div>
@@ -895,7 +901,9 @@ function CdrReport({ page }) {
                                 onChange={(e) => {
                                   setStartDateFlag(e.target.value);
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
+                                onKeyDown={(e) => e.preventDefault()}
                               />
                               <input
                                 type="time"
@@ -907,6 +915,7 @@ function CdrReport({ page }) {
                                     startTime: `${e.target.value}:00`,
                                   }));
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                               />
                             </div>
@@ -924,7 +933,10 @@ function CdrReport({ page }) {
                                 onChange={(e) => {
                                   setEndDateFlag(e.target.value);
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
+                                onKeyDown={(e) => e.preventDefault()}
+                                disabled={!startDateFlag}
                                 min={startDateFlag} // Prevent selecting an end date before the start date
                               />
                               <input
@@ -937,6 +949,7 @@ function CdrReport({ page }) {
                                     endTime: `${e.target.value}:00`,
                                   }));
                                   setPageNumber(1);
+                                  setItemsPerPage(20);
                                 }}
                               />
                             </div>
@@ -1055,6 +1068,8 @@ function CdrReport({ page }) {
                               onChange={(e) => {
                                 setIsSorting(e.target.value);
                                 setSortingValue("");
+                                setPageNumber(1);
+                                setItemsPerPage(20);
                               }}
                             >
                               <option value="">Choose Sorting</option>
@@ -1722,14 +1737,14 @@ function CdrReport({ page }) {
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
+              <div className="row content col-xl-4 col-md-5">
+                <div className="col-12">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
+                <div className="col-12 ">
+                  <h4 className="text-orange">Warning!</h4>
                   <p>
                     Are you sure, you want to block this number (
                     {selectedNumberToBlock})?

@@ -53,16 +53,16 @@ const RingGroups = () => {
       if (apidata?.status) {
         setRingGroup(apidata.data);
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       } else {
         if (apidata.response.status === 403) {
           setNoPermissionToRead(true);
         }
-        setRefreshState(false)
+        setRefreshState(false);
       }
     } else {
       navigate("/");
-      setRefreshState(false)
+      setRefreshState(false);
     }
 
     // Refresh User API if user list is empty
@@ -76,9 +76,9 @@ const RingGroups = () => {
 
   // Getting ringgroup data and also update user refresh to trigger user listing api call
   useEffect(() => {
-    setRefreshState(true)
-    const shouldLoad = true
-    getRingGroupDashboardData(shouldLoad)
+    setRefreshState(true);
+    const shouldLoad = true;
+    getRingGroupDashboardData(shouldLoad);
     // if (refreshState === 0) {
     //   dispatch({
     //     type: "SET_ALLUSERREFRESH",
@@ -196,7 +196,13 @@ const RingGroups = () => {
   const handleAgentClick = async (item) => {
     setPageLoading(true);
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item.username}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
+      const apiData = await generalGetFunction(
+        `/agents?search=${item.username}${
+          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+            ? "&section=Accounts"
+            : ""
+        }`
+      );
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         setPageLoading(false);
@@ -205,13 +211,13 @@ const RingGroups = () => {
         });
       }
     }
-  }
+  };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
-    const shouldLoad = false
-    getRingGroupDashboardData(shouldLoad)
-  }
+    setRefreshState(true);
+    const shouldLoad = false;
+    getRingGroupDashboardData(shouldLoad);
+  };
 
   return (
     <>
@@ -267,19 +273,19 @@ const RingGroups = () => {
                             account?.permissions,
                             "add"
                           ) && (
-                              <Link
-                                // to="/ring-groups-add"
-                                // onClick={backToTop}
-                                onClick={handleRingGroupAddValidation}
-                                effect="ripple"
-                                className="panelButton"
-                              >
-                                <span className="text">Add</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-plus"></i>
-                                </span>
-                              </Link>
-                            )}
+                            <Link
+                              // to="/ring-groups-add"
+                              // onClick={backToTop}
+                              onClick={handleRingGroupAddValidation}
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -295,6 +301,7 @@ const RingGroups = () => {
                             value={itemsPerPage}
                             onChange={(e) => {
                               setItemsPerPage(e.target.value);
+                              setPageNumber(1);
                             }}
                           >
                             <option value={10}>10</option>
@@ -309,7 +316,7 @@ const RingGroups = () => {
                           account?.sectionPermissions,
                           account?.permissions,
                           "search"
-                        ) &&
+                        ) && (
                           <div className="searchBox position-relative">
                             <label>Search:</label>
                             <input
@@ -317,16 +324,20 @@ const RingGroups = () => {
                               name="Search"
                               value={searchValue}
                               className="formItem"
-                              onChange={(e) => setSearchValue(e.target.value)}
+                              onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setPageNumber(1);
+                                setItemsPerPage(10);
+                              }}
                             />
                           </div>
-                        }
+                        )}
                       </div>
                       <div className="tableContainer mb-0">
                         {loading ? (
                           // <SkeletonTableLoader col={8} row={15} />
                           <ThreeDotedLoader />
-                        ) :
+                        ) : (
                           <table>
                             <thead>
                               <tr>
@@ -334,23 +345,43 @@ const RingGroups = () => {
                                 <th>Extension</th>
                                 <th>Strategy</th>
                                 <th>Members</th>
-                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Status</th>}
-                                <th>Description</th>
-                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                                {checkViewSidebar("Ringgroup", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center">Delete</th>}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {noPermissionToRead ||
-                                !checkViewSidebar(
+                                {checkViewSidebar(
                                   "Ringgroup",
                                   slugPermissions,
                                   account?.sectionPermissions,
                                   account?.permissions,
-                                  "read"
-                                ) ? (
+                                  "edit"
+                                ) && <th>Status</th>}
+                                <th>Description</th>
+                                {checkViewSidebar(
+                                  "Ringgroup",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) && <th className="text-center">Edit</th>}
+                                {checkViewSidebar(
+                                  "Ringgroup",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "delete"
+                                ) && <th className="text-center">Delete</th>}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {noPermissionToRead ||
+                              !checkViewSidebar(
+                                "Ringgroup",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
                                 <tr>
-                                  <td colSpan={99}>You dont have any permission</td>
+                                  <td colSpan={99}>
+                                    You dont have any permission
+                                  </td>
                                 </tr>
                               ) : (
                                 <>
@@ -358,75 +389,117 @@ const RingGroups = () => {
                                     ringGroup?.data?.map((item, index) => {
                                       return (
                                         <tr key={index}>
-                                          <td>
-                                            {item.name}
-                                          </td>
-                                          <td>
-                                            {item.extension}
-                                          </td>
-                                          <td>
-                                            {item.strategy}
-                                          </td>
+                                          <td>{item.name}</td>
+                                          <td>{item.extension}</td>
+                                          <td>{item.strategy}</td>
 
                                           <td>
                                             {/* {item.ring_group_destination.length} */}
-                                            <Tippy content={
-                                              <ul className="dropdown-menu-hover"
-                                                style={{ columnCount: item.ring_group_destination.length > 8 ? 2 : 1 }}
-                                              >
-                                                {/* <li className="col-12">
+                                            <Tippy
+                                              content={
+                                                <ul
+                                                  className="dropdown-menu-hover"
+                                                  style={{
+                                                    columnCount:
+                                                      item
+                                                        .ring_group_destination
+                                                        .length > 8
+                                                        ? 2
+                                                        : 1,
+                                                  }}
+                                                >
+                                                  {/* <li className="col-12">
                                                     <div className="dropdown-item fw-bold disabled">
                                                       Agents
                                                     </div>
                                                   </li> */}
-                                                {item.ring_group_destination.map(
-                                                  (item, index) => (
-                                                    <li>
-                                                      <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
-                                                        <span className="avatar-container">
-                                                          {
-                                                            item.profile_picture ?
+                                                  {item.ring_group_destination.map(
+                                                    (item, index) => (
+                                                      <li>
+                                                        <div
+                                                          className="dropdown-item d-flex align-items-center"
+                                                          onClick={() =>
+                                                            handleAgentClick(
+                                                              item
+                                                            )
+                                                          }
+                                                        >
+                                                          <span className="avatar-container">
+                                                            {item.profile_picture ? (
                                                               <img
                                                                 alt="profile"
-                                                                src={item.profile_picture}
-                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                              /> : <i className="fa-light fa-user"></i>}
-                                                        </span>
-                                                        <span className="ms-2">{item?.username}</span>
-                                                      </div>
-                                                    </li>
-                                                  )
-                                                )}
-                                                {/* {item.ring_group_destination.length > 6 && <li className="col-12">
+                                                                src={
+                                                                  item.profile_picture
+                                                                }
+                                                                onError={(e) =>
+                                                                  (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                                }
+                                                              />
+                                                            ) : (
+                                                              <i className="fa-light fa-user"></i>
+                                                            )}
+                                                          </span>
+                                                          <span className="ms-2">
+                                                            {item?.username}
+                                                          </span>
+                                                        </div>
+                                                      </li>
+                                                    )
+                                                  )}
+                                                  {/* {item.ring_group_destination.length > 6 && <li className="col-12">
                                                     <Link to="/agents" className="dropdown-item text-center text-primary">
                                                       Show More
                                                     </Link>
                                                   </li>} */}
-                                              </ul>
-                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                </ul>
+                                              }
+                                              allowHTML={true}
+                                              placement="bottom"
+                                              interactive={true}
+                                              popperOptions={{
+                                                strategy: "fixed",
+                                              }}
+                                            >
                                               <div className="hover-dropdown">
                                                 <div className="avatar-container">
-                                                  {item.ring_group_destination?.slice(0, 4).map((item, index) => {
-                                                    return (
-                                                      <Tippy key={index} content={item?.username}>
-                                                        {item.profile_picture ? (
-                                                          <img
-                                                            alt="profile"
-                                                            src={item.profile_picture}
-                                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                          />
-                                                        ) : (
-                                                          <i className="fa-light fa-user"></i>
-                                                        )}
-                                                      </Tippy>
-                                                    )
-                                                  })}
-                                                  {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length - 4}</span>}
+                                                  {item.ring_group_destination
+                                                    ?.slice(0, 4)
+                                                    .map((item, index) => {
+                                                      return (
+                                                        <Tippy
+                                                          key={index}
+                                                          content={
+                                                            item?.username
+                                                          }
+                                                        >
+                                                          {item.profile_picture ? (
+                                                            <img
+                                                              alt="profile"
+                                                              src={
+                                                                item.profile_picture
+                                                              }
+                                                              onError={(e) =>
+                                                                (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                              }
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
+                                                      );
+                                                    })}
+                                                  {item.ring_group_destination
+                                                    .length > 4 && (
+                                                    <span>
+                                                      +
+                                                      {item
+                                                        .ring_group_destination
+                                                        .length - 4}
+                                                    </span>
+                                                  )}
                                                 </div>
                                               </div>
                                             </Tippy>
-
-
                                           </td>
 
                                           {/* <td>(999) 999-9999, (999) 999-9999</td> */}
@@ -436,7 +509,7 @@ const RingGroups = () => {
                                             account?.sectionPermissions,
                                             account?.permissions,
                                             "edit"
-                                          ) &&
+                                          ) && (
                                             <td>
                                               <div className="my-auto position-relative mx-1">
                                                 {/* <label className="switch">
@@ -456,12 +529,15 @@ const RingGroups = () => {
                                                 </label> */}
                                                 <div className="cl-toggle-switch">
                                                   <label className="cl-switch">
-                                                    <input type="checkbox"
+                                                    <input
+                                                      type="checkbox"
                                                       checked={
                                                         item.status == "active"
                                                       }
                                                       onClick={(e) => {
-                                                        setSelectedRingGroup(item);
+                                                        setSelectedRingGroup(
+                                                          item
+                                                        );
                                                         setPopUp(true);
                                                       }}
                                                       // {...register("status")}
@@ -472,9 +548,15 @@ const RingGroups = () => {
                                                 </div>
                                               </div>
                                             </td>
-                                          }
-                                          <td className="align-middle" id="detailBox">
-                                            <p className="ellipsis mb-0"> {item.description}</p>
+                                          )}
+                                          <td
+                                            className="align-middle"
+                                            id="detailBox"
+                                          >
+                                            <p className="ellipsis mb-0">
+                                              {" "}
+                                              {item.description}
+                                            </p>
                                           </td>
                                           {checkViewSidebar(
                                             "Ringgroup",
@@ -482,7 +564,7 @@ const RingGroups = () => {
                                             account?.sectionPermissions,
                                             account?.permissions,
                                             "edit"
-                                          ) &&
+                                          ) && (
                                             <td>
                                               <button
                                                 className="tableButton edit mx-auto"
@@ -495,14 +577,14 @@ const RingGroups = () => {
                                                 <i className="fa-solid fa-pencil" />
                                               </button>
                                             </td>
-                                          }
+                                          )}
                                           {checkViewSidebar(
                                             "Ringgroup",
                                             slugPermissions,
                                             account?.sectionPermissions,
                                             account?.permissions,
                                             "delete"
-                                          ) &&
+                                          ) && (
                                             <td>
                                               <button
                                                 className="tableButton delete mx-auto"
@@ -516,13 +598,13 @@ const RingGroups = () => {
                                                 {/* <i className="fa-duotone fa-solid fa-user-minus"></i> */}
                                               </button>
                                             </td>
-                                          }
+                                          )}
                                           <div className="utilPopup"></div>
                                         </tr>
                                       );
                                     })}
                                   {ringGroup &&
-                                    ringGroup?.data?.length === 0 ? (
+                                  ringGroup?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Ring Group"
@@ -536,7 +618,7 @@ const RingGroups = () => {
                               )}
                             </tbody>
                           </table>
-                        }
+                        )}
                       </div>
                       <div className="tableFooter">
                         {ringGroup && ringGroup?.data?.length > 0 ? (
@@ -546,6 +628,7 @@ const RingGroups = () => {
                             from={ringGroup.from}
                             to={ringGroup.to}
                             total={ringGroup.total}
+                            defaultPage={pageNumber}
                           />
                         ) : (
                           ""

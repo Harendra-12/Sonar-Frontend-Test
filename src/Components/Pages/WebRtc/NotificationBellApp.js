@@ -7,8 +7,9 @@ import { set } from 'react-hook-form';
 function NotificationBellApp() {
     const recipient_to_remove_notification = ((state) => state?.recipient_to_remove_notification);
     const incomingMessage = useSelector((state) => state.incomingMessage);
-    const groupMessage =useSelector((state) => state.groupMessage);
+    const groupMessage = useSelector((state) => state.groupMessage);
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
+    const confNotif = useSelector((data) => data?.confNotif)
     const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
     const [allNotification, setAllNotification] = useState([]);
@@ -61,22 +62,34 @@ function NotificationBellApp() {
     }, [groupMessage]);
 
 
-   useEffect(() => {
-  if (!recipient_to_remove_notification || recipient_to_remove_notification.length < 3) return;
+    useEffect(() => {
+        if (!recipient_to_remove_notification || recipient_to_remove_notification.length < 3) return;
 
-  setAllNotification(prevNotifications => {
-    if (recipient_to_remove_notification[2] !== "groupChat") {
-      return prevNotifications?.filter(msg =>
-        msg.message_group_id !== undefined ||
-        msg.sender_id !== recipient_to_remove_notification[1]
-      );
-    } else {
-      return prevNotifications?.filter(msg =>
-        msg?.group_name !== recipient_to_remove_notification[0]
-      );
-    }
-  });
-}, [recipient_to_remove_notification?.[0], recipient_to_remove_notification?.[1], recipient_to_remove_notification?.[2]]);
+        setAllNotification(prevNotifications => {
+            if (recipient_to_remove_notification[2] !== "groupChat") {
+                return prevNotifications?.filter(msg =>
+                    msg.message_group_id !== undefined ||
+                    msg.sender_id !== recipient_to_remove_notification[1]
+                );
+            } else {
+                return prevNotifications?.filter(msg =>
+                    msg?.group_name !== recipient_to_remove_notification[0]
+                );
+            }
+        });
+    }, [recipient_to_remove_notification?.[0], recipient_to_remove_notification?.[1], recipient_to_remove_notification?.[2]]);
+
+    useEffect(() => {
+        if (Object?.keys(confNotif)?.length > 0) {
+            setAllNotification((prevList) => {
+                const exists = prevList?.some(msg => msg.group_id === confNotif.group_id);
+                if (!exists) {
+                    return [...prevList, { message_text: confNotif?.message, group_id: confNotif?.group_id }];
+                }
+                return prevList;
+            });
+        }
+    }, [confNotif])
 
 
     const removeNotification = (item) => {
@@ -134,7 +147,7 @@ function NotificationBellApp() {
                                             <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>
                                                     <p className="mb-0 d-flex">
-                                                        {item?.group_name ?
+                                                        {!item?.group_id && item?.group_name ?
                                                             <>
                                                                 <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}<>)</></strong>&nbsp;
                                                                 <span className='text-success'></span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
@@ -146,7 +159,7 @@ function NotificationBellApp() {
                                                         }
 
                                                     </p>
-                                                    <span className="text_gray fw-normal fs-12 ">{item.updated_at.split("T")[0]} - {new Date(item.updated_at).toLocaleTimeString()}</span>
+                                                    {!item?.group_id && <span className="text_gray fw-normal fs-12 ">{item.updated_at.split("T")[0]} - {new Date(item.updated_at).toLocaleTimeString()}</span>}
                                                 </div>
                                                 <div className='ms-4 align-self-start'>
                                                     <button className="closeBtn me-1 border-0 bg-transparent text_gray" onClick={() => removeNotification(item)}><i className="fa-regular fa-xmark"></i></button> </div>

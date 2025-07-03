@@ -421,9 +421,9 @@ function CardAndBilling() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Payment Details" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Payment Details" />
 
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -468,7 +468,7 @@ function CardAndBilling() {
                 </div>
                 <div className="col-12" style={{ padding: '25px 23px' }}>
                   <div className="row gy-3">
-                    <div className="col-xxl-8 col-xl-9">
+                    <div className="col-xxl-8 col-xl-12">
                       <div className="row gy-3">
                         {checkViewSidebar(
                           "CardDetail",
@@ -477,7 +477,7 @@ function CardAndBilling() {
                           account?.permissions,
                           "read"
                         ) &&
-                          <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 billinCardWrapper">
+                          <div className="col-xxl-4  col-lg-4 col-md-4 col-sm-6 col-12 billinCardWrapper">
                             <Cards
                               className="cardWrapper row align-items-center col-12 mx-auto"
                               number={selectedCard?.[0]?.card_number}
@@ -495,7 +495,7 @@ function CardAndBilling() {
                             />
                           </div>
                         }
-                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
+                        <div className="col-xxl-4  col-lg-4 col-md-4 col-sm-6 col-12">
                           <div className="itemWrapper a billing_card1">
                             <div className="heading d-flex justify-content-between align-items-center gap-1">
                               <div className="">
@@ -562,7 +562,7 @@ function CardAndBilling() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
+                        <div className="col-xxl-4  col-lg-4 col-md-4 col-sm-6 col-12">
                           <div className="itemWrapper a billing_card2" >
                             <div className="heading d-flex justify-content-between align-items-center gap-1">
                               <div className="">
@@ -591,7 +591,7 @@ function CardAndBilling() {
                                   </p>
                                   <p>
                                     {!selectedCard?.[0]?.card_number ? (
-                                      <span className="text-danger">
+                                      <span className="text-danger ellipsisText">
                                         Please add a card before recharge!
                                       </span>
                                     ) : (
@@ -614,7 +614,7 @@ function CardAndBilling() {
                           </div>
                         </div>
                       </div>
-                      <div className="row pt-2">
+                      <div className="row pt-3">
                         {checkViewSidebar(
                           "CardDetail",
                           slugPermissions,
@@ -1224,7 +1224,7 @@ function CardAndBilling() {
                       account?.permissions,
                       "read"
                     ) &&
-                      <div className="col-xxl-4 col-xl-3">
+                      <div className="col-xxl-4 col-xl-12">
                         <div className="col-xl-12">
                           <div className="itemWrapper a h-100" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading dashboard_headerPart">
@@ -1651,39 +1651,39 @@ function CardAndBilling() {
                 <div className="mt-3">
                   <div className="col-12">
                     <div className="formRow">
-                      <div className="col-6">
-                        <div className="formLabel">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
+                        <div className="formLabel w-100">
                           <label htmlFor="">Min Threshold</label>
                           <label className="formItemDesc">The minimum threshold that the user will hit before autopay</label>
                         </div>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
                         <input type="number" className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
                       </div>
                     </div>
                   </div>
                   <div className="col-12">
                     <div className="formRow">
-                      <div className="col-6">
-                        <div className="formLabel">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
+                        <div className="formLabel w-100">
                           <label htmlFor="">Amount</label>
                           <label className="formItemDesc">The amount of recharge to be commenced</label>
                         </div>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
                         <input type="number" className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
                       </div>
                     </div>
                   </div>
                   <div className="col-12">
                     <div className="formRow">
-                      <div className="col-6">
-                        <div className="formLabel">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
+                        <div className="formLabel w-100">
                           <label htmlFor="">Status</label>
                           <label className="formItemDesc">The status of the autopay feature</label>
                         </div>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ">
                         <select
                           className="formItem me-0"
                           id="selectFormRow"

@@ -57,9 +57,9 @@ function ChangePassword() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid px-0">
           <Header title="Change Password" />
-        </div>
+        {/* <div className="container-fluid px-0">
+        </div> */}
 
         <div className="overviewTableWrapper">
           <div className="overviewTableChild">

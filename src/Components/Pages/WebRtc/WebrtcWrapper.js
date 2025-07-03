@@ -24,7 +24,10 @@ import { Rnd } from "react-rnd";
 import ConferenceConfig from "./Conference/ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
-import { generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  useDebounce,
+} from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
@@ -37,12 +40,12 @@ import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
 import { ActionType } from "../../Redux/reduxActionType";
 import InitiateCall from "./LivekitConference/InitiateCall";
 import InternalIncomingCall from "./LivekitConference/InternalIncomingCall";
+import GoPeerCallSocket from "../../GlobalFunction/GoPeerCallSocket";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
-  // const state = useSelector((state) => state);
   const volume = useSelector((state) => state?.volume);
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
@@ -71,7 +74,9 @@ const WebrtcWrapper = () => {
   const videoCall = useSelector((state) => state.videoCall);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
   const [hangupRefresh, setHangupRefresh] = useState(0);
   const [selectedModule, setSelectedModule] = useState("");
   const [activePage, setactivePage] = useState("call");
@@ -94,7 +99,7 @@ const WebrtcWrapper = () => {
   const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callCurrentPage, setCallCurrentPage] = useState(1);
-  const [isChatLoadedForNextPage, setIsChatLoadedForNextPage] = useState(false)
+  const [isChatLoadedForNextPage, setIsChatLoadedForNextPage] = useState(false);
   const [callstartDate, setCallStartDate] = useState("");
   const [callendDate, setCallEndDate] = useState("");
   const [callsearchQuery, setCallSearchQuery] = useState("");
@@ -113,19 +118,25 @@ const WebrtcWrapper = () => {
   const [isConferenceCall, setIsConferenceCall] = useState(false);
   const [isConferenceAdmin, setIsConferenceAdmin] = useState(false);
   const [conferenceInfo, setConferenceInfo] = useState([]);
-
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
-
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
-
   const audioRef = useRef(null);
   const audioCtxRef = useRef(null);
   const gainNodeRef = useRef(null);
   const analyserRef = useRef(null);
   const audio = new Audio(ringtone);
   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
+
+  const { sendMessage } = GoPeerCallSocket();
+  useEffect(() => {
+    console.log("GoPeerCallSocket initialized");
+    dispatch({
+      type: "SET_SOCKETSENDPEERCALLMESSAGE",
+      socketSendPeerCallMessage: sendMessage,
+    });
+  }, [GoPeerCallSocket]);
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -259,15 +270,6 @@ const WebrtcWrapper = () => {
       });
   };
 
-  const callSocketForMeetingRoomNotification = () => {
-    const socket = new WebSocket(`wss://testing.webvio.in:8084/ws?user_id=${account?.id}`);
-    socket.addEventListener('message', (data) => {
-      console.log('WebSocket connection opened cccccccccc', data);
-    });
-  }
-
-  callSocketForMeetingRoomNotification()
-
   useEffect(() => {
     checkMicrophoneStatus(); // Check mic status when component mounts
     checkVideoStatus();
@@ -360,8 +362,7 @@ const WebrtcWrapper = () => {
   useEffect(() => {
     async function fetchData() {
       // setCallLoading(true);
-      if (hangupRefresh == 0)
-        setIsCallLoading(true)
+      if (hangupRefresh == 0) setIsCallLoading(true);
       if (callCurrentPage === 1) {
         // setCallLoading(true);
       } else {
@@ -406,7 +407,7 @@ const WebrtcWrapper = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setIsCallLoading(true)
+      setIsCallLoading(true);
       if (callCurrentPage === 1) {
         // setCallLoading(true);
         setIsCallLoading(false);
@@ -470,17 +471,22 @@ const WebrtcWrapper = () => {
     }
   }
 
-
-
   useEffect(() => {
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
 
     if (interCallMinimize) {
       setInterCallSize({ width: "100%", height: "100%" });
-      setInterCallPosition(isConferenceCall ?
-        { x: screenWidth <= 1366 ? 0 : 210, y: screenWidth <= 1366 ? 0 : 61 } :
-        { x: screenWidth <= 1366 ? 0 : 650, y: screenWidth <= 1366 ? 0 : 61 }
+      setInterCallPosition(
+        isConferenceCall
+          ? {
+              x: screenWidth <= 1366 ? 0 : 210,
+              y: screenWidth <= 1366 ? 0 : 61,
+            }
+          : {
+              x: screenWidth <= 1366 ? 0 : 650,
+              y: screenWidth <= 1366 ? 0 : 61,
+            }
       );
     } else if (!interCallMinimize) {
       setInterCallSize({
@@ -648,7 +654,6 @@ const WebrtcWrapper = () => {
           gainNodeRef={gainNodeRef}
           accountDetails={accountDetails}
           didAll={didAll}
-
         />
 
         {/* Draggable Component */}
@@ -710,7 +715,7 @@ const WebrtcWrapper = () => {
                   allContact={allContact}
                   accountDetails={accountDetails}
                   didAll={didAll}
-                // globalSession={sessions}
+                  // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -836,7 +841,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
@@ -928,7 +933,7 @@ const WebrtcWrapper = () => {
           }}
           minWidth={"290px"}
           minHeight={"280px"}
-          maxWidth={`calc(100vw - ${isConferenceCall ? '210px' : '650px'})`}
+          maxWidth={`calc(100vw - ${isConferenceCall ? "210px" : "650px"})`}
           maxHeight={"calc(100vh - 61px)"}
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
           disableDragging={interCallMinimize}
@@ -967,7 +972,11 @@ const WebrtcWrapper = () => {
         ""
       )}
 
-      <InternalIncomingCall setCalling={setCalling} setToUser={setToUser} setInternalCaller={setInternalCaller} />
+      <InternalIncomingCall
+        setCalling={setCalling}
+        setToUser={setToUser}
+        setInternalCaller={setInternalCaller}
+      />
     </>
   );
 };

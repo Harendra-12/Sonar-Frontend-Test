@@ -94,9 +94,9 @@ function PermissionConfigForUser() {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Global Permissions" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Global Permissions" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
@@ -582,7 +582,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
             <div className="accordion-item">
               <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button className="accordion-button mainSection collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
+                <button className="accordion-button mainSection border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
                     <div className="cl-toggle-switch">

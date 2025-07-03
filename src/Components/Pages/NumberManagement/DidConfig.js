@@ -52,7 +52,6 @@ const DidConfig = () => {
     if (locationData.configuration !== null) {
       console.log("Location Data: ", locationData.configuration);
       // setDataAvailable(false);
-
       setValue("usages", locationData.configuration.usages || "none");
       setValue("did_id", locationData.id || "");
       setValue("did_id_view", locationData.did || "");
@@ -317,9 +316,9 @@ const DidConfig = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
             <Header title="Number Configuration" />
-          </div>
+          {/* <div className="container-fluid px-0">
+          </div> */}
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
               <div colSpan={99}>
@@ -380,7 +379,7 @@ const DidConfig = () => {
                               Selected DID.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <input
                               type="text"
                               className="formItem"
@@ -404,7 +403,7 @@ const DidConfig = () => {
                         </div>
 
                         <div className="formRow col-xl-3">
-                          <div className="formLabel">
+                          <div className="formLabel mw-sm-100">
                             <label htmlFor="">
                               Usage
                               {/* <span className="text-danger">*</span> */}
@@ -414,8 +413,9 @@ const DidConfig = () => {
                             </label>
                           </div>
                           <div
-                            className={`${watch().usages === "none" ? "col-6" : "col-3"
-                              } pe-2 ms-auto`}
+                            className={`${
+                              watch().usages === "none" ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12" : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6"
+                            } pe-2 ms-auto`}
                           >
                             <select
                               className="formItem"
@@ -448,7 +448,7 @@ const DidConfig = () => {
                           {watch().usages &&
                             watch().usages !== "none" &&
                             watch().usages !== "aiagent" && (
-                              <div className="col-3">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
                                 <ActionList
                                   category={watch().usages}
                                   title={null}
@@ -463,7 +463,7 @@ const DidConfig = () => {
                               </div>
                             )}
                           {watch().usages && watch().usages === "aiagent" && (
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
                               <select
                                 className="formItem"
                                 name="forward"
@@ -500,10 +500,11 @@ const DidConfig = () => {
                             </label>
                           </div>
                           <div
-                            className={`col-${forwardStatus != "disabled"
-                              ? "3 pe-2 ms-auto"
-                              : "6"
-                              }`}
+                            className={`${
+                              forwardStatus != "disabled"
+                                ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
+                                : "6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
+                            }`}
                           >
                             {forwardStatus != "disabled" && (
                               <div className="formLabel">
@@ -533,7 +534,7 @@ const DidConfig = () => {
                           </div>
                           {forwardStatus === "pstn" &&
                             forwardStatus != "disabled" && (
-                              <div className="col-3">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
                                 <div className="formLabel">
                                   <label>PSTN</label>
                                 </div>
@@ -587,7 +588,7 @@ const DidConfig = () => {
 
                           {forwardStatus !== "pstn" &&
                             forwardStatus != "disabled" && (
-                              <div className="col-3">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
                                 {watch().forward &&
                                   watch().forward?.length !== 0 && (
                                     <>
@@ -635,7 +636,7 @@ const DidConfig = () => {
                               Set a prefix tag for the destination
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <input
                               type="text"
                               name="forward_to"
@@ -655,7 +656,7 @@ const DidConfig = () => {
                               Save the recording.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -678,7 +679,7 @@ const DidConfig = () => {
                               Save the recording.
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -717,7 +718,7 @@ const DidConfig = () => {
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Status</label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -739,7 +740,7 @@ const DidConfig = () => {
                               Select the status of Sticky Agent
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <div className="row gx-2">
                               <div
                                 className={`col-${watch().sticky_agent_enable == "true" ||
@@ -862,7 +863,7 @@ const DidConfig = () => {
                               Select the type of Spam Filter
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <div className="row">
                               <div
                                 className={`col-${watch().spam_filter_type === "3"
@@ -933,7 +934,7 @@ const DidConfig = () => {
                                       <option value={5}>5</option>
                                     </select>
                                   </div>
-                                  <div className="col-6 pe-1">
+                                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 pe-1">
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         DTMF type{" "}
@@ -959,7 +960,7 @@ const DidConfig = () => {
                                       </option>
                                     </select>
                                   </div>
-                                  <div className="col-6 ps-1">
+                                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ps-1">
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         Retry File
@@ -998,7 +999,7 @@ const DidConfig = () => {
                               Select the type of tag you want to display
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <select
                               className="formItem"
                               name=""
@@ -1020,7 +1021,7 @@ const DidConfig = () => {
                               call notification
                             </label>
                           </div>
-                          <div className="col-6">
+                          <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <div className="row">
                               <div
                                 className={`col-${watch().missedcall_type == "disable"
@@ -1040,7 +1041,7 @@ const DidConfig = () => {
                                 </select>
                               </div>
                               {watch().missedcall_type == "sms" && (
-                                <div className={`col-6`}>
+                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12`}>
                                   <input
                                     type="number"
                                     className="formItem"
@@ -1051,7 +1052,7 @@ const DidConfig = () => {
                                 </div>
                               )}
                               {watch().missedcall_type == "email" && (
-                                <div className={`col-6`}>
+                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12`}>
                                   <input
                                     type="email"
                                     className="formItem"
