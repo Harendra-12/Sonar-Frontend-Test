@@ -221,6 +221,9 @@
     .formRow.col-xl-3 {
         width: 100%;
     }
+     .callDashParkedCalls button.callDashParkedCallsBtn {
+        left: -8px;
+    }
 }
 
 @media (max-device-width: 1366px) {
@@ -671,20 +674,26 @@
     .formRow.col-xl-3 {
         width: 100%;
     }
-    .tableHeader .showEntries{
+
+    .tableHeader .showEntries {
         width: 100%;
         justify-content: flex-start;
     }
+
     .col {
-    flex: 1 0 20%;
-}
+        flex: 1 0 20%;
+    }
+    .callDashParkedCalls button.callDashParkedCallsBtn {
+        left: -8px;
+    }
 }
 
 @media (max-width: 767px) {
     .chat_menu {
         display: block;
     }
-    .mw-sm-100{
+
+    .mw-sm-100 {
         max-width: 100%;
         width: 100%;
     }
@@ -757,9 +766,10 @@
         max-width: 92%;
         width: 100%;
     }
+
     .col {
-    flex: 1 0 40%;
-}
+        flex: 1 0 40%;
+    }
 }
 
 @media (max-width: 480px) {
