@@ -28,7 +28,8 @@ const EmailList = ({
   handleMultipleUnStarred,
   handleMultipleStarred,
   handleMultipleSeen,
-  handleMultipleUnSeen
+  handleMultipleUnSeen,
+  searchInput
 }) => {
   const [isCheckedAll, setIsCheckedAll] = useState(false)
   const formatDateTime = (dateString) => {
@@ -121,6 +122,7 @@ const EmailList = ({
                     type="search"
                     name="Search"
                     className="formItem"
+                    value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                   />
                 </div>
@@ -320,7 +322,7 @@ const EmailList = ({
                         }}
                         onClick={() => {
                           if (!loadingForActions?.some(i => i.uid === item.uid))
-                            handleMailDelete(item)
+                            handleMailDelete(item, false)
                         }}
                       ></i>
                     </td>

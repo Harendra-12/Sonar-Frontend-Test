@@ -6,7 +6,7 @@ import {
 } from "../../../validations/validation";
 import ErrorMessage from "../../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
-import { generalPostFunction } from "../../../GlobalFunction/globalFunction";
+import { fileUploadFunction } from "../../../GlobalFunction/globalFunction";
 
 const NewMail = ({
   handleShowNewMail,
@@ -17,6 +17,7 @@ const NewMail = ({
   selectedFromMailAddressId
 }) => {
   const [loading, setLoading] = useState(false);
+  const [newFile, setNewFile] = useState(null);
   const {
     register,
     handleSubmit,
@@ -29,14 +30,22 @@ const NewMail = ({
   const handleComposeMail = async (data) => {
     setLoading(true);
     // implement dynamic toast
+    const ccEmailsArray = data?.CCmail
+      ?.split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter((email) => email !== "");
     try {
-      const payload = {
-        to: data.mailTo,
-        subject: data.subjects,
-        content: data.content,
-        id: selectedFromMailAddressId
-      };
-      const apiData = await generalPostFunction("/send-mail", payload);
+      let formData = new FormData();
+      ccEmailsArray.forEach((email, index) => {
+        formData.append(`cc[${index}]`, email);
+      });
+      formData.append("to", data.mailTo);
+      formData.append("subject", data.subjects);
+      formData.append("content", data.content);
+      formData.append("id", selectedFromMailAddressId);
+      if (newFile)
+        formData.append("attachment", newFile);
+      const apiData = await fileUploadFunction("/send-mail", formData);
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
@@ -76,7 +85,7 @@ const NewMail = ({
                     <p className="text_dark mb-0">Compose Mail</p>
                   </div>
                 </div>
-                <div className="dropdown">
+                {/* <div className="dropdown">
                   <button
                     className="clearButton2"
                     type="button"
@@ -85,10 +94,10 @@ const NewMail = ({
                   >
                     <i className="fa-solid fa-ellipsis-vertical" />
                   </button>
-                  <ul className="dropdown-menu light">
-                    {/* {
+                  <ul className="dropdown-menu light"> */}
+                {/* {
                                                     item.is_admin ? */}
-                    <li className="mailList_menu">
+                {/* <li className="mailList_menu">
                       <button className="dropdown-item">
                         <i class="fa-duotone fa-light fa-star me-2"></i> Starred
                       </button>
@@ -101,11 +110,11 @@ const NewMail = ({
                       </button>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
             </div>
             <form onSubmit={handleSubmit(handleComposeMail)} className="d-flex justify-content-between flex-column h-100">
-              <div className="mailBox_body p-3 " style={{    height: "calc(100vh - 337px)"}}>
+              <div className="mailBox_body p-3 " style={{ height: "calc(100vh - 337px)" }}>
                 <div className="row ">
                   <div className=" col-12">
                     <div className="from-group">
@@ -173,7 +182,7 @@ const NewMail = ({
                         class="formItem"
                         id="CCmailOption"
                         placeholder="johnnydepp@example.com"
-                        {...register("CCmail", { ...emailValidator })}
+                        {...register("CCmail")}
                       />
                       {errors?.CCmail && (
                         <ErrorMessage text={errors.CCmail.message} />
@@ -217,8 +226,44 @@ const NewMail = ({
                           <label for="file" class="custom_file">
                             <i class="fa-solid fa-paperclip"></i>
                           </label>
-                          <input id="file" type="file" />
+                          <input
+                            id="file"
+                            type="file"
+                            className="form-control-file d-none"
+                            accept=".pdf,.doc,.docx,.jpg, .png"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                const maxSizeInKB = 10240; // 10MB
+                                const fileSizeInKB = file.size / 1024;
+
+                                if (fileSizeInKB > maxSizeInKB) {
+                                  toast.error("File size exceeds 10MB limit.");
+                                  e.target.value = ""; // Clear the file input
+                                  return;
+                                }
+
+                                const fileName = file.name.replace(/ /g, "-");
+                                const newFile = new File([file], fileName, {
+                                  type: file.type,
+                                });
+                                setNewFile(newFile);
+                              }
+                            }}
+                          />
                         </div>
+                        {newFile && (
+                          <div className="mt-2 d-flex align-items-center gap-2">
+                            <span>{newFile.name}</span>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => setNewFile(null)}
+                            >
+                              ❌
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
