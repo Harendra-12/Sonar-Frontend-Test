@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
-  const socketSendMessage = useSelector((state) => state.socketSendMessage)
+  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage)
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
@@ -19,7 +19,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
 
     }, 1000);
 
-    socketSendMessage({
+    socketSendPeerCallMessage({
       action: "peercallUpdate",
       chat_call_id: item.uuid,
       hangup_cause: "",
@@ -35,7 +35,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       room_id: item.room_id,
     });
     dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
-    socketSendMessage({
+    socketSendPeerCallMessage({
       action: "peercallUpdate",
       chat_call_id: item.uuid,
       hangup_cause: "rejected",
