@@ -131,6 +131,7 @@ const WebrtcWrapper = () => {
 
   const { sendMessage } = GoPeerCallSocket();
   useEffect(() => {
+    console.log("GoPeerCallSocket initialized");
     dispatch({
       type: "SET_SOCKETSENDPEERCALLMESSAGE",
       socketSendPeerCallMessage: sendMessage,
