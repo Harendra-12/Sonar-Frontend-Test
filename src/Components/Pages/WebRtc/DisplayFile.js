@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { isOnlyLink } from "../../GlobalFunction/globalFunction";
 
 // Keep track of the currently playing audio ref and video ref
 let currentlyPlayingAudioRef = null;
@@ -126,12 +127,22 @@ const DisplayFile = ({ item, index }) => {
         lowerValue.includes("image") ||
         lowerValue.includes("gif") ||
         lowerValue.includes("jpg") ||
-        lowerValue.includes("jpeg") || lowerValue.includes("webp") || lowerValue.includes("svg")
+        lowerValue.includes("jpeg") ||
+        lowerValue.includes("webp") ||
+        lowerValue.includes("svg") ||
+        lowerValue.includes("bmp")
       )
         return "png";
       if (lowerValue.includes("pdf")) return "pdf";
       if (lowerValue.includes("mp3")) return "mp3";
-      if (lowerValue.includes("mp4") || lowerValue.includes("Video"))
+      if (lowerValue.includes("mp4") ||
+        lowerValue.includes("Video") ||
+        lowerValue.includes("mov") ||
+        lowerValue.includes("avi") ||
+        lowerValue.includes("mkv") ||
+        lowerValue.includes("wmv") ||
+        lowerValue.includes("flv")
+      )
         return "mp4";
 
     }
@@ -168,7 +179,19 @@ const DisplayFile = ({ item, index }) => {
   const ext = fileUrl;
 
   if (!ext) {
-    return <div className="messageDetails">{item}</div>;
+    return (
+      <div className="messageDetails">
+        {isOnlyLink(item) ?
+          <a
+            href={item}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'blue', textDecoration: 'underline' }}
+          >
+            {item}
+          </a> : item}
+      </div>
+    );
   } else {
     if (ext === "png") {
       return (
