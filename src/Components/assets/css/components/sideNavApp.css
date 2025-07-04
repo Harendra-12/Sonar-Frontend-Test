@@ -53,7 +53,7 @@
 
 #sidenNavApp .sidenavItems ul li .navItem.active {
     /* background: #ffffff29; */
-    background: #3e8ef7 !important;
+    background: var(--color2) !important;
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
 }

@@ -10,7 +10,7 @@
   background: none;
   border: 0;
   /* background-color: var(--color1); */
-  color: var(--webUtilGray);
+  color: var(--color-subText);
   text-decoration: none;
   font-size: 1.0625rem;
   width: 35px;
@@ -115,15 +115,15 @@
 }
 
 .panelButton.delete {
-  background: red;
+  background: var(--table-delete-text);
 }
 
 .panelButton.gray {
-  background-color: #6c757d;
+  background-color: #636363;
 }
 
 .panelButton.edit {
-  background-color: #00ab2b;
+  background-color: #3caa45;
 }
 
 .panelButton:disabled {
@@ -204,7 +204,7 @@
   font-weight: 500 !important;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
   text-decoration: none;
-  color: #000;
+  color: #1c1c1c;
   background-color: #fff;
   transition: 0.2s;
 }
@@ -828,22 +828,22 @@
 
 .tableButton.blue {
   background-color: #9dc4ff7d;
-  color: #000cff;
+  color: #000c8f;
 }
 
 .tableButton.blue:hover {
-  background-color: #000796;
+  background-color: #000c8f;
   color: #fff;
 }
 
 .tableButton.option {
   background-color: rgba(0, 119, 255, 0.082);
-  color: #0075ff;
-  border: 1px solid #0075ff;
+  color: #305cfd;
+  border: 1px solid #305cfd;
 }
 
 .tableButton.option:hover {
-  background-color: #0075ff;
+  background-color: #305cfd;
   color: #fff;
 }
 
@@ -851,7 +851,7 @@
   color: #0ab39c !important;
 } */
 .tableButton.edit:hover {
-  background-color: #0ab39c;
+  background-color: #24762A;
   color: #fff;
 }
 
@@ -863,9 +863,9 @@
 } */
 
 .tableButton.warning {
-  background-color: rgba(255, 166, 0, 0.205);
-  color: #ad6501;
-  border: 1px solid #c0760f;
+  background-color: #fed05d30;
+  color: #fed05d;
+  border: 1px solid #fed05d;
 }
 
 .tableButton.warning:hover i {

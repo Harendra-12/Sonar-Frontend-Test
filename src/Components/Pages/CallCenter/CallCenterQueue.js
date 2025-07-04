@@ -660,14 +660,14 @@ function CallCenterQueue() {
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
                 <div className="row content col-xl-4 col-md-5">
-                  <div className="col-2 px-0">
+                  <div className="col-12 mb-2">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-triangle-exclamation"></i>
                     </div>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
-                    <p>
+                  <div className="col-12 ">
+                    <h4 className="text-center text-orange ">Warning!</h4>
+                    <p className="text-center">
                       {deleteId == ""
                         ? error
                         : "Are you sure you want to delete this queue?"}
@@ -676,7 +676,7 @@ function CallCenterQueue() {
                           selectedCallCenter?.status == 1 ? "disable" : "enable"
                         } the queue ${selectedCallCenter?.queue_name}?`}
                     </p>
-                    <div className="mt-2 d-flex justify-content-between">
+                    <div className="mt-2 d-flex justify-content-center gap-2 mt-3">
                       {deleteId == "" ? (
                         <button
                           disabled={loading}

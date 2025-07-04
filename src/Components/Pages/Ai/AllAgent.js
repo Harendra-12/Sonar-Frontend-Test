@@ -381,7 +381,7 @@ const AllAgent = () => {
 
                         <div className="row">
                           <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 mb-4">
-                            <div className="popup_box" style={{ borderColor: "rgb(0 192 255)" }}>
+                            <div className="popup_box" style={{ borderColor: "#305CFD" }}>
                               <button
                                 type="button"
                                 className="popup-border text-center bg-transparent p-2"
@@ -397,7 +397,7 @@ const AllAgent = () => {
                                       className="fa-solid fa-plus"
                                       style={{
                                         fontSize: 40,
-                                        color: "#03c2f4",
+                                        color: "#305CFD",
                                       }}
                                     />
                                   </div>
@@ -424,7 +424,7 @@ const AllAgent = () => {
                                       className="fa-solid fa-phone-arrow-up-right"
                                       style={{
                                         fontSize: 20,
-                                        color: "#03c2f4",
+                                        color: "#305CFD",
                                       }}
                                     />
                                     <h5 className="mb-0 mt-2 text-center">
@@ -468,7 +468,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -499,7 +499,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -543,7 +543,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -574,7 +574,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -618,7 +618,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -649,7 +649,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -693,7 +693,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -724,7 +724,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -768,7 +768,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -799,7 +799,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -882,7 +882,7 @@ const AllAgent = () => {
                                         className="fa-solid fa-plus"
                                         style={{
                                           fontSize: 40,
-                                          color: "#03c2f4",
+                                          color: "#305CFD",
                                         }}
                                       />
                                     </div>
@@ -908,7 +908,7 @@ const AllAgent = () => {
                                         className="fa-solid fa-phone-arrow-up-right"
                                         style={{
                                           fontSize: 20,
-                                          color: "#03c2f4",
+                                          color: "#305CFD",
                                         }}
                                       />
                                       <h5 className="mb-0 mt-2 text-center">
@@ -942,7 +942,7 @@ const AllAgent = () => {
                                         className="fa-solid fa-phone-arrow-up-right"
                                         style={{
                                           fontSize: 20,
-                                          color: "#03c2f4",
+                                          color: "#305CFD",
                                         }}
                                       />
                                       <h5 className="mb-0 mt-2 text-center">
@@ -976,7 +976,7 @@ const AllAgent = () => {
                                         className="fa-solid fa-phone-arrow-up-right"
                                         style={{
                                           fontSize: 20,
-                                          color: "#03c2f4",
+                                          color: "#305CFD",
                                         }}
                                       />
                                       <h5 className="mb-0 mt-2 text-center">
@@ -1017,7 +1017,7 @@ const AllAgent = () => {
                                         className="fa-solid fa-plus"
                                         style={{
                                           fontSize: 40,
-                                          color: "#03c2f4",
+                                          color: "#305CFD",
                                         }}
                                       />
                                     </div>
@@ -1050,7 +1050,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-link"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">
@@ -1081,7 +1081,7 @@ const AllAgent = () => {
                                           className="fa-solid fa-chart-waterfall"
                                           style={{
                                             fontSize: 20,
-                                            color: "#03c2f4",
+                                            color: "#305CFD",
                                           }}
                                         />
                                         <h5 className="mb-0 mt-2 text-center">

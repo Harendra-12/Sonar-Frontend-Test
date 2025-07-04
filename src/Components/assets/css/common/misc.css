@@ -80,17 +80,17 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: red;
+    background-color: #DF2A36;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .extensionStatus.online {
     /* background-color: green; */
-    background-color: #00d700;
+    background-color: #3CAA45;
 }
 
 .extensionStatus.onCall {
-    background-color: #ff9921;
+    background-color: #FED05D;
 }
 
 .pagination_slider {
@@ -448,7 +448,7 @@
 }
 
 .addressDrawer.active {
-    border: 1px solid #009688;
+    border: 1px solid var(--text-badge-success);
     box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
@@ -1337,7 +1337,7 @@ input[type=number] {
 
 .callDashParkedCalls button.callDashParkedCallsBtn {
     border: 0;
-    background-color: #0075ff96;
+    background-color: #89A2FA;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1413,11 +1413,12 @@ input[type=number] {
 .f-select-width {
     width: 75px !important;
     height: 28px;
-    border-color: transparent;
+    border-color: transparent !important;
     /* background-color: #f4f7f9 !important; */
     font-size: 0.875rem;
     padding: 0;
-    background-color: var(--table-head);
+    /* background-color: var(--table-head); */
+    background-color: var(--table-odd-color) !important;
 }
 
 .popupopen ul {
@@ -1982,7 +1983,7 @@ input[type=number] {
 
 .mail_leftbar .mail_list.active p,
 .mail_leftbar .mail_list.active span {
-    color: var(--active-mail-list-text);
+    color: var(--active-mail-list-text) !important;
 }
 
 tr.seen-message {
@@ -1997,12 +1998,12 @@ tr.seen-message td p {
 }
 
 .composeBtn {
-    background: #5794d5;
+    background: #89A2FA;
     color: #fff;
 }
 
 .composeBtn:hover {
-    background: #3f7ec0;
+    background: #305CFD;
     color: #fff;
 }
 
@@ -2762,4 +2763,9 @@ i.fa.fa-star {
 
 .ringingCallsWrap {
     padding-top: 55px;
+}
+
+.btn.btn-primary{
+background-color: var(--color2) !important;
+border-color: var(--color2) !important
 }

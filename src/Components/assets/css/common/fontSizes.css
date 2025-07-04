@@ -16,7 +16,7 @@ h5 {
 
 .gray14 {
     font-size: 0.875rem;
-    color: var(--webUtilGray);
+    color: var(--color-subText);
 }
 
 .basicContent {

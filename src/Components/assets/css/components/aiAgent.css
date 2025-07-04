@@ -89,7 +89,7 @@
 }
 
 .knowledge__list .nav .nav-link.active i {
-    color: #066ed7 !important;
+    color: var(--ui-accent) !important;
 }
 
 .KnowledgeRightinfo {

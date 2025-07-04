@@ -11,10 +11,11 @@ table td {
 table th {
     padding: 5px 10px !important;
     font-size: 0.875rem;
-    background-color: var(--table-head) !important;
+    background-color: var(--table-odd-color) !important;
     white-space: nowrap;
     width: 200px;
-    color: var(--form-label) !important;
+    /* color: var(--form-label) !important; */
+    color: var(--immortalBlack) !important;
 }
 
 table thead tr {
@@ -483,15 +484,15 @@ table td.incoming::after {
 /* Checked */
 .cl-switch>input:checked {
     right: -10px;
-    background-color: #85b8b7;
+    background-color: var( --header-dark-gray);
 }
 
 .cl-switch>input:checked+span::before {
-    background-color: #85b8b7;
+    background-color: var( --header-dark-gray);
 }
 
 .cl-switch>input:checked+span::after {
-    background-color: #018786;
+    background-color: var( --list-color);
     transform: translateX(16px);
 }
 

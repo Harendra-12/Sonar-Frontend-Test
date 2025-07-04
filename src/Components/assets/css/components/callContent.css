@@ -766,8 +766,8 @@
 }
 
 .mainContentApp .webrtc_newMessageUi .wertc_iconBox.selected .profileHolder {
-    background-color: rgb(147 207 255);
-    color: #035a9f;
+    background-color: #89A2FA;
+    color: #fff;
 }
 
 .callListItem.wertc_iconBox {
