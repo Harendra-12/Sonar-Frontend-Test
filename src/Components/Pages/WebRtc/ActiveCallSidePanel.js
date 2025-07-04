@@ -325,7 +325,7 @@ function ActiveCallSidePanel({
         (acc) => acc?.extension == destination
       );
       const username = accountDetails?.users?.filter(
-        (acc) => acc?.extension_id == filteredExtension[0]?.id
+        (acc) => acc?.extension_id === filteredExtension[0]?.id
       );
       setCallExtraInfo({
         info: username[0]?.username || destination,

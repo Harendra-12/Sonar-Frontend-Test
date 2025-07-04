@@ -581,8 +581,9 @@ function OngoingCall({
         (acc) => acc.extension == callProgressDestination
       );
       const username = accountDetails?.users?.filter(
-        (acc) => acc?.extension_id == filteredExtension[0]?.id
+        (acc) => acc?.extension_id === filteredExtension[0]?.id
       );
+      console.log(filteredExtension, username,callProgressDestination);
       setCallExtraInfo({
         info: username[0]?.username || callProgressDestination,
         type: "user",
