@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/recording-template/static/css/main.bbc69b6c.css",
+    "main.js": "/recording-template/static/js/main.fd7dda17.js",
+    "index.html": "/recording-template/index.html",
+    "main.bbc69b6c.css.map": "/recording-template/static/css/main.bbc69b6c.css.map",
+    "main.fd7dda17.js.map": "/recording-template/static/js/main.fd7dda17.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bbc69b6c.css",
+    "static/js/main.fd7dda17.js"
+  ]
+}

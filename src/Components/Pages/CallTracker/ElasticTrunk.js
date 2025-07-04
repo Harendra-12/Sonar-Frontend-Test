@@ -72,9 +72,9 @@ function ElasticTrunk() {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Elastic Trunk Portal" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Elastic Trunk Portal" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">

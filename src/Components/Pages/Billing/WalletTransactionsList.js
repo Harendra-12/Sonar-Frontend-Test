@@ -74,9 +74,9 @@ function WalletTransactionsList() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Wallet Transactions" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Wallet Transactions" />
 
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

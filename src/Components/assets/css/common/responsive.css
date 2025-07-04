@@ -207,6 +207,9 @@
         margin: unset;
         margin-left: 20px;
     }
+    .card-body.aiAgentTab.selectTemplate {
+    min-height: 700px !important;
+}
 }
 
 @media (min-device-width:992px) and (max-device-width: 1250px) {
@@ -685,6 +688,9 @@
     }
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
+    }
+    .popup_box{
+        max-width: 100% !important;
     }
 }
 

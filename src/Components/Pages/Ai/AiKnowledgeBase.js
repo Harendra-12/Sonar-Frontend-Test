@@ -296,9 +296,9 @@ const AiKnowledgeBase = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Knowledge Base" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Knowledge Base" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div

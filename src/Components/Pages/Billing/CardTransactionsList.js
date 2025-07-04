@@ -73,9 +73,9 @@ function CardTransactionsList() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Card Transactions" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Card Transactions" />
 
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

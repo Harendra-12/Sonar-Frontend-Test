@@ -99,9 +99,9 @@ function AccessControlAdd() {
     <>
       <div className="mainContent">
         <section id="phonePage">
+              <Header title="Access List" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Access List" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
