@@ -209,7 +209,7 @@ function AccessControlAdd() {
                             </select>
                           </div>
                         </div>
-                        <div className="formRow col-xl-12 ">
+                        {/* <div className="formRow col-xl-12 ">
                           <div className="formLabel">
                             <label htmlFor="">Group</label>
                           </div>
@@ -228,7 +228,7 @@ function AccessControlAdd() {
                               }
                             </select>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">IP Address</label>

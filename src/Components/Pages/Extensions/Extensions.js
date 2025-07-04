@@ -463,7 +463,7 @@ const Extensions = () => {
                                                 );
                                               }
                                             })}
-                                          <th>Default Outbound Number</th>
+                                          {/* <th>Default Outbound Number</th> */}
                                           {checkViewSidebar(
                                             "Extension",
                                             slugPermissions,
@@ -544,7 +544,7 @@ const Extensions = () => {
                                                         )}
                                                       </td>
                                                     ))}
-                                                  <td>
+                                                  {/* <td>
                                                     {
                                                       allDID?.filter(
                                                         (item) =>
@@ -552,7 +552,7 @@ const Extensions = () => {
                                                           1
                                                       )[0]?.did
                                                     }
-                                                  </td>
+                                                  </td> */}
                                                   {checkViewSidebar(
                                                     "Extension",
                                                     slugPermissions,

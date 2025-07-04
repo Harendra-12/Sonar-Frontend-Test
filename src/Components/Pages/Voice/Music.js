@@ -306,7 +306,7 @@ function Music() {
                     className="col-12"
                     style={{ overflow: "auto", padding: "20px 20px 0" }}
                   >
-                    <div className="tableHeader">
+                    {/* <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
                         <select className="formItem">
@@ -323,7 +323,7 @@ function Music() {
                             onChange={() => featureUnderdevelopment()}
                           />
                         </div>}
-                    </div>
+                    </div> */}
                     <div className="tableContainer">
                       {loading ? (
                         // <SkeletonTableLoader col={6} row={15} />
