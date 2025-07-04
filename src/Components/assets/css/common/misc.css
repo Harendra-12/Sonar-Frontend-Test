@@ -1929,12 +1929,14 @@ input[type=number] {
 }
 
 .mail_leftbar {
-    max-width: 200px;
-    width: 100%;
-    min-width: 170px;
+    /* max-width: 200px;
+    width: 100%; */
+    /* min-width: 170px; */
+    /* flex: 0 20%; */
     /* background: #f6f6f6; */
     border: 0;
     height: 100%;
+    width: 300px;
 }
 
 .mail_leftbar ul li {
@@ -2024,7 +2026,7 @@ i.fa.fa-star {
 }
 
 .table_card {
-    width: 100%;
+    flex: 1 1 auto;
     background: var(--knowledge-leftinfo);
     padding: 10px;
     border-radius: 10px;
@@ -2745,20 +2747,19 @@ i.fa.fa-star {
     color: #ffff !important;
 }
 
-.wrongImg{
+.wrongImg {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
     /* height: 300px; */
 }
-.wrongImg img{
+
+.wrongImg img {
     width: 100%;
     height: auto;
 }
-.ringingCallsWrap{
+
+.ringingCallsWrap {
     padding-top: 55px;
 }
-
-
-

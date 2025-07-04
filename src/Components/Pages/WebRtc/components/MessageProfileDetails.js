@@ -222,7 +222,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
               <button className="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
               <button className="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
               <button className="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
-              <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
+              <button className="clearButton2 refresh link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
             </div>
           </nav>
           <div className="tab-content mt-3">
