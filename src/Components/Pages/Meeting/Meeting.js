@@ -140,9 +140,11 @@ function Meeting() {
     try {
       const apidata = await generatePreSignedUrl(filename);
       if (apidata?.status) {
-        setShareRecordingPopup(true);
+        // setShareRecordingPopup(true);
         setPreSignedUrl(apidata.url);
+        navigator.clipboard.writeText(apidata.url);
         setPageLoading(false);
+        toast.success("Link copied to clipboard");
       }
     } catch (err) {
       setPageLoading(false);
@@ -655,58 +657,65 @@ function Meeting() {
                           </tr>
                         </thead>
                         <tbody>
-                          {dataLoade && <SkeletonTableLoader col={5} row={5} />}
-                          {recordData.length === 0 && !dataLoade ? (
-                            <tr>
-                              <td colSpan={5} className="text-center">
-                                No Recordings Found
-                              </td>
-                            </tr>
+                          {dataLoade ? (
+                            <SkeletonTableLoader col={5} row={15} />
                           ) : (
-                            recordData.map((item, key) => {
-                              return (
+                            <>
+                              {recordData.length === 0 && !dataLoade ? (
                                 <tr>
-                                  <td>{key + 1}</td>
-                                  <td>
-                                    {formatTimestamp(
-                                      item?.fileUrl?.file?.startedAt
-                                    )}
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="tableButton"
-                                      onClick={() =>
-                                        handleView(
-                                          item?.fileUrl?.file?.filename
-                                        )
-                                      }
-                                    >
-                                      <i className="fa-solid fa-eye" />
-                                    </button>
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="tableButton edit"
-                                      onClick={() =>
-                                        handleShare(
-                                          item?.fileUrl?.file?.filename
-                                        )
-                                      }
-                                    >
-                                      <i className="fa-solid fa-share" />
-                                    </button>
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="tableButton delete"
-                                      onClick={() => featureUnderdevelopment()}
-                                    >
-                                      <i className="fa-solid fa-trash" />
-                                    </button>
+                                  <td colSpan={5} className="text-center">
+                                    No Recordings Found
                                   </td>
                                 </tr>
-                              );
-                            })
+                              ) : (
+                                recordData.map((item, key) => {
+                                  return (
+                                    <tr>
+                                      <td>{key + 1}</td>
+                                      <td>
+                                        {formatTimestamp(
+                                          item?.fileUrl?.file?.startedAt
+                                        )}
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton"
+                                          onClick={() =>
+                                            handleView(
+                                              item?.fileUrl?.file?.filename
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-solid fa-eye" />
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() =>
+                                            handleShare(
+                                              item?.fileUrl?.file?.filename
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-solid fa-share" />
+                                        </button>
+                                      </td>
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() =>
+                                            featureUnderdevelopment()
+                                          }
+                                        >
+                                          <i className="fa-solid fa-trash" />
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })
+                              )}
+                            </>
                           )}
                         </tbody>
                       </table>

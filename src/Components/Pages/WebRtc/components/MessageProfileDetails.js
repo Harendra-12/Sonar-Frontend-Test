@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { convertDateToCurrentTimeZone, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import DisplayFile from "../DisplayFile";
 
 const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPage, setToUser, setCalling, socketSendMessage, account }) => {
   const dispatch = useDispatch()
@@ -17,6 +18,45 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
   const [allFiles, setAllFiles] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  // ============ to manange audio file stuff start here 
+  const audioRefs = useRef([]);
+  const [playingIndex, setPlayingIndex] = useState(null);
+
+  const handleToggle = (index) => {
+    const currentAudio = audioRefs.current[index];
+
+    if (!currentAudio) return;
+
+    // Stop if already playing
+    if (playingIndex === index) {
+      currentAudio.pause();
+      setPlayingIndex(null);
+    } else {
+      // Pause others
+      if (playingIndex !== null && audioRefs.current[playingIndex]) {
+        audioRefs.current[playingIndex].pause();
+      }
+      currentAudio.play();
+      setPlayingIndex(index);
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setPlayingIndex(null);
+  };
+
+  useEffect(() => {
+    // Attach ended handler
+    audioRefs.current.forEach((audio) => {
+      if (audio) {
+        audio.onended = handleAudioEnded;
+      }
+    });
+  }, []);
+
+  // ================ to manage audio stuff end here
+
 
   // Set Media and Files
   useEffect(() => {
@@ -219,10 +259,11 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
           <nav className="noScrollBar">
             <div className="nav nav-tabs align-items-center" id="nav-tab" role="tablist">
               <button className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All Files</button>
-              <button className="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
+              <button className="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" type="button" role="tab" aria-controls="nav-files" aria-selected="false">PDF</button>
               <button className="nav-link" id="nav-images-tab" data-bs-toggle="tab" data-bs-target="#nav-images" type="button" role="tab" aria-controls="nav-images" aria-selected="false">Images</button>
+              <button className="nav-link" id="nav-audio-tab" data-bs-toggle="tab" data-bs-target="#nav-audio" type="button" role="tab" aria-controls="nav-audio" aria-selected="false">Audio</button>
               <button className="nav-link" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
-              <button className="clearButton2 link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
+              <button className="clearButton2 refresh link f-s-14 ms-auto" onClick={() => handleViewAll()}><i className={`fa-solid fa-refresh ${loading ? 'fa-spin' : ''}`} /></button>
             </div>
           </nav>
           <div className="tab-content mt-3">
@@ -297,20 +338,66 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                 </div>
               ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
             </div>
+            <div className="tab-pane fade" id="nav-audio" role="tabpanel" aria-labelledby="nav-audio-tab" tabIndex="0">
+              {allFiles && allFiles?.length > 0 ? (
+                <div className="imageList">
+                  {allFiles
+                    .filter((item) => item.message_type === "audio")
+                    .map((item, index) => {
+                      const fileName = item.message_text.split("/").pop();
+
+                      return (
+                        <div className="file_list" key={index}>
+                          <div className="file_info">
+                            <p className="ellipsisText">{fileName}</p>
+                            <p className="text_muted">
+                              {convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} -{" "}
+                              {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}
+                            </p>
+                          </div>
+
+                          <div className="audio_controls">
+                            <audio
+                              ref={(el) => (audioRefs.current[index] = el)}
+                              src={item.message_text}
+                            />
+                            <button onClick={() => handleToggle(index)}>
+                              {playingIndex === index ? "Pause" : " Play"}
+                            </button>
+                            <button
+                              className="tableButton head ms-2"
+                              onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
+                              <i className="fa-solid fa-download" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+            </div>
             <div className="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabIndex="0">
               {allFiles && allFiles?.length > 0 ? (
                 <div className="imageList">
                   {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
-                    <div className="imgBox" key={index}>
-                      <img
+                    <div className="video-boxes" key={index}>
+                      {/* <img
                         src={item?.message_text}
                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
                         alt=""
-                      />
+                      /> */}
                       <div className="extraButtons">
-                        <Link className="tableButton me-2" to={item?.message_text} target="_blank">
+                        {/* <Link className="tableButton me-2" to={item?.message_text} target="_blank">
                           <i className="fa-solid fa-eye text-white" />
-                        </Link>
+                        </Link> */}
+                        <div className="">
+                          <DisplayFile
+                            key={index}
+                            item={item?.message_text}
+                            index={index}
+                          />
+                        </div>
+
                         <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
                           <i className="fa-solid fa-download" />
                         </button>

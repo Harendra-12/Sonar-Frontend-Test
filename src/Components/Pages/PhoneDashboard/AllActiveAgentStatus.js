@@ -208,7 +208,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                                     allUser?.filter((agent) => agent?.extension_id !== null)
                                                                         .filter((agent) => onlineUser.includes(agent?.extension?.extension))
                                                                         .map((agent, index) => {
-                                                                            const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
+                                                                            const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_num === agent?.extension?.extension);
 
                                                                             const getCallStatus = () => {
                                                                                 if (activeCallsForAgent.length === 0) return null;
@@ -222,8 +222,8 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                                                         status: activeCall[0]?.callstate === "HELD" || activeCall[0]?.b_callstate === "HELD" ? "On Hold" : "In Call",
                                                                                         direction: activeCall[0]?.direction,
                                                                                         duration: activeCall[0]?.duration,
-                                                                                        from: activeCall[0]?.cid_name ?
-                                                                                            activeCall[0]?.cid_name :
+                                                                                        from: activeCall[0]?.cid_num ?
+                                                                                            activeCall[0]?.cid_num :
                                                                                             activeCall[0]?.b_cid_num,
                                                                                         to: activeCall[0]?.dest
                                                                                     };

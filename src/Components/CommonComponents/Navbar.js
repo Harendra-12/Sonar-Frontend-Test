@@ -26,9 +26,15 @@ function Navbar() {
 
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
-  const isChildActive = (childPaths) => {
-    return childPaths.some((path) => location.pathname === path);
-  };
+  function isChildActive(paths) {
+    const currentPath = location.pathname;
+    return paths.some(path => {
+      if (path.includes(":country")) {
+        return currentPath.startsWith("/number-compliances/");
+      }
+      return currentPath === path;
+    });
+  }
 
   useEffect(() => {
     if (permissionRefresh == 0) {
@@ -85,7 +91,7 @@ function Navbar() {
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo_login.png")}
+                          src={require("../assets/images/logo_login2.png")}
                           alt="img"
                         />
                       </div>
@@ -126,6 +132,7 @@ function Navbar() {
                             "/all-devices",
                             "/device-provisioning-add",
                             "/device-provisioning-edit",
+                            "/device-provisioning-new",
                             "/groups",
                             "/groups-add",
                             "/groups-edit",
@@ -161,6 +168,7 @@ function Navbar() {
                           "/all-devices",
                           "/device-provisioning-add",
                           "/device-provisioning-edit",
+                          "/device-provisioning-new",
                           "/groups",
                           "/groups-add",
                           "/groups-edit",
@@ -233,6 +241,7 @@ function Navbar() {
                                         "/all-devices",
                                         "/device-provisioning-add",
                                         "/device-provisioning-edit",
+                                        "/device-provisioning-new"
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -381,6 +390,8 @@ function Navbar() {
                             "/did-listing",
                             "/management-get-did",
                             "/number-for-ai",
+                            "/number-compliances",
+                            "/number-compliances/:country"
                           ])
                             ? "true"
                             : "false"
@@ -402,6 +413,8 @@ function Navbar() {
                           "/did-listing",
                           "/management-get-did",
                           "/number-for-ai",
+                          "/number-compliances",
+                          "/number-compliances/:country"
                         ])
                           ? "show"
                           : ""
@@ -480,6 +493,25 @@ function Navbar() {
                                   </NavLink>
                                 </li>
                               )}
+                            <li className="tabItem">
+                              <NavLink
+                                to="/number-compliances"
+                                onClick={backToTop}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/number-compliances",
+                                      "/number-compliances/:country",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Number Compliances</div>
+                              </NavLink>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -1315,7 +1347,7 @@ function Navbar() {
                               </NavLink>
 
                             </li> */}
-                              <li className="tabItem ">
+                            <li className="tabItem ">
                               <NavLink
                                 to="/ai-phone-number"
                                 onClick={() => backToTop()}
@@ -1392,7 +1424,7 @@ function Navbar() {
                                 <div className="itemTitle">Knowledge Base</div>
                               </NavLink>
                             </li>
-                          
+
                             <li className="tabItem ">
                               <NavLink
                                 to="/ai-call-history"

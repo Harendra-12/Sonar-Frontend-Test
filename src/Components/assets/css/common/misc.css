@@ -80,17 +80,17 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: red;
+    background-color: #DF2A36;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .extensionStatus.online {
     /* background-color: green; */
-    background-color: #00d700;
+    background-color: #3CAA45;
 }
 
 .extensionStatus.onCall {
-    background-color: #ff9921;
+    background-color: #FED05D;
 }
 
 .pagination_slider {
@@ -448,7 +448,7 @@
 }
 
 .addressDrawer.active {
-    border: 1px solid #009688;
+    border: 1px solid var(--text-badge-success);
     box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
@@ -1337,7 +1337,7 @@ input[type=number] {
 
 .callDashParkedCalls button.callDashParkedCallsBtn {
     border: 0;
-    background-color: #0075ff96;
+    background-color: #89A2FA;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1413,11 +1413,12 @@ input[type=number] {
 .f-select-width {
     width: 75px !important;
     height: 28px;
-    border-color: transparent;
+    border-color: transparent !important;
     /* background-color: #f4f7f9 !important; */
     font-size: 0.875rem;
     padding: 0;
-    background-color: var(--table-head);
+    /* background-color: var(--table-head); */
+    background-color: var(--table-odd-color) !important;
 }
 
 .popupopen ul {
@@ -1929,12 +1930,14 @@ input[type=number] {
 }
 
 .mail_leftbar {
-    max-width: 200px;
-    width: 100%;
-    min-width: 170px;
+    /* max-width: 200px;
+    width: 100%; */
+    /* min-width: 170px; */
+    /* flex: 0 20%; */
     /* background: #f6f6f6; */
     border: 0;
     height: 100%;
+    width: 300px;
 }
 
 .mail_leftbar ul li {
@@ -1980,7 +1983,7 @@ input[type=number] {
 
 .mail_leftbar .mail_list.active p,
 .mail_leftbar .mail_list.active span {
-    color: var(--active-mail-list-text);
+    color: var(--active-mail-list-text) !important;
 }
 
 tr.seen-message {
@@ -1995,12 +1998,12 @@ tr.seen-message td p {
 }
 
 .composeBtn {
-    background: #5794d5;
+    background: #89A2FA;
     color: #fff;
 }
 
 .composeBtn:hover {
-    background: #3f7ec0;
+    background: #305CFD;
     color: #fff;
 }
 
@@ -2024,7 +2027,7 @@ i.fa.fa-star {
 }
 
 .table_card {
-    width: 100%;
+    flex: 1 1 auto;
     background: var(--knowledge-leftinfo);
     padding: 10px;
     border-radius: 10px;
@@ -2745,20 +2748,24 @@ i.fa.fa-star {
     color: #ffff !important;
 }
 
-.wrongImg{
+.wrongImg {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
     /* height: 300px; */
 }
-.wrongImg img{
+
+.wrongImg img {
     width: 100%;
     height: auto;
 }
-.ringingCallsWrap{
+
+.ringingCallsWrap {
     padding-top: 55px;
 }
 
-
-
+.btn.btn-primary{
+background-color: var(--color2) !important;
+border-color: var(--color2) !important
+}

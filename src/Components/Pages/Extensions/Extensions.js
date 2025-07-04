@@ -71,10 +71,9 @@ const Extensions = () => {
   // Trigger user api to get latest users
   const getCurrentUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}${
-        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-          ? "&section=Accounts"
-          : ""
+      `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+        ? "&section=Accounts"
+        : ""
       }`
     );
     if (userApi?.status) {
@@ -104,18 +103,14 @@ const Extensions = () => {
     }
     if (account && account.account_id) {
       const apiData = await generalGetFunction(
-        `/extension/all?${
-          onlineFilter === "all" ? `page=${pageNumber}` : ""
-        }&row_per_page=${itemsPerPage}&search=${searchValue}${
-          onlineFilter === "all"
-            ? ""
-            : onlineFilter == "online"
+        `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all"
+          ? ""
+          : onlineFilter == "online"
             ? "&online"
             : "&offline"
-        }${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       if (apiData?.status) {
@@ -307,17 +302,17 @@ const Extensions = () => {
                           account?.permissions,
                           "add"
                         ) && (
-                          <Link
-                            to="/store-extension"
-                            effect="ripple"
-                            className="panelButton"
-                          >
-                            <span className="text">Buy</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-cart-shopping"></i>
-                            </span>
-                          </Link>
-                        )}
+                            <Link
+                              to="/store-extension"
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Buy</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-cart-shopping"></i>
+                              </span>
+                            </Link>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -349,20 +344,20 @@ const Extensions = () => {
                         account?.permissions,
                         "search"
                       ) && (
-                        <div className="searchBox">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            value={searchValue}
-                            className="formItem"
-                            onChange={(e) => {
-                              setSearchValue(e.target.value);
-                              setPageNumber(1);
-                              setItemsPerPage(10);
-                            }}
-                          />
-                        </div>
-                      )}
+                          <div className="searchBox">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              value={searchValue}
+                              className="formItem"
+                              onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setPageNumber(1);
+                                setItemsPerPage(10);
+                              }}
+                            />
+                          </div>
+                        )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
@@ -371,13 +366,13 @@ const Extensions = () => {
                       ) : (
                         <table>
                           {noPermissionToRead ||
-                          !checkViewSidebar(
-                            "Extension",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? (
+                            !checkViewSidebar(
+                              "Extension",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
                             <tbody>
                               <tr>
                                 <td colSpan={99}>
@@ -402,7 +397,7 @@ const Extensions = () => {
                                             .filter(
                                               (item) =>
                                                 item !==
-                                                  "effectiveCallerIdName" &&
+                                                "effectiveCallerIdName" &&
                                                 item !== "outbundCallerIdName"
                                             )
                                             .map((key) => {
@@ -432,11 +427,14 @@ const Extensions = () => {
                                                       <select
                                                         className="formItem f-select-width"
                                                         value={onlineFilter}
-                                                        onChange={(e) =>
+                                                        onChange={(e) => {
                                                           setonlineFilter(
                                                             e.target.value
                                                           )
-                                                        }
+                                                          if (e.target.value !== "all") {
+                                                            setPageNumber(1);
+                                                          }
+                                                        }}
                                                       >
                                                         <option
                                                           value="all"
@@ -465,7 +463,7 @@ const Extensions = () => {
                                                 );
                                               }
                                             })}
-                                          <th>Default Outbound Number</th>
+                                          {/* <th>Default Outbound Number</th> */}
                                           {checkViewSidebar(
                                             "Extension",
                                             slugPermissions,
@@ -473,10 +471,10 @@ const Extensions = () => {
                                             account?.permissions,
                                             "edit"
                                           ) && (
-                                            <th className="text-center">
-                                              Edit
-                                            </th>
-                                          )}
+                                              <th className="text-center">
+                                                Edit
+                                              </th>
+                                            )}
                                           <th className="text-center">
                                             Add Devices
                                           </th>
@@ -498,9 +496,9 @@ const Extensions = () => {
                                                     .filter(
                                                       (item) =>
                                                         item !==
-                                                          "effectiveCallerIdName" &&
+                                                        "effectiveCallerIdName" &&
                                                         item !==
-                                                          "outbundCallerIdName"
+                                                        "outbundCallerIdName"
                                                     )
                                                     .map((key) => (
                                                       <td key={key}>
@@ -546,7 +544,7 @@ const Extensions = () => {
                                                         )}
                                                       </td>
                                                     ))}
-                                                  <td>
+                                                  {/* <td>
                                                     {
                                                       allDID?.filter(
                                                         (item) =>
@@ -554,7 +552,7 @@ const Extensions = () => {
                                                           1
                                                       )[0]?.did
                                                     }
-                                                  </td>
+                                                  </td> */}
                                                   {checkViewSidebar(
                                                     "Extension",
                                                     slugPermissions,
@@ -562,23 +560,23 @@ const Extensions = () => {
                                                     account?.permissions,
                                                     "edit"
                                                   ) && (
-                                                    <td
-                                                      style={{
-                                                        cursor: "default",
-                                                      }}
-                                                    >
-                                                      <button
-                                                        className="tableButton edit mx-auto"
-                                                        onClick={() =>
-                                                          navigate(
-                                                            `/extensions-edit?id=${item.id}`
-                                                          )
-                                                        }
+                                                      <td
+                                                        style={{
+                                                          cursor: "default",
+                                                        }}
                                                       >
-                                                        <i className="fa-solid fa-pencil"></i>
-                                                      </button>
-                                                    </td>
-                                                  )}
+                                                        <button
+                                                          className="tableButton edit mx-auto"
+                                                          onClick={() =>
+                                                            navigate(
+                                                              `/extensions-edit?id=${item.id}`
+                                                            )
+                                                          }
+                                                        >
+                                                          <i className="fa-solid fa-pencil"></i>
+                                                        </button>
+                                                      </td>
+                                                    )}
                                                   <td
                                                     style={{
                                                       cursor: "default",

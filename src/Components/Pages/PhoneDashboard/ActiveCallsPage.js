@@ -39,7 +39,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
     const [refresh, setRefresh] = useState(0);
     const [selectedModule, setSelectedModule] = useState('');
     const [addNewMod, setAddNewMod] = useState(false);
-    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD");
+    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD" 
+    // || item.callstate === "ACTIVE" || item.callstate === "HELD"
+);
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
@@ -329,14 +331,14 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <nav className='tangoNavs activeCallTabMinWidth'>
                                                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                                                             <button onClick={() => setFilter("all")} className={`nav-link ${locationState?.state?.filter === "all" || locationState.state == null ? 'active' : ''}`} id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread">{activeState.length}</span></button>
-                                                            <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
-                                                            <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
+                                                            <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread" style={{ backgroundColor: '#ae1e2e' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
+                                                            <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread" style={{ backgroundColor: '#3caa45' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
 
                                                             <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID
                                                                 <span className="unread" style={{ backgroundColor: 'rgb(58, 27, 143)' }}>{Object.keys(activenumberCount).length}</span></button>
 
                                                             <button onClick={() => setFilter("internal")} className={`nav-link ${locationState?.state?.filter === "internal" ? 'active' : ''}`} id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread">{activeState.filter((call) => call.direction === "internal").length}</span></button>
-                                                            <button onClick={() => setFilter("inbound")} className={`nav-link ${locationState?.state?.filter === "inbound" ? 'active' : ''}`} id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                            <button onClick={() => setFilter("inbound")} className={`nav-link ${locationState?.state?.filter === "inbound" ? 'active' : ''}`} id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread" style={{ backgroundColor: '#fed05d' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
                                                             <button onClick={() => setFilter("outbound")} className={`nav-link ${locationState?.state?.filter === "outbound" ? 'active' : ''}`} id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
                                                         </div>
                                                     </nav>
@@ -475,7 +477,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : item?.direction === "inbound" ? "#fff3cd" : "" }}>
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.did_tag}</td>
-                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_name}</td>
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_num}</td>
                                                                                                                 {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.dest}</td> */}
                                                                                                                 {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td> */}
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
@@ -511,7 +513,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -545,7 +547,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -604,7 +606,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -640,7 +642,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -676,7 +678,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>

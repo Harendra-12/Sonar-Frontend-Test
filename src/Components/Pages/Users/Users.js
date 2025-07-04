@@ -95,18 +95,14 @@ const Users = () => {
 
   async function getApi() {
     const apiData = await generalGetFunction(
-      `/user/all?${
-        onlineFilter === "all" ? `page=${pageNumber}` : ""
-      }&row_per_page=${itemsPerPage}&search=${userInput}${
-        onlineFilter == "all"
-          ? ""
-          : onlineFilter == "online"
+      `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all"
+        ? ""
+        : onlineFilter == "online"
           ? "&online"
           : "&offline"
-      }${
-        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-          ? "&section=Accounts"
-          : ""
+      }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+        ? "&section=Accounts"
+        : ""
       }`
     );
     if (apiData?.status) {
@@ -365,21 +361,21 @@ const Users = () => {
                         account?.permissions,
                         "search"
                       ) && (
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            className="formItem"
-                            value={userInput}
-                            onChange={(e) => {
-                              setuserInput(e.target.value);
-                              setItemsPerPage(10);
-                              setPageNumber(1);
-                            }}
-                          />
-                        </div>
-                      )}
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              name="Search"
+                              className="formItem"
+                              value={userInput}
+                              onChange={(e) => {
+                                setuserInput(e.target.value);
+                                setItemsPerPage(10);
+                                setPageNumber(1);
+                              }}
+                            />
+                          </div>
+                        )}
                     </div>
                     <div className="tableContainer position-relative">
                       {loading ? (
@@ -405,12 +401,12 @@ const Users = () => {
                                         {item == "usages"
                                           ? "usage"
                                           : item == "extension_id"
-                                          ? "Extension"
-                                          : item == "usertype"
-                                          ? "Role"
-                                          : item == "status"
-                                          ? "activation"
-                                          : item}
+                                            ? "Extension"
+                                            : item == "usertype"
+                                              ? "Role"
+                                              : item == "status"
+                                                ? "activation"
+                                                : item}
                                       </th>
                                     );
                                   })}
@@ -424,9 +420,12 @@ const Users = () => {
                                   <select
                                     className="formItem f-select-width"
                                     value={onlineFilter}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                       setonlineFilter(e.target.value)
-                                    }
+                                      if (e.target.value !== "all") {
+                                        setPageNumber(1);
+                                      }
+                                    }}
                                   >
                                     <option value="all" disabled>
                                       Status
@@ -455,13 +454,13 @@ const Users = () => {
                           </thead>
                           <tbody className="">
                             {noPermissionToRead ||
-                            !checkViewSidebar(
-                              "User",
-                              slugPermissions,
-                              account?.sectionPermissions,
-                              account?.permissions,
-                              "read"
-                            ) ? (
+                              !checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
                               <tr>
                                 <td colSpan={99} className="text-center">
                                   You dont have any permission
@@ -607,16 +606,16 @@ const Users = () => {
                                         {tableKeys.includes(
                                           "socket_status"
                                         ) && (
-                                          <td style={{ width: "156px" }}>
-                                            <span
-                                              className={
-                                                onlineUser.includes(item.id)
-                                                  ? "extensionStatus online mx-auto"
-                                                  : "extensionStatus mx-auto"
-                                              }
-                                            ></span>
-                                          </td>
-                                        )}
+                                            <td style={{ width: "156px" }}>
+                                              <span
+                                                className={
+                                                  onlineUser.includes(item.id)
+                                                    ? "extensionStatus online mx-auto"
+                                                    : "extensionStatus mx-auto"
+                                                }
+                                              ></span>
+                                            </td>
+                                          )}
                                         {checkViewSidebar(
                                           "User",
                                           slugPermissions,
@@ -624,19 +623,19 @@ const Users = () => {
                                           account?.permissions,
                                           "edit"
                                         ) && (
-                                          <td>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() =>
-                                                navigate(`/users-config`, {
-                                                  state: item,
-                                                })
-                                              }
-                                            >
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>
-                                        )}
+                                            <td>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() =>
+                                                  navigate(`/users-config`, {
+                                                    state: item,
+                                                  })
+                                                }
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>
+                                          )}
                                         {checkViewSidebar(
                                           "User",
                                           slugPermissions,
@@ -644,18 +643,18 @@ const Users = () => {
                                           account?.permissions,
                                           "delete"
                                         ) && (
-                                          <td style={{ width: "150px" }}>
-                                            <button
-                                              className="tableButton delete mx-auto"
-                                              onClick={() => {
-                                                setPopUp(true);
-                                                setDeleteId(item.id);
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-trash" />
-                                            </button>
-                                          </td>
-                                        )}
+                                            <td style={{ width: "150px" }}>
+                                              <button
+                                                className="tableButton delete mx-auto"
+                                                onClick={() => {
+                                                  setPopUp(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash" />
+                                              </button>
+                                            </td>
+                                          )}
                                       </tr>
                                     );
                                   })}
@@ -714,10 +713,9 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                      ? `Are you sure you want to ${
-                          selectedUser?.status === "E" ? "disable" : "enable"
+                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                      : ""}
+                        : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button

@@ -1131,7 +1131,7 @@
 }
 
 .newMessageBoxUi .messageItem.sender .messageDetails {
-    background-color: #3e8ef7;
+    background-color: #305CFD;
     border-radius: 5px;
     border: none;
     color: #f0f8ff;
@@ -1201,7 +1201,7 @@
 
 .mainContentApp .webrtc_newMessageUi .textarea_inputTab .tabLink.active {
     border: none !important;
-    background: #79b3ff !important;
+    background: #89A2FA !important;
     color: #fff !important;
 }
 
@@ -1254,13 +1254,13 @@
 }
 
 .clearButton2.emoji {
-    color: #26bf94;
-    background: #26bf941a;
+    color: #3CAA45;
+    background: #F0F9F4;
 }
 
 .clearButton2.emoji:hover {
     color: #f8f8f8 !important;
-    background: #26bf94;
+    background: #3CAA45;
 }
 
 .clearButton2.link {
@@ -1269,8 +1269,8 @@
 }
 
 .clearButton2.link:hover {
-    color: #f8f8f8 !important;
-    background: #2793f4;
+    color: #ECF0FE !important;
+    background: #305CFD;
 }
 
 .clearButton2.gallery {
@@ -1284,14 +1284,14 @@
 }
 
 .clearButton2.eraser {
-    background-color: #fdeacdd7;
-    color: #f7a659 !important;
+    background-color: #FFF5E0;
+    color: #FED05D !important;
     opacity: 0.5;
 }
 
 .clearButton2.eraser.active {
-    color: #f8f8f8 !important;
-    background: #f7a659;
+    color: #FFF5E0 !important;
+    background: #FED05D;
     opacity: 1;
 }
 
