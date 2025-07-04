@@ -85,7 +85,7 @@ function Navbar() {
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo_login.png")}
+                          src={require("../assets/images/logo_login2.png")}
                           alt="img"
                         />
                       </div>

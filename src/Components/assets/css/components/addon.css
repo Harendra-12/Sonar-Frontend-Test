@@ -446,7 +446,7 @@
 }
 
 .checkbox_wrapper.edit {
-    background: #00ab2b;
+    background: var(--text-badge-success);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -369,7 +369,7 @@ function Agents({ type }) {
                         )}
                     </div>
                     <div className="tableContainer">
-                      {loading ? (
+                      {!loading ? (
                         // <SkeletonTableLoader col={8} row={15} />
                         <ThreeDotedLoader />
                       ) : (

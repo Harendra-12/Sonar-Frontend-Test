@@ -14,7 +14,7 @@
 }
 
 #sidenNav .sidenavItems [aria-expanded="true"] {
-    background: #3e8ef769 !important;
+    background: var(--color2-trans) !important;
     border-radius: 7px;
 }
 
@@ -126,7 +126,8 @@
 }
 
 #sidenNav .sidenavItems .dashboard .imgWrapper {
-    width: 150px;
+    width: 200px;
+    padding: 10px;
 }
 
 #sidenNav .sidenavItems .dashboard .imgWrapper img {

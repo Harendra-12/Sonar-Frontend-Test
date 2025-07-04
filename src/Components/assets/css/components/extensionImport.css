@@ -423,7 +423,7 @@ form.tangoNavs .nav-tabs {
 }
 
 .deviceProvision.active {
-    border: 1px solid green;
+    border: 1px solid var(--text-badge-success);
     box-shadow: #00ff1554 0px 3px 8px;
 }
 
@@ -657,7 +657,7 @@ form.tangoNavs .nav-tabs {
 }
 
 .badge-subtle {
-    background-color: #0ab39c;
+    background-color: #3CAA45;
     color: #fff;
     font-size: 0.625rem;
     transition: all 0.4s ease-in-out;
@@ -744,7 +744,7 @@ form.tangoNavs .nav-tabs {
 }
 
 .userPermission__contentBox td[colspan="7"] {
-    background-color: #dce5ff;
+    background-color: var(--btn-active-bg);
 }
 
 body.dark .userPermission__contentBox td[colspan="7"] {

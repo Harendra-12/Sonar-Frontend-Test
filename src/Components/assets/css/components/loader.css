@@ -801,28 +801,28 @@
   0% {
     width: 8em;
     box-shadow:
-      1em -0.8em #037ec57e,
-      -1em 0.8em #aabbc4;
+      1em -0.8em #305CFD7e,
+      -1em 0.8em #ECF0FE;
   }
 
   35% {
     width: 0.8em;
     box-shadow:
-      0 -0.8em #037ec58e,
-      0 0.8em #aabbc4;
+      0 -0.8em #305CFD8e,
+      0 0.8em #ECF0FE;
   }
 
   70% {
     width: 0.8em;
     box-shadow:
-      -1em -0.8em #037ec585,
-      1em 0.8em #aabbc4;
+      -1em -0.8em #305CFD85,
+      1em 0.8em #ECF0FE;
   }
 
   100% {
     width: 8em;
     box-shadow:
-      1em -0.8em #037ec57c,
-      -1em 0.8em #aabbc4;
+      1em -0.8em #305CFD7c,
+      -1em 0.8em #ECF0FE;
   }
 }

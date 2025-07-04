@@ -146,7 +146,7 @@
   height: 23px;
   width: 78px;
   background-color: #0091821a;
-  color: #009688;
+  color: var(--text-badge-success);
   border-radius: 50px;
   font-size: 11px;
   font-weight: 600;
@@ -173,7 +173,7 @@
 .itemWrapper .heading .light-color1 {
 
   background-color: #0091821a;
-  color: #009688;
+  color: var(--text-badge-success);
 
 
 }
@@ -605,7 +605,7 @@
 
 .circularProgressContent p {
   margin-bottom: 0;
-  color: #7a7a7a;
+  color: var(--color-subtext);
   font-weight: 500;
 }
 
@@ -726,7 +726,7 @@
 }
 
 .itemWrapper.active {
-  border: 1px solid #009688;
+  border: 1px solid var(--text-badge-success);
   box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
