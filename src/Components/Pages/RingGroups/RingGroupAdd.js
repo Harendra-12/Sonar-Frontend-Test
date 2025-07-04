@@ -670,11 +670,8 @@ const RingGroupAdd = () => {
                       </div>
                       <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pe-2">
                         <div className="row">
-                          <div
-                            className={`${destinationStatus != "disabled" ? "col-12 ms-auto" : "col-xxl-6 col-xl-12 col-12 pe-2"
-                              }`}
-                          >
-                            {destinationStatus != "disabled" && (
+                          <div className={"col-12 ms-auto"}>
+                            {watch().destination_type != "disabled" && (
                               <div className="formLabel">
                                 <label className="formItemDesc">Type</label>
                               </div>
