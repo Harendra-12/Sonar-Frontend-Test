@@ -705,7 +705,7 @@ const RingGroupAdd = () => {
                                 watch()?.destination_type != "disabled" && (
                                   <div className=" col-12 pe-2">
                                     <div className="formLabel">
-                                      <label>PSTN</label>
+                                      <label className="formItemDesc">PSTN</label>
                                     </div>
                                     <input
                                       type="number"
@@ -736,7 +736,7 @@ const RingGroupAdd = () => {
                                   <div className=" col-12 pe-2">
                                     <>
                                       <div className="formLabel">
-                                        <label>Extension</label>
+                                        <label className="formItemDesc">Extension</label>
                                       </div>
                                       <ActionList
                                         category={watch().destination_type}
@@ -752,7 +752,7 @@ const RingGroupAdd = () => {
                             </div>
                             {
                               watch("destination_type") !== "disabled" && (
-                                <div className="col-xxl-6 col-xl-12 col-12 pe-2 pe-2 ">
+                                <div className="col-xxl-6 col-xl-12 col-12">
                                   <div className="formLabel w-75">
                                     <label className="formItemDesc">
                                       Call Timeout

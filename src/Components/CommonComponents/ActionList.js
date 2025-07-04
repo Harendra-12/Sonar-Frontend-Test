@@ -42,10 +42,8 @@ const ActionList = ({
 
   const [ivr, setIvr] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const state = useSelector((data) => data);
-  const allUserRefresh = state.allUserRefresh;
-  const allUser = state?.allUser?.data;
-  const account = state?.account
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const account = useSelector((state) => state.account)
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const callCenterArr = useSelector((state) => state.callCenter);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);

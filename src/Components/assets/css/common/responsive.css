@@ -218,7 +218,7 @@
     }
 }
 
-@media (min-device-width:992px) and (max-device-width: 1250px) {
+@media (min-device-width:992px) and (max-device-width: 1365px) {
     .formRow.col-xl-3:nth-child(odd) {
         margin-right: 0px;
     }
@@ -338,6 +338,7 @@
     .overviewTableWrapper .tableContainer {
         height: calc(100vh - 320px);
     }
+
     .overviewTableWrapper .tableContainer.mail_table {
         height: calc(100vh - 320px) !important;
     }
@@ -716,10 +717,12 @@
     .mail_leftbar ul {
         height: calc(100vh - 295px);
     }
-    .mail_table{
+
+    .mail_table {
         height: calc(-395px + 100vh) !important;
 
     }
+
     /* .d-smWrap{
         flex-wrap: wrap;
     } */
