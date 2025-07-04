@@ -465,7 +465,7 @@ function DidListing({ page }) {
                                         return (
                                           <tr>
                                             <td> {index + 1}</td>
-                                            <td>{item.did}</td>
+                                            <td>{item.did.replace("+", "")}</td>
                                             {/* <button
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
@@ -696,7 +696,7 @@ function DidListing({ page }) {
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
-                                        {item.did}
+                                        {item.did.replace("+", "")}
                                         {item?.did_vendor_id == 2 && <Tippy content="This number can be configured for AI Agent"><i class="fa-solid fa-microchip-ai ms-2" style={{ color: 'var(--ui-accent)' }}></i></Tippy>}
                                       </td>
                                       {page == "tracker" && (
