@@ -810,6 +810,7 @@
     overflow: hidden auto;
     height: calc(100vh - 250px);
 }
+/* height: calc(100vh - 277px) */
 
 /* .newMessageWrapper {
     background: var(--me-body-bg2);

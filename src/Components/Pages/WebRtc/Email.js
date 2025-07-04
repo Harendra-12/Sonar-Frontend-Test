@@ -557,7 +557,7 @@ function Email({ selectedMail, }) {
                 {availableFromMailAddresses?.length > 0 ?
                   <div className="card mb-0 border-0">
                     <div
-                      className="card-header d-flex justify-content-between align-items-center"
+                      className="card-header d-flex justify-content-between align-items-center flex-wrap"
                       style={{ borderColor: "var(--me-border1)" }}
                     >
                       <h5 className="card-title mb-0 text_dark">Mailbox</h5>
@@ -580,7 +580,7 @@ function Email({ selectedMail, }) {
                     >
                       <i class="fa-regular fa-envelope me-2"></i> New Email
                     </button> */}
-                      <div className="d-flex align-items-center justify-content-end gap-2">
+                      <div className="d-flex align-items-center justify-content-end gap-2 flex-wrap">
                         <select className="formItem"
                           onChange={(event) => handleMailFromAddressChange(event)}
                         >
@@ -703,12 +703,12 @@ function Email({ selectedMail, }) {
                       {/* </h5> */}
                     </div>
                     <div
-                      className="card-body"
+                      className="card-body mailCardBody"
                       style={{ height: "calc(100vh - 140px)", padding: '10px' }}
                     >
-                      <div className="d-flex ">
+                      <div className="d-flex d-smWrap ">
                         <div className="card mail_leftbar rounded-end-3 mb-0 shadow-none">
-                          <div className="card-body ps-0 pe-2 pt-0">
+                          <div className="card-body px-2 pt-0">
                             <button
                               type="button"
                               class="btn composeBtn w-100 mb-2"

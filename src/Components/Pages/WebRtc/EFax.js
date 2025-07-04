@@ -177,7 +177,7 @@ function EFax({ did }) {
           <div className="container-fluid">
             <div className="row webrtc_newMessageUi">
 
-              <div className=" allCallHistory col-12 col-xl-4 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 pb-0">
+              <div className=" allCallHistory col-12 col-xl-5 col-lg-5 col-xxl-4 py-3 px-0 rounded-3 pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -271,7 +271,7 @@ function EFax({ did }) {
                   </nav>
                   <div className="tab-content">
                     {clickStatus === "all" && (
-                      <div className="callList">
+                      <div className="callList" style={{height: 'calc(100vh - 277px)'}}>
                         <div className="dateHeader">
                           <p className="fw-semibold">Today</p>
                         </div>
@@ -429,7 +429,7 @@ function EFax({ did }) {
 
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
-                <div className="callDetails col-12 col-xl-8 col-lg-8 col-xxl-9  newVoicemailBoxUi pe-0 eFaxCompose"
+                <div className="callDetails col-12 col-xl-7 col-lg-7 col-xxl-8  newVoicemailBoxUi pe-0 eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -595,7 +595,7 @@ function EFax({ did }) {
                 </div>
               )}
               <div
-                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose"
+                className="col-12 col-xl-7 col-lg-7 col-xxl-8 callDetails eFaxCompose"
                 style={{ height: "100%" }}
               >
                 <div className="row">
@@ -625,12 +625,12 @@ function EFax({ did }) {
                         id="callDetails"
                       >
                         <div className="messageOverlay">
-                          <div className="contactHeader px-3 border-bottom-0">
+                          <div className="contactHeader px-3 border-bottom-0 flex-wrap">
                             <div>
                               <h4 className="mb-0">Test User</h4>
                               <p className="gray14 mb-0 mt-1">Extension - 1002</p>
                             </div>
-                            <div className="d-flex my-auto">
+                            <div className="d-flex my-auto flex-wrap">
                               <div className="d-flex align-items-center me-2">
                                 <label className="gray14 me-2">Assigned to:</label>
                                 <select className="ovalSelect">
@@ -760,7 +760,7 @@ function EFax({ did }) {
                                       aria-labelledby="nav-home-tab"
                                       tabIndex={0}
                                     >
-                                      <div className="callDetailsList tableContainer mt-0" style={{ height: "calc(100vh - 326px)" }}>
+                                      <div className="callDetailsList tableContainer mt-0 adjustHeight" style={{ height: "calc(100vh - 326px)" }}>
                                         <table>
                                           <thead>
                                             <tr>
