@@ -895,7 +895,7 @@ const RingGroupEdit = () => {
                                             label={null}
                                             getDropdownValue={actionListValueForTimeout}
                                             value={watch().timeout_destination}
-                                            {...register("timeout_destination")}
+                                          // {...register("timeout_destination")}
                                           />
                                         </>
                                       )}
