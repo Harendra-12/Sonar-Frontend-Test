@@ -50,11 +50,11 @@ function CallCenterQueue() {
     );
     if (apidata?.status) {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       setCallCenter(apidata.data);
     } else {
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
       if (apidata.response.status === 403) {
         setNoPermissionToRead(true);
       }
@@ -70,7 +70,6 @@ function CallCenterQueue() {
   };
 
   useEffect(() => {
-
     // if (searchValue.trim().length === 0) {
     //   getCallCenterDashboardData();
     // } else {
@@ -79,8 +78,8 @@ function CallCenterQueue() {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
-    setRefreshState(true)
-    const shouldLoad = true
+    setRefreshState(true);
+    const shouldLoad = true;
     getCallCenterDashboardData(shouldLoad);
     // if (refreshState === 0) {
     //   dispatch({
@@ -229,7 +228,13 @@ function CallCenterQueue() {
   const handleAgentClick = async (item) => {
     setPageLoading(true);
     if (item) {
-      const apiData = await generalGetFunction(`/agents?search=${item.username}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`);
+      const apiData = await generalGetFunction(
+        `/agents?search=${item.username}${
+          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+            ? "&section=Accounts"
+            : ""
+        }`
+      );
       if (apiData?.status) {
         const userData = apiData.data.data[0];
         setPageLoading(false);
@@ -238,13 +243,13 @@ function CallCenterQueue() {
         });
       }
     }
-  }
+  };
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
-    const shouldLoad = false
+    setRefreshState(true);
+    const shouldLoad = false;
     getCallCenterDashboardData(shouldLoad);
-  }
+  };
   return (
     <>
       {pageLoading && <CircularLoader />}
@@ -261,7 +266,7 @@ function CallCenterQueue() {
                       <div className="heading">
                         <div className="content">
                           <h4>
-                            Call Center Queue List {" "}
+                            Call Center Queue List{" "}
                             <button
                               className="clearButton"
                               onClick={handleRefreshBtnClicked}
@@ -295,21 +300,22 @@ function CallCenterQueue() {
                             "CallCenterQueue",
                             slugPermissions,
                             account?.sectionPermissions,
-                            account?.permissions, "add"
+                            account?.permissions,
+                            "add"
                           ) && (
-                              <Link
-                                // to="/cal-center-queue-add"
-                                // onClick={backToTop}
-                                onClick={handleAddCallCenterValidation}
-                                effect="ripple"
-                                className="panelButton"
-                              >
-                                <span className="text">Add</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-plus"></i>
-                                </span>
-                              </Link>
-                            )}
+                            <Link
+                              // to="/cal-center-queue-add"
+                              // onClick={backToTop}
+                              onClick={handleAddCallCenterValidation}
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -324,7 +330,10 @@ function CallCenterQueue() {
                           <select
                             className="formItem"
                             value={itemsPerPage}
-                            onChange={(e) => setItemsPerPage(e.target.value)}
+                            onChange={(e) => {
+                              setItemsPerPage(e.target.value);
+                              setPageNumber(1);
+                            }}
                           >
                             <option value={10}>10</option>
                             <option value={20}>20</option>
@@ -338,7 +347,7 @@ function CallCenterQueue() {
                           account?.sectionPermissions,
                           account?.permissions,
                           "search"
-                        ) &&
+                        ) && (
                           <div className="searchBox position-relative">
                             <label>Search:</label>
                             <input
@@ -346,16 +355,20 @@ function CallCenterQueue() {
                               name="Search"
                               value={searchValue}
                               className="formItem"
-                              onChange={(e) => setSearchValue(e.target.value)}
+                              onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setPageNumber(1);
+                                setItemsPerPage(10);
+                              }}
                             />
                           </div>
-                        }
+                        )}
                       </div>
                       <div className="tableContainer">
                         {loading ? (
                           // <SkeletonTableLoader col={8} row={15} />
                           <ThreeDotedLoader />
-                        ) :
+                        ) : (
                           <table>
                             <thead>
                               <tr>
@@ -364,13 +377,32 @@ function CallCenterQueue() {
                                 <th>Extension</th>
                                 <th>Strategy</th>
                                 <th>Total Agents</th>
-                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Status</th>}
-                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className='text-center'>Edit</th>}
-                                {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className='text-center'>Delete</th>}
+                                {checkViewSidebar(
+                                  "CallCenterQueue",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) && <th className="text-center">Status</th>}
+                                {checkViewSidebar(
+                                  "CallCenterQueue",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) && <th className="text-center">Edit</th>}
+                                {checkViewSidebar(
+                                  "CallCenterQueue",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "delete"
+                                ) && <th className="text-center">Delete</th>}
                               </tr>
                             </thead>
                             <tbody>
-                              {noPermissionToRead || !checkViewSidebar(
+                              {noPermissionToRead ||
+                              !checkViewSidebar(
                                 "CallCenterQueue",
                                 slugPermissions,
                                 account?.sectionPermissions,
@@ -386,75 +418,116 @@ function CallCenterQueue() {
                                     callCenter.data.map((item) => {
                                       return (
                                         <tr>
+                                          <td>{item.tag}</td>
+                                          <td>{item.queue_name}</td>
+                                          <td>{item.extension}</td>
+                                          <td>{item.strategy}</td>
                                           <td>
-                                            {item.tag}
-                                          </td>
-                                          <td>
-                                            {item.queue_name}
-                                          </td>
-                                          <td>
-                                            {item.extension}
-                                          </td>
-                                          <td>
-                                            {item.strategy}
-                                          </td>
-                                          <td >
-                                            <Tippy content={
-                                              <ul className="dropdown-menu-hover"
-                                                style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
-                                              >
-                                                {/* <li className="col-12">
+                                            <Tippy
+                                              content={
+                                                <ul
+                                                  className="dropdown-menu-hover"
+                                                  style={{
+                                                    columnCount:
+                                                      item.agents.length > 8
+                                                        ? 2
+                                                        : 1,
+                                                  }}
+                                                >
+                                                  {/* <li className="col-12">
                                                     <div className="dropdown-item fw-bold disabled">
                                                       Agents
                                                     </div>
                                                   </li> */}
-                                                {item.agents.map(
-                                                  (item, index) => (
-                                                    <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
-                                                      <span className="avatar-container">
-                                                        {
-                                                          item.profile_picture ?
+                                                  {item.agents.map(
+                                                    (item, index) => (
+                                                      <div
+                                                        key={index}
+                                                        className="dropdown-item d-flex"
+                                                        onClick={() =>
+                                                          handleAgentClick(item)
+                                                        }
+                                                      >
+                                                        <span className="avatar-container">
+                                                          {item.profile_picture ? (
                                                             <img
                                                               alt="profile"
-                                                              src={item.profile_picture}
-                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                            /> : <i className="fa-light fa-user"></i>}
-                                                      </span> <span className="ms-2">{item?.username}</span>
-                                                    </div>
-                                                  )
-                                                )}
-                                                {/* {item.agents.length > 6 && <li className="col-12">
+                                                              src={
+                                                                item.profile_picture
+                                                              }
+                                                              onError={(e) =>
+                                                                (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                              }
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </span>{" "}
+                                                        <span className="ms-2">
+                                                          {item?.username}
+                                                        </span>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {/* {item.agents.length > 6 && <li className="col-12">
                                                   <Link to="/agents" className="dropdown-item text-center text-primary">
                                                     See More
                                                   </Link>
                                                 </li>} */}
-                                              </ul>
-                                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                </ul>
+                                              }
+                                              allowHTML={true}
+                                              placement="bottom"
+                                              interactive={true}
+                                              popperOptions={{
+                                                strategy: "fixed",
+                                              }}
+                                            >
                                               <div className="hover-dropdown">
                                                 {/* {item.agents.length} */}
                                                 <div className="avatar-container">
-                                                  {item.agents?.slice(0, 4).map((item, index) => {
-                                                    return (
-                                                      <Tippy key={index} content={item?.username}>
-                                                        {item.profile_picture ? (
-                                                          <img
-                                                            alt="avatar"
-                                                            src={item.profile_picture}
-                                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                          />
-                                                        ) : (
-                                                          <i className="fa-light fa-user"></i>
-                                                        )}
-                                                      </Tippy>
-                                                    )
-                                                  })}
-                                                  {item.agents.length > 4 && <span>+{item.agents.length - 4}</span>}
+                                                  {item.agents
+                                                    ?.slice(0, 4)
+                                                    .map((item, index) => {
+                                                      return (
+                                                        <Tippy
+                                                          key={index}
+                                                          content={
+                                                            item?.username
+                                                          }
+                                                        >
+                                                          {item.profile_picture ? (
+                                                            <img
+                                                              alt="avatar"
+                                                              src={
+                                                                item.profile_picture
+                                                              }
+                                                              onError={(e) =>
+                                                                (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                              }
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
+                                                      );
+                                                    })}
+                                                  {item.agents.length > 4 && (
+                                                    <span>
+                                                      +{item.agents.length - 4}
+                                                    </span>
+                                                  )}
                                                 </div>
                                               </div>
                                             </Tippy>
-
                                           </td>
-                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                          {checkViewSidebar(
+                                            "CallCenterQueue",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit"
+                                          ) && (
                                             <td>
                                               <div className="my-auto position-relative d-flex justify-content-center ">
                                                 {/* <label className="switch">
@@ -476,7 +549,9 @@ function CallCenterQueue() {
                                                       type="checkbox"
                                                       checked={item.status == 1}
                                                       onClick={(e) => {
-                                                        setSelectedCallCenter(item);
+                                                        setSelectedCallCenter(
+                                                          item
+                                                        );
                                                         setPopUp(true);
                                                       }}
                                                       // {...register("status")}
@@ -497,8 +572,14 @@ function CallCenterQueue() {
                                           <i className="fa-duotone fa-gear"></i>
                                         </button> */}
                                             </td>
-                                          }
-                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
+                                          )}
+                                          {checkViewSidebar(
+                                            "CallCenterQueue",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "edit"
+                                          ) && (
                                             <td>
                                               {" "}
                                               <button
@@ -512,8 +593,14 @@ function CallCenterQueue() {
                                                 <i className="fa-solid fa-pencil"></i>
                                               </button>
                                             </td>
-                                          }
-                                          {checkViewSidebar("CallCenterQueue", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
+                                          )}
+                                          {checkViewSidebar(
+                                            "CallCenterQueue",
+                                            slugPermissions,
+                                            account?.sectionPermissions,
+                                            account?.permissions,
+                                            "delete"
+                                          ) && (
                                             <td>
                                               <button
                                                 className="tableButton delete mx-auto"
@@ -526,12 +613,12 @@ function CallCenterQueue() {
                                                 <i className="fa-solid fa-trash"></i>
                                               </button>
                                             </td>
-                                          }
+                                          )}
                                         </tr>
                                       );
                                     })}
                                   {callCenter &&
-                                    callCenter.data.length === 0 ? (
+                                  callCenter.data.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Center"
@@ -545,7 +632,7 @@ function CallCenterQueue() {
                               )}
                             </tbody>
                           </table>
-                        }
+                        )}
                       </div>
                       <div className="tableHeader mb-3">
                         {callCenter && callCenter?.data?.length > 0 ? (
@@ -555,6 +642,7 @@ function CallCenterQueue() {
                             from={callCenter.from}
                             to={callCenter.to}
                             total={callCenter.total}
+                            defaultPage={pageNumber}
                           />
                         ) : (
                           ""
@@ -584,7 +672,8 @@ function CallCenterQueue() {
                         ? error
                         : "Are you sure you want to delete this queue?"}
                       {selectedCallCenter?.id &&
-                        `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
+                        `Are you sure you want to ${
+                          selectedCallCenter?.status == 1 ? "disable" : "enable"
                         } the queue ${selectedCallCenter?.queue_name}?`}
                     </p>
                     <div className="mt-2 d-flex justify-content-between">

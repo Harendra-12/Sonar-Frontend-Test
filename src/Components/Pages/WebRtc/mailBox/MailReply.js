@@ -166,7 +166,7 @@ const MailReply = ({
                       <li className="mailList_menu">
                         <button
                           className="dropdown-item text-danger"
-                          onClick={() => handleMailDelete(currentMail)}
+                          onClick={() => handleMailDelete(currentMail, true)}
                         >
                           <i class="fa-duotone fa-solid fa-trash me-2 "></i>{" "}
                           Delete

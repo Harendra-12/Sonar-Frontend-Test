@@ -94,11 +94,12 @@ var internalCallAction = null;
 var socketSendMessage = null;
 var campaignDetails = [];
 var recipient_to_remove_notification = null;
-var allLeadList = []
-var allLeadFileList = []
-var leadDataRefresh = 0
-var handRaises = []
-var confNotif = []
+var allLeadList = [];
+var allLeadFileList = [];
+var leadDataRefresh = 0;
+var handRaises = [];
+var confNotif = [];
+var socketSendPeerCallMessage = [];
 
 const initialState = {
   account,
@@ -191,13 +192,14 @@ const initialState = {
   incomingCall,
   internalCallAction,
   socketSendMessage,
+  socketSendPeerCallMessage,
   campaignDetails,
   recipient_to_remove_notification,
   allLeadList,
   allLeadFileList,
   leadDataRefresh,
   handRaises,
-  confNotif
+  confNotif,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -439,6 +441,11 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, internalCallAction: action.internalCallAction };
     case "SET_SOCKETSENDMESSAGE":
       return { ...state, socketSendMessage: action.socketSendMessage };
+    case "SET_SOCKETSENDPEERCALLMESSAGE":
+      return {
+        ...state,
+        socketSendPeerCallMessage: action.socketSendPeerCallMessage,
+      };
     case "REMOVE_INTERNALCALLACTION":
       return {
         ...state,
@@ -454,7 +461,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_CAMPAIGN_DETAILS":
       return { ...state, campaignDetails: action.campaignDetails };
     case ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE:
-      return { ...state, recipient_to_remove_notification: action?.recipient }
+      return { ...state, recipient_to_remove_notification: action?.recipient };
     case ActionType?.SET_ALL_LEADS_LIST:
       return { ...state, allLeadList: action.payload };
     case "SET_ALL_LEADS_FILE_LIST":
@@ -481,7 +488,7 @@ const counterReducer = (state = initialState, action) => {
         handRaises: [],
       };
     case "SET_CONF_NOTIF": {
-      return { ...state, confNotif: action.confNotif }
+      return { ...state, confNotif: action.confNotif };
     }
     default:
       return state;

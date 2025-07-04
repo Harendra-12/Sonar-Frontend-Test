@@ -31,16 +31,16 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [onlineFilter, setonlineFilter] = useState("all")
+  const [onlineFilter, setonlineFilter] = useState("all");
   const [searchValue, setSearchValue] = useState("");
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
   const showKeys = [
     "extension",
     "user",
     "effectiveCallerIdName",
     "outbundCallerIdName",
     "description",
-    "sofia_status"
+    "sofia_status",
   ];
   const slugPermissions = useSelector((state) => state?.permissions);
   const [allDID, setAllDID] = useState([]);
@@ -60,32 +60,32 @@ const Extensions = () => {
     }
   }, [registerUser]);
 
-
   // Getting all DID from did listing
   const getAllDid = async () => {
     const apiData = await generalGetFunction(`/did/all?all-dids`);
     if (apiData?.status) {
       setAllDID(apiData.data);
     }
-  }
+  };
 
   // Trigger user api to get latest users
   const getCurrentUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+      `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+        ? "&section=Accounts"
+        : ""
+      }`
     );
     if (userApi?.status) {
       setUserList(userApi.data);
     }
-  }
-
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getAllDid();
     getCurrentUser();
-  }, [])
-
+  }, []);
 
   // Filtering users with extensions
   const userWithExtension = userList
@@ -103,7 +103,15 @@ const Extensions = () => {
     }
     if (account && account.account_id) {
       const apiData = await generalGetFunction(
-        `/extension/all?${onlineFilter === "all" ? `page=${pageNumber}` : ""}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+        `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all"
+          ? ""
+          : onlineFilter == "online"
+            ? "&online"
+            : "&offline"
+        }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
+        }`
       );
       if (apiData?.status) {
         // setLoading(false);
@@ -114,23 +122,23 @@ const Extensions = () => {
           extensionByAccount: apiData.data,
         });
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       } else {
         if (apiData.response.status === 403) {
           setNoPermissionToRead(true);
         }
         // setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       }
     } else {
       // setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     }
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
-    setRefreshState(true)
+    setRefreshState(true);
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
       if (pageNumber === 1 && itemsPerPage === 10) {
@@ -162,8 +170,8 @@ const Extensions = () => {
       //   }, 1000);
       //   return () => clearTimeout(timer);
       // }
-      const shouldLoad = true
-      getExtensionData(shouldLoad)
+      const shouldLoad = true;
+      getExtensionData(shouldLoad);
     } else {
       // async function getData() {
       //   setLoading(true);
@@ -198,9 +206,16 @@ const Extensions = () => {
       //   return () => clearTimeout(timer);
       // }
       const shouldLoad = true;
-      getExtensionData(shouldLoad)
+      getExtensionData(shouldLoad);
     }
-  }, [navigate, pageNumber, account, itemsPerPage, debouncedSearchTerm, onlineFilter]);
+  }, [
+    navigate,
+    pageNumber,
+    account,
+    itemsPerPage,
+    debouncedSearchTerm,
+    onlineFilter,
+  ]);
 
   useEffect(() => {
     if (onlineExtension.length > 0 && extension) {
@@ -209,10 +224,18 @@ const Extensions = () => {
           setFilteredExtension(extension.data);
           break;
         case "online":
-          setFilteredExtension(extension.data.filter((item) => onlineExtension.includes(item.extension)));
+          setFilteredExtension(
+            extension.data.filter((item) =>
+              onlineExtension.includes(item.extension)
+            )
+          );
           break;
         case "offline":
-          setFilteredExtension(extension.data.filter((item) => !onlineExtension.includes(item.extension)));
+          setFilteredExtension(
+            extension.data.filter(
+              (item) => !onlineExtension.includes(item.extension)
+            )
+          );
           break;
         default:
           setFilteredExtension(extension.data);
@@ -220,13 +243,13 @@ const Extensions = () => {
       }
       // setLoading(false)
     }
-  }, [onlineExtension, extension])
+  }, [onlineExtension, extension]);
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
-    const shouldLoad = false
-    getExtensionData(shouldLoad)
-  }
+    setRefreshState(true);
+    const shouldLoad = false;
+    getExtensionData(shouldLoad);
+  };
 
   return (
     <main className="mainContent">
@@ -241,7 +264,7 @@ const Extensions = () => {
                     <div className="heading">
                       <div className="content">
                         <h4>
-                          Extension List {" "}
+                          Extension List{" "}
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -253,8 +276,7 @@ const Extensions = () => {
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
                               }
-                            >
-                            </i>
+                            ></i>
                           </button>
                         </h4>
                         <p>You can see the list of extensions</p>
@@ -279,18 +301,18 @@ const Extensions = () => {
                           account?.sectionPermissions,
                           account?.permissions,
                           "add"
-                        ) &&
-                          <Link
-                            to="/store-extension"
-                            effect="ripple"
-                            className="panelButton"
-                          >
-                            <span className="text">Buy</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-cart-shopping"></i>
-                            </span>
-                          </Link>
-                        }
+                        ) && (
+                            <Link
+                              to="/store-extension"
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Buy</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-cart-shopping"></i>
+                              </span>
+                            </Link>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -304,7 +326,10 @@ const Extensions = () => {
                         <select
                           className="formItem"
                           value={itemsPerPage}
-                          onChange={(e) => setItemsPerPage(e.target.value)}
+                          onChange={(e) => {
+                            setItemsPerPage(e.target.value);
+                            setPageNumber(1);
+                          }}
                         >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
@@ -318,33 +343,41 @@ const Extensions = () => {
                         account?.sectionPermissions,
                         account?.permissions,
                         "search"
-                      ) && <div className="searchBox">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            value={searchValue}
-                            className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
-                          />
-                        </div>
-                      }
+                      ) && (
+                          <div className="searchBox">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              value={searchValue}
+                              className="formItem"
+                              onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setPageNumber(1);
+                                setItemsPerPage(10);
+                              }}
+                            />
+                          </div>
+                        )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
                         // <SkeletonTableLoader col={7} row={15} />
                         <ThreeDotedLoader />
-                      ) :
+                      ) : (
                         <table>
-                          {noPermissionToRead || !checkViewSidebar(
-                            "Extension",
-                            slugPermissions,
-                            account?.sectionPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? (
+                          {noPermissionToRead ||
+                            !checkViewSidebar(
+                              "Extension",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
                             <tbody>
                               <tr>
-                                <td colSpan={99}>You dont have any permission</td>
+                                <td colSpan={99}>
+                                  You dont have any permission
+                                </td>
                               </tr>
                             </tbody>
                           ) : (
@@ -354,57 +387,82 @@ const Extensions = () => {
                                 (() => {
                                   // Filter showKeys to include only keys that exist in extension.data
                                   const validKeys = showKeys.filter((key) =>
-                                    extension.data.some(
-                                      (item) => key in item
-                                    )
+                                    extension.data.some((item) => key in item)
                                   );
                                   return (
                                     <>
                                       <thead>
                                         <tr>
-                                          {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => {
-                                            let formattedKey = "";
-                                            if (
-                                              key ===
-                                              "effectiveCallerIdName"
-                                            ) {
-                                              formattedKey =
-                                                "Effective CID Name";
-                                            } else if (
-                                              key === "outbundCallerIdName"
-                                            ) {
-                                              formattedKey =
-                                                "Outbound CID Name";
-                                            }
-                                            else {
-                                              formattedKey = key
-                                                .replace(/[-_]/g, " ")
-                                                .toLowerCase()
-                                                .replace(/\b\w/g, (char) =>
-                                                  char.toUpperCase()
+                                          {validKeys
+                                            .filter(
+                                              (item) =>
+                                                item !==
+                                                "effectiveCallerIdName" &&
+                                                item !== "outbundCallerIdName"
+                                            )
+                                            .map((key) => {
+                                              let formattedKey = "";
+                                              if (
+                                                key === "effectiveCallerIdName"
+                                              ) {
+                                                formattedKey =
+                                                  "Effective CID Name";
+                                              } else if (
+                                                key === "outbundCallerIdName"
+                                              ) {
+                                                formattedKey =
+                                                  "Outbound CID Name";
+                                              } else {
+                                                formattedKey = key
+                                                  .replace(/[-_]/g, " ")
+                                                  .toLowerCase()
+                                                  .replace(/\b\w/g, (char) =>
+                                                    char.toUpperCase()
+                                                  );
+                                              }
+                                              if (key == "sofia_status") {
+                                                return (
+                                                  <th className="text-center">
+                                                    <span>
+                                                      <select
+                                                        className="formItem f-select-width"
+                                                        value={onlineFilter}
+                                                        onChange={(e) => {
+                                                          setonlineFilter(
+                                                            e.target.value
+                                                          )
+                                                          if (e.target.value !== "all") {
+                                                            setPageNumber(1);
+                                                          }
+                                                        }}
+                                                      >
+                                                        <option
+                                                          value="all"
+                                                          disabled
+                                                        >
+                                                          Status
+                                                        </option>
+                                                        <option value="online">
+                                                          Online
+                                                        </option>
+                                                        <option value="offline">
+                                                          Offline
+                                                        </option>
+                                                        <option value="all">
+                                                          All
+                                                        </option>
+                                                      </select>
+                                                    </span>
+                                                  </th>
                                                 );
-                                            }
-                                            if (key == 'sofia_status') {
-                                              return (
-                                                <th className="text-center">
-                                                  <span>
-                                                    <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
-                                                      <option value="all" disabled>Status</option>
-                                                      <option value="online">Online</option>
-                                                      <option value="offline">Offline</option>
-                                                      <option value="all">All</option>
-                                                    </select>
-                                                  </span>
-                                                </th>
-                                              )
-                                            } else {
-                                              return (
-                                                <th key={key}>
-                                                  {formattedKey}
-                                                </th>
-                                              );
-                                            }
-                                          })}
+                                              } else {
+                                                return (
+                                                  <th key={key}>
+                                                    {formattedKey}
+                                                  </th>
+                                                );
+                                              }
+                                            })}
                                           <th>Default Outbound Number</th>
                                           {checkViewSidebar(
                                             "Extension",
@@ -434,26 +492,44 @@ const Extensions = () => {
                                             return (
                                               <>
                                                 <tr key={index}>
-                                                  {validKeys.filter((item) => item !== "effectiveCallerIdName" && item !== "outbundCallerIdName").map((key) => (
-                                                    <td key={key}>
-                                                      {key === "user"
-                                                        ? foundUser
-                                                          ?
-                                                          <div className="d-flex align-items-center">
-                                                            <div className="tableProfilePicHolder">
-                                                              {foundUser.profile_picture ? (
-                                                                <img
-                                                                  src={foundUser.profile_picture}
-                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                />
-                                                              ) : (
-                                                                <i className="fa-light fa-user" />
-                                                              )}
+                                                  {validKeys
+                                                    .filter(
+                                                      (item) =>
+                                                        item !==
+                                                        "effectiveCallerIdName" &&
+                                                        item !==
+                                                        "outbundCallerIdName"
+                                                    )
+                                                    .map((key) => (
+                                                      <td key={key}>
+                                                        {key === "user" ? (
+                                                          foundUser ? (
+                                                            <div className="d-flex align-items-center">
+                                                              <div className="tableProfilePicHolder">
+                                                                {foundUser.profile_picture ? (
+                                                                  <img
+                                                                    src={
+                                                                      foundUser.profile_picture
+                                                                    }
+                                                                    onError={(
+                                                                      e
+                                                                    ) =>
+                                                                      (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                                                    }
+                                                                  />
+                                                                ) : (
+                                                                  <i className="fa-light fa-user" />
+                                                                )}
+                                                              </div>
+                                                              <div className="ms-2">
+                                                                {foundUser.name}
+                                                              </div>
                                                             </div>
-                                                            <div className="ms-2">{foundUser.name}</div>
-                                                          </div>
-                                                          : ""
-                                                        : key == 'sofia_status' ? (
+                                                          ) : (
+                                                            ""
+                                                          )
+                                                        ) : key ==
+                                                          "sofia_status" ? (
                                                           <span
                                                             className={
                                                               onlineExtension.includes(
@@ -463,11 +539,20 @@ const Extensions = () => {
                                                                 : "extensionStatus mx-auto"
                                                             }
                                                           ></span>
-                                                        ) :
-                                                          item[key]}
-                                                    </td>
-                                                  ))}
-                                                  <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                                        ) : (
+                                                          item[key]
+                                                        )}
+                                                      </td>
+                                                    ))}
+                                                  <td>
+                                                    {
+                                                      allDID?.filter(
+                                                        (item) =>
+                                                          item.default_outbound ==
+                                                          1
+                                                      )[0]?.did
+                                                    }
+                                                  </td>
                                                   {checkViewSidebar(
                                                     "Extension",
                                                     slugPermissions,
@@ -559,7 +644,7 @@ const Extensions = () => {
                             ""
                           )}
                         </table>
-                      }
+                      )}
                     </div>
                     <div className="tableHeader mb-3">
                       {extension && extension.data.length > 0 ? (
@@ -569,6 +654,7 @@ const Extensions = () => {
                           from={(pageNumber - 1) * extension.per_page + 1}
                           to={extension.to}
                           total={extension.total}
+                          defaultPage={pageNumber}
                         />
                       ) : (
                         ""
@@ -581,7 +667,7 @@ const Extensions = () => {
           </div>
         </div>
       </section>
-    </main >
+    </main>
   );
 };
 

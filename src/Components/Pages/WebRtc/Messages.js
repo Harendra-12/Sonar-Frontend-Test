@@ -70,6 +70,7 @@ function Messages({
 }) {
   const dispatch = useDispatch();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
+  const socketSendPeerCallMessage = useSelector((state)=> state.socketSendPeerCallMessage);
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -2613,7 +2614,7 @@ function Messages({
                         setMeetingPage={setMeetingPage}
                         setToUser={setToUser}
                         setCalling={setCalling}
-                        socketSendMessage={socketSendMessage}
+                        socketSendMessage={socketSendPeerCallMessage}
                         account={account}
                         formatRelativeTime={formatRelativeTime}
                         onlineUser={onlineUser}
@@ -3120,7 +3121,7 @@ function Messages({
                                     type: "SET_INTERNALCALLACTION",
                                     internalCallAction: null,
                                   });
-                                  socketSendMessage({
+                                  socketSendPeerCallMessage({
                                     action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
@@ -3145,7 +3146,7 @@ function Messages({
                                     type: "SET_INTERNALCALLACTION",
                                     internalCallAction: null,
                                   });
-                                  socketSendMessage({
+                                  socketSendPeerCallMessage({
                                     action: "peercallInitiate",
                                     from: account.id,
                                     to: recipient?.[1],
@@ -4185,7 +4186,7 @@ function Messages({
                               setMeetingPage={setMeetingPage}
                               setToUser={setToUser}
                               setCalling={setCalling}
-                              socketSendMessage={socketSendMessage}
+                              socketSendMessage={socketSendPeerCallMessage}
                               account={account}
                             />
                           ) : (

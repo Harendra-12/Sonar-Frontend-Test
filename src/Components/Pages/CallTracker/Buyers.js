@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
-import { generalDeleteFunction, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import {
+  generalDeleteFunction,
+  generalGetFunction,
+  useDebounce,
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -12,9 +16,9 @@ import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 function Buyers() {
   const navigate = useNavigate();
   const [allBuyers, setAllBuyers] = useState([]);
-  const [buyersDetailsData, setBuyersDetailsData] = useState()
+  const [buyersDetailsData, setBuyersDetailsData] = useState();
   const [loading, setLoading] = useState(false);
-  const [refreshState, setRefreshState] = useState(false)
+  const [refreshState, setRefreshState] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
@@ -22,34 +26,35 @@ function Buyers() {
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllBuyers = async (shouldLoad) => {
-    if (shouldLoad)
-      setLoading(true);
-    const response = await generalGetFunction(`buyer/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
+    if (shouldLoad) setLoading(true);
+    const response = await generalGetFunction(
+      `buyer/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+    );
     if (response.status) {
       setAllBuyers(response?.data?.data);
       setBuyersDetailsData(response?.data);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     } else {
       toast.error(response.message);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     }
   };
 
   // Initial data fetch
   useEffect(() => {
     setRefreshState(true);
-    const shouldLoad = true
+    const shouldLoad = true;
     getAllBuyers(shouldLoad);
-  }, [itemsPerPage, debouncedSearchTerm, pageNumber ])
+  }, [itemsPerPage, debouncedSearchTerm, pageNumber]);
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
     if (id) {
-      navigate('/buyer-edit', { state: { id: id } });
+      navigate("/buyer-edit", { state: { id: id } });
     }
-  }
+  };
 
   // Handle Delete Buyer
   const handleDeleteConfig = async (id) => {
@@ -61,8 +66,8 @@ function Buyers() {
         if (apiCall.status) {
           setLoading(false);
           toast.success("Buyer Deleted Successfully.");
-          setRefreshState(true)
-          const shouldLoad = true
+          setRefreshState(true);
+          const shouldLoad = true;
           getAllBuyers(shouldLoad);
         }
       } catch (err) {
@@ -70,13 +75,13 @@ function Buyers() {
         setLoading(false);
       }
     }
-  }
+  };
 
   const getRefresh = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = false;
-    getAllBuyers(shouldLoad)
-  }
+    getAllBuyers(shouldLoad);
+  };
   return (
     <>
       <main className="mainContent">
@@ -90,9 +95,20 @@ function Buyers() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4> All Buyers
-                            <button className="clearButton" onClick={getRefresh} disabled={refreshState}>
-                              <i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} /></button>
+                          <h4>
+                            {" "}
+                            All Buyers
+                            <button
+                              className="clearButton"
+                              onClick={getRefresh}
+                              disabled={refreshState}
+                            >
+                              <i
+                                className={`fa-regular fa-arrows-rotate fs-5 ${
+                                  refreshState ? "fa-spin" : ""
+                                }`}
+                              />
+                            </button>
                           </h4>
                           <p>You can see all list of all buyers</p>
                         </div>
@@ -127,6 +143,7 @@ function Buyers() {
                             value={itemsPerPage}
                             onChange={(e) => {
                               setItemsPerPage(e.target.value);
+                              setPageNumber(1);
                             }}
                           >
                             <option value={10}>10</option>
@@ -143,7 +160,11 @@ function Buyers() {
                             placeholder="Search"
                             value={searchValue}
                             className="formItem"
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            onChange={(e) => {
+                              setSearchValue(e.target.value);
+                              setPageNumber(1);
+                              setItemsPerPage(10);
+                            }}
                           />
                         </div>
                       </div>
@@ -166,28 +187,51 @@ function Buyers() {
                             </tr>
                           </thead>
                           <tbody>
-                            {loading ?
+                            {loading ? (
                               // <SkeletonTableLoader col={13} row={15} />
                               <ThreeDotedLoader />
-                              :
-                              allBuyers && allBuyers?.length > 0 ?
-                                allBuyers?.map((buyer, index) => (
-                                  <tr key={index}>
-                                    <td>{buyer.name}</td>
-                                    <td>+{buyer.phone_code} - {buyer.phone_number}</td>
-                                    <td>{buyer.alt_phone}</td>
-                                    <td>{buyer.email}</td>
-                                    <td>{buyer.address}</td>
-                                    <td>{buyer.city}</td>
-                                    <td>{buyer.state}</td>
-                                    <td>{buyer.province}</td>
-                                    <td>{buyer.postal_code}</td>
-                                    <td>{buyer.country_code}</td>
-                                    <td><button className="tableButton edit" onClick={() => handleConfigEdit(buyer.id)}><i className='fa-solid fa-pen' /></button></td>
-                                    <td><button className="tableButton delete" onClick={() => handleDeleteConfig(buyer.id)}><i className='fa-solid fa-trash' /></button></td>
-                                  </tr>
-                                )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
-                            }
+                            ) : allBuyers && allBuyers?.length > 0 ? (
+                              allBuyers?.map((buyer, index) => (
+                                <tr key={index}>
+                                  <td>{buyer.name}</td>
+                                  <td>
+                                    +{buyer.phone_code} - {buyer.phone_number}
+                                  </td>
+                                  <td>{buyer.alt_phone}</td>
+                                  <td>{buyer.email}</td>
+                                  <td>{buyer.address}</td>
+                                  <td>{buyer.city}</td>
+                                  <td>{buyer.state}</td>
+                                  <td>{buyer.province}</td>
+                                  <td>{buyer.postal_code}</td>
+                                  <td>{buyer.country_code}</td>
+                                  <td>
+                                    <button
+                                      className="tableButton edit"
+                                      onClick={() => handleConfigEdit(buyer.id)}
+                                    >
+                                      <i className="fa-solid fa-pen" />
+                                    </button>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="tableButton delete"
+                                      onClick={() =>
+                                        handleDeleteConfig(buyer.id)
+                                      }
+                                    >
+                                      <i className="fa-solid fa-trash" />
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={99}>
+                                  <EmptyPrompt generic={true} />
+                                </td>
+                              </tr>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -199,6 +243,7 @@ function Buyers() {
                           from={buyersDetailsData?.from}
                           to={buyersDetailsData?.to}
                           total={buyersDetailsData?.total}
+                          defaultPage={pageNumber}
                         />
                       </div>
                     </div>

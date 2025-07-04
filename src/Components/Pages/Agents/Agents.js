@@ -105,13 +105,13 @@ function Agents({ type }) {
     const queryParams = [
       `usages=${type}`,
       `row_per_page=${entriesPerPage}`,
-      ...(onlineFilter === "all" ? [`page=${pageNumber}`] : []),
+      `page=${pageNumber}`,
       `search=${userInput}`,
       ...(onlineFilter === "online"
         ? ["online=true"]
         : onlineFilter === "offline"
-        ? ["online=false"]
-        : []),
+          ? ["online=false"]
+          : []),
       ...(account.usertype !== "Company" && account.usertype !== "SupreAdmin"
         ? ["section=Accounts"]
         : []),
@@ -258,7 +258,7 @@ function Agents({ type }) {
   return (
     <main className="mainContent">
       <section id="phonePage">
-            <Header title="Agents" />
+        <Header title="Agents" />
         <div className="container-fluid">
           <div className="row">
             <div className="overviewTableWrapper">
@@ -307,19 +307,19 @@ function Agents({ type }) {
                           account?.permissions,
                           "add"
                         ) && (
-                          <button
-                            onClick={() => {
-                              navigate("/agents-pbx-add");
-                              backToTop();
-                            }}
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                            <button
+                              onClick={() => {
+                                navigate("/agents-pbx-add");
+                                backToTop();
+                              }}
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -332,7 +332,10 @@ function Agents({ type }) {
                         <label>Show</label>
                         <select
                           value={entriesPerPage}
-                          onChange={(e) => setEntriesPerPage(e.target.value)}
+                          onChange={(e) => {
+                            setEntriesPerPage(e.target.value);
+                            setPageNumber(1);
+                          }}
                           className="formItem"
                         >
                           <option value={10}>10</option>
@@ -349,17 +352,21 @@ function Agents({ type }) {
                         account?.permissions,
                         "search"
                       ) && (
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            className="formItem"
-                            value={userInput}
-                            onChange={(e) => setuserInput(e?.target?.value)}
-                          />
-                        </div>
-                      )}
+                          <div className="searchBox position-relative">
+                            <label>Search:</label>
+                            <input
+                              type="search"
+                              name="Search"
+                              className="formItem"
+                              value={userInput}
+                              onChange={(e) => {
+                                setuserInput(e?.target?.value);
+                                setEntriesPerPage(10);
+                                setPageNumber(1);
+                              }}
+                            />
+                          </div>
+                        )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
@@ -378,9 +385,12 @@ function Agents({ type }) {
                                 <select
                                   className="formItem f-select-width"
                                   value={onlineFilter}
-                                  onChange={(e) =>
+                                  onChange={(e) => {
                                     setonlineFilter(e.target.value)
-                                  }
+                                    if (e.target.value !== "all") {
+                                      setPageNumber(1);
+                                    }
+                                  }}
                                 >
                                   <option value="all" disabled>
                                     Status
@@ -410,13 +420,13 @@ function Agents({ type }) {
                           <tbody className="">
                             <>
                               {noPermissionToRead ||
-                              checkViewSidebar(
-                                "User",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                                checkViewSidebar(
+                                  "User",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
                                 agents?.data?.length === 0 ? (
                                   <tr>
                                     <td colSpan={99}>
@@ -454,12 +464,12 @@ function Agents({ type }) {
                                           {item.extension.record === "A"
                                             ? "All"
                                             : item.extension.record === "L"
-                                            ? "Local"
-                                            : item.extension.record === "I"
-                                            ? "Inbound"
-                                            : item.extension.record === "O"
-                                            ? "Outbound"
-                                            : "Disabled"}
+                                              ? "Local"
+                                              : item.extension.record === "I"
+                                                ? "Inbound"
+                                                : item.extension.record === "O"
+                                                  ? "Outbound"
+                                                  : "Disabled"}
                                         </td>
                                         <td>
                                           <span
@@ -473,9 +483,9 @@ function Agents({ type }) {
                                           ></span>
                                         </td>
                                         {getToken(item.extension.extension) &&
-                                        onlineUsers.includes(
-                                          item.extension.extension
-                                        ) ? (
+                                          onlineUsers.includes(
+                                            item.extension.extension
+                                          ) ? (
                                           <td>
                                             <button
                                               className="tableButton delete mx-auto"
@@ -501,22 +511,22 @@ function Agents({ type }) {
                                           account?.permissions,
                                           "edit"
                                         ) && (
-                                          <td>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() => {
-                                                navigate(
-                                                  `/agents-edit?id=${item.id}`,
-                                                  {
-                                                    state: item,
-                                                  }
-                                                );
-                                              }}
-                                            >
-                                              <i className="fa-solid fa-pencil"></i>
-                                            </button>
-                                          </td>
-                                        )}
+                                            <td>
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() => {
+                                                  navigate(
+                                                    `/agents-edit?id=${item.id}`,
+                                                    {
+                                                      state: item,
+                                                    }
+                                                  );
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-pencil"></i>
+                                              </button>
+                                            </td>
+                                          )}
                                         {/* <td>
                             account?.permissions,"edit")&& <td>
                             <button
@@ -565,6 +575,7 @@ function Agents({ type }) {
                         from={(pageNumber - 1) * agents.per_page + 1}
                         to={agents.to}
                         total={agents.total}
+                        defaultPage={pageNumber}
                       />
                     </div>
                   </div>

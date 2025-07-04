@@ -218,7 +218,7 @@
     }
 }
 
-@media (min-device-width:992px) and (max-device-width: 1250px) {
+@media (min-device-width:992px) and (max-device-width: 1365px) {
     .formRow.col-xl-3:nth-child(odd) {
         margin-right: 0px;
     }

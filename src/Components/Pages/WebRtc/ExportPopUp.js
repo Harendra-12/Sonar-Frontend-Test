@@ -107,8 +107,8 @@ export default function ExportPopUp({
         .flatMap(([key, value]) =>
           Array.isArray(value)
             ? value.map(
-              (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
-            )
+                (val) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+              )
             : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
@@ -122,10 +122,10 @@ export default function ExportPopUp({
         page === "all"
           ? callType
           : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-              ? callType
-              : page,
+          ? "pstn"
+          : page === "callrecording"
+          ? callType
+          : page,
       variable_sip_from_user: debounceCallOriginFlag,
       variable_sip_to_user: debounceCallDestinationFlag,
       start_date: startDate,
@@ -267,22 +267,34 @@ export default function ExportPopUp({
   };
 
   return (
-    <div className="backdropContact" >
-      <div className="backdropContact" >
+    <div className="backdropContact">
+      <div className="backdropContact">
         <div className="addNewContactPopup" style={{ width: "500px" }}>
           <div className="row">
             <div className="col-12 heading mb-0">
               <i className="fa-light fa-file-export" />
               <h5>Export Options</h5>
-              <p>Choose what and how you want to export the call detail reports</p>
+              <p>
+                Choose what and how you want to export the call detail reports
+              </p>
             </div>
             <div style={{ borderBottom: "1px solid var(--border-color)" }} />
             <div className="col-12 my-2">
-              <div className="row" style={{ minHeight: "400px", maxHeight: "400px", overflowY: "auto" }}>
+              <div
+                className="row"
+                style={{
+                  minHeight: "400px",
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                }}
+              >
                 <h5 className="mb-0 d-flex justify-content-between align-items-center">
                   CDR Filters{" "}
-                  <button className="tableButton delete">
-                   <i class="fa-solid fa-rotate"></i>
+                  <button
+                    className="tableButton delete"
+                    onClick={handleClearFilter}
+                  >
+                    <i class="fa-solid fa-rotate"></i>
                   </button>
                 </h5>
                 {filteredKeys.includes("variable_start_stamp") && (
@@ -338,6 +350,7 @@ export default function ExportPopUp({
                             max={new Date().toISOString().split("T")[0]}
                             value={startDateFlag}
                             onChange={handleStartDateChange}
+                            onKeyDown={(e) => e.preventDefault()}
                           />
                         </div>
                         <div className="formRow border-0 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
@@ -351,6 +364,8 @@ export default function ExportPopUp({
                             value={endDateFlag}
                             onChange={handleEndDateChange}
                             min={startDateFlag}
+                            onKeyDown={(e) => e.preventDefault()}
+                            disabled={!startDateFlag}
                           />
                         </div>
                       </>
@@ -396,7 +411,8 @@ export default function ExportPopUp({
                   </div>
                 )}
 
-                {page === "all" && filteredKeys.includes("variable_sip_to_user") ? (
+                {page === "all" &&
+                filteredKeys.includes("variable_sip_to_user") ? (
                   <>
                     <div className="formRow border-0 col-12">
                       <label className="formLabel text-start mb-0 w-100">
@@ -458,7 +474,7 @@ export default function ExportPopUp({
                   ""
                 )}
                 {page === "callrecording" &&
-                  !filteredKeys.includes("Hangup-Cause") ? (
+                !filteredKeys.includes("Hangup-Cause") ? (
                   ""
                 ) : (
                   <>
@@ -585,68 +601,71 @@ export default function ExportPopUp({
               </div>
             </div>
             <div style={{ borderBottom: "1px solid var(--border-color)" }} />
-              <div className="col-12 mt-2">
-                <h5 className="mb-0 d-flex justify-content-between align-items-center">
-                  Format Options
-                </h5>
+            <div className="col-12 mt-2">
+              <h5 className="mb-0 d-flex justify-content-between align-items-center">
+                Format Options
+              </h5>
 
-                <div className="formRow col-12 justify-content-start gap-5">
-                  <div className="form-check mt-2">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                      id="flexRadioDefault1"
-                      checked={exportChecked === "CSV"}
-                    />
-                    <label className="formLabel" htmlFor="flexRadioDefault1">
-                      Export To CSV
-                    </label>
-                  </div>
-                  <div className="form-check mt-2">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                      id="flexRadioDefault2"
-                      checked={exportChecked === "mail"}
-                      onChange={(e) =>
-                        e.target.checked
-                          ? setExportChecked("mail")
-                          : setExportChecked("CSV")
-                      }
-                    />
-                    <label className="formLabel" htmlFor="flexRadioDefault2">
-                      Send To Mail
-                    </label>
-                  </div>
+              <div className="formRow col-12 justify-content-start gap-5">
+                <div className="form-check mt-2">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="flexRadioDefault1"
+                    checked={exportChecked === "CSV"}
+                  />
+                  <label className="formLabel" htmlFor="flexRadioDefault1">
+                    Export To CSV
+                  </label>
+                </div>
+                <div className="form-check mt-2">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="flexRadioDefault2"
+                    checked={exportChecked === "mail"}
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setExportChecked("mail")
+                        : setExportChecked("CSV")
+                    }
+                  />
+                  <label className="formLabel" htmlFor="flexRadioDefault2">
+                    Send To Mail
+                  </label>
                 </div>
               </div>
-              <div className="col-xl-12 mt-2 pt-3" style={{ borderTop: "1px solid var(--border-color)" }} >
-                <div className="d-flex justify-content-between">
-                  <button
-                    className="panelButton gray ms-0"
-                    onClick={() => setExportPopup(false)}
-                  >
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  <button
-                    className="panelButton me-0"
-                    onClick={() => {
-                      handleExport();
-                    }}
-                    disabled={isExcelLoading}
-                  >
-                    <span className="text">Export</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-file-export" />
-                    </span>
-                  </button>
-                </div>
+            </div>
+            <div
+              className="col-xl-12 mt-2 pt-3"
+              style={{ borderTop: "1px solid var(--border-color)" }}
+            >
+              <div className="d-flex justify-content-between">
+                <button
+                  className="panelButton gray ms-0"
+                  onClick={() => setExportPopup(false)}
+                >
+                  <span className="text">Close</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-caret-left" />
+                  </span>
+                </button>
+                <button
+                  className="panelButton me-0"
+                  onClick={() => {
+                    handleExport();
+                  }}
+                  disabled={isExcelLoading}
+                >
+                  <span className="text">Export</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-file-export" />
+                  </span>
+                </button>
               </div>
+            </div>
           </div>
         </div>
       </div>

@@ -52,8 +52,8 @@ const DidConfig = () => {
     if (locationData.configuration !== null) {
       console.log("Location Data: ", locationData.configuration);
       // setDataAvailable(false);
-
       setValue("usages", locationData.configuration.usages || "none");
+      setValue("did_id", locationData.id || "");
       setValue("did_id_view", locationData.did || "");
       setValue("forward", locationData.configuration.forward || "");
       setValue("forward_action", locationData.configuration.forward_to || "");
@@ -229,7 +229,11 @@ const DidConfig = () => {
       if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
-        reset();
+        reset(apiData.data);
+        setValue("did_id_view", locationData.did || "");
+        if (apiData.data.usages == null) {
+          setValue("usages", "none");
+        }
         navigate(-1);
       } else {
         setLoading(false);
@@ -251,7 +255,11 @@ const DidConfig = () => {
       if (apiData.status) {
         setLoading(false);
         toast.success(apiData.message);
-        reset();
+        reset(apiData.data);
+        setValue("did_id_view", locationData.did || "");
+        if (apiData.data.usages == null) {
+          setValue("usages", "none");
+        }
       } else {
         setLoading(false);
         toast.error(apiData?.errors[Object.keys(apiData?.errors)[0]]);
@@ -374,15 +382,20 @@ const DidConfig = () => {
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <input
                               type="text"
-                              name="did_id_view"
                               className="formItem"
                               value={locationData.did && locationData.did}
+                              defaultValue={locationData.did && locationData.did}
                               disabled
-                              {...register("did_id", {
-                                ...noSpecialCharactersValidator,
-                              })}
+                              {...register("did_id_view")}
                             />
-
+                            <input
+                              type="text"
+                              className="formItem d-none"
+                              value={locationData.id && locationData.id}
+                              defaultValue={locationData.id && locationData.id}
+                              disabled
+                              {...register("did_id")}
+                            />
                             {errors.did_id && (
                               <ErrorMessage text={errors.did_id.message} />
                             )}

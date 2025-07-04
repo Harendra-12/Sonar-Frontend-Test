@@ -206,6 +206,8 @@ const AiPhoneNumber = () => {
         payload
       );
       if (res.status) {
+        setInboundCallAgent("")
+        setOutboundCallAgent("")
         await Promise.all([fetchAvailableAgents(), fetchAvailableNumbers()]);
         toast.success("Phone number updated successfully!");
       } else {

@@ -274,7 +274,10 @@ function Meeting() {
                           <select
                             className="formItem"
                             value={itemsPerPage}
-                            onChange={(e) => setItemsPerPage(e.target.value)}
+                            onChange={(e) => {
+                              setItemsPerPage(e.target.value);
+                              setPageNumber(1);
+                            }}
                           >
                             <option value={10}>10</option>
                             <option value={20}>20</option>
@@ -297,7 +300,11 @@ function Meeting() {
                               placeholder="Search"
                               value={searchValue}
                               className="formItem"
-                              onChange={(e) => setSearchValue(e.target.value)}
+                              onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setPageNumber(1);
+                                setItemsPerPage(10);
+                              }}
                             />
                           </div>
                         )}
@@ -549,6 +556,7 @@ function Meeting() {
                             from={conference.from}
                             to={conference.to}
                             total={conference.total}
+                            defaultPage={pageNumber}
                           />
                         ) : (
                           ""

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { backToTop, generalDeleteFunction, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalDeleteFunction,
+  generalGetFunction,
+  useDebounce,
+} from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
@@ -15,9 +20,10 @@ function FportalCampaign() {
   const [allFCampaigns, setAllFCampaigns] = useState([]);
   const [CampaignDetailsData, setCampaignDetailsData] = useState();
   const [loading, setLoading] = useState(false);
-  const [modalTask, setModalTask] = useState("")
-  const [activateInactivateLoading, setActivateInactivateLoading] = useState(null)
-  const [refreshState, setRefreshState] = useState(false)
+  const [modalTask, setModalTask] = useState("");
+  const [activateInactivateLoading, setActivateInactivateLoading] =
+    useState(null);
+  const [refreshState, setRefreshState] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
@@ -25,106 +31,107 @@ function FportalCampaign() {
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const getAllCampaigns = async (shouldRefresh) => {
-    if (shouldRefresh)
-      setLoading(true);
-    const response = await generalGetFunction(`fcampaign/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`);
+    if (shouldRefresh) setLoading(true);
+    const response = await generalGetFunction(
+      `fcampaign/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+    );
     if (response.status) {
       setAllFCampaigns(response.data?.data);
-      setCampaignDetailsData(response?.data)
+      setCampaignDetailsData(response?.data);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     } else {
       toast.error(response.message);
       setLoading(false);
-      setRefreshState(false)
+      setRefreshState(false);
     }
   };
 
   // Initial data fetch
   useEffect(() => {
-    setRefreshState(true)
-    const shouldRefresh = true
-    getAllCampaigns(shouldRefresh)
-  }, [itemsPerPage, debouncedSearchTerm])
+    setRefreshState(true);
+    const shouldRefresh = true;
+    getAllCampaigns(shouldRefresh);
+  }, [itemsPerPage, debouncedSearchTerm]);
 
   // Handle Edit Buyer
   const handleConfigEdit = async (id) => {
     if (id) {
-      navigate('/call-forwarding-campaign-edit', { state: { id: id } });
+      navigate("/call-forwarding-campaign-edit", { state: { id: id } });
     }
-  }
+  };
 
   // Handle Delete Buyer
   const handleDeleteConfig = async (id) => {
-    setModalTask("delete")
+    setModalTask("delete");
     const userConfirmed = await confirm();
     if (userConfirmed) {
       setLoading(true);
-      setRefreshState(true)
+      setRefreshState(true);
       try {
         const apiCall = await generalDeleteFunction(`/fcampaign/${id}`);
         if (apiCall.status) {
           setLoading(false);
-          setRefreshState(false)
+          setRefreshState(false);
           toast.success("Campaign Deleted Successfully.");
-          const shouldRefresh = true
-          getAllCampaigns(shouldRefresh)
+          const shouldRefresh = true;
+          getAllCampaigns(shouldRefresh);
         }
       } catch (err) {
         console.log(err);
-        setRefreshState(false)
+        setRefreshState(false);
         setLoading(false);
       } finally {
-        setRefreshState(false)
+        setRefreshState(false);
         setLoading(false);
       }
     }
-  }
+  };
 
   const getRefresh = () => {
-    setRefreshState(true)
-    const shouldRefresh = false
-    getAllCampaigns(shouldRefresh)
-  }
+    setRefreshState(true);
+    const shouldRefresh = false;
+    getAllCampaigns(shouldRefresh);
+  };
 
   const activateFCampaign = async (id) => {
     const response = await generalGetFunction(`fcampaign/start/${id}`);
     if (response?.status) {
-      toast?.success(response?.message)
-      setActivateInactivateLoading(null)
-      const shouldLoad = false
-      getAllCampaigns(shouldLoad)
+      toast?.success(response?.message);
+      setActivateInactivateLoading(null);
+      const shouldLoad = false;
+      getAllCampaigns(shouldLoad);
     } else {
       // toast.error(response.message);
-      setActivateInactivateLoading(null)
+      setActivateInactivateLoading(null);
     }
-  }
+  };
 
   const inactivateFCampaign = async (id) => {
     const response = await generalGetFunction(`fcampaign/stop/${id}`);
     if (response?.status) {
-      toast?.success(response?.message)
-      const shouldLoad = false
-      getAllCampaigns(shouldLoad)
-      setActivateInactivateLoading(null)
+      toast?.success(response?.message);
+      const shouldLoad = false;
+      getAllCampaigns(shouldLoad);
+      setActivateInactivateLoading(null);
     } else {
       // toast.error(response.message);
-      setActivateInactivateLoading(null)
+      setActivateInactivateLoading(null);
     }
-  }
+  };
 
   const handleActivateInActivateClicked = async (campaign) => {
-    setModalTask(campaign?.status === "active" ? "Inactivate" : "Activate")
+    setModalTask(campaign?.status === "active" ? "Inactivate" : "Activate");
     const userConfirmed = await confirm();
     if (userConfirmed) {
-      setActivateInactivateLoading(campaign?.id)
+      setActivateInactivateLoading(campaign?.id);
       if (campaign?.status === "active") {
-        inactivateFCampaign(campaign?.id)
+        inactivateFCampaign(campaign?.id);
       } else {
-        activateFCampaign(campaign?.id)
+        activateFCampaign(campaign?.id);
       }
     }
-  }
+  };
 
   return (
     <main className="mainContent">
@@ -138,9 +145,18 @@ function FportalCampaign() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Forwarding portal
-                          <button className="clearButton" onClick={getRefresh} disabled={refreshState}>
-                            <i className={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? 'fa-spin' : ''}`} />
+                        <h4>
+                          Forwarding portal
+                          <button
+                            className="clearButton"
+                            onClick={getRefresh}
+                            disabled={refreshState}
+                          >
+                            <i
+                              className={`fa-regular fa-arrows-rotate fs-5 ${
+                                refreshState ? "fa-spin" : ""
+                              }`}
+                            />
                           </button>
                         </h4>
                         <p>You can see all list of Forwarding portal</p>
@@ -153,7 +169,9 @@ function FportalCampaign() {
                           </span>
                         </button>
                         <button
-                          onClick={() => navigate("/call-forwarding-campaign-create")}
+                          onClick={() =>
+                            navigate("/call-forwarding-campaign-create")
+                          }
                           effect="ripple"
                           className="panelButton"
                         >
@@ -177,6 +195,7 @@ function FportalCampaign() {
                           value={itemsPerPage}
                           onChange={(e) => {
                             setItemsPerPage(e.target.value);
+                            setPageNumber(1);
                           }}
                         >
                           <option value={10}>10</option>
@@ -193,7 +212,11 @@ function FportalCampaign() {
                           placeholder="Search"
                           value={searchValue}
                           className="formItem"
-                          onChange={(e) => setSearchValue(e.target.value)}
+                          onChange={(e) => {
+                            setSearchValue(e.target.value);
+                            setPageNumber(1);
+                            setItemsPerPage(10);
+                          }}
                         />
                       </div>
                     </div>
@@ -214,38 +237,59 @@ function FportalCampaign() {
                           </tr>
                         </thead>
                         <tbody>
-                          {loading ?
+                          {loading ? (
                             //  <SkeletonTableLoader col={8} row={15} />
                             <ThreeDotedLoader />
-                            :
-                            allFCampaigns && allFCampaigns?.length > 0 ?
-                              allFCampaigns?.map((campaign, index) => (
-                                <tr key={index}>
-                                  <td>
-                                    <div className="phone-call">
-                                      <i
-                                        className={`fa-solid fa-${campaign?.status == 'active' ? 'play' : 'pause'}`}
-                                        style={{
-                                          cursor: activateInactivateLoading === campaign?.id ? 'not-allowed' : 'pointer',
-                                          opacity: activateInactivateLoading === campaign?.id ? 0.5 : 1,
-                                          pointerEvents: activateInactivateLoading === campaign?.id ? 'none' : 'auto'
-                                        }}
-                                        onClick={() => handleActivateInActivateClicked(campaign)}
-                                      />
+                          ) : allFCampaigns && allFCampaigns?.length > 0 ? (
+                            allFCampaigns?.map((campaign, index) => (
+                              <tr key={index}>
+                                <td>
+                                  <div className="phone-call">
+                                    <i
+                                      className={`fa-solid fa-${
+                                        campaign?.status == "active"
+                                          ? "play"
+                                          : "pause"
+                                      }`}
+                                      style={{
+                                        cursor:
+                                          activateInactivateLoading ===
+                                          campaign?.id
+                                            ? "not-allowed"
+                                            : "pointer",
+                                        opacity:
+                                          activateInactivateLoading ===
+                                          campaign?.id
+                                            ? 0.5
+                                            : 1,
+                                        pointerEvents:
+                                          activateInactivateLoading ===
+                                          campaign?.id
+                                            ? "none"
+                                            : "auto",
+                                      }}
+                                      onClick={() =>
+                                        handleActivateInActivateClicked(
+                                          campaign
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-start">
+                                    <div>
+                                      <span className="ms-1">
+                                        {campaign?.status}
+                                      </span>
                                     </div>
-                                  </td>
-                                  <td>
-                                    <div className="d-flex align-items-center justify-content-start">
-                                      <div>
-                                        <span className="ms-1">{campaign?.status}</span>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td>{campaign?.campaign_name}</td>
-                                  <td>{campaign?.country_prefix}</td>
-                                  <td>{campaign?.pstn_number}</td>
-                                  <td>{campaign?.agent_name}</td>
-                                  {/* <td className="">
+                                  </div>
+                                </td>
+                                <td>{campaign?.campaign_name}</td>
+                                <td>{campaign?.country_prefix}</td>
+                                <td>{campaign?.pstn_number}</td>
+                                <td>{campaign?.agent_name}</td>
+                                {/* <td className="">
                                     <div
                                       className="specialProgressWrap"
                                       style={{ cursor: "pointer" }}
@@ -268,7 +312,7 @@ function FportalCampaign() {
                                         <p>0.00%</p>
                                         <span>0 of 1000</span>
                                       </div> */}
-                                  {/* <div className="specialProgressWrapDetails">
+                                {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
                                     style={{
@@ -380,29 +424,85 @@ function FportalCampaign() {
                                   </li>
                                 </ul>
                               </div> */}
-                                  {/* </div>
+                                {/* </div>
                                   </td> */}
-                                  {/* <td><button className="tableButton edit" onClick={() => handleConfigEdit(campaign.id)}><i className='fa-solid fa-pen' /></button></td>
+                                {/* <td><button className="tableButton edit" onClick={() => handleConfigEdit(campaign.id)}><i className='fa-solid fa-pen' /></button></td>
                                   <td><button className="tableButton delete" onClick={() => handleDeleteConfig(campaign.id)}><i className='fa-solid fa-trash' /></button></td> */}
-                                  <td>
-                                    <div className="dropdown">
-                                      <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i className="fa-solid fa-ellipsis-vertical" />
-                                      </div>
-                                      <ul className="dropdown-menu actionBtnDropdowns">
-                                        {campaign?.status == 'active' ?
-                                          <li className='dropdown-item' onClick={() => handleActivateInActivateClicked(campaign)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Inactivate</div></li>
-                                          :
-                                          <li className='dropdown-item' onClick={() => handleActivateInActivateClicked(campaign)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Activate</div></li>
-                                        }
-                                        <li className='dropdown-item' onClick={() => handleConfigEdit(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>
-                                        <li className='dropdown-item' onClick={() => handleDeleteConfig(campaign?.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>
-                                      </ul>
+                                <td>
+                                  <div className="dropdown">
+                                    <div
+                                      className="tableButton"
+                                      href="#"
+                                      role="button"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="fa-solid fa-ellipsis-vertical" />
                                     </div>
-                                  </td>
-                                </tr>
-                              )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
-                          }
+                                    <ul className="dropdown-menu actionBtnDropdowns">
+                                      {campaign?.status == "active" ? (
+                                        <li
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleActivateInActivateClicked(
+                                              campaign
+                                            )
+                                          }
+                                        >
+                                          <div className="clearButton text-align-start">
+                                            <i className="fa-regular fa-circle-stop me-2"></i>{" "}
+                                            Inactivate
+                                          </div>
+                                        </li>
+                                      ) : (
+                                        <li
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleActivateInActivateClicked(
+                                              campaign
+                                            )
+                                          }
+                                        >
+                                          <div className="clearButton text-align-start">
+                                            <i className="fa-regular fa-circle-play me-2"></i>{" "}
+                                            Activate
+                                          </div>
+                                        </li>
+                                      )}
+                                      <li
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          handleConfigEdit(campaign?.id)
+                                        }
+                                      >
+                                        <div className="clearButton text-align-start">
+                                          <i className="fa-regular fa-pen me-2"></i>{" "}
+                                          Edit
+                                        </div>
+                                      </li>
+                                      <li
+                                        className="dropdown-item"
+                                        onClick={() =>
+                                          handleDeleteConfig(campaign?.id)
+                                        }
+                                      >
+                                        <div className="clearButton text-align-start">
+                                          <i className="fa-regular fa-trash me-2"></i>{" "}
+                                          Delete
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={99}>
+                                <EmptyPrompt generic={true} />
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
@@ -413,6 +513,7 @@ function FportalCampaign() {
                         from={CampaignDetailsData?.from}
                         to={CampaignDetailsData?.to}
                         total={CampaignDetailsData?.total}
+                        defaultPage={pageNumber}
                       />
                     </div>
                   </div>
@@ -424,7 +525,6 @@ function FportalCampaign() {
         <ModalComponent task={modalTask} reference={"Campaign"} />
       </section>
     </main>
-
   );
 }
 

@@ -45,7 +45,7 @@ function Members({
   conferenceInfo
 }) {
   const room = useRoomContext();
-  const socketSendMessage = useSelector((state) => state.socketSendMessage);
+  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
   const isRecording = useIsRecording();
   const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
   const avatarTracks = {}; // Store references for avatars
@@ -80,8 +80,8 @@ function Members({
   useEffect(() => {
     if (
       internalCallAction &&
-      (internalCallAction?.hangup_cause !== "originator_cancel" ||
-        internalCallAction?.hangup_cause !== "success")
+      (internalCallAction?.Hangup_cause !== "originator_cancel" ||
+        internalCallAction?.Hangup_cause !== "success")
     ) {
       const filterCall = incomingCall.filter(
         (item) => item.room_id === internalCallAction.room_id
@@ -162,12 +162,12 @@ function Members({
         incomingCall.filter((item) => item?.room_id === roomName)[0]
           ?.isOtherMember
       ) {
-        socketSendMessage({
+        socketSendPeerCallMessage({
           action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
           )?.[0]?.uuid,
-          hangup_cause: "success",
+          Hangup_cause: "success",
           room_id: roomName,
           duration: 120,
           status: "ended",
@@ -176,12 +176,12 @@ function Members({
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         setCalling(false); // Update parent state if needed
       } else {
-        socketSendMessage({
+        socketSendPeerCallMessage({
           action: "peercallUpdate",
           chat_call_id: incomingCall.filter(
             (item) => item?.room_id === roomName
           )?.[0]?.uuid,
-          hangup_cause: "originator_cancel",
+          Hangup_cause: "originator_cancel",
           room_id: roomName,
           duration: 0,
           status: "ended",
@@ -214,9 +214,9 @@ function Members({
   useEffect(() => {
     if (
       (internalCallAction?.room_id === roomName &&
-        internalCallAction?.hangup_cause === "rejected") ||
-      internalCallAction?.hangup_cause === "success" ||
-      internalCallAction?.hangup_cause === "originator_cancel"
+        internalCallAction?.Hangup_cause === "rejected") ||
+      internalCallAction?.Hangup_cause === "success" ||
+      internalCallAction?.Hangup_cause === "originator_cancel"
     ) {
       handleDisconnect();
     }

@@ -164,7 +164,10 @@ const IvrListing = () => {
                         <select
                           className="formItem"
                           value={itemsPerPage}
-                          onChange={(e) => setItemsPerPage(e.target.value)}
+                          onChange={(e) => {
+                            setItemsPerPage(e.target.value);
+                            setPageNumber(1);
+                          }}
                         >
                           <option value={10}>10</option>
                           <option value={20}>20</option>
@@ -186,7 +189,11 @@ const IvrListing = () => {
                             name="Search"
                             className="formItem"
                             value={userInput}
-                            onChange={(e) => setuserInput(e.target.value)}
+                            onChange={(e) => {
+                              setuserInput(e.target.value);
+                              setPageNumber(1);
+                              setItemsPerPage(10);
+                            }}
                           />
                         </div>
                       )}
@@ -354,6 +361,7 @@ const IvrListing = () => {
                           from={(pageNumber - 1) * ivr.per_page + 1}
                           to={ivr.to - 1} // -1 because customeradmin user is removed form the list
                           total={ivr.total - 1} // -1 because customeradmin user is removed form the list
+                          defaultPage={pageNumber}
                         />
                       ) : (
                         ""

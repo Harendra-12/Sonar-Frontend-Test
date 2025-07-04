@@ -447,7 +447,7 @@ const RingGroupEdit = () => {
         return;
       }
     }
-    if(data.destination_type === "disabled"){
+    if (data.destination_type === "disabled") {
       delete data.timeout_destination
     }
 
@@ -848,15 +848,13 @@ const RingGroupEdit = () => {
                               <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          {console.log('destination_type status', destination_type)}
-                          {console.log('forward status', forwardStatus)}
                           <>
                             <div className="col-xxl-6 col-xl-12 col-12 pe-2">
                               {destination_type?.toLowerCase() === "pstn" &&
                                 destination_type?.toLowerCase() != "disabled" && (
-                                  <div className="col-xxl-4 col-xl-12 col-12 pe-2">
+                                  <div className="col-12">
                                     <div className="formLabel">
-                                      <label>PSTN</label>
+                                      <label className="formItemDesc">PSTN</label>
                                     </div>
                                     <input
                                       type="number"
@@ -889,7 +887,7 @@ const RingGroupEdit = () => {
                                       watch().destination_type?.length !== 0 && (
                                         <>
                                           <div className="formLabel">
-                                            <label>Extension</label>
+                                            <label className="formItemDesc">Extension</label>
                                           </div>
                                           <ActionList
                                             category={watch().destination_type}
@@ -897,7 +895,7 @@ const RingGroupEdit = () => {
                                             label={null}
                                             getDropdownValue={actionListValueForTimeout}
                                             value={watch().timeout_destination}
-                                            {...register("timeout_destination")}
+                                          // {...register("timeout_destination")}
                                           />
                                         </>
                                       )}
@@ -906,35 +904,35 @@ const RingGroupEdit = () => {
                             </div>
                             {
                               watch("destination_type") !== "disabled" && (
-                            <div className="col-xxl-6 col-xl-12 col-12 pe-2">
-                              <div className="formLabel">
-                                <label className="formItemDesc">
-                                  Call Timeout
-                                </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="extension"
-                                className="formItem"
-                                {...register("call_timeout", {
-                                  ...noSpecialCharactersValidator,
-                                  ...(watch("call_timeout") !== "" &&
-                                    minValidator(
-                                      destination.reduce(
-                                        (max, obj) =>
-                                          Math.max(max, obj.delay),
-                                        0
-                                      )
-                                    )),
-                                })}
-                                onKeyDown={restrictToNumbers}
-                              />
-                              {errors.call_timeout && (
-                                <ErrorMessage
-                                  text={errors.call_timeout.message}
-                                />
-                              )}
-                            </div>
+                                <div className="col-xxl-6 col-xl-12 col-12 pe-2">
+                                  <div className="formLabel">
+                                    <label className="formItemDesc">
+                                      Call Timeout
+                                    </label>
+                                  </div>
+                                  <input
+                                    type="text"
+                                    name="extension"
+                                    className="formItem"
+                                    {...register("call_timeout", {
+                                      ...noSpecialCharactersValidator,
+                                      ...(watch("call_timeout") !== "" &&
+                                        minValidator(
+                                          destination.reduce(
+                                            (max, obj) =>
+                                              Math.max(max, obj.delay),
+                                            0
+                                          )
+                                        )),
+                                    })}
+                                    onKeyDown={restrictToNumbers}
+                                  />
+                                  {errors.call_timeout && (
+                                    <ErrorMessage
+                                      text={errors.call_timeout.message}
+                                    />
+                                  )}
+                                </div>
                               )}
                           </>
                           {errors?.destination_type && (
