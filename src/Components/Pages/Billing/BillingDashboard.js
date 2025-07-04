@@ -153,9 +153,9 @@ function BillingDashboard() {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Billing Dashboard" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Billing Dashboard" />
             <div className="overviewTableWrapper0">
               <div className="overviewTableChild0">
                 <div className="row my-3">

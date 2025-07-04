@@ -40,14 +40,14 @@ const ClickToCallListing = () => {
       if (apidata?.status) {
         setCallBlock(apidata.data);
         setLoading(false);
-        setRefreshState(false)
+        setRefreshState(false);
       } else {
         // navigate("/");
-        setRefreshState(false)
+        setRefreshState(false);
       }
     } else {
       navigate("/");
-      setRefreshState(false)
+      setRefreshState(false);
     }
   };
 
@@ -72,10 +72,10 @@ const ClickToCallListing = () => {
   }
 
   const handleRefreshBtnClicked = () => {
-    setRefreshState(true)
+    setRefreshState(true);
     const shouldLoad = false;
     getRingGroupDashboardData(shouldLoad);
-  }
+  };
 
   return (
     <main className="mainContent">
@@ -89,7 +89,8 @@ const ClickToCallListing = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Click to call widget List
+                        <h4>
+                          Click to call widget List
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -126,7 +127,7 @@ const ClickToCallListing = () => {
                           account?.sectionPermissions,
                           account?.permissions,
                           "add"
-                        ) &&
+                        ) && (
                           <div
                             // to="/ring-groups-add"
                             effect="ripple"
@@ -138,7 +139,7 @@ const ClickToCallListing = () => {
                               <i className="fa-solid fa-plus"></i>
                             </span>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -154,6 +155,7 @@ const ClickToCallListing = () => {
                           value={itemsPerPage}
                           onChange={(e) => {
                             setItemsPerPage(e.target.value);
+                            setPageNumber(1);
                           }}
                         >
                           <option value={10}>10</option>
@@ -169,30 +171,47 @@ const ClickToCallListing = () => {
                         account?.sectionPermissions,
                         account?.permissions,
                         "search"
-                      ) && <div className="searchBox">
+                      ) && (
+                        <div className="searchBox">
                           <label>Search:</label>
                           <input
                             type="search"
                             className="formItem"
                             value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            onChange={(e) => {
+                              setSearchValue(e.target.value);
+                              setPageNumber(1);
+                              setItemsPerPage(10);
+                            }}
                           />
                         </div>
-                      }
+                      )}
                     </div>
                     <div className="tableContainer">
                       {loading ? (
                         // <SkeletonTableLoader col={5} row={15} />
                         <ThreeDotedLoader />
-                      ) :
+                      ) : (
                         <table>
                           <thead>
                             <tr>
                               <th>Company Name</th>
                               <th>Usage</th>
                               <th>Action</th>
-                              {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th>Edit</th>}
-                              {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th>Delete</th>}
+                              {checkViewSidebar(
+                                "Clicktocall",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit"
+                              ) && <th>Edit</th>}
+                              {checkViewSidebar(
+                                "Clicktocall",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "delete"
+                              ) && <th>Delete</th>}
                             </tr>
                           </thead>
                           <tbody>
@@ -202,57 +221,78 @@ const ClickToCallListing = () => {
                               account?.sectionPermissions,
                               account?.permissions,
                               "read"
-                            ) ? <tr><td colSpan={99} className="text-center">You dont have any permission</td></tr> :
-                              (
-                                <>
-                                  {callBlock &&
-                                    callBlock.data?.map((item, index) => {
-                                      return (
-                                        <tr key={index}>
-                                          <td>{item.company_name}</td>
-                                          <td>{item.usages}</td>
-                                          <td>{item.action}</td>
-                                          {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") &&
-                                            <td>
-                                              <button
-                                                className="tableButton edit"
-                                                onClick={() => navigate(`/click-to-call-edit?id=${item.id}`)}
-                                              >
-                                                <i className="fa-solid fa-pen"></i>
-                                              </button>
-                                            </td>
-                                          }
-                                          {checkViewSidebar("Clicktocall", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") &&
-                                            <td>
-                                              <button
-                                                className="tableButton delete"
-                                                onClick={() => {
-                                                  setDeletePopup(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash"></i>
-                                              </button>
-                                            </td>
-                                          }
-                                        </tr>
-                                      );
-                                    })}
-                                  {callBlock && callBlock.length === 0 ? (
-                                    <td colSpan={99}>
-                                      <EmptyPrompt
-                                        name="Call Blocking"
-                                        link="call-blocking"
-                                      />
-                                    </td>
-                                  ) : (
-                                    ""
-                                  )}
-                                </>
-                              )}
+                            ) ? (
+                              <tr>
+                                <td colSpan={99} className="text-center">
+                                  You dont have any permission
+                                </td>
+                              </tr>
+                            ) : (
+                              <>
+                                {callBlock &&
+                                  callBlock.data?.map((item, index) => {
+                                    return (
+                                      <tr key={index}>
+                                        <td>{item.company_name}</td>
+                                        <td>{item.usages}</td>
+                                        <td>{item.action}</td>
+                                        {checkViewSidebar(
+                                          "Clicktocall",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) && (
+                                          <td>
+                                            <button
+                                              className="tableButton edit"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/click-to-call-edit?id=${item.id}`
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pen"></i>
+                                            </button>
+                                          </td>
+                                        )}
+                                        {checkViewSidebar(
+                                          "Clicktocall",
+                                          slugPermissions,
+                                          account?.sectionPermissions,
+                                          account?.permissions,
+                                          "delete"
+                                        ) && (
+                                          <td>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                setDeletePopup(true);
+                                                setDeleteId(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash"></i>
+                                            </button>
+                                          </td>
+                                        )}
+                                      </tr>
+                                    );
+                                  })}
+                                {callBlock && callBlock.length === 0 ? (
+                                  <td colSpan={99}>
+                                    <EmptyPrompt
+                                      name="Call Blocking"
+                                      link="call-blocking"
+                                    />
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
+                              </>
+                            )}
                           </tbody>
                         </table>
-                      }
+                      )}
                     </div>
                     <div className="tableHeader mb-3">
                       {callBlock && callBlock?.data?.length > 0 ? (
@@ -262,6 +302,7 @@ const ClickToCallListing = () => {
                           from={callBlock.from}
                           to={callBlock.to}
                           total={callBlock.total}
+                          defaultPage={pageNumber}
                         />
                       ) : (
                         ""
@@ -286,9 +327,7 @@ const ClickToCallListing = () => {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>
-                    Are you sure you want to remove this widget?
-                  </p>
+                  <p>Are you sure you want to remove this widget?</p>
                   <div className="mt-2 d-flex justify-content-between">
                     <button
                       className="panelButton m-0"

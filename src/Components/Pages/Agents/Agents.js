@@ -258,9 +258,9 @@ function Agents({ type }) {
   return (
     <main className="mainContent">
       <section id="phonePage">
+            <Header title="Agents" />
         <div className="container-fluid">
           <div className="row">
-            <Header title="Agents" />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -332,7 +332,10 @@ function Agents({ type }) {
                         <label>Show</label>
                         <select
                           value={entriesPerPage}
-                          onChange={(e) => setEntriesPerPage(e.target.value)}
+                          onChange={(e) => {
+                            setEntriesPerPage(e.target.value);
+                            setPageNumber(1);
+                          }}
                           className="formItem"
                         >
                           <option value={10}>10</option>
@@ -356,7 +359,11 @@ function Agents({ type }) {
                             name="Search"
                             className="formItem"
                             value={userInput}
-                            onChange={(e) => setuserInput(e?.target?.value)}
+                            onChange={(e) => {
+                              setuserInput(e?.target?.value);
+                              setEntriesPerPage(10);
+                              setPageNumber(1);
+                            }}
                           />
                         </div>
                       )}
@@ -565,6 +572,7 @@ function Agents({ type }) {
                         from={(pageNumber - 1) * agents.per_page + 1}
                         to={agents.to}
                         total={agents.total}
+                        defaultPage={pageNumber}
                       />
                     </div>
                   </div>

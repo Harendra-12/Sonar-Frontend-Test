@@ -206,6 +206,8 @@ const AiPhoneNumber = () => {
         payload
       );
       if (res.status) {
+        setInboundCallAgent("")
+        setOutboundCallAgent("")
         await Promise.all([fetchAvailableAgents(), fetchAvailableNumbers()]);
         toast.success("Phone number updated successfully!");
       } else {
@@ -267,9 +269,9 @@ const AiPhoneNumber = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
+              <Header title="Phone Numbers" />
           <div className="container-fluid">
             <div className="row">
-              <Header title="Phone Numbers" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div

@@ -151,7 +151,7 @@ function PortNumberAdd() {
                             Full legal name of the current owner.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -176,7 +176,7 @@ function PortNumberAdd() {
                             The company to whom the number is registered.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -210,7 +210,7 @@ function PortNumberAdd() {
                             The address associated with the current number.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -238,7 +238,7 @@ function PortNumberAdd() {
                             Some carriers require a PIN for porting.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -261,7 +261,7 @@ function PortNumberAdd() {
                             The current vendor/carrier of the number.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -287,7 +287,7 @@ function PortNumberAdd() {
                             Account Number with Current Provider.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"
@@ -314,7 +314,7 @@ function PortNumberAdd() {
                             The number(s) that need to be ported.
                           </label>
                         </div>
-                        <div className="col-6">
+                        <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <input
                             type="text"
                             name="extension"

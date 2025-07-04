@@ -9,9 +9,9 @@ function CallDashboardProvider() {
         <>
             <main className="mainContent">
                 <section id="phonePage">
-                    <div className="container-fluid px-0">
                         <Header title="Call dashboard " />
-                    </div>
+                    {/* <div className="container-fluid px-0">
+                    </div> */}
                     <div className="col-xl-12" style={{ overflow: "auto" }}>
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">

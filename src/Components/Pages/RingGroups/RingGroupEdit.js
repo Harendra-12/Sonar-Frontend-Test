@@ -817,10 +817,10 @@ const RingGroupEdit = () => {
                           Select the timeout destination for this ring group.
                         </label>
                       </div>
-                      <div className="col-6">
+                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                         <div className="row">
                           <div
-                            className={`col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                            className={`col-${forwardStatus != "disabled" ? "col-xxl-3 col-xl-12 col-12 pe-2 " : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
                               }`}
                           >
                             {destination_type != "disabled" && (
@@ -851,10 +851,10 @@ const RingGroupEdit = () => {
                           {console.log('destination_type status', destination_type)}
                           {console.log('forward status', forwardStatus)}
                           <>
-                            <div className="col-4">
+                            <div className="col-xxl-6 col-xl-12 col-12 pe-2">
                               {destination_type?.toLowerCase() === "pstn" &&
                                 destination_type?.toLowerCase() != "disabled" && (
-                                  <div className="col-4">
+                                  <div className="col-xxl-4 col-xl-12 col-12 pe-2">
                                     <div className="formLabel">
                                       <label>PSTN</label>
                                     </div>
@@ -904,7 +904,9 @@ const RingGroupEdit = () => {
                                   </div>
                                 )}
                             </div>
-                            <div className="col-4">
+                            {
+                              watch("destination_type") !== "disabled" && (
+                            <div className="col-xxl-6 col-xl-12 col-12 pe-2">
                               <div className="formLabel">
                                 <label className="formItemDesc">
                                   Call Timeout
@@ -933,6 +935,7 @@ const RingGroupEdit = () => {
                                 />
                               )}
                             </div>
+                              )}
                           </>
                           {errors?.destination_type && (
                             <ErrorMessage
@@ -1135,13 +1138,13 @@ const RingGroupEdit = () => {
                   </form>
                 </div>
                 <div className="col-12">
-                  <div className="heading bg-transparent border-bottom-0">
-                    <div className="content">
+                  <div className="heading bg-transparent border-bottom-0 flex-wrap">
+                    <div className="content mb-3">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div className="d-flex tableHeader">
-                      <div className="searchBox position-relative">
+                      <div className="searchBox position-relative mb-3">
                         <label>Search:</label>
                         <input
                           type="search"
@@ -1152,7 +1155,7 @@ const RingGroupEdit = () => {
                       </div>
                       {selectedAgentToEdit.length > 1 && (
                         <button
-                          className="panelButton delete"
+                          className="panelButton delete mb-3"
                           onClick={deleteSelectedDestination}
                         >
                           <span className="text">Delete</span>
@@ -1165,7 +1168,7 @@ const RingGroupEdit = () => {
                         selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
-                          className="panelButton ms-2"
+                          className="panelButton ms-2 mb-3"
                           onClick={() => {
                             setBulkEditPopup(true);
                           }}
@@ -1178,7 +1181,7 @@ const RingGroupEdit = () => {
                       ) : (
                         <button
                           type="button"
-                          className="panelButton edit ms-2"
+                          className="panelButton edit ms-2 mb-3"
                           onClick={() => {
                             setSelectedAgentToEdit(destination);
                             setBulkEditPopup(true);
@@ -1193,7 +1196,7 @@ const RingGroupEdit = () => {
                       {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                         <button
                           onClick={() => setBulkAddPopUp(true)}
-                          className="panelButton"
+                          className="panelButton mb-3"
                         >
                           <span className="text">Add</span>
                           <span className="icon">
