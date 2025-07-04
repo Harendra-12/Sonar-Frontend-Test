@@ -207,12 +207,13 @@
         margin: unset;
         margin-left: 20px;
     }
+
     .card-body.aiAgentTab.selectTemplate {
-    min-height: 700px !important;
-}
+        min-height: 700px !important;
+    }
 }
 
-@media (min-device-width:992px) and (max-device-width: 1250px) {
+@media (min-device-width:992px) and (max-device-width: 1365px) {
     .formRow.col-xl-3:nth-child(odd) {
         margin-right: 0px;
     }
@@ -224,7 +225,8 @@
     .formRow.col-xl-3 {
         width: 100%;
     }
-     .callDashParkedCalls button.callDashParkedCallsBtn {
+
+    .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
     }
 }
@@ -686,10 +688,12 @@
     .col {
         flex: 1 0 20%;
     }
+
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
     }
-    .popup_box{
+
+    .popup_box {
         max-width: 100% !important;
     }
 }
