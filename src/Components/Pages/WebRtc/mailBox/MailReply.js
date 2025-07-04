@@ -197,7 +197,7 @@ const MailReply = ({
                   }}
                   className="email-content"
                 />
-                {formatEmailSnippet(currentMail?.body)}
+                <p className="me-2 fs-12 text_gray">{formatEmailSnippet(currentMail?.body)}</p>
                 {currentMail?.attachments &&
                   currentMail?.attachments.length > 0 && (
                     <div class="mail-attachments mb-4 mt-5">

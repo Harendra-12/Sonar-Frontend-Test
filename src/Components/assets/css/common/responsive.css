@@ -207,9 +207,15 @@
         margin: unset;
         margin-left: 20px;
     }
+
     .card-body.aiAgentTab.selectTemplate {
-    min-height: 700px !important;
-}
+        min-height: 700px !important;
+    }
+
+    .clearButton2.refresh {
+        width: 25px;
+        height: 25px;
+    }
 }
 
 @media (min-device-width:992px) and (max-device-width: 1250px) {
@@ -224,7 +230,8 @@
     .formRow.col-xl-3 {
         width: 100%;
     }
-     .callDashParkedCalls button.callDashParkedCallsBtn {
+
+    .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
     }
 }
@@ -289,7 +296,7 @@
     } */
 
     .tangoNavs .nav-tabs .nav-link {
-        padding: 10px 10px;
+        padding: 10px 5px;
         font-size: 0.7rem;
     }
 
@@ -329,7 +336,10 @@
     } */
 
     .overviewTableWrapper .tableContainer {
-        height: calc(100vh - 320px)
+        height: calc(100vh - 320px);
+    }
+    .overviewTableWrapper .tableContainer.mail_table {
+        height: calc(100vh - 320px) !important;
     }
 
     /* .viewingAs span,
@@ -686,12 +696,33 @@
     .col {
         flex: 1 0 20%;
     }
+
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
     }
-    .popup_box{
+
+    .popup_box {
         max-width: 100% !important;
     }
+
+    .mailCardBody {
+        height: calc(-211px + 100vh) !important;
+    }
+
+    .table_card {
+        height: calc(100vh - 231px);
+    }
+
+    .mail_leftbar ul {
+        height: calc(100vh - 295px);
+    }
+    .mail_table{
+        height: calc(-395px + 100vh) !important;
+
+    }
+    /* .d-smWrap{
+        flex-wrap: wrap;
+    } */
 }
 
 @media (max-width: 767px) {
@@ -775,6 +806,10 @@
 
     .col {
         flex: 1 0 40%;
+    }
+
+    .adjustHeight {
+        height: calc(-419px + 100vh) !important;
     }
 }
 
