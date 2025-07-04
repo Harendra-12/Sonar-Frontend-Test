@@ -465,7 +465,7 @@ function DidListing({ page }) {
                                         return (
                                           <tr>
                                             <td> {index + 1}</td>
-                                            <td>{item.did}</td>
+                                            <td>{item.did.replace("+", "")}</td>
                                             {/* <button
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
@@ -696,8 +696,8 @@ function DidListing({ page }) {
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
-                                        {item.did}
-                                        {item?.did_vendor_id == 2 && <Tippy content="This number can be configured for AI Agent"><i class="fa-solid fa-microchip-ai ms-2" style={{ color: 'var(--ui-accent)' }}></i></Tippy>}
+                                        {item.did.replace("+", "")}
+                                        {item?.vendor?.vendor_name == "Twillio" && <Tippy content="This number can be configured for AI Agent"><i class="fa-solid fa-microchip-ai ms-2" style={{ color: 'var(--ui-accent)' }}></i></Tippy>}
                                       </td>
                                       {page == "tracker" && (
                                         <>
@@ -729,7 +729,7 @@ function DidListing({ page }) {
                                           {item?.sms}
                                         </td>
                                         <td>
-                                          {item?.did_vendor_id == 2 ? 'Twillio' : 'Commio'}
+                                          {item?.vendor?.vendor_name}
                                         </td>
                                       </> : ""}
                                       {page === "pbx" ? (
@@ -1300,7 +1300,7 @@ function DidListing({ page }) {
                     <option value="pbx">PBX</option>
                     <option value="dialer">Dialer</option>
                     <option value="tracker">Tracker</option>
-                    {selectedDid?.did_vendor_id == 2 && <option value="ai">AI</option>}
+                    {selectedDid?.vendor?.vendor_name == "Twillio" && <option value="ai">AI</option>}
                   </select>
                   <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
                     <button

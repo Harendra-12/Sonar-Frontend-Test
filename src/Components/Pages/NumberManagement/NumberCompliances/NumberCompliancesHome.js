@@ -29,6 +29,8 @@ function NumberCompliancesHome() {
         }
     }
 
+    const completedCountries = new Set(["DZ", "AR", "AU", "AE", "GB", "AT", "BH", "BD", "BE", "BB", "BG", "BJ", "BR", "CL", "CO", "CA", "BW", "HR", "CZ", "DK", "EC", "US", "PT", "IN"]);
+
     return (
         <>
             <main className="mainContent">
@@ -56,7 +58,7 @@ function NumberCompliancesHome() {
                                         </div>
                                         <div className="col-xxl-8 col-12 mx-auto">
                                             <div className="basicContent">
-                                                <p>Both Twilio and our customers must adhere to local phone number regulations. To help you comply with these regulations and minimize the risk of disruption to your phone numbers, we maintain an up-to-date, country-by-country guide of phone number regulatory requirements.</p>
+                                                <p>Our customers must adhere to local phone number regulations. To help you comply with these regulations and minimize the risk of disruption to your phone numbers, we maintain an up-to-date, country-by-country guide of phone number regulatory requirements.</p>
                                                 <p>Local regulations often require providing adequate identity documentation to carriers or a local enforcement agency. To avoid urgent escalations from regulators, we urge you to provide the required information for each country.</p>
                                                 <p>Read our Frequently Asked Questions (FAQ) or our Getting Started Guide for additional information. For detailed information about important milestones for your phone numbers and regulatory compliance, please review our regulatory compliance product releases.</p>
                                             </div>
@@ -64,7 +66,7 @@ function NumberCompliancesHome() {
                                         <div className='col-xxl-8 col-12 mx-auto'>
                                             <div className='country_card_group pt-4'>
                                                 {countryCode && countryCode.length > 0 &&
-                                                    countryCode.map((item, index) => (
+                                                    countryCode.filter((item) => completedCountries.has(item.country_code)).map((item, index) => (
                                                         <div key={index} className='card country_box' onClick={() => navigate(`/number-compliances/${item?.country_code.toLowerCase()}`, { state: { item } })}>
                                                             <div className='card-body'>
                                                                 <div className='avatar_img'>

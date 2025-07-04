@@ -819,10 +819,7 @@ const RingGroupEdit = () => {
                       </div>
                       <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                         <div className="row">
-                          <div
-                            className={`col-${forwardStatus != "disabled" ? "col-xxl-3 col-xl-12 col-12 pe-2 " : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
-                              }`}
-                          >
+                          <div className={"col-12 ms-auto"}>
                             {destination_type != "disabled" && (
                               <div className="formLabel">
                                 <label className="formItemDesc">Type</label>
