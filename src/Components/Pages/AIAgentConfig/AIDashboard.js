@@ -13,11 +13,6 @@ import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-console.log(
-  JSON.parse(
-    '{"call_volume_trend": [{"date": "2025-07-04", "count": 1}, {"date": "2025-07-05", "count": 7}], "avg_duration_trend": [{"date": "2025-07-04", "average_duration_sec": 0}, {"date": "2025-07-05", "average_duration_sec": 1541.4}], "top_moments": [{"timestamp": "Customer: \\u00bfAl\\u00f3?", "description": "Customer calling to report that her husband has just missed the flight with Avianca airline from Lima to Bogot\\u00e1.", "cdr_id": "7878"}, {"timestamp": "Customer: \\u00bfAl\\u00f3?", "description": "Customer calling to report that her husband has just missed the flight with Avianca airline from Lima to Bogot\\u00e1.", "cdr_id": "7879"}, {"timestamp": "47.55-48.05s", "description": "Agent confirms possibility of changing the holiday dates", "cdr_id": "100353"}, {"timestamp": "33.50-33.74s", "description": "Agent asks customer if they want to purchase the room", "cdr_id": "100335"}, {"timestamp": "30.51-30.91s", "description": "Customer requests to cancel the reservation", "cdr_id": "100334"}, {"timestamp": "30.00-30.50s", "description": "Customer reports an issue with her husband missing the flight with Avianca airline.", "cdr_id": "1423"}, {"timestamp": "23.54-24.04s", "description": "Customer provides the full name of the passenger for booking change", "cdr_id": "100324"}, {"timestamp": "22.41-22.81s", "description": "Agent asks customer what they want to do", "cdr_id": "100354"}], "unique_moments": [{"timestamp": "Customer: \\u00bfAl\\u00f3?", "description": "Customer calling to report that her husband has just missed the flight with Avianca airline from Lima to Bogot\\u00e1.", "cdr_id": "7878"}, {"timestamp": "47.55-48.05s", "description": "Agent confirms possibility of changing the holiday dates", "cdr_id": "100353"}, {"timestamp": "33.50-33.74s", "description": "Agent asks customer if they want to purchase the room", "cdr_id": "100335"}, {"timestamp": "30.51-30.91s", "description": "Customer requests to cancel the reservation", "cdr_id": "100334"}, {"timestamp": "30.00-30.50s", "description": "Customer reports an issue with her husband missing the flight with Avianca airline.", "cdr_id": "1423"}, {"timestamp": "23.54-24.04s", "description": "Customer provides the full name of the passenger for booking change", "cdr_id": "100324"}, {"timestamp": "22.41-22.81s", "description": "Agent asks customer what they want to do", "cdr_id": "100354"}], "top_agents": [{"agent": "wasif", "calls": 3}, {"agent": "Rahul", "calls": 2}, {"agent": "John", "calls": 1}, {"agent": "ravi raj", "calls": 1}, {"agent": "Walter", "calls": 1}], "sentiment_dist": {"frustration": 4, "neutral": 2, "frustrated": 2}, "sentiment_trend": [{"date": "2025-07-04", "frustration": 1}, {"date": "2025-07-05", "neutral": 2, "frustration": 3, "frustrated": 2}], "csat_average": 3.5, "resolution_score_average": 5.875, "dropped_call_rate": 0.0, "calls_by_direction": {"inbound": 8}, "top_issues": [{"issue": "Customer calling to report that her husband has just missed the flight with Avianca airline from Lima to Bogot\\u00e1.", "count": 2}, {"issue": "Customer reports an issue with her husband missing the flight with Avianca airline.", "count": 1}, {"issue": "Agent confirms possibility of changing the holiday dates", "count": 1}, {"issue": "Customer requests to cancel the reservation", "count": 1}, {"issue": "Agent asks customer if they want to purchase the room", "count": 1}], "escalation_rate": 0.0}'
-  )
-);
 function AIDashboard() {
   const [aiData, setAiData] = useState();
   const [loading, setLoading] = useState(true);
@@ -73,7 +68,7 @@ function AIDashboard() {
       }
     }
     getData();
-  });
+  },[]);
 
   function getAverageDurationHHMMSS(data) {
     if (!Array.isArray(data) || data.length === 0) return "00:00:00";
