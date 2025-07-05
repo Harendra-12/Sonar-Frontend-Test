@@ -279,7 +279,7 @@ function AICDRSearch({ page }) {
                                           <td>
                                             {formatDuration(item.duration_sec)}
                                           </td>
-                                          <td>{item.charge}</td>
+                                          <td>${item.charge}</td>
                                           <td>{item.customer_sentiment}</td>
                                           <td>{item.customer_sentiment_score}</td>
                                           <td>{item.efficiency_score}</td>
