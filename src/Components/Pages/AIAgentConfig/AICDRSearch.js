@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import { api_url } from "../../../urls";
 
@@ -32,37 +31,42 @@ import { api_url } from "../../../urls";
 
 function AICDRSearch({ page }) {
   const [loading, setLoading] = useState(false);
-  const [circularLoader, setCircularLoader] = useState(false);
   const [cdr, setCdr] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const navigate = useNavigate();
   const [advanceSearch, setAdvanceSearch] = useState();
   const [selectedCall, setSelectedCall] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [agentName, setAgentName] = useState();
 
   async function getAdvanceSearch() {
+    if (!advanceSearch || advanceSearch?.trim() === "") {
+      toast.error("Please enter some data to search");
+      return;
+    }
     if (advanceSearch) {
       setLoading(true);
-      setCircularLoader(true);
       const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, {
         query: advanceSearch,
+        ...(startDate && {
+          date_range: endDate ? `${startDate}:${endDate}` : startDate,
+        }),
+        ...(agentName?.trim() && { agent_name: agentName }),
       });
       if (res?.status) {
         setLoading(false);
-        setCircularLoader(false);
         setCdr(res?.data);
-        console.log(res)
+        console.log(res);
       } else {
         toast.error(res?.err);
         setLoading(false);
-        setCircularLoader(false);
       }
     } else {
       toast.error("Please enter some data to search");
       setLoading(false);
-      setCircularLoader(false);
     }
   }
-console.log(cdr)
+  console.log(cdr);
   const formatDuration = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -72,32 +76,33 @@ console.log(cdr)
 
     return `${padded(hours)}:${padded(minutes)}:${padded(seconds)}`;
   };
-function parseTranscript(rawText) {
-  const lines = rawText.split('\n');
-  const entries = [];
+  function parseTranscript(rawText) {
+    const lines = rawText.split("\n");
+    const entries = [];
 
-  const regex = /^(Agent|Customer) \[(\d+\.\d+)-(\d+\.\d+)s\]: (.+)$/;
+    const regex = /^(Agent|Customer) \[(\d+\.\d+)-(\d+\.\d+)s\]: (.+)$/;
 
-  for (let line of lines) {
-    const match = line.match(regex);
-    if (match) {
-      const [, speaker, start, end, text] = match;
-      entries.push({
-        speaker,
-        start: parseFloat(start),
-        end: parseFloat(end),
-        text,
-      });
+    for (let line of lines) {
+      const match = line.match(regex);
+      if (match) {
+        const [, speaker, start, end, text] = match;
+        entries.push({
+          speaker,
+          start: parseFloat(start),
+          end: parseFloat(end),
+          text,
+        });
+      }
     }
+
+    return entries;
   }
 
-  return entries;
-}
+  const today = new Date().toISOString().split("T")[0]; // "2025-07-03"
 
- 
+  console.log(startDate, endDate);
   return (
     <>
-      {circularLoader && <CircularLoader />}
       <main className="mainContent">
         <section id="phonePage">
           <Header title="AI CDR Search" />
@@ -135,16 +140,67 @@ function parseTranscript(rawText) {
                     className="col-12"
                     style={{ overflow: "auto", padding: "10px 20px 0" }}
                   >
-                    <div className="tableHeader justify-content-start">
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          name="Search"
-                          className="formItem"
-                          value={advanceSearch}
-                          onChange={(e) => setAdvanceSearch(e.target.value)}
-                        />
+                    <div className="tableHeader align-items-end justify-content-start">
+                      <div className="formRow border-0 pb-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Query*
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="text"
+                            className="formItem"
+                            value={advanceSearch}
+                            onChange={(e) => setAdvanceSearch(e.target.value)}
+                            // max={new Date()?.toISOString()?.split("T")[0]}
+                            // value={startDateFlag}
+
+                            // onKeyDown={(e) => e.preventDefault()}
+                          />
+                        </div>
+                      </div>
+                      <div className="formRow border-0 pb-0 col-xxl-1 col-xl-2">
+                        <label className="formLabel text-start mb-0 w-100">
+                          From
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="date"
+                            className="formItem"
+                            value={startDate}
+                            max={endDate || today} // Don't let 'From' exceed 'To' or today
+                            onChange={(e) => setStartDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="formRow border-0 pb-0 col-xxl-1 col-xl-2">
+                        <label className="formLabel text-start mb-0 w-100">
+                          To
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="date"
+                            className="formItem"
+                            value={endDate}
+                            min={startDate} // Don't let 'To' go before 'From'
+                            max={today} // Don't let 'To' exceed today
+                            onChange={(e) => setEndDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="formRow border-0 pb-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Agent Name
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="text"
+                            className="formItem"
+                            value={agentName}
+                            onChange={(e) => setAgentName(e.target.value)}
+                          />
+                        </div>
                       </div>
                       <button
                         className="panelButton"
@@ -185,7 +241,7 @@ function parseTranscript(rawText) {
                               ) : (
                                 <>
                                   {cdr?.records?.map((internalItem, index) => {
-                                    const item = internalItem.metadata
+                                    const item = internalItem.metadata;
                                     return (
                                       <tr
                                         key={index}
@@ -305,7 +361,8 @@ function parseTranscript(rawText) {
           <div className="offcanvas-body p-3">
             <div className="heading">
               <h5 className="offcanvas-title" id="offcanvasRightLabel">
-                {selectedCall?.call_date}, {selectedCall?.call_time.replace(/Z$/, "")}{" "}
+                {selectedCall?.call_date},{" "}
+                {selectedCall?.call_time.replace(/Z$/, "")}{" "}
                 {selectedCall?.direction}
               </h5>
               <button className=" bg-transparent border-0 text-danger">
@@ -344,8 +401,8 @@ function parseTranscript(rawText) {
                                 src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
                             />
                         </div> */}
-                          <div
-              className="rounded-3 p-2 table__details mb-2" 
+            <div
+              className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
               <h6 className="f-s-14" style={{ color: "var(--immortalBlack)" }}>
@@ -355,7 +412,7 @@ function parseTranscript(rawText) {
                 {selectedCall?.call_summary}
               </p>
             </div>
-               <div
+            <div
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
@@ -429,7 +486,7 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Customer Analysis
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
@@ -439,18 +496,18 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.customer_sentiment}
+                    {selectedCall?.customer_sentiment}
                   </span>
                 </p>
               </div>
-               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
                 <p className="status_text">
                   {" "}
                   <span>Customer Sentiment Score</span>
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.customer_sentiment_score}
+                    {selectedCall?.customer_sentiment_score}
                   </span>
                 </p>
               </div>
@@ -460,9 +517,7 @@ function parseTranscript(rawText) {
                   <span>Customer Satisfaction</span>
                 </p>
                 <p className="status_text">
-                  <span className="endedTxt">
-                   {selectedCall?.csat_score}
-                  </span>
+                  <span className="endedTxt">{selectedCall?.csat_score}</span>
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
@@ -472,17 +527,17 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.customer_sentiment_reason}
+                    {selectedCall?.customer_sentiment_reason}
                   </span>
                 </p>
               </div>
             </div>
 
-             <div
+            <div
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Agent Analysis
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
@@ -491,19 +546,17 @@ function parseTranscript(rawText) {
                   <span>Agent Name</span>
                 </p>
                 <p className="status_text">
-                  <span className="endedTxt">
-                   {selectedCall?.agent_name}
-                  </span>
+                  <span className="endedTxt">{selectedCall?.agent_name}</span>
                 </p>
               </div>
-               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
                 <p className="status_text">
                   {" "}
                   <span>Agent Sentiment</span>
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.agent_sentiment}
+                    {selectedCall?.agent_sentiment}
                   </span>
                 </p>
               </div>
@@ -514,7 +567,7 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.agent_sentiment_score}
+                    {selectedCall?.agent_sentiment_score}
                   </span>
                 </p>
               </div>
@@ -525,17 +578,17 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.agent_sentiment_reason}
+                    {selectedCall?.agent_sentiment_reason}
                   </span>
                 </p>
               </div>
             </div>
 
-             <div
+            <div
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Key Points
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
@@ -545,18 +598,18 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.key_moment_description}
+                    {selectedCall?.key_moment_description}
                   </span>
                 </p>
               </div>
-               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
                 <p className="status_text">
                   {" "}
                   <span>Problem Resolution Reason</span>
                 </p>
                 <p className="status_text">
                   <span className="endedTxt">
-                   {selectedCall?.problem_resolution_reason}
+                    {selectedCall?.problem_resolution_reason}
                   </span>
                 </p>
               </div>
@@ -567,15 +620,19 @@ function parseTranscript(rawText) {
                 </p>
                 <p className="status_text">
                   <ul className="ps-3">
-                    {selectedCall?.key_improvement_areas?.map((item, index) =>{
-                    return ( <li key={index}><span className="endedTxt">{item}</span></li>)}
-                    )}
+                    {selectedCall?.key_improvement_areas?.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <span className="endedTxt">{item}</span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </p>
               </div>
             </div>
 
-             <div
+            <div
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
@@ -588,10 +645,7 @@ function parseTranscript(rawText) {
                   <span>agent:</span>
                 </p>
                 <p className="status_text">
-                  <span className="endedTxt">
-                    {" "}
-                    Dummy data as of now?
-                  </span>
+                  <span className="endedTxt"> Dummy data as of now?</span>
                 </p>
               </div>
             </div>
