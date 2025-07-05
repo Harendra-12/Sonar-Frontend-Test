@@ -1256,7 +1256,7 @@ function Navbar() {
                         type="button"
                         className={({ isActive }) =>
                           isActive ||
-                            ["/ivr-add", "/ivr-edit", "/ivr-options"].some((path) =>
+                            ["/ivr-add", "/ivr-edit", "/ivr-options", "/call-flow"].some((path) =>
                               window.location.pathname.includes(path)
                             )
                             ? "nav-link active"

@@ -16,6 +16,7 @@ function NotificationBellApp() {
     const prevMessageIdRef = useRef(null);
     const deletedMessageIdsRef = useRef(new Set());
     const dispatch = useDispatch();
+    const [toConference, setToConference] = useState(false);
 
     useEffect(() => {
         if (incomingMessage) {
@@ -84,7 +85,7 @@ function NotificationBellApp() {
             setAllNotification((prevList) => {
                 const exists = prevList?.some(msg => msg.group_id === confNotif.group_id);
                 if (!exists) {
-                    return [...prevList, { message_text: confNotif?.message, group_id: confNotif?.group_id }];
+                    return [...prevList, { message_text: confNotif?.message, group_id: confNotif?.group_id, type: 'conference' }];
                 }
                 return prevList;
             });
@@ -115,6 +116,13 @@ function NotificationBellApp() {
     //     }
     // }, [locationState.state, contact, allAgents]);
 
+    // Redirect to Conference
+    useEffect(() => {
+        if (toConference) {
+            dispatch({ type: 'SET_REDIRECTCONFERENCE', redirectConference: true });
+        }
+    }, [toConference])
+
     return (
         <div className="dropdown notification_dropdown">
             <button
@@ -135,26 +143,39 @@ function NotificationBellApp() {
                 <ul>
                     {allNotification && allNotification?.length > 0 ?
                         allNotification?.slice(0, 5).map((item, index) => (
-                            <li className="dropdown-item">
+                            <li className="dropdown-item"
+                            >
                                 <div className="d-flex align-items-start">
                                     {item.message_text ? (
                                         <>
                                             <div className="pe-2">
                                                 <span className="badge_icon bg-secondary-transparent">
-                                                    <i className="fa-duotone fa-solid fa-messages"></i>
+                                                    <i className={`fa-duotone fa-solid fa-${item.type == 'conference' ? 'video' : 'messages'}`}></i>
                                                 </span>
                                             </div>
                                             <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                 <div>
-                                                    <p className="mb-0 d-flex">
+                                                    <p className="mb-0 d-flex" style={{ width: '300px' }}
+                                                        onClick={() => {
+                                                            if (item.type === 'conference') {
+                                                                setToConference(true);
+                                                                removeNotification(item);
+                                                            }
+                                                        }}
+                                                    >
                                                         {!item?.group_id && item?.group_name ?
                                                             <>
-                                                                <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}<>)</></strong>&nbsp;
+                                                                <strong>{item?.group_name}<>{" "} (</>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username}<>)</></strong>&nbsp;
                                                                 <span className='text-success'></span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
                                                             </> :
                                                             <>
-                                                                <strong>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}</strong>&nbsp;
-                                                                <span className='text-success'></span>&nbsp;-&nbsp;<span style={{ width: '100px', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{item?.message_text}</span>
+                                                                {item.type != "conference" &&
+                                                                    <>
+                                                                        <strong>{accountDetails?.users.find((account) => account.id === item.sender_id)?.username || 'N/A'}</strong>&nbsp;
+                                                                        <span className='text-success'></span>&nbsp;-&nbsp;
+                                                                    </>
+                                                                }
+                                                                <span style={{ width: 'auto', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', fontSize: '0.85rem' }}>{item?.message_text}</span>
                                                             </>
                                                         }
 

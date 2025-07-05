@@ -1446,7 +1446,7 @@ input[type=number] {
 } */
 
 .popup .videoContainer {
-    width: 80%;
+    width: auto;
     height: 80%;
     border-radius: 20px;
     overflow: hidden;
@@ -1456,7 +1456,7 @@ input[type=number] {
 .popup .videoContainer video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 
@@ -2409,7 +2409,7 @@ i.fa.fa-star {
 }
 
 .bg-secondary {
-    background-color: #23b7e5 !important;
+    background-color: var(--secondary-rgb-text) !important;
 }
 
 .pulse {
@@ -2765,7 +2765,7 @@ i.fa.fa-star {
     padding-top: 55px;
 }
 
-.btn.btn-primary{
-background-color: var(--color2) !important;
-border-color: var(--color2) !important
+.btn.btn-primary {
+    background-color: var(--color2) !important;
+    border-color: var(--color2) !important
 }

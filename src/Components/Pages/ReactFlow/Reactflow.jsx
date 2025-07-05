@@ -36,6 +36,7 @@ import {
   validatePressDigitsConnections,
 } from "./utils/validateFlow";
 import { toast } from "react-toastify";
+import Header from "../../CommonComponents/Header";
 
 // Custom node types
 const nodeTypes = {
@@ -289,62 +290,67 @@ const Reactflow = () => {
         ""
       )}
       <main className="mainContent">
-        <div className="flowMain">
-          <div>
-            <h2
-              style={{
-                color: "white",
-                fontSize: "20px",
-                marginLeft: "10px",
-                paddingTop: "5px",
-              }}
-            >
-              Options for IVR:{" "}
-              <span style={{ color: "var(--ui-accent)" }}>{flowName}</span>
-            </h2>
+        <section id="phonePage">
+          <div className="container-fluid px-0">
+            <Header title="Call Flow" />
           </div>
-          <ReactFlow
-            className="reactFlowCanvas"
-            nodes={nodesWithHandlers}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            connectOnClick={true}
-            style={{ height: "100vh", maxHeight: "95%" }}
-            defaultEdgeOptions={{
-              type: "customEdge",
-              animated: true,
-              style: { strokeWidth: 2, stroke: "#000" },
-            }}
-            // fitView
-            snapToGrid
-            connectionMode="strict"
-          >
-            <Panel position="top-right" className="conversation-panel">
-              <ConversationOptions />
-              <div className="pt-3 w-100">
-                <button
-                  onClick={exportFlowData}
-                  className="panelButton static w-100"
-                >
-                  <span className="text">{buttonType}</span>
-                </button>
-                <button
-                  onClick={() => onLayout("LR")}
-                  className="panelButton static w-100 edit mt-2"
-                >
-                  <span className="text">Auto Layout</span>
-                </button>
-              </div>
-            </Panel>
-            <Controls />
-            <Background variant={BackgroundVariant.Dots} />
-            {/* <MiniMap /> */}
-          </ReactFlow>
-        </div>
+          <div className="flowMain">
+            <div>
+              <h2
+                style={{
+                  color: "white",
+                  fontSize: "20px",
+                  marginLeft: "10px",
+                  paddingTop: "5px",
+                }}
+              >
+                Options for IVR:{" "}
+                <span style={{ color: "var(--ui-accent)" }}>{flowName}</span>
+              </h2>
+            </div>
+            <ReactFlow
+              className="reactFlowCanvas"
+              nodes={nodesWithHandlers}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
+              connectOnClick={true}
+              style={{ height: "100vh", maxHeight: "95%" }}
+              defaultEdgeOptions={{
+                type: "customEdge",
+                animated: true,
+                style: { strokeWidth: 2, stroke: "#000" },
+              }}
+              // fitView
+              snapToGrid
+              connectionMode="strict"
+            >
+              <Panel position="top-right" className="conversation-panel">
+                <ConversationOptions />
+                <div className="pt-3 w-100">
+                  <button
+                    onClick={exportFlowData}
+                    className="panelButton static w-100"
+                  >
+                    <span className="text">{buttonType}</span>
+                  </button>
+                  <button
+                    onClick={() => onLayout("LR")}
+                    className="panelButton static w-100 edit mt-2"
+                  >
+                    <span className="text">Auto Layout</span>
+                  </button>
+                </div>
+              </Panel>
+              <Controls />
+              <Background variant={BackgroundVariant.Dots} />
+              {/* <MiniMap /> */}
+            </ReactFlow>
+          </div>
+        </section>
       </main>
     </>
   );
