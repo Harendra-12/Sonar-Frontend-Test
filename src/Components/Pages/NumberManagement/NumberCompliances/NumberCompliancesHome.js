@@ -29,7 +29,13 @@ function NumberCompliancesHome() {
         }
     }
 
-    const completedCountries = new Set(["DZ", "AR", "AU", "AE", "GB", "AT", "BH", "BD", "BE", "BB", "BG", "BJ", "BR", "CL", "CO", "CA", "BW", "HR", "CZ", "DK", "EC", "US", "PT", "IN"]);
+    const completedCountries = new Set(["DZ", "AR", "AU", "AE", "GB",
+        "AT", "BH", "BD", "BE", "BB", "BG", "BJ", "BR",
+        "CL", "CO", "CA", "BW", "HR", "CZ", "DK", "EC",
+        "US", "PT", "IN", "FI", "DE", "GH", "GR", "HK",
+        "HU", "ID", "IE", "IT", "JP", "KE", "LT", "MO",
+        "MY", "NL", "NZ", "PA", "PH", "PL", "PR", "RO",
+        "SI", "ZA", "SE", "CH", "TH", "TN"]);
 
     return (
         <>
