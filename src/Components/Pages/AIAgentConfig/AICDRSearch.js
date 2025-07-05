@@ -382,7 +382,7 @@ function AICDRSearch({ page }) {
             {circularLoader && <CircularLoader />}
             <main className="mainContent">
                 <section id="phonePage">
-                        <Header title="AI CDR Search" />
+                    <Header title="AI CDR Search" />
                     <div className="container-fluid px-0 position-relative">
                         <div className="overviewTableWrapper">
                             <div className="overviewTableChild">
@@ -438,7 +438,12 @@ function AICDRSearch({ page }) {
                                                 {cdr?.data?.length > 0 ? (
                                                     <>
                                                         <thead>
-                                                            <tr style={{ whiteSpace: "nowrap" }}>
+                                                            <tr
+                                                                style={{ whiteSpace: "nowrap" }}
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#offcanvasRight"
+                                                                aria-controls="offcanvasRight"
+                                                            >
                                                                 <th>#</th>
                                                                 {filteredColumns?.map((column, index) => {
                                                                     return <th key={index}>{column}</th>;
@@ -742,6 +747,141 @@ function AICDRSearch({ page }) {
                         </div>
                     </div>
                 </section>
+                <div
+                    className="offcanvas offcanvas-end w-30"
+                    tabIndex="-1"
+                    id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel"
+                >
+                    <div
+                        className="offcanvas-header"
+                        style={{ borderBlockEnd: "1px solid var(--me-border1)" }}
+                    >
+                        <div>
+                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                                Call History
+                            </h5>
+                            <p
+                                className="f-s-14 mb-0"
+                                style={{ color: "var(--color-subtext)" }}
+                            >
+                                See all the details of this Call History
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            className="btn-close ms-auto"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div className="offcanvas-body p-3">
+                        <div className="heading">
+                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                                04/07/2025, 09:50:05 web_call
+                            </h5>
+                            <button className=" bg-transparent border-0 text-danger">
+                                <i className="fa-solid fa-trash" />
+                            </button>
+                        </div>
+                        <div className="content">
+                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                                <strong>Agent:</strong>{" "}
+                                <span className="fs-12"> agent_9020c5d80ca697d9d88ec9e825</span>
+                                <button className="clearButton">
+                                    <i className="fa-solid fa-clone" />
+                                </button>
+                            </p>
+                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                                <strong>Duration:</strong> <span className="fs-12">00:00:08</span>
+                            </p>
+                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                                <strong>Cost:</strong> <span className="fs-12">$ 0.02</span>
+                            </p>
+                        </div>
+                        <div
+                            className="d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2"
+                            style={{ border: "1px solid var(--me-border1)" }}
+                        >
+                            <audio
+                                controls=""
+                                className="w-[300px] h-10"
+                                src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
+                            />
+                        </div>
+                        <div
+                            className="rounded-3 p-2 table__details mb-2"
+                            style={{ border: "1px solid var(--me-border1)" }}
+                        >
+                            <h6 style={{ color: "var(--immortalBlack)" }}>Conversation Analysis</h6>
+                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
+                                Preset
+                            </p>
+                            <div className="d-flex justify-content-start align-items-center gap-2">
+                                <p className="status_text">
+                                    <i className="fa-solid fa-headphones" /> <span>Call Status</span>
+                                </p>
+                                <p className="status_text">
+                                    <i className="fa-solid fa-circle-small text-danger" />{" "}
+                                    <span className="endedTxt">ended</span>
+                                </p>
+                            </div>
+                            <div className="d-flex justify-content-start align-items-center gap-2">
+                                <p className="status_text">
+                                    <i className="fa-regular fa-user-vneck-hair" />{" "}
+                                    <span>User Sentiment</span>
+                                </p>
+                                <p className="status_text">
+                                    <i className="fa-solid fa-circle-small text-primary" />{" "}
+                                    <span className="endedTxt">Neutral</span>
+                                </p>
+                            </div>
+                            <div className="d-flex justify-content-start align-items-center gap-2">
+                                <p className="status_text">
+                                    <i className="fa-regular fa-phone" /> <span>Disconnection Reason</span>
+                                </p>
+                                <p className="status_text">
+                                    <i className="fa-solid fa-circle-small text-warning" />{" "}
+                                    <span className="endedTxt">user hangup</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            className="rounded-3 p-2 table__details mb-2"
+                            style={{ border: "1px solid var(--me-border1)" }}
+                        >
+                            <h6 className="f-s-14" style={{ color: "var(--immortalBlack)" }}>
+                                Summary
+                            </h6>
+                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
+                                The call begins with the agent introducing themselves and offering
+                                assistance in booking tickets, asking for the user's name to proceed.
+                            </p>
+                        </div>
+                        <div
+                            className="rounded-3 p-2 table__details mb-2"
+                            style={{ border: "1px solid var(--me-border1)" }}
+                        >
+                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
+                                Transcription
+                            </p>
+                            <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                                <p className="status_text" style={{ maxWidth: 50 }}>
+                                    {" "}
+                                    <span>agent:</span>
+                                </p>
+                                <p className="status_text">
+                                    <span className="endedTxt">
+                                        {" "}
+                                        Hi there! This is Alex from Webvio. I’m here to help you book your
+                                        tickets today. May I know your name to get started?
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 {/* {popUp ? (
                     <div className="popup">
                         <div className="container h-100">

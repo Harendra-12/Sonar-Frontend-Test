@@ -2409,7 +2409,7 @@ i.fa.fa-star {
 }
 
 .bg-secondary {
-    background-color: #23b7e5 !important;
+    background-color: var(--secondary-rgb-text) !important;
 }
 
 .pulse {
@@ -2765,7 +2765,7 @@ i.fa.fa-star {
     padding-top: 55px;
 }
 
-.btn.btn-primary{
-background-color: var(--color2) !important;
-border-color: var(--color2) !important
+.btn.btn-primary {
+    background-color: var(--color2) !important;
+    border-color: var(--color2) !important
 }
