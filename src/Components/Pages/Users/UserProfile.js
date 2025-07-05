@@ -133,7 +133,7 @@ function UserProfile() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-            <Header title="User Profile" />
+        <Header title="User Profile" />
         <div className="container-fluid">
           <div className="row">
           </div>
@@ -404,7 +404,7 @@ function UserProfile() {
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2">Agent</h5>
+                                            <h5 className="mb-0 pb-2">{account?.user_role?.roles?.name}</h5>
                                           </div>
                                         </div>
                                       )}

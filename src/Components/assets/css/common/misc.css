@@ -1418,7 +1418,10 @@ input[type=number] {
     font-size: 0.875rem;
     padding: 0;
     /* background-color: var(--table-head); */
-    background-color: var(--table-odd-color) !important;
+    /* background-color: var(--table-odd-color) !important; */
+    background-color: transparent !important;
+    color: var(--form-input-text);
+    font-weight: 500;
 }
 
 .popupopen ul {

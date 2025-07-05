@@ -425,7 +425,7 @@ const Extensions = () => {
                                                   <th className="text-center">
                                                     <span>
                                                       <select
-                                                        className="formItem f-select-width"
+                                                        className="f-select-width"
                                                         value={onlineFilter}
                                                         onChange={(e) => {
                                                           setonlineFilter(

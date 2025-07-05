@@ -94,7 +94,7 @@ function PermissionConfigForUser() {
     <>
       <main className="mainContent">
         <section id="phonePage">
-              <Header title="Global Permissions" />
+          <Header title="Global Permissions" />
           <div className="container-fluid">
             <div className="row">
               <div className="overviewTableWrapper">
@@ -766,7 +766,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                       if (filteredColumnRecords.length === 0) return null;
 
                                                       return (
-                                                        <div key={column} className="col-md-3 mb-3">
+                                                        <div key={column} className="col-xxl-3 col-xl-4 col-lg-6 mb-3">
                                                           <div className="card">
                                                             <div className="card-body">
                                                               {filteredColumnRecords.map(record => (
