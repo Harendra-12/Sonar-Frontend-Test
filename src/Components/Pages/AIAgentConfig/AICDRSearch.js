@@ -15,6 +15,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import { api_url } from "../../../urls";
+import { useSelector } from "react-redux";
 
 /**
  * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
@@ -30,6 +31,7 @@ import { api_url } from "../../../urls";
  */
 
 function AICDRSearch({ page }) {
+  const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(false);
   const [cdr, setCdr] = useState();
   const navigate = useNavigate();
@@ -100,7 +102,22 @@ function AICDRSearch({ page }) {
 
   const today = new Date().toISOString().split("T")[0]; // "2025-07-03"
 
-  console.log(startDate, endDate);
+  function formatTimestampToDateTime(timestamp) {
+    const date = new Date(timestamp);
+    const timeZone = account?.timezone?.name || "UTC"; // Use user's time zone or default to UTC
+
+    return date.toLocaleString("en-GB", {
+      timeZone,
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+  }
+
   return (
     <>
       <main className="mainContent">
@@ -151,10 +168,10 @@ function AICDRSearch({ page }) {
                             className="formItem"
                             value={advanceSearch}
                             onChange={(e) => setAdvanceSearch(e.target.value)}
-                            // max={new Date()?.toISOString()?.split("T")[0]}
-                            // value={startDateFlag}
+                          // max={new Date()?.toISOString()?.split("T")[0]}
+                          // value={startDateFlag}
 
-                            // onKeyDown={(e) => e.preventDefault()}
+                          // onKeyDown={(e) => e.preventDefault()}
                           />
                         </div>
                       </div>
@@ -214,100 +231,99 @@ function AICDRSearch({ page }) {
                     </div>
                     <div className="tableContainer">
                       <table>
-                        {cdr?.records?.length > 0 ? (
-                          <>
-                            <thead>
-                              <tr
-                                style={{ whiteSpace: "nowrap" }}
-                                data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight"
-                                aria-controls="offcanvasRight"
-                              >
-                                <th>Customer</th>
-                                <th>Agent</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Duration</th>
-                                <th>Cost</th>
-                                <th>Customer Sentiment</th>
-                                <th>Sentiment Score</th>
-                                <th>Efficiency Score</th>
-                              </tr>
-                            </thead>
-
-                            <tbody>
-                              {loading ? (
-                                <ThreeDotedLoader />
-                              ) : (
+                        {
+                          loading ? <ThreeDotedLoader /> :
+                            !loading && cdr?.records?.length == 0 ?
+                              <div>
+                                <EmptyPrompt type="generic" />
+                              </div> :
+                              !loading && cdr?.records?.length > 0 ?
                                 <>
-                                  {cdr?.records?.map((internalItem, index) => {
-                                    const item = internalItem.metadata;
-                                    return (
-                                      <tr
-                                        key={index}
-                                        style={{ whiteSpace: "nowrap" }}
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasRight"
-                                        aria-controls="offcanvasRight"
-                                        onClick={() => setSelectedCall(item)}
+                                  <thead>
+                                    <tr
+                                      style={{ whiteSpace: "nowrap" }}
+                                      data-bs-toggle="offcanvas"
+                                      data-bs-target="#offcanvasRight"
+                                      aria-controls="offcanvasRight"
+                                    >
+                                      <th>Customer</th>
+                                      <th>Agent</th>
+                                      <th>Date</th>
+                                      <th>Time</th>
+                                      <th>Duration</th>
+                                      <th>Cost</th>
+                                      <th>Customer Sentiment</th>
+                                      <th>Sentiment Score</th>
+                                      <th>Efficiency Score</th>
+                                      <th>View</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    {cdr?.records?.map((internalItem, index) => {
+                                      const item = internalItem.metadata;
+                                      return (
+                                        <tr
+                                          key={index}
+                                          style={{ whiteSpace: "nowrap" }}
+                                          data-bs-toggle="offcanvas"
+                                          data-bs-target="#offcanvasRight"
+                                          aria-controls="offcanvasRight"
+                                          onClick={() => setSelectedCall(item)}
+                                        >
+                                          <td>{item.caller_number}</td>
+                                          <td>{item.agent_name}</td>
+                                          <td>{item.call_date}{formatTimestampToDateTime(item.timestamp).split("")[0]}</td>
+                                          <td>{item.call_time}{formatTimestampToDateTime(item.timestamp).split("")[1]}</td>
+                                          <td>
+                                            {formatDuration(item.duration_sec)}
+                                          </td>
+                                          <td>{item.charge}</td>
+                                          <td>{item.customer_sentiment}</td>
+                                          <td>{item.customer_sentiment_score}</td>
+                                          <td>{item.efficiency_score}</td>
+                                          <td>
+                                            <button className="tableButton edit mx-auto"><i className="fa-regular fa-eye"></i></button>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                  </tbody>
+                                </> :
+                                <div>
+                                  <div className="mt-5">
+                                    <div
+                                      className="imgWrapper loader position-static"
+                                      style={{
+                                        width: "150px",
+                                        height: "150px",
+                                        transform: "none",
+                                      }}
+                                    >
+                                      <img
+                                        src={require(`../../assets/images/ai.png`)}
+                                        alt="Empty"
+                                        className="w-100"
+                                      />
+                                    </div>
+                                    <div className="text-center mt-3">
+                                      <h5
+                                        style={{
+                                          color: "var(--color-subtext)",
+                                          fontWeight: 400,
+                                        }}
                                       >
-                                        <td>{item.caller_number}</td>
-                                        <td>{item.agent_name}</td>
-                                        <td>{item.call_date}</td>
-                                        <td>{item.call_time}</td>
-                                        <td>
-                                          {formatDuration(item.duration_sec)}
-                                        </td>
-                                        <td>{item.charge}</td>
-                                        <td>{item.customer_sentiment}</td>
-                                        <td>{item.customer_sentiment_score}</td>
-                                        <td>{item.efficiency_score}</td>
-                                      </tr>
-                                    );
-                                  })}
-                                </>
-                              )}
-                            </tbody>
-                          </>
-                        ) : cdr?.data?.length === 0 && !loading ? (
-                          <div>
-                            <EmptyPrompt type="generic" />
-                          </div>
-                        ) : (
-                          <div>
-                            <div className="mt-5">
-                              <div
-                                className="imgWrapper loader position-static"
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  transform: "none",
-                                }}
-                              >
-                                <img
-                                  src={require(`../../assets/images/ai.png`)}
-                                  alt="Empty"
-                                  className="w-100"
-                                />
-                              </div>
-                              <div className="text-center mt-3">
-                                <h5
-                                  style={{
-                                    color: "var(--color-subtext)",
-                                    fontWeight: 400,
-                                  }}
-                                >
-                                  Please search for a <b>call detail record</b>{" "}
-                                  to display{" "}
-                                  <span style={{ color: "var(--ui-accent)" }}>
-                                    <b>results</b>
-                                  </span>
-                                  .
-                                </h5>
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                                        Please search for a <b>call detail record</b>{" "}
+                                        to display{" "}
+                                        <span style={{ color: "var(--ui-accent)" }}>
+                                          <b>results</b>
+                                        </span>
+                                        .
+                                      </h5>
+                                    </div>
+                                  </div>
+                                </div>
+                        }
                       </table>
                     </div>
                     {/* <div className="tableHeader mb-3">
@@ -361,8 +377,9 @@ function AICDRSearch({ page }) {
           <div className="offcanvas-body p-3">
             <div className="heading">
               <h5 className="offcanvas-title" id="offcanvasRightLabel">
-                {selectedCall?.call_date},{" "}
-                {selectedCall?.call_time.replace(/Z$/, "")}{" "}
+                {formatTimestampToDateTime(selectedCall?.timestamp)}{" "}
+                {/* {selectedCall?.call_date},{" "}
+                {selectedCall?.call_time.replace(/Z$/, "")}{" "} */}
                 {selectedCall?.direction}
               </h5>
               <button className=" bg-transparent border-0 text-danger">
@@ -391,16 +408,16 @@ function AICDRSearch({ page }) {
                 <span className="fs-12">$ {selectedCall?.charge}</span>
               </p>
             </div>
-            {/* <div
-                            className="d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2"
-                            style={{ border: "1px solid var(--me-border1)" }}
-                        >
-                            <audio
-                                controls=""
-                                className="w-[300px] h-10"
-                                src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
-                            />
-                        </div> */}
+            <div
+              className="d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <audio
+                controls=""
+                className="w-[300px] h-10"
+                src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
+              />
+            </div>
             <div
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
@@ -479,6 +496,21 @@ function AICDRSearch({ page }) {
                     {selectedCall?.professionalism_score}
                   </span>
                 </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-regular fa-phone" />{" "}
+                  <span>Profanity Events</span>
+                </p>
+                <ul className="ps-3">
+                  {selectedCall?.profanity_events?.map((item, index) => {
+                    return (
+                      <li key={index}>
+                        <span className="endedTxt">{item}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
 
