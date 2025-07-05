@@ -6,28 +6,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 
 import {
-    awsGeneralPostFunction,
-    backToTop,
-    convertDateToCurrentTimeZone,
-    featureUnderdevelopment,
-    formatTimeWithAMPM,
-    generalGetFunction,
-    generalPostFunction,
-    generatePreSignedUrl,
+  awsGeneralPostFunction,
+  backToTop,
 } from "../../GlobalFunction/globalFunction";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
-import Tippy from "@tippyjs/react";
-import CircularLoader from "../../Loader/CircularLoader";
-import Comments from "../WebRtc/Comments";
-import Duplicates from "../WebRtc/Duplicates";
-import ExportPopUp from "../WebRtc/ExportPopUp";
-import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
-import axios from "axios";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import { api_url } from "../../../urls";
 
@@ -45,761 +30,368 @@ import { api_url } from "../../../urls";
  */
 
 function AICDRSearch({ page }) {
-    const dispatch = useDispatch();
-    const [loading, setLoading] = useState(false);
-    const [circularLoader, setCircularLoader] = useState(false);
-    const [cdr, setCdr] = useState();
-    const [pageNumber, setPageNumber] = useState(1);
-    const navigate = useNavigate();
-    const account = useSelector((state) => state.account);
-    const selectedCdrFilter = useSelector((state) => state.selectedCdrFilter);
-    const [currentPlaying, setCurrentPlaying] = useState(""); // For tracking the currently playing audio
-    const [refreshState, setRefreshState] = useState(false)
-    const [callBlock, setCallBlock] = useState([]);
-    const [callBlockRefresh, setCallBlockRefresh] = useState(0);
-    const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
-    const [popUp, setPopUp] = useState(false);
-    const [itemsPerPage, setItemsPerPage] = useState(20);
-    const [audioURL, setAudioURL] = useState("");
-    const [comment, setComment] = useState("");
-    const [selectedCdr, setSelectedCdr] = useState("");
-    const [exportPopup, setExportPopup] = useState(false);
-    const [filteredKeys, setFilteredKeys] = useState([]);
-    const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false);
-    const [duplicatePopUpData, setDuplicatePopUpData] = useState({});
-    const [error, setError] = useState("");
-    const [showAudio, setShowAudio] = useState(false);
-    // const [transcribeLink, setTranscribeLink] = useState()
-    const [showDropDown, setShowDropdown] = useState(false);
-    const [showComment, setShowComment] = useState(false);
-    const [filteredColumns, setFilteredColumns] = useState([])
-    const [filteredColumnForTable, setFilteredColumnForTable] = useState([])
-    const [advanceSearch, setAdvanceSearch] = useState();
-    const [cdrSearchAI, setCdrSearchAI] = useState([]);
-    const [cdrAIRes, setCdrAIRes] = useState([]);
-    const [showCustomerFeedback, setShowCustomerFeedback] = useState("");
-    const [showKeys, setShowKeys] = useState([
-        "Call-Direction",
-        // "Caller-Orig-Caller-ID-Name",
-        "variable_sip_from_user",
-        "tag",
-        "variable_sip_to_user",
-        // "application_state",
-        // "application_state_to_ext",
-        "e_name",
-        "Date",
-        "Time",
-        "recording_path",
-        "variable_billsec",
-        // "variable_sip_to_user",
-        "Hangup-Cause",
-        "variable_DIALSTATUS",
-        "start_date",
-        "end_date",
-        // "call_cost",
-        "id",
-    ]);
+  const [loading, setLoading] = useState(false);
+  const [cdr, setCdr] = useState();
+  const navigate = useNavigate();
+  const [advanceSearch, setAdvanceSearch] = useState();
+  const [selectedCall, setSelectedCall] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [agentName, setAgentName] = useState();
 
-    const thisAudioRef = useRef(null);
+  async function getAdvanceSearch() {
+    if (!advanceSearch || advanceSearch?.trim() === "") {
+      toast.error("Please enter some data to search");
+      return;
+    }
+    if (advanceSearch) {
+      setLoading(true);
+      const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, {
+        query: advanceSearch,
+        ...(startDate && {
+          date_range: endDate ? `${startDate}:${endDate}` : startDate,
+        }),
+        ...(agentName?.trim() && { agent_name: agentName }),
+      });
+      if (res?.status) {
+        setLoading(false);
+        setCdr(res?.data);
+        console.log(res);
+      } else {
+        toast.error(res?.err);
+        setLoading(false);
+      }
+    } else {
+      toast.error("Please enter some data to search");
+      setLoading(false);
+    }
+  }
+  console.log(cdr);
+  const formatDuration = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-    async function getData() {
-        // build a dynamic url which include only the available params to make API call easy
-        const queryParams = cdrSearchAI.map(id => `ids[]=${encodeURIComponent(id)}`).join('&');
-        const finalUrl = `/cdr?account=${account.account_id}&${queryParams}`;
+    const padded = (num) => String(num).padStart(2, "0");
 
-        // function to filter object
-        function filterObjectKeys(obj, keys) {
-            let filteredObj = {};
+    return `${padded(hours)}:${padded(minutes)}:${padded(seconds)}`;
+  };
+  function parseTranscript(rawText) {
+    const lines = rawText.split("\n");
+    const entries = [];
 
-            keys.forEach((key) => {
-                if (
-                    key === "variable_start_stamp" &&
-                    obj.hasOwnProperty("variable_start_stamp")
-                ) {
-                    filteredObj["Date"] = convertDateToCurrentTimeZone(obj["variable_start_stamp"]?.split(" ")[0]);
-                    filteredObj["Time"] = formatTimeWithAMPM(
-                        obj["variable_start_stamp"]?.split(" ")[1]
-                    );
-                }
-                if (obj.hasOwnProperty(key)) {
-                    filteredObj[key] = obj[key];
-                }
-            });
+    const regex = /^(Agent|Customer) \[(\d+\.\d+)-(\d+\.\d+)s\]: (.+)$/;
 
-            return filteredObj;
-        }
-
-        if (account && account.account_id) {
-            const apiData = await generalGetFunction(finalUrl);
-            if (apiData?.response?.status == 403) {
-                toast.error("You don't have permission to access this page.");
-            } else if (apiData?.status === true) {
-                const filteredData = apiData?.data?.data?.map((item) =>
-                    filterObjectKeys(item, [...apiData.filteredKeys, "id"])
-                );
-                setFilteredKeys([...apiData.filteredKeys, "id"]);
-                setCdr({
-                    ...apiData?.data,
-                    data: filteredData,
-                });
-                if (selectedCdrFilter !== "") {
-                    dispatch({
-                        type: "SET_SELECTEDCDRFILTER",
-                        selectedCdrFilter: "",
-                    });
-                }
-            }
-            setLoading(false);
-            setCircularLoader(false);
-            setRefreshState(false);
-            setCircularLoader(false);
-        } else {
-            setLoading(false);
-            setCircularLoader(false);
-            navigate("/");
-            setRefreshState(false);
-        }
+    for (let line of lines) {
+      const match = line.match(regex);
+      if (match) {
+        const [, speaker, start, end, text] = match;
+        entries.push({
+          speaker,
+          start: parseFloat(start),
+          end: parseFloat(end),
+          text,
+        });
+      }
     }
 
-    const handlePlaying = async (audio) => {
-        // Reseting state before Playing
-        setCurrentPlaying("");
-        setAudioURL("");
+    return entries;
+  }
 
-        try {
-            setCurrentPlaying(audio);
-            const url = audio?.split(".com/").pop();
-            // const res = await generatePreSignedUrl(url);
+  const today = new Date().toISOString().split("T")[0]; // "2025-07-03"
 
-            // if (res?.status && res?.url) {
-            // setAudioURL(res.url); // Update audio URL state
-            setAudioURL(audio);
-            // Wait for React state update before accessing ref
-            setTimeout(() => {
-                if (thisAudioRef.current) {
-                    thisAudioRef.current.load(); // Reload audio source
-                    thisAudioRef.current.play().catch((error) => {
-                        console.error("Audio play error:", error);
-                    });
-                }
-            }, 100); // Reduced timeout to minimize delay
-            // }
-        } catch (error) {
-            console.error("Error in handlePlaying:", error);
-        }
-    };
-
-    // const handleBlockNumber = async (blockNumber) => {
-    //     if (!blockNumber) {
-    //         toast.error("Please enter number");
-    //     } else if (
-    //         blockNumber < 99999999 ||
-    //         blockNumber > 99999999999999 ||
-    //         isNaN(blockNumber)
-    //     ) {
-    //         toast.error("Please enter valid number");
-    //     } else {
-    //         setPopUp(false);
-    //         setLoading(true);
-    //         const parsedData = {
-    //             type: "DID",
-    //             number: blockNumber,
-    //         };
-    //         const apidata = await generalPostFunction(`/spam/store`, parsedData);
-    //         if (apidata.status) {
-    //             setLoading(false);
-
-    //             setSelectedNumberToBlock(null);
-    //             setCallBlock([...callBlock, apidata?.data]);
-    //             toast.success("Number added to block list");
-    //         } else {
-    //             setLoading(false);
-    //         }
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     const getRingGroupDashboardData = async () => {
-    //         if (account && account.id) {
-    //             const apidata = await generalGetFunction(`/spam/all?all`);
-    //             if (apidata?.status) {
-    //                 setCallBlock(apidata?.data);
-    //                 setLoading(false);
-    //             } else {
-    //                 navigate("/");
-    //             }
-    //         } else {
-    //             navigate("/");
-    //         }
-    //     };
-    //     getRingGroupDashboardData();
-    // }, [callBlockRefresh]);
-
-    function formatTime(seconds) {
-        const hours = Math.floor(seconds / 3600)
-            .toString()
-            .padStart(2, "0");
-        const minutes = Math.floor((seconds % 3600) / 60)
-            .toString()
-            .padStart(2, "0");
-        const secs = (seconds % 60).toString().padStart(2, "0");
-        return `${hours}:${minutes}:${secs}`;
-    }
-
-    // const duplicateColumn = async (item) => {
-    //     setShowDuplicatePopUp(true);
-    //     setDuplicatePopUpData(item);
-    // };
-
-    useEffect(() => {
-        const columns = []
-        const originKeys = []
-        {
-            showKeys.map((key) => {
-                if (
-                    cdr?.data[0]?.hasOwnProperty(key) &&
-                    key !== "id"
-                ) {
-                    let formattedKey = "";
-                    if (key === "variable_sip_from_user") {
-                        formattedKey = "Caller No.";
-                    } else if (key === "variable_sip_to_user") {
-                        formattedKey = "Destination";
-                    } else if (
-                        key === "Caller-Orig-Caller-ID-Name"
-                    ) {
-                        formattedKey = "Caller Name";
-                    } else if (key === "recording_path") {
-                        formattedKey = "Recording";
-                    } else if (key === "variable_billsec") {
-                        formattedKey = "Duration";
-                    } else if (key === "application_state") {
-                        formattedKey = "Via/Route";
-                    } else if (
-                        key === "application_state_to_ext"
-                    ) {
-                        formattedKey = "Ext";
-                    } else if (key === "e_name") {
-                        formattedKey = "User Name";
-                    } else if (key === "variable_DIALSTATUS") {
-                        formattedKey = "Hangup Status";
-                    } else if (key === "Hangup-Cause") {
-                        formattedKey = "Hangup Cause";
-                    } else if (key === "call_cost") {
-                        formattedKey = "Charge";
-                    } else {
-                        formattedKey = key
-                            .replace(/[-_]/g, " ")
-                            .toLowerCase()
-                            .replace(/\b\w/g, (char) =>
-                                char.toUpperCase()
-                            );
-                    }
-                    columns.push(formattedKey)
-                    originKeys.push({ key: key, formattedKey: formattedKey })
-
-                }
-                return null;
-            })
-        }
-
-        columns.push("Customer Sentiment")
-        columns.push("Call Summary")
-        originKeys.push({ key: "customer_sentiment", formattedKey: "Customer Sentiment" })
-        originKeys.push({ key: "call_summary", formattedKey: "Call Summary" })
-
-        const indexOfOriginKey = originKeys?.findIndex((data) => data?.key == "recording_path")
-        if (indexOfOriginKey !== -1) {
-            let removedItem = originKeys?.splice(indexOfOriginKey, 1)[0];
-            let insertIndex = originKeys?.length - 3;
-            originKeys.splice(insertIndex, 0, removedItem);
-        }
-        setFilteredColumnForTable(originKeys)
-        let columnIndex = columns?.findIndex(val => val === "Recording");
-        if (columnIndex !== -1) {
-            let removedItem = columns?.splice(columnIndex, 1)[0];
-            let insertIndex = columns?.length - 3;
-            columns?.splice(insertIndex, 0, removedItem);
-        }
-        setFilteredColumns(columns)
-        const optionsCol = columns?.map((data, index) => ({
-            value: data,
-            label: data
-        }))
-        optionsCol.shift()
-        const index = optionsCol?.findIndex((data) => data?.value == "Recording")
-        if (index !== -1) {
-            let removedItem = optionsCol?.splice(index, 1)[0];
-            let insertIndex = optionsCol?.length - 3;
-            optionsCol?.splice(insertIndex, 0, removedItem);
-        }
-    }, [showKeys, cdr?.data?.length])
-
-    useEffect(() => {
-        if (cdrSearchAI.length > 0) {
-            getData();
-        }
-    }, [cdrSearchAI]);
-
-    async function getAdvanceSearch() {
-        if (advanceSearch) {
-            setLoading(true);
-            setCircularLoader(true);
-            // axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/ai-search", { query: advanceSearch }).then((res) => {
-            //     const matches = res.data.matches;
-            //     setCdrAIRes(matches);
-            //     if (matches.length > 0) {
-            //         const cdrIds = matches.map(match => match.cdr_id);
-            //         setCdrSearchAI(cdrIds);
-            //     }
-            // })
-            //     .catch((err) => {
-            //         toast.error(err);
-            //         setLoading(false);
-            //         setCircularLoader(false);
-            //     });
-            const res = await awsGeneralPostFunction(api_url?.AI_SEARCH, { query: advanceSearch })
-            if (res?.status) {
-                const matches = res.data.matches;
-                setCdrAIRes(matches);
-                if (matches.length > 0) {
-                    const cdrIds = matches.map(match => match.cdr_id);
-                    setCdrSearchAI(cdrIds);
-                }
-            } else {
-                toast.error(res?.err);
-                setLoading(false);
-                setCircularLoader(false);
-            }
-        } else {
-            toast.error("Please enter some data to search");
-            setLoading(false);
-            setCircularLoader(false);
-        }
-    }
-    return (
-        <>
-            {circularLoader && <CircularLoader />}
-            <main className="mainContent">
-                <section id="phonePage">
-                    <Header title="AI CDR Search" />
-                    <div className="container-fluid px-0 position-relative">
-                        <div className="overviewTableWrapper">
-                            <div className="overviewTableChild">
-                                <div className="d-flex flex-wrap">
-                                    <div className="col-12">
-                                        <div className="heading">
-                                            <div className="content">
-                                                <h4>AI CDR Search
-                                                </h4>
-                                                <p>Search for a specific call detail record with the power of AI</p>
-                                            </div>
-                                            <div className="buttonGroup">
-                                                <button
-                                                    effect="ripple"
-                                                    className="panelButton gray"
-                                                    onClick={() => {
-                                                        navigate(-1);
-                                                        backToTop();
-                                                    }}
-                                                >
-                                                    <span className="text">Back</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-caret-left"></i>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="col-12"
-                                        style={{ overflow: "auto", padding: "10px 20px 0" }}
-                                    >
-                                        <div className="tableHeader justify-content-start">
-                                            <div className="searchBox position-relative">
-                                                <label>Search:</label>
-                                                <input
-                                                    type="search"
-                                                    name="Search"
-                                                    className="formItem"
-                                                    value={advanceSearch}
-                                                    onChange={(e) => setAdvanceSearch(e.target.value)}
-                                                />
-                                            </div>
-                                            <button className="panelButton" onClick={getAdvanceSearch}>
-                                                <span className="text">Search</span>
-                                                <span className="icon">
-                                                    <i className="fa-solid fa-magnifying-glass" />
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <div className="tableContainer">
-                                            <table>
-                                                {cdr?.data?.length > 0 ? (
-                                                    <>
-                                                        <thead>
-                                                            <tr
-                                                                style={{ whiteSpace: "nowrap" }}
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                <th>#</th>
-                                                                {filteredColumns?.map((column, index) => {
-                                                                    return <th key={index}>{column}</th>;
-                                                                })}
-                                                            </tr>
-                                                        </thead>
-
-                                                        <tbody>
-                                                            {loading ? (
-                                                                // <SkeletonTableLoader
-                                                                //     col={showKeys.length}
-                                                                //     row={12}
-                                                                // />
-                                                                <ThreeDotedLoader />
-                                                            ) : (
-                                                                <>
-                                                                    {cdr?.data?.map((item, index) => {
-                                                                        const isBlocked = callBlock?.some(
-                                                                            (block) => {
-                                                                                if (
-                                                                                    item["Call-Direction"] === "inbound"
-                                                                                ) {
-                                                                                    return (
-                                                                                        item["Caller-Caller-ID-Number"] ===
-                                                                                        block.number
-                                                                                    );
-                                                                                } else if (
-                                                                                    item["Call-Direction"] === "outbound"
-                                                                                ) {
-                                                                                    return (
-                                                                                        item["Caller-Callee-ID-Number"] ===
-                                                                                        block.number
-                                                                                    );
-                                                                                }
-                                                                            }
-                                                                        );
-
-                                                                        return (
-                                                                            <React.Fragment key={index}>
-                                                                                <tr className="cdrTableRow">
-                                                                                    <td>
-                                                                                        {(pageNumber - 1) *
-                                                                                            Number(itemsPerPage) +
-                                                                                            (index + 1)}
-                                                                                    </td>
-
-                                                                                    {filteredColumnForTable.map((val) => {
-                                                                                        const key = val?.key
-                                                                                        if (
-                                                                                            item.hasOwnProperty(key) &&
-                                                                                            key !== "id"
-                                                                                        ) {
-                                                                                            if (key === "recording_path") {
-                                                                                                return (
-                                                                                                    <td key={key}>
-                                                                                                        {item["recording_path"] &&
-                                                                                                            item["variable_billsec"] >
-                                                                                                            0 && (
-                                                                                                                <button
-                                                                                                                    className="tableButton px-2 mx-0"
-                                                                                                                    onClick={() => {
-                                                                                                                        if (
-                                                                                                                            item[
-                                                                                                                            "recording_path"
-                                                                                                                            ] ===
-                                                                                                                            currentPlaying
-                                                                                                                        ) {
-                                                                                                                            setCurrentPlaying(
-                                                                                                                                ""
-                                                                                                                            );
-                                                                                                                            setAudioURL("");
-                                                                                                                        } else {
-                                                                                                                            handlePlaying(
-                                                                                                                                item[
-                                                                                                                                "recording_path"
-                                                                                                                                ]
-                                                                                                                            );
-                                                                                                                        }
-                                                                                                                    }}
-                                                                                                                >
-                                                                                                                    {currentPlaying ===
-                                                                                                                        item[
-                                                                                                                        "recording_path"
-                                                                                                                        ] ? (
-                                                                                                                        <i className="fa-solid fa-chevron-up"></i>
-                                                                                                                    ) : (
-                                                                                                                        <i className="fa-solid fa-chevron-down"></i>
-                                                                                                                    )}
-                                                                                                                </button>
-                                                                                                            )}
-                                                                                                    </td>
-                                                                                                );
-                                                                                            } else if (
-                                                                                                key === "Call-Direction"
-                                                                                            ) {
-                                                                                                const statusIcons = {
-                                                                                                    Missed:
-                                                                                                        "fa-solid fa-phone-missed",
-                                                                                                    Cancelled:
-                                                                                                        "fa-solid fa-phone-xmark",
-                                                                                                    Failed:
-                                                                                                        "fa-solid fa-phone-slash",
-                                                                                                    transfer:
-                                                                                                        "fa-solid fa-arrow-right-arrow-left",
-                                                                                                };
-                                                                                                const callIcons = {
-                                                                                                    inbound: {
-                                                                                                        icon:
-                                                                                                            statusIcons[
-                                                                                                            item.variable_DIALSTATUS
-                                                                                                            ] ||
-                                                                                                            "fa-phone-arrow-down-left",
-                                                                                                        color:
-                                                                                                            item.variable_DIALSTATUS ==
-                                                                                                                "Missed" || item.variable_DIALSTATUS ==
-                                                                                                                "Failed"
-                                                                                                                ? "var(--funky-boy4)"
-                                                                                                                : "var(--funky-boy3)",
-                                                                                                        label: "Inbound",
-                                                                                                    },
-                                                                                                    outbound: {
-                                                                                                        icon:
-                                                                                                            statusIcons[
-                                                                                                            item.variable_DIALSTATUS
-                                                                                                            ] ||
-                                                                                                            "fa-phone-arrow-up-right",
-                                                                                                        color:
-                                                                                                            item.variable_DIALSTATUS ==
-                                                                                                                "Missed" || item.variable_DIALSTATUS ==
-                                                                                                                "Failed"
-                                                                                                                ? "var(--funky-boy4)"
-                                                                                                                : "var(--color3)",
-                                                                                                        label: "Outbound",
-                                                                                                    },
-                                                                                                    internal: {
-                                                                                                        icon:
-                                                                                                            statusIcons[
-                                                                                                            item.variable_DIALSTATUS
-                                                                                                            ] || "fa-headset",
-                                                                                                        color:
-                                                                                                            item.variable_DIALSTATUS ==
-                                                                                                                "Missed" || item.variable_DIALSTATUS ==
-                                                                                                                "Failed"
-                                                                                                                ? "var(--funky-boy4)"
-                                                                                                                : "var(--color2)",
-                                                                                                        label: "Internal",
-                                                                                                    },
-                                                                                                };
-
-                                                                                                const callType =
-                                                                                                    callIcons[
-                                                                                                    item["Call-Direction"]
-                                                                                                    ] || callIcons.internal;
-
-                                                                                                return (
-                                                                                                    <td key={key}>
-                                                                                                        <i
-                                                                                                            className={`fa-solid ${callType.icon} me-1`}
-                                                                                                            style={{
-                                                                                                                color: callType.color,
-                                                                                                            }}
-                                                                                                        ></i>
-                                                                                                        {callType.label}
-                                                                                                    </td>
-                                                                                                );
-                                                                                            } else if (
-                                                                                                key === "application_state"
-                                                                                            ) {
-                                                                                                return (
-                                                                                                    <td key={key}>
-                                                                                                        {[
-                                                                                                            "intercept",
-                                                                                                            "eavesdrop",
-                                                                                                            "whisper",
-                                                                                                            "barge",
-                                                                                                        ].includes(
-                                                                                                            item["application_state"]
-                                                                                                        )
-                                                                                                            ? item[
-                                                                                                            "other_leg_destination_number"
-                                                                                                            ]
-                                                                                                            : item[
-                                                                                                            "Caller-Callee-ID-Number"
-                                                                                                            ]}{" "}
-                                                                                                        {item[
-                                                                                                            "application_state_name"
-                                                                                                        ] &&
-                                                                                                            `(${item["application_state_name"]})`}
-                                                                                                    </td>
-                                                                                                );
-                                                                                            } else if (
-                                                                                                key === "variable_billsec"
-                                                                                            ) {
-                                                                                                return (
-                                                                                                    <td key={key}>
-                                                                                                        {formatTime(
-                                                                                                            item["variable_billsec"]
-                                                                                                        )}
-                                                                                                    </td>
-                                                                                                );
-                                                                                            } else if (
-                                                                                                key === "call_cost" &&
-                                                                                                item[key]
-                                                                                            ) {
-                                                                                                return <td>${item[key]}</td>;
-                                                                                            } else {
-                                                                                                return (
-                                                                                                    <td key={key}>{item[key]}</td>
-                                                                                                );
-                                                                                            }
-                                                                                        }
-                                                                                        return null;
-                                                                                    })}
-
-                                                                                    <>
-                                                                                        {
-                                                                                            filteredColumnForTable?.find((data) => data?.key == "customer_sentiment") &&
-                                                                                            <td>
-                                                                                                {cdrAIRes ? cdrAIRes?.find((data) => data.cdr_id == item.id)?.customer_sentiment : "N/A"}
-                                                                                            </td>
-                                                                                        }
-                                                                                        {
-                                                                                            filteredColumnForTable?.find((data) => data?.key == "call_summary") &&
-                                                                                            <td>
-                                                                                                {cdrAIRes?.find((data) => data.cdr_id == item.id)?.call_summary ? <button
-                                                                                                    effect="ripple"
-                                                                                                    className={`tableButton ms-0`}
-                                                                                                    style={{
-                                                                                                        height: "34px",
-                                                                                                        width: "34px",
-                                                                                                    }}
-                                                                                                    onClick={() => setShowCustomerFeedback(cdrAIRes?.find((data) => data.cdr_id == item.id)?.call_summary)}
-                                                                                                >
-                                                                                                    <Tippy content={"View Summary"}>
-                                                                                                        <i className="fa-solid fa-comment-dots"></i>
-                                                                                                    </Tippy>
-                                                                                                </button> : "N/A"}
-                                                                                            </td>
-                                                                                        }
-                                                                                    </>
-
-                                                                                </tr>
-                                                                                {currentPlaying ===
-                                                                                    item["recording_path"] &&
-                                                                                    item["recording_path"] && (
-                                                                                        <tr>
-                                                                                            <td colSpan="17">
-                                                                                                <div className="audio-container mx-2">
-                                                                                                    <AudioWaveformCommon
-                                                                                                        audioUrl={audioURL}
-                                                                                                        peaksData={JSON.parse(
-                                                                                                            item.peak_json
-                                                                                                        )}
-                                                                                                    />
-                                                                                                </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    )}
-                                                                            </React.Fragment>
-                                                                        );
-                                                                    })}
-                                                                </>
-                                                            )}
-                                                        </tbody>
-                                                    </>
-                                                ) : cdr?.data?.length === 0 && !loading ? (
-                                                    <div>
-                                                        <EmptyPrompt type="generic" />
-                                                    </div>
-                                                ) : (
-                                                    <div>
-                                                        <div className='mt-5'>
-                                                            <div className='imgWrapper loader position-static' style={{ width: '150px', height: '150px', transform: 'none' }}>
-                                                                <img src={require(`../../assets/images/ai.png`)} alt="Empty" className="w-100" />
-                                                            </div>
-                                                            <div className='text-center mt-3'>
-                                                                <h5 style={{ color: 'var(--color-subtext)', fontWeight: 400 }}>Please search for a <b>call detail record</b> to display <span style={{ color: 'var(--ui-accent)' }}><b>results</b></span>.</h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </table>
-                                        </div>
-                                        <div className="tableHeader mb-3">
-                                            {!loading && cdr && cdr?.data?.length > 0 ? (
-                                                <PaginationComponent
-                                                    pageNumber={(e) => setPageNumber(e)}
-                                                    totalPage={cdr?.last_page}
-                                                    from={(pageNumber - 1) * cdr?.per_page + 1}
-                                                    to={cdr?.to}
-                                                    total={cdr?.total}
-                                                    defaultPage={pageNumber}
-                                                />
-                                            ) : (
-                                                ""
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <div
-                    className="offcanvas offcanvas-end w-30"
-                    tabIndex="-1"
-                    id="offcanvasRight"
-                    aria-labelledby="offcanvasRightLabel"
-                >
-                    <div
-                        className="offcanvas-header"
-                        style={{ borderBlockEnd: "1px solid var(--me-border1)" }}
-                    >
-                        <div>
-                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
-                                Call History
-                            </h5>
-                            <p
-                                className="f-s-14 mb-0"
-                                style={{ color: "var(--color-subtext)" }}
-                            >
-                                See all the details of this Call History
-                            </p>
-                        </div>
+  console.log(startDate, endDate);
+  return (
+    <>
+      <main className="mainContent">
+        <section id="phonePage">
+          <Header title="AI CDR Search" />
+          <div className="container-fluid px-0 position-relative">
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>AI CDR Search</h4>
+                        <p>
+                          Search for a specific call detail record with the
+                          power of AI
+                        </p>
+                      </div>
+                      <div className="buttonGroup">
                         <button
-                            type="button"
-                            className="btn-close ms-auto"
-                            data-bs-dismiss="offcanvas"
-                            aria-label="Close"
-                        ></button>
+                          effect="ripple"
+                          className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="offcanvas-body p-3">
-                        <div className="heading">
-                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
-                                04/07/2025, 09:50:05 web_call
-                            </h5>
-                            <button className=" bg-transparent border-0 text-danger">
-                                <i className="fa-solid fa-trash" />
-                            </button>
+                  </div>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
+                  >
+                    <div className="tableHeader align-items-end justify-content-start">
+                      <div className="formRow border-0 pb-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Query*
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="text"
+                            className="formItem"
+                            value={advanceSearch}
+                            onChange={(e) => setAdvanceSearch(e.target.value)}
+                            // max={new Date()?.toISOString()?.split("T")[0]}
+                            // value={startDateFlag}
+
+                            // onKeyDown={(e) => e.preventDefault()}
+                          />
                         </div>
-                        <div className="content">
-                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
-                                <strong>Agent:</strong>{" "}
-                                <span className="fs-12"> agent_9020c5d80ca697d9d88ec9e825</span>
-                                <button className="clearButton">
-                                    <i className="fa-solid fa-clone" />
-                                </button>
-                            </p>
-                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
-                                <strong>Duration:</strong> <span className="fs-12">00:00:08</span>
-                            </p>
-                            <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
-                                <strong>Cost:</strong> <span className="fs-12">$ 0.02</span>
-                            </p>
+                      </div>
+                      <div className="formRow border-0 pb-0 col-xxl-1 col-xl-2">
+                        <label className="formLabel text-start mb-0 w-100">
+                          From
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="date"
+                            className="formItem"
+                            value={startDate}
+                            max={endDate || today} // Don't let 'From' exceed 'To' or today
+                            onChange={(e) => setStartDate(e.target.value)}
+                          />
                         </div>
-                        <div
+                      </div>
+
+                      <div className="formRow border-0 pb-0 col-xxl-1 col-xl-2">
+                        <label className="formLabel text-start mb-0 w-100">
+                          To
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="date"
+                            className="formItem"
+                            value={endDate}
+                            min={startDate} // Don't let 'To' go before 'From'
+                            max={today} // Don't let 'To' exceed today
+                            onChange={(e) => setEndDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="formRow border-0 pb-0">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Agent Name
+                        </label>
+                        <div className="d-flex w-100">
+                          <input
+                            type="text"
+                            className="formItem"
+                            value={agentName}
+                            onChange={(e) => setAgentName(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <button
+                        className="panelButton"
+                        onClick={getAdvanceSearch}
+                      >
+                        <span className="text">Search</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-magnifying-glass" />
+                        </span>
+                      </button>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        {cdr?.records?.length > 0 ? (
+                          <>
+                            <thead>
+                              <tr
+                                style={{ whiteSpace: "nowrap" }}
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight"
+                                aria-controls="offcanvasRight"
+                              >
+                                <th>Customer</th>
+                                <th>Agent</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                                <th>Cost</th>
+                                <th>Customer Sentiment</th>
+                                <th>Sentiment Score</th>
+                                <th>Efficiency Score</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              {loading ? (
+                                <ThreeDotedLoader />
+                              ) : (
+                                <>
+                                  {cdr?.records?.map((internalItem, index) => {
+                                    const item = internalItem.metadata;
+                                    return (
+                                      <tr
+                                        key={index}
+                                        style={{ whiteSpace: "nowrap" }}
+                                        data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight"
+                                        aria-controls="offcanvasRight"
+                                        onClick={() => setSelectedCall(item)}
+                                      >
+                                        <td>{item.caller_number}</td>
+                                        <td>{item.agent_name}</td>
+                                        <td>{item.call_date}</td>
+                                        <td>{item.call_time}</td>
+                                        <td>
+                                          {formatDuration(item.duration_sec)}
+                                        </td>
+                                        <td>{item.charge}</td>
+                                        <td>{item.customer_sentiment}</td>
+                                        <td>{item.customer_sentiment_score}</td>
+                                        <td>{item.efficiency_score}</td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
+                              )}
+                            </tbody>
+                          </>
+                        ) : cdr?.data?.length === 0 && !loading ? (
+                          <div>
+                            <EmptyPrompt type="generic" />
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="mt-5">
+                              <div
+                                className="imgWrapper loader position-static"
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  transform: "none",
+                                }}
+                              >
+                                <img
+                                  src={require(`../../assets/images/ai.png`)}
+                                  alt="Empty"
+                                  className="w-100"
+                                />
+                              </div>
+                              <div className="text-center mt-3">
+                                <h5
+                                  style={{
+                                    color: "var(--color-subtext)",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  Please search for a <b>call detail record</b>{" "}
+                                  to display{" "}
+                                  <span style={{ color: "var(--ui-accent)" }}>
+                                    <b>results</b>
+                                  </span>
+                                  .
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </table>
+                    </div>
+                    {/* <div className="tableHeader mb-3">
+                      {!loading && cdr && cdr?.data?.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={cdr?.last_page}
+                          from={(pageNumber - 1) * cdr?.per_page + 1}
+                          to={cdr?.to}
+                          total={cdr?.total}
+                          defaultPage={pageNumber}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div
+          className="offcanvas offcanvas-end w-30"
+          tabIndex="-1"
+          id="offcanvasRight"
+          aria-labelledby="offcanvasRightLabel"
+        >
+          <div
+            className="offcanvas-header"
+            style={{ borderBlockEnd: "1px solid var(--me-border1)" }}
+          >
+            <div>
+              <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                Call History
+              </h5>
+              <p
+                className="f-s-14 mb-0"
+                style={{ color: "var(--color-subtext)" }}
+              >
+                See all the details of this Call History
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn-close ms-auto"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="offcanvas-body p-3">
+            <div className="heading">
+              <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                {selectedCall?.call_date},{" "}
+                {selectedCall?.call_time.replace(/Z$/, "")}{" "}
+                {selectedCall?.direction}
+              </h5>
+              <button className=" bg-transparent border-0 text-danger">
+                <i className="fa-solid fa-trash" />
+              </button>
+            </div>
+            <div className="content mb-2">
+              <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                <strong>Agent:</strong>{" "}
+                <span className="fs-12">
+                  {" "}
+                  {selectedCall?.agent_name} ({selectedCall?.extension})
+                </span>
+                {/* <button className="clearButton">
+                  <i className="fa-solid fa-clone" />
+                </button> */}
+              </p>
+              <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                <strong>Duration:</strong>{" "}
+                <span className="fs-12">
+                  {formatDuration(selectedCall?.duration_sec)}
+                </span>
+              </p>
+              <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
+                <strong>Cost:</strong>{" "}
+                <span className="fs-12">$ {selectedCall?.charge}</span>
+              </p>
+            </div>
+            {/* <div
                             className="d-flex justify-content-between align-items-center gap-3 my-3 rounded-3 p-2"
                             style={{ border: "1px solid var(--me-border1)" }}
                         >
@@ -808,155 +400,260 @@ function AICDRSearch({ page }) {
                                 className="w-[300px] h-10"
                                 src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
                             />
-                        </div>
-                        <div
-                            className="rounded-3 p-2 table__details mb-2"
-                            style={{ border: "1px solid var(--me-border1)" }}
-                        >
-                            <h6 style={{ color: "var(--immortalBlack)" }}>Conversation Analysis</h6>
-                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
-                                Preset
-                            </p>
-                            <div className="d-flex justify-content-start align-items-center gap-2">
-                                <p className="status_text">
-                                    <i className="fa-solid fa-headphones" /> <span>Call Status</span>
-                                </p>
-                                <p className="status_text">
-                                    <i className="fa-solid fa-circle-small text-danger" />{" "}
-                                    <span className="endedTxt">ended</span>
-                                </p>
-                            </div>
-                            <div className="d-flex justify-content-start align-items-center gap-2">
-                                <p className="status_text">
-                                    <i className="fa-regular fa-user-vneck-hair" />{" "}
-                                    <span>User Sentiment</span>
-                                </p>
-                                <p className="status_text">
-                                    <i className="fa-solid fa-circle-small text-primary" />{" "}
-                                    <span className="endedTxt">Neutral</span>
-                                </p>
-                            </div>
-                            <div className="d-flex justify-content-start align-items-center gap-2">
-                                <p className="status_text">
-                                    <i className="fa-regular fa-phone" /> <span>Disconnection Reason</span>
-                                </p>
-                                <p className="status_text">
-                                    <i className="fa-solid fa-circle-small text-warning" />{" "}
-                                    <span className="endedTxt">user hangup</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div
-                            className="rounded-3 p-2 table__details mb-2"
-                            style={{ border: "1px solid var(--me-border1)" }}
-                        >
-                            <h6 className="f-s-14" style={{ color: "var(--immortalBlack)" }}>
-                                Summary
-                            </h6>
-                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
-                                The call begins with the agent introducing themselves and offering
-                                assistance in booking tickets, asking for the user's name to proceed.
-                            </p>
-                        </div>
-                        <div
-                            className="rounded-3 p-2 table__details mb-2"
-                            style={{ border: "1px solid var(--me-border1)" }}
-                        >
-                            <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
-                                Transcription
-                            </p>
-                            <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                                <p className="status_text" style={{ maxWidth: 50 }}>
-                                    {" "}
-                                    <span>agent:</span>
-                                </p>
-                                <p className="status_text">
-                                    <span className="endedTxt">
-                                        {" "}
-                                        Hi there! This is Alex from Webvio. I’m here to help you book your
-                                        tickets today. May I know your name to get started?
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        </div> */}
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="f-s-14" style={{ color: "var(--immortalBlack)" }}>
+                Summary
+              </h6>
+              <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
+                {selectedCall?.call_summary}
+              </p>
+            </div>
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+                Conversation Analysis
+              </h6>
+              <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
+                Preset
+              </p>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-solid fa-headphones" />{" "}
+                  <span>Hangup Cause</span>
+                </p>
+                <p className="status_text">
+                  <i className="fa-solid fa-circle-small text-danger" />{" "}
+                  <span className="endedTxt">{selectedCall?.hangup_cause}</span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-regular fa-user-vneck-hair" />{" "}
+                  <span>Hangup Status</span>
+                </p>
+                <p className="status_text">
+                  <i className="fa-solid fa-circle-small text-primary" />{" "}
+                  <span className="endedTxt">
+                    {selectedCall?.hangup_status}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-regular fa-phone" />{" "}
+                  <span>Efficiency Score</span>
+                </p>
+                <p className="status_text">
+                  <i className="fa-solid fa-circle-small text-warning" />{" "}
+                  <span className="endedTxt">
+                    {selectedCall?.efficiency_score}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-regular fa-phone" />{" "}
+                  <span>Problem Resolution Score</span>
+                </p>
+                <p className="status_text">
+                  <i className="fa-solid fa-circle-small text-warning" />{" "}
+                  <span className="endedTxt">
+                    {selectedCall?.problem_resolution_score}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-center gap-2">
+                <p className="status_text">
+                  <i className="fa-regular fa-phone" />{" "}
+                  <span>Professionalism Score</span>
+                </p>
+                <p className="status_text">
+                  <i className="fa-solid fa-circle-small text-warning" />{" "}
+                  <span className="endedTxt">
+                    {selectedCall?.professionalism_score}
+                  </span>
+                </p>
+              </div>
+            </div>
 
-                </div>
-                {/* {popUp ? (
-                    <div className="popup">
-                        <div className="container h-100">
-                            <div className="row h-100 justify-content-center align-items-center">
-                                <div className="row content col-xl-4">
-                                    <div className="col-12 px-0">
-                                        <div className="iconWrapper">
-                                            <i className="fa-duotone fa-triangle-exclamation"></i>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 ps-0 pe-0 text-center">
-                                        <h4 className="text-orange">Warning!</h4>
-                                        <p>
-                                            Are you sure, you want to block this number (
-                                            {selectedNumberToBlock})?
-                                        </p>
-                                        <div className="mt-2 d-flex justify-content-center gap-2">
-                                            <button
-                                                disabled={loading}
-                                                className="panelButton m-0"
-                                                onClick={() => handleBlockNumber(selectedNumberToBlock)}
-                                            >
-                                                <span className="text">Confirm</span>
-                                                <span className="icon">
-                                                    <i className="fa-solid fa-check"></i>
-                                                </span>
-                                            </button>
-                                            <button
-                                                className="panelButton gray m-0 float-end"
-                                                onClick={() => {
-                                                    setPopUp(false);
-                                                    setSelectedNumberToBlock(null);
-                                                }}
-                                            >
-                                                <span className="text">Cancel</span>
-                                                <span className="icon">
-                                                    <i className="fa-solid fa-xmark"></i>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    ""
-                )} */}
-            </main>
-            {
-                showCustomerFeedback &&
-                <div className="backdropContact" style={{ zIndex: 15 }}>
-                    <div className="addNewContactPopup">
-                        <div className="formRow px-0 pb-0 row">
-                            <div className="col-xl-12">
-                                <div className="content-comment">
-                                    <div className="formLabel" style={{ maxWidth: '100%' }}>
-                                        <label>{showCustomerFeedback}</label>
-                                    </div>
-                                </div>
-                                <div className="col-xl-12 mt-2">
-                                    <button className="panelButton gray mx-0" onClick={() => setShowCustomerFeedback()}>
-                                        <span className="text">Close</span>
-                                        <span className="icon">
-                                            <i className="fa-solid fa-caret-left" />
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </>
-    );
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+                Customer Analysis
+              </h6>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Customer Sentiment</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.customer_sentiment}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Customer Sentiment Score</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.customer_sentiment_score}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Customer Satisfaction</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">{selectedCall?.csat_score}</span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Customer Sentiment Reason</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.customer_sentiment_reason}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+                Agent Analysis
+              </h6>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Agent Name</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">{selectedCall?.agent_name}</span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Agent Sentiment</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.agent_sentiment}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Agent Sentiment Score</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.agent_sentiment_score}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Agent Sentiment Reason</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.agent_sentiment_reason}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+                Key Points
+              </h6>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Key Moment Description</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.key_moment_description}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Problem Resolution Reason</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt">
+                    {selectedCall?.problem_resolution_reason}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>Key Improvement Areas</span>
+                </p>
+                <p className="status_text">
+                  <ul className="ps-3">
+                    {selectedCall?.key_improvement_areas?.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <span className="endedTxt">{item}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="rounded-3 p-2 table__details mb-2"
+              style={{ border: "1px solid var(--me-border1)" }}
+            >
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
+                Transcript
+              </h6>
+              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
+                <p className="status_text">
+                  {" "}
+                  <span>agent:</span>
+                </p>
+                <p className="status_text">
+                  <span className="endedTxt"> Dummy data as of now?</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }
 
 export default AICDRSearch;
