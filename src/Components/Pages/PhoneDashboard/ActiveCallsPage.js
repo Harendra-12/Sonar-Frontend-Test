@@ -39,9 +39,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
     const [refresh, setRefresh] = useState(0);
     const [selectedModule, setSelectedModule] = useState('');
     const [addNewMod, setAddNewMod] = useState(false);
-    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD" 
-    // || item.callstate === "ACTIVE" || item.callstate === "HELD"
-);
+    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD"
+        // || item.callstate === "ACTIVE" || item.callstate === "HELD"
+    );
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
@@ -414,7 +414,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             </Tippy>
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={55} collapsible={true} minSize={25} ref={rightPanel}>
-                                            <div className='activeCallsAgentWrapper position-relative'>
+                                            <div className='activeCallsAgentWrapper position-relative' style={{ overflow: 'scroll', width: '100%' }}>
                                                 <div className='d-flex resBottom'>
                                                     <Tippy content="Minimize this window">
                                                         <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>

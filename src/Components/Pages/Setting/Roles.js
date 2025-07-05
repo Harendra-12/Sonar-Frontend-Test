@@ -954,7 +954,7 @@ function Roles() {
         )}
         {/* set permissions of new role */}
         {submitPopup ? (
-          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '600px' }}>
+          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '700px', zIndex: 9999 }}>
             <div className="row">
               <div className="col-12 heading mb-0">
                 <i className="fa-light fa-user-plus" />

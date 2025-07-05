@@ -580,7 +580,7 @@ const Dashboard = () => {
                                 </p>
                                 <div className="d-flex justify-content-center align-items-center">
                                   <p className="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
-                                  <p className="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                  <p className="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}&nbsp;</p>
                                   <p className="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
                                 </div>
                               </div>

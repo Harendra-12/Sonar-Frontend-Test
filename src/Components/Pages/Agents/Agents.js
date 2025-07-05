@@ -369,7 +369,7 @@ function Agents({ type }) {
                         )}
                     </div>
                     <div className="tableContainer">
-                      {!loading ? (
+                      {loading ? (
                         // <SkeletonTableLoader col={8} row={15} />
                         <ThreeDotedLoader />
                       ) : (
@@ -383,7 +383,7 @@ function Agents({ type }) {
                               <th>Recording</th>
                               <th className="text-center">
                                 <select
-                                  className="formItem f-select-width"
+                                  className="f-select-width"
                                   value={onlineFilter}
                                   onChange={(e) => {
                                     setonlineFilter(e.target.value)

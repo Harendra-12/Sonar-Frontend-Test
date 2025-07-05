@@ -52,7 +52,7 @@ const DidListingAdd = () => {
   useEffect(() => {
     setAllDid(didAll)
   }, [didAll])
-  
+
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data, did_vendor_id: Number(data.did_vendor_id) };
@@ -214,7 +214,7 @@ const DidListingAdd = () => {
                             })}
                           >
                             <option disabled value={""}>
-                              Chose a vendor
+                              Choose a vendor
                             </option>
                             {vendorData &&
                               vendorData.map((item) => {
