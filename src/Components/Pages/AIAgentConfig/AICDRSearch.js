@@ -209,7 +209,6 @@ function parseTranscript(rawText) {
                                       </tr>
                                     );
                                   })}
-                                  <tr>Hii</tr>
                                 </>
                               )}
                             </tbody>
@@ -276,7 +275,7 @@ function parseTranscript(rawText) {
           </div>
         </section>
         <div
-          className="offcanvas offcanvas-end w-30 show"
+          className="offcanvas offcanvas-end w-30"
           tabIndex="-1"
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
@@ -306,23 +305,23 @@ function parseTranscript(rawText) {
           <div className="offcanvas-body p-3">
             <div className="heading">
               <h5 className="offcanvas-title" id="offcanvasRightLabel">
-                {selectedCall?.call_date}, {selectedCall?.call_time}{" "}
+                {selectedCall?.call_date}, {selectedCall?.call_time.replace(/Z$/, "")}{" "}
                 {selectedCall?.direction}
               </h5>
               <button className=" bg-transparent border-0 text-danger">
                 <i className="fa-solid fa-trash" />
               </button>
             </div>
-            <div className="content">
+            <div className="content mb-2">
               <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
                 <strong>Agent:</strong>{" "}
                 <span className="fs-12">
                   {" "}
-                  {selectedCall?.agent_name} {selectedCall?.extension}
+                  {selectedCall?.agent_name} ({selectedCall?.extension})
                 </span>
-                <button className="clearButton">
+                {/* <button className="clearButton">
                   <i className="fa-solid fa-clone" />
-                </button>
+                </button> */}
               </p>
               <p className="mb-0" style={{ color: "var(--color-subtext)" }}>
                 <strong>Duration:</strong>{" "}
@@ -346,7 +345,7 @@ function parseTranscript(rawText) {
                             />
                         </div> */}
                           <div
-              className="rounded-3 p-2 table__details mb-2"
+              className="rounded-3 p-2 table__details mb-2" 
               style={{ border: "1px solid var(--me-border1)" }}
             >
               <h6 className="f-s-14" style={{ color: "var(--immortalBlack)" }}>
@@ -360,7 +359,7 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-              <h6 style={{ color: "var(--immortalBlack)" }}>
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Conversation Analysis
               </h6>
               <p className="f-s-14" style={{ color: "var(--color-subtext)" }}>
@@ -430,11 +429,11 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 style={{ color: "var(--immortalBlack)" }}>
+               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Customer Analysis
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Customer Sentiment</span>
                 </p>
@@ -445,7 +444,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
                <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Customer Sentiment Score</span>
                 </p>
@@ -456,7 +455,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Customer Satisfaction</span>
                 </p>
@@ -467,7 +466,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Customer Sentiment Reason</span>
                 </p>
@@ -483,11 +482,11 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 style={{ color: "var(--immortalBlack)" }}>
+               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Agent Analysis
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Agent Name</span>
                 </p>
@@ -498,7 +497,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
                <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Agent Sentiment</span>
                 </p>
@@ -509,7 +508,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Agent Sentiment Score</span>
                 </p>
@@ -520,7 +519,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Agent Sentiment Reason</span>
                 </p>
@@ -536,11 +535,11 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-               <h6 style={{ color: "var(--immortalBlack)" }}>
+               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Key Points
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Key Moment Description</span>
                 </p>
@@ -551,7 +550,7 @@ function parseTranscript(rawText) {
                 </p>
               </div>
                <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Problem Resolution Reason</span>
                 </p>
@@ -562,14 +561,14 @@ function parseTranscript(rawText) {
                 </p>
               </div>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>Key Improvement Areas</span>
                 </p>
                 <p className="status_text">
-                  <ul className="endedTxt">
+                  <ul className="ps-3">
                     {selectedCall?.key_improvement_areas?.map((item, index) =>{
-                    return ( <li key={index}>{item}</li>)}
+                    return ( <li key={index}><span className="endedTxt">{item}</span></li>)}
                     )}
                   </ul>
                 </p>
@@ -580,11 +579,11 @@ function parseTranscript(rawText) {
               className="rounded-3 p-2 table__details mb-2"
               style={{ border: "1px solid var(--me-border1)" }}
             >
-              <h6 style={{ color: "var(--immortalBlack)" }}>
+              <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Transcript
               </h6>
               <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text" style={{ maxWidth: 50 }}>
+                <p className="status_text">
                   {" "}
                   <span>agent:</span>
                 </p>
