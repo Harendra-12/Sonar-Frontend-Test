@@ -60,12 +60,12 @@
                             ]
                         },
                         "notes": [
-                            "*Although documentation is not required at this time, Our advises verifying the accuracy of any supplied information, such as collecting or checking documentary proof. Additional information may be required in the future."
+                            "*Although documentation is not required at this time, AngelPBX advises verifying the accuracy of any supplied information, such as collecting or checking documentary proof. Additional information may be required in the future."
                         ]
                     }
                 }
             ],
-            "legal_notice": "These guidelines are provided to help comply with applicable requirements. They represent Our’s current understanding and do not constitute legal advice. Compliance obligations apply to your specific use cases, and guidelines may be updated without notice."
+            "legal_notice": "These guidelines are provided to help comply with applicable requirements. They represent AngelPBX’s current understanding and do not constitute legal advice. Compliance obligations apply to your specific use cases, and guidelines may be updated without notice."
         }
     },
     {
@@ -159,7 +159,7 @@
                     }
                 }
             ],
-            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -518,7 +518,7 @@
             "notes": [
                 "*Although not required at this time, verifying submitted information with documentation is advised to avoid escalations."
             ],
-            "legal_notice": "Guidelines reflect Our’s current understanding and don't represent legal advice; obligations vary by use case and may be updated."
+            "legal_notice": "Guidelines reflect AngelPBX’s current understanding and don't represent legal advice; obligations vary by use case and may be updated."
         }
     },
     {
@@ -938,7 +938,7 @@
                     }
                 },
                 "notes": [
-                    "LOA must be uploaded via Console using Our’s provided template."
+                    "LOA must be uploaded via Console using AngelPBX’s provided template."
                 ]
             },
             "sms": {
@@ -961,7 +961,7 @@
                 "outbound_requirements": "N/A",
                 "best_practices": "N/A"
             },
-            "legal_notice": "These guidelines reflect Our’s current understanding, do not constitute legal advice, and may change without notice."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding, do not constitute legal advice, and may change without notice."
         }
     },
     {
@@ -1846,7 +1846,7 @@
             "letter_of_authorization": {
                 "required_for_business": true,
                 "notes": [
-                    "Executed LOA must be filled from Our template and uploaded via Console"
+                    "Executed LOA must be filled from AngelPBX template and uploaded via Console"
                 ]
             },
             "sms": {
@@ -1985,7 +1985,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s understanding of regulatory requirements in Croatia and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s understanding of regulatory requirements in Croatia and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -2027,7 +2027,7 @@
                     ]
                 }
             },
-            "legal_notice": "These guidelines represent Our’s current understanding and do not constitute legal advice; comply with your specific obligations, and check regularly as requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding and do not constitute legal advice; comply with your specific obligations, and check regularly as requirements may change."
         }
     },
     {
@@ -2147,7 +2147,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s understanding of regulatory requirements in the Czech Republic and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s understanding of regulatory requirements in the Czech Republic and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -2264,7 +2264,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of regulatory requirements in Denmark and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of regulatory requirements in Denmark and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -2367,7 +2367,7 @@
                     "supported": true,
                     "sender_id_preserved": true,
                     "provisioning_time": "4 weeks",
-                    "note": "Sender IDs may be overwritten with a random shortcode outside the Our platform"
+                    "note": "Sender IDs may be overwritten with a random shortcode"
                 },
                 "compliance_notes": [
                     "Get opt‑in consent",
@@ -2394,7 +2394,7 @@
                     "emergency_calls": false
                 }
             },
-            "legal_notice": "These guidelines represent Our’s current understanding and do not constitute legal advice; obligations vary and may change without notice."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding and do not constitute legal advice; obligations vary and may change without notice."
         }
     },
     {
@@ -2535,7 +2535,7 @@
             },
             "notes": [
                 "LOA template available via link",
-                "Guidelines reflect Our’s current understanding and are not legal advice",
+                "Guidelines reflect AngelPBX’s current understanding and are not legal advice",
                 "Information subject to change without notice"
             ]
         }
@@ -2638,7 +2638,7 @@
                     "Business Address": "No documentation required"
                 }
             },
-            "regulatory_notice": "These guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. They represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "regulatory_notice": "These guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. They represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -2765,7 +2765,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s understanding of Finnish requirements combined with DID provider norms; they do not constitute legal advice and are subject to change."
+            "legal_notice": "These guidelines represent AngelPBX’s understanding of Finnish requirements combined with DID provider norms; they do not constitute legal advice and are subject to change."
         }
     },
     {
@@ -3018,7 +3018,7 @@
                     }
                 }
             },
-            "footer_notice": "These guidelines represent Our’s current understanding… do not constitute legal advice. You are expected to understand and abide by all compliance obligations. Check the page regularly for updates."
+            "footer_notice": "These guidelines represent AngelPBX’s current understanding… do not constitute legal advice. You are expected to understand and abide by all compliance obligations. Check the page regularly for updates."
         }
     },
     {
@@ -3147,7 +3147,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of regulatory requirements in Germany and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of regulatory requirements in Germany and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -3208,7 +3208,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines are provided to help you comply with Twilio’s mobile number regulations for Ghana and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines are provided to help you comply with AngelPBX’s mobile number regulations for Ghana and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -3310,7 +3310,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines are based on Twilio’s published regulatory requirements for Greece and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines are based on AngelPBX’s published regulatory requirements for Greece and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -3357,8 +3357,8 @@
                     "letter_of_authorization": "Executed letter of authorization (if required; use template and upload to Console)"
                 },
                 "notes": [
-                    "*Although documentation is not required at this time, Our advises verifying the accuracy of required information—such as collecting or checking documentary proof.",
-                    "**If an executed Letter of Authorization (LOA) is required for documentation, please copy the template located on the Our page, fill it out, and upload it to the Console."
+                    "*Although documentation is not required at this time, AngelPBX advises verifying the accuracy of required information—such as collecting or checking documentary proof.",
+                    "**If an executed Letter of Authorization (LOA) is required for documentation, please copy the template located on the AngelPBX page, fill it out, and upload it to the Console."
                 ]
             },
             "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements [...] updated or changed without notice."
@@ -3422,9 +3422,9 @@
                 }
             },
             "notes": [
-                "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements.",
-                "These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice.",
-                "By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs.",
+                "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure AngelPBX's platform remains compliant with global telecommunications ecosystem requirements.",
+                "These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice.",
+                "By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs.",
                 "You are expected to understand and abide by all compliance obligations applicable to your specific application.",
                 "You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
             ]
@@ -3566,7 +3566,7 @@
                     }
                 }
             ],
-            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Twilio's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Twilio and its customers, and do not constitute legal advice. Requirements may change."
+            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure our platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -3666,7 +3666,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s and local provider norms for Hungary, based on regulatory sources. They do not constitute legal advice and may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s and local provider norms for Hungary, based on regulatory sources. They do not constitute legal advice and may change."
         }
     },
     {
@@ -3777,7 +3777,7 @@
                     }
                 }
             },
-            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to ensure Our remains compliant with global telecommunications ecosystem rules. These guidelines represent current understanding and do not constitute legal advice; they may be updated or changed without notice."
+            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to ensure AngelPBX remains compliant with global telecommunications ecosystem rules. These guidelines represent current understanding and do not constitute legal advice; they may be updated or changed without notice."
         }
     },
     {
@@ -3817,7 +3817,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of toll-free phone number provisioning requirements in India. They do not constitute legal advice and may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of toll-free phone number provisioning requirements in India. They do not constitute legal advice and may change."
         }
     },
     {
@@ -3993,7 +3993,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of Indonesian regulatory requirements. They do not constitute legal advice and may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of Indonesian regulatory requirements. They do not constitute legal advice and may change."
         }
     },
     {
@@ -4051,7 +4051,7 @@
                             },
                             "acceptable_documentation": {},
                             "notes": [
-                                "All provided details will be digitally verified; Twilio may request additional evidence if inconsistencies arise"
+                                "All provided details will be digitally verified; AngelPBX may request additional evidence if inconsistencies arise"
                             ]
                         }
                     }
@@ -4131,7 +4131,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of regulatory requirements in Ireland and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of regulatory requirements in Ireland and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -4187,7 +4187,7 @@
                     }
                 }
             },
-            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure AngelPBX's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -4309,7 +4309,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s published regulatory requirements for Italy and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s published regulatory requirements for Italy and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -4358,8 +4358,8 @@
                     "letter_of_authorization": "Executed Letter of Authorization (if required; use template in Console)"
                 },
                 "notes": [
-                    "*Although documentation is not required at this time, Our advises verifying the accuracy of required information — such as collecting or checking documentary proof.",
-                    "**If an executed Letter of Authorization (LOA) is required for documentation, please copy the template located on the Our page, fill it out, and upload it to the Console."
+                    "*Although documentation is not required at this time, AngelPBX advises verifying the accuracy of required information — such as collecting or checking documentary proof.",
+                    "**If an executed Letter of Authorization (LOA) is required for documentation, please copy the template located on the AngelPBX page, fill it out, and upload it to the Console."
                 ]
             },
             "sms": {
@@ -4501,7 +4501,7 @@
                     }
                 }
             ],
-            "legal_notice": "National and toll-free numbers are available only to businesses via Twilio; individual requests are not supported. Following national telecom rules, documentation includes business registration, ID, and proof‑of‑address. Requirements are based on Twilio and Telnyx norms and may change."
+            "legal_notice": "National and toll-free numbers are available only to businesses via AngelPBX; individual requests are not supported. Following national telecom rules, documentation includes business registration, ID, and proof‑of‑address. Requirements are based on AngelPBX and Telnyx norms and may change."
         }
     },
     {
@@ -4560,7 +4560,7 @@
                     "letter_of_authorization": "Executed Letter of Authorization (if required; use template and upload to Console)"
                 }
             },
-            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "footer": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -4647,7 +4647,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s published local number requirements in Kenya and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s published local number requirements in Kenya and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -4689,9 +4689,9 @@
                 }
             },
             "disclaimer": [
-                "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our’s platform remains compliant with global telecommunications ecosystem requirements.",
-                "These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice.",
-                "By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs.",
+                "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure AngelPBX’s platform remains compliant with global telecommunications ecosystem requirements.",
+                "These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice.",
+                "By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs.",
                 "You are expected to understand and abide by all compliance obligations applicable to your specific application.",
                 "You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
             ]
@@ -4950,7 +4950,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s understanding of Macao’s mobile number compliance requirements and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s understanding of Macao’s mobile number compliance requirements and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -5032,8 +5032,8 @@
             },
             "disclaimer": [
                 "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements.",
-                "These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice.",
-                "By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs.",
+                "These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice.",
+                "By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs.",
                 "You are expected to understand and abide by all compliance obligations applicable to your specific application.",
                 "You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
             ]
@@ -5189,7 +5189,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s official phone number compliance requirements in Malaysia and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s official phone number compliance requirements in Malaysia and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -5244,8 +5244,8 @@
             },
             "disclaimer": [
                 "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements.",
-                "These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice.",
-                "By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs.",
+                "These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice.",
+                "By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs.",
                 "You are expected to understand and abide by all compliance obligations applicable to your specific application.",
                 "You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
             ]
@@ -5283,7 +5283,7 @@
                     "letter_of_authorization": "Executed Letter of Authorization"
                 }
             },
-            "disclaimer": "These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "disclaimer": "These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -5503,7 +5503,7 @@
                     }
                 }
             ],
-            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -5655,7 +5655,7 @@
                     }
                 }
             ],
-            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to Our and its customers, and do not constitute legal advice. By posting these guidelines, Our makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
+            "legal_notice": "For the benefit of all our customers, these guidelines are provided to help you comply with applicable requirements and to help ensure Our's platform remains compliant with global telecommunications ecosystem requirements. These guidelines represent our current understanding of common compliance requirements generally applicable to AngelPBX and its customers, and do not constitute legal advice. By posting these guidelines, AngelPBX makes no assurances regarding the legal compliance of your application built using our APIs. You are expected to understand and abide by all compliance obligations applicable to your specific application. You should check these pages regularly for updates as telecommunications ecosystem requirements continue to evolve and change, and the information below may be updated or changed without notice."
         }
     },
     {
@@ -5781,7 +5781,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of regulatory requirements in the United States and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of regulatory requirements in the United States and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -5907,7 +5907,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio's current understanding of the regulatory requirements for phone numbers in Portugal. They do not constitute legal advice and may change."
+            "legal_notice": "These guidelines reflect our current understanding of the regulatory requirements for phone numbers in Portugal. They do not constitute legal advice and may change."
         }
     },
     {
@@ -6055,7 +6055,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of phone number regulatory requirements in the Netherlands and do not constitute legal advice; requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of phone number regulatory requirements in the Netherlands and do not constitute legal advice; requirements may change."
         }
     },
     {
@@ -6160,7 +6160,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s published regulatory requirements for New Zealand phone numbers and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s published regulatory requirements for New Zealand phone numbers and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -6310,7 +6310,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of phone number compliance requirements in Panama and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of phone number compliance requirements in Panama and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -6386,7 +6386,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of regulatory requirements for phone numbers in the Philippines and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of regulatory requirements for phone numbers in the Philippines and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -6603,7 +6603,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of Poland's regulatory compliance requirements and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of Poland's regulatory compliance requirements and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -6736,7 +6736,7 @@
                     }
                 }
             ],
-            "legal_notice": "Puerto Rico is regulated as part of the United States under Twilio’s numbering compliance system, so U.S. documentation applies equally. Local porting and SMS features follow U.S. rules."
+            "legal_notice": "Puerto Rico is regulated as part of the United States under AngelPBX’s numbering compliance system, so U.S. documentation applies equally. Local porting and SMS features follow U.S. rules."
         }
     },
     {
@@ -6905,7 +6905,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines are based on Twilio’s official regulatory requirements for Romania and do not constitute legal advice; requirements may change."
+            "legal_notice": "These guidelines are based on AngelPBX’s official regulatory requirements for Romania and do not constitute legal advice; requirements may change."
         }
     },
     {
@@ -7285,7 +7285,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of phone number regulatory requirements in South Africa and do not constitute legal advice. Requirements may change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of phone number regulatory requirements in South Africa and do not constitute legal advice. Requirements may change."
         }
     },
     {
@@ -7353,7 +7353,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines represent Twilio’s current understanding of Sweden’s phone number provisioning requirements. They do not constitute legal advice and are subject to change."
+            "legal_notice": "These guidelines represent AngelPBX’s current understanding of Sweden’s phone number provisioning requirements. They do not constitute legal advice and are subject to change."
         }
     },
     {
@@ -7526,7 +7526,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of Swiss phone number regulatory requirements and do not constitute legal advice; requirements may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of Swiss phone number regulatory requirements and do not constitute legal advice; requirements may change."
         }
     },
     {
@@ -7731,7 +7731,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines reflect Twilio’s current understanding of phone number compliance requirements in Thailand. They do not constitute legal advice and may change."
+            "legal_notice": "These guidelines reflect AngelPBX’s current understanding of phone number compliance requirements in Thailand. They do not constitute legal advice and may change."
         }
     },
     {
@@ -7797,7 +7797,7 @@
                     }
                 }
             ],
-            "legal_notice": "These guidelines are based on Twilio’s published regulatory requirements for Tunisia and do not constitute legal advice; requirements may change."
+            "legal_notice": "These guidelines are based on AngelPBX’s published regulatory requirements for Tunisia and do not constitute legal advice; requirements may change."
         }
     }
 ]
