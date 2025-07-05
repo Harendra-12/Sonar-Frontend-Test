@@ -1028,7 +1028,11 @@ function Navbar() {
                       </div>
                     </li>
                   }
-                  {isCustomerAdmin &&
+                  {checkModulePerm(
+                    "Call Tracker",
+                    permissions,
+                    account?.sections,
+                  ) &&
                     <li className="">
                       <button
                         data-bs-toggle="collapse"
