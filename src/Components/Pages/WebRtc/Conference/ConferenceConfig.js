@@ -44,6 +44,8 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
   const account = useSelector((state) => state.account);
   const slugPermissions = useSelector((state) => state?.permissions);
 
+  const redirectConference = useSelector((state) => state.redirectConference)
+
   // Initial API call to get all conference data
   useEffect(() => {
     async function getData() {
@@ -111,6 +113,13 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
       return false
     }
   }
+
+  // toggle switch for Conference Redirect
+  useEffect(() => {
+    if (redirectConference) {
+      dispatch({ type: 'SET_REDIRECTCONFERENCE', redirectConference: false });
+    }
+  }, [redirectConference])
   return (
     <>
       {spinLoading && <CircularLoader />}

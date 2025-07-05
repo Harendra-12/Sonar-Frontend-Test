@@ -34,6 +34,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const dispatch = useDispatch();
   const adminLogout = useSelector((state) => state.adminLogout);
   const slugPermissions = useSelector((state) => state?.permissions);
+  const redirectConference = useSelector((state) => state?.redirectConference);
 
 
   // Trying to connect with freeswitch at every 3 seconds when disconnect or unregister from feeswitch for any of reason
@@ -105,6 +106,14 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const handleToggle = () => {
     setIsVisible(!isVisible);
   };
+
+  // Function to check if redirect to conference
+  useEffect(() => {
+    if (redirectConference) {
+      setactivePage("conference");
+    }
+  }, [redirectConference])
+
 
   return (
     <>
