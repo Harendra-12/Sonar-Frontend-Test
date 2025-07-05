@@ -37,6 +37,7 @@ function AICDRSearch({ page }) {
   const navigate = useNavigate();
   const [advanceSearch, setAdvanceSearch] = useState();
   const [selectedCall, setSelectedCall] = useState();
+  const [selectedAudioPath, setSelectedAudioPath] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [agentName, setAgentName] = useState();
@@ -269,7 +270,7 @@ function AICDRSearch({ page }) {
                                           data-bs-toggle="offcanvas"
                                           data-bs-target="#offcanvasRight"
                                           aria-controls="offcanvasRight"
-                                          onClick={() => setSelectedCall(item)}
+                                          onClick={() => { setSelectedCall(item); setSelectedAudioPath(internalItem.audio_url) }}
                                         >
                                           <td>{item.caller_number}</td>
                                           <td>{item.agent_name}</td>
@@ -415,7 +416,7 @@ function AICDRSearch({ page }) {
               <audio
                 controls=""
                 className="w-[300px] h-10"
-                src="https://dxc03zgurdly9.cloudfront.net/f5e0247d28860688da234a274581852650536733268c7de4cfb4e423be59f1ce/recording.wav"
+                src={selectedAudioPath}
               />
             </div>
             <div
