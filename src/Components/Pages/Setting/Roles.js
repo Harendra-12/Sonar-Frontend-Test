@@ -1107,6 +1107,7 @@ function Roles() {
                         loading={loading}
                         setLoading={setLoading}
                         setRolePermissionBridge={setRolePermissionBridge}
+                        isPopup={true}
                       />
                     </div>
                   )}

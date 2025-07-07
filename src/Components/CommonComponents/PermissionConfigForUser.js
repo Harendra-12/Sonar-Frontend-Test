@@ -203,7 +203,7 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter }) {
+export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter, isPopup }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
@@ -581,8 +581,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         return (
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
             <div className="accordion-item">
-              <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button className="accordion-button mainSection border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
+              <div className="heading h-auto justify-content-between mb-0" style={{ flexDirection: 'row' }}>
+                <button className="accordion-button mainSection border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}${isPopup && 'unique'}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
                     <div className="cl-toggle-switch">
@@ -640,7 +640,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 )}
               </div>
               {expandedSections[sectionName] && (
-                <div id={sectionName.replace(/ /g, "")} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
+                <div id={sectionName.replace(/ /g, "") + (isPopup && 'unique')} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
                   <div className="accordion-body">
                     <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
                       <table className="w-100">
