@@ -385,9 +385,9 @@ const UsersAdd = () => {
       </style>
       <main className="mainContent">
         <section id="phonePage">
-          <div className="container-fluid px-0">
             <Header title="Users" />
-          </div>
+          {/* <div className="container-fluid px-0">
+          </div> */}
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

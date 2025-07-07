@@ -70,7 +70,7 @@ function HeaderApp({ title, loading, setLoading, refreshApi }) {
                       ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                       : "fa-regular fa-arrows-rotate fs-5 "
                   }
-                  style={{ color: "var(--webUtilGray)" }}
+                  style={{ color: "var(--me-text-color)" }}
                 ></i>
               </button>
             )}

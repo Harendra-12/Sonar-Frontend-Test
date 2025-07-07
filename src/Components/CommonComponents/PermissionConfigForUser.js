@@ -617,7 +617,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                         </div>
                       </Tippy>
                       <div className="my-auto position-relative ms-3 me-1 d-flex">
-                        <span className='me-2'>Master: </span>
+                        <span className='me-2 text_muted2'>Master: </span>
                         <div className="cl-toggle-switch">
                           <label className="cl-switch">
                             <input

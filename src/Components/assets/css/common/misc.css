@@ -897,7 +897,7 @@ input[type=number] {
 
 .viewingAs {
     text-transform: uppercase;
-    color: var(--webUtilGray);
+    color: var(--me-text-color);
     font-size: 0.875rem !important;
     font-weight: 500;
 }
