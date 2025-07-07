@@ -23,6 +23,15 @@ const RingGroup = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (ringGroupRefresh === 0) {
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: 1,
+      });
+    }
+  }, [ringGroupRefresh, dispatch]);
+
+  useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
         const filteredData = [];
@@ -45,11 +54,6 @@ const RingGroup = () => {
         setRingGroupData(filteredRingGroup);
       };
       filterRinggroup();
-    } else {
-      dispatch({
-        type: "SET_RINGGROUPREFRESH",
-        ringGroupRefresh: ringGroupRefresh + 1,
-      });
     }
   }, [ringGroup, allCall]);
 
@@ -128,8 +132,8 @@ const RingGroup = () => {
                         </span>
                       </div>
                     </div>
-                  {/* </div> */}
-                  {/* <div className="col-6"> */}
+                    {/* </div> */}
+                    {/* <div className="col-6"> */}
                     <div className="headingExtraInfo">
                       <div className="">
                         <span className="badge badge-soft-success rounded-pill "
@@ -194,7 +198,7 @@ const RingGroup = () => {
                     {ringGroupData &&
                       ringGroup &&
                       ringGroup.map((call, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{call.name}</td>
                           <td>
@@ -251,7 +255,7 @@ const RingGroup = () => {
                                 >
                                   {call.ring_group_destination.map(
                                     (item, index) => (
-                                      <li>
+                                      <li key={index}>
                                         <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
                                           <span className="avatar-container">
                                             {
