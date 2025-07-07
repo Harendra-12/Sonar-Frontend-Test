@@ -284,7 +284,7 @@ function AICDRSearch({ page }) {
                                           <td>{item.customer_sentiment_score}</td>
                                           <td>{item.efficiency_score}</td>
                                           <td>
-                                            <button className="tableButton edit mx-auto"><i className="fa-regular fa-eye"></i></button>
+                                            <button className="tableButton edit"><i className="fa-regular fa-eye"></i></button>
                                           </td>
                                         </tr>
                                       );
