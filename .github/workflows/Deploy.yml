@@ -7,13 +7,24 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Set up SSH agent for Git access
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: |
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Use Node.js
+      - name: Add GitHub to known_hosts
+        run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Checkout repository using SSH
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -32,40 +43,17 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-build
-          path: build/
-          if-no-files-found: error
-
-  deploy:
-    needs: build-and-deploy
-    runs-on: self-hosted
-
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: react-build
-          path: build/
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: |
-            ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add GitHub to known_hosts
-        run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Deploy to Server
+      - name: Deploy build to server directory
         run: |
-          rsync -avz --delete ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/
+          echo "Deploying build to ${{ secrets.DEPLOY_PATH }}"
 
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            echo "Deployment completed. Reloading server..."
-            # Uncomment below if needed
-            # sudo systemctl reload apache2
-            exit 0
-          EOF
+          # Ensure DEPLOY_PATH exists
+          mkdir -p ${{ secrets.DEPLOY_PATH }}
+
+          # Clean previous build
+          rm -rf ${{ secrets.DEPLOY_PATH }}/*
+
+          # Copy new build
+          cp -r build/* ${{ secrets.DEPLOY_PATH }}/
+
+          echo "Deployment complete."
