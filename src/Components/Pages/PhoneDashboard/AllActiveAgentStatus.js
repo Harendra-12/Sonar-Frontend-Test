@@ -234,7 +234,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                                             const callStatus = getCallStatus();
 
                                                                             return (
-                                                                                <tr>
+                                                                                <tr key={index}>
                                                                                     <td>
                                                                                         <div className="d-flex align-items-center">
                                                                                             <span className={`extensionStatus ${callStatus?.status === 'In Call' || callStatus?.status === 'On Hold' ? 'onCall' : onlineUser.includes(agent?.extension?.extension) ? 'online' : 'offline'}`}></span>
@@ -296,7 +296,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                                         // .filter((agent) => )
                                                                         .map((agent, index) => {
                                                                             return (
-                                                                                <tr>
+                                                                                <tr key={index}>
                                                                                     <td>
                                                                                         <div className="d-flex align-items-center">
                                                                                             <span className={"extensionStatus offline"}></span>
@@ -342,9 +342,9 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen, isAct
                                                     </thead>
                                                     <tbody>
                                                         {allParkedCall.length > 0 &&
-                                                            allParkedCall.map((call) => {
+                                                            allParkedCall.map((call, index) => {
                                                                 return (
-                                                                    <tr>
+                                                                    <tr key={index}>
                                                                         <td>{call.cid_num}</td>
 
                                                                         <td>{extractLastNumber(call?.parked_by)}</td>

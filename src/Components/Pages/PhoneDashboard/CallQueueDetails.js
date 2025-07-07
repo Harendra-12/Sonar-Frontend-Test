@@ -121,8 +121,8 @@ const CallQueueDetails = () => {
                         </span>
                       </div>
                     </div>
-                  {/* </div> */}
-                  {/* <div className="col-6"> */}
+                    {/* </div> */}
+                    {/* <div className="col-6"> */}
                     <div className="headingExtraInfo">
                       <div className="me-auto">
                         <span className="badge badge-soft-success rounded-pill "
@@ -187,7 +187,7 @@ const CallQueueDetails = () => {
                     {callQueue &&
                       callCenter &&
                       callCenter.map((call, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{call.queue_name}</td>
                           <td>
