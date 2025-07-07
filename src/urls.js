@@ -21,6 +21,7 @@ export const api_url = {
     AI_SEARCH: `/dev2/ai-search`,
     CHAT_BOT: `/dev2/chat_bot`,
     AI_REPLY: `/dev2/ai-reply`,
+    AI_DASHBOARD: `/dev2/ai-dashboard`,
 
     // meet related api's
     MEET_STOP_RECORDING: (name) => `/stop-recording?roomName=${name}`,
