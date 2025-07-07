@@ -49,7 +49,6 @@ function AIDashboard() {
           "rgba(255, 99, 133, 0.81)",
           "rgba(54, 163, 235, 0.81)",
           "rgba(255, 207, 86, 0.81)",
-          "rgba(255, 207, 86, 0.81)",
           "rgba(77, 81, 87, 0.32) ",
         ],
       },
@@ -68,7 +67,7 @@ function AIDashboard() {
       }
     }
     getData();
-  },[]);
+  }, []);
 
   function getAverageDurationHHMMSS(data) {
     if (!Array.isArray(data) || data.length === 0) return "00:00:00";
@@ -94,11 +93,11 @@ function AIDashboard() {
     <>
       <main className="mainContent ">
         <section id="phonePage">
-          <Header title="Reports" />
-          {loading ? (
-            <ThreeDotedLoader />
-          ) : (
-            <div className="container-fluid lightBG_ai">
+          <Header title="AI Dashboard" />
+          <div className="container-fluid lightBG_ai">
+            {loading ? (
+              <ThreeDotedLoader />
+            ) : (<>
               <div className="row mt-3">
                 <div className="col-xxl-8">
                   <div className="row gx-xxl-3 gx-lg-2">
@@ -231,6 +230,30 @@ function AIDashboard() {
                   </div>
                 </div>
                 <div className="col-xxl-4">
+                  <div className="d-flex justify-content-start">
+                    <div className="formRow border-0 pt-0">
+                      <label className="formLabel text-start mb-0 w-100 pt-0">Date Filter</label>
+                      <select className="formItem">
+                        <option value="date">Single Date</option>
+                        <option value="date_range">Date Range</option>
+                        <option value="7_days">Last 7 Days</option>
+                        <option value="1_month">Last 1 Month</option>
+                        <option value="3_month">Last 3 Months</option>
+                      </select>
+                    </div>
+                    <div className="formRow border-0 pt-0">
+                      <label className="formLabel text-start mb-0 w-100 pt-0">From</label>
+                      <div className="d-flex w-100">
+                        <input type="date" className="formItem" defaultValue="" />
+                      </div>
+                    </div>
+                    <div className="formRow border-0 pt-0">
+                      <label className="formLabel text-start mb-0 w-100 pt-0">To</label>
+                      <div className="d-flex w-100">
+                        <input type="date" className="formItem" defaultValue="" />
+                      </div>
+                    </div>
+                  </div>
                   <div className="schedule-card card">
                     <div className=" card-header">
                       <div className="header-top">
@@ -253,8 +276,8 @@ function AIDashboard() {
                                 </div>
                                 <div className="flex-fill">
                                   <div className="d-flex justify-content-between align-items-center">
-                                    <h6>{key}</h6>
-                                    <p className="text-primary fw-bold">
+                                    <h6 className="mb-0" style={{ textTransform: 'capitalize' }}>{key}</h6>
+                                    <p className="text-primary fw-bold mb-0">
                                       {value}
                                     </p>
                                   </div>
@@ -333,7 +356,7 @@ function AIDashboard() {
                     </div>
 
                     <div className="card-body">
-                      <div className="tableContainer">
+                      <div className="tableContainer ai-agent-analytics">
                         <table>
                           <thead>
                             <tr>
@@ -354,7 +377,7 @@ function AIDashboard() {
                                         {/* {item.profile_picture ? ( */}
                                         <img
                                           src={require("../../assets/images/placeholder-image.webp")}
-                                          // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                        // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                         />
                                         {/* ) : ( */}
                                         {/* <i className="fa-light fa-user" /> */}
@@ -365,12 +388,12 @@ function AIDashboard() {
                                   </td>
                                   <td>
                                     <span className="badge badge-soft-primary  rounded-pill">
-                                      {item?.average_duration_sec}seconds
+                                      {item?.average_duration_sec} seconds
                                     </span>
                                   </td>
                                   <td>
                                     <span className="badge badge-soft-primary  rounded-pill">
-                                      {item?.average_sentiment_score}
+                                      {parseFloat(item?.average_sentiment_score).toFixed(2)}
                                     </span>
                                   </td>
                                   <td>
@@ -384,7 +407,7 @@ function AIDashboard() {
                                       return (
                                         <span
                                           key={index}
-                                          className="badge badge-soft-secondary rounded-pill"
+                                          className="badge badge-soft-secondary rounded-pill me-2"
                                         >
                                           {moment}
                                         </span>
@@ -401,8 +424,9 @@ function AIDashboard() {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </>
+            )}
+          </div>
         </section>
       </main>
     </>

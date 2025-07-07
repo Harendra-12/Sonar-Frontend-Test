@@ -24,7 +24,7 @@ table thead tr {
 }
 
 table tbody tr {
-    background-color: var(--table-even-bg) ;
+    background-color: var(--table-even-bg);
     /* transition: 0.1s ease-in; */
     /* border-bottom: 1px solid var(--border-color); */
     position: relative;
@@ -484,15 +484,15 @@ table td.incoming::after {
 /* Checked */
 .cl-switch>input:checked {
     right: -10px;
-    background-color: var( --header-dark-gray);
+    background-color: var(--header-dark-gray);
 }
 
 .cl-switch>input:checked+span::before {
-    background-color: var( --header-dark-gray);
+    background-color: var(--header-dark-gray);
 }
 
 .cl-switch>input:checked+span::after {
-    background-color: var( --list-color);
+    background-color: var(--list-color);
     transform: translateX(16px);
 }
 
@@ -541,7 +541,7 @@ table td.incoming::after {
     background-color: #61b5b4;
 }
 
-table .smallNottif{
+table .smallNottif {
     position: absolute;
     top: -20px;
     right: 0;
@@ -555,6 +555,11 @@ table .smallNottif{
     color: var(--color-subtext);
     transition: 0.3s ease-in-out;
 }
-table .smallNottif i{
+
+table .smallNottif i {
     color: var(--badge-info-text-subtle);
+}
+
+.ai-agent-analytics.tableContainer table tbody tr td {
+    white-space: break-spaces !important;
 }
