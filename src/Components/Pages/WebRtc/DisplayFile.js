@@ -159,8 +159,8 @@ const DisplayFile = ({ item, index }) => {
           backgroundColor: "var(--dash-listing-bg)",
           borderRadius: "5px",
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "end",
+          justifyContent: "center",
+          alignItems: "center",
           padding: "1rem",
         }}
       >

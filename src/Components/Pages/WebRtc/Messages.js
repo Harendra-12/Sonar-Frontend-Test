@@ -448,7 +448,7 @@ function Messages({
     return parts[parts?.length - 1]?.toLowerCase();
   };
 
-  
+
 
   // Logic to send message
   const checkMessageType = (message) => {
@@ -2348,16 +2348,16 @@ function Messages({
                                   <div className=" d-flex align-items-center">
                                     <div
                                       className="profileHolder"
-                                      // id={
-                                      //   item?.message_groupusers?.some((user) =>
-                                      //     onlineUser?.some(
-                                      //       (online) =>
-                                      //         online?.id === user?.user_id
-                                      //     )
-                                      //   )
-                                      //     ? "profileOnlineNav"
-                                      //     : "profileOfflineNav"
-                                      // }
+                                    // id={
+                                    //   item?.message_groupusers?.some((user) =>
+                                    //     onlineUser?.some(
+                                    //       (online) =>
+                                    //         online?.id === user?.user_id
+                                    //     )
+                                    //   )
+                                    //     ? "profileOnlineNav"
+                                    //     : "profileOfflineNav"
+                                    // }
                                     >
                                       <i className="fa-light fa-users fs-5"></i>
                                     </div>
@@ -2720,7 +2720,7 @@ function Messages({
                                   <div className="d-flex">
                                     <div
                                       className="profileHolder"
-                                      // id={"profileOfflineNav"}
+                                    // id={"profileOfflineNav"}
                                     >
                                       <i className="fa-light fa-users fs-5"></i>
                                     </div>

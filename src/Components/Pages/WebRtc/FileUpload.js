@@ -63,7 +63,8 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                 [recipient[0]]: [
                     ...(prevState[recipient[0]] || []),
                     {
-                        from: account.name,
+                        from: account.id,
+                        user_name: account.name,
                         body: "loading",
                         time
                     },
