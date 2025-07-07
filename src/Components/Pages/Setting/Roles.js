@@ -875,7 +875,7 @@ function Roles() {
                             <option value="" disabled>
                               Please Select Template
                             </option>
-                            {roles.map((item, key) => {
+                            {roles?.filter((item => item?.is_default == 1))?.map((item, key) => {
                               return (
                                 <option value={item.id} key={key}>
                                   {item.name}
@@ -936,6 +936,7 @@ function Roles() {
                           setSaveClick(false);
                           setEditClick(false);
                           setEditIndex("");
+                          setNewRole("");
                         }}
                       >
                         <span className="text">Cancel</span>

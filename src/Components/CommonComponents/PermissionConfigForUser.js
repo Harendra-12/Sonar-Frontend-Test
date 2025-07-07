@@ -207,6 +207,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
+  const [isDefaultOne, setIsDefaultOne] = useState(false)
   const [rolePermissions, setRolePermissions] = useState({
     role_id: selectedRole,
     permissions: [],
@@ -238,6 +239,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
       }));
     }
+    const isDefault = allRoleList?.find((item) => item?.id == selectedRole)?.is_default == 1;
+    setIsDefaultOne(isDefault)
   }, [selectedRole, allRoleList, existingUserData]);
 
   const resetPermissionToInitialState = () => {
@@ -591,6 +594,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                           type="checkbox"
                           checked={!!expandedSections[sectionName]}
                           onChange={() => toggleSection(sectionName, filteredModels)}
+                          disabled={isDefaultOne}
                         />
                         <span></span>
                       </label>
@@ -601,7 +605,14 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                   <>
                     <div className='d-flex ms-2'>
                       <Tippy content="Reset permissions to initial state">
-                        <div onClick={resetPermissionToInitialState}>
+                        <div
+                          onClick={!isDefaultOne ? resetPermissionToInitialState : undefined}
+                          style={{
+                            cursor: isDefaultOne ? 'not-allowed' : 'pointer',
+                            opacity: isDefaultOne ? 0.5 : 1,
+                            pointerEvents: isDefaultOne ? 'none' : 'auto',
+                          }}
+                        >
                           <i className='fa-solid fa-arrows-rotate' />
                         </div>
                       </Tippy>
@@ -611,6 +622,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                           <label className="cl-switch">
                             <input
                               type="checkbox"
+                              disabled={isDefaultOne}
                               checked={filteredModels.every(model =>
                                 model.permissions.every(p =>
                                   rolePermissions.permissions.includes(p.id)
@@ -692,6 +704,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                 <label className="cl-switch">
                                                   <input
                                                     type="checkbox"
+                                                    disabled={isDefaultOne}
                                                     checked={
                                                       rolePermissions.sectionPermissions.includes(model.id) &&
                                                       rolePermissions.permissions.includes(permission.id)
@@ -750,6 +763,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                       <input
                                                         type="checkbox"
                                                         checked={checkedState}
+                                                        disabled={isDefaultOne}
                                                         onChange={(e) => {
                                                           toggleAllColumnPermissions(model, e.target.checked, row.type)
                                                         }}
