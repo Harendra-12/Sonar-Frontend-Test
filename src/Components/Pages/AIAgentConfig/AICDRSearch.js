@@ -414,7 +414,7 @@ function AICDRSearch({ page }) {
               style={{ border: "1px solid var(--me-border1)" }}
             >
               <audio
-                controls=""
+                controls={true}
                 className="w-[300px] h-10"
                 src={selectedAudioPath}
               />
