@@ -509,7 +509,7 @@ function Messages({
     }
   };
   function sendSingleMessage(selectedUrl) {
-    if (!selectedUrl && messageInput[recipient[0]].trim() === "") {
+    if (!selectedUrl && (!messageInput[recipient[0]]?.trim || messageInput[recipient[0]].trim() === "")) {
       return;
     }
     let messageContent;

@@ -236,7 +236,7 @@ function CdrFilterReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
         setPageNumber(1);
-        setItemsPerPage(20);
+        // setItemsPerPage(20);
       } else {
         setDebounceCallOrigin("");
       }
@@ -250,7 +250,7 @@ function CdrFilterReport({ page }) {
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
         setPageNumber(1);
-        setItemsPerPage(20);
+        // setItemsPerPage(20);
       } else {
         setDebounceCallDestination("");
       }
@@ -775,7 +775,7 @@ function CdrFilterReport({ page }) {
     }
     setColumnsOptions(optionsCol);
     setColumnOriginalSequence(columns);
-  }, [showKeys, cdr?.data?.length]);
+  }, [showKeys]);
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true);
@@ -993,7 +993,7 @@ function CdrFilterReport({ page }) {
                                   setStartDateFlag("");
                                   setEndDateFlag("");
                                   setPageNumber(1);
-                                  setItemsPerPage(20);
+                                  // setItemsPerPage(20);
                                 }}
                               >
                                 <option value={"date"}>Single Date</option>
@@ -1019,7 +1019,7 @@ function CdrFilterReport({ page }) {
                                     onChange={(e) => {
                                       setStartDateFlag(e.target.value);
                                       setPageNumber(1);
-                                      setItemsPerPage(20);
+                                      // setItemsPerPage(20);
                                     }}
                                   />
                                   <input
@@ -1032,7 +1032,7 @@ function CdrFilterReport({ page }) {
                                         startTime: `${e.target.value}:00`,
                                       }));
                                       setPageNumber(1);
-                                      setItemsPerPage(20);
+                                      // setItemsPerPage(20);
                                     }}
                                   />
                                 </div>
@@ -1055,7 +1055,7 @@ function CdrFilterReport({ page }) {
                                       onChange={(e) => {
                                         setStartDateFlag(e.target.value);
                                         setPageNumber(1);
-                                        setItemsPerPage(20);
+                                        // setItemsPerPage(20);
                                       }}
                                       onKeyDown={(e) => e.preventDefault()}
                                     />
@@ -1069,7 +1069,7 @@ function CdrFilterReport({ page }) {
                                           startTime: `${e.target.value}:00`,
                                         }));
                                         setPageNumber(1);
-                                        setItemsPerPage(20);
+                                        // setItemsPerPage(20);
                                       }}
                                     />
                                   </div>
@@ -1089,7 +1089,7 @@ function CdrFilterReport({ page }) {
                                       onChange={(e) => {
                                         setEndDateFlag(e.target.value);
                                         setPageNumber(1);
-                                        setItemsPerPage(20);
+                                        // setItemsPerPage(20);
                                       }}
                                       onKeyDown={(e) => e.preventDefault()}
                                       disabled={!startDateFlag}
@@ -1105,7 +1105,7 @@ function CdrFilterReport({ page }) {
                                           endTime: `${e.target.value}:00`,
                                         }));
                                         setPageNumber(1);
-                                        setItemsPerPage(20);
+                                        // setItemsPerPage(20);
                                       }}
                                     />
                                   </div>
@@ -1210,7 +1210,7 @@ function CdrFilterReport({ page }) {
                                                 : [...prev, option.value]
                                             );
                                             setPageNumber(1);
-                                            setItemsPerPage(20);
+                                            // setItemsPerPage(20);
                                           }}
                                         />
                                         <span className="text-dark ms-2">
@@ -1293,7 +1293,7 @@ function CdrFilterReport({ page }) {
                                                 : [...prev, option.value]
                                             );
                                             setPageNumber(1);
-                                            setItemsPerPage(20);
+                                            // setItemsPerPage(20);
                                           }}
                                         />
                                         <span className="text-dark ms-2">
@@ -1379,7 +1379,7 @@ function CdrFilterReport({ page }) {
                                                 : [...prev, option.value]
                                             );
                                             setPageNumber(1);
-                                            setItemsPerPage(20);
+                                            // setItemsPerPage(20);
                                           }}
                                         />
                                         <span className="text-dark ms-2">
@@ -1458,7 +1458,7 @@ function CdrFilterReport({ page }) {
                                                   : [...prev, option.value]
                                               );
                                               setPageNumber(1);
-                                              setItemsPerPage(20);
+                                              // setItemsPerPage(20);
                                             }}
                                           />
                                           <span className="text-dark ms-2">
@@ -1635,7 +1635,7 @@ function CdrFilterReport({ page }) {
                                           filteredVallocal
                                         );
                                         setPageNumber(1);
-                                        setItemsPerPage(20);
+                                        // setItemsPerPage(20);
                                       }}
                                     />
                                     <span className="text-dark ms-2">

@@ -583,7 +583,7 @@ function OngoingCall({
       const username = accountDetails?.users?.filter(
         (acc) => acc?.extension_id === filteredExtension[0]?.id
       );
-      console.log(filteredExtension, username,callProgressDestination);
+      console.log(filteredExtension, username, callProgressDestination);
       setCallExtraInfo({
         info: username[0]?.username || callProgressDestination,
         type: "user",
@@ -1064,7 +1064,15 @@ function OngoingCall({
                     className="dialerInput"
                     ref={primDialpadRef}
                     value={destNumber}
-                    onChange={(e) => setDestNumber(e.target.value)}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      const lastDigit = newValue.slice(-1); // Get only the last typed digit
+                      setDestNumber(newValue);
+
+                      if (lastDigit !== "") {
+                        handleDigitPress(lastDigit);
+                      }
+                    }}
                     // onChange={handleInputChange}
                   />
                 </div>
