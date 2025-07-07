@@ -139,7 +139,7 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                     <div className="text-center">
                         <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                            style={{ color: "var(--webUtilGray)" }}
+                            style={{ color: "var(--me-text-color)" }}
                         ></i>
                     </div>
                 }

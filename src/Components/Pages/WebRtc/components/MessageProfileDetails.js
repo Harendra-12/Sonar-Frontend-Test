@@ -223,7 +223,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
             {" "} */}
               {recipient[3] ? recipient[3] : <div className='skeleton skeleton-text' style={{ width: '150px' }} />}
             </p>
-            {recipient[2] === "singleChat" && <h5 className="fw-medium f-s-14 text_muted">{recipient[4] ? recipient[4] : <div className='skeleton skeleton-heading-small' style={{ width: '200px' }} />}</h5>}
+            {recipient[2] === "singleChat" && <h5 className="fw-medium f-s-14 ">{recipient[4] ? recipient[4] : <div className='skeleton skeleton-heading-small' style={{ width: '200px' }} />}</h5>}
           </div>
         </div>
         <div className="d-flex justify-content-center align-items-center gap-2">
@@ -340,14 +340,14 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
             </div>
             <div className="tab-pane fade" id="nav-audio" role="tabpanel" aria-labelledby="nav-audio-tab" tabIndex="0">
               {allFiles && allFiles?.length > 0 ? (
-                <div className="imageList">
+                <div className="">
                   {allFiles
                     .filter((item) => item.message_type === "audio")
                     .map((item, index) => {
                       const fileName = item.message_text.split("/").pop();
 
                       return (
-                        <div className="file_list" key={index}>
+                        <div className="file_list mb-2" key={index}>
                           <div className="file_info">
                             <p className="ellipsisText">{fileName}</p>
                             <p className="text_muted">
@@ -361,14 +361,18 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                               ref={(el) => (audioRefs.current[index] = el)}
                               src={item.message_text}
                             />
-                            <button onClick={() => handleToggle(index)}>
-                              {playingIndex === index ? "Pause" : " Play"}
-                            </button>
-                            <button
-                              className="tableButton head ms-2"
-                              onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
-                              <i className="fa-solid fa-download" />
-                            </button>
+                            <div className="download ">
+                              <button onClick={() => handleToggle(index)} style={{fontSize: "1rem"}}>
+                                {playingIndex === index ? <i class="fa-regular fa-circle-pause"></i> : <i class="fa-regular fa-circle-play"></i>}
+                              </button>
+                            </div>
+                            <div className="download ">
+                              <button
+                                className=""
+                                onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
+                                <i className="fa-solid fa-download" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       );
@@ -380,13 +384,13 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
               {allFiles && allFiles?.length > 0 ? (
                 <div className="imageList">
                   {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
-                    <div className="video-boxes" key={index}>
+                    <div className="imgBox" key={index}>
                       {/* <img
                         src={item?.message_text}
                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
                         alt=""
                       /> */}
-                      <div className="extraButtons">
+                      {/* <div className="extraButtons"> */}
                         {/* <Link className="tableButton me-2" to={item?.message_text} target="_blank">
                           <i className="fa-solid fa-eye text-white" />
                         </Link> */}
@@ -398,10 +402,10 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                           />
                         </div>
 
-                        <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
+                        {/* <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
                           <i className="fa-solid fa-download" />
-                        </button>
-                      </div>
+                        </button> */}
+                      {/* </div> */}
                     </div>
                   ))}
                 </div>

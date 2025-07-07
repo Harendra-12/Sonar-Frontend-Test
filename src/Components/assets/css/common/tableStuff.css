@@ -488,7 +488,7 @@ table td.incoming::after {
 }
 
 .cl-switch>input:checked+span::before {
-    background-color: var( --header-dark-gray);
+    background-color: var(--switch-toggle);
 }
 
 .cl-switch>input:checked+span::after {

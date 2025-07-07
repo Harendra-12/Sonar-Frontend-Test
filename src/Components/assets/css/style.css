@@ -259,6 +259,7 @@
   --active-mail-list-text: #000C8F;
   --clr-permission-text: #333849;
   --mail-seen: #434649;
+    --switch-toggle:#89a2fa;
 }
 
 :root.dark {
@@ -351,10 +352,10 @@
 
   --table-head: #293e59;
   --table-even-bg: rgba(46, 44, 63, 0.62);
-  --table-odd-color: rgba(85, 104, 130, 0.18);
+  --table-odd-color: rgb(47 61 80);
   --table-border-color: #525458;
   --table-bg-active: #292f3a;
-
+  --switch-toggle:#89a2fa;
   /* ================= message box color  */
 
   --me-body-bg: #12131d;
