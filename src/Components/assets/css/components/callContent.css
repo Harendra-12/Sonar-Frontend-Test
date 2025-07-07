@@ -429,6 +429,9 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 20px;
     z-index: 10;
+
+    max-height: 100vh;
+    overflow: scroll;
 }
 
 .addNewContactPopup.logoutPopup {
@@ -810,6 +813,7 @@
     overflow: hidden auto;
     height: calc(100vh - 250px);
 }
+
 /* height: calc(100vh - 277px) */
 
 /* .newMessageWrapper {
@@ -1084,13 +1088,13 @@ h2.titleName {
 .lk-chat-header {
     justify-content: start;
     font-weight: 600;
-     border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .lk-close-button.lk-button.lk-chat-toggle {
     background: transparent !important;
     color: #000;
-      text-indent: 0;
+    text-indent: 0;
 }
 
 .lk-close-button.lk-button.lk-chat-toggle svg path {
