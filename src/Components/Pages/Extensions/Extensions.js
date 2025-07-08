@@ -383,7 +383,7 @@ const Extensions = () => {
                           ) : (
                             <>
                               {extension &&
-                                extension?.data?.length > 0 &&
+                                // extension?.data?.length > 0 &&
                                 (() => {
                                   // Filter showKeys to include only keys that exist in extension.data
                                   const validKeys = showKeys.filter((key) =>
@@ -393,7 +393,7 @@ const Extensions = () => {
                                     <>
                                       <thead>
                                         <tr>
-                                          {validKeys
+                                          {showKeys
                                             .filter(
                                               (item) =>
                                                 item !==
