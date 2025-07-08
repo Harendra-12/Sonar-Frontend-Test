@@ -266,6 +266,13 @@ const RingGroupAdd = () => {
 
   // Function to create a new ring group by validating form
   const handleFormSubmit = handleSubmit(async (data) => {
+    if(data.destination_type === "disabled") {
+      delete data.timeout_destination;
+    }
+    if( data.destination_type !== "disabled" && data.timeout_destination === "") {
+      toast.error("Please select timeout destination");
+      return;
+    }
     if (!destinationValidation()) {
       setError("destinations", {
         type: "manual",
@@ -350,10 +357,10 @@ const RingGroupAdd = () => {
     } else {
       setLoading(false);
       if (apiData.error) {
-        toast.error(apiData.error);
+        // toast.error(apiData.error);
       } else {
         const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   });
@@ -698,8 +705,10 @@ const RingGroupAdd = () => {
                           </div>
                           <>
                             <div className="col-xxl-6 col-xl-12 col-12">
-                              {watch()?.destination_type === "pstn" &&
-                                watch()?.destination_type != "disabled" && (
+                              {
+                                console.log(watch()?.destination_type,watch()?.destination_type === "pstn")
+                              }
+                              {watch()?.destination_type === "pstn" && (
                                   <div className=" col-12 pe-2">
                                     <div className="formLabel">
                                       <label className="formItemDesc">PSTN</label>
@@ -709,7 +718,7 @@ const RingGroupAdd = () => {
                                       name="timeout_destination"
                                       className="formItem"
                                       {...register("timeout_destination", {
-                                        required: "PSTN is required",
+                                        required: "required field",
                                         pattern: {
                                           value: /^[0-9]*$/,
                                           message: "Only digits are allowed",
@@ -939,7 +948,7 @@ const RingGroupAdd = () => {
                               name="forward_to"
                               className="formItem"
                               {...register("forward_to", {
-                                required: "PSTN is required",
+                                required: "required field",
                                 pattern: {
                                   value: /^[0-9]*$/,
                                   message: "Only digits are allowed",
