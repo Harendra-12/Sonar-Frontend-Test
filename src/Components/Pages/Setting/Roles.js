@@ -825,6 +825,7 @@ function Roles() {
                           setLoading={setLoading}
                           setRolePermissionBridge={setRolePermissionBridge}
                           isUserFilter={false}
+                          needToCheckDefault={true}
                         />
                       </div>
                     )}
@@ -1109,6 +1110,7 @@ function Roles() {
                         setLoading={setLoading}
                         setRolePermissionBridge={setRolePermissionBridge}
                         isPopup={true}
+                        needToCheckDefault={false}
                       />
                     </div>
                   )}

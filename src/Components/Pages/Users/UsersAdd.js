@@ -52,6 +52,7 @@ const UsersAdd = () => {
   const [profileImage, setProfileImage] = useState(null);
   const permissions = useSelector((state) => state.permissions);
   const [userPermissionBridge, setUserPermissionBridge] = useState([]);
+  const [profilePicUploading, setProfilePicUploading] = useState(false);
 
   const {
     register,
@@ -179,6 +180,7 @@ const UsersAdd = () => {
       if (fileSizeInMB > maxSizeInMB) {
         toast.error(`Please choose a file less than ${maxSizeInMB}MB.`);
       } else {
+        setProfilePicUploading(true);
         const parsedData = new FormData();
         parsedData.append("profile_picture", newImage);
         const apiData = await fileUploadFunction(
@@ -188,11 +190,13 @@ const UsersAdd = () => {
         if (apiData.status) {
           setProfileImage(apiData?.data);
           setProfilePicPopup(false);
+          setProfilePicUploading(false);
           // setRefresh(refresh + 1);
           toast.success(apiData.message);
         } else {
           setProfilePicPopup(false);
           toast.error(apiData.message);
+          setProfilePicUploading(false);
         }
       }
     } else {
@@ -262,7 +266,7 @@ const UsersAdd = () => {
       setLoading(false);
       // const errorMessage = Object.keys(addUser.errors);
       // toast.error(addUser.errors[errorMessage[0]][0]);
-      toast.error(addUser?.errors?.email[0]);
+      // toast.error(addUser?.errors?.email[0]);
     }
   });
 
@@ -1007,6 +1011,7 @@ const UsersAdd = () => {
                             setLoading={setLoading}
                             setUserPermissionBridge={setUserPermissionBridge}
                             isUserFilter={true}
+                            needToCheckDefault={false}
                           />
                         </div>
                       </div>
@@ -1157,9 +1162,9 @@ const UsersAdd = () => {
                       <button
                         className="panelButton m-0"
                         onClick={handleNewImage}
-                        disabled={!newImage}
+                        disabled={profilePicUploading}
                       >
-                        <span className="text">Confirm</span>
+                        <span className="text">{profilePicUploading ? "Uploading..." : "Confirm"}</span>
                         <span className="icon">
                           <i className="fa-solid fa-check"></i>
                         </span>

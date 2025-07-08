@@ -775,7 +775,7 @@ function CdrFilterReport({ page }) {
     }
     setColumnsOptions(optionsCol);
     setColumnOriginalSequence(columns);
-  }, [showKeys]);
+  }, [showKeys,cdr?.data?.length]);
 
   const handleRefreshBtnClicked = () => {
     setRefreshState(true);

@@ -188,6 +188,7 @@ function PermissionConfigForUser() {
                         loading={loading}
                         setLoading={setLoading}
                         standalone={true}
+                        needToCheckDefault={true}
                       />
                     </div>
                   </div>
@@ -203,7 +204,7 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter, isPopup }) {
+export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter, isPopup, needToCheckDefault }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
@@ -240,7 +241,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
       }));
     }
     const isDefault = allRoleList?.find((item) => item?.id == selectedRole)?.is_default == 1;
-    setIsDefaultOne(isDefault)
+    setIsDefaultOne(needToCheckDefault? isDefault:false)
   }, [selectedRole, allRoleList, existingUserData]);
 
   const resetPermissionToInitialState = () => {

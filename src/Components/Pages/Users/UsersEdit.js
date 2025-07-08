@@ -1046,6 +1046,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               setUserPermissionBridge={setUserPermissionBridge}
                               existingUserData={userData}
                               isUserFilter={true}
+                              needToCheckDefault={false}
                             />
                           </div>
                         </div>
