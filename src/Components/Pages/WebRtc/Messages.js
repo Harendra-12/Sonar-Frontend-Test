@@ -76,6 +76,7 @@ function Messages({
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
   const globalSession = useSelector((state) => state.sessions);
+  const allNotificationState = useSelector((data) => data?.allNotificationState);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const groupMessage = useSelector((state) => state.groupMessage);
@@ -857,8 +858,26 @@ function Messages({
         }
       }
     }
+    const isNewMessage = !allNotificationState?.some(data => data?.uuid === incomingMessage?.uuid);
 
-    handleIncomingMessage();
+    if (isNewMessage) {
+      handleIncomingMessage();
+    } else {
+      const unreadMap = {};
+
+      allNotificationState?.forEach((data) => {
+        if (data?.group_name) {
+          unreadMap[data.group_name] = (unreadMap[data.group_name] || 0) + 1;
+        } else if (data?.sender_id) {
+          unreadMap[data.sender_id] = (unreadMap[data.sender_id] || 0) + 1;
+        }
+      });
+
+      setUnreadMessage((prev) => ({
+        ...prev,
+        ...unreadMap,
+      }));
+    }
 
     return () => {
       isMounted = false; // Cleanup: mark as unmounted
@@ -1579,65 +1598,79 @@ function Messages({
 
   // Recieve group message
   useEffect(() => {
-    if (groupMessage) {
-      const audio = new Audio(
-        require("../../assets/music/message-notification.mp3")
-      );
-      const from = groupMessage?.user_id;
-      const body = groupMessage?.message_text;
-      setIsFreeSwitchMessage(true);
-      const time = formatDateTime(new Date());
-      setAllMessage((prevState) => ({
-        ...prevState,
-        [groupMessage.group_name]: [
-          ...(prevState[groupMessage.group_name] || []),
-          {
-            from,
-            body,
-            time,
-            user_id: from,
-            user_name: groupMessage?.user_name,
-            profile_picture: groupMessage?.profile_picture,
-            message_type: groupMessage.message_type,
-          },
-        ],
-      }));
-      if (groupMessage?.group_name != undefined) {
-        const contactIndex = groups.findIndex(
-          (contact) => contact?.group_name === groupMessage?.group_name
+    const isNewMessage = !allNotificationState?.some(data => data?.uuid === groupMessage?.uuid);
+    if (isNewMessage) {
+      if (groupMessage) {
+        const audio = new Audio(
+          require("../../assets/music/message-notification.mp3")
         );
-        if (contactIndex !== -1) {
-          const newGroups = [...groups];
-          newGroups[contactIndex].last_message_data.message_text = body;
-          newGroups[contactIndex].last_message_data.created_at = time;
-          newGroups[contactIndex].last_message_data.user_id = from;
-          newGroups?.splice(contactIndex, 1);
-          newGroups.unshift(groups[contactIndex]);
-          setGroups(newGroups);
-          setOriginalGroupsList(newGroups);
-        }
-        setActiveTab("all");
-        setUnreadMessage((prevState) => ({
+        const from = groupMessage?.user_id;
+        const body = groupMessage?.message_text;
+        setIsFreeSwitchMessage(true);
+        const time = formatDateTime(new Date());
+        setAllMessage((prevState) => ({
           ...prevState,
-          [groupMessage?.group_name]:
-            (prevState[groupMessage?.group_name] || 0) + 1,
+          [groupMessage.group_name]: [
+            ...(prevState[groupMessage.group_name] || []),
+            {
+              from,
+              body,
+              time,
+              user_id: from,
+              user_name: groupMessage?.user_name,
+              profile_picture: groupMessage?.profile_picture,
+              message_type: groupMessage.message_type,
+            },
+          ],
         }));
-        audio.play();
+        if (groupMessage?.group_name != undefined) {
+          const contactIndex = groups.findIndex(
+            (contact) => contact?.group_name === groupMessage?.group_name
+          );
+          if (contactIndex !== -1) {
+            const newGroups = [...groups];
+            newGroups[contactIndex].last_message_data.message_text = body;
+            newGroups[contactIndex].last_message_data.created_at = time;
+            newGroups[contactIndex].last_message_data.user_id = from;
+            newGroups?.splice(contactIndex, 1);
+            newGroups.unshift(groups[contactIndex]);
+            setGroups(newGroups);
+            setOriginalGroupsList(newGroups);
+          }
+          setActiveTab("all");
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [groupMessage?.group_name]:
+              (prevState[groupMessage?.group_name] || 0) + 1,
+          }));
+          audio.play();
+        }
       }
-    }
 
-    if (recipient?.length > 0) {
-      setUnreadMessage((prevState) => {
-        const {
-          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
-          ...newState
-        } = prevState;
-        return newState;
+      if (recipient?.length > 0) {
+        setUnreadMessage((prevState) => {
+          const {
+            [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
+            ...newState
+          } = prevState;
+          return newState;
+        });
+        dispatch({
+          type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+          recipient: [...recipient],
+        });
+      }
+    } else {
+      const unreadMap = {};
+      allNotificationState?.forEach((data) => {
+        if (data?.group_name) {
+          unreadMap[data.group_name] = (unreadMap[data.group_name] || 0) + 1;
+        }
       });
-      dispatch({
-        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-        recipient: [...recipient],
-      });
+      setUnreadMessage((prev) => ({
+        ...prev,
+        ...unreadMap,
+      }));
     }
   }, [groupMessage]);
 
@@ -2116,7 +2149,7 @@ function Messages({
                               handleMessageSearchChange(event)
                             }
                           />
-                          {contact.map((item) => {
+                          {contact?.map((item) => {
                             return (
                               <div
                                 data-bell={

@@ -101,6 +101,7 @@ var handRaises = [];
 var confNotif = [];
 var socketSendPeerCallMessage = [];
 var redirectConference = false;
+var allNotificationState = []
 
 const initialState = {
   account,
@@ -201,7 +202,8 @@ const initialState = {
   leadDataRefresh,
   handRaises,
   confNotif,
-  redirectConference
+  redirectConference,
+  allNotificationState
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -494,6 +496,9 @@ const counterReducer = (state = initialState, action) => {
     }
     case "SET_REDIRECTCONFERENCE": {
       return { ...state, redirectConference: action.redirectConference }
+    }
+    case ActionType.SET_NOTIFICATION_STATE: {
+      return { ...state, allNotificationState: action?.allNotificationState}
     }
     default:
       return state;
