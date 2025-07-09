@@ -501,7 +501,7 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper a dashboard_cardWrap ">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
@@ -569,7 +569,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    {/* <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper b d_card2 dashboard_cardWrap">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
@@ -590,12 +590,6 @@ const Dashboard = () => {
                               <p>Username: {account?.username}</p>
                               <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }} title={account?.email}>Email: {account?.email}</p>
                             </div>
-                            {/* <div className="col-3">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
-                              />
-                            </div> */}
                           </div>
                         </div>
                         <div className="d_chartImg">
@@ -605,9 +599,9 @@ const Dashboard = () => {
                           />
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     {checkViewSidebar("Package", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
-                      <div className="col-xl-3 mb-3 mb-xl-0">
+                      <div className="col-xl-4 mb-3 mb-xl-0">
                         <div className="itemWrapper c dashboard_cardWrap d_card3">
                           <div className="heading">
                             <div className="d-flex flex-wrap justify-content-between">
@@ -649,7 +643,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     }
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper d d_card4 dashboard_cardWrap ">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
@@ -825,7 +819,7 @@ const Dashboard = () => {
                           <></>
                         )} */}
                         {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
-                          <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart h-auto">
                                 <div className="d-flex flex-wrap justify-content-between">
@@ -933,17 +927,16 @@ const Dashboard = () => {
                           </div>
                         }
                         {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
-                          <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart h-auto">
                                 <div className="d-flex flex-wrap justify-content-between">
                                   <div className="col-9">
-                                    <h5>Agents</h5>
+                                    <h5>Users</h5>
                                     <p>
                                       Total:{" "}
-                                      {allUserList.filter((user) => user.extension !== null &&
-                                        user.extension.extension !== null)?.length}
-                                      {" "}Agents Created
+                                      {allUserList?.length}
+                                      {" "}Users Created
                                     </p>
                                   </div>
                                   <div className="col-3">
@@ -954,7 +947,7 @@ const Dashboard = () => {
                               <div className="dashboardUtilityCardWrapper">
                                 {accountDetails && accountDetails?.users ?
                                   <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
-                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineUser.length / allUserList?.length) * 100)}` }}>
                                       <circle className="bg"
                                         cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" strokeWidth="20"
                                       ></circle>
@@ -965,8 +958,7 @@ const Dashboard = () => {
                                     </svg>
                                     <div className='circularProgressContent'>
                                       <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList.filter((user) => user.extension !== null &&
-                                          user.extension.extension !== null)?.length}</span>
+                                        <label style={{ color: '#62a8ac' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -980,15 +972,13 @@ const Dashboard = () => {
                                 <div className="col">
                                   <ul>
                                     <li>
-                                      <label>Created:</label> <span style={{ color: 'rgb(98, 168, 172)' }}>{allUserList.filter((user) => user.extension !== null &&
-                                        user.extension.extension !== null)?.length}</span>
+                                      <label>Created:</label> <span style={{ color: 'rgb(98, 168, 172)' }}>{allUserList?.length}</span>
                                     </li>
                                     <li>
-                                      <label>Online:</label> <span>{onlineExtension.length}</span>
+                                      <label>Online:</label> <span>{onlineUser.length}</span>
                                     </li>
                                     <li>
-                                      <label>Activity:</label> <span>{(Number(onlineExtension.length) / Number(allUserList.filter((user) => user.extension !== null &&
-                                        user.extension.extension !== null)?.length) || 0).toFixed(2) * 100}%</span>
+                                      <label>Activity:</label> <span>{(Number(onlineUser.length) / Number(allUserList?.length) || 0).toFixed(2) * 100}%</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -997,7 +987,7 @@ const Dashboard = () => {
                                 <div className="data-number2">
                                   <div className="col-12">
                                     <div className="heading mb-2 h-auto">
-                                      <div className="d-flex justify-content-between"><span>Recent Agents</span> <Link to='/agents' className="text-decoration-none">View All</Link></div>
+                                      <div className="d-flex justify-content-between"><span>Recent Users</span> <Link to='/agents' className="text-decoration-none">View All</Link></div>
                                     </div>
                                     <ul
                                       style={{
@@ -1006,23 +996,22 @@ const Dashboard = () => {
                                         paddingRight: 10,
                                       }}
                                     >
-                                      {allUserList.filter((user) => user.extension !== null &&
-                                        user.extension.extension !== null).map(
-                                          (item, index) => (
-                                            <li className="d_extension_listing" key={index}>
-                                              {item?.name}
-                                              <span
-                                                className={
-                                                  onlineUser.includes(
-                                                    item?.id
-                                                  )
-                                                    ? "float-end extensionStatus online"
-                                                    : "float-end extensionStatus"
-                                                }
-                                              ></span>
-                                            </li>
-                                          )
-                                        )}
+                                      {allUserList.map(
+                                        (item, index) => (
+                                          <li className="d_extension_listing" key={index}>
+                                            {item?.name}
+                                            <span
+                                              className={
+                                                onlineUser.includes(
+                                                  item?.id
+                                                )
+                                                  ? "float-end extensionStatus online"
+                                                  : "float-end extensionStatus"
+                                              }
+                                            ></span>
+                                          </li>
+                                        )
+                                      )}
                                     </ul>
                                   </div>
                                 </div>
@@ -1068,7 +1057,7 @@ const Dashboard = () => {
                           </div>
                         } */}
                         {checkViewSidebar("DidDetail", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
-                          <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart">
                                 <div className="d-flex flex-wrap justify-content-between">
