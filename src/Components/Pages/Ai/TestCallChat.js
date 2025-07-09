@@ -125,6 +125,26 @@ const TestCallChat = ({ agentId }) => {
     }
   }
 
+  const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Auto-scroll only if user is near the bottom
+  const scrollToBottom = () => {
+    if (!containerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+
+    if (isNearBottom) {
+      containerRef.current.scrollTop = scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [transcript]);
+
   return (
     <>
       <div className="TestCallMessage">
@@ -144,7 +164,11 @@ const TestCallChat = ({ agentId }) => {
         {/* {testCallToken && (isCalling || transcript.length > 0) ? ( */}
         {testCallToken ? (
           <>
-            <div className="messageContent heightAuto">
+            <div
+              className="messageContent heightAuto"
+              ref={containerRef}
+              style={{ overflowY: "auto", maxHeight: "400px" }} // adjust height if needed
+            >
               {transcript &&
                 transcript.map((msg, index) => (
                   <div key={index} className="messageList">
@@ -161,6 +185,7 @@ const TestCallChat = ({ agentId }) => {
                     </div>
                   </div>
                 ))}
+              <div ref={messagesEndRef} />
             </div>
             <div className="messageFooter">
               <button
