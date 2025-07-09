@@ -132,6 +132,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
   const [logInDetails, setLoginDetails] = useState([]);
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("");
+  const [credsError, setCredsError] = useState(false);
 
   // Handle login function
   async function handleLogin() {
@@ -307,6 +308,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   // Function to handle login
   const userLogin = useCallback(async () => {
+    setCredsError(false);
     if (userName === "") {
       toast.error("Username is required!");
     } else if (password === "") {
@@ -320,6 +322,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
+        setCredsError(false);
         const country = JSON.parse(checkLogin.details).countryCode;
         localStorage.setItem('userCountry', country)
 
@@ -416,7 +419,11 @@ export function LoginComponent({ setLanguageChangePopup }) {
       ) {
         setLoading(false);
         toast.error(checkLogin?.response?.data?.message);
+        if (checkLogin?.response?.status === 401) {
+          setCredsError(true);
+        }
       } else {
+        setCredsError(false);
         if (checkLogin?.message === "Network Error") {
           toast.error("Network Error");
           return;
@@ -500,28 +507,34 @@ export function LoginComponent({ setLanguageChangePopup }) {
           <i className="fa-regular fa-user" />
         </div> */}
           <label>Username</label>
-          <div className="position-relative">
+          <div className="position-relative" style={{ marginBottom: '20px' }}>
             <i className="fa-thin fa-user" />
             <input
               type="text"
               name="username1"
               placeholder="Enter your username"
-              className="loginFormItem"
+              className={`loginFormItem mb-0 ${credsError && 'error'}`}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
+            {credsError && <div class="invalid-feedback d-block">
+              <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Username.
+            </div>}
           </div>
           <label>Password</label>
-          <div className="position-relative">
+          <div className="position-relative" style={{ marginBottom: '20px' }}>
             <i className="fa-thin fa-lock" />
             <input
               type="password"
               name="password1"
               placeholder="Enter your password"
-              className="loginFormItem"
+              className={`loginFormItem mb-0 ${credsError && 'error'}`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {credsError && <div class="invalid-feedback d-block">
+              <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Password.
+            </div>}
           </div>
           <div onClick={backToTop}>
             <button

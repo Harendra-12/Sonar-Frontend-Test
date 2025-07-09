@@ -162,6 +162,7 @@ function Messages({
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
+  const scrollPositionRef = useRef({ scrollTop: 0, scrollHeight: 0 });
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -396,10 +397,17 @@ function Messages({
           : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
       );
 
+      if (messageListRef.current && !isFreeSwitchMessage) {
+        scrollPositionRef.current = {
+          scrollTop: messageListRef.current.scrollTop,
+          scrollHeight: messageListRef.current.scrollHeight,
+        };
+      }
       apiData?.data?.data?.map((item) => {
         const user_details = allAgents?.find(
           (data) => data?.id == item?.user_id
         );
+
         setAllMessage((prevState) => ({
           ...prevState,
           [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
@@ -428,15 +436,9 @@ function Messages({
       }
     }
     if (recipient?.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(recipient?.[0])) {
-        if (
-          chatHistory[recipient?.[0]]?.total &&
-          chatHistory[recipient?.[0]].pageNumber * 40 <
-          chatHistory[recipient?.[0]].total
-        ) {
-          getData(chatHistory[recipient?.[0]].pageNumber + 1);
-          setIsFreeSwitchMessage(false);
-        }
+      if (Object.keys(chatHistory).includes(String(recipient?.[0]))) {
+        getData(chatHistory[recipient?.[0]].pageNumber + 1);
+        setIsFreeSwitchMessage(false);
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
@@ -1015,20 +1017,63 @@ function Messages({
   }, [allMessage]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (messageListRef.current) {
-        const threshold = messageListRef.current.scrollHeight * 0.9;
-        console.log(threshold, messageListRef.current.scrollTop);
-        if (messageListRef.current.scrollTop >= threshold) {
-          setLoadMore(loadMore + 1);
+    const el = messageListRef.current;
+    if (!el) return;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const { scrollTop, scrollHeight } = scrollPositionRef.current || {};
+
+        if (isFreeSwitchMessage) {
+          el.scrollTop = el.scrollHeight;
+        } else if (scrollTop !== undefined && scrollHeight !== undefined) {
+          const newScrollHeight = el.scrollHeight;
+          el.scrollTop = newScrollHeight - scrollHeight + scrollTop;
         }
+      });
+    });
+  }, [allMessage, isFreeSwitchMessage]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (messageListRef.current?.scrollTop === 0) {
+        setLoadMore(prev => prev + 1);
       }
     };
 
-    if (messageListRef.current) {
-      messageListRef.current.addEventListener("scroll", handleScroll);
-    }
+    const el = messageListRef.current;
+    if (el) el.addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (el) el.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (messageListRef.current) {
+  //       // Check if scrolled to top
+  //       if (messageListRef.current.scrollTop === 0) {
+  //         setLoadMore(prev => prev + 1);
+  //       }
+  //     }
+  //   };
+
+  //   const ref = messageListRef.current;
+  //   if (ref) {
+  //     ref.addEventListener("scroll", handleScroll);
+  //   }
+
+  //   // Cleanup listener on unmount or dependency change
+  //   return () => {
+  //     if (ref) {
+  //       ref.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [messageListRef?.current?.scrollTop === 0]);
+
+  // ================ scroll related stuff end here 
 
   useEffect(() => {
     async function getData() {
