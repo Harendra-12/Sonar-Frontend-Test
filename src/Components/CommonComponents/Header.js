@@ -203,7 +203,7 @@ function Header(props) {
               <div style={{ borderTop: '1px solid var(--border-color)' }} />
               <div className="dropdown-item">
                 <Link to={"/users-profile"} className="clearButton">
-                  <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
+                  <i className="fa-light fa-user me-2" aria-hidden="true"></i>
                   My Profile
                 </Link>
               </div>
@@ -212,7 +212,7 @@ function Header(props) {
                   onClick={() => setPopUp(true)}
                   className="clearButton text-align-start"
                 >
-                  <i className="fa-regular fa-lock me-2"></i>
+                  <i className="fa-light fa-gear me-2"></i>
                   Change Password
                 </Link>
               </div>
@@ -222,7 +222,7 @@ function Header(props) {
                   to={"/"}
                   className="clearButton text-align-start"
                 >
-                  <i className="fa-solid fa-power-off me-1"></i> Logout
+                  <i className="fa-light fa-right-from-bracket me-1"></i> Logout
                 </Link>
               </div>
               {/* <div
