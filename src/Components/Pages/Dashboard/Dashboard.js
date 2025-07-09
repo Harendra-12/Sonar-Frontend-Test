@@ -463,7 +463,7 @@ const Dashboard = () => {
         <div className="container-fluid">
           <div className="row ">
             <div className="col-12 mt-3 tangoNavs">
-              <nav>
+              {/* <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                   <button
                     className="nav-link active"
@@ -477,60 +477,8 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {/* {checkViewSidebar(
-                    "ChannelHangupComplete",
-                    slugPermissions,
-                    account?.permissions
-                  ) && (
-                      <button
-                        className="nav-link"
-                        id="nav-home-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#nav-calls"
-                        type="button"
-                        role="tab"
-                        aria-controls="nav-calls"
-                        aria-selected="true"
-                      >
-                        Calls
-                      </button>
-                    )} */}
-                  {/* {checkViewSidebar(
-                    "BillingAddress",
-                    slugPermissions,
-                    account?.permissions, "read"
-                  ) && checkViewSidebar(
-                    "WalletTransaction",
-                    slugPermissions,
-                    account?.permissions
-                  ) && (
-                      <button
-                        className="nav-link"
-                        id="nav-contact-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#nav-billing"
-                        type="button"
-                        role="tab"
-                        aria-controls="nav-billing"
-                        aria-selected="false"
-                      >
-                        Billing
-                      </button>
-                    )} */}
-                  {/* <div className="ms-auto pb-2">
-                    <Clock
-                      value={time}
-                      size={50}
-                      secondHandWidth={1}
-                      renderMinuteMarks={false}
-                      hourMarksWidth={1}
-                      hourMarksLength={15}
-                      hourHandWidth={2}
-                      minuteHandWidth={1}
-                    />
-                  </div> */}
                 </div>
-              </nav>
+              </nav> */}
               <div className="tab-content mt-3" id="nav-tabContent">
                 <div
                   className="tab-pane fade show active"

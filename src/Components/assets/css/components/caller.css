@@ -31,7 +31,7 @@
 
 .caller .header h5 {
     color: #fff;
-    font-family: Open Sans;
+    /* font-family: Open Sans; */
     font-size: 1.5rem !important;
     font-weight: 300;
 }
@@ -49,7 +49,7 @@
 
 .caller .user h3 {
     color: #fff;
-    font-family: 'Roboto';
+
     font-weight: 400;
 }
 
@@ -119,7 +119,7 @@
 .incomingCallPopup .userInfo h5 {
     font-weight: 300;
     color: #ffffff86;
-    font-family: Roboto;
+
 }
 
 .incomingCallPopup .controls {
@@ -309,7 +309,7 @@
     z-index: 1;
 }
 
-.duplicateBody .collpaseBtn{
+.duplicateBody .collpaseBtn {
     border: 0;
     background-color: #0075ff96;
     position: absolute;
@@ -340,10 +340,12 @@
 .duplicateWrapper .tableContainer {
     height: 405px;
 }
-.tippy-box.margeCall{
+
+.tippy-box.margeCall {
     transform: translate(83px, 8px);
 }
+
 .tippy-box.margeCall[data-placement^=bottom]>.tippy-arrow:before {
     left: -38px;
-   
+
 }

@@ -1018,6 +1018,7 @@ function Messages({
     const handleScroll = () => {
       if (messageListRef.current) {
         const threshold = messageListRef.current.scrollHeight * 0.9;
+        console.log(threshold, messageListRef.current.scrollTop);
         if (messageListRef.current.scrollTop >= threshold) {
           setLoadMore(loadMore + 1);
         }

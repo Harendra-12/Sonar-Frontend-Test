@@ -26,7 +26,7 @@ main.login {
     color: #fff;
     margin-bottom: 30px;
     padding: 5px 15px 5px 40px;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-size: 1rem;
     font-weight: 200;
     outline: none;
@@ -34,7 +34,7 @@ main.login {
 
 .loginFormItem::placeholder {
     color: #fff;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 400;
     font-size: 0.875rem;
     letter-spacing: 1px;
@@ -64,7 +64,7 @@ main.login {
 .loginLabel {
     color: #fff;
     font-size: 0.8125rem;
-    font-family: Outfit;
+    /* font-family: Outfit; */
 }
 
 a.loginLabel {
@@ -99,7 +99,7 @@ a.loginLabel {
 }
 
 .login .someText h1 {
-    font-family: Open Sans;
+    /* font-family: Open Sans; */
     font-weight: 900;
     letter-spacing: -1px;
     color: #fff;
@@ -118,7 +118,7 @@ a.loginLabel {
 }
 
 .login .someLogo h3 {
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 700;
     color: #fff;
     position: relative;
@@ -185,7 +185,7 @@ a.loginLabel {
     text-indent: 4px;
     line-height: 14px;
     padding-bottom: 2px;
-    font-family: Helvetica, Arial, sans-serif;
+    /* font-family: Helvetica, Arial, sans-serif; */
     font-weight: bold;
 }
 
@@ -234,7 +234,7 @@ a.loginLabel {
 
 .loginWrapper2 .content h3,
 .loginWrapper2 .loginImgWrapper h3 {
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 300;
     font-size: 1.75rem;
 }
@@ -254,7 +254,7 @@ a.loginLabel {
 
 .loginWrapper2 .content p,
 .loginWrapper2 .loginImgWrapper p {
-    font-family: Open sans;
+    /* font-family: Open sans; */
     font-weight: 400;
     font-size: 0.875rem;
 }
@@ -280,7 +280,7 @@ a.loginLabel {
 
 .loginWrapper2 .content .loginForm label {
     font-weight: 400;
-    font-family: 'Outfit';
+    /* font-family: 'Outfit'; */
     font-size: 0.875rem;
     margin-bottom: 5px;
     color: var(--immortalBlack);

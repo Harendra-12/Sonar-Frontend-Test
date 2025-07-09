@@ -4,13 +4,13 @@
 }
 
 .profileView .profileDetailsHolder .contentFinal h2 {
-    font-family: Outfit;
+    /* font-family: Outfit; */
     margin-bottom: 20px;
 
 }
 
 .profileView .profileDetailsHolder .contentFinal p {
-    font-family: Roboto;
+
     font-size: 1.125rem;
     color: var(--color-subtext);
 }
@@ -46,7 +46,7 @@
 
 .profileView .profileDetailsHolder .configProgressWrapper p {
     margin-bottom: 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-size: 1.25rem;
 }
 

@@ -7,6 +7,7 @@
     left: 0;
     z-index: 100;
 }
+
 #dialPad.subDialPad {
     background-color: #14161e;
     top: 0;
@@ -25,7 +26,7 @@
 .dialPadContainer h3 {
     font-size: 1.25rem;
     margin-bottom: 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     /* color: #6a6a6a; */
     color: #fff;
 }
@@ -33,7 +34,7 @@
 .dialPadContainer span {
     font-size: 0.75rem;
     color: #505050;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
 }
 
@@ -88,14 +89,14 @@
 .dialPadContainer .dialerWrap h4 {
     font-size: 1.625rem !important;
     color: #fff;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     margin-bottom: 0;
 }
 
 .dialPadContainer .dialerWrap h6 {
     font-size: 0.75rem;
     color: #6a6a6a;
-    font-family: Outfit;
+    /* font-family: Outfit; */
 }
 
 #dialPadCaller {
@@ -106,6 +107,6 @@
     cursor: pointer;
 }
 
-.spninner-loader{
+.spninner-loader {
     margin-left: 50px !important;
 }

@@ -80,7 +80,7 @@
 .messageOverlay .contactHeader h4 {
     font-size: 1.125rem !important;
     margin-bottom: 5px;
-    font-family: Roboto;
+
 }
 
 .messageOverlay .contactHeader .status {
@@ -725,7 +725,7 @@
     color: var(--color-subtext);
     padding: 5px 10px;
     font-weight: 400;
-    font-family: Outfit;
+    /* font-family: Outfit; */
 }
 
 .contactHeader .dropdown-menu .dropdown-item:active,
@@ -1683,21 +1683,26 @@
     color: var(--clr-permission-text);
     font-weight: 500;
 }
-.audio_controls{
+
+.audio_controls {
     display: flex;
     align-items: center;
     gap: 2px;
     margin-left: auto;
 }
-.css-1jqq78o-placeholder{
+
+.css-1jqq78o-placeholder {
     color: var(--me-text-color) !important;
 }
+
 .css-7sib9c-option:active {
     background-color: #303132 !important;
 }
-.css-7sib9c-option{
- color: var(--me-text-color) !important;
+
+.css-7sib9c-option {
+    color: var(--me-text-color) !important;
 }
-.text_muted2{
- color: var(--me-text-color) !important;
+
+.text_muted2 {
+    color: var(--me-text-color) !important;
 }
