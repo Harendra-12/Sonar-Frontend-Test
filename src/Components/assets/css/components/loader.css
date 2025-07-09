@@ -350,7 +350,7 @@
 
 .wordLoader {
   color: var(--color-subtext);
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-weight: 500;
   font-size: 1.5625rem;
   -webkit-box-sizing: content-box;

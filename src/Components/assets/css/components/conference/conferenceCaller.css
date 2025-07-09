@@ -21,12 +21,12 @@
 
 .contentParentWrap .contentWrap h4 {
     color: #fff;
-    font-family: Outfit;
+    /* font-family: Outfit; */
 }
 
 .contentParentWrap .contentWrap h6 {
     color: #fff;
-    font-family: Roboto;
+
     font-size: 0.9375rem;
 }
 

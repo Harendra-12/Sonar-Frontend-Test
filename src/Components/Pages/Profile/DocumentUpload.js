@@ -132,7 +132,7 @@ function DocumentUpload() {
   .custom-file-upload {
     width: 100%;
     height: 44px;
-    font-family: 'Roboto';
+    
     font-size: 0.8125rem;
     outline: none;
     padding-left: 10px;

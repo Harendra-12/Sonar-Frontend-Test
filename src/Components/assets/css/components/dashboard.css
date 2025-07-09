@@ -74,7 +74,7 @@
 .mainContent .title {
   font-size: 1rem;
   font-weight: 600;
-  font-family: Open sans;
+  /* font-family: Open sans; */
   color: var(--immortalBlack);
 }
 
@@ -86,13 +86,13 @@
 .itemWrapperb .heading {
   font-size: 0.6875rem;
   font-weight: 600;
-  font-family: Roboto;
+
   color: var(--color-subtext);
 }
 
 .itemWrapperb .data-number {
   font-size: 1.875rem;
-  font-family: Open sans !important;
+  /* font-family: Open sans !important; */
   line-height: 45px !important;
   padding: 0 !important;
   font-weight: 600;
@@ -109,14 +109,14 @@
 .itemWrapperb .label2 {
   font-size: 0.75rem;
   font-weight: 400;
-  font-family: Roboto;
+
   color: var(--color-subtext);
 }
 
 .itemWrapper .heading {
   text-align: left;
   font-weight: 500;
-  font-family: Roboto;
+
   color: var(--bgdark-color);
   height: 65px;
   padding: 0;
@@ -128,7 +128,7 @@
 .itemWrapper .heading h5 {
   margin-bottom: 5px;
   font-size: 1rem;
-  font-family: "Open Sans";
+  /* font-family: "Open Sans"; */
   font-weight: 700;
 }
 
@@ -293,7 +293,7 @@
   margin-bottom: 5px;
   font-size: 1.5rem;
   font-weight: 600;
-  font-family: Outfit;
+  /* font-family: Outfit; */
 }
 
 .itemWrapper .data-number2 h4 {
@@ -330,7 +330,7 @@
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%); */
-  font-family: Roboto;
+
   width: 100%;
   text-align: left;
   padding-top: 5px;
@@ -523,7 +523,7 @@
 .data-number {
   font-size: 2.625rem;
   font-weight: 600;
-  font-family: Outfit;
+  /* font-family: Outfit; */
   padding: 5px 0;
   text-align: center;
 }
@@ -535,7 +535,7 @@
 
 .data-number p {
   font-size: 1rem;
-  font-family: Roboto;
+
   font-weight: 400;
   margin: 5px 0 0 0;
 }
@@ -700,7 +700,7 @@
 }
 
 .itemWrapper .invoiceList li p {
-  font-family: Roboto;
+
   margin-bottom: 0;
   font-weight: 600;
   color: var(--immortalBlack);
@@ -713,7 +713,7 @@
 
 .itemWrapper .invoiceList li a {
   font-weight: 600;
-  font-family: Roboto;
+
 }
 
 .itemWrapper .invoiceList li a i {
@@ -919,7 +919,7 @@
 }
 
 .d_extension_listing {
-  background: var(--dash-listing-bg);
+  /* background: var(--dash-listing-bg); */
   color: var(--dash-listing-text);
   padding: 8px 10px !important;
   /* border-radius: 5px; */
@@ -942,9 +942,9 @@
 }
 
 .dashboard_headerPart {
-  border: 1px solid var(--header-dark-gray) !important;
+  /* border: 1px solid var(--header-dark-gray) !important; */
   border-radius: 8px;
-  padding: 10px !important;
+  /* padding: 10px !important; */
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
 }
@@ -970,6 +970,7 @@
 .itemWrapper.dashboard_cardWrap {
   min-height: 188px;
 }
+
 .itemWrapper.dashboard_cardWrap.a {
   background: #005b70 !important;
 }
@@ -1001,7 +1002,7 @@
   /* border: 2px dotted rgba(126, 126, 126, 0.38); */
   padding: 10px 8px !important;
   height: 100% !important;
-  border-radius: 10px ;
+  border-radius: 10px;
   transition: all 0.4s ease-in-out;
   display: flex;
   justify-content: center;
@@ -1071,16 +1072,51 @@
 }
 
 
-.numberActive_box p{
+.numberActive_box p {
   font-size: 10px !important;
 }
-.knowledgeDetails .itemWrapper .heading{
+
+.knowledgeDetails .itemWrapper .heading {
   height: auto;
 }
-.badgeGroup{
+
+.badgeGroup {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   align-items: center;
   justify-content: flex-end;
+}
+
+.dashboardUtilityCardWrapper {
+  display: flex;
+  padding: 20px 10px;
+}
+
+.dashboardUtilityCardWrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dashboardUtilityCardWrapper ul li {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.dashboardUtilityCardWrapper ul li label {
+  color: var(--color-subtext);
+}
+
+.dashboardUtilityCardWrapper ul li span {
+  font-weight: 700;
 }

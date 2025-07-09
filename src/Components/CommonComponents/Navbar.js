@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/css/style.css";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideNav } from "./Header";
 import { checkViewSidebar } from "../GlobalFunction/globalFunction";
+import { ThemeState } from "./DarkModeToggle";
 function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
@@ -22,7 +23,11 @@ function Navbar() {
     account?.user_role?.roles?.name === "Super Admin";
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
-
+  const [theme, setTheme] = useState(() => {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  });
 
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
@@ -45,6 +50,24 @@ function Navbar() {
     }
   }, []);
 
+  // Checks Current Theme
+  useEffect(() => {
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          const isDark = document.documentElement.classList.contains("dark");
+          setTheme(isDark ? "dark" : "light");
+        }
+      }
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div>
       <section>
@@ -58,7 +81,7 @@ function Navbar() {
                     <Link to="/temporary-dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo_login.png")}
+                          src={require(`../assets/images/logo_login${theme === "dark" ? "2" : "3"}.png`)}
                           alt="img"
                         />
                       </div>
@@ -91,7 +114,7 @@ function Navbar() {
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require("../assets/images/logo_login2.png")}
+                          src={require(`../assets/images/logo_login${theme === "dark" ? "2" : "3"}.png`)}
                           alt="img"
                         />
                       </div>
@@ -1387,7 +1410,7 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                <div className="itemTitle">All Agents</div>
+                                <div className="itemTitle">Agents</div>
                               </NavLink>
                             </li>
                             {/* <li className="tabItem ">

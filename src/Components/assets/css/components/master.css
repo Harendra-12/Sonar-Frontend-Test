@@ -40,7 +40,7 @@
     width: 100%;
     font-size: 0.875rem;
     /* color: #fff; */
-    font-family: Noto sans;
+    /* font-family: Noto sans; */
     -webkit-font-smoothing: antialiased;
     font-weight: 400;
     color: var(--form-label);

@@ -30,7 +30,7 @@
 
 #contactView .b h3,
 #contactView .b p {
-    font-family: Outfit;
+    /* font-family: Outfit; */
     color: #444444;
 }
 
@@ -54,7 +54,7 @@
 .contactItem .content h5,
 .contactItem .content .contact-email-box {
     font-size: 0.8125rem !important;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
     color: #505050;
     margin: 0;
@@ -70,7 +70,7 @@
 .contactItem .content h6 {
     font-size: 0.75rem;
     margin: 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
     color: #505050;
 }
