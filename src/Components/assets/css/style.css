@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 
 /* CSS Modules */
 @import url("./components/headerTitle.css");
@@ -259,7 +260,7 @@
   --active-mail-list-text: #000C8F;
   --clr-permission-text: #333849;
   --mail-seen: #434649;
-    --switch-toggle:#89a2fa;
+  --switch-toggle: #89a2fa;
 }
 
 :root.dark {
@@ -355,7 +356,7 @@
   --table-odd-color: rgb(47 61 80);
   --table-border-color: #525458;
   --table-bg-active: #292f3a;
-  --switch-toggle:#89a2fa;
+  --switch-toggle: #89a2fa;
   /* ================= message box color  */
 
   --me-body-bg: #12131d;
@@ -436,7 +437,7 @@ html {
 }
 
 body {
-  font-family: Roboto;
+  font-family: Geist;
   background-color: var(--bg-color);
   height: 100vh;
   margin: 0;

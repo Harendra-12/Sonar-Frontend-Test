@@ -51,7 +51,7 @@
     /* margin-top: auto; */
     /* margin-bottom: auto; */
     position: relative;
-    font-family: Noto sans;
+    /* font-family: Noto sans; */
     -webkit-font-smoothing: antialiased;
 }
 
@@ -293,7 +293,7 @@ input[type="file"]::file-selector-button {
     font-weight: 400;
     width: 100%;
     color: var(--color-subtext);
-    font-family: Raleway;
+    /* font-family: Raleway; */
 }
 
 #detailsContent .listRow .listItemDesc {
@@ -371,7 +371,7 @@ form.tangoNavs .nav-tabs {
 
 .overviewTableWrapper .heading .content h4 {
     margin-bottom: 5px;
-    font-family: 'Roboto';
+
 }
 
 .overviewTableWrapper .buttonGroup {
@@ -787,13 +787,15 @@ body.dark .userPermission__contentBox td[colspan="7"] {
 input[type="time"]:invalid {
     border: 1px solid red;
 }
-.AvailableAgents{
+
+.AvailableAgents {
     border: 1px solid var(--me-border1);
     border-radius: 10px;
     padding: 20px 5px;
     background: var(--me-body-bg2);
 }
-.AvailableAgents .callListItem{
+
+.AvailableAgents .callListItem {
     border: 1px solid var(--me-border1);
     border-radius: 10px;
     padding: 10px 20px;
@@ -802,20 +804,23 @@ input[type="time"]:invalid {
     background: transparent !important;
     /* background: var(--user-list-active) !important; */
 }
-.AvailableAgents .callListItem.selected{
+
+.AvailableAgents .callListItem.selected {
     background: var(--user-list-active) !important;
     border-color: var(--ui-accent);
 }
+
 /* .AvailableAgents .callListItem:last-child{
     margin-bottom: 0;
 } */
 .checkbox-placeholder.selected {
-  background-color: #62a7f8; 
-   border: 1px solid #62a7f8;
-  border-radius: 5px;
-  transition: background-color 0.2s ease;
+    background-color: #62a7f8;
+    border: 1px solid #62a7f8;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
 }
+
 .checkbox-placeholder.selectedNone {
-  background-color: transparent; 
-     border: 1px solid var(--border-color);
+    background-color: transparent;
+    border: 1px solid var(--border-color);
 }

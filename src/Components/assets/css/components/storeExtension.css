@@ -20,7 +20,7 @@
 .storeExtension .itemWrapper .label2 {
     font-size: 0.875rem;
     color: var(--color-subtext);
-    font-family: Roboto;
+
     width: 100%;
     position: absolute;
     bottom: 75px;

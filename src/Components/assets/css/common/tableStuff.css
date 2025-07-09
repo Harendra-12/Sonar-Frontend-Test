@@ -129,7 +129,7 @@ table tr th:first-child {
 .tableHeader .showEntries label,
 .tableHeader .searchBox label {
     margin-right: 10px;
-    font-family: Roboto;
+
     color: var(--color-subtext);
     font-weight: 500;
     font-size: 0.875rem;
@@ -385,7 +385,7 @@ table td.incoming::after {
     font-size: 0.8125rem;
     font-weight: 600;
     color: #000;
-    font-family: Roboto;
+
     outline: none;
 }
 
