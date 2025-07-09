@@ -270,6 +270,10 @@ a.loginLabel {
     color: var(--color-subtext);
 }
 
+.loginWrapper2 .content .loginFormItem.error {
+    border: 1px solid red;
+}
+
 .loginWrapper2 .content .loginForm i {
     position: absolute;
     top: 12px;
