@@ -66,6 +66,7 @@
   --bg-color: #f3f3f3;
   --bgdark-color: #111525;
   /* Dark Mode */
+  --sidenav-color: #ffffff;
   --nav-color: #1c1c1c;
   --button-dark: #2d3864;
   --div-color: #161c31;
@@ -265,6 +266,7 @@
 
 :root.dark {
   --color2: #89A2FA;
+  --sidenav-color: var(--nav-color);
   --nav-color: #1c1c1c;
   --active-text: #cfcfcf;
   --tab-active: #4060852e;
