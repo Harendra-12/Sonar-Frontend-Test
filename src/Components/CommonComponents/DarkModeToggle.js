@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import Tippy from '@tippyjs/react';
 import React, { useEffect, useRef, useState } from 'react'
 
 function DarkModeToggle({ marginLeft }) {
@@ -51,24 +52,22 @@ function DarkModeToggle({ marginLeft }) {
 
     return (
         <>
-            <div className="col-auto mx-2">
+            {/* <div className="col-auto mx-2">
                 <button className="clearButton2 xl" effect="ripple">
                     <i className={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
                     <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: '0', zIndex: "3", cursor: "pointer" }} />
                 </button>
-            </div>
-
-
-            {/* <div className="iconHolder">
-
-            </div>
-            <div className="itemTitle customTogle d-flex align-items-center">
-                Dark Mode
-                <label className={`switch ms-${marginLeft}`}>
-                    <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} />
-                    <span className="slider my-auto"></span>
-                </label>
             </div> */}
+            <Tippy content={`Switch to ${isDark ? "Light" : "Dark"} Mode`}>
+                <div className="itemTitle customTogle d-flex align-items-center mx-3">
+                    <i className={`fa-${!isDark ? "solid" : "light"} fa-sun-bright`}></i>
+                    <label className={`switch ms-${marginLeft}`}>
+                        <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} />
+                        <span className="slider my-auto"></span>
+                    </label>
+                    <i className={`fa-${isDark ? "solid" : "light"} fa-moon`}></i>
+                </div>
+            </Tippy>
         </>
     )
 }
