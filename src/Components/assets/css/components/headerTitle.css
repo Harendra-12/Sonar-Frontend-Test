@@ -188,7 +188,7 @@
   /* color: #fff; */
   display: inline-block;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.9rem;
   max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -246,20 +246,36 @@
 }
 
 .dorpInfo {
-  border-bottom: 1px solid #475177;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 40px;
   padding-bottom: 10px;
-  margin-bottom: 10px;
   border-radius: 0 !important;
 }
 
-.dorpInfo .fa-wallet {
-  color: var(--ui-accent);
+.dorpInfo .profileNameWrap {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+
+  margin-left: 10px;
 }
 
-.dorpInfo .balanceText {
-  color: #00ceff;
+.dorpInfo .profileNameWrap .profileName {
+  font-size: 0.875rem
+}
+
+.dorpInfo .profileNameWrap label {
+  font-size: 0.8rem;
+  color: #f7f7f7ab;
+}
+
+.dorpInfo .roleBadge {
+  background-color: var(--color2);
+  color: #fff;
+  width: max-content;
+  border-radius: 5px;
+  padding: 0 7px;
+  font-size: 0.75rem;
+  height: max-content;
 }
