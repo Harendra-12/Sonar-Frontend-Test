@@ -188,24 +188,24 @@ function Header(props) {
               <Tippy content={accounName}>
                 <div className="profileName">{accounName}</div>
               </Tippy>
-               <div>
-              <Tippy content="Your available balance, click to know more!">
-                <div
-                  onClick={() => navigate("/card-details")}
-                  style={{
-                    cursor: "pointer",
-                    //  minWidth: '140px' 
-                  }}
-                  className=""
-                >
-                  <i className="fa-regular fa-wallet me-2" />{" "}
-                  {/* <span className="d-none d-xl-inline-block"> */}
-                  <span className="balanceText">
-                    ${accountBalance || 0}
-                  </span>
-                </div>
-              </Tippy>
-            </div>
+              <div>
+                <Tippy content="Your available balance, click to know more!">
+                  <div
+                    onClick={() => navigate("/card-details")}
+                    style={{
+                      cursor: "pointer",
+                      //  minWidth: '140px' 
+                    }}
+                    className=""
+                  >
+                    <i className="fa-regular fa-wallet me-2" />{" "}
+                    {/* <span className="d-none d-xl-inline-block"> */}
+                    <span className="balanceText">
+                      ${accountBalance || 0}
+                    </span>
+                  </div>
+                </Tippy>
+              </div>
             </div>
             <div className="dropdown-item">
               <Link to={"/users-profile"} className="clearButton">
@@ -222,14 +222,22 @@ function Header(props) {
                 Change Password
               </Link>
             </div>
-            <div
+            <div className="dropdown-item" onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
+              <Link
+                to={"/"}
+                className="clearButton text-align-start"
+              >
+                <i className="fa-solid fa-power-off me-1"></i> Logout
+              </Link>
+            </div>
+            {/* <div
               onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}
               className="d-flex w-100 gap-3 align-items-center justify-content-start"
             >
               <Link to={"/"} className="logoutBtn">
                 <i className="fa-solid fa-power-off me-1"></i> Logout
               </Link>
-            </div>
+            </div> */}
           </div>
         ) : (
           ""
