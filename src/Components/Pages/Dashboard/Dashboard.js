@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
@@ -37,6 +37,9 @@ const Dashboard = () => {
   const [allDID, setAllDID] = useState([]);
   const [allUserList, setAllUserList] = useState([]);
   const [userTimeZone, setUserTimeZone] = useState("");
+
+  const [onlineUser, setOnlineUSer] = useState([0]);
+  const logonUser = useSelector((state) => state.loginUser);
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
@@ -441,6 +444,16 @@ const Dashboard = () => {
     fetchTotalCallCostGraphData();
   }, [graphFilter.callCostPerHour])
 
+  useEffect(() => {
+    if (logonUser && logonUser.length > 0) {
+      setOnlineUSer(
+        logonUser.map((item) => {
+          return item.id;
+        })
+      );
+    }
+  }, [logonUser])
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -814,7 +827,7 @@ const Dashboard = () => {
                         {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
-                              <div className="heading dashboard_headerPart">
+                              <div className="heading dashboard_headerPart h-auto">
                                 <div className="d-flex flex-wrap justify-content-between">
                                   <div className="col-9">
                                     <h5>Extensions</h5>
@@ -831,42 +844,82 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               </div>
+                              <div className="dashboardUtilityCardWrapper">
+                                {accountDetails && accountDetails.extensions ? (
+                                  <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
+                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                      <circle className="bg"
+                                        cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" strokeWidth="20"
+                                      ></circle>
+                                      <circle className="fg"
+                                        cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" strokeWidth="20"
+                                        strokeDasharray="361.25 361.25"
+                                      ></circle>
+                                    </svg>
+                                    <div className='circularProgressContent'>
+                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#ff8c42' }}>{extension?.filter((item) => item.user == null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="deviceProvision position-relative h-100">
+                                    <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                      <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                    </div>
+                                  </div>
+                                )}
+                                <div className="col">
+                                  <ul>
+                                    <li>
+                                      <label>Registered:</label> <span style={{ color: 'rgb(255, 140, 66)' }}>{extension?.filter((item) => item.user !== null)?.length}</span>
+                                    </li>
+                                    <li>
+                                      <label>Available:</label> <span>{extension?.filter((item) => item.user == null)?.length}</span>
+                                    </li>
+                                    <li>
+                                      <label>Usage:</label> <span>{(Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length).toFixed(2) || 0) * 100}%</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
                               {accountDetails && accountDetails.extensions ? (
                                 <div className="data-number2">
-                                  <div className="d-flex flex-wrap justify-content-between">
-                                    <div className="col-12">
-                                      <ul
-                                        style={{
-                                          overflowY: "scroll",
-                                          height: "220px",
-                                          paddingRight: 10,
-                                        }}
-                                      >
-                                        {accountDetails?.extensions?.map(
-                                          (item, index) => (
-                                            <li className="d_extension_listing"
-                                              key={index}
-                                              onClick={() =>
-                                                navigate(
-                                                  `/extensions-edit?id=${item?.id}`
-                                                )
-                                              }
-                                            >
-                                              {item?.extension}
-                                              <span
-                                                className={
-                                                  onlineExtension?.includes(
-                                                    item?.extension
-                                                  )
-                                                    ? "float-end extensionStatus online"
-                                                    : "float-end extensionStatus"
-                                                }
-                                              ></span>
-                                            </li>
-                                          )
-                                        )}
-                                      </ul>
+                                  <div className="col-12">
+                                    <div className="heading mb-2 h-auto">
+                                      <div className="d-flex justify-content-between"><span>Recent Extensions</span> <Link to='/extensions' className="text-decoration-none">View All</Link></div>
                                     </div>
+                                    <ul
+                                      style={{
+                                        overflowY: "scroll",
+                                        height: "220px",
+                                        paddingRight: 10,
+                                      }}
+                                    >
+                                      {accountDetails?.extensions?.map(
+                                        (item, index) => (
+                                          <li className="d_extension_listing"
+                                            key={index}
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item?.id}`
+                                              )
+                                            }
+                                          >
+                                            {item?.extension}
+                                            <span
+                                              className={
+                                                onlineExtension?.includes(
+                                                  item?.extension
+                                                )
+                                                  ? "float-end extensionStatus online"
+                                                  : "float-end extensionStatus"
+                                              }
+                                            ></span>
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
                                   </div>
                                 </div>
                               ) : (
@@ -881,65 +934,111 @@ const Dashboard = () => {
                         }
                         {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
-                            <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                              {/* <DoughnutChart
-                              fields={["Inbound", "Outbound", "Total"]}
-                              percentage={[
-                                callCardData.handled.inboundAnswered,
-                                callCardData.handled.outboundAnswered,
-                                callCardData.handled.count,
-                              ]}
-                              centerTitle={`${extensionList}/${Number(
-                                accountDetails?.package?.number_of_user
-                              )}`}
-                              centerDesc="Extensions Details"
-                              colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            /> */}
-                              {onlineExtension && allUserList?.length ?
-                                <div className='circularProgressWrapper'>
-                                  <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                    <circle className="bg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" strokeWidth="20"
-                                    ></circle>
-                                    <circle className="fg"
-                                      cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" strokeWidth="20"
-                                      strokeDasharray="361.25 361.25"
-                                    ></circle>
-                                  </svg>
-                                  <div className='circularProgressContent'>
-                                    <div className="data-number">
-                                      <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {allUserList.filter((user) => user.extension !== null &&
-                                        user.extension.extension !== null)?.length}</span>
-                                    </div>
-                                    <p>Total Online Agents</p>
+                            <div className="itemWrapper a">
+                              <div className="heading dashboard_headerPart h-auto">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-9">
+                                    <h5>Agents</h5>
+                                    <p>
+                                      Total:{" "}
+                                      {allUserList.filter((user) => user.extension !== null &&
+                                        user.extension.extension !== null)?.length}
+                                      {" "}Agents Created
+                                    </p>
+                                  </div>
+                                  <div className="col-3">
+                                    <i className="fa-duotone fa-user"></i>
                                   </div>
                                 </div>
-                                : (
-                                  <div className="deviceProvision position-relative h-100">
-                                    <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                      <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                              </div>
+                              <div className="dashboardUtilityCardWrapper">
+                                {accountDetails && accountDetails?.users ?
+                                  <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
+                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                      <circle className="bg"
+                                        cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" strokeWidth="20"
+                                      ></circle>
+                                      <circle className="fg"
+                                        cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" strokeWidth="20"
+                                        strokeDasharray="361.25 361.25"
+                                      ></circle>
+                                    </svg>
+                                    <div className='circularProgressContent'>
+                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList.filter((user) => user.extension !== null &&
+                                          user.extension.extension !== null)?.length}</span>
+                                      </div>
                                     </div>
                                   </div>
-                                )}
+                                  : (
+                                    <div className="deviceProvision position-relative h-100">
+                                      <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                        <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                      </div>
+                                    </div>
+                                  )}
+                                <div className="col">
+                                  <ul>
+                                    <li>
+                                      <label>Created:</label> <span style={{ color: 'rgb(98, 168, 172)' }}>{allUserList.filter((user) => user.extension !== null &&
+                                        user.extension.extension !== null)?.length}</span>
+                                    </li>
+                                    <li>
+                                      <label>Online:</label> <span>{onlineExtension.length}</span>
+                                    </li>
+                                    <li>
+                                      <label>Activity:</label> <span>{(Number(onlineExtension.length) / Number(allUserList.filter((user) => user.extension !== null &&
+                                        user.extension.extension !== null)?.length) || 0).toFixed(2) * 100}%</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              {allUserList ? (
+                                <div className="data-number2">
+                                  <div className="col-12">
+                                    <div className="heading mb-2 h-auto">
+                                      <div className="d-flex justify-content-between"><span>Recent Agents</span> <Link to='/agents' className="text-decoration-none">View All</Link></div>
+                                    </div>
+                                    <ul
+                                      style={{
+                                        overflowY: "scroll",
+                                        height: "220px",
+                                        paddingRight: 10,
+                                      }}
+                                    >
+                                      {allUserList.filter((user) => user.extension !== null &&
+                                        user.extension.extension !== null).map(
+                                          (item, index) => (
+                                            <li className="d_extension_listing" key={index}>
+                                              {item?.name}
+                                              <span
+                                                className={
+                                                  onlineUser.includes(
+                                                    item?.id
+                                                  )
+                                                    ? "float-end extensionStatus online"
+                                                    : "float-end extensionStatus"
+                                                }
+                                              ></span>
+                                            </li>
+                                          )
+                                        )}
+                                    </ul>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="deviceProvision position-relative" style={{ height: '250px' }}>
+                                  <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                    <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         }
-                        {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                        {/* {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                              {/* <DoughnutChart
-                              fields={["Inbound", "Outbound", "Total"]}
-                              percentage={[
-                                callCardData.handled.inboundAnswered,
-                                callCardData.handled.outboundAnswered,
-                                callCardData.handled.count,
-                              ]}
-                              centerTitle={`${extensionList}/${Number(
-                                accountDetails?.package?.number_of_user
-                              )}`}
-                              centerDesc="Extensions Details"
-                              colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            /> */}
                               {accountDetails && accountDetails.extensions ? (
                                 <div className='circularProgressWrapper'>
                                   <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
@@ -967,7 +1066,7 @@ const Dashboard = () => {
                               )}
                             </div>
                           </div>
-                        }
+                        } */}
                         {checkViewSidebar("DidDetail", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
@@ -987,7 +1086,7 @@ const Dashboard = () => {
                                   <div className="col-12">
                                     <ul>
                                       <li className="d_extension_listing">
-                                        Total DID Purchasd{" "}
+                                        Total DID Purchased{" "}
                                         <span className="float-end">
                                           {allDID?.length}
                                         </span>
