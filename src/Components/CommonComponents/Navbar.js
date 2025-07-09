@@ -1410,7 +1410,7 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                <div className="itemTitle">All Agents</div>
+                                <div className="itemTitle">Agents</div>
                               </NavLink>
                             </li>
                             {/* <li className="tabItem ">
