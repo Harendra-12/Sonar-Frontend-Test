@@ -10,7 +10,7 @@
     background: var(--sidenav-color);
     /* background: linear-gradient(0deg, #004793 0%, #0071e9 100%); */
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 
 #sidenNav .sidenavItems [aria-expanded="true"] {
