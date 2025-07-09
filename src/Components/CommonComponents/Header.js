@@ -183,7 +183,7 @@ function Header(props) {
                         {accounName}
                       </div>
                       <span className="roleBadge ms-2">
-                        {account?.user_role || 'Company'}
+                        {account?.user_role ? account?.user_role?.roles?.name : account?.usertype}
                       </span>
                     </div>
                   </Tippy>
