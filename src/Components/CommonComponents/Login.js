@@ -60,16 +60,6 @@ function Login() {
                     <h3>Get Started Now</h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
-                    <div className="errorBox_message mb-4">
-                      <i class="fa-regular fa-circle-exclamation"></i>
-                      <div className=" ">
-                          <p className="mb-2">Invalid username and password. Please try again.</p>
-                          <div className="d-flex align-items-center justify-content-between gap-2">
-                            <Link to=''>Forgot your password</Link>
-                            <button className="errorBtn">Account Locked</button>
-                          </div>
-                      </div>
-                    </div>
                     <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
                   </div>
                   <div
@@ -143,6 +133,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("");
   const [credsError, setCredsError] = useState(false);
+  const [customErrorText, setCustomErrorText] = useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -418,6 +409,8 @@ export function LoginComponent({ setLanguageChangePopup }) {
           } else {
             setLoading(false);
             toast.error("Server error !");
+            setCredsError(true);
+            setCustomErrorText("Server error !")
           }
         } else {
           setLoading(false);
@@ -429,17 +422,23 @@ export function LoginComponent({ setLanguageChangePopup }) {
       ) {
         setLoading(false);
         toast.error(checkLogin?.response?.data?.message);
+        setCredsError(true);
+        setCustomErrorText(checkLogin?.response?.data?.message)
         if (checkLogin?.response?.status === 401) {
           setCredsError(true);
+          setCustomErrorText("Invalid username and password. Please try again.")
         }
       } else {
-        setCredsError(false);
         if (checkLogin?.message === "Network Error") {
           toast.error("Network Error");
+          setCredsError(true);
+          setCustomErrorText("Network Error")
           return;
         }
         if (checkLogin?.response?.data?.message === "user is disabled.") {
           toast.error("Your account is disabled. Please contact Admin.");
+          setCredsError(true);
+          setCustomErrorText("Your account is disabled. Please contact Admin.")
           return;
         }
         setLoading(false);
@@ -511,6 +510,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   return (
     <>
+      {credsError && <CustomLoginError errorText={customErrorText} />}
       <form className="loginForm">
         <div className="col-xl-12 m-auto">
           {/* <div className="iconWrapper">
@@ -523,13 +523,13 @@ export function LoginComponent({ setLanguageChangePopup }) {
               type="text"
               name="username1"
               placeholder="Enter your username"
-              className={`loginFormItem mb-0 ${credsError && 'error'}`}
+              className={`loginFormItem mb-0`}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
-            {credsError && <div class="invalid-feedback d-block">
+            {/* {credsError && <div class="invalid-feedback d-block">
               <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Username.
-            </div>}
+            </div>} */}
           </div>
           <label>Password</label>
           <div className="position-relative" style={{ marginBottom: '20px' }}>
@@ -538,13 +538,13 @@ export function LoginComponent({ setLanguageChangePopup }) {
               type="password"
               name="password1"
               placeholder="Enter your password"
-              className={`loginFormItem mb-0 ${credsError && 'error'}`}
+              className={`loginFormItem mb-0`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {credsError && <div class="invalid-feedback d-block">
+            {/* {credsError && <div class="invalid-feedback d-block">
               <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Password.
-            </div>}
+            </div>} */}
           </div>
           <div onClick={backToTop}>
             <button
@@ -839,6 +839,21 @@ export function LanguagePromptPopup({ setLanguageChangePopup }) {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+export function CustomLoginError({ errorText }) {
+  return (
+    <div className="errorBox_message mb-4">
+      <i class="fa-regular fa-circle-exclamation"></i>
+      <div className=" ">
+        <p className="mb-0">{errorText}</p>
+        {/* <div className="d-flex align-items-center justify-content-between gap-2">
+            <Link to=''>Forgot your password</Link>
+            <button className="errorBtn">Account Locked</button>
+          </div> */}
       </div>
     </div>
   )

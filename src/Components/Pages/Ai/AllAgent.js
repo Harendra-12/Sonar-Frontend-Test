@@ -236,121 +236,95 @@ const AllAgent = () => {
                           />
                         </div>
                       </div>
-
-
-
-
-
-
-
-
-
                       <div className="gridCard my-3">
-                        {filteredAgents.map((item, index) => {
-                          return (
-                            <div className="w-100" key={index} >
-                              <div class="crypto-card">
-                                <div className="d-flex align-items-center justify-content-between w-100 pb-3 gap-3" style={{ borderBottom: '1px solid var(--table-border-color)' }}>
-                                  <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
-                                      <i className="fa-light fa-user" />
-                                      {/* )} */}
+                        {loading ? (<ThreeDotedLoader />) :
+                          filteredAgents.map((item, index) => {
+                            return (
+                              <div className="w-100" key={index} >
+                                <div class="crypto-card">
+                                  <div className="d-flex align-items-center justify-content-between w-100 pb-3 gap-3" style={{ borderBottom: '1px solid var(--table-border-color)' }}>
+                                    <div className="d-flex align-items-center">
+                                      <div className="tableProfilePicHolder">
+                                        <i className="fa-light fa-user" />
+                                        {/* )} */}
+                                      </div>
+                                      <div className="ms-2">
+                                        {item.agent_name}
+                                      </div>
                                     </div>
-                                    <div className="ms-2">
-                                      {item.agent_name}
+                                    <div className="dropdown">
+                                      <button
+                                        type="button"
+                                        className={`tableButton`}
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                      </button>
+                                      <ul className="dropdown-menu actionBtnDropdowns">
+                                        <li className="dropdown-item">
+                                          <Tippy content="View this agent">
+                                            <button type="button" className="clearButton text-align-start" onClick={() => handleEditClick(item)}>
+                                              <i class="fa-regular fa-eye me-2"></i>
+                                              View
+                                            </button>
+                                          </Tippy>
+                                        </li>
+                                        <li className="dropdown-item">
+                                          <Tippy content={"Delete this Agent"}>
+                                            <button
+                                              type="button"
+                                              className="clearButton text-align-start text-danger"
+                                              onClick={() => {
+                                                setDeletePopup(true);
+                                                setDeletedItem(item);
+                                              }}
+                                            >
+                                              <i
+                                                className={`fa-regular fa-trash me-2`}
+                                              ></i>{" "}
+                                              Delete
+                                            </button>
+                                          </Tippy>
+                                        </li>
+                                      </ul>
                                     </div>
                                   </div>
-                                  <div className="dropdown">
-                                    <button
-                                      type="button"
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </button>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <li className="dropdown-item">
-                                        <Tippy content="View this agent">
-                                          <button type="button" className="clearButton text-align-start" onClick={() => handleEditClick(item)}>
-                                            <i class="fa-regular fa-eye me-2"></i>
-                                            View
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                      <li className="dropdown-item">
-                                        <Tippy content={"Delete this Agent"}>
-                                          <button
-                                            type="button"
-                                            className="clearButton text-align-start text-danger"
-                                            onClick={() => {
-                                              setDeletePopup(true);
-                                              setDeletedItem(item);
-                                            }}
-                                          >
-                                            <i
-                                              className={`fa-regular fa-trash me-2`}
-                                            ></i>{" "}
-                                            Delete
-                                          </button>
-                                        </Tippy>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                                <div class="cryptoInfo w-100 mt-3">
-                                  <div className="d-flex align-items-center justify-content-between w-100 gap-2 mb-2 flex-wrap" style={{
-                                    borderBottom: '1px dashed var(--table-border-color)',
-                                    paddingBottom: '10px',
-                                  }}>
-                                    <p className="agentText mb-0"><span>Phone :</span> <span className="subInfo">
-                                      {item?.agent_id &&
-                                        (finePhoneNumber(item.agent_id)
-                                          ?.length > 0
-                                          ? finePhoneNumber(item.agent_id)
-                                          : "-")}
-                                    </span></p>
-                                    <p className="agentText mb-0"><span>Language :</span> <span className="subInfo"> {item.language} </span></p>
-                                  </div>
-                                  <div className="d-flex align-items-start justify-content-between w-100 flex-column  ">
-                                    <p className="agentText mb-2 d-flex align-items-start justify-content-start w-100 gap-2" style={{
+                                  <div class="cryptoInfo w-100 mt-3">
+                                    <div className="d-flex align-items-center justify-content-between w-100 gap-2 mb-2 flex-wrap" style={{
                                       borderBottom: '1px dashed var(--table-border-color)',
                                       paddingBottom: '10px',
-                                    }}><span className="mb-0">Voice :</span> <span className="subInfo ellipsisText230 mb-0"> {item.voice_id}</span></p>
-                                    <p className="agentText mb-0 d-flex align-items-start justify-content-start w-100 gap-2"
-                                      style={{
+                                    }}>
+                                      <p className="agentText mb-0"><span>Phone :</span> <span className="subInfo">
+                                        {item?.agent_id &&
+                                          (finePhoneNumber(item.agent_id)
+                                            ?.length > 0
+                                            ? finePhoneNumber(item.agent_id)
+                                            : "-")}
+                                      </span></p>
+                                      <p className="agentText mb-0"><span>Language :</span> <span className="subInfo"> {item.language} </span></p>
+                                    </div>
+                                    <div className="d-flex align-items-start justify-content-between w-100 flex-column  ">
+                                      <p className="agentText mb-2 d-flex align-items-start justify-content-start w-100 gap-2" style={{
                                         borderBottom: '1px dashed var(--table-border-color)',
                                         paddingBottom: '10px',
-                                      }}><span className="mb-0">Voice Model :</span> <span className="subInfo ellipsisText230 mb-0"> {item.voice_model}</span></p>
-                                  </div>
+                                      }}><span className="mb-0">Voice :</span> <span className="subInfo ellipsisText230 mb-0"> {item.voice_id.includes('custom') ? 'Custom' : item.voice_id.split('-')[1]}</span></p>
+                                      <p className="agentText mb-0 d-flex align-items-start justify-content-start w-100 gap-2"
+                                        style={{
+                                          borderBottom: '1px dashed var(--table-border-color)',
+                                          paddingBottom: '10px',
+                                        }}><span className="mb-0">Voice Model :</span> <span className="subInfo ellipsisText230 mb-0"> {item.voice_model}</span></p>
+                                    </div>
 
+                                  </div>
                                 </div>
                               </div>
-                            </div>
 
-                          );
-                        })}
+                            );
+                          })}
                       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                       {/* 
                       <div className="tableContainer">
                         <table>
