@@ -3421,7 +3421,7 @@ function Messages({
                                                 &nbsp;
                                                 {item.user_name}
                                               </h6>
-                                              <div className="">
+                                              <div className=" videoSize">
                                                 <DisplayFile
                                                   key={index}
                                                   item={item.body}

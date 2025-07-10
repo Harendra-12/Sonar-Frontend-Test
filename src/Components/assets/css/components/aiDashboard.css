@@ -143,10 +143,11 @@
 .card {
     margin-bottom: 20px;
     border: none;
-    transition: all 0.3s ease;
+    /* transition: all 0.3s ease; */
     letter-spacing: 0.5px;
     border-radius: 15px;
     box-shadow: 0px 9px 20px rgba(46, 35, 94, 0.07);
+    width: 100%;
 }
 
 /* ======= */
