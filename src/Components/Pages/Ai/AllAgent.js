@@ -273,7 +273,7 @@ const AllAgent = () => {
                                     </button>
                                     <ul className="dropdown-menu actionBtnDropdowns">
                                       <li className="dropdown-item">
-                                        <Tippy content="View">
+                                        <Tippy content="View this agent">
                                           <button type="button" className="clearButton text-align-start" onClick={() => handleEditClick(item)}>
                                             <i class="fa-regular fa-eye me-2"></i>
                                             View
@@ -281,7 +281,7 @@ const AllAgent = () => {
                                         </Tippy>
                                       </li>
                                       <li className="dropdown-item">
-                                        <Tippy content={"Delete the DID"}>
+                                        <Tippy content={"Delete this Agent"}>
                                           <button
                                             type="button"
                                             className="clearButton text-align-start text-danger"
