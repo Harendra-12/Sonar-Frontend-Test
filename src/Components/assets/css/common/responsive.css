@@ -31,6 +31,10 @@
         font-size: 10px !important;
     }
 
+    .gridCard {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    }
+
 }
 
 @media (max-device-width: 2250px) {
@@ -720,9 +724,17 @@
         height: calc(-395px + 100vh) !important;
 
     }
-    /* .d-smWrap{
-        flex-wrap: wrap;
-    } */
+
+    .gridCall .card-body {
+        max-width: 219px;
+        width: 100%;
+    }
+
+    .gridCall .card-body {
+        padding-right: 36px !important;
+        width: 100%;
+    }
+
 }
 
 @media (max-width: 767px) {
@@ -777,6 +789,15 @@
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -13px;
     }
+
+    .gridCall .card-body {
+        padding-right: 20px !important;
+        width: 100%;
+    }
+
+    .small-widget .bg-gradient {
+        right: -14px !important;
+    }
 }
 
 @media (max-width: 575px) {
@@ -822,5 +843,13 @@
     .clickToCall .clickToCallModule .clickToCallHeader {
         padding: 15px 12px;
         text-align: center;
+    }
+
+    .gridCard {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    }
+
+    .small-widget .bg-gradient {
+        right: -0 !important;
     }
 }

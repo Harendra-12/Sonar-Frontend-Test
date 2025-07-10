@@ -723,9 +723,12 @@
     background: #b7c6d959 !important;
     /* border-radius: 10px; */
 }
-.accordion-flush .accordion-item .accordion-button, .accordion-flush .accordion-item .accordion-button.collapsed{
+
+.accordion-flush .accordion-item .accordion-button,
+.accordion-flush .accordion-item .accordion-button.collapsed {
     border-radius: 10px;
 }
+
 .accordion .accordion-button:not(.collapsed) {
     color: var(--form-input-text);
     background: var(--accordion-active);
@@ -868,17 +871,18 @@
 }
 
 
- #inputVoiceSpeed{
-  /* border-radius: 8px; */
-  height: 8px;
-  width: 150px;
-  outline: none;
-  /* -webkit-appearance: none; */
-  background: #dce0ed;
-  border: none !important;
+#inputVoiceSpeed {
+    /* border-radius: 8px; */
+    height: 8px;
+    width: 150px;
+    outline: none;
+    /* -webkit-appearance: none; */
+    background: #dce0ed;
+    border: none !important;
 }
+
 input[type="range"]::-moz-range-track {
-    border: none! important;
+    border: none ! important;
 }
 
 /* input[type='range']::-webkit-slider-thumb {
@@ -891,23 +895,79 @@ input[type="range"]::-moz-range-track {
 /***** Thumb Styles *****/
 /***** Chrome, Safari, Opera, and Edge Chromium *****/
 input[type="range"]::-webkit-slider-thumb {
-   -webkit-appearance: none; /* Override default look */
-   appearance: none;
-   background-color: #5cd5eb;
-   
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    background-color: #5cd5eb;
+
 }
+
 .custom-range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 18px;
-  width: 18px;
-  border-radius: 50%;
-  background-color: #ff5722; /* 🔴 Change dot color here */
-  border: 2px solid white;
-  margin-top: -6px; /* aligns thumb with track */
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background-color: #ff5722;
+    /* 🔴 Change dot color here */
+    border: 2px solid white;
+    margin-top: -6px;
+    /* aligns thumb with track */
 }
 
 .card-body.aiAgentTab.selectTemplate {
     min-height: 576px;
     overflow: auto;
     max-height: 489px;
+}
+
+
+/* ------  ai agent card */
+
+.crypto-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    box-shadow: var(--shadow-gray) -1px 0 7px 0!important;
+    border: 1px solid var(--shadow-gray);
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+}
+.crypto-card:hover {
+border: 1px solid var(--color2)!important;
+}
+
+.agentText{
+    white-space: nowrap;
+}
+
+.agentText span{
+    color: var(--immortalBlack);
+    font-size: 0.813rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.agentText span.subInfo{
+    color: var(--color-subtext);
+    font-size: 0.813rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.ellipsisText230 {
+    display: block;
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gridCard{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)) ;
+    gap: 20px;
 }
