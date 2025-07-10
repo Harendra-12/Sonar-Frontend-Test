@@ -9,7 +9,7 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import languages from './ListOfLanguage.json';
 
@@ -132,6 +132,8 @@ export function LoginComponent({ setLanguageChangePopup }) {
   const [logInDetails, setLoginDetails] = useState([]);
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("");
+  const [credsError, setCredsError] = useState(false);
+  const [customErrorText, setCustomErrorText] = useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -307,6 +309,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   // Function to handle login
   const userLogin = useCallback(async () => {
+    setCredsError(false);
     if (userName === "") {
       toast.error("Username is required!");
     } else if (password === "") {
@@ -320,6 +323,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
+        setCredsError(false);
         const country = JSON.parse(checkLogin.details).countryCode;
         localStorage.setItem('userCountry', country)
 
@@ -405,6 +409,8 @@ export function LoginComponent({ setLanguageChangePopup }) {
           } else {
             setLoading(false);
             toast.error("Server error !");
+            setCredsError(true);
+            setCustomErrorText("Server error !")
           }
         } else {
           setLoading(false);
@@ -416,13 +422,23 @@ export function LoginComponent({ setLanguageChangePopup }) {
       ) {
         setLoading(false);
         toast.error(checkLogin?.response?.data?.message);
+        setCredsError(true);
+        setCustomErrorText(checkLogin?.response?.data?.message)
+        if (checkLogin?.response?.status === 401) {
+          setCredsError(true);
+          setCustomErrorText("Invalid username and password. Please try again.")
+        }
       } else {
         if (checkLogin?.message === "Network Error") {
           toast.error("Network Error");
+          setCredsError(true);
+          setCustomErrorText("Network Error")
           return;
         }
         if (checkLogin?.response?.data?.message === "user is disabled.") {
           toast.error("Your account is disabled. Please contact Admin.");
+          setCredsError(true);
+          setCustomErrorText("Your account is disabled. Please contact Admin.")
           return;
         }
         setLoading(false);
@@ -494,34 +510,41 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   return (
     <>
+      {credsError && <CustomLoginError errorText={customErrorText} />}
       <form className="loginForm">
         <div className="col-xl-12 m-auto">
           {/* <div className="iconWrapper">
           <i className="fa-regular fa-user" />
         </div> */}
           <label>Username</label>
-          <div className="position-relative">
+          <div className="position-relative" style={{ marginBottom: '20px' }}>
             <i className="fa-thin fa-user" />
             <input
               type="text"
               name="username1"
               placeholder="Enter your username"
-              className="loginFormItem"
+              className={`loginFormItem mb-0`}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
+            {/* {credsError && <div class="invalid-feedback d-block">
+              <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Username.
+            </div>} */}
           </div>
           <label>Password</label>
-          <div className="position-relative">
+          <div className="position-relative" style={{ marginBottom: '20px' }}>
             <i className="fa-thin fa-lock" />
             <input
               type="password"
               name="password1"
               placeholder="Enter your password"
-              className="loginFormItem"
+              className={`loginFormItem mb-0`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {/* {credsError && <div class="invalid-feedback d-block">
+              <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Password.
+            </div>} */}
           </div>
           <div onClick={backToTop}>
             <button
@@ -816,6 +839,21 @@ export function LanguagePromptPopup({ setLanguageChangePopup }) {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+export function CustomLoginError({ errorText }) {
+  return (
+    <div className="errorBox_message mb-4">
+      <i class="fa-regular fa-circle-exclamation"></i>
+      <div className=" ">
+        <p className="mb-0">{errorText}</p>
+        {/* <div className="d-flex align-items-center justify-content-between gap-2">
+            <Link to=''>Forgot your password</Link>
+            <button className="errorBtn">Account Locked</button>
+          </div> */}
       </div>
     </div>
   )

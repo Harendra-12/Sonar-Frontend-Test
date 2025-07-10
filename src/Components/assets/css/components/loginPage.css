@@ -270,6 +270,10 @@ a.loginLabel {
     color: var(--color-subtext);
 }
 
+.loginWrapper2 .content .loginFormItem.error {
+    border: 1px solid red;
+}
+
 .loginWrapper2 .content .loginForm i {
     position: absolute;
     top: 12px;
@@ -352,4 +356,49 @@ a.loginLabel {
 .loginWave img {
     width: 100%;
     object-fit: cover;
+}
+
+.errorBox_message {
+    background: var(--table-delete-bg);
+    border: 1px solid #df2a3660;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.errorBox_message p {
+    color: var(--table-delete-text) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+.errorBox_message a {
+    color: var(--table-delete-text) !important;
+    font-size: 12px;
+    font-weight: 400;
+    transition: all 0.4s ease-in-out;
+}
+
+.errorBox_message i {
+    font-size: 12px;
+}
+
+.errorBox_message a:hover {
+    font-weight: 500;
+}
+
+.errorBtn {
+    background: #ff8c8c1f;
+    border: 1px solid transparent;
+    font-size: 12px !important;
+    border-radius: 5px;
+    padding: 2px 10px;
+    color: var(--text-badge-danger);
+    transition: all 0.4s ease-in-out;
+}
+
+.errorBtn:hover {
+    border: 1px solid #df2a3660;
 }
