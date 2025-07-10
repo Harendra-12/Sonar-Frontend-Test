@@ -9,7 +9,7 @@ import {
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import languages from './ListOfLanguage.json';
 
@@ -60,6 +60,16 @@ function Login() {
                     <h3>Get Started Now</h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
+                    <div className="errorBox_message mb-4">
+                      <i class="fa-regular fa-circle-exclamation"></i>
+                      <div className=" ">
+                          <p className="mb-2">Invalid username and password. Please try again.</p>
+                          <div className="d-flex align-items-center justify-content-between gap-2">
+                            <Link to=''>Forgot your password</Link>
+                            <button className="errorBtn">Account Locked</button>
+                          </div>
+                      </div>
+                    </div>
                     <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
                   </div>
                   <div
