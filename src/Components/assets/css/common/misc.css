@@ -126,7 +126,6 @@
 }
 
 .pricing_section .pricing_box h3 {
-    font-family: Roboto;
     color: var(--ui-accent);
     font-weight: 600;
     font-size: 1.4375rem;
@@ -134,14 +133,13 @@
 }
 
 .pricing_section .pricing_box p {
-    font-family: var(--paragraph);
     font-weight: 400;
     font-size: 0.8125rem;
     margin: 0px 0px 8px 0px;
 }
 
 .pricing_section .pricing_box h5 {
-    font-family: Roboto;
+
     color: #8d8d8d;
     font-weight: 500;
     font-size: 0.8125rem !important;
@@ -157,7 +155,7 @@
 }
 
 .pricing_section .pricing_box h2 {
-    font-family: Roboto;
+
     color: var(--ui-accent);
     font-weight: 700;
     font-size: 2.25rem;
@@ -175,7 +173,7 @@
     background: linear-gradient(135deg, #871fff, #7ec9f4);
     padding: 10px 10px;
     color: #fff;
-    font-family: Roboto;
+
     border-radius: 4px;
     margin: 0px 0px 10px 0px;
 }
@@ -189,7 +187,7 @@
 
 .pricing_section .pricing_box .feture_list h4 {
     text-align: left;
-    font-family: Roboto;
+
     font-size: 1.125rem !important;
     font-weight: 500;
 }
@@ -202,7 +200,6 @@
 }
 
 .pricing_section .pricing_box .feture_list ul li p {
-    font-family: var(--paragraph);
     font-weight: 400;
 }
 
@@ -254,7 +251,7 @@
     font-weight: 600;
     font-size: 0.8125rem;
     color: var(--color-subtext);
-    font-family: Open Sans;
+    /* font-family: Open Sans; */
     padding: 0px 0 3px 0;
 }
 
@@ -325,13 +322,13 @@
 }
 
 .sidePannel .wrapper .label li {
-    font-family: Roboto;
+
     font-size: 1rem;
     font-weight: 500;
 }
 
 .sidePannel .wrapper ul li {
-    font-family: Open Sans;
+    /* font-family: Open Sans; */
     font-size: 0.875rem;
     font-weight: 500;
 
@@ -840,7 +837,7 @@ input[type=number] {
     color: var(--color-subtext);
     padding: 5px 10px;
     font-weight: 400;
-    font-family: Outfit;
+    /* font-family: Outfit; */
 }
 
 .newHeader .dropdown-menu .dropdown-item:active {
@@ -885,7 +882,7 @@ input[type=number] {
 .myProfileWidget .profileName {
     font-size: 1rem;
     font-weight: 500;
-    font-family: Roboto;
+
 }
 
 .myProfileWidget .profileName span.status {
@@ -897,7 +894,7 @@ input[type=number] {
 
 .viewingAs {
     text-transform: uppercase;
-    color: var(--webUtilGray);
+    color: var(--me-text-color);
     font-size: 0.875rem !important;
     font-weight: 500;
 }
@@ -1140,7 +1137,7 @@ input[type=number] {
     font-size: 1.25rem;
     font-weight: 400;
     margin-bottom: 0;
-    font-family: 'Roboto';
+
 }
 
 /* From Uiverse.io by Shoh2008 */
@@ -1418,7 +1415,10 @@ input[type=number] {
     font-size: 0.875rem;
     padding: 0;
     /* background-color: var(--table-head); */
-    background-color: var(--table-odd-color) !important;
+    /* background-color: var(--table-odd-color) !important; */
+    background-color: var(--bg-color) !important;
+    color: var(--immortalBlack);
+    font-weight: 500;
 }
 
 .popupopen ul {
@@ -1446,7 +1446,7 @@ input[type=number] {
 } */
 
 .popup .videoContainer {
-    width: 80%;
+    width: auto;
     height: 80%;
     border-radius: 20px;
     overflow: hidden;
@@ -1456,7 +1456,7 @@ input[type=number] {
 .popup .videoContainer video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 
@@ -2409,7 +2409,7 @@ i.fa.fa-star {
 }
 
 .bg-secondary {
-    background-color: #23b7e5 !important;
+    background-color: var(--secondary-rgb-text) !important;
 }
 
 .pulse {
@@ -2765,7 +2765,7 @@ i.fa.fa-star {
     padding-top: 55px;
 }
 
-.btn.btn-primary{
-background-color: var(--color2) !important;
-border-color: var(--color2) !important
+.btn.btn-primary {
+    background-color: var(--color2) !important;
+    border-color: var(--color2) !important
 }

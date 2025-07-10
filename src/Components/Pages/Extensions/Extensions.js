@@ -383,7 +383,7 @@ const Extensions = () => {
                           ) : (
                             <>
                               {extension &&
-                                extension?.data?.length > 0 &&
+                                // extension?.data?.length > 0 &&
                                 (() => {
                                   // Filter showKeys to include only keys that exist in extension.data
                                   const validKeys = showKeys.filter((key) =>
@@ -393,7 +393,7 @@ const Extensions = () => {
                                     <>
                                       <thead>
                                         <tr>
-                                          {validKeys
+                                          {showKeys
                                             .filter(
                                               (item) =>
                                                 item !==
@@ -425,7 +425,7 @@ const Extensions = () => {
                                                   <th className="text-center">
                                                     <span>
                                                       <select
-                                                        className="formItem f-select-width"
+                                                        className="f-select-width"
                                                         value={onlineFilter}
                                                         onChange={(e) => {
                                                           setonlineFilter(
@@ -463,7 +463,7 @@ const Extensions = () => {
                                                 );
                                               }
                                             })}
-                                          <th>Default Outbound Number</th>
+                                          {/* <th>Default Outbound Number</th> */}
                                           {checkViewSidebar(
                                             "Extension",
                                             slugPermissions,
@@ -544,7 +544,7 @@ const Extensions = () => {
                                                         )}
                                                       </td>
                                                     ))}
-                                                  <td>
+                                                  {/* <td>
                                                     {
                                                       allDID?.filter(
                                                         (item) =>
@@ -552,7 +552,7 @@ const Extensions = () => {
                                                           1
                                                       )[0]?.did
                                                     }
-                                                  </td>
+                                                  </td> */}
                                                   {checkViewSidebar(
                                                     "Extension",
                                                     slugPermissions,

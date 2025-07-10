@@ -312,13 +312,13 @@ const AiPhoneNumber = () => {
                             <div className="KnowledgeLeftinfo">
                               <div className="info_header">
                                 <h5 className="mb-0">Available Numbers</h5>
-                                <button
+                                {/* <button
                                   className={`tableButton`}
                                   role="button"
                                   onClick={setKnowledgeBase}
                                 >
                                   <i className="fa-regular fa-plus" />
-                                </button>
+                                </button> */}
                               </div>
                               <div className="knowledge__list">
                                 {availableNumbers.length === 0 ? (

@@ -47,7 +47,6 @@
 .callListItem h4 {
     font-size: 1rem !important;
     margin: 0;
-    font-family: 'Roboto' !important;
 }
 
 .callListItem h5,
@@ -119,7 +118,7 @@
 .callListItem h6 {
     font-size: 0.75rem;
     margin: 0;
-    font-family: Open sans;
+    /* font-family: Open sans; */
     font-weight: 500;
     color: #505050d6;
 }
@@ -127,7 +126,7 @@
 .callListItem span {
     font-size: 1rem;
     margin: 0;
-    font-family: Roboto;
+
     font-weight: 500;
     color: #525252;
 }
@@ -148,13 +147,13 @@
 .mainContentApp .contactListItem h4 {
     font-size: 1.0625rem !important;
     margin: 0;
-    font-family: Roboto;
+
 }
 
 .mainContentApp .contactListItem h5 {
     font-size: 0.875rem !important;
     margin: 5px 0 0;
-    font-family: Roboto;
+
     font-weight: 400;
     color: var(--color-subtext);
 
@@ -167,7 +166,7 @@
 .mainContentApp .contactListItem h6 {
     font-size: 0.75rem;
     margin: 0;
-    font-family: Outfit;
+    /* font-family: Outfit; */
     font-weight: 500;
     color: #505050;
 }
@@ -176,7 +175,7 @@
 .callListItem p.timeAgo {
     font-size: 0.75rem !important;
     margin: 0px 0 5px;
-    font-family: Roboto;
+
     font-weight: 400;
     color: #ababab;
 }
@@ -184,7 +183,7 @@
 .callhistory-date {
     font-size: 0.75rem !important;
     margin: 0px 0 5px;
-    font-family: Roboto;
+
     font-weight: 400;
     color: #ababab !important;
     margin-right: 10px !important;
@@ -429,6 +428,9 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 20px;
     z-index: 10;
+
+    max-height: 100vh;
+    overflow: scroll;
 }
 
 .addNewContactPopup.logoutPopup {
@@ -810,6 +812,7 @@
     overflow: hidden auto;
     height: calc(100vh - 250px);
 }
+
 /* height: calc(100vh - 277px) */
 
 /* .newMessageWrapper {
@@ -1084,13 +1087,13 @@ h2.titleName {
 .lk-chat-header {
     justify-content: start;
     font-weight: 600;
-     border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .lk-close-button.lk-button.lk-chat-toggle {
     background: transparent !important;
     color: #000;
-      text-indent: 0;
+    text-indent: 0;
 }
 
 .lk-close-button.lk-button.lk-chat-toggle svg path {

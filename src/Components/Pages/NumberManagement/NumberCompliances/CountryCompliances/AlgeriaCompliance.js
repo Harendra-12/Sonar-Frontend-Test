@@ -57,7 +57,7 @@ function AlgeriaCompliance() {
                                                         {Object.keys(countryCompliance.numbers_summary).length > 0 ?
                                                             Object.keys(countryCompliance?.numbers_summary).map((item, index) => (
                                                                 <li className='row' key={index}>
-                                                                    <div className='col-6'><p style={{ textTransform: "capitalize" }}><b>{item.replace("_", " ")}</b></p></div>
+                                                                    <div className='col-6'><p style={{ textTransform: "capitalize" }}><b>{item.replace(/_/g, " ")}</b></p></div>
                                                                     <div className='col-6'>
                                                                         <p>{countryCompliance?.numbers_summary[item]}</p>
                                                                     </div>
@@ -67,56 +67,56 @@ function AlgeriaCompliance() {
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div className="col-xxl-8 col-12 mx-auto compliancesBox">
-                                                <div className="basicContent my-0">
-                                                    <h4>Requirements for Individuals</h4>
-                                                    <ul>
-                                                        <li className='listingLi row'>
-                                                            <div className='col-4 heading'>Information required</div>
-                                                            <div className='col-4 heading'>Documentation required</div>
-                                                            <div className='col-4 heading'>Acceptable Documentation</div>
-                                                        </li>
-                                                        {countryCompliance?.requirements?.individuals?.information_required?.map((info, i) => (
-                                                            <li key={i} className='row'>
-                                                                <div className='col-4'><p><b>{info}</b></p></div>
-                                                                <div className='col-4'>
-                                                                    <p>{countryCompliance?.requirements?.individuals?.documentation_required[info] || "—"}</p>
-                                                                </div>
-                                                                {countryCompliance?.requirements?.individuals?.acceptable_documentation &&
-                                                                    <div className='col-4'>
-                                                                        <p>{countryCompliance?.requirements?.individuals?.acceptable_documentation[info] || "—"}</p>
+                                            {countryCompliance?.requirements?.map((requirement, index) => {
+                                                const [numberType, value] = Object.entries(requirement)[0];
+
+                                                return (
+                                                    <div key={index} className="col-xxl-8 col-12 mx-auto compliancesBox">
+                                                        <div className="basicContent my-0">
+                                                            <h3>Requirements for {numberType.replace(/_/g, ' ')}</h3>
+
+                                                            {["individuals", "businesses"].map((partyType) => (
+                                                                value[partyType] && (
+                                                                    <div key={partyType} className="my-4">
+                                                                        <h5 className="mb-2 text-capitalize">{partyType}</h5>
+                                                                        <ul>
+                                                                            <li className='listingLi row'>
+                                                                                <div className='col-4 heading'>Information required</div>
+                                                                                <div className='col-4 heading'>Documentation required</div>
+                                                                                <div className='col-4 heading'>Acceptable Documentation</div>
+                                                                            </li>
+
+                                                                            {value[partyType]?.information_required?.map((info, i) => (
+                                                                                <li key={i} className='row'>
+                                                                                    <div className='col-4'><p><b>{info}</b></p></div>
+                                                                                    <div className='col-4'>
+                                                                                        <p>{value[partyType]?.documentation_required?.[info] || "—"}</p>
+                                                                                    </div>
+                                                                                    <div className='col-4'>
+                                                                                        <p>{value[partyType]?.acceptable_documentation?.[info] || "—"}</p>
+                                                                                    </div>
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>
+
+                                                                        {/* Notes section if available */}
+                                                                        {value[partyType]?.notes && (
+                                                                            <div className="mt-3">
+                                                                                <h6>Notes:</h6>
+                                                                                <ul>
+                                                                                    {value[partyType].notes.map((note, idx) => (
+                                                                                        <li key={idx}>{note}</li>
+                                                                                    ))}
+                                                                                </ul>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
-                                                                }
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div className="col-xxl-8 col-12 mx-auto compliancesBox">
-                                                <div className="basicContent my-0">
-                                                    <h4>Requirements for Businesses</h4>
-                                                    <ul>
-                                                        <li className='listingLi row'>
-                                                            <div className='col-4 heading'>Information required</div>
-                                                            <div className='col-4 heading'>Documentation required</div>
-                                                            <div className='col-4 heading'>Acceptable Documentation</div>
-                                                        </li>
-                                                        {countryCompliance?.requirements?.businesses?.information_required?.map((info, i) => (
-                                                            <li key={i} className='row'>
-                                                                <div className='col-4'><p><b>{info}</b></p></div>
-                                                                <div className='col-4'>
-                                                                    <p>{countryCompliance?.requirements?.businesses?.documentation_required[info] || "—"}</p>
-                                                                </div>
-                                                                {countryCompliance?.requirements?.businesses?.acceptable_documentation &&
-                                                                    <div className='col-4'>
-                                                                        <p>{countryCompliance?.requirements?.businesses?.acceptable_documentation[info] || "—"}</p>
-                                                                    </div>
-                                                                }
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                                                )
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
                                             <div className="col-xxl-8 col-12 mx-auto compliancesBox">
                                                 <div className="basicContent my-0">
                                                     {countryCompliance?.requirements?.notes?.map((note, i) => (

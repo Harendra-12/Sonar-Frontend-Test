@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 
 /* CSS Modules */
 @import url("./components/headerTitle.css");
@@ -65,6 +66,7 @@
   --bg-color: #f3f3f3;
   --bgdark-color: #111525;
   /* Dark Mode */
+  --sidenav-color: #ffffff;
   --nav-color: #1c1c1c;
   --button-dark: #2d3864;
   --div-color: #161c31;
@@ -221,8 +223,8 @@
   --primary-color01: #845adf;
   --pink-rgb-bg: #e791bc1a;
   --pink-rgb-text: #e791bc;
-  --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
-  --secondary-rgb-text: rgb(35, 183, 229);
+  --secondary-rgb-bg: #89A2FA1a;
+  --secondary-rgb-text: #89A2FA;
   --default-border: #dbdbdb;
 
   --shadow01: rgba(169, 169, 169, .15);
@@ -257,12 +259,14 @@
   --batch_bg: #f5f7fa;
   --active-mail-list: #ECF0FE;
   --active-mail-list-text: #000C8F;
-   --clr-permission-text: #333849;
---mail-seen: #434649;
+  --clr-permission-text: #333849;
+  --mail-seen: #434649;
+  --switch-toggle: #89a2fa;
 }
 
 :root.dark {
-    --color2: #89A2FA;
+  --color2: #89A2FA;
+  --sidenav-color: var(--nav-color);
   --nav-color: #1c1c1c;
   --active-text: #cfcfcf;
   --tab-active: #4060852e;
@@ -351,10 +355,10 @@
 
   --table-head: #293e59;
   --table-even-bg: rgba(46, 44, 63, 0.62);
-  --table-odd-color: rgba(85, 104, 130, 0.18);
+  --table-odd-color: rgb(47 61 80);
   --table-border-color: #525458;
   --table-bg-active: #292f3a;
-
+  --switch-toggle: #89a2fa;
   /* ================= message box color  */
 
   --me-body-bg: #12131d;
@@ -362,7 +366,7 @@
   --me-video-bg: #1d2326ba;
   --me-input-bg: #293341;
   /* --me-border1: #4a4a4aa6; */
-    --me-border1: var(--border-color);
+  --me-border1: var(--border-color);
   --me-text-color: #c9c8c8;
   --me-text-color2: #b4b8c3;
   --me-text-color3: #212529bf;
@@ -435,7 +439,7 @@ html {
 }
 
 body {
-  font-family: Roboto;
+  font-family: Geist;
   background-color: var(--bg-color);
   height: 100vh;
   margin: 0;

@@ -141,7 +141,7 @@
     margin: 5px 0;
     font-weight: 500;
     font-size: 1rem;
-    font-family: 'Open Sans';
+    /* font-family: 'Open Sans'; */
     color: var(--immortalBlack);
 }
 
@@ -226,9 +226,11 @@
     color: var(--immortalBlack) !important;
 
 }
-.progressStepWrapper .stepWrapper label{
+
+.progressStepWrapper .stepWrapper label {
     margin-top: 0 !important;
 }
+
 .progressStepWrapper .stepWrapper {
     text-align: center;
     position: relative;
@@ -245,7 +247,8 @@
     inset: 0;
     margin: auto 26px;
 }
-.progress-bar{
+
+.progress-bar {
     width: 4px;
 }
 
@@ -291,7 +294,7 @@
     /* position: absolute; */
     bottom: -30px;
     margin-top: 10px;
-    font-family: 'Open Sans';
+    /* font-family: 'Open Sans'; */
     font-weight: 500;
     color: #7c7c7c;
     text-wrap: nowrap;
@@ -540,6 +543,7 @@
     font-size: 14px;
     font-weight: 500;
 }
-.listViewProfileInfo{
+
+.listViewProfileInfo {
     flex: auto;
 }

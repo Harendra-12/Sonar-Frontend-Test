@@ -140,7 +140,7 @@ function AccessControl() {
                               <tr>
                                 <th>Name</th>
                                 <th>List</th>
-                                <th>Group</th>
+                                <th>Role</th>
                                 {checkViewSidebar("AccessControl", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
                                 {checkViewSidebar("AccessControl", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <th className="text-center" >Delete</th>}
                               </tr>

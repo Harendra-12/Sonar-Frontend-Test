@@ -168,9 +168,9 @@ const Users = () => {
       email: selectedUser.email,
       extension_id: selectedUser.extension_id,
       name: selectedUser.name,
-      permissions: selectedUser.permissions,
-      sectionPermissions: selectedUser.sectionPermissions,
-      tablePermissions: selectedUser.tablePermissions,
+      // permissions: selectedUser.permissions,
+      // sectionPermissions: selectedUser.sectionPermissions,
+      // tablePermissions: selectedUser.tablePermissions,
       role_id: selectedUser.user_role.role_id,
       status: selectedUser.status === "E" ? "D" : "E",
       timezone_id: selectedUser.timezone_id,
@@ -418,7 +418,7 @@ const Users = () => {
                                 <th className="text-center">
                                   {" "}
                                   <select
-                                    className="formItem f-select-width"
+                                    className="f-select-width"
                                     value={onlineFilter}
                                     onChange={(e) => {
                                       setonlineFilter(e.target.value)

@@ -65,6 +65,10 @@ const NewGetDid = () => {
       label: "Emergency",
       value: "emergency",
     },
+    {
+      label: "AI",
+      value: "ai",
+    },
   ];
 
   const {
@@ -314,7 +318,7 @@ const NewGetDid = () => {
                                       className="formItem"
                                       value={watch().country}
                                       {...register("country")}
-                                      // disabled
+                                    // disabled
                                     >
                                       {countryCode.length > 0 ? (
                                         countryCode.map((item, key) => {
@@ -354,9 +358,8 @@ const NewGetDid = () => {
                                   <div className="col-12">
                                     <select
                                       name="searchType"
-                                      className={`formItem ${
-                                        errors.searchType ? "error" : ""
-                                      }`}
+                                      className={`formItem ${errors.searchType ? "error" : ""
+                                        }`}
                                       {...register("searchType", {
                                         ...requiredValidator,
                                       })}
@@ -398,9 +401,8 @@ const NewGetDid = () => {
                                     <input
                                       type="number"
                                       name="quantity"
-                                      className={`formItem ${
-                                        errors.quantity ? "error" : ""
-                                      }`}
+                                      className={`formItem ${errors.quantity ? "error" : ""
+                                        }`}
                                       {...register("quantity", {
                                         // ...requiredValidator,
                                         ...lengthValidator(1, 10),
@@ -542,6 +544,37 @@ const NewGetDid = () => {
                                           </symbol>
                                         </svg>
                                       </div>
+                                      <div className="checkbox-wrapper-4">
+                                        <input
+                                          className="inp-cbx"
+                                          id="AI"
+                                          name="AI"
+                                          type="checkbox"
+                                          onChange={handleChangeUsage}
+                                        />
+                                        <label
+                                          className="cbx"
+                                          htmlFor="AI"
+                                        >
+                                          <span>
+                                            <svg
+                                              width="12px"
+                                              height="10px"
+                                            ></svg>
+                                          </span>
+                                          <span className="checkBoxLabel">
+                                            AI
+                                          </span>
+                                        </label>
+                                        <svg className="inline-svg">
+                                          <symbol
+                                            id="check-4"
+                                            viewBox="0 0 12 10"
+                                          >
+                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                          </symbol>
+                                        </svg>
+                                      </div>
                                     </div>
                                     <label
                                       htmlFor="data"
@@ -564,9 +597,8 @@ const NewGetDid = () => {
                                       <div className="col-12">
                                         <select
                                           name="searchBy"
-                                          className={`formItem ${
-                                            errors.searchBy ? "error" : ""
-                                          }`}
+                                          className={`formItem ${errors.searchBy ? "error" : ""
+                                            }`}
                                           {...register("searchBy", {
                                             ...requiredValidator,
                                           })}
@@ -604,50 +636,49 @@ const NewGetDid = () => {
                                   watch().searchBy === "npanxx" ||
                                   watch().searchType === "tollfree" ||
                                   !watch().searchBy) && (
-                                  <>
-                                    <div
-                                      className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}
-                                    >
-                                      <div className="col-12">
-                                        <div
-                                          className="formLabel"
-                                          style={{ maxWidth: "100%" }}
-                                        >
-                                          <label htmlFor="npa">
-                                            First 3 Digits
+                                    <>
+                                      <div
+                                        className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}
+                                      >
+                                        <div className="col-12">
+                                          <div
+                                            className="formLabel"
+                                            style={{ maxWidth: "100%" }}
+                                          >
+                                            <label htmlFor="npa">
+                                              First 3 Digits
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="col-12">
+                                          <input
+                                            type="number"
+                                            name="npa"
+                                            className={`formItem ${errors.npa ? "error" : ""
+                                              }`}
+                                            {...register("npa", {
+                                              ...(watch("searchBy") === "npanxx"
+                                                ? requiredValidator
+                                                : {}),
+                                              ...lengthValidator(3, 3),
+                                              ...noSpecialCharactersValidator,
+                                            })}
+                                          />
+                                          <label
+                                            htmlFor="data"
+                                            className="formItemDesc text-start"
+                                          >
+                                            {/* Input the first 3 digits (NPA - Area Code) of the DID */}
                                           </label>
+                                          {errors.npa && (
+                                            <ErrorMessage
+                                              text={errors.npa.message}
+                                            />
+                                          )}
                                         </div>
                                       </div>
-                                      <div className="col-12">
-                                        <input
-                                          type="number"
-                                          name="npa"
-                                          className={`formItem ${
-                                            errors.npa ? "error" : ""
-                                          }`}
-                                          {...register("npa", {
-                                            ...(watch("searchBy") === "npanxx"
-                                              ? requiredValidator
-                                              : {}),
-                                            ...lengthValidator(3, 3),
-                                            ...noSpecialCharactersValidator,
-                                          })}
-                                        />
-                                        <label
-                                          htmlFor="data"
-                                          className="formItemDesc text-start"
-                                        >
-                                          {/* Input the first 3 digits (NPA - Area Code) of the DID */}
-                                        </label>
-                                        {errors.npa && (
-                                          <ErrorMessage
-                                            text={errors.npa.message}
-                                          />
-                                        )}
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
+                                    </>
+                                  )}
 
                                 {watch().searchBy === "npanxx" &&
                                   watch().searchType === "domestic" && (
@@ -669,9 +700,8 @@ const NewGetDid = () => {
                                           <input
                                             type="number"
                                             name="nxx"
-                                            className={`formItem ${
-                                              errors.nxx ? "error" : ""
-                                            }`}
+                                            className={`formItem ${errors.nxx ? "error" : ""
+                                              }`}
                                             {...register("nxx", {
                                               ...requiredValidator,
                                               ...lengthValidator(3, 3),
@@ -717,9 +747,8 @@ const NewGetDid = () => {
                                           <input
                                             type="string"
                                             name="rateCenter"
-                                            className={`formItem ${
-                                              errors.rateCenter ? "error" : ""
-                                            }`}
+                                            className={`formItem ${errors.rateCenter ? "error" : ""
+                                              }`}
                                             {...register("rateCenter", {
                                               // ...requiredValidator
                                             })}
@@ -750,9 +779,8 @@ const NewGetDid = () => {
                                           <input
                                             type="state"
                                             name="state"
-                                            className={`formItem ${
-                                              errors.state ? "error" : ""
-                                            }`}
+                                            className={`formItem ${errors.state ? "error" : ""
+                                              }`}
                                             {...register("state", {
                                               ...requiredValidator,
                                             })}
@@ -776,9 +804,8 @@ const NewGetDid = () => {
                                         <div className="col-12">
                                           <select
                                             name="contiguous"
-                                            className={`formItem ${
-                                              errors.contiguous ? "error" : ""
-                                            }`}
+                                            className={`formItem ${errors.contiguous ? "error" : ""
+                                              }`}
                                             {...register("contiguous", {
                                               ...requiredValidator,
                                             })}
@@ -820,11 +847,10 @@ const NewGetDid = () => {
                                 {did && did.length > 0 ? (
                                   did.map((item, index) => (
                                     <div
-                                      className={`card country_box ${
-                                        selectedDid.includes(item)
-                                          ? "active"
-                                          : ""
-                                      }`}
+                                      className={`card country_box ${selectedDid.includes(item)
+                                        ? "active"
+                                        : ""
+                                        }`}
                                       key={index}
                                       onClick={() =>
                                         selectedDid.includes(item)
@@ -835,9 +861,8 @@ const NewGetDid = () => {
                                       <div className="card-body flex-row gap-3 justify-content-start w-100">
                                         <div className="avatar_img mb-0">
                                           <img
-                                            src={`https://flagsapi.com/${
-                                              watch().country
-                                            }/flat/64.png`}
+                                            src={`https://flagsapi.com/${watch().country
+                                              }/flat/64.png`}
                                             alt="logout"
                                             style={{ width: "auto" }}
                                           />
@@ -883,6 +908,16 @@ const NewGetDid = () => {
                                                   <Tippy content="Emergency / e911 is activated for this DID">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-light-emergency-on"></i>
+                                                    </button>
+                                                  </Tippy>
+                                                );
+                                              } else if (
+                                                item.label === "AI"
+                                              ) {
+                                                return (
+                                                  <Tippy content="Emergency / e911 is activated for this DID">
+                                                    <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                      <i className="fa-regular fa-microchip-ai"></i>
                                                     </button>
                                                   </Tippy>
                                                 );

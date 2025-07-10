@@ -17,6 +17,7 @@ import {
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,
+  isOnlyLink,
   logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -70,11 +71,12 @@ function Messages({
 }) {
   const dispatch = useDispatch();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
-  const socketSendPeerCallMessage = useSelector((state)=> state.socketSendPeerCallMessage);
+  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
   const globalSession = useSelector((state) => state.sessions);
+  const allNotificationState = useSelector((data) => data?.allNotificationState);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const groupMessage = useSelector((state) => state.groupMessage);
@@ -160,6 +162,7 @@ function Messages({
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
+  const scrollPositionRef = useRef({ scrollTop: 0, scrollHeight: 0 });
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -192,7 +195,6 @@ function Messages({
 
   //  function to extract extension
   const extractFileExtension = (selectedUrl) => {
-    // debugger
     if (!selectedUrl) return null;
 
     // Step 1: Remove query parameters and get the base URL
@@ -286,7 +288,7 @@ function Messages({
           ...data?.last_message_data,
           message_text:
             checkMessageType(data?.last_message_data?.message_text) ===
-            "text/plain"
+              "text/plain"
               ? data?.last_message_data?.message_text
               : checkMessageType(data?.last_message_data?.message_text),
         },
@@ -395,10 +397,17 @@ function Messages({
           : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
       );
 
+      if (messageListRef.current && !isFreeSwitchMessage) {
+        scrollPositionRef.current = {
+          scrollTop: messageListRef.current.scrollTop,
+          scrollHeight: messageListRef.current.scrollHeight,
+        };
+      }
       apiData?.data?.data?.map((item) => {
         const user_details = allAgents?.find(
           (data) => data?.id == item?.user_id
         );
+
         setAllMessage((prevState) => ({
           ...prevState,
           [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
@@ -427,15 +436,9 @@ function Messages({
       }
     }
     if (recipient?.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(recipient?.[0])) {
-        if (
-          chatHistory[recipient?.[0]]?.total &&
-          chatHistory[recipient?.[0]].pageNumber * 40 <
-            chatHistory[recipient?.[0]].total
-        ) {
-          getData(chatHistory[recipient?.[0]].pageNumber + 1);
-          setIsFreeSwitchMessage(false);
-        }
+      if (Object.keys(chatHistory).includes(String(recipient?.[0]))) {
+        getData(chatHistory[recipient?.[0]].pageNumber + 1);
+        setIsFreeSwitchMessage(false);
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
@@ -448,6 +451,8 @@ function Messages({
     return parts[parts?.length - 1]?.toLowerCase();
   };
 
+
+
   // Logic to send message
   const checkMessageType = (message) => {
     const isHasExtension = getExtension(message);
@@ -459,40 +464,55 @@ function Messages({
       return "image";
     } else if (isHasExtension == "png") {
       return "image";
-    } else if (isHasExtension == "m4v") {
+    } else if (isHasExtension == "jpeg") {
+      return "image"
+    } else if (isHasExtension == "svg") {
+      return "image"
+    } else if (isHasExtension == "tiff") {
+      return "image"
+    } else if (isHasExtension == "webp") {
+      return "image"
+    } else if (isHasExtension == "mp3") {
+      return "audio"
+    } else if (isHasExtension == "mp4") {
+      return "video";
+    } else if (isHasExtension == "mov") {
       return "video";
     } else if (isHasExtension == "avi") {
       return "video";
-    } else if (isHasExtension == "mpg") {
+    } else if (isHasExtension == "mkv") {
       return "video";
-    } else if (isHasExtension == "mp4") {
+    } else if (isHasExtension == "WMV") {
+      return "video"
+    } else if (isHasExtension == "flv") {
       return "video";
-    } else if (isHasExtension == "webm") {
-      return "video";
-    } else if (isHasExtension == "wav") {
-      return "audio";
-    } else if (isHasExtension == "wma") {
-      return "audio";
     } else if (isHasExtension == "pdf") {
       return "file";
+    } else if (isHasExtension == "txt") {
+      return "file";
+    } else if (isHasExtension == "rtf") {
+      return "file";
+    } else if (isHasExtension == "odt") {
+      return "file";
+    } else if (isHasExtension == "doc") {
+      return "file";
+    } else if (isHasExtension == "docx") {
+      return "file";
+    } else if (isHasExtension == "xls") {
+      return "file";
     } else if (isHasExtension == "xlsx") {
-      return "file";
-    } else if (isHasExtension == "xlsm") {
-      return "file";
-    } else if (isHasExtension == "xlsb") {
-      return "file";
-    } else if (isHasExtension == "xltx") {
-      return "file";
+      return "file"
     } else if (isHasExtension == "csv") {
-      return "file";
-    } else if (isHasExtension == "zip") {
-      return "file";
+      return "file"
+    } else if (isHasExtension == "ppt") {
+      return "file"
+    } else if (isHasExtension == "pptx") {
     } else {
       return "text/plain";
     }
   };
   function sendSingleMessage(selectedUrl) {
-    if (!selectedUrl && messageInput[recipient[0]].trim() === "") {
+    if (!selectedUrl && (!messageInput[recipient[0]]?.trim || messageInput[recipient[0]].trim() === "")) {
       return;
     }
     let messageContent;
@@ -793,7 +813,7 @@ function Messages({
                 body,
                 time,
                 user_id: agentDetails?.id,
-                user_name: agentDetails?.name,
+                user_name: agentDetails?.username,
                 profile_picture: agentDetails?.profile_picture,
                 message_type: contentType,
               },
@@ -840,8 +860,26 @@ function Messages({
         }
       }
     }
+    const isNewMessage = !allNotificationState?.some(data => data?.uuid === incomingMessage?.uuid);
 
-    handleIncomingMessage();
+    if (isNewMessage) {
+      handleIncomingMessage();
+    } else {
+      const unreadMap = {};
+
+      allNotificationState?.forEach((data) => {
+        if (data?.group_name) {
+          unreadMap[data.group_name] = (unreadMap[data.group_name] || 0) + 1;
+        } else if (data?.sender_id) {
+          unreadMap[data.sender_id] = (unreadMap[data.sender_id] || 0) + 1;
+        }
+      });
+
+      setUnreadMessage((prev) => ({
+        ...prev,
+        ...unreadMap,
+      }));
+    }
 
     return () => {
       isMounted = false; // Cleanup: mark as unmounted
@@ -979,19 +1017,63 @@ function Messages({
   }, [allMessage]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (messageListRef.current) {
-        const threshold = messageListRef.current.scrollHeight * 0.9;
-        if (messageListRef.current.scrollTop >= threshold) {
-          setLoadMore(loadMore + 1);
+    const el = messageListRef.current;
+    if (!el) return;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const { scrollTop, scrollHeight } = scrollPositionRef.current || {};
+
+        if (isFreeSwitchMessage) {
+          el.scrollTop = el.scrollHeight;
+        } else if (scrollTop !== undefined && scrollHeight !== undefined) {
+          const newScrollHeight = el.scrollHeight;
+          el.scrollTop = newScrollHeight - scrollHeight + scrollTop;
         }
+      });
+    });
+  }, [allMessage, isFreeSwitchMessage]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (messageListRef.current?.scrollTop === 0) {
+        setLoadMore(prev => prev + 1);
       }
     };
 
-    if (messageListRef.current) {
-      messageListRef.current.addEventListener("scroll", handleScroll);
-    }
+    const el = messageListRef.current;
+    if (el) el.addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (el) el.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (messageListRef.current) {
+  //       // Check if scrolled to top
+  //       if (messageListRef.current.scrollTop === 0) {
+  //         setLoadMore(prev => prev + 1);
+  //       }
+  //     }
+  //   };
+
+  //   const ref = messageListRef.current;
+  //   if (ref) {
+  //     ref.addEventListener("scroll", handleScroll);
+  //   }
+
+  //   // Cleanup listener on unmount or dependency change
+  //   return () => {
+  //     if (ref) {
+  //       ref.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [messageListRef?.current?.scrollTop === 0]);
+
+  // ================ scroll related stuff end here 
 
   useEffect(() => {
     async function getData() {
@@ -1078,13 +1160,13 @@ function Messages({
               mode === "audio"
                 ? true
                 : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
                   },
+                  optional: [{ facingMode: "user" }],
+                },
           },
         }
       );
@@ -1176,7 +1258,7 @@ function Messages({
             ...data?.last_message_data,
             message_text:
               checkMessageType(data?.last_message_data?.message_text) ===
-              "text/plain"
+                "text/plain"
                 ? data?.last_message_data?.message_text
                 : checkMessageType(data?.last_message_data?.message_text),
           },
@@ -1562,65 +1644,79 @@ function Messages({
 
   // Recieve group message
   useEffect(() => {
-    if (groupMessage) {
-      const audio = new Audio(
-        require("../../assets/music/message-notification.mp3")
-      );
-      const from = groupMessage?.user_id;
-      const body = groupMessage?.message_text;
-      setIsFreeSwitchMessage(true);
-      const time = formatDateTime(new Date());
-      setAllMessage((prevState) => ({
-        ...prevState,
-        [groupMessage.group_name]: [
-          ...(prevState[groupMessage.group_name] || []),
-          {
-            from,
-            body,
-            time,
-            user_id: from,
-            user_name: groupMessage?.user_name,
-            profile_picture: groupMessage?.profile_picture,
-            message_type: groupMessage.message_type,
-          },
-        ],
-      }));
-      if (groupMessage?.group_name != undefined) {
-        const contactIndex = groups.findIndex(
-          (contact) => contact?.group_name === groupMessage?.group_name
+    const isNewMessage = !allNotificationState?.some(data => data?.uuid === groupMessage?.uuid);
+    if (isNewMessage) {
+      if (groupMessage) {
+        const audio = new Audio(
+          require("../../assets/music/message-notification.mp3")
         );
-        if (contactIndex !== -1) {
-          const newGroups = [...groups];
-          newGroups[contactIndex].last_message_data.message_text = body;
-          newGroups[contactIndex].last_message_data.created_at = time;
-          newGroups[contactIndex].last_message_data.user_id = from;
-          newGroups?.splice(contactIndex, 1);
-          newGroups.unshift(groups[contactIndex]);
-          setGroups(newGroups);
-          setOriginalGroupsList(newGroups);
-        }
-        setActiveTab("all");
-        setUnreadMessage((prevState) => ({
+        const from = groupMessage?.user_id;
+        const body = groupMessage?.message_text;
+        setIsFreeSwitchMessage(true);
+        const time = formatDateTime(new Date());
+        setAllMessage((prevState) => ({
           ...prevState,
-          [groupMessage?.group_name]:
-            (prevState[groupMessage?.group_name] || 0) + 1,
+          [groupMessage.group_name]: [
+            ...(prevState[groupMessage.group_name] || []),
+            {
+              from,
+              body,
+              time,
+              user_id: from,
+              user_name: groupMessage?.user_name,
+              profile_picture: groupMessage?.profile_picture,
+              message_type: groupMessage.message_type,
+            },
+          ],
         }));
-        audio.play();
+        if (groupMessage?.group_name != undefined) {
+          const contactIndex = groups.findIndex(
+            (contact) => contact?.group_name === groupMessage?.group_name
+          );
+          if (contactIndex !== -1) {
+            const newGroups = [...groups];
+            newGroups[contactIndex].last_message_data.message_text = body;
+            newGroups[contactIndex].last_message_data.created_at = time;
+            newGroups[contactIndex].last_message_data.user_id = from;
+            newGroups?.splice(contactIndex, 1);
+            newGroups.unshift(groups[contactIndex]);
+            setGroups(newGroups);
+            setOriginalGroupsList(newGroups);
+          }
+          setActiveTab("all");
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [groupMessage?.group_name]:
+              (prevState[groupMessage?.group_name] || 0) + 1,
+          }));
+          audio.play();
+        }
       }
-    }
 
-    if (recipient?.length > 0) {
-      setUnreadMessage((prevState) => {
-        const {
-          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
-          ...newState
-        } = prevState;
-        return newState;
+      if (recipient?.length > 0) {
+        setUnreadMessage((prevState) => {
+          const {
+            [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
+            ...newState
+          } = prevState;
+          return newState;
+        });
+        dispatch({
+          type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+          recipient: [...recipient],
+        });
+      }
+    } else {
+      const unreadMap = {};
+      allNotificationState?.forEach((data) => {
+        if (data?.group_name) {
+          unreadMap[data.group_name] = (unreadMap[data.group_name] || 0) + 1;
+        }
       });
-      dispatch({
-        type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
-        recipient: [...recipient],
-      });
+      setUnreadMessage((prev) => ({
+        ...prev,
+        ...unreadMap,
+      }));
     }
   }, [groupMessage]);
 
@@ -2038,7 +2134,7 @@ function Messages({
                       /> */}
                       <div
                         className="callList"
-                        // style={{ height: "calc(100vh - 270px)" }}
+                      // style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
                           <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
@@ -2084,9 +2180,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          // style={{
-                          //   borderBottom: "1px solid var(--border-color)",
-                          // }}
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
                         >
                           <input
                             type="search"
@@ -2099,7 +2195,7 @@ function Messages({
                               handleMessageSearchChange(event)
                             }
                           />
-                          {contact.map((item) => {
+                          {contact?.map((item) => {
                             return (
                               <div
                                 data-bell={
@@ -2184,16 +2280,16 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
                                       </p>
                                       <h5>
                                         {/* here showing last send message below of contact name */}
-                                        {item?.last_message_data?.message_text}
+                                        {isOnlyLink(item?.last_message_data?.message_text) ? "Link" : item?.last_message_data?.message_text}
                                       </h5>
                                       <div className="contactTags ">
                                         {item.tags
@@ -2262,7 +2358,7 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse3"
-                          // style={{ borderBottom: "1px solid #ddd" }}
+                        // style={{ borderBottom: "1px solid #ddd" }}
                         >
                           <input
                             type="search"
@@ -2331,16 +2427,16 @@ function Messages({
                                   <div className=" d-flex align-items-center">
                                     <div
                                       className="profileHolder"
-                                      id={
-                                        item?.message_groupusers?.some((user) =>
-                                          onlineUser?.some(
-                                            (online) =>
-                                              online?.id === user?.user_id
-                                          )
-                                        )
-                                          ? "profileOnlineNav"
-                                          : "profileOfflineNav"
-                                      }
+                                    // id={
+                                    //   item?.message_groupusers?.some((user) =>
+                                    //     onlineUser?.some(
+                                    //       (online) =>
+                                    //         online?.id === user?.user_id
+                                    //     )
+                                    //   )
+                                    //     ? "profileOnlineNav"
+                                    //     : "profileOfflineNav"
+                                    // }
                                     >
                                       <i className="fa-light fa-users fs-5"></i>
                                     </div>
@@ -2351,9 +2447,9 @@ function Messages({
                                           <p className="timeAgo">
                                             {item?.last_message_data?.created_at
                                               ? formatRelativeTime(
-                                                  item?.last_message_data
-                                                    ?.created_at
-                                                )
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
                                               : ""}
                                           </p>
                                         </span>
@@ -2369,18 +2465,18 @@ function Messages({
                                           (data) =>
                                             data?.id ==
                                             item?.last_message_data?.user_id
-                                        )?.name && (
-                                          <span className="text-info fw-normal f-s-14">
-                                            {
-                                              allAgents?.find(
-                                                (data) =>
-                                                  data?.id ==
-                                                  item?.last_message_data
-                                                    ?.user_id
-                                              )?.name
-                                            }
-                                          </span>
-                                        )}
+                                        )?.username && (
+                                            <span className="text-info fw-normal f-s-14">
+                                              {
+                                                allAgents?.find(
+                                                  (data) =>
+                                                    data?.id ==
+                                                    item?.last_message_data
+                                                      ?.user_id
+                                                )?.username
+                                              }
+                                            </span>
+                                          )}
                                         {item?.last_message_data
                                           ?.message_text && ":"}{" "}
                                         {item?.last_message_data?.message_text}
@@ -2703,7 +2799,7 @@ function Messages({
                                   <div className="d-flex">
                                     <div
                                       className="profileHolder"
-                                      id={"profileOfflineNav"}
+                                    // id={"profileOfflineNav"}
                                     >
                                       <i className="fa-light fa-users fs-5"></i>
                                     </div>
@@ -2715,21 +2811,21 @@ function Messages({
                                       </div> */}
                                       {item?.last_message_data
                                         ?.message_text && (
-                                        <p className="fs-14 text-gray">
-                                          <span className="text-info fw-normal">
-                                            {allAgents.find(
-                                              (data) =>
-                                                data.id ==
-                                                item?.last_message_data?.user_id
-                                            )?.username || "N/A"}{" "}
-                                            : &nbsp;
-                                          </span>{" "}
-                                          {
-                                            item?.last_message_data
-                                              ?.message_text
-                                          }
-                                        </p>
-                                      )}
+                                          <p className="fs-14 text-gray">
+                                            <span className="text-info fw-normal">
+                                              {allAgents.find(
+                                                (data) =>
+                                                  data.id ==
+                                                  item?.last_message_data?.user_id
+                                              )?.username || "N/A"}{" "}
+                                              : &nbsp;
+                                            </span>{" "}
+                                            {
+                                              item?.last_message_data
+                                                ?.message_text
+                                            }
+                                          </p>
+                                        )}
                                     </div>
                                   </div>
                                   <div className=" text-end">
@@ -2738,18 +2834,18 @@ function Messages({
                                       <p className="timeAgo">
                                         {item?.last_message_data?.created_at
                                           ? formatRelativeTime(
-                                              item?.last_message_data
-                                                ?.created_at
-                                            )
+                                            item?.last_message_data
+                                              ?.created_at
+                                          )
                                           : ""}
                                       </p>
-                                      {unreadMessage[item.group_name] ? (
+                                      {/* {unreadMessage[item.group_name] ? (
                                         ""
                                       ) : (
                                         <span className="chat-read-icon readsms ">
                                           <i className="fa-solid fa-check-double"></i>
                                         </span>
-                                      )}
+                                      )} */}
                                     </div>
                                     {/* <div className="dropdown">
                                         <button
@@ -2890,45 +2986,45 @@ function Messages({
                               {contact.find(
                                 (contact) => contact.id == recipient?.[1]
                               )?.tags?.length > 8 && (
-                                <Tippy
-                                  trigger="click"
-                                  content={
-                                    <ul
-                                      className="contactTags"
-                                      style={{
-                                        listStyle: "none",
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        maxWidth: "300px",
-                                        gap: "5px",
-                                        zIndex: "99999",
-                                      }}
-                                    >
-                                      {contact
-                                        .find(
-                                          (contact) =>
-                                            contact.id == recipient?.[1]
-                                        )
-                                        // ?.tags?.slice(2)
-                                        ?.tags?.map((tag, key) => (
-                                          // <li key={key}  data-id={key}>
-                                          <span key={key} data-id={key}>
-                                            {tag.tag?.[0]?.name}
-                                          </span>
-                                          // </li>
-                                        ))}
-                                    </ul>
-                                  }
-                                  allowHTML={true}
-                                >
-                                  <span className="viewAllTagBtn">
-                                    View All +
-                                    {contact.find(
-                                      (contact) => contact.id == recipient?.[1]
-                                    )?.tags?.length - 8}
-                                  </span>
-                                </Tippy>
-                              )}
+                                  <Tippy
+                                    trigger="click"
+                                    content={
+                                      <ul
+                                        className="contactTags"
+                                        style={{
+                                          listStyle: "none",
+                                          display: "flex",
+                                          flexWrap: "wrap",
+                                          maxWidth: "300px",
+                                          gap: "5px",
+                                          zIndex: "99999",
+                                        }}
+                                      >
+                                        {contact
+                                          .find(
+                                            (contact) =>
+                                              contact.id == recipient?.[1]
+                                          )
+                                          // ?.tags?.slice(2)
+                                          ?.tags?.map((tag, key) => (
+                                            // <li key={key}  data-id={key}>
+                                            <span key={key} data-id={key}>
+                                              {tag.tag?.[0]?.name}
+                                            </span>
+                                            // </li>
+                                          ))}
+                                      </ul>
+                                    }
+                                    allowHTML={true}
+                                  >
+                                    <span className="viewAllTagBtn">
+                                      View All +
+                                      {contact.find(
+                                        (contact) => contact.id == recipient?.[1]
+                                      )?.tags?.length - 8}
+                                    </span>
+                                  </Tippy>
+                                )}
 
                               {/* <span data-id="1">Work</span> */}
                               {selectedChat === "groupChat" ? (
@@ -2986,7 +3082,7 @@ function Messages({
                                                 recipient?.[1]
                                               )
                                             }
-                                            // className="removableTag"
+                                          // className="removableTag"
                                           >
                                             {item?.name}
                                           </span>
@@ -3222,9 +3318,9 @@ function Messages({
                                 )}
 
                                 {selectedChat === "groupChat" &&
-                                groups?.find(
-                                  (group) => group.group_name == recipient?.[0]
-                                )?.created_by == account?.id ? (
+                                  groups?.find(
+                                    (group) => group.group_name == recipient?.[0]
+                                  )?.created_by == account?.id ? (
                                   <li>
                                     <div
                                       className="dropdown-item text-danger"
@@ -3277,7 +3373,7 @@ function Messages({
                                 const isNewDate =
                                   index === 0 ||
                                   messageDate !==
-                                    arr[index - 1].time?.split(" ")[0];
+                                  arr[index - 1].time?.split(" ")[0];
 
                                 return (
                                   <React.Fragment key={index}>
@@ -3611,9 +3707,8 @@ function Messages({
                                 <div className="d-flex gap-1 align-items-center">
                                   <Tippy content="Auto Reply with AI">
                                     <button
-                                      className={`clearButton2 eraser ${
-                                        autoReply ? "active" : ""
-                                      }`}
+                                      className={`clearButton2 eraser ${autoReply ? "active" : ""
+                                        }`}
                                       onClick={() => setAutoReply(!autoReply)}
                                     >
                                       <i className="fa-solid fa-message-bot"></i>
@@ -3874,7 +3969,7 @@ function Messages({
                                             <input
                                               type="checkbox"
                                               onChange={handleSelectAll} // Call handler on change
-                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                            // checked={selectAll ? true : false} // Keep checkbox state in sync
                                             />
                                           </th>
                                         </tr>
@@ -4028,7 +4123,7 @@ function Messages({
                                           <h4>{item.name}</h4>
                                         </div>
                                         {item.email !== account.email &&
-                                        isAdmin ? (
+                                          isAdmin ? (
                                           <div className="col text-end my-auto">
                                             <div className="dropdown">
                                               <button
@@ -4121,21 +4216,21 @@ function Messages({
                       style={{
                         width:
                           isActiveAgentsOpen &&
-                          recipient &&
-                          recipient?.length > 0
+                            recipient &&
+                            recipient?.length > 0
                             ? "30%"
                             : "0%",
                         transition: "all 0.4s ease-in-out",
                       }}
-                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                    // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                     >
                       <div
                         className={`callDashParkedCalls messageDower pe-0 absolutePanel`}
                         style={{
                           transform:
                             isActiveAgentsOpen &&
-                            recipient &&
-                            recipient?.length > 0
+                              recipient &&
+                              recipient?.length > 0
                               ? "translate(3%, 0%)"
                               : "translate(100%, 0%)",
                         }}
@@ -4149,21 +4244,20 @@ function Messages({
                             style={{
                               left:
                                 isActiveAgentsOpen &&
-                                recipient &&
-                                recipient?.length > 0
+                                  recipient &&
+                                  recipient?.length > 0
                                   ? "-15px"
                                   : "-5px",
                               transition: "all 0.4s ease-in-out",
                             }}
                           >
                             <i
-                              className={`fa-solid fa-chevron-${
-                                isActiveAgentsOpen &&
+                              className={`fa-solid fa-chevron-${isActiveAgentsOpen &&
                                 recipient &&
                                 recipient?.length > 0
-                                  ? "right"
-                                  : "left"
-                              }`}
+                                ? "right"
+                                : "left"
+                                }`}
                             />
                           </button>
                         ) : (
@@ -4171,7 +4265,7 @@ function Messages({
                         )}
                         <div
                           className=" h-100"
-                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                        // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                         >
                           {/* this section is for profile details ************ */}
                           {recipient && recipient?.length > 0 ? (
@@ -4265,7 +4359,7 @@ function Messages({
                                 <input
                                   type="checkbox"
                                   onChange={handleSelectAll} // Call handler on change
-                                  // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                // checked={selectAll ? true : false} // Keep checkbox state in sync
                                 />
                               </th>
                             </tr>

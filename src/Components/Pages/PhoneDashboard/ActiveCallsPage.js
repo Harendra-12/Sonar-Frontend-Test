@@ -39,7 +39,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
     const [refresh, setRefresh] = useState(0);
     const [selectedModule, setSelectedModule] = useState('');
     const [addNewMod, setAddNewMod] = useState(false);
-    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD");
+    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD"
+        // || item.callstate === "ACTIVE" || item.callstate === "HELD"
+    );
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
@@ -412,7 +414,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             </Tippy>
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={55} collapsible={true} minSize={25} ref={rightPanel}>
-                                            <div className='activeCallsAgentWrapper position-relative'>
+                                            <div className='activeCallsAgentWrapper position-relative' style={{ overflow: 'scroll', width: '100%' }}>
                                                 <div className='d-flex resBottom'>
                                                     <Tippy content="Minimize this window">
                                                         <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
@@ -475,7 +477,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : item?.direction === "inbound" ? "#fff3cd" : "" }}>
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.did_tag}</td>
-                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_name}</td>
+                                                                                                                <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_num}</td>
                                                                                                                 {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.dest}</td> */}
                                                                                                                 {/* <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td> */}
                                                                                                                 <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
@@ -511,7 +513,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -545,7 +547,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -604,7 +606,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -640,7 +642,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>
@@ -676,7 +678,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                                             <tr>
                                                                                                                 <td>{key + 1}</td>
                                                                                                                 <td>{item.did_tag}</td>
-                                                                                                                <td>{item.cid_name}</td>
+                                                                                                                <td>{item.cid_num}</td>
                                                                                                                 <td>{item.dest}</td>
                                                                                                                 <td>{item.feature_tag}</td>
                                                                                                                 <td>{item.realTimeDuration}</td>

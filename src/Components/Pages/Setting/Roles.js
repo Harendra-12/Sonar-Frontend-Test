@@ -825,6 +825,7 @@ function Roles() {
                           setLoading={setLoading}
                           setRolePermissionBridge={setRolePermissionBridge}
                           isUserFilter={false}
+                          needToCheckDefault={true}
                         />
                       </div>
                     )}
@@ -875,7 +876,7 @@ function Roles() {
                             <option value="" disabled>
                               Please Select Template
                             </option>
-                            {roles.map((item, key) => {
+                            {roles?.filter((item => item?.is_default == 1))?.map((item, key) => {
                               return (
                                 <option value={item.id} key={key}>
                                   {item.name}
@@ -936,6 +937,7 @@ function Roles() {
                           setSaveClick(false);
                           setEditClick(false);
                           setEditIndex("");
+                          setNewRole("");
                         }}
                       >
                         <span className="text">Cancel</span>
@@ -954,7 +956,7 @@ function Roles() {
         )}
         {/* set permissions of new role */}
         {submitPopup ? (
-          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '600px' }}>
+          <div className="addNewContactPopup profileDetailsHolder" style={{ width: '700px', zIndex: 9999 }}>
             <div className="row">
               <div className="col-12 heading mb-0">
                 <i className="fa-light fa-user-plus" />
@@ -1107,6 +1109,8 @@ function Roles() {
                         loading={loading}
                         setLoading={setLoading}
                         setRolePermissionBridge={setRolePermissionBridge}
+                        isPopup={true}
+                        needToCheckDefault={false}
                       />
                     </div>
                   )}

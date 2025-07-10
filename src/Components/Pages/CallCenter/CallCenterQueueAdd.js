@@ -88,10 +88,9 @@ function CallCenterQueueAdd() {
     async function getData() {
       setLoading(true);
       const userData = await generalGetFunction(
-        `/user/search?account=${account.account_id}${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       const musicData = await generalGetFunction("/sound/all");
@@ -308,7 +307,7 @@ function CallCenterQueueAdd() {
             ? 5
             : Number(data.max_wait_time_with_no_agent_time_reached),
         ring_progressively_delay:
-          data.ring_progressively_delay === ""
+          data.ring_progressively_delay === "" || !data.ring_progressively_delay
             ? 10
             : Number(data.ring_progressively_delay),
       },
@@ -1402,16 +1401,16 @@ function CallCenterQueueAdd() {
                         "delete"
                       )
                         ? selectedAgentToEdit.length > 1 && (
-                            <button
-                              className="panelButton delete"
-                              onClick={deleteSelectedDestination}
-                            >
-                              <span className="text">Delete</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-trash"></i>
-                              </span>
-                            </button>
-                          )
+                          <button
+                            className="panelButton delete"
+                            onClick={deleteSelectedDestination}
+                          >
+                            <span className="text">Delete</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-trash"></i>
+                            </span>
+                          </button>
+                        )
                         : ""}
                       {checkViewSidebar(
                         "CallCenterAgent",
@@ -1421,35 +1420,35 @@ function CallCenterQueueAdd() {
                         "edit"
                       )
                         ? agent.length > 0 &&
-                          (selectedAgentToEdit.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
                           selectedAgentToEdit.length != agent.length ? (
-                            <button
-                              type="button"
-                              className="panelButton"
-                              onClick={() => {
-                                setBulkEditPopup(true);
-                              }}
-                            >
-                              <span className="text">Edit</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              className="panelButton edit"
-                              onClick={() => {
-                                setSelectedAgentToEdit(agent);
-                                setBulkEditPopup(true);
-                              }}
-                            >
-                              <span className="text">Edit All</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-pen"></i>
-                              </span>
-                            </button>
-                          ))
+                          <button
+                            type="button"
+                            className="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton edit"
+                            onClick={() => {
+                              setSelectedAgentToEdit(agent);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit All</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        ))
                         : ""}
                       {checkViewSidebar(
                         "CallCenterAgent",
@@ -1458,21 +1457,21 @@ function CallCenterQueueAdd() {
                         account?.permissions,
                         "add"
                       ) && (
-                        <button
-                          type="button"
-                          className="panelButton"
-                          onClick={() => {
-                            if (user.length !== agent.length)
-                              setBulkAddPopUp(true);
-                            else toast.warn("All agent selected");
-                          }}
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-plus"></i>
-                          </span>
-                        </button>
-                      )}
+                          <button
+                            type="button"
+                            className="panelButton"
+                            onClick={() => {
+                              if (user.length !== agent.length)
+                                setBulkAddPopUp(true);
+                              else toast.warn("All agent selected");
+                            }}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                     </div>
                   </div>
                   {checkViewSidebar(
@@ -1526,16 +1525,14 @@ function CallCenterQueueAdd() {
                                     <label>{index + 1}.</label>
                                   </div>
                                   <div
-                                    className={`row col-${
-                                      advance.includes(item.id)
-                                        ? "11"
-                                        : "xxl-5 col-xl-6"
-                                    }`}
+                                    className={`row col-${advance.includes(item.id)
+                                      ? "11"
+                                      : "xxl-5 col-xl-6"
+                                      }`}
                                   >
                                     <div
-                                      className={`col-${
-                                        advance.includes(item.id) ? "2" : "6"
-                                      } ps-0 pe-2`}
+                                      className={`col-${advance.includes(item.id) ? "2" : "6"
+                                        } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1566,9 +1563,8 @@ function CallCenterQueueAdd() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`col-${
-                                        advance.includes(item.id) ? "2" : "2"
-                                      } ps-0 pe-2`}
+                                      className={`col-${advance.includes(item.id) ? "2" : "2"
+                                        } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1589,9 +1585,8 @@ function CallCenterQueueAdd() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`col-${
-                                        advance.includes(item.id) ? "1" : "2"
-                                      } ps-0 pe-2`}
+                                      className={`col-${advance.includes(item.id) ? "1" : "2"
+                                        } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1623,9 +1618,8 @@ function CallCenterQueueAdd() {
                                       </select>
                                     </div>
                                     <div
-                                      className={`col-${
-                                        advance.includes(item.id) ? "1" : "2"
-                                      } ps-0 pe-2`}
+                                      className={`col-${advance.includes(item.id) ? "1" : "2"
+                                        } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1889,16 +1883,14 @@ function CallCenterQueueAdd() {
                                       >
                                         <button
                                           type="button"
-                                          className={`tableButton edit my-auto ${
-                                            agent.length < 2 ? "me-2" : ""
-                                          }`}
+                                          className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
+                                            }`}
                                         >
                                           <i
-                                            className={`fa-solid fa-${
-                                              advance.includes(item.id)
-                                                ? "gear"
-                                                : "gears"
-                                            }`}
+                                            className={`fa-solid fa-${advance.includes(item.id)
+                                              ? "gear"
+                                              : "gears"
+                                              }`}
                                           ></i>
                                         </button>
                                       </div>

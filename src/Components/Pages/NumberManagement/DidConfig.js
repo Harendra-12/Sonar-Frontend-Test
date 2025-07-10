@@ -316,7 +316,7 @@ const DidConfig = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
-            <Header title="Number Configuration" />
+          <Header title="Number Configuration" />
           {/* <div className="container-fluid px-0">
           </div> */}
           <div className="col-xl-12" style={{ overflow: "auto" }}>
@@ -413,9 +413,8 @@ const DidConfig = () => {
                             </label>
                           </div>
                           <div
-                            className={`${
-                              watch().usages === "none" ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12" : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6"
-                            } pe-2 ms-auto`}
+                            className={`${watch().usages === "none" ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12" : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6"
+                              } pe-2 ms-auto`}
                           >
                             <select
                               className="formItem"
@@ -500,11 +499,10 @@ const DidConfig = () => {
                             </label>
                           </div>
                           <div
-                            className={`${
-                              forwardStatus != "disabled"
+                            className={`${forwardStatus != "disabled"
                                 ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
                                 : "6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
-                            }`}
+                              }`}
                           >
                             {forwardStatus != "disabled" && (
                               <div className="formLabel">
@@ -749,16 +747,11 @@ const DidConfig = () => {
                                   : "12"
                                   }`}
                               >
-                                {watch().sticky_agent_enable === "true" ||
-                                  watch().sticky_agent_enable === 1 ? (
-                                  <div className="formLabel">
-                                    <label className="formItemDesc">
-                                      Status
-                                    </label>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
+                                <div className="formLabel">
+                                  <label className="formItemDesc">
+                                    Status
+                                  </label>
+                                </div>
                                 <select
                                   className="formItem"
                                   name=""

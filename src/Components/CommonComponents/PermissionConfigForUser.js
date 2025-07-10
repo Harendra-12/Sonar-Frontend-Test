@@ -94,7 +94,7 @@ function PermissionConfigForUser() {
     <>
       <main className="mainContent">
         <section id="phonePage">
-              <Header title="Global Permissions" />
+          <Header title="Global Permissions" />
           <div className="container-fluid">
             <div className="row">
               <div className="overviewTableWrapper">
@@ -188,6 +188,7 @@ function PermissionConfigForUser() {
                         loading={loading}
                         setLoading={setLoading}
                         standalone={true}
+                        needToCheckDefault={true}
                       />
                     </div>
                   </div>
@@ -203,10 +204,11 @@ function PermissionConfigForUser() {
 
 export default PermissionConfigForUser
 
-export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter }) {
+export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, selectedRole, allPermissions, loading, setLoading, setRolePermissionBridge, setUserPermissionBridge, existingUserData, isUserFilter, isPopup, needToCheckDefault }) {
   const [showOnlyViewPermissions, setShowOnlyViewPermissions] = useState(false);
   const [permissionData, setPermissionData] = useState(null);
   const [expandedRows, setExpandedRows] = useState([]);
+  const [isDefaultOne, setIsDefaultOne] = useState(false)
   const [rolePermissions, setRolePermissions] = useState({
     role_id: selectedRole,
     permissions: [],
@@ -238,6 +240,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         sectionPermissions: allRoleList?.find((role) => role.id == selectedRole)?.sectionPermissions || []
       }));
     }
+    const isDefault = allRoleList?.find((item) => item?.id == selectedRole)?.is_default == 1;
+    setIsDefaultOne(needToCheckDefault? isDefault:false)
   }, [selectedRole, allRoleList, existingUserData]);
 
   const resetPermissionToInitialState = () => {
@@ -581,8 +585,8 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
         return (
           <div key={sectionName} className='permissionsConfigWrapper accordion' id="accordionMainParent">
             <div className="accordion-item">
-              <div className="heading h-auto justify-content-between" style={{ flexDirection: 'row' }}>
-                <button className="accordion-button mainSection border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}`} aria-expanded="false" aria-controls={sectionName}>
+              <div className="heading h-auto justify-content-between mb-0" style={{ flexDirection: 'row' }}>
+                <button className="accordion-button mainSection border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#${sectionName.replace(/ /g, "")}${isPopup && 'unique'}`} aria-expanded="false" aria-controls={sectionName}>
                   <div className='d-flex justify-content-between align-items-center w-100'>
                     <h5 className='m-0'>{sectionName}</h5>
                     <div className="cl-toggle-switch">
@@ -591,6 +595,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                           type="checkbox"
                           checked={!!expandedSections[sectionName]}
                           onChange={() => toggleSection(sectionName, filteredModels)}
+                          disabled={isDefaultOne}
                         />
                         <span></span>
                       </label>
@@ -601,16 +606,24 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                   <>
                     <div className='d-flex ms-2'>
                       <Tippy content="Reset permissions to initial state">
-                        <div onClick={resetPermissionToInitialState}>
+                        <div
+                          onClick={!isDefaultOne ? resetPermissionToInitialState : undefined}
+                          style={{
+                            cursor: isDefaultOne ? 'not-allowed' : 'pointer',
+                            opacity: isDefaultOne ? 0.5 : 1,
+                            pointerEvents: isDefaultOne ? 'none' : 'auto',
+                          }}
+                        >
                           <i className='fa-solid fa-arrows-rotate' />
                         </div>
                       </Tippy>
                       <div className="my-auto position-relative ms-3 me-1 d-flex">
-                        <span className='me-2'>Master: </span>
+                        <span className='me-2 text_muted2'>Master: </span>
                         <div className="cl-toggle-switch">
                           <label className="cl-switch">
                             <input
                               type="checkbox"
+                              disabled={isDefaultOne}
                               checked={filteredModels.every(model =>
                                 model.permissions.every(p =>
                                   rolePermissions.permissions.includes(p.id)
@@ -640,7 +653,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                 )}
               </div>
               {expandedSections[sectionName] && (
-                <div id={sectionName.replace(/ /g, "")} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
+                <div id={sectionName.replace(/ /g, "") + (isPopup && 'unique')} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMainParent">
                   <div className="accordion-body">
                     <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
                       <table className="w-100">
@@ -692,6 +705,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                 <label className="cl-switch">
                                                   <input
                                                     type="checkbox"
+                                                    disabled={isDefaultOne}
                                                     checked={
                                                       rolePermissions.sectionPermissions.includes(model.id) &&
                                                       rolePermissions.permissions.includes(permission.id)
@@ -750,6 +764,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                       <input
                                                         type="checkbox"
                                                         checked={checkedState}
+                                                        disabled={isDefaultOne}
                                                         onChange={(e) => {
                                                           toggleAllColumnPermissions(model, e.target.checked, row.type)
                                                         }}
@@ -766,7 +781,7 @@ export function PermissionConfigTable({ standalone, allRoleList, selectedGroup, 
                                                       if (filteredColumnRecords.length === 0) return null;
 
                                                       return (
-                                                        <div key={column} className="col-md-3 mb-3">
+                                                        <div key={column} className="col-xxl-3 col-xl-4 col-lg-6 mb-3">
                                                           <div className="card">
                                                             <div className="card-body">
                                                               {filteredColumnRecords.map(record => (

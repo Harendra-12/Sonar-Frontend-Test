@@ -24,7 +24,7 @@ table thead tr {
 }
 
 table tbody tr {
-    background-color: var(--table-even-bg) ;
+    background-color: var(--table-even-bg);
     /* transition: 0.1s ease-in; */
     /* border-bottom: 1px solid var(--border-color); */
     position: relative;
@@ -129,7 +129,7 @@ table tr th:first-child {
 .tableHeader .showEntries label,
 .tableHeader .searchBox label {
     margin-right: 10px;
-    font-family: Roboto;
+
     color: var(--color-subtext);
     font-weight: 500;
     font-size: 0.875rem;
@@ -335,16 +335,17 @@ table td.incoming::after {
 
 .profileDropdown {
     /* display: none; */
-    position: absolute;
+    /* position: absolute; */
     z-index: 999;
-    top: 60px;
-    right: 10px;
+    /* top: 60px; */
+    /* right: 10px; */
     background-color: var(--nav-color);
-    padding: 10px;
+    padding: 0 10px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: #fff;
     width: max-content;
+    min-width: 220px;
 }
 
 .profileDropdown::after {
@@ -355,6 +356,10 @@ table td.incoming::after {
     top: -19px;
     right: 17px;
     font-size: 1.75rem;
+}
+
+.profileDropdown .dropdown-item {
+    padding: 10px !important;
 }
 
 .profileDropdown .dropdown-item,
@@ -385,7 +390,7 @@ table td.incoming::after {
     font-size: 0.8125rem;
     font-weight: 600;
     color: #000;
-    font-family: Roboto;
+
     outline: none;
 }
 
@@ -484,15 +489,15 @@ table td.incoming::after {
 /* Checked */
 .cl-switch>input:checked {
     right: -10px;
-    background-color: var( --header-dark-gray);
+    background-color: var(--header-dark-gray);
 }
 
 .cl-switch>input:checked+span::before {
-    background-color: var( --header-dark-gray);
+    background-color: var(--switch-toggle);
 }
 
 .cl-switch>input:checked+span::after {
-    background-color: var( --list-color);
+    background-color: var(--list-color);
     transform: translateX(16px);
 }
 
@@ -541,7 +546,7 @@ table td.incoming::after {
     background-color: #61b5b4;
 }
 
-table .smallNottif{
+table .smallNottif {
     position: absolute;
     top: -20px;
     right: 0;
@@ -555,6 +560,11 @@ table .smallNottif{
     color: var(--color-subtext);
     transition: 0.3s ease-in-out;
 }
-table .smallNottif i{
+
+table .smallNottif i {
     color: var(--badge-info-text-subtle);
+}
+
+.ai-agent-analytics.tableContainer table tbody tr td {
+    white-space: break-spaces !important;
 }

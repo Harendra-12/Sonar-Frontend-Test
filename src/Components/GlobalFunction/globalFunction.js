@@ -1015,3 +1015,8 @@ export function convertDateToIST(dateString) {
 
   return utcDate.toLocaleDateString("en-CA", options); // en-CA gives YYYY-MM-DD
 }
+
+export const isOnlyLink = (message) => {
+    const urlRegex = /^(https?:\/\/)?([^\s.]+\.)?[^\s]+\.[^\s]{2,}.*$/i;
+    return urlRegex.test(message?.trim());
+  };

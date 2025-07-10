@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
 import { Link } from "react-router-dom";
 
@@ -7,11 +7,32 @@ function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
   const activeCall = useSelector((state) => state.activeCall);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
+  const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (callDetails?.calls) {
       setExtensionDataLoading(false);
     }
   }, [callDetails]);
+
+  const refreshCallDetails = () => {
+    dispatch({
+      type: "SET_CALLDETAILSREFRESH",
+      callDetailsRefresh: callDetailsRefresh + 1,
+    });
+  }
+
+  // Poll Call Details Data
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshCallDetails();
+    }, 7000)
+
+    return () => clearInterval(interval);
+  }, [callDetailsRefresh])
+
+
   return (
     <>
       {callDetails ? (

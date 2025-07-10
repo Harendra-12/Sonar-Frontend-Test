@@ -342,6 +342,7 @@
     .overviewTableWrapper .tableContainer {
         height: calc(100vh - 320px);
     }
+
     .overviewTableWrapper .tableContainer.mail_table {
         height: calc(100vh - 320px) !important;
     }
@@ -720,7 +721,8 @@
     .mail_leftbar ul {
         height: calc(100vh - 295px);
     }
-    .mail_table{
+
+    .mail_table {
         height: calc(-395px + 100vh) !important;
 
     }
