@@ -923,7 +923,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* ------  ai agent card */
 
-.crypto-card {
+/* .crypto-card {
     background: var(--ele-color);
     border-radius: 12px;
     padding: 16px 20px;
@@ -968,10 +968,77 @@ input[type="range"]::-webkit-slider-thumb {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
+} */
 
 .gridCard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    position: relative;
+    min-height: 271px;
+}
+
+
+.crypto-card {
+    position: relative;
+    background: var(--ele-color);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--shadow-gray) -1px 0 7px 0 !important;
+    border: 1px solid var(--border-light-subtle);
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+    max-width: 300px;
+}
+
+.crypto-card:hover {
+    border: 1px solid var(--color2) !important;
+}
+
+.crypto-card .tableProfilePicHolder {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+}
+
+.agentName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--immortalBlack);
+    margin-top: 8px;
+}
+
+.cryptoInfo {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--table-border-color);
+}
+
+.infoRow:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.infoRow .label {
+    color: var(--immortalBlack);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.infoRow .value {
+    color: var(--color-subtext);
+    font-weight: 400;
+    font-size: 0.875rem;
+    text-align: right;
 }

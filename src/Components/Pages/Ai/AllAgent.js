@@ -241,12 +241,12 @@ const AllAgent = () => {
                           filteredAgents.map((item, index) => {
                             return (
                               <div className="w-100" key={index} >
-                                <div class="crypto-card">
+
+                                {/* <div class="crypto-card">
                                   <div className="d-flex align-items-center justify-content-between w-100 pb-3 gap-3" style={{ borderBottom: '1px solid var(--table-border-color)' }}>
                                     <div className="d-flex align-items-center">
                                       <div className="tableProfilePicHolder">
                                         <i className="fa-light fa-user" />
-                                        {/* )} */}
                                       </div>
                                       <div className="ms-2">
                                         {item.agent_name}
@@ -319,7 +319,76 @@ const AllAgent = () => {
                                     </div>
 
                                   </div>
+                                </div> */}
+
+                                <div className="crypto-card">
+                                  <div className="idCardHeader d-flex flex-column align-items-center w-100 pb-2" style={{ borderBottom: '1px solid var(--table-border-color)' }}>
+                                    <div className="tableProfilePicHolder mb-2">
+                                      {/* <i className="fa-light fa-user" /> */}
+                                      <VoiceAvatar voiceId={item.voice_id} />
+                                    </div>
+                                    <div className="agentName">{item.agent_name}</div>
+
+                                    <div className="dropdown position-absolute top-0 end-0 mt-2 me-2">
+                                      <button
+                                        type="button"
+                                        className="tableButton"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                      </button>
+                                      <ul className="dropdown-menu actionBtnDropdowns">
+                                        <li className="dropdown-item">
+                                          <Tippy content="View this agent">
+                                            <button type="button" className="clearButton text-align-start" onClick={() => handleEditClick(item)}>
+                                              <i className="fa-regular fa-eye me-2"></i> View
+                                            </button>
+                                          </Tippy>
+                                        </li>
+                                        <li className="dropdown-item">
+                                          <Tippy content="Delete this Agent">
+                                            <button
+                                              type="button"
+                                              className="clearButton text-align-start text-danger"
+                                              onClick={() => {
+                                                setDeletePopup(true);
+                                                setDeletedItem(item);
+                                              }}
+                                            >
+                                              <i className="fa-regular fa-trash me-2"></i> Delete
+                                            </button>
+                                          </Tippy>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+
+                                  <div className="cryptoInfo w-100 mt-2">
+                                    <div className="infoRow">
+                                      <span className="label">Phone :</span>
+                                      <span className="value">
+                                        {item?.agent_id && (finePhoneNumber(item.agent_id)?.length > 0 ? finePhoneNumber(item.agent_id) : "-")}
+                                      </span>
+                                    </div>
+                                    <div className="infoRow">
+                                      <span className="label">Language :</span>
+                                      <span className="value">{item.language}</span>
+                                    </div>
+                                    <div className="infoRow">
+                                      <span className="label">Voice :</span>
+                                      <span className="value ellipsisText230">
+                                        {item.voice_id.includes('custom') ? 'Custom' : item.voice_id.split('-')[1]}
+                                      </span>
+                                    </div>
+                                    <div className="infoRow">
+                                      <span className="label">Voice Model :</span>
+                                      <span className="value ellipsisText230">{item.voice_model}</span>
+                                    </div>
+                                  </div>
                                 </div>
+
+
                               </div>
 
                             );
@@ -1407,3 +1476,30 @@ const AllAgent = () => {
 };
 
 export default AllAgent;
+
+export function VoiceAvatar({ voiceId }) {
+  const [imgSrc, setImgSrc] = useState("");
+
+  useEffect(() => {
+    // If voiceId includes 'custom' (case-insensitive)
+    if (voiceId.toLowerCase().includes("custom")) {
+      setImgSrc("https://cdn-icons-png.flaticon.com/512/149/149071.png");
+    } else {
+      const aiName = voiceId.split("-")[1];
+      setImgSrc(`https://retell-utils-public.s3.us-west-2.amazonaws.com/${aiName}.png`);
+    }
+  }, [voiceId]);
+
+  const handleImgError = () => {
+    const aiName = voiceId.split("-")[1];
+    const lowerCaseSrc = `https://retell-utils-public.s3.us-west-2.amazonaws.com/${aiName?.toLowerCase()}.png`;
+    if (imgSrc !== lowerCaseSrc) {
+      setImgSrc(lowerCaseSrc);
+    } else {
+      // Both normal + lowercase failed, fallback
+      setImgSrc("https://cdn-icons-png.flaticon.com/512/149/149071.png");
+    }
+  };
+
+  return <img src={imgSrc} alt={voiceId} onError={handleImgError} />;
+}
