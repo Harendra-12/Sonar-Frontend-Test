@@ -998,7 +998,11 @@ const Dashboard = () => {
                                     >
                                       {allUserList.map(
                                         (item, index) => (
-                                          <li className="d_extension_listing" key={index}>
+                                          <li className="d_extension_listing" key={index} onClick={() =>
+                                            navigate(`/users-config`, {
+                                              state: item,
+                                            })
+                                          }>
                                             {item?.name}
                                             <span
                                               className={
