@@ -431,14 +431,17 @@ function Messages({
         newChatHistory[recipient?.[0]] = {
           total: apiData.data.total,
           pageNumber: apiData.data.current_page,
+          last_page_number: apiData?.data?.last_page_url?.split("page=")?.pop()
         };
         setChatHistory(newChatHistory);
       }
     }
     if (recipient?.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(String(recipient?.[0]))) {
-        getData(chatHistory[recipient?.[0]].pageNumber + 1);
-        setIsFreeSwitchMessage(false);
+      if (Object.keys(chatHistory).includes(String(recipient?.[0])) && messageListRef.current.scrollHeight > 1000) {
+        if (chatHistory[recipient?.[0]]?.last_page_number >= chatHistory[recipient?.[0]].pageNumber) {
+          getData(chatHistory[recipient?.[0]].pageNumber + 1);
+          setIsFreeSwitchMessage(false);
+        }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);

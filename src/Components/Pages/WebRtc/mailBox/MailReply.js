@@ -206,7 +206,8 @@ const MailReply = ({
                           {" "}
                           <span class="fs-14 fw-semibold text_dark">
                             <i class="fa-solid fa-paperclip me-3"></i>Attachments{" "}
-                            {totalFileSize(currentMail?.attachments)}:
+                            {/* {totalFileSize(currentMail?.attachments)}: */}
+                            {currentMail?.size}
                           </span>{" "}
                         </div>
                         <div>
@@ -256,7 +257,7 @@ const MailReply = ({
                               </p>
                               <p class="mb-0 fs-11 text_gray">
                                 {" "}
-                                {formatFileSize(attachment?.size)}{" "}
+                                {attachment?.size}{" "}
                               </p>
                             </div>
                           </Link>

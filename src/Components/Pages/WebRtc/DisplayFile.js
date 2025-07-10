@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isOnlyLink } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 // Keep track of the currently playing audio ref and video ref
 let currentlyPlayingAudioRef = null;
@@ -115,38 +116,64 @@ const DisplayFile = ({ item, index }) => {
     }
   };
 
+  // =========================================
+  // const extractFileExtension = (selectedUrl) => {
+  //   if (!selectedUrl) return null;
+  //   const fileUrl = selectedUrl;
+  //   const fileName = fileUrl.split("/").pop();
+  //   if (fileName) {
+  //     const lowerValue = selectedUrl;
+  //     if (
+  //       lowerValue.includes("png") ||
+  //       lowerValue.includes("Screenshot") ||
+  //       lowerValue.includes("image") ||
+  //       lowerValue.includes("gif") ||
+  //       lowerValue.includes("jpg") ||
+  //       lowerValue.includes("jpeg") ||
+  //       lowerValue.includes("webp") ||
+  //       lowerValue.includes("svg") ||
+  //       lowerValue.includes("bmp")
+  //     )
+  //       return "png";
+  //     if (lowerValue.includes("pdf")) return "pdf";
+  //     if (lowerValue.includes("mp3")) return "mp3";
+  //     if (lowerValue.includes("mp4") ||
+  //       lowerValue.includes("Video") ||
+  //       lowerValue.includes("mov") ||
+  //       lowerValue.includes("avi") ||
+  //       lowerValue.includes("mkv") ||
+  //       lowerValue.includes("wmv") ||
+  //       lowerValue.includes("flv")
+  //     )
+  //       return "mp4";
+  //   }
+  //   return null; // No extension found
+  // };
+  // ==============================================
+
   const extractFileExtension = (selectedUrl) => {
     if (!selectedUrl) return null;
-    const fileUrl = selectedUrl;
-    const fileName = fileUrl.split("/").pop();
-    if (fileName) {
-      const lowerValue = selectedUrl;
-      if (
-        lowerValue.includes("png") ||
-        lowerValue.includes("Screenshot") ||
-        lowerValue.includes("image") ||
-        lowerValue.includes("gif") ||
-        lowerValue.includes("jpg") ||
-        lowerValue.includes("jpeg") ||
-        lowerValue.includes("webp") ||
-        lowerValue.includes("svg") ||
-        lowerValue.includes("bmp")
-      )
-        return "png";
-      if (lowerValue.includes("pdf")) return "pdf";
-      if (lowerValue.includes("mp3")) return "mp3";
-      if (lowerValue.includes("mp4") ||
-        lowerValue.includes("Video") ||
-        lowerValue.includes("mov") ||
-        lowerValue.includes("avi") ||
-        lowerValue.includes("mkv") ||
-        lowerValue.includes("wmv") ||
-        lowerValue.includes("flv")
-      )
-        return "mp4";
 
+    const fileName = selectedUrl.split("/").pop(); // Get file name
+    if (!fileName) return null;
+
+    const extension = fileName.split(".").pop().toLowerCase(); // Get the actual extension
+    if (!extension) return null;
+
+    if (["png", "gif", "jpg", "jpeg", "webp", "svg", "bmp"].includes(extension)) return "png";
+    if (extension === "pdf") return "pdf";
+    if (extension === "mp3") return "mp3";
+    if (["mp4", "mov", "avi", "mkv", "wmv", "flv"].includes(extension)) return "mp4";
+
+    return null; // No known extension
+  };
+
+
+  const handleLinkClick = (e, url) => {
+    if (url.startsWith('file://')) {
+      e.preventDefault();
+      toast.error("Cannot open local file paths in browser.");
     }
-    return null; // No extension found
   };
 
   if (!item) return null;
@@ -186,6 +213,7 @@ const DisplayFile = ({ item, index }) => {
             href={item}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => handleLinkClick(e, item)}
             style={{ color: 'blue', textDecoration: 'underline' }}
           >
             {item}
