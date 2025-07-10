@@ -1485,13 +1485,13 @@ export function VoiceAvatar({ voiceId }) {
     if (voiceId.toLowerCase().includes("custom")) {
       setImgSrc("https://cdn-icons-png.flaticon.com/512/149/149071.png");
     } else {
-      const aiName = voiceId.split("-")[1];
+      const aiName = voiceId?.split("-")[1];
       setImgSrc(`https://retell-utils-public.s3.us-west-2.amazonaws.com/${aiName}.png`);
     }
   }, [voiceId]);
 
   const handleImgError = () => {
-    const aiName = voiceId.split("-")[1];
+    const aiName = voiceId?.split("-")[1];
     const lowerCaseSrc = `https://retell-utils-public.s3.us-west-2.amazonaws.com/${aiName?.toLowerCase()}.png`;
     if (imgSrc !== lowerCaseSrc) {
       setImgSrc(lowerCaseSrc);
