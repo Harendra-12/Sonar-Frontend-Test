@@ -240,7 +240,22 @@ a.loginLabel {
 }
 
 .loginWrapper2 .content h3 {
-    color: var(--immortalBlack);
+    color: #1B1E3D !important;
+    /* Heading 2 */
+    font-family: Geist;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    /* 57.6px */
+    letter-spacing: -1.44px;
+}
+
+.loginWrapper2 .content h3 .loginGradient {
+    background: linear-gradient(85deg, rgba(48, 92, 253, 0.00) 48.55%, #DE8DD6 79.38%), linear-gradient(0deg, #305CFD 0%, #305CFD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
 }
 
 .loginWrapper2 .content p {
@@ -312,11 +327,48 @@ a.loginLabel {
     /* Darken on hover */
 }
 
+.loginWrapper2 .loginFooter {
+    border-radius: 45px;
+    border: 1px solid #BF84E4;
+    background: linear-gradient(92deg, rgba(77, 65, 212, 0.90) 19.52%, rgba(223, 98, 204, 0.90) 121.57%);
+    box-shadow: 0px 8px 12.9px 0px rgba(89, 102, 201, 0.48);
+    backdrop-filter: blur(11.300000190734863px);
+
+    width: max-content;
+    padding: 10px 15px;
+
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.loginWrapper2 .loginFooter .first {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.16px;
+}
+
+.loginWrapper2 .loginFooter .last {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 200;
+    line-height: 18px;
+    letter-spacing: 0.16px;
+}
+
 .loginWrapper2 .loginImgWrapper {
     /* background: var(--ui-accent); */
     border-radius: 20px;
     overflow: hidden;
     height: 100%;
+    position: relative;
 }
 
 .loginWrapper2 .loginImgWrapper .content {
@@ -330,12 +382,16 @@ a.loginLabel {
     margin-bottom: 0;
 }
 
-.loginWrapper2 .loginImgWrapper img {
+.loginWrapper2 .loginImgWrapper img.loginbg {
     width: 100%;
     height: 100%;
     object-fit: cover;
     /* margin-top: 25px; */
     /* margin-left: -8px; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .loginWrapper2 .loginImgWrapper img.comp {

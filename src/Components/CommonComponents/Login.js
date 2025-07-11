@@ -81,15 +81,15 @@ function Login() {
                     </p>
                   </div>
                 </div>
-                <div className="col-xl-6 col-lg-5 d-xl-block d-none h-100">
+                <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
-                    <img src={require('../assets/images/pbx.webp')} />
+                    <img src={require('../assets/images/pbx.webp')} className="loginbg" />
                     {/* <div className="content">
                       <h3>
-                        An Effective PBX Solution for all your Business
-                        Communication Needs
+                        You are one step <br />
+                        closer to <span className="loginGradient">AI-Powered</span> <br />
+                        Communication
                       </h3>
-                      <p>Enter your credentials to access your control</p>
                       <div
                         style={{
                           display: "flex",
@@ -98,10 +98,14 @@ function Login() {
                         }}
                       >
                         <img
-                          src={require("../assets/images/pbx.webp")}
+                          src={"/login_chat.svg"}
+                          className="loginChat"
                           alt="logo"
-                          style={{ marginLeft: "0", width: "85%" }}
+                          style={{ marginLeft: "0", width: "85%", marginTop: "50px" }}
                         />
+                      </div>
+                      <div className="loginFooter">
+                        <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
                       </div>
                     </div> */}
                   </div>
