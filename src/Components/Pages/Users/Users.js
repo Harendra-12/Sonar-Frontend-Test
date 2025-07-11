@@ -6,6 +6,7 @@ import {
   checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
+  generalPostFunction,
   generalPutFunction,
   useDebounce,
 } from "../../GlobalFunction/globalFunction";
@@ -284,7 +285,11 @@ const Users = () => {
   };
 
   async function handleBulkEdit() {
-    if(bulkEditRole === "" && bulkEditStatus === "" && bulkEditTimezone === "") {
+    if (
+      bulkEditRole === "" &&
+      bulkEditStatus === "" &&
+      bulkEditTimezone === ""
+    ) {
       toast.error("Please select at least one field to edit");
       return;
     }
@@ -292,22 +297,25 @@ const Users = () => {
     setLoading(true);
     const payload = selectUserToEdit.map((user) => ({
       id: user.id,
-      role_id: bulkEditRole,
-      status: bulkEditStatus,
-      timezone_id: bulkEditTimezone,
+      ...(bulkEditRole === "" ? {} : { role_id: bulkEditRole }),
+      ...(bulkEditStatus === "" ? {} : { status: bulkEditStatus }),
+      ...(bulkEditTimezone === "" ? {} : { timezone_id: bulkEditTimezone })
     }));
-    const apiData = await generalPutFunction(`/user/bulkEdit`, payload);
+
+    const apiData = await generalPostFunction(`/user/users/edit`, {
+      users: payload,
+    });
     if (apiData.status) {
       // setLoading(false);
       toast.success(apiData.message);
-      setRefreshData(refreshData + 1);
+     handleRefreshBtnClicked()
       setSelectUserToEdit([]);
-      
+
       setBulkEditRole("");
       setBulkEditStatus("");
       setBulkEditTimezone("");
     } else {
-      toast.error(apiData.message);
+      // toast.error(apiData.errors);
       setLoading(false);
     }
   }
@@ -951,7 +959,7 @@ const Users = () => {
                   >
                     <option value={""}>Select Status</option>
                     <option value={"E"}>Active</option>
-                    <option value={"I"}>Inactive</option>
+                    <option value={"D"}>Inactive</option>
                   </select>
                 </div>
                 <div className="col-4 pe-0">
@@ -988,7 +996,7 @@ const Users = () => {
                       <i className="fa-solid fa-caret-left" />
                     </span>
                   </button>
-                  <button className="panelButton me-0" onClick={handleBulkEdit} >
+                  <button className="panelButton me-0" onClick={handleBulkEdit}>
                     <span className="text">Done</span>
                     <span className="icon">
                       <i className="fa-solid fa-check" />
