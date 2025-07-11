@@ -851,8 +851,8 @@ const Dashboard = () => {
                                       ></circle>
                                     </svg>
                                     <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#ff8c42' }}>{extension?.filter((item) => item.user == null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
+                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#ff8c42', width: '100%' }}>{extension?.filter((item) => item.user == null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -957,8 +957,8 @@ const Dashboard = () => {
                                       ></circle>
                                     </svg>
                                     <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#62a8ac' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
+                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#62a8ac', width: '100%' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -998,7 +998,11 @@ const Dashboard = () => {
                                     >
                                       {allUserList.map(
                                         (item, index) => (
-                                          <li className="d_extension_listing" key={index}>
+                                          <li className="d_extension_listing" key={index} onClick={() =>
+                                            navigate(`/users-config`, {
+                                              state: item,
+                                            })
+                                          }>
                                             {item?.name}
                                             <span
                                               className={

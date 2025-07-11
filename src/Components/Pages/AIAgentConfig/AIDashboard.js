@@ -504,12 +504,12 @@ function AIDashboard() {
                                       </div>
                                     </td>
                                     <td>
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {item?.average_duration_sec}{" "} seconds
                                       </span>
                                     </td>
                                     <td>
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {parseFloat(
                                           item?.average_sentiment_score
                                         ).toFixed(2)}
@@ -517,7 +517,7 @@ function AIDashboard() {
                                     </td>
                                     <td>
                                       {" "}
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {item?.average_csat_score}
                                       </span>
                                     </td>
@@ -527,7 +527,7 @@ function AIDashboard() {
                                           return (
                                             <span
                                               key={index}
-                                              className="badge badge-soft-secondary rounded-pill me-2"
+                                              className="badge badge-soft-secondary rounded-pill me-2 text-black"
                                             >
                                               {moment}
                                             </span>
