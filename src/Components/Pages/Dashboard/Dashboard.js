@@ -9,7 +9,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
+import GoogleTranslate from "../../CommonComponents/GoogleTranslate";
 const Dashboard = () => {
+  
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -456,6 +458,7 @@ const Dashboard = () => {
 
   return (
     <main className="mainContent">
+      
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">

@@ -5,6 +5,7 @@
 
 .mainContentApp .nav-link {
     color: #444444;
+    transition: none;
 }
 
 .mainContentApp .tabLink {

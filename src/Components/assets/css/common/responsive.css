@@ -119,18 +119,18 @@
         --progress: 0;
     }
 
-    .circular-progress {
+    /* .circular-progress {
         --size: 208px !important;
         --stroke-width: 25px;
 
-    }
+    } */
 
-    .mainContent .circularProgressWrapper {
+    /* .mainContent .circularProgressWrapper {
 
         height: 209px !important;
         width: 209px !important;
 
-    }
+    } */
 
     .webrtc_newMessageUi {
         overflow: hidden;
@@ -392,14 +392,14 @@
         font-size: 9px;
     } */
 
-    .mainContent .circularProgressWrapper {
+    /* .mainContent .circularProgressWrapper {
         width: 200px;
         height: 200px;
-    }
+    } */
 
-    .circular-progress {
+    /* .circular-progress {
         --size: 200px;
-    }
+    } */
 
     .headingExtraInfo span.badge.rounded-pill {
         font-size: 0.625rem;
