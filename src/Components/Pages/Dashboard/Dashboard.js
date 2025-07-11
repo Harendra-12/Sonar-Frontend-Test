@@ -872,7 +872,7 @@ const Dashboard = () => {
                                       <label>Available:</label> <span>{extension?.filter((item) => item.user == null)?.length}</span>
                                     </li>
                                     <li>
-                                      <label>Usage:</label> <span>{(Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length).toFixed(2) || 0) * 100}%</span>
+                                      <label>Usage:</label> <span>{Math.round((Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length) || 0) * 100)}%</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -978,7 +978,7 @@ const Dashboard = () => {
                                       <label>Online:</label> <span>{onlineUser.length}</span>
                                     </li>
                                     <li>
-                                      <label>Activity:</label> <span>{(Number(onlineUser.length) / Number(allUserList?.length) || 0).toFixed(2) * 100}%</span>
+                                      <label>Activity:</label> <span>{Math.round((Number(onlineUser.length) / Number(allUserList?.length) || 0) * 100)}%</span>
                                     </li>
                                   </ul>
                                 </div>
