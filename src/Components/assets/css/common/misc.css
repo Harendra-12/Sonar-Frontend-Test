@@ -1383,6 +1383,17 @@ input[type=number] {
 }
 
 
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate,
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Prevent layout shift caused by Translate banner */
+body {
+  top: 0px !important;
+}
+
 .goog-te-combo {
     /* margin-left: 4px; */
     /* margin-right: 4px; */
