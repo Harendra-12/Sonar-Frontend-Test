@@ -239,15 +239,13 @@ a.loginLabel {
     font-size: 1.75rem;
 }
 
-.loginWrapper2 .content h3 {
+/* .loginWrapper2 .content h3 {
     color: #1B1E3D !important;
-    /* Heading 2 */
     font-family: Geist;
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
-    /* 57.6px */
     letter-spacing: -1.44px;
 }
 
@@ -256,7 +254,7 @@ a.loginLabel {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
-}
+} */
 
 .loginWrapper2 .content p {
     color: var(--color-subtext);
