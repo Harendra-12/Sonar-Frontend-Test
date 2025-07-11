@@ -114,7 +114,7 @@
     align-items: center;
     line-height: 31px;
 
-    transition: color 100ms cubic-bezier(0.0, 0, 0.0, 1) 0ms, background-color 250ms cubic-bezier(0.0, 0, 0.0, 1) 0ms;
+    /* transition: color 100ms cubic-bezier(0.0, 0, 0.0, 1) 0ms, background-color 250ms cubic-bezier(0.0, 0, 0.0, 1) 0ms; */
 }
 
 .pricing_section .pricing_box {
@@ -267,7 +267,7 @@
     border: 1px solid var(--border-color);
     margin-bottom: 10px;
     padding: 10px;
-    transition: 0.3s;
+    /* transition: 0.3s; */
     position: relative;
 }
 
@@ -796,7 +796,7 @@ input[type=number] {
     color: #fff;
     margin-right: 5px;
     opacity: 0;
-    transition: all 0.4s ease-in-out;
+    /* transition: all 0.4s ease-in-out; */
 }
 
 .contactTags span.removableTag:hover::before {
@@ -961,7 +961,7 @@ input[type=number] {
     padding: 5px 10px;
     border-radius: 3px;
     height: 34px;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
 }
 
 .PhoneInput:hover {
@@ -1054,7 +1054,7 @@ input[type=number] {
 .popup.music .card .card-body .popup-border {
     border: 2px dotted var(--border-color);
     border-radius: 10px;
-    transition: 0.2s ease-in-out;
+    /* transition: 0.2s ease-in-out; */
 }
 
 .popup.music .card .card-body .popup-border:hover {
@@ -1153,7 +1153,7 @@ input[type=number] {
     padding: 6px 8px 6px 0;
     border-radius: 6px;
     overflow: hidden;
-    transition: all 0.2s ease;
+    /* transition: all 0.2s ease; */
     display: inline-flex;
 }
 
@@ -1178,7 +1178,7 @@ input[type=number] {
     border-radius: 4px;
     transform: scale(1);
     border: 1px solid #cccfdb;
-    transition: all 0.2s ease;
+    /* transition: all 0.2s ease; */
     box-shadow: 0 1px 1px rgba(0, 16, 75, 0.05);
 }
 
@@ -1193,8 +1193,8 @@ input[type=number] {
     stroke-linejoin: round;
     stroke-dasharray: 16px;
     stroke-dashoffset: 16px;
-    transition: all 0.3s ease;
-    transition-delay: 0.1s;
+    /* transition: all 0.3s ease;
+    transition-delay: 0.1s; */
     transform: translate3d(0, 0, 0);
 }
 
@@ -1324,7 +1324,7 @@ input[type=number] {
     top: 50%;
     transform: translate(0, -50%);
     z-index: 9999;
-    transition: 0.5s linear;
+    /* transition: 0.5s linear; */
 }
 
 .callDashParkedCalls .overviewTableWrapper {
@@ -1343,7 +1343,7 @@ input[type=number] {
     height: 200px;
     border-radius: 5px 0 0 5px;
     backdrop-filter: blur(5px);
-    transition: 0.3s ease-in-out;
+    /* transition: 0.3s ease-in-out; */
     color: #fff;
     font-size: 13px;
     width: 15px;
@@ -1353,29 +1353,53 @@ input[type=number] {
     background-color: var(--color2);
 }
 
-#google_translate_element select {
-    background-color: var(--ele-color);
-    border: 1px solid var(--color4);
-    padding: 5px 5px;
-    border-radius: 3px;
-    outline: none;
-    font-size: 13px;
-    width: 100%;
-    height: 35px;
-    transition: all 0.3s ease-in-out;
-    color: #fff;
-    font-weight: 700;
-
-    border: none;
-    background: #66339900;
-    /* color: #000000; */
+.language-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: var(--ele-color);
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 0px 4px rgb(143 142 142 / 37%)
 }
 
-#google_translate_element select:invalid,
-#google_translate_element select option[value] {
-    color: #000000;
+.language-icon {
+  color: #4285f4;
+  font-size: 16px;
 }
 
+.dropdown-icon {
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.language-text {
+  font-weight: 500;
+  color: var(--immortalBlack);
+}
+
+
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate,
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Prevent layout shift caused by Translate banner */
+body {
+  top: 0px !important;
+}
+
+.goog-te-combo {
+    /* margin-left: 4px; */
+    /* margin-right: 4px; */
+    vertical-align: baseline;
+    width: 30px;
+}
 .popupopen {
     position: fixed;
     top: 0;
@@ -1602,7 +1626,7 @@ input[type=number] {
     font-size: 1rem;
     outline: none;
     border-radius: 25px;
-    transition: all .5s ease-in-out;
+    /* transition: all .5s ease-in-out; */
     background-color: var(-- --chat-bg-icon);
     padding-right: 27px;
     /* color:#180505; */
@@ -1641,7 +1665,7 @@ input[type=number] {
     /* border-radius: 0px; */
     background-color: var(--chat-bg-button);
     border-bottom: 1px solid var(--chat-border);
-    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    /* transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2); */
 }
 
 .input-search:focus {
@@ -1649,7 +1673,7 @@ input[type=number] {
     /* border-radius: 0px; */
     background-color: var(--chat-bg-button);
     border-bottom: 1px solid rgba(255, 255, 255, .5);
-    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+    /* transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2); */
 }
 
 .chat_button {
@@ -1930,8 +1954,8 @@ input[type=number] {
 }
 
 .mail_leftbar {
-    /* max-width: 200px;
-    width: 100%; */
+    max-width: 300px;
+    width: 100%;
     /* min-width: 170px; */
     /* flex: 0 20%; */
     /* background: #f6f6f6; */
@@ -1952,7 +1976,7 @@ input[type=number] {
     font-size: 14px;
     color: var(--black);
     font-weight: 500;
-    transition: all 0.4s ease-in-out;
+    /* transition: all 0.4s ease-in-out; */
     padding: 10px 15px;
     border-radius: 5px;
     width: 100%;
@@ -2032,6 +2056,7 @@ i.fa.fa-star {
     padding: 10px;
     border-radius: 10px;
     height: calc(100vh - 165px);
+    width: 100%;
 }
 
 .badge-solid-primary {

@@ -6,6 +6,7 @@ import {
   checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
+  generalPostFunction,
   generalPutFunction,
   useDebounce,
 } from "../../GlobalFunction/globalFunction";
@@ -20,6 +21,8 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import CircularLoader from "../../Loader/CircularLoader";
 import NewDotedLoader from "../../Loader/NewDotedLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import { use } from "react";
+import { set } from "date-fns";
 /**
  * This component is used to display a list of all users and their respective roles.
  * The component renders a table with the following columns: username, extension, role, usage, status, and actions.
@@ -54,6 +57,12 @@ const Users = () => {
   const slugPermissions = useSelector((state) => state?.permissions);
   const debouncedSearchTerm = useDebounce(userInput, 1000);
   const [tableKeys, setTableKeys] = useState([]);
+  const [selectUserToEdit, setSelectUserToEdit] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
+  const [allTimeZones, setAllTimeZones] = useState([]);
+  const [bulkEditRole, setBulkEditRole] = useState("");
+  const [bulkEditStatus, setBulkEditStatus] = useState("");
+  const [bulkEditTimezone, setBulkEditTimezone] = useState("");
   const [showKeys, setShowKeys] = useState([
     "profile_picture",
     "name",
@@ -63,6 +72,46 @@ const Users = () => {
     "usages",
     "status",
   ]);
+
+  function checkUserIfPresntToEdit(user) {
+    if (selectUserToEdit.includes(user)) {
+      // remove user from the list
+      setSelectUserToEdit(selectUserToEdit.filter((item) => item !== user));
+    } else {
+      // add user to the list
+      setSelectUserToEdit([...selectUserToEdit, user]);
+    }
+  }
+
+  // Checking if all user is selected for edit then remove all else add all users to edit
+  const handleSelectAllUsers = () => {
+    if (selectUserToEdit.length === filterUser.length) {
+      setSelectUserToEdit([]);
+    } else {
+      setSelectUserToEdit(filterUser.map((item) => item));
+    }
+  };
+
+  // Fetching all roles and timezones to display in bulk edit popup
+  useEffect(() => {
+    const getRoles = async () => {
+      const roles = await generalGetFunction("/role/all");
+      if (roles.status) {
+        setAllRoles(roles.data);
+      }
+    };
+    const getTimeZones = async () => {
+      const timeZones = await generalGetFunction("/timezone/all");
+      if (timeZones.status) {
+        setAllTimeZones(timeZones.data);
+      }
+    };
+    getRoles();
+    getTimeZones();
+  }, []);
+
+  const [bulkEditPopup, setBulkEditPopup] = useState(false);
+
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -74,35 +123,18 @@ const Users = () => {
     }
   }, [logonUser]);
 
-  // Getting roles data to show which role is assigned to a user
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "SET_ROLES_REFRESH",
-  //     rolesRefresh: rolesRefresh + 1,
-  //   });
-  // }, []);
-
-  // Debounce logic
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedInput(userInput); // Update debounced value after delay
-  //   }, 500); // 500ms debounce delay
-
-  //   return () => {
-  //     clearTimeout(handler); // Clear timeout on cleanup
-  //   };
-  // }, [userInput]);
-
   async function getApi() {
     const apiData = await generalGetFunction(
-      `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all"
-        ? ""
-        : onlineFilter == "online"
+      `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${
+        onlineFilter == "all"
+          ? ""
+          : onlineFilter == "online"
           ? "&online"
           : "&offline"
-      }${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-        ? "&section=Accounts"
-        : ""
+      }${
+        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
       }`
     );
     if (apiData?.status) {
@@ -252,6 +284,43 @@ const Users = () => {
     getApi();
   };
 
+  async function handleBulkEdit() {
+    if (
+      bulkEditRole === "" &&
+      bulkEditStatus === "" &&
+      bulkEditTimezone === ""
+    ) {
+      toast.error("Please select at least one field to edit");
+      return;
+    }
+    setBulkEditPopup(false);
+    setLoading(true);
+    const payload = selectUserToEdit.map((user) => ({
+      id: user.id,
+      ...(bulkEditRole === "" ? {} : { role_id: bulkEditRole }),
+      ...(bulkEditStatus === "" ? {} : { status: bulkEditStatus }),
+      ...(bulkEditTimezone === "" ? {} : { timezone_id: bulkEditTimezone })
+    }));
+
+    const apiData = await generalPostFunction(`/user/users/edit`, {
+      users: payload,
+    });
+    if (apiData.status) {
+      // setLoading(false);
+      toast.success(apiData.message);
+     handleRefreshBtnClicked()
+      setSelectUserToEdit([]);
+
+      setBulkEditRole("");
+      setBulkEditStatus("");
+      setBulkEditTimezone("");
+    } else {
+      // toast.error(apiData.errors);
+      setLoading(false);
+    }
+  }
+
+  console.log(selectUserToEdit);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -295,6 +364,20 @@ const Users = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
+
+                        <button
+                          onClick={() => {
+                            setBulkEditPopup(true);
+                          }}
+                          effect="ripple"
+                          className="panelButton edit"
+                        >
+                          <span className="text">Edit</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
+                          </span>
+                        </button>
+
                         {checkViewSidebar(
                           "User",
                           slugPermissions,
@@ -361,21 +444,21 @@ const Users = () => {
                         account?.permissions,
                         "search"
                       ) && (
-                          <div className="searchBox position-relative">
-                            <label>Search:</label>
-                            <input
-                              type="search"
-                              name="Search"
-                              className="formItem"
-                              value={userInput}
-                              onChange={(e) => {
-                                setuserInput(e.target.value);
-                                setItemsPerPage(10);
-                                setPageNumber(1);
-                              }}
-                            />
-                          </div>
-                        )}
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            className="formItem"
+                            value={userInput}
+                            onChange={(e) => {
+                              setuserInput(e.target.value);
+                              setItemsPerPage(10);
+                              setPageNumber(1);
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                     <div className="tableContainer position-relative">
                       {loading ? (
@@ -386,6 +469,24 @@ const Users = () => {
                         <table>
                           <thead>
                             <tr>
+                              {checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit"
+                              ) && (
+                                <th style={{ width: "20px" }}>
+                                  <input
+                                    type="checkbox"
+                                    checked={
+                                      selectUserToEdit.length ===
+                                      filterUser.length
+                                    }
+                                    onClick={() => handleSelectAllUsers()}
+                                  />
+                                </th>
+                              )}
                               {tableKeys &&
                                 tableKeys
                                   .filter(
@@ -401,12 +502,12 @@ const Users = () => {
                                         {item == "usages"
                                           ? "usage"
                                           : item == "extension_id"
-                                            ? "Extension"
-                                            : item == "usertype"
-                                              ? "Role"
-                                              : item == "status"
-                                                ? "activation"
-                                                : item}
+                                          ? "Extension"
+                                          : item == "usertype"
+                                          ? "Role"
+                                          : item == "status"
+                                          ? "activation"
+                                          : item}
                                       </th>
                                     );
                                   })}
@@ -421,7 +522,7 @@ const Users = () => {
                                     className="f-select-width"
                                     value={onlineFilter}
                                     onChange={(e) => {
-                                      setonlineFilter(e.target.value)
+                                      setonlineFilter(e.target.value);
                                       if (e.target.value !== "all") {
                                         setPageNumber(1);
                                       }
@@ -454,13 +555,13 @@ const Users = () => {
                           </thead>
                           <tbody className="">
                             {noPermissionToRead ||
-                              !checkViewSidebar(
-                                "User",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                            !checkViewSidebar(
+                              "User",
+                              slugPermissions,
+                              account?.sectionPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
                               <tr>
                                 <td colSpan={99} className="text-center">
                                   You dont have any permission
@@ -479,6 +580,24 @@ const Users = () => {
                                     // }
                                     return (
                                       <tr key={index}>
+                                        {checkViewSidebar(
+                                          "User",
+                                          slugPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) && (
+                                          <td style={{ width: "20px" }}>
+                                            <input
+                                              type="checkbox"
+                                              checked={selectUserToEdit.includes(
+                                                item
+                                              )}
+                                              onClick={() =>
+                                                checkUserIfPresntToEdit(item)
+                                              }
+                                            />
+                                          </td>
+                                        )}
                                         {tableKeys
                                           .filter(
                                             (key) =>
@@ -606,16 +725,16 @@ const Users = () => {
                                         {tableKeys.includes(
                                           "socket_status"
                                         ) && (
-                                            <td style={{ width: "156px" }}>
-                                              <span
-                                                className={
-                                                  onlineUser.includes(item.id)
-                                                    ? "extensionStatus online mx-auto"
-                                                    : "extensionStatus mx-auto"
-                                                }
-                                              ></span>
-                                            </td>
-                                          )}
+                                          <td style={{ width: "156px" }}>
+                                            <span
+                                              className={
+                                                onlineUser.includes(item.id)
+                                                  ? "extensionStatus online mx-auto"
+                                                  : "extensionStatus mx-auto"
+                                              }
+                                            ></span>
+                                          </td>
+                                        )}
                                         {checkViewSidebar(
                                           "User",
                                           slugPermissions,
@@ -623,19 +742,19 @@ const Users = () => {
                                           account?.permissions,
                                           "edit"
                                         ) && (
-                                            <td>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() =>
-                                                  navigate(`/users-config`, {
-                                                    state: item,
-                                                  })
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil"></i>
-                                              </button>
-                                            </td>
-                                          )}
+                                          <td>
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() =>
+                                                navigate(`/users-config`, {
+                                                  state: item,
+                                                })
+                                              }
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
+                                        )}
                                         {checkViewSidebar(
                                           "User",
                                           slugPermissions,
@@ -643,18 +762,18 @@ const Users = () => {
                                           account?.permissions,
                                           "delete"
                                         ) && (
-                                            <td style={{ width: "150px" }}>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setPopUp(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash" />
-                                              </button>
-                                            </td>
-                                          )}
+                                          <td style={{ width: "150px" }}>
+                                            <button
+                                              className="tableButton delete mx-auto"
+                                              onClick={() => {
+                                                setPopUp(true);
+                                                setDeleteId(item.id);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-trash" />
+                                            </button>
+                                          </td>
+                                        )}
                                       </tr>
                                     );
                                   })}
@@ -713,9 +832,10 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
+                      ? `Are you sure you want to ${
+                          selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                        : ""}
+                      : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button
@@ -760,6 +880,133 @@ const Users = () => {
         </div>
       ) : (
         " "
+      )}
+      {bulkEditPopup && (
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Edit the selected Agents</h5>
+              </div>
+              <div>
+                <div className="d-flex justify-content-between mb-2 align-items-center">
+                  <h5
+                    className="me-2"
+                    style={{
+                      color: "var(--color-subtext)",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      marginTop: 5,
+                    }}
+                  >
+                    Affected user:{" "}
+                  </h5>
+                  <div className="searchBoxWrapper flex-fill">
+                    <input
+                      className="searchBar formItem"
+                      type="text"
+                      defaultValue=""
+                    />
+                  </div>
+                </div>
+                <ul>
+                  {selectUserToEdit.map((item, key) => {
+                    return (
+                      <li key={key}>
+                        <i className="fa-regular fa-user me-2" />
+                        {item.name}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center" />
+              </div>
+              <div className="mt-3 d-flex">
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Role</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    name="timeOut"
+                    id="selectFormRow"
+                    style={{ width: "100%" }}
+                    value={bulkEditRole}
+                    onChange={(e) => setBulkEditRole(e.target.value)}
+                  >
+                    <option value={""}>Select Role</option>
+                    {allRoles.map((role, index) => (
+                      <option key={index} value={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Status</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    id="selectFormRow"
+                    name="status"
+                    style={{ width: "100%" }}
+                    value={bulkEditStatus}
+                    onChange={(e) => setBulkEditStatus(e.target.value)}
+                  >
+                    <option value={""}>Select Status</option>
+                    <option value={"E"}>Active</option>
+                    <option value={"D"}>Inactive</option>
+                  </select>
+                </div>
+                <div className="col-4 pe-0">
+                  <div className="formLabel">
+                    <label htmlFor="">TimeZone</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    id="selectFormRow"
+                    name="status"
+                    style={{ width: "100%" }}
+                    value={bulkEditTimezone}
+                    onChange={(e) => setBulkEditTimezone(e.target.value)}
+                  >
+                    <option value={""}>Select Status</option>
+                    {allTimeZones.map((zone, index) => (
+                      <option key={index} value={zone.id}>
+                        {zone.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkEditPopup(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="panelButton me-0" onClick={handleBulkEdit}>
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );

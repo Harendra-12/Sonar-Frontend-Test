@@ -26,8 +26,8 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                 return;
             }
         } else {
-            if (!["audio/mpeg", "video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/avi", "application/pdf"].includes(fileType)) {
-                toast.error("Only media(mp3,mp4,mov,avi,mkv), or PDF files are allowed.");
+            if (!["audio/mpeg", "video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/avi", "application/pdf", "text/plain", "application/msword", "application/vnd.oasis.opendocument.text", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/csv", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"].includes(fileType)) {
+                toast.error("Only media(mp3,mp4,mov,avi,mkv), or PDF, TXT, RTF, ODT, DOC, DOCX, XLS, XLSX, CSV, PPT, PPTX files are allowed.");
                 setLoading(false)
                 return;
             }
@@ -137,6 +137,23 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                                         {selectedFile.type === "application/pdf" && (
                                             <iframe title='pdf' src={preview} className="pdf-preview"></iframe>
                                         )}
+                                        {console.log('selected file', selectedFile)}
+                                        {   (selectedFile.type == "text/plain" ||
+                                            selectedFile?.type == "application/msword" ||
+                                            selectedFile?.type == "application/rtf" ||
+                                            selectedFile?.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+                                            selectedFile?.type == "application/vnd.ms-excel" ||
+                                            selectedFile?.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                                            selectedFile?.type == "text/csv" ||
+                                            selectedFile?.type == "application/vnd.ms-powerpoint" ||
+                                            selectedFile?.type == "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+                                            selectedFile?.type == "application/vnd.oasis.opendocument.text"
+                                        ) && (
+                                                <div className="text-preview">
+                                                    {console.log('preview', preview)}
+                                                    <iframe title='text/plain' src={preview} className="pdf-preview"></iframe>
+                                                </div>
+                                            )}
                                         <button className="tableButton delete ms-2" onClick={() => setSelectedFile(null)}><i className='fa-solid fa-xmark' /></button>
                                     </>
 
@@ -170,7 +187,7 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                                             id="fileInput"
                                             accept={type === "image" ?
                                                 "image/jpeg,image/jpg,image/png,image/gif,image/bmp,image/webp" :
-                                                "audio/mp3,video/mp4,video/quicktime,video/avi,video/mkv,video/x-matroska,application/pdf"
+                                                "audio/mp3,video/mp4,video/quicktime,video/avi,video/mkv,video/x-matroska,application/pdf,.txt,.rtf,.odt,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx"
 
                                             }
                                             onChange={(e) => handleFileChange(e.target.files[0])}
@@ -179,7 +196,7 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                                             <div className="test-user text-center">
                                                 <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
                                                 <p className="mb-0 mt-2 text-center">Drag and Drop or <span>Click on upload</span></p>
-                                                <span>Supports formats : {type === "image" ? "jpeg,jpg,png,gif,bmp,webp (Max 2MB)" : "mp3, mp4, mov, avi, mkv (Max 2MB), PDF"}</span>
+                                                <span>Supports formats : {type === "image" ? "jpeg,jpg,png,gif,bmp,webp (Max 2MB)" : "mp3, mp4, mov, avi, mkv (Max 2MB), PDF, txt, rtf, odt, doc, docx, xls,xlsx,csv,ppt,pptx"}</span>
                                             </div>
                                         </label>
                                     </div>}</>

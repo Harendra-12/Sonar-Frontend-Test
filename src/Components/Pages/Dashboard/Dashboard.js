@@ -9,7 +9,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
+import GoogleTranslate from "../../CommonComponents/GoogleTranslate";
 const Dashboard = () => {
+  
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -456,6 +458,7 @@ const Dashboard = () => {
 
   return (
     <main className="mainContent">
+      
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
@@ -832,16 +835,16 @@ const Dashboard = () => {
                                     </p>
                                   </div>
                                   <div className="col-3">
-                                    <Tippy content="Click to view extensions">
+                                    {/* <Tippy content="Click to view extensions"> */}
                                       <i className="fa-duotone fa-phone-office" onClick={() => navigate("/extensions")}></i>
-                                    </Tippy>
+                                    {/* </Tippy> */}
                                   </div>
                                 </div>
                               </div>
                               <div className="dashboardUtilityCardWrapper">
                                 {accountDetails && accountDetails.extensions ? (
                                   <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
-                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user !== null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
                                       <circle className="bg"
                                         cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" strokeWidth="20"
                                       ></circle>
@@ -851,8 +854,8 @@ const Dashboard = () => {
                                       ></circle>
                                     </svg>
                                     <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#ff8c42' }}>{extension?.filter((item) => item.user == null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
+                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#ff8c42', width: '100%' }}>{extension?.filter((item) => item.user !== null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -872,7 +875,7 @@ const Dashboard = () => {
                                       <label>Available:</label> <span>{extension?.filter((item) => item.user == null)?.length}</span>
                                     </li>
                                     <li>
-                                      <label>Usage:</label> <span>{(Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length).toFixed(2) || 0) * 100}%</span>
+                                      <label>Usage:</label> <span>{Math.round((Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length) || 0) * 100)}%</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -957,8 +960,8 @@ const Dashboard = () => {
                                       ></circle>
                                     </svg>
                                     <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#62a8ac' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
+                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
+                                        <label style={{ color: '#62a8ac', width: '100%' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -978,7 +981,7 @@ const Dashboard = () => {
                                       <label>Online:</label> <span>{onlineUser.length}</span>
                                     </li>
                                     <li>
-                                      <label>Activity:</label> <span>{(Number(onlineUser.length) / Number(allUserList?.length) || 0).toFixed(2) * 100}%</span>
+                                      <label>Activity:</label> <span>{Math.round((Number(onlineUser.length) / Number(allUserList?.length) || 0) * 100)}%</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -987,7 +990,7 @@ const Dashboard = () => {
                                 <div className="data-number2">
                                   <div className="col-12">
                                     <div className="heading mb-2 h-auto">
-                                      <div className="d-flex justify-content-between"><span>Recent Users</span> <Link to='/agents' className="text-decoration-none">View All</Link></div>
+                                      <div className="d-flex justify-content-between"><span>Recent Users</span> <Link to='/users' className="text-decoration-none">View All</Link></div>
                                     </div>
                                     <ul
                                       style={{
@@ -998,7 +1001,11 @@ const Dashboard = () => {
                                     >
                                       {allUserList.map(
                                         (item, index) => (
-                                          <li className="d_extension_listing" key={index}>
+                                          <li className="d_extension_listing" key={index} onClick={() =>
+                                            navigate(`/users-config`, {
+                                              state: item,
+                                            })
+                                          }>
                                             {item?.name}
                                             <span
                                               className={
@@ -1102,6 +1109,12 @@ const Dashboard = () => {
                                         Default WhatsApp{" "}
                                         <span className="float-end">
                                           {allDID?.filter((item) => item.default_whatsapp == 1)[0]?.did}
+                                        </span>
+                                      </li>
+                                      <li className="d_extension_listing">
+                                        Total Numbers For AI{" "}
+                                        <span className="float-end">
+                                          {allDID?.filter((item) => item.vendor?.vendor_name == "Twillio")?.length}
                                         </span>
                                       </li>
                                     </ul>

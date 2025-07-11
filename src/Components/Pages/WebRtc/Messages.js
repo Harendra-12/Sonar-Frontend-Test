@@ -163,6 +163,8 @@ function Messages({
   const [aiProcessing, setAiProcessing] = useState(false);
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
   const scrollPositionRef = useRef({ scrollTop: 0, scrollHeight: 0 });
+  const isUserAtBottomRef = useRef(true);
+  const isNewMessageByUserRef = useRef(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -397,7 +399,7 @@ function Messages({
           : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
       );
 
-      if (messageListRef.current && !isFreeSwitchMessage) {
+      if (messageListRef.current) {
         scrollPositionRef.current = {
           scrollTop: messageListRef.current.scrollTop,
           scrollHeight: messageListRef.current.scrollHeight,
@@ -431,14 +433,18 @@ function Messages({
         newChatHistory[recipient?.[0]] = {
           total: apiData.data.total,
           pageNumber: apiData.data.current_page,
+          last_page_number: apiData?.data?.last_page_url?.split("page=")?.pop()
         };
         setChatHistory(newChatHistory);
       }
     }
     if (recipient?.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(String(recipient?.[0]))) {
-        getData(chatHistory[recipient?.[0]].pageNumber + 1);
-        setIsFreeSwitchMessage(false);
+      if (Object.keys(chatHistory).includes(String(recipient?.[0])) && messageListRef.current.scrollHeight > 1000) {
+
+        if (chatHistory[recipient?.[0]]?.last_page_number >= chatHistory[recipient?.[0]].pageNumber) {
+          getData(chatHistory[recipient?.[0]].pageNumber + 1);
+          setIsFreeSwitchMessage(false);
+        }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
@@ -521,6 +527,7 @@ function Messages({
     } else {
       messageContent = messageInput[recipient[0]].trim();
     }
+    isNewMessageByUserRef.current = true;
     const messageType = checkMessageType(messageContent);
     socketSendMessage({
       sharedMessage: messageContent,
@@ -1010,12 +1017,7 @@ function Messages({
   // }
 
   // Auto scroll
-  useEffect(() => {
-    if (isFreeSwitchMessage) {
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-    }
-  }, [allMessage]);
-
+  // ================ scroll related stuff start here 
   useEffect(() => {
     const el = messageListRef.current;
     if (!el) return;
@@ -1023,24 +1025,30 @@ function Messages({
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const { scrollTop, scrollHeight } = scrollPositionRef.current || {};
-
-        if (isFreeSwitchMessage) {
+        const newScrollHeight = el.scrollHeight;
+        if (isUserAtBottomRef.current || isNewMessageByUserRef.current) {
           el.scrollTop = el.scrollHeight;
         } else if (scrollTop !== undefined && scrollHeight !== undefined) {
-          const newScrollHeight = el.scrollHeight;
           el.scrollTop = newScrollHeight - scrollHeight + scrollTop;
         }
+        isNewMessageByUserRef.current = false;
       });
     });
-  }, [allMessage, isFreeSwitchMessage]);
+  }, [allMessage]);
+
+
+  const handleScroll = () => {
+    const el = messageListRef.current;
+    if (!el) return;
+
+    if (el.scrollTop === 0) {
+      setLoadMore(prev => prev + 1);
+    }
+    const isAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 50;
+    isUserAtBottomRef.current = isAtBottom;
+  };
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (messageListRef.current?.scrollTop === 0) {
-        setLoadMore(prev => prev + 1);
-      }
-    };
-
     const el = messageListRef.current;
     if (el) el.addEventListener("scroll", handleScroll);
 
@@ -1048,7 +1056,6 @@ function Messages({
       if (el) el.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
 
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -3421,7 +3428,7 @@ function Messages({
                                                 &nbsp;
                                                 {item.user_name}
                                               </h6>
-                                              <div className="">
+                                              <div className=" videoSize">
                                                 <DisplayFile
                                                   key={index}
                                                   item={item.body}

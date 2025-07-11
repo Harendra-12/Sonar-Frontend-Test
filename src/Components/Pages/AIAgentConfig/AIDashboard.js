@@ -177,85 +177,89 @@ function AIDashboard() {
                 <div className="row mt-3">
                   <div className="col-xxl-8">
                     <div className="row gx-xxl-3 gx-lg-2">
-                      <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
-                        <div className="card small-widget overflow-hidden cardbg_gradient">
-                          <div className="card-body primary">
-                            {" "}
-                            <span className="text25">Calls analyzed </span>
-                            <div className="textArea">
-                              <p className=" fs-14 text-b mb-0">
-                                <strong>
-                                  {aiData?.call_volume_trend.reduce(
-                                    (sum, item) => sum + item.count,
-                                    0
-                                  )}
-                                </strong>{" "}
-                                <span className="f-light fs-12">
-                                  {" "}
-                                  calls in last 7 days
-                                </span>
-                              </p>
-                            </div>
-                            <div className="bg-gradient">
-                              {/* <i className="fa-solid fa-headset "></i> */}
-                              <img
-                                src={require("../../assets/images/customer-service.png")}
-                                alt="customer-service"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
-                        <div className="card small-widget overflow-hidden cardbg_gradient2">
-                          <div className="card-body success ">
-                            {" "}
-                            <span className="text25">
-                              Average call duration{" "}
-                            </span>
-                            <div className="textArea">
-                              <p className=" fs-14 text-b mb-0">
-                                <strong>
-                                  {getAverageDurationHHMMSS(
-                                    aiData?.avg_duration_trend
-                                  )}
-                                </strong>{" "}
-                                <span className="f-light fs-12">
-                                  {" "}
-                                  score in last 7 days
-                                </span>
-                              </p>
-                            </div>
-                            <div className="bg-gradient">
-                              {/* <i className="fa-solid fa-headset "></i> */}
-                              <img
-                                src={require("../../assets/images/customer-care.png")}
-                                alt="customer-care"
-                              />
+                      <div className="col-12 mb-3">
+                        <div className="gridCall">
+                          <div className="w-100">
+                            <div className="card small-widget overflow-hidden cardbg_gradient">
+                              <div className="card-body primary">
+                                {" "}
+                                <span className="text25">Calls analyzed </span>
+                                <div className="textArea">
+                                  <p className=" fs-14 text-b mb-0">
+                                    <strong>
+                                      {aiData?.call_volume_trend.reduce(
+                                        (sum, item) => sum + item.count,
+                                        0
+                                      )}
+                                    </strong>{" "}
+                                    <span className="f-light fs-12">
+                                      {" "}
+                                      calls in last 7 days
+                                    </span>
+                                  </p>
+                                </div>
+                                <div className="bg-gradient">
+                                  {/* <i className="fa-solid fa-headset "></i> */}
+                                  <img
+                                    src={require("../../assets/images/customer-service.png")}
+                                    alt="customer-service"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-4 col-lg-6 col-md-6 mb-3">
-                        <div className="card small-widget overflow-hidden cardbg_gradient3">
-                          <div className="card-body warning ">
-                            {" "}
-                            <span className="text25">Unique moments </span>
-                            <div className="textArea">
-                              <p className=" fs-14 text-b mb-0">
-                                <strong>{aiData?.unique_moments.length}</strong>{" "}
-                                <span className="f-light fs-12">
-                                  {" "}
-                                  captured during coustomer interactions
+                          <div className="w-100">
+                            <div className="card small-widget overflow-hidden cardbg_gradient2">
+                              <div className="card-body success ">
+                                {" "}
+                                <span className="text25">
+                                  Average call duration{" "}
                                 </span>
-                              </p>
+                                <div className="textArea">
+                                  <p className=" fs-14 text-b mb-0">
+                                    <strong>
+                                      {getAverageDurationHHMMSS(
+                                        aiData?.avg_duration_trend
+                                      )}
+                                    </strong>{" "}
+                                    <span className="f-light fs-12">
+                                      {" "}
+                                      score in last 7 days
+                                    </span>
+                                  </p>
+                                </div>
+                                <div className="bg-gradient">
+                                  {/* <i className="fa-solid fa-headset "></i> */}
+                                  <img
+                                    src={require("../../assets/images/customer-care.png")}
+                                    alt="customer-care"
+                                  />
+                                </div>
+                              </div>
                             </div>
-                            <div className="bg-gradient">
-                              {/* <i className="fa-solid fa-headset "></i> */}
-                              <img
-                                src={require("../../assets/images/phone.png")}
-                                alt="phone"
-                              />
+                          </div>
+                          <div className="w-100">
+                            <div className="card small-widget overflow-hidden cardbg_gradient3">
+                              <div className="card-body warning ">
+                                {" "}
+                                <span className="text25">Unique moments </span>
+                                <div className="textArea">
+                                  <p className=" fs-14 text-b mb-0">
+                                    <strong>{aiData?.unique_moments.length}</strong>{" "}
+                                    <span className="f-light fs-12">
+                                      {" "}
+                                      captured during coustomer interactions
+                                    </span>
+                                  </p>
+                                </div>
+                                <div className="bg-gradient">
+                                  {/* <i className="fa-solid fa-headset "></i> */}
+                                  <img
+                                    src={require("../../assets/images/phone.png")}
+                                    alt="phone"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -488,7 +492,7 @@ function AIDashboard() {
                                           {/* {item.profile_picture ? ( */}
                                           <img
                                             src={require("../../assets/images/placeholder-image.webp")}
-                                            // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                          // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                           />
                                           {/* ) : ( */}
                                           {/* <i className="fa-light fa-user" /> */}
@@ -500,12 +504,12 @@ function AIDashboard() {
                                       </div>
                                     </td>
                                     <td>
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {item?.average_duration_sec}{" "} seconds
                                       </span>
                                     </td>
                                     <td>
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {parseFloat(
                                           item?.average_sentiment_score
                                         ).toFixed(2)}
@@ -513,7 +517,7 @@ function AIDashboard() {
                                     </td>
                                     <td>
                                       {" "}
-                                      <span className="badge badge-soft-primary  rounded-pill">
+                                      <span className="badge badge-soft-primary  rounded-pill text-black">
                                         {item?.average_csat_score}
                                       </span>
                                     </td>
@@ -523,7 +527,7 @@ function AIDashboard() {
                                           return (
                                             <span
                                               key={index}
-                                              className="badge badge-soft-secondary rounded-pill me-2"
+                                              className="badge badge-soft-secondary rounded-pill me-2 text-black"
                                             >
                                               {moment}
                                             </span>

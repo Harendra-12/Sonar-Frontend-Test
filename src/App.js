@@ -271,7 +271,7 @@ function App() {
     <>
       <Router>
         {adminLogout && <AdminLogoutPopUp />}
-        <GoogleTranslate />
+       
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />

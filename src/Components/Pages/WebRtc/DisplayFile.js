@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isOnlyLink } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
 
 // Keep track of the currently playing audio ref and video ref
 let currentlyPlayingAudioRef = null;
@@ -15,7 +16,7 @@ const DisplayFile = ({ item, index }) => {
     setShowOptions(!showOptions);
   };
 
-  const downloadPdf = async (pdfUrl, filename) => {
+  const downloadPdf = async (pdfUrl, filename, fineType) => {
     try {
       const response = await fetch(pdfUrl, {
         method: "GET",
@@ -27,7 +28,7 @@ const DisplayFile = ({ item, index }) => {
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(
-        new Blob([blob], { type: "application/pdf" })
+        new Blob([blob], { type: fineType })
       );
 
       const link = document.createElement("a");
@@ -115,38 +116,65 @@ const DisplayFile = ({ item, index }) => {
     }
   };
 
+  // =========================================
+  // const extractFileExtension = (selectedUrl) => {
+  //   if (!selectedUrl) return null;
+  //   const fileUrl = selectedUrl;
+  //   const fileName = fileUrl.split("/").pop();
+  //   if (fileName) {
+  //     const lowerValue = selectedUrl;
+  //     if (
+  //       lowerValue.includes("png") ||
+  //       lowerValue.includes("Screenshot") ||
+  //       lowerValue.includes("image") ||
+  //       lowerValue.includes("gif") ||
+  //       lowerValue.includes("jpg") ||
+  //       lowerValue.includes("jpeg") ||
+  //       lowerValue.includes("webp") ||
+  //       lowerValue.includes("svg") ||
+  //       lowerValue.includes("bmp")
+  //     )
+  //       return "png";
+  //     if (lowerValue.includes("pdf")) return "pdf";
+  //     if (lowerValue.includes("mp3")) return "mp3";
+  //     if (lowerValue.includes("mp4") ||
+  //       lowerValue.includes("Video") ||
+  //       lowerValue.includes("mov") ||
+  //       lowerValue.includes("avi") ||
+  //       lowerValue.includes("mkv") ||
+  //       lowerValue.includes("wmv") ||
+  //       lowerValue.includes("flv")
+  //     )
+  //       return "mp4";
+  //   }
+  //   return null; // No extension found
+  // };
+  // ==============================================
+
   const extractFileExtension = (selectedUrl) => {
     if (!selectedUrl) return null;
-    const fileUrl = selectedUrl;
-    const fileName = fileUrl.split("/").pop();
-    if (fileName) {
-      const lowerValue = selectedUrl;
-      if (
-        lowerValue.includes("png") ||
-        lowerValue.includes("Screenshot") ||
-        lowerValue.includes("image") ||
-        lowerValue.includes("gif") ||
-        lowerValue.includes("jpg") ||
-        lowerValue.includes("jpeg") ||
-        lowerValue.includes("webp") ||
-        lowerValue.includes("svg") ||
-        lowerValue.includes("bmp")
-      )
-        return "png";
-      if (lowerValue.includes("pdf")) return "pdf";
-      if (lowerValue.includes("mp3")) return "mp3";
-      if (lowerValue.includes("mp4") ||
-        lowerValue.includes("Video") ||
-        lowerValue.includes("mov") ||
-        lowerValue.includes("avi") ||
-        lowerValue.includes("mkv") ||
-        lowerValue.includes("wmv") ||
-        lowerValue.includes("flv")
-      )
-        return "mp4";
 
+    const fileName = selectedUrl.split("/").pop(); // Get file name
+    if (!fileName) return null;
+
+    const extension = fileName.split(".").pop().toLowerCase(); // Get the actual extension
+    if (!extension) return null;
+
+    if (["png", "gif", "jpg", "jpeg", "webp", "svg", "bmp"].includes(extension)) return "png";
+    if (extension === "pdf") return "pdf";
+    if (extension === "mp3") return "mp3";
+    if (["txt", "rtf", "odt", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx"].includes(extension)) return "doc";
+    if (["mp4", "mov", "avi", "mkv", "wmv", "flv"].includes(extension)) return "mp4";
+
+    return null; // No known extension
+  };
+
+
+  const handleLinkClick = (e, url) => {
+    if (url.startsWith('file://')) {
+      e.preventDefault();
+      toast.error("Cannot open local file paths in browser.");
     }
-    return null; // No extension found
   };
 
   if (!item) return null;
@@ -177,7 +205,6 @@ const DisplayFile = ({ item, index }) => {
       ? extractFileExtension(item)
       : "";
   const ext = fileUrl;
-
   if (!ext) {
     return (
       <div className="messageDetails">
@@ -186,6 +213,7 @@ const DisplayFile = ({ item, index }) => {
             href={item}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => handleLinkClick(e, item)}
             style={{ color: 'blue', textDecoration: 'underline' }}
           >
             {item}
@@ -261,7 +289,7 @@ const DisplayFile = ({ item, index }) => {
               className="dropdown-menu light"
             >
               <li>
-                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={() => downloadPdf(item, extractFileNameFromUrl(item))}>
+                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={() => downloadPdf(item, extractFileNameFromUrl(item), "application/pdf")}>
                   Download
                 </div>
               </li>
@@ -270,6 +298,51 @@ const DisplayFile = ({ item, index }) => {
                                             
                                             </div>
                                           </li> */}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    // Handle other files
+    if (ext === "doc") {
+      function extractFileNameFromUrl(url) {
+        if (!url || typeof url !== "string") {
+          return null; // Handle invalid input
+        }
+
+        const parts = url.split("/");
+        if (parts.length === 0) {
+          return null; // Handle cases with no slashes
+        }
+
+        const originalFileName = parts[parts.length - 1];
+        return originalFileName.substring(originalFileName.length - 10);
+      }
+
+      return (
+        <div className="displayFile">
+          <div className='align-items-center justify-content-between' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px", display: "flex", justifyContent: "space-between", alignItems: "end", padding: '1rem' }} >
+            <div style={{ fontSize: "26px", color: "#ff2424" }}>
+              <i className="fa-solid fa-file"></i>
+
+            </div>
+            <h5 className='p-0 m-0 '>{extractFileNameFromUrl(item)}</h5>
+            <button
+              className="clearButton2 xl"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="true"
+              onClick={toggleOptions}
+            > <i className="fa-solid fa-ellipsis-vertical"  ></i></button>
+            <ul
+              className="dropdown-menu light"
+            >
+              <li>
+                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={() => downloadPdf(item, extractFileNameFromUrl(item), 'application/octet-stream')}>
+                  Download
+                </div>
+              </li>
             </ul>
           </div>
         </div>
@@ -296,10 +369,10 @@ const DisplayFile = ({ item, index }) => {
 
     if (ext === "mp4") {
       return (
-        <div className="displayFile">
+        <div className="displayFile" style={{height:"200px", width:"200px"}}>
           <video
             controls
-            className="w-100 h-100"
+            className="w-100 h-100 rounded"
             ref={thisVideoRef}
             onPlay={handlePlayVideo}
           >

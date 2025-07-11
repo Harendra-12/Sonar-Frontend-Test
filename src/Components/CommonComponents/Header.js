@@ -9,11 +9,12 @@ import {
 } from "../GlobalFunction/globalFunction";
 import DarkModeToggle from "./DarkModeToggle";
 import { toast } from "react-toastify";
+import GoogleTranslate from "./GoogleTranslate";
 
 function Header(props) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const accountBalance = useSelector((state) => state.accountBalance)
+  const accountBalance = useSelector((state) => state.accountBalance);
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const [popUp, setPopUp] = useState(false);
@@ -108,14 +109,13 @@ function Header(props) {
         <h4 className="my-auto">{props.title}</h4>
       </div>
       <div className="col-md-8 col-6 d-flex justify-content-end align-items-center">
+        <div className="my-auto">
+          <GoogleTranslate />
+        </div>
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
-              checkModulePerm(
-                "Webrtc",
-                permissions,
-                account?.sections,
-              ) ?
+            checkModulePerm("Webrtc", permissions, account?.sections) ? (
               <div className="my-auto">
                 <Tippy content="Click here to open dialer!">
                   <a
@@ -125,42 +125,35 @@ function Header(props) {
                     className="clearColorButton"
                   >
                     <i className="fa-regular fa-phone-office me-0" />{" "}
-                    <span className="d-none d-xl-inline-block">
-                      App
-                    </span>
+                    <span className="d-none d-xl-inline-block">Angel Go</span>
                   </a>
                 </Tippy>
               </div>
-              : ""}
-            {/* <div>
-              <Tippy content="Your available balance, click to know more!">
-                <div
-                  onClick={() => navigate("/card-details")}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  className="clearColorButton"
-                >
-                  <i className="fa-regular fa-wallet" />{" "}
-                  <span className="">
-                    ${accountBalance || 0}
-                  </span>
-                </div>
-              </Tippy>
-            </div> */}
+            ) : (
+              ""
+            )}
           </div>
         </div>
+
         <DarkModeToggle marginLeft={"3"} />
         <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
           <div className="dropdown">
             <div
               className="profileHolder"
-              role="button" data-bs-toggle="dropdown" aria-expanded="false"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <img
-                src={account?.profile_picture ? account?.profile_picture : require('../assets/images/placeholder-image.webp')}
+                src={
+                  account?.profile_picture
+                    ? account?.profile_picture
+                    : require("../assets/images/placeholder-image.webp")
+                }
                 alt="profile"
-                onError={(e) => e.target.src = require('../assets/images/placeholder-image.webp')}
+                onError={(e) =>
+                  (e.target.src = require("../assets/images/placeholder-image.webp"))
+                }
               />
             </div>
 
@@ -168,39 +161,48 @@ function Header(props) {
               <div className="dropdown-item dorpInfo">
                 <div
                   className="profileHolder"
-                  role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
                 >
                   <img
-                    src={account?.profile_picture ? account?.profile_picture : require('../assets/images/placeholder-image.webp')}
+                    src={
+                      account?.profile_picture
+                        ? account?.profile_picture
+                        : require("../assets/images/placeholder-image.webp")
+                    }
                     alt="profile"
-                    onError={(e) => e.target.src = require('../assets/images/placeholder-image.webp')}
+                    onError={(e) =>
+                      (e.target.src = require("../assets/images/placeholder-image.webp"))
+                    }
                   />
                 </div>
                 <div className="profileNameWrap">
                   <Tippy content={accounName}>
                     <div className="d-flex align-items-center">
-                      <div className="profileName">
-                        {accounName}
-                      </div>
+                      <div className="profileName">{accounName}</div>
                       <span className="roleBadge ms-2">
-                        {account?.user_role ? account?.user_role?.roles?.name : account?.usertype}
+                        {account?.user_role
+                          ? account?.user_role?.roles?.name
+                          : account?.usertype}
                       </span>
                     </div>
                   </Tippy>
-                  {account?.email &&
-                    <label>{account?.email}</label>
-                  }
+                  {account?.email && <label>{account?.email}</label>}
                 </div>
               </div>
               <div className="dropdown-item">
                 <Link to={"/card-details"} className="clearButton">
                   <div className="d-flex justify-content-between">
                     <label>Balance</label>
-                    <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> ${accountBalance || 0}</label>
+                    <label style={{ color: "#3CAA45", fontWeight: "bold" }}>
+                      {" "}
+                      ${accountBalance || 0}
+                    </label>
                   </div>
                 </Link>
               </div>
-              <div style={{ borderTop: '1px solid var(--border-color)' }} />
+              <div style={{ borderTop: "1px solid var(--border-color)" }} />
               <div className="dropdown-item">
                 <Link to={"/users-profile"} className="clearButton">
                   <i className="fa-light fa-user me-2" aria-hidden="true"></i>
@@ -216,12 +218,12 @@ function Header(props) {
                   Change Password
                 </Link>
               </div>
-              <div style={{ borderTop: '1px solid var(--border-color)' }} />
-              <div className="dropdown-item" onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
-                <Link
-                  to={"/"}
-                  className="clearButton text-align-start"
-                >
+              <div style={{ borderTop: "1px solid var(--border-color)" }} />
+              <div
+                className="dropdown-item"
+                onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}
+              >
+                <Link to={"/"} className="clearButton text-align-start">
                   <i className="fa-light fa-right-from-bracket me-1"></i> Logout
                 </Link>
               </div>
@@ -236,118 +238,124 @@ function Header(props) {
             </div>
           </div>
         </div>
-      </div >
-      {
-        popUp ? (
-          <>
-            <div className="backdropContact">
-              <div className="addNewContactPopup">
-                <div className="row">
-                  <div className="col-12 heading">
-                    <i className="fa-light fa-key" />
-                    <h5>Change Password</h5>
-                    <p>
-                      Change your account password effortlessly, keeping your account secure and private.
-                    </p>
-                    <div className="border-bottom col-12" />
+      </div>
+      {popUp ? (
+        <>
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading">
+                  <i className="fa-light fa-key" />
+                  <h5>Change Password</h5>
+                  <p>
+                    Change your account password effortlessly, keeping your
+                    account secure and private.
+                  </p>
+                  <div className="border-bottom col-12" />
+                </div>
+                <div className="col-xl-12">
+                  <div
+                    className="formLabel d-flex justify-content-between"
+                    style={{ maxWidth: "100%" }}
+                  >
+                    <label className="text-dark">Current Password : </label>
+                    {errorOldPassword ? (
+                      <label className="status missing">Field Missing</label>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  <div className="col-xl-12">
-                    <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
-                      <label className="text-dark">
-                        Current Password :{" "}
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 mt-3">
+                  <div
+                    className="formLabel d-flex justify-content-between"
+                    style={{ maxWidth: "100%" }}
+                  >
+                    <label className="text-dark">New Password : </label>
+                    {errorNewPassword ? (
+                      <label className="status missing">
+                        Password must be min. 6 characters
                       </label>
-                      {errorOldPassword ? (
-                        <label className="status missing">
-                          Field Missing
-                        </label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                      />
-
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  <div className="col-xl-12 mt-3">
-                    <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
-                      <label className="text-dark">New Password : </label>
-                      {errorNewPassword ? (
-                        <label className="status missing">
-                          Password must be min. 6 characters
-                        </label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                      />
-
-                    </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
                   </div>
-                  <div className="col-xl-12 mt-3">
-                    <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
-                      <label className="text-dark">
-                        Confirm Password :
+                </div>
+                <div className="col-xl-12 mt-3">
+                  <div
+                    className="formLabel d-flex justify-content-between"
+                    style={{ maxWidth: "100%" }}
+                  >
+                    <label className="text-dark">Confirm Password :</label>
+                    {errorConfirm ? (
+                      <label className="status missing">
+                        Password do not matched
                       </label>
-                      {errorConfirm ? (
-                        <label className="status missing">
-                          Password do not matched
-                        </label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-12">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        value={confPassword}
-                        onChange={(e) => setConfPassword(e.target.value)}
-                      />
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  <div className="col-xl-12 mt-4">
-                    <div className="d-flex justify-content-between">
-                      <button className="panelButton ms-0" disabled={loading} onClick={() => handleSubmit()}>
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check" />
-                        </span>
-                      </button>
-                      <button className="panelButton gray me-0"
-                        onClick={() => {
-                          setPopUp(false);
-                        }}>
-                        <span className="text">Close</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-xmark" />
-                        </span>
-                      </button>
-                    </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={confPassword}
+                      onChange={(e) => setConfPassword(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 mt-4">
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="panelButton ms-0"
+                      disabled={loading}
+                      onClick={() => handleSubmit()}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check" />
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray me-0"
+                      onClick={() => {
+                        setPopUp(false);
+                      }}
+                    >
+                      <span className="text">Close</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark" />
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          </>
-        ) : (
-          ""
-        )
-      }
-    </div >
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+    </div>
   );
 }
 
