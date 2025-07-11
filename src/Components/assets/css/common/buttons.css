@@ -19,7 +19,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s ease-in-out;
+  /* transition: 0.2s ease-in-out; */
   padding: 0;
   flex-shrink: 0;
 }
@@ -570,7 +570,7 @@
   min-width: 70px;
   text-align: center;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transition: 0.3s ease-in-out;
+  /* transition: 0.3s ease-in-out; */
   cursor: pointer;
 }
 

@@ -324,7 +324,7 @@ const DisplayFile = ({ item, index }) => {
 
     if (ext === "mp4") {
       return (
-        <div className="displayFile">
+        <div className="displayFile" style={{height:"200px", width:"200px"}}>
           <video
             controls
             className="w-100 h-100"

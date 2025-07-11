@@ -632,7 +632,7 @@
   transform: rotate(-90deg);
   transform-origin: var(--half-size) var(--half-size);
   stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
-  transition: stroke-dasharray 0.0s linear 0s;
+  /* transition: stroke-dasharray 0.0s linear 0s; */
 }
 
 .tangoNavs .nav-tabs {
@@ -644,7 +644,7 @@
   color: var(--color-subtext);
   padding: 10px 5px;
   font-size: 0.875rem;
-  transition: color .0s ease-in-out, background-color .0s ease-in-out, border-color .0s ease-in-out;
+  /* transition: color .0s ease-in-out, background-color .0s ease-in-out, border-color .0s ease-in-out; */
 }
 
 .tangoNavs .nav-tabs .nav-link.active {

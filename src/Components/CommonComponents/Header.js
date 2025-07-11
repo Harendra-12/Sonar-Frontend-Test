@@ -9,6 +9,7 @@ import {
 } from "../GlobalFunction/globalFunction";
 import DarkModeToggle from "./DarkModeToggle";
 import { toast } from "react-toastify";
+import GoogleTranslate from "./GoogleTranslate";
 
 function Header(props) {
   const dispatch = useDispatch();
@@ -108,6 +109,9 @@ function Header(props) {
         <h4 className="my-auto">{props.title}</h4>
       </div>
       <div className="col-md-8 col-6 d-flex justify-content-end align-items-center">
+          <div className="my-auto">
+         <GoogleTranslate/>
+       </div>
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
@@ -132,24 +136,11 @@ function Header(props) {
                 </Tippy>
               </div>
               : ""}
-            {/* <div>
-              <Tippy content="Your available balance, click to know more!">
-                <div
-                  onClick={() => navigate("/card-details")}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  className="clearColorButton"
-                >
-                  <i className="fa-regular fa-wallet" />{" "}
-                  <span className="">
-                    ${accountBalance || 0}
-                  </span>
-                </div>
-              </Tippy>
-            </div> */}
+          
           </div>
         </div>
+
+     
         <DarkModeToggle marginLeft={"3"} />
         <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
           <div className="dropdown">

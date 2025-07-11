@@ -2,6 +2,11 @@
     border: none;
 } */
 
+
+.nav-link{
+    transition: none;
+}
+
 .mainContentApp .nav-link {
     color: #444444;
 }
@@ -1152,7 +1157,12 @@
     margin-bottom: 8px;
     text-transform: capitalize;
 }
+.webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
+     height: 201px;
+    width: 201px;
+  
 
+}
 .webrtc_newMessageUi .leftside_listBar {
     height: calc(100vh - 82px);
     background: var(--me-body-bg2);
