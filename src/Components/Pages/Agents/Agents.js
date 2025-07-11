@@ -391,7 +391,7 @@ function Agents({ type }) {
                         <table>
                           <thead>
                             <tr>
-                              {checkViewSidebar(
+                              {/* {checkViewSidebar(
                                 "User",
                                 slugPermissions,
                                 account?.sectionPermissions,
@@ -399,7 +399,7 @@ function Agents({ type }) {
                                 "edit"
                               ) &&
                                 <th style={{ width: '20px' }}><input type="checkbox" /></th>
-                              }
+                              } */}
                               <th>Name</th>
                               {/* <th>Caller ID</th> */}
                               <th>Extension</th>
@@ -461,7 +461,7 @@ function Agents({ type }) {
                                   filterUser?.map((item, index) => {
                                     return (
                                       <tr>
-                                        {checkViewSidebar(
+                                        {/* {checkViewSidebar(
                                           "User",
                                           slugPermissions,
                                           account?.permissions,
@@ -470,7 +470,7 @@ function Agents({ type }) {
                                             <td style={{ width: '20px' }}>
                                               <input type="checkbox" />
                                             </td>
-                                          )}
+                                          )} */}
                                         <td>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">

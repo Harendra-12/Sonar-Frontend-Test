@@ -14,6 +14,7 @@ const MailReply = ({
   downloadAllAtachment,
   loadingForDownloadAtachment
 }) => {
+    {console.log(currentMail?.rawData,currentMail)}
   const navigate = useNavigate();
   const [showResults, setShowResults] = React.useState(false);
   const onClick = () => setShowResults(true);
@@ -192,6 +193,7 @@ const MailReply = ({
 
               <div class="main-mail-content mb-4 mt-5" style={{ fontSize: "0.9rem " }}>
                 <div
+              
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHTML(currentMail?.rawData),
                   }}
