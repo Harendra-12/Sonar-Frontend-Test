@@ -188,7 +188,7 @@ function Header(props) {
                     </div>
                   </Tippy>
                   {account?.email &&
-                    <label>{account?.email}</label>
+                    <label className="ellipsisText">{account?.email}</label>
                   }
                 </div>
               </div>
@@ -199,6 +199,15 @@ function Header(props) {
                     <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> ${accountBalance || 0}</label>
                   </div>
                 </Link>
+              </div>
+               <div style={{ borderTop: '1px solid var(--border-color)' }} />
+              <div className="dropdown-item">
+                <div className="clearButton">
+                  <div className="d-flex justify-content-between">
+                    <label className="text-white">Account ID</label>
+                    <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> PM1250</label>
+                  </div>
+                </div>
               </div>
               <div style={{ borderTop: '1px solid var(--border-color)' }} />
               <div className="dropdown-item">
