@@ -82,8 +82,8 @@ function Agents({ type }) {
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        registerUser?.map((item) => {
-          return item.extension;
+        logonUser?.map((item) => {
+          return item.id;
         })
       );
     }
@@ -222,13 +222,13 @@ function Agents({ type }) {
       switch (onlineFilter) {
         case "online":
           const onlineAgents = agents.data.filter((item) =>
-            onlineUsers.includes(String(item.extension.extension))
+            onlineUsers.includes(item.id)
           );
           setFilterUser(onlineAgents);
           break;
         case "offline":
           const offlineAgents = agents.data.filter(
-            (item) => !onlineUsers.includes(String(item.extension.extension))
+            (item) => !onlineUsers.includes(item.id)
           );
           setFilterUser(offlineAgents);
           break;
@@ -243,7 +243,7 @@ function Agents({ type }) {
   function getToken(extension) {
     // console.log("User:", extension,logonUser);
     const user = logonUser?.find(
-      (user) => user?.extension?.extension === extension
+      (user) => user?.id === extension
     );
 
     return user?.usertokens?.length > 0 ? user?.usertokens : null;
@@ -509,16 +509,16 @@ function Agents({ type }) {
                                           <span
                                             className={
                                               onlineUsers.includes(
-                                                item.extension.extension
+                                                item.id
                                               )
                                                 ? "extensionStatus online mx-auto"
                                                 : "extensionStatus mx-auto"
                                             }
                                           ></span>
                                         </td>
-                                        {getToken(item.extension.extension) &&
+                                        {getToken(item.id) &&
                                           onlineUsers.includes(
-                                            item.extension.extension
+                                            item.id
                                           ) ? (
                                           <td>
                                             <button
@@ -528,7 +528,7 @@ function Agents({ type }) {
                                                 setLogoutUserId(item.id);
                                                 setAgentLogOutToken(
                                                   getToken(
-                                                    item.extension.extension
+                                                    item.id
                                                   )[0].token
                                                 );
                                               }}
