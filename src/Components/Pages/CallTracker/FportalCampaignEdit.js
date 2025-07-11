@@ -1220,14 +1220,9 @@ function FportalCampaignEdit() {
                                     : "12"
                                     }`}
                                 >
-                                  {watch().sticky_agent_enable === "true" ||
-                                    watch().sticky_agent_enable === 1 ? (
-                                    <div className="formLabel">
-                                      <label className="formItemDesc">Status</label>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
+                                  <div className="formLabel">
+                                    <label className="formItemDesc">Status</label>
+                                  </div>
                                   <select
                                     className="formItem"
                                     id="selectFormRow"
