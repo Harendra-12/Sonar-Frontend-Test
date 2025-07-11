@@ -1158,7 +1158,7 @@
     text-transform: capitalize;
 }
 .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
-     height: 201px;
+     /* height: 201px; */
     width: 201px;
   
 

@@ -372,7 +372,7 @@ const DisplayFile = ({ item, index }) => {
         <div className="displayFile" style={{height:"200px", width:"200px"}}>
           <video
             controls
-            className="w-100 h-100"
+            className="w-100 h-100 rounded"
             ref={thisVideoRef}
             onPlay={handlePlayVideo}
           >
