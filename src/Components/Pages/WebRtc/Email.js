@@ -284,7 +284,7 @@ function Email({ selectedMail, }) {
     const shouldLoad = true;
     fetchData(shouldLoad);
   }, []);
-  
+
   // whenever email type will change
   useEffect(() => {
     const shouldLoad = true;
@@ -448,7 +448,6 @@ function Email({ selectedMail, }) {
     setLoadingForActions(prev => [...prev, mail]);
     setLoading(true)
     const shouldLoad = false
-    debugger
     if (!mail?.status_flags?.seen) {
       mailStatusApiCall(shouldLoad, shouldToast, {
         uid: [mail?.uid],

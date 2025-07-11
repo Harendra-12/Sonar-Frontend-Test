@@ -14,6 +14,7 @@ const MailReply = ({
   downloadAllAtachment,
   loadingForDownloadAtachment
 }) => {
+    {console.log(currentMail?.rawData,currentMail)}
   const navigate = useNavigate();
   const [showResults, setShowResults] = React.useState(false);
   const onClick = () => setShowResults(true);
@@ -192,6 +193,7 @@ const MailReply = ({
 
               <div class="main-mail-content mb-4 mt-5" style={{ fontSize: "0.9rem " }}>
                 <div
+              
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHTML(currentMail?.rawData),
                   }}
@@ -206,7 +208,8 @@ const MailReply = ({
                           {" "}
                           <span class="fs-14 fw-semibold text_dark">
                             <i class="fa-solid fa-paperclip me-3"></i>Attachments{" "}
-                            {totalFileSize(currentMail?.attachments)}:
+                            {/* {totalFileSize(currentMail?.attachments)}: */}
+                            {currentMail?.size}
                           </span>{" "}
                         </div>
                         <div>
@@ -256,7 +259,7 @@ const MailReply = ({
                               </p>
                               <p class="mb-0 fs-11 text_gray">
                                 {" "}
-                                {formatFileSize(attachment?.size)}{" "}
+                                {attachment?.size}{" "}
                               </p>
                             </div>
                           </Link>

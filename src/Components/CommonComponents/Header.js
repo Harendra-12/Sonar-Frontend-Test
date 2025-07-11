@@ -125,7 +125,7 @@ function Header(props) {
                     className="clearColorButton"
                   >
                     <i className="fa-regular fa-phone-office me-0" />{" "}
-                    <span className="d-none d-xl-inline-block">App</span>
+                    <span className="d-none d-xl-inline-block">Angel Go</span>
                   </a>
                 </Tippy>
               </div>
