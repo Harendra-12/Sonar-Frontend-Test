@@ -56,8 +56,8 @@ function Login() {
             <div className="loginWrapper2">
               <div className="row h-100">
                 <div className="col-xl-6 h-100 position-relative d-flex align-items-center">
-                  <div className="content col-xl-7 mx-auto py-5">
-                    <h3>Get Started Now</h3>
+                  <div className="content col-xxl-7 col-xl-8 mx-auto py-5">
+                    <h3>Login now to get introduced <br />to AngelPBX.ai</h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
                     <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
@@ -81,9 +81,10 @@ function Login() {
                     </p>
                   </div>
                 </div>
-                <div className="col-xl-6 col-lg-5 d-xl-block d-none">
+                <div className="col-xl-6 col-lg-5 d-xl-block d-none h-100">
                   <div className="loginImgWrapper">
-                    <div className="content">
+                    <img src={require('../assets/images/pbx.webp')} />
+                    {/* <div className="content">
                       <h3>
                         An Effective PBX Solution for all your Business
                         Communication Needs
@@ -102,8 +103,7 @@ function Login() {
                           style={{ marginLeft: "0", width: "85%" }}
                         />
                       </div>
-                      {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
