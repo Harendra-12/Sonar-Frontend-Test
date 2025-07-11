@@ -64,11 +64,11 @@ function Login() {
                   </div>
                   <div
                     className="text-center position-absolute w-100"
-                    // style={{
-                    //   bottom: 0,
-                    //   left: "50%",
-                    //   transform: "translate(-50%, -50%)",
-                    // }}
+                    style={{
+                      bottom: 0,
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
                   >
                     <p
                       style={{
@@ -638,7 +638,29 @@ export function LoginComponent({ setLanguageChangePopup }) {
                   </ul>
                 )}
                 <div className="d-flex justify-content-between px-0">
-                  
+                  {/* <button
+                    className="panelButton m-0 float-end"
+                    onClick={() => {
+                      setPopUp(false);
+                      setLoading(true)
+                      handleLogin()
+                    }}
+                  >
+                    <span className="text">Login</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button> */}
+
+                  {/* <button onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }} type="button" className="btn btn-success-light btn-wave " >
+                    <span>Login</span> <i
+                      className="fa-solid fa-check"
+                    ></i></button> */}
+
                   <button
                     className="btn2"
                     onClick={() => {
@@ -669,6 +691,55 @@ export function LoginComponent({ setLanguageChangePopup }) {
               </div>
             </div>
           </div>
+
+          {/* 
+          <div className="popupopen ">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p className="my-2">
+                      You are about to log out of all devices!
+                    </p>
+                    <div className="d-flex justify-content-between mt-3">
+                      <button
+                        className="panelButton delete m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                          setLoading(true)
+                          handleLogin()
+                        }}
+                      >
+                        <span className="text">LogOut</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-power-off"></i>
+                        </span>
+                      </button>
+
+                      <div>
+                        <button
+                          disabled={loading}
+                          className="panelButton gray"
+                          onClick={handleLogoutAll}
+                        >
+                          <span className="text">Close</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
         </>
       ) : (
         ""
@@ -748,7 +819,7 @@ export function LanguagePromptPopup({ setLanguageChangePopup }) {
                   </p>
                   <div className="formRow">
                     <select className="formItem" onChange={(e) => setSelectLanguage(e.target.value)}>
-                      {/* <option value={""}>Select Language</option> */}
+                      <option value={""}>Select Language</option>
                       {languages.map((lang, index) => {
                         return (
                           <option key={index} value={lang.code}>{lang.name}</option>
