@@ -115,7 +115,7 @@ function Header(props) {
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
-            checkModulePerm("Webrtc", permissions, account?.sections) ? (
+              checkModulePerm("Webrtc", permissions, account?.sections) ? (
               <div className="my-auto">
                 <Tippy content="Click here to open dialer!">
                   <a
@@ -125,7 +125,7 @@ function Header(props) {
                     className="clearColorButton"
                   >
                     <i className="fa-regular fa-phone-office me-0" />{" "}
-                    <span className="d-none d-xl-inline-block">Angel Go</span>
+                    <span className="d-none d-xl-inline-block">AngelGo</span>
                   </a>
                 </Tippy>
               </div>
@@ -205,7 +205,7 @@ function Header(props) {
                   </div>
                 </Link>
               </div>
-               <div style={{ borderTop: '1px solid var(--border-color)' }} />
+              <div style={{ borderTop: '1px solid var(--border-color)' }} />
               <div className="dropdown-item">
                 <div className="clearButton">
                   <div className="d-flex justify-content-between">
