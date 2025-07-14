@@ -56,8 +56,8 @@ function Login() {
             <div className="loginWrapper2">
               <div className="row h-100">
                 <div className="col-xl-6 h-100 position-relative d-flex align-items-center">
-                  <div className="content col-xl-7 mx-auto py-5">
-                    <h3>Get Started Now</h3>
+                  <div className="content col-xxl-7 col-xl-8 mx-auto py-5">
+                    <h3>Login now to get introduced <br />to AngelPBX.ai</h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
                     <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
@@ -83,12 +83,13 @@ function Login() {
                 </div>
                 <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
-                    <div className="content">
+                    <img src={require('../assets/images/pbx.webp')} className="loginbg" />
+                    {/* <div className="content">
                       <h3>
-                        An Effective PBX Solution for all your Business
-                        Communication Needs
+                        You are one step <br />
+                        closer to <span className="loginGradient">AI-Powered</span> <br />
+                        Communication
                       </h3>
-                      <p>Enter your credentials to access your control</p>
                       <div
                         style={{
                           display: "flex",
@@ -97,13 +98,16 @@ function Login() {
                         }}
                       >
                         <img
-                          src={require("../assets/images/pbx.webp")}
+                          src={"/login_chat.svg"}
+                          className="loginChat"
                           alt="logo"
-                          style={{ marginLeft: "0", width: "85%" }}
+                          style={{ marginLeft: "0", width: "85%", marginTop: "50px" }}
                         />
                       </div>
-                      {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
-                    </div>
+                      <div className="loginFooter">
+                        <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
+                      </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

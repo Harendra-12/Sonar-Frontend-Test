@@ -455,7 +455,7 @@ table td.incoming::after {
     opacity: 0;
     transform: scale(1);
     pointer-events: none;
-    transition: opacity 0.3s 0.1s, transform 0.2s 0.1s;
+    /* transition: opacity 0.3s 0.1s, transform 0.2s 0.1s; */
 }
 
 /* Track */
@@ -469,7 +469,7 @@ table td.incoming::after {
     height: 13px;
     background-color: rgb(0, 0, 0, 0.38);
     vertical-align: top;
-    transition: background-color 0.2s, opacity 0.2s;
+    /* transition: background-color 0.2s, opacity 0.2s; */
 }
 
 /* Thumb */
@@ -483,7 +483,7 @@ table td.incoming::after {
     height: 15px;
     background-color: #fff;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    transition: background-color 0.2s, transform 0.2s;
+    /* transition: background-color 0.2s, transform 0.2s; */
 }
 
 /* Checked */
@@ -518,7 +518,7 @@ table td.incoming::after {
 .cl-switch>input:active {
     opacity: 1;
     transform: scale(0);
-    transition: transform 0s, opacity 0s;
+    /* transition: transform 0s, opacity 0s; */
 }
 
 .cl-switch>input:active+span::before {
@@ -558,7 +558,7 @@ table .smallNottif {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     font-size: 0.75rem;
     color: var(--color-subtext);
-    transition: 0.3s ease-in-out;
+    /* transition: 0.3s ease-in-out; */
 }
 
 table .smallNottif i {

@@ -77,15 +77,19 @@ function Agents({ type }) {
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
+  const [bulkEditPopup, setBulkEditPopup] = useState(false);
+
   useEffect(() => {
+    
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        registerUser?.map((item) => {
-          return item.extension;
+        logonUser?.map((item) => {
+          return item.id;
         })
       );
     }
   }, [logonUser]);
+  console.log("logonUser:", onlineUsers);
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
@@ -220,13 +224,13 @@ function Agents({ type }) {
       switch (onlineFilter) {
         case "online":
           const onlineAgents = agents.data.filter((item) =>
-            onlineUsers.includes(String(item.extension.extension))
+            onlineUsers.includes(item.id)
           );
           setFilterUser(onlineAgents);
           break;
         case "offline":
           const offlineAgents = agents.data.filter(
-            (item) => !onlineUsers.includes(String(item.extension.extension))
+            (item) => !onlineUsers.includes(item.id)
           );
           setFilterUser(offlineAgents);
           break;
@@ -241,7 +245,7 @@ function Agents({ type }) {
   function getToken(extension) {
     // console.log("User:", extension,logonUser);
     const user = logonUser?.find(
-      (user) => user?.extension?.extension === extension
+      (user) => user?.id === extension
     );
 
     return user?.usertokens?.length > 0 ? user?.usertokens : null;
@@ -297,6 +301,19 @@ function Agents({ type }) {
                           <span className="text">Back</span>
                           <span className="icon">
                             <i className="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setBulkEditPopup(true);
+                          }}
+                          effect="ripple"
+                          className="panelButton edit"
+                        >
+                          <span className="text">Edit</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
                           </span>
                         </button>
 
@@ -376,6 +393,15 @@ function Agents({ type }) {
                         <table>
                           <thead>
                             <tr>
+                              {/* {checkViewSidebar(
+                                "User",
+                                slugPermissions,
+                                account?.sectionPermissions,
+                                account?.permissions,
+                                "edit"
+                              ) &&
+                                <th style={{ width: '20px' }}><input type="checkbox" /></th>
+                              } */}
                               <th>Name</th>
                               {/* <th>Caller ID</th> */}
                               <th>Extension</th>
@@ -437,6 +463,16 @@ function Agents({ type }) {
                                   filterUser?.map((item, index) => {
                                     return (
                                       <tr>
+                                        {/* {checkViewSidebar(
+                                          "User",
+                                          slugPermissions,
+                                          account?.permissions,
+                                          "edit"
+                                        ) && (
+                                            <td style={{ width: '20px' }}>
+                                              <input type="checkbox" />
+                                            </td>
+                                          )} */}
                                         <td>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">
@@ -475,16 +511,16 @@ function Agents({ type }) {
                                           <span
                                             className={
                                               onlineUsers.includes(
-                                                item.extension.extension
+                                                item.id
                                               )
                                                 ? "extensionStatus online mx-auto"
                                                 : "extensionStatus mx-auto"
                                             }
                                           ></span>
                                         </td>
-                                        {getToken(item.extension.extension) &&
+                                        {getToken(item.id) &&
                                           onlineUsers.includes(
-                                            item.extension.extension
+                                            item.id
                                           ) ? (
                                           <td>
                                             <button
@@ -494,7 +530,7 @@ function Agents({ type }) {
                                                 setLogoutUserId(item.id);
                                                 setAgentLogOutToken(
                                                   getToken(
-                                                    item.extension.extension
+                                                    item.id
                                                   )[0].token
                                                 );
                                               }}
@@ -676,7 +712,121 @@ function Agents({ type }) {
           </div>
         </div>
       )}
-    </main>
+      {bulkEditPopup && (
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Edit the selected Agents</h5>
+              </div>
+              <div>
+                <div className="d-flex justify-content-between mb-2 align-items-center">
+                  <h5
+                    className="me-2"
+                    style={{
+                      color: "var(--color-subtext)",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      marginTop: 5
+                    }}
+                  >
+                    Affected user:{" "}
+                  </h5>
+                  <div className="searchBoxWrapper flex-fill">
+                    <input className="searchBar formItem" type="text" defaultValue="" />
+                  </div>
+                </div>
+                <ul>
+                  <li>
+                    <i className="fa-regular fa-user me-2" />
+                    Ram
+                  </li>
+                  <li>
+                    <i className="fa-regular fa-user me-2" />
+                    Shyam
+                  </li>
+                  <li>
+                    <i className="fa-regular fa-user me-2" />
+                    Babu
+                  </li>
+                </ul>
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center" />
+              </div>
+              <div className="mt-3 d-flex">
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Role</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    name="timeOut"
+                    id="selectFormRow"
+                    style={{ width: "100%" }}
+                  >
+                    <option>Select Role</option>
+                    <option value={'agent'}>Agent</option>
+                    <option value={'admin'}>Admin</option>
+                  </select>
+                </div>
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Recording</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    id="selectFormRow"
+                    name="status"
+                    style={{ width: "100%" }}
+                  >
+                    <option>Select Status</option>
+                    <option value={'true'}>True</option>
+                    <option value={'false'}>False</option>
+                  </select>
+                </div>
+                <div className="col-4 pe-0">
+                  <div className="formLabel">
+                    <label htmlFor="">Status</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    id="selectFormRow"
+                    name="status"
+                    style={{ width: "100%" }}
+                  >
+                    <option>Select Status</option>
+                    <option value={'true'}>True</option>
+                    <option value={'false'}>False</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkEditPopup(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="panelButton me-0">
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </main >
   );
 }
 

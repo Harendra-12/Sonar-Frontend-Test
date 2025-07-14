@@ -23,5 +23,5 @@
     background: var(--ripple-background, white);
     transform: translate(-50%, -50%) scale(var(--s, 1));
     opacity: calc(var(--o, 1) * var(--ripple-opacity, 0.3));
-    transition: calc(var(--t, 0) * var(--ripple-duration, 600ms)) var(--ripple-easing, linear);
+    /* transition: calc(var(--t, 0) * var(--ripple-duration, 600ms)) var(--ripple-easing, linear); */
 }
