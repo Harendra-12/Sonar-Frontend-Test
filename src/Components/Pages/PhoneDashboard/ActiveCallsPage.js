@@ -28,7 +28,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
     const [customModule, setCustomModule] = useState([]);
-    const ringingState = activeCall.filter((item) => item.b_callstate === "" && item.callstate === "RINGING");
+    const ringingState = activeCall.filter((item) => item.b_callstate === "" && (item.callstate === "RINGING" || item.callstate === "RING_WAIT"));
     const [cdrData, setCdrData] = useState([]);
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
