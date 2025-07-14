@@ -113,7 +113,8 @@ const RingGroup = () => {
                           {activeCallData.filter(
                             (e) =>
                               e.b_callstate === "ACTIVE" ||
-                              e.b_callstate === "HELD"
+                              e.b_callstate === "HELD" || e.callstate === "HELD" ||
+                              e.callstate === "ACTIVE"
                           ).length}
                         </span>
                       </div>
@@ -207,8 +208,9 @@ const RingGroup = () => {
                                 (e) =>
                                   e.dest === call.extension &&
                                   (e.b_callstate === "ACTIVE" ||
-                                    e.b_callstate === "HELD")
-                              ).length
+                                    e.b_callstate === "HELD" || e.callstate === "HELD" ||
+                                    e.callstate === "ACTIVE")
+                              )?.length
                             }
                           </td>
                           <td>

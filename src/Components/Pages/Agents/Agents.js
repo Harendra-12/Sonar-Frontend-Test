@@ -80,6 +80,7 @@ function Agents({ type }) {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
 
   useEffect(() => {
+    
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
         logonUser?.map((item) => {
@@ -88,6 +89,7 @@ function Agents({ type }) {
       );
     }
   }, [logonUser]);
+  console.log("logonUser:", logonUser);
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
