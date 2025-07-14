@@ -1307,12 +1307,11 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/all-ai-agent",
-                            "/ai-dashboard",
                             "/ai-all-agent",
                             "/conversations-flow",
                             "/all-users",
                             "/ai-knowledge-base",
-                            '  /ai-phone-number',
+                            '/ai-phone-number',
                             "/ai-call-history",
                             "/ai-billing",
                             "/ai-batch-call",

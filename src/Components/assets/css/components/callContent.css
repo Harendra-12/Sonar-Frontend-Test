@@ -757,8 +757,9 @@
 }
 
 .mainContentApp .webrtc_newMessageUi .wertc_iconBox.selected h5,
-.mainContentApp .webrtc_newMessageUi .wertc_iconBox.selected p.timeAgo {
-    color: var(--me-text-color2);
+.mainContentApp .webrtc_newMessageUi .wertc_iconBox.selected p.timeAgo,
+.mainContentApp .webrtc_newMessageUi .wertc_iconBox.selected p.timeAgo .callhistory-date {
+    color: var(--me-text-color) !important;
 }
 
 .mainContentApp .webrtc_newMessageUi .wertc_iconBox .profileHolder {

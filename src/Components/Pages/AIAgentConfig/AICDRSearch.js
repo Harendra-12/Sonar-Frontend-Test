@@ -416,7 +416,7 @@ function AICDRSearch({ page }) {
               <audio
                 controls={true}
                 className="w-[300px] h-10"
-                src={selectedAudioPath}
+                src={selectedAudioPath?.split("?")[0]}
               />
             </div>
             <div
@@ -678,6 +678,8 @@ function AICDRSearch({ page }) {
                   <span>agent:</span>
                 </p>
                 <p className="status_text">
+                  {console.log(JSON.parse("Agent : Welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : to\nAgent : provide\nAgent : you\nAgent : services.\nAgent : Thanks\nAgent : for\nAgent : connecting.\nAgent : Please\nAgent : wait\nAgent : while\nAgent : we\nAgent : connect\nAgent : your\nAgent : call.\nAgent : Welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : Welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : to\nAgent : provide\nAgent : you\nAgent : services.\nAgent : Thanks\nAgent : for\nAgent : connecting.\nAgent : Please\nAgent : wait\nAgent : while\nAgent : we\nAgent : connect\nAgent : your\nAgent : call.\nAgent : Welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : to\nAgent : provide\nAgent : you\nAgent : services.\nAgent : Thanks\nAgent : for\nAgent : connecting.\nAgent : Please\nAgent : wait\nAgent : while\nAgent : we\nAgent : connect\nAgent : your\nAgent : call.\nAgent : Welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : to\nAgent : welcome\nAgent : to\nAgent : Webio\nAgent : Technologies.\nAgent : We\nAgent : are\nAgent : helped\nAgent : to\nAgent : provide\nAgent : you\nAgent : services.\nAgent : Thanks\nAgent : for\nAgent : connecting.\nAgent : Please\nAgent : wait."
+))}
                   <span className="endedTxt"> Dummy data as of now?</span>
                 </p>
               </div>

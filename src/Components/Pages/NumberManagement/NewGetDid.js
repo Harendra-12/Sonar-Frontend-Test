@@ -426,7 +426,7 @@ const NewGetDid = () => {
                                     <label htmlFor="">Usage</label>
                                   </div>
                                   <div className="col-12">
-                                    <div className="d-flex justify-content-between flex-wrap">
+                                    <div className="d-flex flex-wrap" style={{columnGap: '15px'}}>
                                       <div className="checkbox-wrapper-4">
                                         <input
                                           className="inp-cbx"
@@ -516,37 +516,6 @@ const NewGetDid = () => {
                                       <div className="checkbox-wrapper-4">
                                         <input
                                           className="inp-cbx"
-                                          id="Emergency"
-                                          name="Emergency"
-                                          type="checkbox"
-                                          onChange={handleChangeUsage}
-                                        />
-                                        <label
-                                          className="cbx"
-                                          htmlFor="Emergency"
-                                        >
-                                          <span>
-                                            <svg
-                                              width="12px"
-                                              height="10px"
-                                            ></svg>
-                                          </span>
-                                          <span className="checkBoxLabel">
-                                            Emergency
-                                          </span>
-                                        </label>
-                                        <svg className="inline-svg">
-                                          <symbol
-                                            id="check-4"
-                                            viewBox="0 0 12 10"
-                                          >
-                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                          </symbol>
-                                        </svg>
-                                      </div>
-                                      <div className="checkbox-wrapper-4">
-                                        <input
-                                          className="inp-cbx"
                                           id="AI"
                                           name="AI"
                                           type="checkbox"
@@ -575,6 +544,38 @@ const NewGetDid = () => {
                                           </symbol>
                                         </svg>
                                       </div>
+                                      <div className="checkbox-wrapper-4">
+                                        <input
+                                          className="inp-cbx"
+                                          id="Emergency"
+                                          name="Emergency"
+                                          type="checkbox"
+                                          onChange={handleChangeUsage}
+                                        />
+                                        <label
+                                          className="cbx"
+                                          htmlFor="Emergency"
+                                        >
+                                          <span>
+                                            <svg
+                                              width="12px"
+                                              height="10px"
+                                            ></svg>
+                                          </span>
+                                          <span className="checkBoxLabel">
+                                            Emergency
+                                          </span>
+                                        </label>
+                                        <svg className="inline-svg">
+                                          <symbol
+                                            id="check-4"
+                                            viewBox="0 0 12 10"
+                                          >
+                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                          </symbol>
+                                        </svg>
+                                      </div>
+                                      
                                     </div>
                                     <label
                                       htmlFor="data"

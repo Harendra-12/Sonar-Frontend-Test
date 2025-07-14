@@ -210,7 +210,7 @@ function Header(props) {
                 <div className="clearButton">
                   <div className="d-flex justify-content-between">
                     <label className="text-white">Account ID</label>
-                    <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> PM1250</label>
+                    <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> {account?.account_id}</label>
                   </div>
                 </div>
               </div>
