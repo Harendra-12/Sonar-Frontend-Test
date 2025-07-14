@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
 import { Link } from "react-router-dom";
+import { act } from "react";
 
 function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
   const activeCall = useSelector((state) => state.activeCall);
+  console.log(activeCall);
+  console.log(callDetails);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const dispatch = useDispatch();
@@ -63,7 +66,7 @@ function AllCallsDetails() {
                           <div>
                             <span className="badge badge-soft-primary rounded-pill"
                             // style={{ backgroundColor: 'var(--ui-accent)' }}
-                            >Active: {activeCall.length}</span>
+                            >Active: {activeCall.filter((call) => call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")?.length}</span>
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-primary rounded-pill"
@@ -90,7 +93,7 @@ function AllCallsDetails() {
                                 <div className=" text-center">
                                   <p>Agents On Calls</p>
                                   <h3 className="mb-0 fw-bolder">
-                                    {activeCall.length}
+                                    {activeCall.filter((call) => call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE").length}
                                   </h3>
                                 </div>
                               </div>
@@ -278,7 +281,7 @@ function AllCallsDetails() {
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
                             <span className="badge badge-soft-secondary rounded-pill"
-                            >Active: {activeCall.length}</span>
+                            >Active: {activeCall.filter((call) => call?.direction === "inbound" && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE"))?.length}</span>
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-secondary rounded-pill"
@@ -306,7 +309,7 @@ function AllCallsDetails() {
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       activeCall.filter(
-                                        (call) => call.direction === "inbound"
+                                        (call) => call.direction === "inbound" && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")
                                       ).length
                                     }
                                   </h3>
@@ -505,7 +508,7 @@ function AllCallsDetails() {
                           <div>
                             <span className="badge badge-soft-success rounded-pill"
                             //  style={{ backgroundColor: 'var(--color3)' }}
-                            >Active: {activeCall.length}</span>
+                            >Active: {activeCall.filter((call) => call?.direction === 'outbound').length}</span>
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-success rounded-pill"
@@ -533,7 +536,7 @@ function AllCallsDetails() {
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       activeCall.filter(
-                                        (call) => call.direction === "outbound"
+                                        (call) => call.direction === "outbound" && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")
                                       ).length
                                     }
                                   </h3>
@@ -645,7 +648,7 @@ function AllCallsDetails() {
                           <div>
                             <span className="badge badge-soft-danger rounded-pill"
                             // style={{ backgroundColor: 'var(--funky-boy4)' }}
-                            >Active: {activeCall.length}</span>
+                            >Active: {activeCall.filter((call) =>call.direction === 'internal' && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")).length}</span>
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-danger rounded-pill"
@@ -673,7 +676,7 @@ function AllCallsDetails() {
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       activeCall.filter(
-                                        (call) => call.direction === "internal"
+                                        (call) => call.direction === "internal" && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")
                                       ).length
                                     }
                                   </h3>

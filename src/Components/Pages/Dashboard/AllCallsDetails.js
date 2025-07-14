@@ -5,6 +5,9 @@ import ContentLoader from '../../Loader/ContentLoader';
 
 function AllCallsDetails() {
     const callDetails = useSelector((state)=>state.allCall)
+
+    
+    console.log(callDetails)
     return (
         <>
         {(callDetails && callDetails.all)?

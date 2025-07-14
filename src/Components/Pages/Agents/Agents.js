@@ -89,7 +89,7 @@ function Agents({ type }) {
       );
     }
   }, [logonUser]);
-  console.log("logonUser:", onlineUsers);
+  console.log("logonUser:", logonUser);
 
   const getData = async (shouldLoad) => {
     if (shouldLoad) setLoading(true);
