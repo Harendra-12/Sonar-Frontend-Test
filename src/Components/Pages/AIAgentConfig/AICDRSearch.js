@@ -119,6 +119,28 @@ function AICDRSearch({ page }) {
     });
   }
 
+  function formattedTranscript (lines){ 
+    lines.map((line, index) => {
+  const [roleRaw, ...messageParts] = line.split(":");
+  const role = roleRaw.trim().toLowerCase(); // 'agent' or 'customer'
+  const message = messageParts.join(":").trim();
+
+  return (
+    <div
+      key={index}
+      className="d-flex justify-content-start align-items-start gap-2 mb-3"
+    >
+      <p className="status_text">
+        <span>{role}:</span>
+      </p>
+      <p className="status_text">
+        <span className="endedTxt">{message || "..."}</span>
+      </p>
+    </div>
+  );
+})};
+
+
   return (
     <>
       <main className="mainContent">
@@ -672,15 +694,8 @@ function AICDRSearch({ page }) {
               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Transcript
               </h6>
-              <div className="d-flex justify-content-start align-items-start gap-2 mb-3">
-                <p className="status_text">
-                  {" "}
-                  <span>agent:</span>
-                </p>
-                <p className="status_text">
-                  <span className="endedTxt"> Dummy data as of now?</span>
-                </p>
-              </div>
+
+              <div>{formattedTranscript(selectedCall?.full_transcript_en_chunk_1)}</div>
             </div>
           </div>
         </div>
