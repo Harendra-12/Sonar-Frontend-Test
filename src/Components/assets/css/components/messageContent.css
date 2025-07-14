@@ -1716,3 +1716,77 @@
 .text_muted2 {
     color: var(--me-text-color) !important;
 }
+
+
+
+
+.displayFile{
+
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 90deg;
+  inherits: true;
+}
+
+@property --gradX {
+  syntax: '<percentage>';
+  initial-value: 50%;
+  inherits: true;
+}
+
+@property --gradY {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: true;
+}
+
+
+.displayFile.borderGradientAnimation{
+    position: relative;
+}
+
+.displayFile.borderGradientAnimation::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 200px;
+    height: 100%;
+    border: 0.20rem solid transparent; /* Start transparent */
+    border-image: conic-gradient(from var(--angle), var(--c2), rgb(0 151 255) 0.1turn, rgb(48 92 253) 0.15turn, var(--c2) 0.25turn) 30;
+    animation: borderRotate var(--d) linear forwards;
+    border-radius: 5px;
+}
+
+
+@keyframes borderRotate {
+    0% {
+        --gradX: 50%;
+        --gradY: 0%;
+        --angle: 90deg;
+       opacity: 1;
+    }
+    20% {
+        --gradX: 100%;
+        --gradY: 50%;
+    }
+    40% {
+        --gradX: 100%;
+        --gradY: 100%;
+    }
+    60% {
+        --gradX: 50%;
+        --gradY: 100%;
+    }
+    80% {
+        --gradX: 0%;
+        --gradY: 50%;
+    }
+    100% {
+        --gradX: 50%;
+        --gradY: 0%;
+        --angle: 420deg;
+        opacity: 0;
+    }
+}
