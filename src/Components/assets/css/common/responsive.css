@@ -220,6 +220,11 @@
         width: 25px;
         height: 25px;
     }
+
+    .loginWrapper2 .loginImgWrapper .content {
+        padding: 50px 50px;
+        color: #fff;
+    }
 }
 
 @media (min-device-width:992px) and (max-device-width: 1365px) {
@@ -735,6 +740,10 @@
     .gridCall .card-body {
         padding-right: 36px !important;
         width: 100%;
+    }
+
+    .skiptranslate span {
+        white-space: break-spaces !important;
     }
 
 }

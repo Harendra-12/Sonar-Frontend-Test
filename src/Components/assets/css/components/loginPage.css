@@ -458,7 +458,8 @@ a.loginLabel {
 .loginWrapper2 .loginImgWrapper h3 {
     color: #1B1E3D !important;
     font-family: Geist;
-    font-size: 48px;
+    /* font-size: 48px; */
+    font-size: clamp(35px, 3vw, 48px);;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
@@ -470,4 +471,12 @@ a.loginLabel {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+}
+
+.goog-te-gadget .goog-te-combo {
+    margin: 0;
+    /* width: 100%; */
+    /* height: auto; */
+    padding: 3px 31px;
+    cursor: pointer;
 }
