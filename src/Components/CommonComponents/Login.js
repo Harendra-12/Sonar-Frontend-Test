@@ -53,21 +53,21 @@ function Login() {
       </style>
       <div>
         <main className="login">
-                  <nav className="navbar navbar-expand-lg fixedTop">
-                <div className="container">
-                    <Link className="navbar-brand" href="#home">  <img src={require('../assets/images/site-logo.png')} alt="logo" className='img' /></Link>
-                    {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <nav className="navbar navbar-expand-lg fixedTop">
+            <div className="container">
+              <Link className="navbar-brand" href="#home">  <img src={require('../assets/images/site-logo.png')} alt="logo" className='img' /></Link>
+              {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i className="fa-solid fa-bars"></i>
                     </button> */}
-                    {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
                        
                     </div> */}
-                        <div className='d-flex rightSide_group ms-auto'>
-                            <GoogleTranslate />
-                            
-                        </div>
-                </div>
-            </nav>
+              <div className='d-flex rightSide_group ms-auto'>
+                <GoogleTranslate />
+
+              </div>
+            </div>
+          </nav>
 
           <div className="container position-relative h-100">
             <div className="loginWrapper2">
@@ -100,8 +100,8 @@ function Login() {
                 </div>
                 <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
-                    <img src={require('../assets/images/pbx.webp')} className="loginbg" />
-                    {/* <div className="content">
+                    <img src={require('../assets/images/loginbg.webp')} className="loginbg" />
+                    <div className="content">
                       <h3>
                         You are one step <br />
                         closer to <span className="loginGradient">AI-Powered</span> <br />
@@ -124,7 +124,7 @@ function Login() {
                       <div className="loginFooter">
                         <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>

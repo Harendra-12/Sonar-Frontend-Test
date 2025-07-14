@@ -239,23 +239,6 @@ a.loginLabel {
     font-size: 1.75rem;
 }
 
-/* .loginWrapper2 .content h3 {
-    color: #1B1E3D !important;
-    font-family: Geist;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 120%;
-    letter-spacing: -1.44px;
-}
-
-.loginWrapper2 .content h3 .loginGradient {
-    background: linear-gradient(85deg, rgba(48, 92, 253, 0.00) 48.55%, #DE8DD6 79.38%), linear-gradient(0deg, #305CFD 0%, #305CFD 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-} */
-
 .loginWrapper2 .content p {
     color: var(--color-subtext);
 }
@@ -470,4 +453,21 @@ a.loginLabel {
 .navbar {
     background: var(--light-bg) !important;
     backdrop-filter: blur(10px);
+}
+
+.loginWrapper2 .loginImgWrapper h3 {
+    color: #1B1E3D !important;
+    font-family: Geist;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    letter-spacing: -1.44px;
+}
+
+.loginWrapper2 .loginImgWrapper h3 .loginGradient {
+    background: linear-gradient(85deg, rgba(48, 92, 253, 0.00) 48.55%, #DE8DD6 79.38%), linear-gradient(0deg, #305CFD 0%, #305CFD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
 }
