@@ -512,7 +512,8 @@
 }
 
 .itemWrapper.c .heading i {
-  background-color: var(--color3-trans);
+  /* background-color: var(--color3-trans); */
+  background-color: #fcc5a224;
 }
 
 .itemWrapper.d .heading i {
@@ -965,7 +966,8 @@
 .itemWrapper.dashboard_cardWrap.c .heading i,
 .itemWrapper.c i {
   /* color: var(--listing-color3); */
-  color: var(--color3);
+  /* color: var(--color3); */
+  color: #ff5200;
 }
 
 .itemWrapper.dashboard_cardWrap {
