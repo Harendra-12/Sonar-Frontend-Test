@@ -188,7 +188,10 @@ function Header(props) {
                       </span>
                     </div>
                   </Tippy>
-                  {account?.email && <label>{account?.email}</label>}
+                  {account?.email &&
+                    <label className="ellipsisText">{account?.email}</label>
+                  }
+                  {/* {account?.email && <label>{account?.email}</label>} */}
                 </div>
               </div>
               <div className="dropdown-item">
@@ -202,7 +205,16 @@ function Header(props) {
                   </div>
                 </Link>
               </div>
-              <div style={{ borderTop: "1px solid var(--border-color)" }} />
+               <div style={{ borderTop: '1px solid var(--border-color)' }} />
+              <div className="dropdown-item">
+                <div className="clearButton">
+                  <div className="d-flex justify-content-between">
+                    <label className="text-white">Account ID</label>
+                    <label style={{ color: '#3CAA45', fontWeight: 'bold' }}> PM1250</label>
+                  </div>
+                </div>
+              </div>
+              <div style={{ borderTop: '1px solid var(--border-color)' }} />
               <div className="dropdown-item">
                 <Link to={"/users-profile"} className="clearButton">
                   <i className="fa-light fa-user me-2" aria-hidden="true"></i>

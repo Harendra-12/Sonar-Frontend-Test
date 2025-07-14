@@ -239,23 +239,6 @@ a.loginLabel {
     font-size: 1.75rem;
 }
 
-/* .loginWrapper2 .content h3 {
-    color: #1B1E3D !important;
-    font-family: Geist;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 120%;
-    letter-spacing: -1.44px;
-}
-
-.loginWrapper2 .content h3 .loginGradient {
-    background: linear-gradient(85deg, rgba(48, 92, 253, 0.00) 48.55%, #DE8DD6 79.38%), linear-gradient(0deg, #305CFD 0%, #305CFD 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-} */
-
 .loginWrapper2 .content p {
     color: var(--color-subtext);
 }
@@ -457,4 +440,43 @@ a.loginLabel {
 
 .errorBtn:hover {
     border: 1px solid #df2a3660;
+}
+
+.fixedTop {
+    position: sticky;
+    width: 100%;
+    z-index: 1111;
+    top: 0;
+    /* margin-bottom: 108px; */
+}
+
+.navbar {
+    background: var(--light-bg) !important;
+    backdrop-filter: blur(10px);
+}
+
+.loginWrapper2 .loginImgWrapper h3 {
+    color: #1B1E3D !important;
+    font-family: Geist;
+    /* font-size: 48px; */
+    font-size: clamp(35px, 3vw, 48px);;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    letter-spacing: -1.44px;
+}
+
+.loginWrapper2 .loginImgWrapper h3 .loginGradient {
+    background: linear-gradient(85deg, rgba(48, 92, 253, 0.00) 48.55%, #DE8DD6 79.38%), linear-gradient(0deg, #305CFD 0%, #305CFD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.goog-te-gadget .goog-te-combo {
+    margin: 0;
+    /* width: 100%; */
+    /* height: auto; */
+    padding: 3px 31px;
+    cursor: pointer;
 }

@@ -25,7 +25,7 @@ const GoogleTranslate = () => {
   }, []);
 
   // Function to programmatically open the language dropdown
-    const openLanguageDropdown = () => {
+  const openLanguageDropdown = () => {
     const googleSpan = document.querySelector(".goog-te-gadget span");
     if (googleSpan) {
       googleSpan.click();
@@ -38,17 +38,16 @@ const GoogleTranslate = () => {
 
       <i
         className="fa-solid fa-chevron-down dropdown-icon" onClick={openLanguageDropdown}
-       
+
         style={{ cursor: "pointer", marginLeft: "5px" }}
         title="Change Language"
       ></i>
-<div id="google_translate_element" style={{ position: "absolute", top: "0px", opacity:0,  left:"0" }}></div>
-      <span className="language-text" style={{ marginLeft: "5px" }}>
+      <div id="google_translate_element" style={{ position: "absolute", top: "0px", opacity: 0, left: "0" }}></div>
+      {/* <span className="language-text" style={{ marginLeft: "5px" }}>
         EN
-      </span>
+      </span> */}
 
-      {/* Hidden container for Google Translate widget */}
-      
+
     </div>
   );
 };
