@@ -46,7 +46,7 @@ function ConfigureStepDashboard({ account2 }) {
       if (apiData.status) {
         setSearchingDid(false);
         setDidRawData(apiData);
-        setDid(apiData.data[0].id);
+        setDid(apiData.data[0].didSummary);
       } else {
         setSearchingDid(false);
         setDidRawData(apiData);
@@ -67,7 +67,7 @@ function ConfigureStepDashboard({ account2 }) {
       accountId: didRawData.data[0].vendorAccountId,
       dids: [
         {
-          did: didRawData.data[0].id,
+          did: didRawData.data[0].didSummary,
           vendorId: didRawData.data[0].vendorId,
         },
       ],
