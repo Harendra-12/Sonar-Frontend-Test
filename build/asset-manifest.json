@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.e76cacb1.css",
-    "main.js": "/static/js/main.26ec5453.js",
+    "main.css": "/static/css/main.7de2ae8a.css",
+    "main.js": "/static/js/main.5f76221d.js",
     "static/js/453.6a4f2cd4.chunk.js": "/static/js/453.6a4f2cd4.chunk.js",
     "static/media/cellphone-ringing-6475.mp3": "/static/media/cellphone-ringing-6475.464cc45992f202d5ea62.mp3",
-    "static/media/pbx.webp": "/static/media/pbx.2685d04dcc33b80a0edc.webp",
+    "static/media/loginbg.webp": "/static/media/loginbg.beb164f9d92891a956b1.webp",
     "static/media/instagram.webp": "/static/media/instagram.3090db40fa34a1e434a6.webp",
     "static/media/5570879.jpg": "/static/media/5570879.96dc0e54a8ca08e5b1fb.jpg",
     "static/media/went-wrong.png": "/static/media/went-wrong.bf13c64297af510cb26c.png",
@@ -48,12 +48,12 @@
     "static/media/jpg.webp": "/static/media/jpg.0f9f6a065f02423ce008.webp",
     "static/media/file.webp": "/static/media/file.a7990a1771475a401239.webp",
     "static/media/register.webp": "/static/media/register.c9c3dd0cf1a662c8c81b.webp",
-    "main.e76cacb1.css.map": "/static/css/main.e76cacb1.css.map",
-    "main.26ec5453.js.map": "/static/js/main.26ec5453.js.map",
+    "main.7de2ae8a.css.map": "/static/css/main.7de2ae8a.css.map",
+    "main.5f76221d.js.map": "/static/js/main.5f76221d.js.map",
     "453.6a4f2cd4.chunk.js.map": "/static/js/453.6a4f2cd4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e76cacb1.css",
-    "static/js/main.26ec5453.js"
+    "static/css/main.7de2ae8a.css",
+    "static/js/main.5f76221d.js"
   ]
 }
