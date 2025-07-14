@@ -458,3 +458,16 @@ a.loginLabel {
 .errorBtn:hover {
     border: 1px solid #df2a3660;
 }
+
+.fixedTop {
+    position: sticky;
+    width: 100%;
+    z-index: 1111;
+    top: 0;
+    /* margin-bottom: 108px; */
+}
+
+.navbar {
+    background: var(--light-bg) !important;
+    backdrop-filter: blur(10px);
+}

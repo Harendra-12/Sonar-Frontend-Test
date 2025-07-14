@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import languages from './ListOfLanguage.json';
+import GoogleTranslate from "./GoogleTranslate";
 
 
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -52,6 +53,22 @@ function Login() {
       </style>
       <div>
         <main className="login">
+                  <nav className="navbar navbar-expand-lg fixedTop">
+                <div className="container">
+                    <Link className="navbar-brand" href="#home">  <img src={require('../assets/images/site-logo.png')} alt="logo" className='img' /></Link>
+                    {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i className="fa-solid fa-bars"></i>
+                    </button> */}
+                    {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                       
+                    </div> */}
+                        <div className='d-flex rightSide_group ms-auto'>
+                            <GoogleTranslate />
+                            
+                        </div>
+                </div>
+            </nav>
+
           <div className="container position-relative h-100">
             <div className="loginWrapper2">
               <div className="row h-100">
