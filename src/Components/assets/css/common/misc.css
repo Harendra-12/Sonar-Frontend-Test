@@ -653,7 +653,7 @@ input[type=number] {
     display: flex;
     align-items: center;
     margin-top: 2px;
-    /* width: max-content; */
+    width: max-content;
     flex-wrap: wrap;
     gap: 5px;
 }
@@ -2022,7 +2022,7 @@ tr.seen-message td p {
 }
 
 .composeBtn {
-    background: #89A2FA;
+    background: #305CFD;
     color: #fff;
 }
 
