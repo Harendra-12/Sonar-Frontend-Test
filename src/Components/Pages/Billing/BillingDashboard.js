@@ -172,7 +172,8 @@ function BillingDashboard() {
     const { startDate, endDate } = bcStartDateFlag;
     const response = await generalGetFunction(`/billing-cost-cdr?start_date=${startDate}&end_date=${endDate}&type=monthly`);
     if (response.status) {
-      setBcCdrData(response.data);
+      const sortedData = [...response.data].sort((a, b) => b.period.localeCompare(a.period));
+      setBcCdrData(sortedData);
       setBcLoading(false)
     }
   }
@@ -243,9 +244,8 @@ function BillingDashboard() {
                                             </td>
                                           </tr> :
                                           bcCdrData && bcCdrData.length > 0 ?
-                                            bcCdrData.reverse().map((item, index) => {
+                                            bcCdrData.map((item, index) => {
                                               const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
                                               return (
                                                 <tr key={index}>
                                                   <td>
