@@ -187,7 +187,8 @@ function BillingDashboard() {
 
     const response = await generalGetFunction(`/billing-cost-cdr?start_date=${formatedStartDate}&end_date=${formatedEndDate}&type=yearly`);
     if (response.status) {
-      setBcCdrDataYearly(response.data);
+      const sortedData = [...response.data].sort((a, b) => b.period.localeCompare(a.period));
+      setBcCdrDataYearly(sortedData);
       setBcLoading(false)
     }
   }
@@ -297,7 +298,7 @@ function BillingDashboard() {
                                             </td>
                                           </tr> :
                                           bcCdrDataYearly && bcCdrDataYearly.length > 0 ?
-                                            bcCdrDataYearly.reverse().map((item, index) => {
+                                            bcCdrDataYearly.map((item, index) => {
                                               return (
                                                 <tr key={index}>
                                                   <td>
