@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import Header from "../../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { get, set } from "react-hook-form";
 import {
   featureUnderdevelopment,
   generalGetFunction,
@@ -14,7 +12,6 @@ import HeaderApp from "../HeaderApp";
 
 const WhatsAppChatBox = ({ initial }) => {
   const dispatch = useDispatch();
-  const account = useSelector((state) => state.account);
   const chatContainerRef = useRef(null);
 
   const sessions = useSelector((state) => state.sessions);
@@ -30,7 +27,7 @@ const WhatsAppChatBox = ({ initial }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [whatsappContactData, setWhatsappContactData] = useState();
-  const [whatsappMessageData, setWhatsappMessageData] = useState();
+  // const [whatsappMessageData, setWhatsappMessageData] = useState();
   const [activeChat, setActiveChat] = useState();
   const [activeChatMessages, setActiveChatMessages] = useState();
   const [message, setMessage] = useState();
@@ -40,9 +37,9 @@ const WhatsAppChatBox = ({ initial }) => {
   const [isWhatsappInAllSocialPlatformData, setIsWhatsappInAllSocialPlatformData] = useState(null)
   const POLLING_INTERVAL = 3000; // 3 seconds
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
+  // const handleOpen = () => {
+  //   setOpen(!open);
+  // };
 
   useEffect(() => {
     if (whatsappContactRefresh > 0) {
@@ -56,7 +53,7 @@ const WhatsAppChatBox = ({ initial }) => {
     }
 
     if (whatsappMessageRefresh > 0) {
-      setWhatsappMessageData(whatsappMessage);
+      // setWhatsappMessageData(whatsappMessage);
     } else {
       dispatch({
         type: "SET_WHATSAPPMESSAGEREFRESH",

@@ -44,7 +44,7 @@ function OngoingCall({
   const [showTranferableList, setShowTranferableList] = useState(false);
   const [showActiveSessions, setShowActiveSessions] = useState(false);
   const activeCall = useSelector((state) => state.activeCall);
-  const { isMuted, hangup, hold, mute, session, unhold, unmute, timer } =
+  const { isMuted, hangup, mute, session, unmute, timer } =
     useSessionCall(callProgressId);
   const canHold = session && session._state === SessionState.Established;
   const canMute = session && session._state === SessionState.Established;
@@ -1403,7 +1403,7 @@ export default OngoingCall;
 // Duplicate Data Component
 export function ShowDuplicateCallData({ duplicateData }) {
   const [collapse, setCollapse] = useState(false);
-  const [showKeys, setShowKeys] = useState([
+  const showKeys = [
     "Call-Direction",
     "variable_sip_from_user",
     // "tag",
@@ -1416,7 +1416,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
     "variable_billsec",
     // "Hangup-Cause",
     // "variable_DIALSTATUS"
-  ]);
+  ];
   // Comments Modal Variables
   const [selectedId, setSelectedId] = useState();
   const [showComment, setShowComment] = useState(false);

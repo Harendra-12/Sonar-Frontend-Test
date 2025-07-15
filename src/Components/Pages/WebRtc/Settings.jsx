@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import SoundSettings from './SoundSettings'
-import { featureUnderdevelopment, logout } from '../../GlobalFunction/globalFunction';
-import { useDispatch, useSelector } from 'react-redux';
-import { useSIPProvider } from 'modify-react-sipjs';
-import LogOutPopUp from './LogOutPopUp';
-import HeaderApp from './HeaderApp';
+import { featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
 
 const Settings = (
     {
@@ -14,8 +9,6 @@ const Settings = (
         analyserRef,
         volume,
         setVolume,
-        allContactLoading,
-        setAllContactLoading,
         audio,
         handleVolumeChange
     }) => {

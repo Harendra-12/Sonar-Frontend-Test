@@ -3,11 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import ThreeDotedLoader from "../../../Loader/ThreeDotedLoader";
 
 const MailReply = ({
-  handleShowNewMail,
   handleListingClick,
-  handleMailReplay,
   currentMail,
-  activeList,
   activeCategory,
   handleMailDelete,
   loading,
@@ -15,7 +12,6 @@ const MailReply = ({
   loadingForDownloadAtachment
 }) => {
     {console.log(currentMail?.rawData,currentMail)}
-  const navigate = useNavigate();
   const [showResults, setShowResults] = React.useState(false);
   const onClick = () => setShowResults(true);
   const formatDateTime = (dateString) => {
@@ -64,13 +60,6 @@ const MailReply = ({
     return file.split(".").slice(-1)[0];
   };
 
-  const totalFileSize = (allAttachments) => {
-    let totalSize = 0;
-    for (let i = 0; i < allAttachments.length; i++) {
-      totalSize += allAttachments[i].size;
-    }
-    return formatFileSize(totalSize);
-  };
 
   // Basic HTML sanitization function
   const sanitizeHTML = (html) => {

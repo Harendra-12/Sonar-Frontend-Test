@@ -120,7 +120,7 @@ function AICDRSearch({ page }) {
   }
 
   function formattedTranscript (lines){ 
-    lines.map((line, index) => {
+    lines?.map((line, index) => {
   const [roleRaw, ...messageParts] = line.split(":");
   const role = roleRaw.trim().toLowerCase(); // 'agent' or 'customer'
   const message = messageParts.join(":").trim();

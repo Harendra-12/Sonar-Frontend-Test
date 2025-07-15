@@ -59,6 +59,10 @@ function GlobalCalls() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (account && account?.account_id) {
+      dispatch({
+        type: "SET_CALLDETAILSLOADING",
+        callDetailsLoading: true,
+      })
       async function getData() {
         const apiData = await generalGetFunction(
           `/call-details?account=${account.account_id}`
@@ -73,6 +77,10 @@ function GlobalCalls() {
             allCallDetails: apiData?.cdr_filters,
           });
         }
+        dispatch({
+          type: "SET_CALLDETAILSLOADING",
+          callDetailsLoading: false,
+        })
       }
 
       if (callDetailsRefresh > 0) {
