@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
@@ -18,7 +18,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
 
     }, 1000);
-    
+
 
     socketSendPeerCallMessage({
       action: "peercallUpdate",
@@ -55,7 +55,10 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     })
   }, [internalCallAction])
 
-  console.log("incomingCall", incomingCall);
+  useEffect(()=>{
+    console.log("incomingCall", incomingCall);
+  },[])
+  
   return (
     <>
       {incomingCall.length > 0 &&
