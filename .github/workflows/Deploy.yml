@@ -27,7 +27,7 @@ jobs:
       - name: SSH Working
         run: |
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST_UCAAS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.DEV_SERVER_TESTING }} << 'EOF'
            #set -e  # Exit immediately if a command exits with a non-zero status
            # set -x  # Uncomment for debugging purposes
 
