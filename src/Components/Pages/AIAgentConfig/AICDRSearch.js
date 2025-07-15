@@ -80,25 +80,16 @@ function AICDRSearch({ page }) {
     return `${padded(hours)}:${padded(minutes)}:${padded(seconds)}`;
   };
   function parseTranscript(rawText) {
+    if (!rawText) return [];
+    // Split the raw text into lines and format it into an array of objects
     const lines = rawText.split("\n");
-    const entries = [];
+    const formatedData = lines.map((line) => {
+      const key = line.split(":")[0].trim();
+      const value = line.split(":")[1].trim();
+      return { [key]: value };
+    });
 
-    const regex = /^(Agent|Customer) \[(\d+\.\d+)-(\d+\.\d+)s\]: (.+)$/;
-
-    for (let line of lines) {
-      const match = line.match(regex);
-      if (match) {
-        const [, speaker, start, end, text] = match;
-        entries.push({
-          speaker,
-          start: parseFloat(start),
-          end: parseFloat(end),
-          text,
-        });
-      }
-    }
-
-    return entries;
+    return formatedData;
   }
 
   const today = new Date().toISOString().split("T")[0]; // "2025-07-03"
@@ -118,28 +109,6 @@ function AICDRSearch({ page }) {
       hour12: false,
     });
   }
-
-  function formattedTranscript (lines){ 
-    lines?.map((line, index) => {
-  const [roleRaw, ...messageParts] = line.split(":");
-  const role = roleRaw.trim().toLowerCase(); // 'agent' or 'customer'
-  const message = messageParts.join(":").trim();
-
-  return (
-    <div
-      key={index}
-      className="d-flex justify-content-start align-items-start gap-2 mb-3"
-    >
-      <p className="status_text">
-        <span>{role}:</span>
-      </p>
-      <p className="status_text">
-        <span className="endedTxt">{message || "..."}</span>
-      </p>
-    </div>
-  );
-})};
-
 
   return (
     <>
@@ -191,10 +160,10 @@ function AICDRSearch({ page }) {
                             className="formItem"
                             value={advanceSearch}
                             onChange={(e) => setAdvanceSearch(e.target.value)}
-                          // max={new Date()?.toISOString()?.split("T")[0]}
-                          // value={startDateFlag}
+                            // max={new Date()?.toISOString()?.split("T")[0]}
+                            // value={startDateFlag}
 
-                          // onKeyDown={(e) => e.preventDefault()}
+                            // onKeyDown={(e) => e.preventDefault()}
                           />
                         </div>
                       </div>
@@ -254,99 +223,119 @@ function AICDRSearch({ page }) {
                     </div>
                     <div className="tableContainer">
                       <table>
-                        {
-                          loading ? <ThreeDotedLoader /> :
-                            !loading && cdr?.records?.length == 0 ?
-                              <div>
-                                <EmptyPrompt type="generic" />
-                              </div> :
-                              !loading && cdr?.records?.length > 0 ?
-                                <>
-                                  <thead>
-                                    <tr
-                                      style={{ whiteSpace: "nowrap" }}
-                                      data-bs-toggle="offcanvas"
-                                      data-bs-target="#offcanvasRight"
-                                      aria-controls="offcanvasRight"
-                                    >
-                                      <th>Customer</th>
-                                      <th>Agent</th>
-                                      <th>Date</th>
-                                      <th>Time</th>
-                                      <th>Duration</th>
-                                      <th>Cost</th>
-                                      <th>Customer Sentiment</th>
-                                      <th>Sentiment Score</th>
-                                      <th>Efficiency Score</th>
-                                      <th>View</th>
-                                    </tr>
-                                  </thead>
+                        {loading ? (
+                          <ThreeDotedLoader />
+                        ) : !loading && cdr?.records?.length == 0 ? (
+                          <div>
+                            <EmptyPrompt type="generic" />
+                          </div>
+                        ) : !loading && cdr?.records?.length > 0 ? (
+                          <>
+                            <thead>
+                              <tr
+                                style={{ whiteSpace: "nowrap" }}
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight"
+                                aria-controls="offcanvasRight"
+                              >
+                                <th>Customer</th>
+                                <th>Agent</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                                <th>Cost</th>
+                                <th>Customer Sentiment</th>
+                                <th>Sentiment Score</th>
+                                <th>Efficiency Score</th>
+                                <th>View</th>
+                              </tr>
+                            </thead>
 
-                                  <tbody>
-                                    {cdr?.records?.map((internalItem, index) => {
-                                      const item = internalItem.metadata;
-                                      return (
-                                        <tr
-                                          key={index}
-                                          style={{ whiteSpace: "nowrap" }}
-                                          data-bs-toggle="offcanvas"
-                                          data-bs-target="#offcanvasRight"
-                                          aria-controls="offcanvasRight"
-                                          onClick={() => { setSelectedCall(item); setSelectedAudioPath(internalItem.audio_url) }}
-                                        >
-                                          <td>{item.caller_number}</td>
-                                          <td>{item.agent_name}</td>
-                                          <td>{item.call_date}{formatTimestampToDateTime(item.timestamp).split("")[0]}</td>
-                                          <td>{item.call_time}{formatTimestampToDateTime(item.timestamp).split("")[1]}</td>
-                                          <td>
-                                            {formatDuration(item.duration_sec)}
-                                          </td>
-                                          <td>${item.charge}</td>
-                                          <td>{item.customer_sentiment}</td>
-                                          <td>{item.customer_sentiment_score}</td>
-                                          <td>{item.efficiency_score}</td>
-                                          <td>
-                                            <button className="tableButton edit"><i className="fa-regular fa-eye"></i></button>
-                                          </td>
-                                        </tr>
+                            <tbody>
+                              {cdr?.records?.map((internalItem, index) => {
+                                const item = internalItem.metadata;
+                                return (
+                                  <tr
+                                    key={index}
+                                    style={{ whiteSpace: "nowrap" }}
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight"
+                                    aria-controls="offcanvasRight"
+                                    onClick={() => {
+                                      setSelectedCall(item);
+                                      setSelectedAudioPath(
+                                        internalItem.audio_url
                                       );
-                                    })}
-                                  </tbody>
-                                </> :
-                                <div>
-                                  <div className="mt-5">
-                                    <div
-                                      className="imgWrapper loader position-static"
-                                      style={{
-                                        width: "150px",
-                                        height: "150px",
-                                        transform: "none",
-                                      }}
-                                    >
-                                      <img
-                                        src={require(`../../assets/images/ai.png`)}
-                                        alt="Empty"
-                                        className="w-100"
-                                      />
-                                    </div>
-                                    <div className="text-center mt-3">
-                                      <h5
-                                        style={{
-                                          color: "var(--color-subtext)",
-                                          fontWeight: 400,
-                                        }}
-                                      >
-                                        Please search for a <b>call detail record</b>{" "}
-                                        to display{" "}
-                                        <span style={{ color: "var(--ui-accent)" }}>
-                                          <b>results</b>
-                                        </span>
-                                        .
-                                      </h5>
-                                    </div>
-                                  </div>
-                                </div>
-                        }
+                                    }}
+                                  >
+                                    <td>{item.caller_number}</td>
+                                    <td>{item.agent_name}</td>
+                                    <td>
+                                      {item.call_date}
+                                      {
+                                        formatTimestampToDateTime(
+                                          item.timestamp
+                                        ).split("")[0]
+                                      }
+                                    </td>
+                                    <td>
+                                      {item.call_time}
+                                      {
+                                        formatTimestampToDateTime(
+                                          item.timestamp
+                                        ).split("")[1]
+                                      }
+                                    </td>
+                                    <td>{formatDuration(item.duration_sec)}</td>
+                                    <td>${item.charge}</td>
+                                    <td>{item.customer_sentiment}</td>
+                                    <td>{item.customer_sentiment_score}</td>
+                                    <td>{item.efficiency_score}</td>
+                                    <td>
+                                      <button className="tableButton edit">
+                                        <i className="fa-regular fa-eye"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </>
+                        ) : (
+                          <div>
+                            <div className="mt-5">
+                              <div
+                                className="imgWrapper loader position-static"
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  transform: "none",
+                                }}
+                              >
+                                <img
+                                  src={require(`../../assets/images/ai.png`)}
+                                  alt="Empty"
+                                  className="w-100"
+                                />
+                              </div>
+                              <div className="text-center mt-3">
+                                <h5
+                                  style={{
+                                    color: "var(--color-subtext)",
+                                    fontWeight: 400,
+                                  }}
+                                >
+                                  Please search for a <b>call detail record</b>{" "}
+                                  to display{" "}
+                                  <span style={{ color: "var(--ui-accent)" }}>
+                                    <b>results</b>
+                                  </span>
+                                  .
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </table>
                     </div>
                     {/* <div className="tableHeader mb-3">
@@ -694,8 +683,30 @@ function AICDRSearch({ page }) {
               <h6 className="mb-3" style={{ color: "var(--immortalBlack)" }}>
                 Transcript
               </h6>
+              {parseTranscript(selectedCall?.full_transcript_en_chunk_1)?.map(
+                (transcript, key) => {
+                  const role = Object.keys(transcript)[0];
+                  const message = transcript[role];
 
-              <div>{formattedTranscript(selectedCall?.full_transcript_en_chunk_1)}</div>
+                  return (
+                    <div
+                      key={key}
+                      className={`d-flex justify-content-start align-items-start gap-2 mb-3 ${
+                        role.toLowerCase() === "agent"
+                          ? "flex-row-reverse text-end"
+                          : ""
+                      }`}
+                    >
+                      <p className="status_text">
+                        <span>{role}:</span>
+                      </p>
+                      <p className="status_text">
+                        <span className="endedTxt">{message || "..."}</span>
+                      </p>
+                    </div>
+                  );
+                }
+              )}
             </div>
           </div>
         </div>
