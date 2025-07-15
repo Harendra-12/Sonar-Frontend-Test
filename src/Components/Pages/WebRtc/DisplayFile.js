@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isOnlyLink } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-
+import thumbnail from '../../../Components/assets/images/thumbnail.png'
 // Keep track of the currently playing audio ref and video ref
 let currentlyPlayingAudioRef = null;
 let currentlyPlayingVideoRef = null;
@@ -11,6 +11,7 @@ const DisplayFile = ({ item, index }) => {
   const thisVideoRef = useRef(null);
   const [enlargeImage, setEnlargeImage] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -59,6 +60,7 @@ const DisplayFile = ({ item, index }) => {
         a.remove();
       })
   }
+  // ============ useEffect stuff start here 
   useEffect(() => {
     if (item && thisAudioRef.current) {
       thisAudioRef.current.load();
@@ -69,6 +71,27 @@ const DisplayFile = ({ item, index }) => {
       thisVideoRef.current.pause();
     }
   }, [item]);
+
+  // Load video but keep it hidden
+  useEffect(() => {
+    const video = thisVideoRef.current;
+
+    const handleLoadedData = () => {
+      setIsVideoLoaded(true);
+    };
+
+    if (video) {
+      video.addEventListener("loadeddata", handleLoadedData);
+    }
+
+    // return () => {
+    //   if (video) {
+    //     video.removeEventListener("loadeddata", handleLoadedData);
+    //   }
+    // };
+  }, [item]);
+
+  // ================ useEffect stuff end here 
 
   const handlePlayVideo = () => {
     if (thisVideoRef.current) {
@@ -368,13 +391,27 @@ const DisplayFile = ({ item, index }) => {
     }
 
     if (ext === "mp4") {
+
       return (
-        <div className="displayFile" style={{height:"200px", width:"200px"}}>
+        <div className="displayFile" style={{ height: "200px", width: "200px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {!isVideoLoaded && (
+            <a
+              href={item}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-sm btn-primary"
+            >
+              <i class="fa-solid fa-download"></i> not supported Video
+            </a>
+          )}
+
+          {/* Video (hidden until loaded) */}
           <video
-            controls
-            className="w-100 h-100 rounded"
             ref={thisVideoRef}
-            onPlay={handlePlayVideo}
+            controls
+            className={`w-100 h-100 rounded ${!isVideoLoaded ? "d-none" : ""}`}
+            preload="auto"
+            poster={thumbnail}
           >
             <source src={item} type="video/mp4" />
           </video>
