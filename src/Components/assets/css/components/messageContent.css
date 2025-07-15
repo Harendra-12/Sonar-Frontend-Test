@@ -1490,6 +1490,7 @@
     gap: 5px;
     transform: translate(-1%, -5%);
     z-index: 999;
+    overflow: hidden;
 }
 
 .messageIncomingPopup .incomingCallPopup {
