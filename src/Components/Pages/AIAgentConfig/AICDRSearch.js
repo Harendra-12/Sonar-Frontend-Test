@@ -691,11 +691,7 @@ function AICDRSearch({ page }) {
                   return (
                     <div
                       key={key}
-                      className={`d-flex justify-content-start align-items-start gap-2 mb-3 ${
-                        role.toLowerCase() === "agent"
-                          ? "flex-row-reverse text-end"
-                          : ""
-                      }`}
+                      className={`d-flex justify-content-start align-items-start gap-2 mb-3`}
                     >
                       <p className="status_text">
                         <span>{role}:</span>
