@@ -446,7 +446,7 @@ const UsersAdd = () => {
                       className="col-xl-6"
                       style={{ borderRight: "1px solid var(--border-color)" }}
                     >
-                      <form className="row mb-0">
+                      <form autoComplete="off" className="row mb-0">
 
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
@@ -479,6 +479,7 @@ const UsersAdd = () => {
                             <input
                               type="text"
                               name="extension"
+                              autoComplete="off"
                               className="formItem"
                               {...register("username", {
                                 ...requiredValidator,
@@ -504,6 +505,7 @@ const UsersAdd = () => {
                             <input
                               type="password"
                               name="extension"
+                              autoComplete="off"
                               className="formItem"
                               {...register("password", {
                                 ...requiredValidator,
