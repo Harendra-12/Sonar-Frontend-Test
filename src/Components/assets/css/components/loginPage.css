@@ -355,6 +355,7 @@ a.loginLabel {
 .loginWrapper2 .loginImgWrapper .content {
     padding: 30px 60px;
     color: #fff;
+    width: 100%;
 }
 
 .loginWrapper2 .loginImgWrapper .content p {
@@ -486,4 +487,18 @@ a.loginLabel {
     align-items: start;
     flex-direction: column;
     padding-bottom: 30px;
+}
+.loginGirlsImg{
+   position: absolute;
+    bottom: 63px;
+    left: 0;
+    right: 0;
+    width: 285px;
+    margin: auto;
+    z-index: -1;
+}
+.loginChat{
+    margin-top: 50px;
+    width: 85%;
+    margin-left: 0;
 }

@@ -118,20 +118,18 @@ function Login() {
                           src={"/login_chat.svg"}
                           className="loginChat"
                           alt="logo"
-                          style={{ marginLeft: "0", width: "85%", marginTop: "50px" }}
                         />
                       </div>
                       <div className="loginFooter">
                         <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
                       </div>
-                    </div>
-                    <div className="mx-auto w-50" >
-                      <img
+                      <div className="loginGirlsImg" >
+                        <img
                           src={"/login_girl.svg"}
-                          className="loginChat"
+                          className="loginChat w-100"
                           alt="logo"
-                          style={{ marginLeft: "0", width: "100%", marginTop: "0" }}
                         />
+                      </div>
                     </div>
                   </div>
                 </div>
