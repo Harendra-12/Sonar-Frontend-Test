@@ -24,36 +24,37 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build React app
-        run: npm run build
-
-      - name: Deploy build to server directory
+      - name: SSH Working
         run: |
-          echo "Deploying build to ${{ secrets.DEPLOY_PATH }}"
+          
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST_UCAAS }} << 'EOF'
+           #set -e  # Exit immediately if a command exits with a non-zero status
+           # set -x  # Uncomment for debugging purposes
 
-          # Ensure DEPLOY_PATH exists
-          mkdir -p ${{ secrets.DEPLOY_PATH }}
+            echo "Navigating to deployment directory: ${{ secrets.DEPLOY_PATH }}"
+            cd ${{ secrets.DEPLOY_PATH }}
 
-          # Clean previous build
-          rm -rf ${{ secrets.DEPLOY_PATH }}/*
+            echo "Configuring Git to trust this repository globally."
+            git config --global --add safe.directory "$PWD"
 
-          # Copy new build
-          cp -r build/* ${{ secrets.DEPLOY_PATH }}/
+            # Check if the directory is a Git repository
+            if [ -d ".git" ]; then
+                echo "Git repository found. Checking out Production branch and pulling latest changes."
+            
+                # Ensure we are on the correct branch
+                git checkout Developement
+                git pull origin Developement
 
+            else
+                echo "Git repository not found. Cloning repository."
+            
+                # Clone only the Development branch
+                 git clone --single-branch --branch Developement git@github.com:AngelPbx/UcaaS-Frontend.git .
+            fi
+
+            echo "Listing deployment directory contents:"
+            ls -la
+            
+
+          EOF
           echo "Deployment complete."
