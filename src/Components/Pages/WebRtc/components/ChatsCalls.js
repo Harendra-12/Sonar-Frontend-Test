@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { formatTimeWithAMPM, generalGetFunction } from '../../../GlobalFunction/globalFunction';
+import React, { useRef } from 'react'
+import { formatTimeWithAMPM } from '../../../GlobalFunction/globalFunction';
 import EmptyPrompt from '../../../Loader/EmptyPrompt';
-import Tippy from '@tippyjs/react';
 
 const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory, pageNumber, setPageNumber, rawData }) => {
     const callListRef = useRef(null);

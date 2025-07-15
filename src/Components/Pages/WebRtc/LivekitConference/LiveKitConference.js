@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "@livekit/components-styles"; // Importing LiveKit styles
 import { formatChatMessageLinks, LiveKitRoom, useRoomContext, VideoConference } from "@livekit/components-react";
 import SettingsMenu from "./SettingsMenu";

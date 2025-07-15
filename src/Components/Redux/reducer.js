@@ -473,7 +473,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_LEADS_REFRESH":
       return { ...state, leadDataRefresh: action.leadDataRefresh };
     case "SET_HAND_RAISE": {
-      const { room_id, username, hand_raised } = action.payload;
+      const { room_id, username } = action.payload;
 
       // Remove existing entry for same room_id & username
       const updatedHandRaises = state.handRaises.filter(

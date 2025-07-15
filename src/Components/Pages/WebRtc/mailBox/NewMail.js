@@ -9,9 +9,7 @@ import { toast } from "react-toastify";
 import { fileUploadFunction } from "../../../GlobalFunction/globalFunction";
 
 const NewMail = ({
-  handleShowNewMail,
   handleListingClick,
-  handleMailReplay,
   availableFromMailAddresses,
   activeList,
   selectedFromMailAddressId
@@ -23,7 +21,6 @@ const NewMail = ({
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm();
 
   // compose a new mail

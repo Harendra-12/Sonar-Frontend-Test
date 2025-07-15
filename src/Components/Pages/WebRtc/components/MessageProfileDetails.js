@@ -2,19 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { convertDateToCurrentTimeZone, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import DisplayFile from "../DisplayFile";
 
 const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPage, setToUser, setCalling, socketSendMessage, account }) => {
   const dispatch = useDispatch()
-  // console.log("Messages",messages);
-  const [media, setMedia] = useState([]);
-  const [allMedia, setAllMedia] = useState([]);
-
-  const [viewAllToggle, setViewAllToggle] = useState(false);
-
-  const [files, setFiles] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
   const [loading, setLoading] = useState(false);
