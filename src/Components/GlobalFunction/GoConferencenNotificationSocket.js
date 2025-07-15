@@ -49,8 +49,7 @@ function GoConferenceNotificationSocket() {
             }
 
             connectingRef.current = true;
-
-            const socket = new WebSocket(`wss://testing.webvio.in:8084/ws?user_id=${account.id}`);
+            const socket = new WebSocket(`wss://${ip}:${port}/ws?id=${account.id}`);
 
             socket.onopen = () => {
                 reconnectAttemptsRef.current = 0;
