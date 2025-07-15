@@ -353,7 +353,7 @@ a.loginLabel {
 }
 
 .loginWrapper2 .loginImgWrapper .content {
-    padding: 50px 80px;
+    padding: 30px 60px;
     color: #fff;
 }
 
@@ -455,11 +455,11 @@ a.loginLabel {
     backdrop-filter: blur(10px);
 }
 
-.loginWrapper2 .loginImgWrapper h3 {
+.loginWrapper2 .loginImgWrapper .content h3.login_text {
     color: #1B1E3D !important;
     font-family: Geist;
     /* font-size: 48px; */
-    font-size: clamp(35px, 3vw, 48px);;
+    font-size: 3rem;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
@@ -479,4 +479,11 @@ a.loginLabel {
     /* height: auto; */
     padding: 3px 31px;
     cursor: pointer;
+}
+.loginWrapper2 .loginImgWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    flex-direction: column;
+    padding-bottom: 30px;
 }

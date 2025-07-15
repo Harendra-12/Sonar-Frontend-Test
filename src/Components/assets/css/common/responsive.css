@@ -1,3 +1,17 @@
+@media (max-width: 1800px) {
+
+    .loginWrapper2 .loginImgWrapper .content {
+        padding: 35px 48px;
+        color: #fff;
+        width: 100%;
+    }
+
+    .loginWrapper2 .loginImgWrapper .content h3.login_text {
+        font-size: 2.4rem;
+    }
+
+}
+
 @media (max-device-width: 1500px) {
 
     /* .formRow.col-xl-3 {
