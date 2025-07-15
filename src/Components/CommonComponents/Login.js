@@ -100,9 +100,9 @@ function Login() {
                 </div>
                 <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
-                    <img src={require('../assets/images/loginbg.webp')} className="loginbg" />
+                    <img src={require('../assets/images/login_bg.webp')} className="loginbg" />
                     <div className="content">
-                      <h3>
+                      <h3 className="login_text">
                         You are one step <br />
                         closer to <span className="loginGradient">AI-Powered</span> <br />
                         Communication
@@ -124,6 +124,14 @@ function Login() {
                       <div className="loginFooter">
                         <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
                       </div>
+                    </div>
+                    <div className="mx-auto w-50" >
+                      <img
+                          src={"/login_girl.svg"}
+                          className="loginChat"
+                          alt="logo"
+                          style={{ marginLeft: "0", width: "100%", marginTop: "0" }}
+                        />
                     </div>
                   </div>
                 </div>
