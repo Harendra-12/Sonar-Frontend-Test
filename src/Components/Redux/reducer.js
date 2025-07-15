@@ -19,6 +19,7 @@ var billingListRefresh = 0;
 var cardList = JSON.parse(localStorage.getItem("cardList"));
 var billingList = JSON.parse(localStorage.getItem("billingList"));
 var callDetailsRefresh = 0;
+var callDetailsLoading = false;
 var extension = [];
 var extensionRefresh = 0;
 var ringGroup = [];
@@ -119,6 +120,7 @@ const initialState = {
   billingList,
   accountDetailsRefresh,
   callDetailsRefresh,
+  callDetailsLoading,
   activeCall,
   microPhonePermission,
   extension,
@@ -240,6 +242,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, billingList: action.billingList };
     case "SET_CALLDETAILSREFRESH":
       return { ...state, callDetailsRefresh: action.callDetailsRefresh };
+    case "SET_CALLDETAILSLOADING":
+      return { ...state, callDetailsLoading: action.callDetailsLoading };
     case "SET_ACTIVECALL":
       return { ...state, activeCall: action.activeCall };
     case "SET_MICROPHONEPERMISSION":
@@ -498,7 +502,7 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, redirectConference: action.redirectConference }
     }
     case ActionType.SET_NOTIFICATION_STATE: {
-      return { ...state, allNotificationState: action?.allNotificationState}
+      return { ...state, allNotificationState: action?.allNotificationState }
     }
     default:
       return state;

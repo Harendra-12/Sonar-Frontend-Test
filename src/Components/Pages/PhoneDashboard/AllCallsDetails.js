@@ -26,14 +26,14 @@ function AllCallsDetails() {
     });
   }
 
-  // Poll Call Details Data
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refreshCallDetails();
-    }, 7000)
+  // // Poll Call Details Data
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     refreshCallDetails();
+  //   }, 7000)
 
-    return () => clearInterval(interval);
-  }, [callDetailsRefresh])
+  //   return () => clearInterval(interval);
+  // }, [callDetailsRefresh])
 
 
   return (
@@ -648,7 +648,7 @@ function AllCallsDetails() {
                           <div>
                             <span className="badge badge-soft-danger rounded-pill"
                             // style={{ backgroundColor: 'var(--funky-boy4)' }}
-                            >Active: {activeCall.filter((call) =>call.direction === 'internal' && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")).length}</span>
+                            >Active: {activeCall.filter((call) => call.direction === 'internal' && (call?.b_callstate === "ACTIVE" || call?.b_callstate === "HELD" || call?.callstate === "HELD" || call?.callstate === "ACTIVE")).length}</span>
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-danger rounded-pill"
