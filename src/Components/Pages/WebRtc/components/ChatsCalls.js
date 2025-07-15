@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { formatTimeWithAMPM, generalGetFunction } from '../../../GlobalFunction/globalFunction';
+import React, { useRef } from 'react'
+import { formatTimeWithAMPM } from '../../../GlobalFunction/globalFunction';
 import EmptyPrompt from '../../../Loader/EmptyPrompt';
-import Tippy from '@tippyjs/react';
 
 const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory, pageNumber, setPageNumber, rawData }) => {
     const callListRef = useRef(null);
@@ -32,7 +31,7 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                                 className="profileHolder"
                                                 id={
                                                     onlineUser.find(
-                                                        (user) => user.id === alternateUser.id
+                                                        (user) => user?.id === alternateUser?.id
                                                     )
                                                         ? "profileOnlineNav"
                                                         : "profileOfflineNav"
@@ -63,14 +62,14 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                             </div>
                                             <div className="col text-end d-flex justify-content-end align-items-center" onClick={() => {
                                                 setMeetingPage("message");
-                                                setToUser(item.id);
+                                                setToUser(item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id);
                                                 setCalling(true);
                                                 socketSendMessage({
                                                     action: "peercallInitiate",
                                                     from: account.id,
-                                                    to: item.id,
-                                                    room_id: `${account.id}-${item.id}`,
-                                                    call_type: `${item.call_type}`,
+                                                    to: item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id,
+                                                    room_id: `${account.id}-${item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id}`,
+                                                    call_type: `audio`,
                                                 });
 
                                             }}>

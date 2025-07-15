@@ -4,13 +4,10 @@ import React, { useEffect, useState, useRef } from "react";
 // import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
 import {
-  generalGetFunction,
-  generalPostFunction,
   meetGeneralGetFunction,
   meetGeneralPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { api_url } from "../../../../urls";
 
@@ -55,7 +52,7 @@ function Members({
   const [participants, setParticipants] = useState([]);
   const [showParticipants, setParticipantList] = useState(false);
   const [processingRecRequest, setProcessingRecRequest] = useState(false);
-  const [currentCallRoom, setCurentCallRoom] = useState([]);
+  // const [currentCallRoom, setCurentCallRoom] = useState([]);
   // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
   const [searchTerm, setSearchTerm] = useState(""); // State to track the search input
   //   const currentCallRoom = incomingCall.filter((item) => item.room_id === roomName)
@@ -71,11 +68,11 @@ function Members({
 
   const [toggleMeetingInfo, setToggleMeetingInfo] = useState(false);
 
-  useEffect(() => {
-    setCurentCallRoom(
-      incomingCall.filter((item) => item?.room_id === roomName)
-    );
-  }, [incomingCall]);
+  // useEffect(() => {
+  //   setCurentCallRoom(
+  //     incomingCall.filter((item) => item?.room_id === roomName)
+  //   );
+  // }, [incomingCall]);
   // Function to check if any user added in room and if added then update its value in incomingCall
   useEffect(() => {
     if (

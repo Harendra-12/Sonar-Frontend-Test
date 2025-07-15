@@ -25,7 +25,7 @@ function AudioTranscribe({ url, setTranscribeLink }) {
             //     // toast.error(trnascriptData?.errors[Object.keys(trnascriptData?.errors)[0]][0])
             // })
 
-            const res = awsGeneralPostFunction("/dev2/transcribe", { audio_url: presignData?.url })
+            const res = await awsGeneralPostFunction("/dev2/transcribe", { audio_url: presignData?.url })
             if (res?.status) {
                 setTranscribeLoading(false)
                 setTranscript(res?.data?.tagged_transcript);

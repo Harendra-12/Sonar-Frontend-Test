@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
-import { checkViewSidebar, featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, logout } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
@@ -26,8 +26,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const isWhatsAppAvailable = useSelector((state) => state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null);
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
-  const accountDetails = useSelector((state) => state.accountDetails);
-  const isCustomerAdmin = account?.email == accountDetails?.email;
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -87,7 +85,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      const apiResponses = await logout(
+       await logout(
         allCallCenterIds,
         dispatch,
         sessionManager
@@ -142,7 +140,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                       }
                     >
                       {account?.profile_picture ?
-                        <img src={account?.profile_picture} 
+                        <img alt="profile" src={account?.profile_picture} 
                         // onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                          /> : (
                           <i className="fa-light fa-user"></i>
@@ -410,7 +408,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 </li>
               }
               {
-                account?.user_role == null || account?.user_role?.roles?.name != "Agent" &&
+                (account?.user_role == null || account?.user_role?.roles?.name != "Agent") &&
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => navigate('/dashboard')}

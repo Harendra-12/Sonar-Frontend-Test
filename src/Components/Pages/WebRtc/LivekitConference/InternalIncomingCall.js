@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
@@ -18,6 +18,7 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
       dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
 
     }, 1000);
+
 
     socketSendPeerCallMessage({
       action: "peercallUpdate",
@@ -54,13 +55,17 @@ function InternalIncomingCall({ setInternalCaller, setToUser, setCalling }) {
     })
   }, [internalCallAction])
 
+  useEffect(()=>{
+    console.log("incomingCall", incomingCall);
+  },[])
+  
   return (
     <>
       {incomingCall.length > 0 &&
-        incomingCall.map((item) => {
+        incomingCall.map((item,key) => {
           if (item.sender_id != account.id && !item.recieved) {
             return (
-              <div className="messageIncomingPopup">
+              <div key={key} className="messageIncomingPopup">
                 <div className="incomingCallPopup ">
                   <div className="d-flex justify-content-between w-100 align-items-center gap-2">
                     <div className="user">

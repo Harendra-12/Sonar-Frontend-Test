@@ -3,7 +3,6 @@ import { checkViewSidebar, featureUnderdevelopment, formatTimeWithAMPM, generalG
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
-import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { numberValidator, requiredValidator } from "../../validations/validation";
@@ -16,7 +15,7 @@ function SmsChat({ setLoading, loading, did }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
-  const { sessionManager, connectStatus } = useSIPProvider();
+  const { sessionManager } = useSIPProvider();
   const [allLogOut, setAllLogOut] = useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
 
@@ -36,7 +35,7 @@ function SmsChat({ setLoading, loading, did }) {
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      const apiResponses = await logout(
+       await logout(
         allCallCenterIds,
         dispatch,
         sessionManager

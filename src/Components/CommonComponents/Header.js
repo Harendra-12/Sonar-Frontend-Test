@@ -1,10 +1,11 @@
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkModulePerm,
+  generalGetFunction,
   generalPostFunction,
 } from "../GlobalFunction/globalFunction";
 import DarkModeToggle from "./DarkModeToggle";
@@ -27,6 +28,10 @@ function Header(props) {
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const permissions = useSelector((state) => state.permissions);
+
+  const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
+  const callDetailsLoading = useSelector((state) => state.callDetailsLoading);
+  const location = useLocation();
 
   async function handleSubmit() {
     if (oldPassword === "") {
@@ -95,6 +100,14 @@ function Header(props) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
+  // Refresh Call Details
+  const refreshCallDetails = async () => {
+    dispatch({
+      type: "SET_CALLDETAILSREFRESH",
+      callDetailsRefresh: callDetailsRefresh + 1,
+    });
+  }
+
   return (
     <div id="detailsHeader" style={props.style}>
       <div className="col-md-4 col-6  d-flex align-items-center">
@@ -107,6 +120,9 @@ function Header(props) {
           </button>
         </div>
         <h4 className="my-auto">{props.title}</h4>
+        {location.pathname === "/phone-dashboard" &&
+          <button className="clearButton ms-2" onClick={refreshCallDetails}><i className={`fa-regular fa-arrows-rotate fs-5 ${callDetailsLoading && 'fa-spin'}`}></i></button>
+        }
       </div>
       <div className="col-md-8 col-6 d-flex justify-content-end align-items-center">
         <div className="my-auto">

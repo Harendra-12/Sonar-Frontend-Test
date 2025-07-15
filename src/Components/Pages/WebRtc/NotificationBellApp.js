@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
-import { formatTimeWithAMPM } from '../../GlobalFunction/globalFunction';
-import { set } from 'react-hook-form';
 import { ActionType } from '../../Redux/reduxActionType';
 
 function NotificationBellApp() {
@@ -12,7 +10,7 @@ function NotificationBellApp() {
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const confNotif = useSelector((data) => data?.confNotif)
     const allNotificationState = useSelector((data) => data?.allNotificationState);
-    const [incomingMessageList, setIncomingMessageList] = useState([]);
+    // const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
     const [allNotification, setAllNotification] = useState(allNotificationState || []);
     const [userHasInteracted, setUserHasInteracted] = useState(false);
@@ -39,13 +37,13 @@ function NotificationBellApp() {
             const currentMessageId = incomingMessage.uuid;
             if (currentMessageId !== prevMessageIdRef.current) {
                 if (!deletedNotificationId?.has(currentMessageId)) {
-                    setIncomingMessageList((prevList) => {
-                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
-                        if (!exists) {
-                            return [...prevList, incomingMessage];
-                        }
-                        return prevList;
-                    });
+                    // setIncomingMessageList((prevList) => {
+                    //     const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
+                    //     if (!exists) {
+                    //         return [...prevList, incomingMessage];
+                    //     }
+                    //     return prevList;
+                    // });
 
                     setAllNotification((prevList) => {
                         const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);

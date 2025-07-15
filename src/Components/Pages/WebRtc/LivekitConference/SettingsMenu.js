@@ -4,8 +4,7 @@ import "@livekit/components-styles"; // Importing LiveKit styles
 import { useRoomContext, TrackToggle, MediaDeviceMenu } from "@livekit/components-react";
 import { Track } from "livekit-client";
 import { useDispatch } from "react-redux";
-import { generalGetFunction, meetGeneralGetFunction } from "../../../GlobalFunction/globalFunction";
-import axios from "axios";
+import { meetGeneralGetFunction } from "../../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { api_url } from "../../../../urls";
 // import { generalGetFunction } from "./GlobalFunction/globalFunction";
@@ -24,62 +23,61 @@ const SettingsMenu = () => {
     const [processingRecRequest, setProcessingRecRequest] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState(null); // Store MediaRecorder instance
     const [combinedStream, setCombinedStream] = useState(null); // Store combined stream
-    const tabs = ["media", "effects"];
-    const [activeTab, setActiveTab] = useState("media");
-    const startRecording = async () => {
-        try {
-            // Capture the screen
-            const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-            // Capture the audio
-            const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const activeTab ="media";
+    // const startRecording = async () => {
+    //     try {
+    //         // Capture the screen
+    //         const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+    //         // Capture the audio
+    //         const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-            // Combine screen and audio streams
-            const combinedStream = new MediaStream([
-                ...screenStream.getVideoTracks(),
-                ...audioStream.getAudioTracks(),
-            ]);
-            setCombinedStream(combinedStream); // Save the combined stream
+    //         // Combine screen and audio streams
+    //         const combinedStream = new MediaStream([
+    //             ...screenStream.getVideoTracks(),
+    //             ...audioStream.getAudioTracks(),
+    //         ]);
+    //         setCombinedStream(combinedStream); // Save the combined stream
 
-            // Create a MediaRecorder for the combined stream
-            const mediaRecorder = new MediaRecorder(combinedStream);
-            setMediaRecorder(mediaRecorder); // Save the MediaRecorder instance
+    //         // Create a MediaRecorder for the combined stream
+    //         const mediaRecorder = new MediaRecorder(combinedStream);
+    //         setMediaRecorder(mediaRecorder); // Save the MediaRecorder instance
 
-            mediaRecorder.ondataavailable = async (event) => {
-                if (event.data.size > 0) {
-                    // Send the recorded data to the backend
-                    await fetch("http://localhost:5000/recording/data", {
-                        method: "POST",
-                        body: event.data,
-                    });
-                }
-            };
+    //         mediaRecorder.ondataavailable = async (event) => {
+    //             if (event.data.size > 0) {
+    //                 // Send the recorded data to the backend
+    //                 await fetch("http://localhost:5000/recording/data", {
+    //                     method: "POST",
+    //                     body: event.data,
+    //                 });
+    //             }
+    //         };
 
-            mediaRecorder.onstop = () => {
-                // Stop all tracks when recording stops
-                combinedStream.getTracks().forEach((track) => track.stop());
-                setCombinedStream(null); // Clear the combined stream
-                setMediaRecorder(null); // Clear the MediaRecorder instance
-            };
+    //         mediaRecorder.onstop = () => {
+    //             // Stop all tracks when recording stops
+    //             combinedStream.getTracks().forEach((track) => track.stop());
+    //             setCombinedStream(null); // Clear the combined stream
+    //             setMediaRecorder(null); // Clear the MediaRecorder instance
+    //         };
 
-            mediaRecorder.start(1000); // Send data every 1 second
-            console.log("Recording started");
-        } catch (error) {
-            console.error("Error starting recording:", error);
-            alert("Failed to start recording: " + error.message);
-        }
-    };
+    //         mediaRecorder.start(1000); // Send data every 1 second
+    //         console.log("Recording started");
+    //     } catch (error) {
+    //         console.error("Error starting recording:", error);
+    //         alert("Failed to start recording: " + error.message);
+    //     }
+    // };
 
-    const stopRecording = () => {
-        if (mediaRecorder) {
-            mediaRecorder.stop(); // Stop the MediaRecorder
-        }
-        if (combinedStream) {
-            combinedStream.getTracks().forEach((track) => track.stop()); // Stop all media tracks
-        }
-        setMediaRecorder(null); // Clear the MediaRecorder instance
-        setCombinedStream(null); // Clear the combined stream
-        console.log("Recording stopped");
-    };
+    // const stopRecording = () => {
+    //     if (mediaRecorder) {
+    //         mediaRecorder.stop(); // Stop the MediaRecorder
+    //     }
+    //     if (combinedStream) {
+    //         combinedStream.getTracks().forEach((track) => track.stop()); // Stop all media tracks
+    //     }
+    //     setMediaRecorder(null); // Clear the MediaRecorder instance
+    //     setCombinedStream(null); // Clear the combined stream
+    //     console.log("Recording stopped");
+    // };
 
     // const toggleRoomRecording = async () => {
     //     setProcessingRecRequest(true);
