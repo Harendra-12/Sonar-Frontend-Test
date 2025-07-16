@@ -1160,8 +1160,10 @@
 .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
      /* height: 201px; */
     width: 201px;
-  
 
+}
+.messageItem.sender .messageDetailss.displayFile{
+    margin-left: -135px;
 }
 .webrtc_newMessageUi .leftside_listBar {
     height: calc(100vh - 82px);

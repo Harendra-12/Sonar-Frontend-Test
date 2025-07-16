@@ -352,7 +352,7 @@ const DisplayFile = ({ item, index }) => {
     // Handle audio files
     if (ext === "mp3") {
       return (
-        <div className="messageDetailss displayFile" style={{    marginLeft: "-135px"}}>
+        <div className="messageDetailss displayFile">
           <div className="audio-container mx-2">
             <audio
               controls={true}
