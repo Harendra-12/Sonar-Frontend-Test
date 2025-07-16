@@ -507,3 +507,15 @@ a.loginLabel {
     width: 85%;
     margin-left: 0;
 }
+
+.loginWrapper2 .content .loginForm .clearButton2 {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.loginWrapper2 .content .loginForm .clearButton2 i {
+    color: var(--color-subText);
+}

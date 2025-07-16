@@ -161,6 +161,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
   const [logOutToken, setLogOutToken] = useState("");
   const [credsError, setCredsError] = useState(false);
   const [customErrorText, setCustomErrorText] = useState("");
+  const [passwordMask, setPasswordMask] = useState(true);
 
   // Handle login function
   async function handleLogin() {
@@ -562,7 +563,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
           <div className="position-relative" style={{ marginBottom: '20px' }}>
             <i className="fa-thin fa-lock" />
             <input
-              type="password"
+              type={passwordMask ? "password" : "text"}
               name="password1"
               placeholder="Enter your password"
               className={`loginFormItem mb-0`}
@@ -572,6 +573,9 @@ export function LoginComponent({ setLanguageChangePopup }) {
             {/* {credsError && <div class="invalid-feedback d-block">
               <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Password.
             </div>} */}
+            <button className="clearButton2" onClick={() => setPasswordMask(!passwordMask)} type="button">
+              <i className={`fa-solid fa-eye${passwordMask ? "" : "-slash"} position-static`} />
+            </button>
           </div>
           <div onClick={backToTop}>
             <button
