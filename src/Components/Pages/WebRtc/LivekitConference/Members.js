@@ -403,21 +403,26 @@ function Members({
         meetingInfoButon.onclick = () => setToggleMeetingInfo((prev) => !prev);
 
         // Create the "Record" button
-        if (isAdmin) {
+        if (isAdmin && isConferenceCall) {
           const recordButton = document.createElement("button");
           recordButton.className = "lk-button record-button";
           disconnectButton.parentNode.insertBefore(recordButton, disconnectButton);
         }
-        // Append the buttons to the custom div
-        customDiv.appendChild(allMembersButton);
 
-        customDiv.appendChild(meetingInfoButon);
+        if (isConferenceCall) {
+          // Append the buttons to the custom div
+          customDiv.appendChild(allMembersButton);
+
+          customDiv.appendChild(meetingInfoButon);
+        }
 
         // Insert the custom div before the disconnect button
         disconnectButton.parentNode.insertBefore(customDiv, disconnectButton);
 
-        // Insert the hand raise button before the disconnect button
-        disconnectButton.parentNode.insertBefore(handRaiseButton, disconnectButton);
+        if (isConferenceCall) {
+          // Insert the hand raise button before the disconnect button
+          disconnectButton.parentNode.insertBefore(handRaiseButton, disconnectButton);
+        }
       }
     }
   }, [setParticipantList, roomName, chatButton]);
@@ -536,8 +541,8 @@ function Members({
       if (textNode && textNode.nodeType === Node.TEXT_NODE) {
         textNode.textContent = toggleHandRaise ? "Lower Hand" : "Raise Hand";
       }
+      handRaiseButton.setAttribute("data-lk-enabled", toggleHandRaise);
     }
-    handRaiseButton.setAttribute("data-lk-enabled", toggleHandRaise);
   }, [toggleHandRaise])
 
   // Replace Microphone with Mute / Unmute

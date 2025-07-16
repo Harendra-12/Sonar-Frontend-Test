@@ -131,7 +131,7 @@ function InitiateCall({
           serverUrl={serverUrl}
           roomName={roomName}
           username={name}
-          isAdmin={true}
+          isAdmin={isAdmin}
           setCalling={setCalling}
           isMinimize={interCallMinimize}
           setIsMinimize={setInterCallMinimize}
