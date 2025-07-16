@@ -166,6 +166,9 @@ function Messages({
   const isUserAtBottomRef = useRef(true);
   const isNewMessageByUserRef = useRef(false);
 
+  const prevRecipient = useRef(null);
+  const messageRecipient = useSelector((state) => state.messageRecipient)
+
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -1912,6 +1915,26 @@ function Messages({
     setOnlineUser(originalOnlineUser);
     setInternalCallHistory(origInalinternalCallHistory);
   };
+
+  // Adding this coz Recipient was changed from being passed as a prop from WebrtcWrapper to here, need this hack to make P2P Call chat work
+  useEffect(() => {
+    if (recipient && recipient !== prevRecipient.current) {
+      dispatch(({
+        type: "SET_MESSAGERECIPIENT",
+        messageRecipient: recipient,
+      }));
+      prevRecipient.current = recipient;
+    }
+  }, [recipient, dispatch]);
+
+  // Sync to support the above
+  useEffect(() => {
+    if (messageRecipient && messageRecipient !== recipient) {
+      setRecipient(messageRecipient);
+      prevRecipient.current = messageRecipient; // sync ref too
+    }
+  }, [messageRecipient]);
+
 
   return (
     <>
