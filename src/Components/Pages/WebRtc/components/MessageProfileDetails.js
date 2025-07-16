@@ -286,107 +286,114 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
               </div>
             </div>
             <div className="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" tabIndex="0">
-              {allFiles && allFiles?.length > 0 ? (
-                allFiles.filter((item) => item.message_type === "file").map((item, index) => (
-                  <div className="file_list" key={index}>
-                    <div className="">
-                      <span className="shared-file-icon">
-                        <i className="fa-regular fa-files"></i>
-                      </span>
-                    </div>
-                    <div className=" ">
-                      <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
-                      <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
-                    </div>
-                    <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
-                      <button>
-                        <i className="fa-regular fa-arrow-down-to-line"></i>
-                      </button>
-                    </div>
-                  </div>
-                ))
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
-            </div>
-            <div className="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabIndex="0">
-              {allFiles && allFiles?.length > 0 ? (
-                <div className="imageList">
-                  {allFiles.filter((item) => item.message_type === "image").map((item, index) => (
-                    <div className="imgBox" key={index}>
-                      <img
-                        src={item?.message_text}
-                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
-                        alt=""
-                      />
-                      <div className="extraButtons">
-                        <Link className="tableButton me-2" to={item?.message_text} target="_blank">
-                          <i className="fa-solid fa-eye text-white" />
-                        </Link>
-                        <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
-                          <i className="fa-solid fa-download" />
+              <div className="filePanelActive">
+                {allFiles && allFiles?.length > 0 ? (
+                  allFiles.filter((item) => item.message_type === "file").map((item, index) => (
+                    <div className="file_list" key={index}>
+                      <div className="">
+                        <span className="shared-file-icon">
+                          <i className="fa-regular fa-files"></i>
+                        </span>
+                      </div>
+                      <div className=" ">
+                        <p className="ellipsisText">{item?.message_text?.split('chats/')[1]}</p>
+                        <p className="text_muted">{convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} - {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</p>
+                      </div>
+                      <div className="download" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])} >
+                        <button>
+                          <i className="fa-regular fa-arrow-down-to-line"></i>
                         </button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+                  ))
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+              </div>
+            </div>
+            <div className="tab-pane fade" id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab" tabIndex="0">
+              <div className="filePanelActive">
+                {allFiles && allFiles?.length > 0 ? (
+                  <div className="imageList">
+                    {allFiles.filter((item) => item.message_type === "image").map((item, index) => (
+                      <div className="imgBox" key={index}>
+                        <img
+                          src={item?.message_text}
+                          onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
+                          alt=""
+                        />
+                        <div className="extraButtons">
+                          <Link className="tableButton me-2" to={item?.message_text} target="_blank">
+                            <i className="fa-solid fa-eye text-white" />
+                          </Link>
+                          <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
+                            <i className="fa-solid fa-download" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+              </div>
             </div>
             <div className="tab-pane fade" id="nav-audio" role="tabpanel" aria-labelledby="nav-audio-tab" tabIndex="0">
-              {allFiles && allFiles?.length > 0 ? (
-                <div className="">
-                  {allFiles
-                    .filter((item) => item.message_type === "audio")
-                    .map((item, index) => {
-                      const fileName = item.message_text.split("/").pop();
+              <div className="filePanelActive">
+                {allFiles && allFiles?.length > 0 ? (
+                  <div className="">
+                    {allFiles
+                      .filter((item) => item.message_type === "audio")
+                      .map((item, index) => {
+                        const fileName = item.message_text.split("/").pop();
 
-                      return (
-                        <div className="file_list mb-2" key={index}>
-                          <div className="file_info">
-                            <p className="ellipsisText">{fileName}</p>
-                            <p className="text_muted">
-                              {convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} -{" "}
-                              {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}
-                            </p>
-                          </div>
+                        return (
+                          <div className="file_list mb-2" key={index}>
+                            <div className="file_info">
+                              <p className="ellipsisText">{fileName}</p>
+                              <p className="text_muted">
+                                {convertDateToCurrentTimeZone(item?.created_at?.split(" ")[0])} -{" "}
+                                {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}
+                              </p>
+                            </div>
 
-                          <div className="audio_controls">
-                            <audio
-                              ref={(el) => (audioRefs.current[index] = el)}
-                              src={item.message_text}
-                            />
-                            <div className="download ">
-                              <button onClick={() => handleToggle(index)} style={{fontSize: "1rem"}}>
-                                {playingIndex === index ? <i class="fa-regular fa-circle-pause"></i> : <i class="fa-regular fa-circle-play"></i>}
-                              </button>
-                            </div>
-                            <div className="download ">
-                              <button
-                                className=""
-                                onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
-                                <i className="fa-solid fa-download" />
-                              </button>
+                            <div className="audio_controls">
+                              <audio
+                                ref={(el) => (audioRefs.current[index] = el)}
+                                src={item.message_text}
+                              />
+                              <div className="download ">
+                                <button onClick={() => handleToggle(index)} style={{ fontSize: "1rem" }}>
+                                  {playingIndex === index ? <i class="fa-regular fa-circle-pause"></i> : <i class="fa-regular fa-circle-play"></i>}
+                                </button>
+                              </div>
+                              <div className="download ">
+                                <button
+                                  className=""
+                                  onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
+                                  <i className="fa-solid fa-download" />
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+                        );
+                      })}
+                  </div>
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+              </div>
             </div>
             <div className="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabIndex="0">
-              {allFiles && allFiles?.length > 0 ? (
-                <div className="imageList">
-                  {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
-                    <div className="imgBox" key={index}>
-                      {/* <img
+              <div className="filePanelActive filePanelActive-video">
+                {allFiles && allFiles?.length > 0 ? (
+                  <div className="video-list-in-profile-details">
+                    {allFiles.filter((item) => item.message_type === "video").map((item, index) => (
+                      <div className="imgBox" key={index}>
+                        {/* <img
                         src={item?.message_text}
                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
                         alt=""
                       /> */}
-                      {/* <div className="extraButtons"> */}
+                        {/* <div className="extraButtons"> */}
                         {/* <Link className="tableButton me-2" to={item?.message_text} target="_blank">
                           <i className="fa-solid fa-eye text-white" />
                         </Link> */}
-                        <div className="">
+                        <div className="videoSize">
                           <DisplayFile
                             key={index}
                             item={item?.message_text}
@@ -397,11 +404,12 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
                         {/* <button className="tableButton head ms-2" onClick={() => downloadImage(item?.message_text, item?.message_text?.split('chats/')[1])}>
                           <i className="fa-solid fa-download" />
                         </button> */}
-                      {/* </div> */}
-                    </div>
-                  ))}
-                </div>
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+                        {/* </div> */}
+                      </div>
+                    ))}
+                  </div>
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />}
+              </div>
             </div>
           </div>
         </div>

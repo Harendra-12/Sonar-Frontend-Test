@@ -166,6 +166,9 @@ function Messages({
   const isUserAtBottomRef = useRef(true);
   const isNewMessageByUserRef = useRef(false);
 
+  const prevRecipient = useRef(null);
+  const messageRecipient = useSelector((state) => state.messageRecipient)
+
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -414,6 +417,7 @@ function Messages({
           ...prevState,
           [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
             {
+              ...item,
               from: item.user_id,
               body: item?.message_text,
               time: formatDateTime(item.created_at),
@@ -1912,6 +1916,36 @@ function Messages({
     setOnlineUser(originalOnlineUser);
     setInternalCallHistory(origInalinternalCallHistory);
   };
+
+  const handlePinMessage = async (item) => {
+    const result = await generalPostFunction(api_url?.PIN_MESSAGE(item?.id, item?.is_pinned == 1 ? 0 : 1));
+    if (result?.status) {
+      toast?.success(result?.message)
+      const updatedAllMessage = allMessage[recipient[1]]?.map(item =>
+        item.id === result?.data?.id ? { ...result?.data } : item
+      );
+      setAllMessage(updatedAllMessage)
+    }
+  }
+  // Adding this coz Recipient was changed from being passed as a prop from WebrtcWrapper to here, need this hack to make P2P Call chat work
+  useEffect(() => {
+    if (recipient && recipient !== prevRecipient.current) {
+      dispatch(({
+        type: "SET_MESSAGERECIPIENT",
+        messageRecipient: recipient,
+      }));
+      prevRecipient.current = recipient;
+    }
+  }, [recipient, dispatch]);
+
+  // Sync to support the above
+  useEffect(() => {
+    if (messageRecipient && messageRecipient !== recipient) {
+      setRecipient(messageRecipient);
+      prevRecipient.current = messageRecipient; // sync ref too
+    }
+  }, [messageRecipient]);
+
 
   return (
     <>
@@ -3428,12 +3462,38 @@ function Messages({
                                                 &nbsp;
                                                 {item.user_name}
                                               </h6>
-                                              <div className=" videoSize">
-                                                <DisplayFile
-                                                  key={index}
-                                                  item={item.body}
-                                                  index={index}
-                                                />
+                                              <div
+                                                className="message-text-container"
+                                                style={{ display: "flex", alignItems: "center" }}
+                                              >
+                                                <div className="dropdown">
+                                                  <button
+                                                    className="clearButton2"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                  >
+                                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                  </button>
+                                                  <ul className="dropdown-menu">
+                                                    <li>
+                                                      <div
+                                                        className="dropdown-item"
+                                                        href="#"
+                                                        onClick={() => handlePinMessage(item)}
+                                                      >
+                                                        Pin
+                                                      </div>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                                <div className="videoSize">
+                                                  <DisplayFile
+                                                    key={index}
+                                                    item={item.body}
+                                                    index={index}
+                                                  />
+                                                </div>
                                               </div>
                                             </div>
                                             {item?.profile_picture ? (
@@ -3491,8 +3551,34 @@ function Messages({
                                                     .join(":")}
                                                 </span>
                                               </h6>
-                                              <div className="">
-                                                <DisplayFile item={item.body} />
+                                              <div
+                                                className="message-text-container"
+                                                style={{ display: "flex", alignItems: "center" }}
+                                              >
+                                                <div className="videoSize">
+                                                  <DisplayFile item={item.body} />
+                                                </div>
+                                                <div className="dropdown">
+                                                  <button
+                                                    className="clearButton2"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                  >
+                                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                  </button>
+                                                  <ul className="dropdown-menu">
+                                                    <li>
+                                                      <div
+                                                        className="dropdown-item"
+                                                        href="#"
+                                                        onClick={() => handlePinMessage(item)}
+                                                      >
+                                                        Pin
+                                                      </div>
+                                                    </li>
+                                                  </ul>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>

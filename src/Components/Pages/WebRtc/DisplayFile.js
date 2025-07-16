@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isOnlyLink } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-
+import thumbnail from '../../../Components/assets/images/thumbnail.png'
 // Keep track of the currently playing audio ref and video ref
 let currentlyPlayingAudioRef = null;
 let currentlyPlayingVideoRef = null;
@@ -11,6 +11,7 @@ const DisplayFile = ({ item, index }) => {
   const thisVideoRef = useRef(null);
   const [enlargeImage, setEnlargeImage] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -59,6 +60,7 @@ const DisplayFile = ({ item, index }) => {
         a.remove();
       })
   }
+  // ============ useEffect stuff start here 
   useEffect(() => {
     if (item && thisAudioRef.current) {
       thisAudioRef.current.load();
@@ -69,6 +71,27 @@ const DisplayFile = ({ item, index }) => {
       thisVideoRef.current.pause();
     }
   }, [item]);
+
+  // Load video but keep it hidden
+  useEffect(() => {
+    const video = thisVideoRef.current;
+
+    const handleLoadedData = () => {
+      setIsVideoLoaded(true);
+    };
+
+    if (video) {
+      video.addEventListener("loadeddata", handleLoadedData);
+    }
+
+    // return () => {
+    //   if (video) {
+    //     video.removeEventListener("loadeddata", handleLoadedData);
+    //   }
+    // };
+  }, [item]);
+
+  // ================ useEffect stuff end here 
 
   const handlePlayVideo = () => {
     if (thisVideoRef.current) {
@@ -176,6 +199,11 @@ const DisplayFile = ({ item, index }) => {
       toast.error("Cannot open local file paths in browser.");
     }
   };
+
+  const extractFileNameFromUrl = (url) => {
+    return url.substring(url.lastIndexOf('/') + 1);
+  }
+
 
   if (!item) return null;
   if (item === "loading")
@@ -369,12 +397,56 @@ const DisplayFile = ({ item, index }) => {
 
     if (ext === "mp4") {
       return (
-        <div className="displayFile" style={{height:"200px", width:"200px"}}>
+        <div className="displayFile" >
+          {!isVideoLoaded && (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              margin: 'auto',
+              gap: '5px'
+            }}>
+              <div style={{ fontSize: "26px", color: "#007bff" }}>
+                <i className="fa-solid fa-file-video"></i>
+              </div>
+              <h5 className="p-0 m-0 text-center" style={{ fontSize: '14px', maxWidth: '180px', wordBreak: 'break-word' }}>
+                {
+                  extractFileNameFromUrl(item)?.length > 10
+                    ? extractFileNameFromUrl(item)?.slice(0, 10) + '...'
+                    : extractFileNameFromUrl(item)
+                }
+              </h5>
+              <button
+                className="clearButton2 xl mt-2"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                onClick={toggleOptions}
+              >
+                <i className="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <ul className="dropdown-menu light">
+                <li style={{ textAlign: "center" }}>
+                  <a
+                    href={item}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <i class="fa-solid fa-download"></i> Download
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
+
+          {/* Video (hidden until loaded) */}
           <video
-            controls
-            className="w-100 h-100 rounded"
             ref={thisVideoRef}
-            onPlay={handlePlayVideo}
+            controls
+            className={`w-100 h-100 rounded ${!isVideoLoaded ? "d-none" : ""}`}
+            preload="auto"
+            poster={thumbnail}
           >
             <source src={item} type="video/mp4" />
           </video>

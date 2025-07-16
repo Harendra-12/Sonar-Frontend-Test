@@ -26,5 +26,8 @@ export const api_url = {
     // meet related api's
     MEET_STOP_RECORDING: (name) => `/stop-recording?roomName=${name}`,
     MEET_START_RECORDING: (name) =>  `/start-recording?roomName=${name}`,
-    MEET_RECORDING: (id) => `/recordings?roomName=${id}`
+    MEET_RECORDING: (id) => `/recordings?roomName=${id}`,
+
+    // webrtc-> message module api's
+    PIN_MESSAGE: (message_id, isPin) => `/message/${message_id}/${isPin}`
 }

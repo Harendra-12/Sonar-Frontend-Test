@@ -3,7 +3,7 @@
 } */
 
 
-.nav-link{
+.nav-link {
     transition: none;
 }
 
@@ -1141,7 +1141,7 @@
     border: none;
     color: #f0f8ff;
     font-size: 0.813rem;
-    text-align: end;
+    /* text-align: end; */
 }
 
 .webrtc_newMessageUi .newMessageBoxUi #profileOfflineNav::before {
@@ -1160,8 +1160,19 @@
 .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
      /* height: 201px; */
     width: 201px;
-  
 
+/* .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
+    height: 201px;
+    width: 201px;
+} */
+}
+
+.displayFile {
+    display: flex;
+    width: 180px;
+}
+.messageItem.sender .messageDetailss.displayFile{
+    margin-left: -135px;
 }
 .webrtc_newMessageUi .leftside_listBar {
     height: calc(100vh - 82px);
@@ -1490,7 +1501,6 @@
     gap: 5px;
     transform: translate(-1%, -5%);
     z-index: 999;
-    overflow: hidden;
 }
 
 .messageIncomingPopup .incomingCallPopup {
@@ -1634,6 +1644,10 @@
     height: calc(100vh - 360px);
     overflow: auto;
 }
+.filePanelActive-video{
+    display: flex;
+    justify-content: center;
+}
 
 .webrtc_newMessageUi .messageOverlay.groupChat .messageList {
     height: calc(100vh - 319px);
@@ -1718,33 +1732,37 @@
     color: var(--me-text-color) !important;
 }
 
+.video-list-in-profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
 
-
-.displayFile{
-
+.displayFile {
+    text-align: center;
 }
 
 @property --angle {
-  syntax: '<angle>';
-  initial-value: 90deg;
-  inherits: true;
+    syntax: '<angle>';
+    initial-value: 90deg;
+    inherits: true;
 }
 
 @property --gradX {
-  syntax: '<percentage>';
-  initial-value: 50%;
-  inherits: true;
+    syntax: '<percentage>';
+    initial-value: 50%;
+    inherits: true;
 }
 
 @property --gradY {
-  syntax: '<percentage>';
-  initial-value: 0%;
-  inherits: true;
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: true;
 }
 
 
-.displayFile.borderGradientAnimation{
+.displayFile.borderGradientAnimation {
     position: relative;
 }
 
@@ -1754,7 +1772,8 @@
     inset: 0;
     width: 200px;
     height: 100%;
-    border: 0.20rem solid transparent; /* Start transparent */
+    border: 0.20rem solid transparent;
+    /* Start transparent */
     border-image: conic-gradient(from var(--angle), var(--c2), rgb(0 151 255) 0.1turn, rgb(48 92 253) 0.15turn, var(--c2) 0.25turn) 30;
     animation: borderRotate var(--d) linear forwards;
     border-radius: 5px;
@@ -1766,24 +1785,29 @@
         --gradX: 50%;
         --gradY: 0%;
         --angle: 90deg;
-       opacity: 1;
+        opacity: 1;
     }
+
     20% {
         --gradX: 100%;
         --gradY: 50%;
     }
+
     40% {
         --gradX: 100%;
         --gradY: 100%;
     }
+
     60% {
         --gradX: 50%;
         --gradY: 100%;
     }
+
     80% {
         --gradX: 0%;
         --gradY: 50%;
     }
+
     100% {
         --gradX: 50%;
         --gradY: 0%;

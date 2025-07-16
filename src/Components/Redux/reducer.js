@@ -102,7 +102,8 @@ var handRaises = [];
 var confNotif = [];
 var socketSendPeerCallMessage = [];
 var redirectConference = false;
-var allNotificationState = []
+var allNotificationState = [];
+var messageRecipient = []
 
 const initialState = {
   account,
@@ -205,7 +206,8 @@ const initialState = {
   handRaises,
   confNotif,
   redirectConference,
-  allNotificationState
+  allNotificationState,
+  messageRecipient
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -503,6 +505,9 @@ const counterReducer = (state = initialState, action) => {
     }
     case ActionType.SET_NOTIFICATION_STATE: {
       return { ...state, allNotificationState: action?.allNotificationState }
+    }
+    case "SET_MESSAGERECIPIENT": {
+      return { ...state, messageRecipient: action.messageRecipient }
     }
     default:
       return state;

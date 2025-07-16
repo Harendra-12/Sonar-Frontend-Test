@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import LiveKitConference from "./LiveKitConference";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { meetGeneralGetFunction } from "../../../GlobalFunction/globalFunction";
 
 function InitiateCall({
@@ -22,6 +22,7 @@ function InitiateCall({
   isConferenceAdmin,
   conferenceInfo
 }) {
+  const dispatch = useDispatch();
   const [token, setToken] = useState(null);
   const [serverUrl, setServerUrl] = useState(null);
   // const roomName = `${from}-${to}`;
@@ -30,6 +31,7 @@ function InitiateCall({
   const roomId = useSelector((state) => state.RoomID);
   const [roomName, setRoomName] = useState("");
   const [isAdmin, setIsAdmin] = useState(true);
+  const messageRecipient = useSelector((state) => state.messageRecipient)
 
   // Check if its a Conference Call or Normal Call
 
@@ -66,31 +68,34 @@ function InitiateCall({
     if (roomName) {
       getToken();
     }
-    if (recipient[1] == to) {
-      setStoreRecipient(recipient);
+    if (messageRecipient[1] == to) {
+      setStoreRecipient(messageRecipient);
     }
   }, [from, to, name, roomName, isAdmin]);
 
-  // useEffect(() => {
-  //     const handleClick = (event) => {
-  //         const chatButton = document.querySelector(".lk-button.lk-chat-toggle");
+  useEffect(() => {
+    const handleClick = (event) => {
+      const chatButton = document.querySelector(".lk-button.lk-chat-toggle");
 
-  //         if (event.target === chatButton || chatButton?.contains(event.target)) {
-  //             if (storeRecipient) {
-  //                 setRecipient(storeRecipient);
-  //                 setSelectedChat("singleChat");
+      if (event.target === chatButton || chatButton?.contains(event.target)) {
+        if (storeRecipient) {
+          dispatch(({
+            type: "SET_MESSAGERECIPIENT",
+            messageRecipient: storeRecipient,
+          }));
+          setSelectedChat("singleChat");
 
-  //                 setIsChatOpen(prev => !prev);
-  //             }
-  //         }
-  //     };
+          setIsChatOpen(prev => !prev);
+        }
+      }
+    };
 
-  //     document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick);
 
-  //     return () => {
-  //         document.removeEventListener('click', handleClick);
-  //     };
-  // }, [storeRecipient]);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, [storeRecipient]);
 
   useEffect(() => {
     const messagingBlock = document.getElementById("messagingBlock");
@@ -131,7 +136,7 @@ function InitiateCall({
           serverUrl={serverUrl}
           roomName={roomName}
           username={name}
-          isAdmin={true}
+          isAdmin={isAdmin}
           setCalling={setCalling}
           isMinimize={interCallMinimize}
           setIsMinimize={setInterCallMinimize}
