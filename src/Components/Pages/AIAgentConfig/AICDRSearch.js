@@ -110,8 +110,6 @@ function AICDRSearch({ page }) {
     });
   }
 
-  console.log(formatTimestampToDateTime(1751884488.0));
-
   return (
     <>
       <main className="mainContent">
