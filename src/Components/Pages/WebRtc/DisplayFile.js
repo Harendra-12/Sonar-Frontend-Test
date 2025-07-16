@@ -200,6 +200,11 @@ const DisplayFile = ({ item, index }) => {
     }
   };
 
+  const extractFileNameFromUrl = (url) => {
+    return url.substring(url.lastIndexOf('/') + 1);
+  }
+
+
   if (!item) return null;
   if (item === "loading")
     return (
@@ -391,18 +396,48 @@ const DisplayFile = ({ item, index }) => {
     }
 
     if (ext === "mp4") {
-
       return (
-        <div className="displayFile" style={{ height: "200px", width: "200px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="displayFile" >
           {!isVideoLoaded && (
-            <a
-              href={item}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-sm btn-primary"
-            >
-              <i class="fa-solid fa-download"></i> not supported Video
-            </a>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              margin: 'auto',
+              gap: '5px'
+            }}>
+              <div style={{ fontSize: "26px", color: "#007bff" }}>
+                <i className="fa-solid fa-file-video"></i>
+              </div>
+              <h5 className="p-0 m-0 text-center" style={{ fontSize: '14px', maxWidth: '180px', wordBreak: 'break-word' }}>
+                {
+                  extractFileNameFromUrl(item)?.length > 10
+                    ? extractFileNameFromUrl(item)?.slice(0, 10) + '...'
+                    : extractFileNameFromUrl(item)
+                }
+              </h5>
+              <button
+                className="clearButton2 xl mt-2"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                onClick={toggleOptions}
+              >
+                <i className="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <ul className="dropdown-menu light">
+                <li style={{ textAlign: "center" }}>
+                  <a
+                    href={item}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <i class="fa-solid fa-download"></i> Download
+                  </a>
+                </li>
+              </ul>
+            </div>
           )}
 
           {/* Video (hidden until loaded) */}
