@@ -304,7 +304,7 @@ function Agents({ type }) {
                           </span>
                         </button>
 
-                        <button
+                        {/* <button
                           onClick={() => {
                             setBulkEditPopup(true);
                           }}
@@ -315,7 +315,7 @@ function Agents({ type }) {
                           <span className="icon">
                             <i className="fa-solid fa-pen"></i>
                           </span>
-                        </button>
+                        </button> */}
 
                         {checkViewSidebar(
                           "User",
