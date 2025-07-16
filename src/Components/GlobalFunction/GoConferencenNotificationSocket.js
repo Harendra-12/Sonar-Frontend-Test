@@ -51,7 +51,7 @@ function GoConferenceNotificationSocket() {
       }
 
       connectingRef.current = true;
-      const socket = new WebSocket(`wss://${ip}:${port}/ws?id=${account.id}`);
+      const socket = new WebSocket(`wss://${ip}:${port}/ws?user_id=${account.id}`);
 
       socket.onopen = () => {
         reconnectAttemptsRef.current = 0;
