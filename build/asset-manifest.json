@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.7512e99e.css",
-    "main.js": "/static/js/main.ab484aac.js",
+    "main.css": "/static/css/main.48351773.css",
+    "main.js": "/static/js/main.93abd2f1.js",
     "static/js/453.6a4f2cd4.chunk.js": "/static/js/453.6a4f2cd4.chunk.js",
     "static/media/cellphone-ringing-6475.mp3": "/static/media/cellphone-ringing-6475.464cc45992f202d5ea62.mp3",
     "static/media/instagram.webp": "/static/media/instagram.3090db40fa34a1e434a6.webp",
     "static/media/5570879.jpg": "/static/media/5570879.96dc0e54a8ca08e5b1fb.jpg",
+    "static/media/thumbnail.png": "/static/media/thumbnail.0ba0e2b707ad33e67923.png",
     "static/media/went-wrong.png": "/static/media/went-wrong.bf13c64297af510cb26c.png",
     "static/media/loader-gif.webp": "/static/media/loader-gif.3f40aeb2e7a9b1cc50e4.webp",
     "static/media/profile-bg1.webp": "/static/media/profile-bg1.c68b7241670373d3de16.webp",
@@ -48,12 +49,12 @@
     "static/media/jpg.webp": "/static/media/jpg.0f9f6a065f02423ce008.webp",
     "static/media/file.webp": "/static/media/file.a7990a1771475a401239.webp",
     "static/media/register.webp": "/static/media/register.c9c3dd0cf1a662c8c81b.webp",
-    "main.7512e99e.css.map": "/static/css/main.7512e99e.css.map",
-    "main.ab484aac.js.map": "/static/js/main.ab484aac.js.map",
+    "main.48351773.css.map": "/static/css/main.48351773.css.map",
+    "main.93abd2f1.js.map": "/static/js/main.93abd2f1.js.map",
     "453.6a4f2cd4.chunk.js.map": "/static/js/453.6a4f2cd4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7512e99e.css",
-    "static/js/main.ab484aac.js"
+    "static/css/main.48351773.css",
+    "static/js/main.93abd2f1.js"
   ]
 }
