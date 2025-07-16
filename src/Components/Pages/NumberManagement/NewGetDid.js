@@ -426,7 +426,7 @@ const NewGetDid = () => {
                                     <label htmlFor="">Usage</label>
                                   </div>
                                   <div className="col-12">
-                                    <div className="d-flex flex-wrap" style={{columnGap: '15px'}}>
+                                    <div className="d-flex flex-wrap" style={{ columnGap: '15px' }}>
                                       <div className="checkbox-wrapper-4">
                                         <input
                                           className="inp-cbx"
@@ -575,7 +575,7 @@ const NewGetDid = () => {
                                           </symbol>
                                         </svg>
                                       </div>
-                                      
+
                                     </div>
                                     <label
                                       htmlFor="data"
@@ -834,7 +834,7 @@ const NewGetDid = () => {
                                 <div className="formRow col-auto">
                                   <div className="">
                                     <button
-                                      className="btn btn-primary"
+                                      className="btn btn-primary mt-4"
                                       type="submit"
                                     >
                                       Search
