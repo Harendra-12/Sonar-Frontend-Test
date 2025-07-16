@@ -98,7 +98,7 @@ function CallBlockingAdd() {
   }, [debounceCallDestination]);
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
-    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+    if (/^\d*$/.test(newValue) && newValue.length <= 15) {
       setDebounceCallDestinationFlag(newValue);
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
@@ -270,7 +270,7 @@ function CallBlockingAdd() {
         action: "reject",
         block_type: "did"
       }));
-    const response = await generalPostFunction("/spam/store", payload);
+    const response = await generalPostFunction("/spam/storeSpamBatch", payload);
     if (response.status) {
       toast.success(response.message);
       setSelectedCdrToBlock([]);
