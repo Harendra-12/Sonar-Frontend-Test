@@ -227,9 +227,10 @@ a.loginLabel {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 80vh;
+    height: 80dvh;
     padding: 20px 20px;
     z-index: 999;
+    margin-top: 20px;
 }
 
 .loginWrapper2 .content h3,
@@ -386,15 +387,16 @@ a.loginLabel {
 
 .loginWave {
     width: 100%;
-    height: 500px;
+    height: 400px;
     position: fixed;
-    bottom: 0;
+    bottom: -10px;
     left: 0;
     z-index: 0;
 }
 
 .loginWave img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -481,6 +483,7 @@ a.loginLabel {
     padding: 3px 31px;
     cursor: pointer;
 }
+
 .loginWrapper2 .loginImgWrapper {
     display: flex;
     justify-content: flex-start;
@@ -488,8 +491,9 @@ a.loginLabel {
     flex-direction: column;
     padding-bottom: 30px;
 }
-.loginGirlsImg{
-   position: absolute;
+
+.loginGirlsImg {
+    position: absolute;
     bottom: 63px;
     left: 0;
     right: 0;
@@ -497,7 +501,8 @@ a.loginLabel {
     margin: auto;
     z-index: -1;
 }
-.loginChat{
+
+.loginChat {
     margin-top: 50px;
     width: 85%;
     margin-left: 0;
