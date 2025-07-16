@@ -137,7 +137,7 @@ function Header(props) {
                   <a
                     href="/webrtc"
                     target="_blank"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", position: 'relative', zIndex: '9999' }}
                     className="clearColorButton"
                   >
                     <i className="fa-regular fa-phone-office me-0" />{" "}
