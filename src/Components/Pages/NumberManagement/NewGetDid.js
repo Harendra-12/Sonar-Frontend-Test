@@ -41,6 +41,8 @@ const NewGetDid = () => {
   const [popUp, setPopUp] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [purchaseDidPopup, setPurchaseDidPopup] = useState(false);
+  const [activeVendor, setActiveVendor] = useState("");
+  const availableTopCountries = ["US", "GB", "CA", "CO"];
 
   const [selectedUsage, setSelectedUsage] = useState([
     {
@@ -94,6 +96,7 @@ const NewGetDid = () => {
         if (apiData?.status) {
           setCountryCode(apiData.data);
           setLoading(false);
+          setActiveVendor(apiData.active_vendor)
         }
       } catch (err) {
         console.log(err);
@@ -138,7 +141,7 @@ const NewGetDid = () => {
       ...data,
       // searchType: data.searchType,
       quantity: data.quantity || 10, // Fallback for Quantity
-      npa: data.npa ? data.npa : data.searchType === "domestic" ? "567" : "",
+      // npa: data.npa ? data.npa : data.searchType === "domestic" ? "567" : "",
       companyId: account.account_id,
       usage: usagePayload,
     };
@@ -321,21 +324,28 @@ const NewGetDid = () => {
                                     // disabled
                                     >
                                       {countryCode.length > 0 ? (
-                                        countryCode.map((item, key) => {
-                                          return (
-                                            <option
-                                              key={key}
-                                              value={item?.country_code}
-                                            >
-                                              <div>
-                                                <label>
-                                                  {item?.country} -{" "}
-                                                  {item?.country_code}
-                                                </label>
-                                              </div>
-                                            </option>
-                                          );
-                                        })
+                                        countryCode
+                                          .filter((item) => {
+                                            if (watch().searchType === "tollfree") {
+                                              return availableTopCountries.includes(item?.country_code);
+                                            }
+                                            return true;
+                                          })
+                                          .map((item, key) => {
+                                            return (
+                                              <option
+                                                key={key}
+                                                value={item?.country_code}
+                                              >
+                                                <div>
+                                                  <label>
+                                                    {item?.country} -{" "}
+                                                    {item?.country_code}
+                                                  </label>
+                                                </div>
+                                              </option>
+                                            );
+                                          })
                                       ) : (
                                         <option>No Country Found!</option>
                                       )}
@@ -951,37 +961,48 @@ const NewGetDid = () => {
                         ) : (
                           <div className="p-4">
                             <h4 className="card_title">Top countries</h4>
-                            <div className="country_card_group mb-3">
-                              <div
-                                className="card country_box"
-                                onClick={() => setValue("country", "US")}
-                                style={{ width: "141px" }}
-                              >
-                                <div className="card-body">
-                                  <div className="avatar_img">
-                                    <img
-                                      src={`https://flagsapi.com/US/flat/64.png`}
-                                      alt="logout"
-                                      style={{ width: "auto" }}
-                                    />
-                                  </div>
-                                  <div className="card_details">
-                                    <p className="country_name">
-                                      United States
-                                    </p>
-                                    <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                      <p className="text-center mb-0">+1</p>
+                            <div className="country_card_group mb-3 d-flex flex-wrap">
+                              {countryCode &&
+                                countryCode.length > 0 &&
+                                countryCode
+                                  .filter((item) => availableTopCountries.includes(item.country_code))
+                                  .map((item, index) => (
+                                    <div
+                                      key={index}
+                                      className="card country_box"
+                                      style={{ width: '141px' }}
+                                      onClick={() =>
+                                        setValue("country", item.country_code)
+                                      }
+                                    >
+                                      <div className="card-body">
+                                        <div className="avatar_img">
+                                          <img
+                                            src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                            alt="logout"
+                                            style={{ width: "auto" }}
+                                          />
+                                        </div>
+                                        <div className="card_details">
+                                          <p className="country_name">
+                                            {item?.country}
+                                          </p>
+                                          <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                            <p className="text-center mb-0">
+                                              {item?.prefix_code}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </div>
+                                  ))}
                             </div>
                             <h4 className="card_title">All countries</h4>
                             <div className="country_card_group">
                               {countryCode &&
                                 countryCode.length > 0 &&
                                 countryCode
-                                  .filter((item) => item.country_code !== "US")
+                                  .filter((item) => !availableTopCountries.includes(item.country_code))
                                   .map((item, index) => (
                                     <div
                                       key={index}
