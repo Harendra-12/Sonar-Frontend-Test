@@ -3466,7 +3466,8 @@ function Messages({
                                                 className="message-text-container"
                                                 style={{ display: "flex", alignItems: "center" }}
                                               >
-                                                <div className="dropdown">
+                                                {/* TODO : FIX PIN UI */}
+                                                {/* <div className="dropdown">
                                                   <button
                                                     className="clearButton2"
                                                     type="button"
@@ -3486,7 +3487,7 @@ function Messages({
                                                       </div>
                                                     </li>
                                                   </ul>
-                                                </div>
+                                                </div> */}
                                                 <div className="videoSize">
                                                   <DisplayFile
                                                     key={index}
@@ -3558,7 +3559,8 @@ function Messages({
                                                 <div className="videoSize">
                                                   <DisplayFile item={item.body} />
                                                 </div>
-                                                <div className="dropdown">
+                                                 {/* TODO : FIX PIN UI */}
+                                                {/* <div className="dropdown">
                                                   <button
                                                     className="clearButton2"
                                                     type="button"
@@ -3578,7 +3580,7 @@ function Messages({
                                                       </div>
                                                     </li>
                                                   </ul>
-                                                </div>
+                                                </div> */}
                                               </div>
                                             </div>
                                           </div>
