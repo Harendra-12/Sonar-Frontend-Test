@@ -96,7 +96,7 @@ const NewGetDid = () => {
         if (apiData?.status) {
           setCountryCode(apiData.data);
           setLoading(false);
-          setActiveVendor(apiData.active_vendor)
+          setActiveVendor(apiData?.active_vendor)
         }
       } catch (err) {
         console.log(err);
