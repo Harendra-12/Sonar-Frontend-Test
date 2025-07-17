@@ -160,10 +160,10 @@ function AICDRSearch({ page }) {
                             className="formItem"
                             value={advanceSearch}
                             onChange={(e) => setAdvanceSearch(e.target.value)}
-                            // max={new Date()?.toISOString()?.split("T")[0]}
-                            // value={startDateFlag}
+                          // max={new Date()?.toISOString()?.split("T")[0]}
+                          // value={startDateFlag}
 
-                            // onKeyDown={(e) => e.preventDefault()}
+                          // onKeyDown={(e) => e.preventDefault()}
                           />
                         </div>
                       </div>
@@ -272,19 +272,19 @@ function AICDRSearch({ page }) {
                                     <td>{item.agent_name}</td>
                                     <td>
                                       {item.call_date}
-                                      {
+                                      {/* {
                                         formatTimestampToDateTime(
                                           item.timestamp
                                         ).split("")[0]
-                                      }
+                                      } */}
                                     </td>
                                     <td>
                                       {item.call_time}
-                                      {
+                                      {/* {
                                         formatTimestampToDateTime(
                                           item.timestamp
                                         ).split("")[1]
-                                      }
+                                      } */}
                                     </td>
                                     <td>{formatDuration(item.duration_sec)}</td>
                                     <td>${item.charge}</td>

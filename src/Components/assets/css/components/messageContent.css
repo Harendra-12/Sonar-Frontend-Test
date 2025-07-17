@@ -1157,17 +1157,23 @@
     margin-bottom: 8px;
     text-transform: capitalize;
 }
+.webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
+     /* height: 201px; */
+    width: 201px;
 
 /* .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second .videoSize {
     height: 201px;
     width: 201px;
 } */
+}
 
 .displayFile {
     display: flex;
     width: 180px;
 }
-
+.messageItem.sender .messageDetailss.displayFile{
+    margin-left: -135px;
+}
 .webrtc_newMessageUi .leftside_listBar {
     height: calc(100vh - 82px);
     background: var(--me-body-bg2);
@@ -1495,7 +1501,6 @@
     gap: 5px;
     transform: translate(-1%, -5%);
     z-index: 999;
-    overflow: hidden;
 }
 
 .messageIncomingPopup .incomingCallPopup {
