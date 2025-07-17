@@ -143,6 +143,14 @@ function DidListing({ page }) {
     if (page === "number")
       allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`;
     const apiData = await generalGetFunction(allDidUrl);
+     const apiData2 = await generalGetFunction(`/did/all?all-dids`);
+        if (apiData2?.status) {
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData2.data,
+          });
+          // setLoading(false);
+        } 
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
@@ -158,10 +166,10 @@ function DidListing({ page }) {
       // }
       setDid(apiData.data?.data);
       setDidWithPagination(apiData?.data);
-      dispatch({
-        type: "SET_DIDALL",
-        didAll: apiData.data || [],
-      });
+      // dispatch({
+      //   type: "SET_DIDALL",
+      //   didAll: apiData.data || [],
+      // });
     } else {
       setLoading(false);
       setRefreshState(false);
@@ -244,7 +252,7 @@ function DidListing({ page }) {
           termination_uri: terminationUri,
         });
         // navigate('/ai-phone-number')
-      } else if (selectedDid.usages === "ai") {
+      } else if (selectedDid?.usages === "ai") {
         aiGeneralDeleteFunction(`/phonenumber/delete/${selectedDid.did}`);
       }
     } else {
@@ -392,8 +400,8 @@ function DidListing({ page }) {
                   </div>
 
                   {addNew ? (
-                    didAll?.data?.filter(
-                      (item) => item.usages === "" || !item.usages
+                    didAll?.filter(
+                      (item) => item.usages === "" || !item.usages || item.usages ===  null
                     ).length === 0 ? (
                       <div
                         className="popup loggedPopupSm"
@@ -417,7 +425,7 @@ function DidListing({ page }) {
                                 </h4>
                                 <p className="text-center">
                                   All number is assign with other module please
-                                  add <Link to="/did-add">new number</Link>!
+                                  add <Link to="/management-get-did">new number</Link>!
                                 </p>
                                 <div className="mt-3 logoutPopup d-flex justify-content-center">
                                   <button
@@ -456,8 +464,7 @@ function DidListing({ page }) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {didAll?.data
-                                      ?.filter(
+                                    {didAll?.filter(
                                         (item) =>
                                           item.usages === "" || !item.usages
                                       )
