@@ -1086,19 +1086,22 @@ function Messages({
 
   // ================ scroll related stuff end here 
 
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction("/user-all");
-      if (apiData?.status) {
-        // setUser(apiData.data.filter((item) => item.extension_id !== null));
-        setAllAgents(apiData.data);
-        // setGroupSelecedAgents((prevSelected) => {
-        //   return [...apiData.data.filter((item) => item.email === account.email)];
-        // }
-        // )
-      }
+  const getAllUser = async () => {
+    const apiData = await generalGetFunction("/user-all");
+    if (apiData?.status) {
+      // setUser(apiData.data.filter((item) => item.extension_id !== null));
+      setAllAgents(apiData.data);
+      // setGroupSelecedAgents((prevSelected) => {
+      //   return [...apiData.data.filter((item) => item.email === account.email)];
+      // }
+      // )
     }
-    getData();
+  }
+
+  // =============== useEffect stuff start here 
+
+  useEffect(() => {
+    getAllUser();
   }, []);
 
   useEffect(() => {
@@ -1118,6 +1121,8 @@ function Messages({
       setOriginalOnlineUser([]);
     }
   }, [loginUser]);
+
+  // ======================= useEffect stuff End here 
 
   // Handle calling
   async function onSubmit(mode, destNumber) {
@@ -1918,7 +1923,7 @@ function Messages({
   };
 
   const handlePinMessage = async (item) => {
-    const result = await generalPostFunction(api_url?.PIN_MESSAGE(item?.id, item?.is_pinned == 1 ? 0 : 1));
+    const result = await generalPostFunction(api_url?.PIN_MESSAGE(item?.id, item?.is_pinned == 1 ? true : ''));
     if (result?.status) {
       toast?.success(result?.message)
       const updatedAllMessage = allMessage[recipient[1]]?.map(item =>
@@ -1946,6 +1951,14 @@ function Messages({
     }
   }, [messageRecipient]);
 
+  const handleTypingEvent = () => {
+    socketSendMessage({
+      action: "typing_status",
+      user_id: account?.id,
+      to_user_id: recipient?.[1],
+      is_typing: true
+    });
+  }
 
   return (
     <>
@@ -2236,7 +2249,7 @@ function Messages({
                               handleMessageSearchChange(event)
                             }
                           />
-                          {contact?.map((item) => {
+                          {contact?.map((item, key) => {
                             return (
                               <div
                                 data-bell={
@@ -2249,6 +2262,7 @@ function Messages({
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
+                                key={key}
                               >
                                 <div
                                   onClick={() => {
@@ -2340,6 +2354,7 @@ function Messages({
                                               <span
                                                 data-id={key}
                                                 className="ellipsisText"
+                                                key={key}
                                               >
                                                 {tag.tag?.[0]?.name}
                                               </span>
@@ -2361,7 +2376,10 @@ function Messages({
                                               >
                                                 {item.tags?.map((tag, key) => (
                                                   // <li>
-                                                  <span data-id={key}>
+                                                  <span
+                                                    data-id={key}
+                                                    key={key}
+                                                  >
                                                     {tag.tag?.[0]?.name}
                                                   </span>
                                                   // </li>
@@ -2418,6 +2436,7 @@ function Messages({
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
+                                key={index}
                                 data-bell={
                                   unreadMessage[item.group_name]
                                     ? unreadMessage[item.group_name]
@@ -2549,7 +2568,7 @@ function Messages({
                           </h5>
                         </div>
                         <div className="collapse show" id="collapse4">
-                          {onlineUser.map((item) => {
+                          {onlineUser.map((item, key) => {
                             return (
                               <div
                                 data-bell=""
@@ -2558,6 +2577,7 @@ function Messages({
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
+                                key={key}
                               >
                                 <div
                                   onClick={() => {
@@ -2791,6 +2811,7 @@ function Messages({
                                   ? "contactListItem selected"
                                   : "contactListItem"
                               }
+                              key={index}
                               data-bell={
                                 unreadMessage[item.group_name]
                                   ? unreadMessage[item.group_name]
@@ -3117,6 +3138,7 @@ function Messages({
                                         return (
                                           <span
                                             data-id={key}
+                                            key={key}
                                             onClick={() =>
                                               handleAssignTask(
                                                 item?.id,
@@ -3398,6 +3420,28 @@ function Messages({
                       )}
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
+                        {allMessage[recipient[1]]?.length > 0 && (() => {
+                          const pinnedMessages = allMessage[recipient[1]].filter(msg => msg?.is_pinned == 1);
+
+                          if (pinnedMessages.length === 0) return null;
+
+                          return (
+                            <div className="dateHeader sticky">
+                              <p>
+                                {pinnedMessages.map((data, index) => {
+                                  const isLast = index === pinnedMessages.length - 1;
+                                  return (
+                                    <span key={index}>
+                                      {data?.message_text}
+                                      {!isLast && ', '}
+                                    </span>
+                                  );
+                                })}
+                              </p>
+                            </div>
+                          );
+                        })()}
+
                         <div className="messageList" ref={messageListRef}>
                           {recipient?.[0] ? (
                             <>
@@ -3734,7 +3778,7 @@ function Messages({
                                           .trim()
                                           .split(/\s+/)
                                           .filter(Boolean).length;
-
+                                        debugger
                                         if (value.trim() === "") {
                                           setMessageInput((prev) => {
                                             const updated = { ...prev };
@@ -3743,7 +3787,7 @@ function Messages({
                                           });
                                           return;
                                         }
-
+                                        handleTypingEvent()
                                         if (wordCount <= 250) {
                                           setMessageInput((prev) => ({
                                             ...prev,
@@ -4196,6 +4240,7 @@ function Messages({
                                     data-bell=""
                                     className="contactListItem bg-transparent"
                                     style={{ minHeight: "auto" }}
+                                    key={index}
                                   >
                                     <div className="row justify-content-between">
                                       <div className="col-xl-12 d-flex">
