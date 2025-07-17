@@ -50,7 +50,7 @@ function ConfigureStepDashboard({ account2 }) {
       } else {
         setSearchingDid(false);
         setDidRawData(apiData);
-        setDid("No DID found with the given NPX");
+        setDid("No Number found with the given NPX");
       }
     }
   }
@@ -168,8 +168,7 @@ function ConfigureStepDashboard({ account2 }) {
                       <ul>
                         <li>
                           <p className="text-center">
-                            Please write first 3 digits of the number which you want in
-                            DID.
+                            Please write first 3 digits of the number.
                           </p>
                         </li>
                         <li>
@@ -224,19 +223,19 @@ function ConfigureStepDashboard({ account2 }) {
                                 )}
                               </div>
                               <div className="configProgressText">
-                                <p>Searching for available DID</p>
+                                <p>Searching for available Numbers</p>
                               </div>
                             </li>
                           ) : (
                             <li>
-                              {did === "No DID found with the given NPX" ? (
+                              {did === "No Number found with the given NPX" ? (
                                 <div className="configProgressText did">
                                   <p>{did}</p>
                                 </div>
                               ) : (
                                 <div className="configProgressText did">
                                   <p>
-                                    Your DID is: <span>{did}</span>
+                                    Your Number is: <span>{did}</span>
                                   </p>
                                   <button onClick={takeDid}>
                                     <i className="fa-solid fa-check"></i>

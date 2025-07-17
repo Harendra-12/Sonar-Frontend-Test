@@ -428,7 +428,7 @@ function CampaignCreate() {
                           >
                             <div className="heading">
                               <div className="col-10">
-                                <h5>Available DID</h5>
+                                <h5>Available Number</h5>
                                 <p>Select from the available list of DIDs</p>
                               </div>
                               <div className="col-2" style={{ cursor: "pointer" }}>

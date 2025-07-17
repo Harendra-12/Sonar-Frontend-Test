@@ -263,7 +263,7 @@ const NewGetDid = () => {
         <section>
           <div className="container-fluid">
             <div className="row">
-              <Header title="DID Management" />
+              <Header title="Number Management" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild position-relative onlyModulePopup">
                   <div className="d-flex flex-wrap">
@@ -271,7 +271,7 @@ const NewGetDid = () => {
                       <div className="heading">
                         <div className="content">
                           <h4>Buy A Number</h4>
-                          <p className="mb-0">You can purchase a DID here</p>
+                          <p className="mb-0">You can purchase a Number here</p>
                         </div>
                         <div className="buttonGroup">
                           <button
@@ -379,7 +379,7 @@ const NewGetDid = () => {
                                       htmlFor="data"
                                       className="formItemDesc text-start"
                                     >
-                                      Select the type of DID
+                                      Select the type of Number
                                     </label>
                                   </div>
                                 </div>
@@ -625,7 +625,7 @@ const NewGetDid = () => {
                                           htmlFor="data"
                                           className="formItemDesc text-start"
                                         >
-                                          Select the type of domestic DID
+                                          Select the type of domestic Number
                                         </label>
                                       </div>
                                     </div>
@@ -878,7 +878,7 @@ const NewGetDid = () => {
                                             {selectedUsage.map((item, key) => {
                                               if (item.label === "Voice") {
                                                 return (
-                                                  <Tippy content="Voice Call is activated for this DID">
+                                                  <Tippy content="Voice Call is activated for this Number">
                                                     <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-solid fa-phone"></i>
                                                     </button>
@@ -888,7 +888,7 @@ const NewGetDid = () => {
                                                 item.label === "Text"
                                               ) {
                                                 return (
-                                                  <Tippy content="SMS is activated for this DID">
+                                                  <Tippy content="SMS is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-comments"></i>
                                                     </button>
@@ -896,7 +896,7 @@ const NewGetDid = () => {
                                                 );
                                               } else if (item.label === "Fax") {
                                                 return (
-                                                  <Tippy content="Fax is activated for this DID">
+                                                  <Tippy content="Fax is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-solid fa-fax"></i>
                                                     </button>
@@ -906,7 +906,7 @@ const NewGetDid = () => {
                                                 item.label === "Emergency"
                                               ) {
                                                 return (
-                                                  <Tippy content="Emergency / e911 is activated for this DID">
+                                                  <Tippy content="Emergency / e911 is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-light-emergency-on"></i>
                                                     </button>
@@ -916,7 +916,7 @@ const NewGetDid = () => {
                                                 item.label === "AI"
                                               ) {
                                                 return (
-                                                  <Tippy content="Emergency / e911 is activated for this DID">
+                                                  <Tippy content="Emergency / e911 is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-microchip-ai"></i>
                                                     </button>
@@ -1247,7 +1247,7 @@ const NewGetDid = () => {
                   <h4>Warning!</h4>
                   <p>
                     Are you sure you want to purchase{" "}
-                    {selectedDid?.length > 1 ? "these" : "this"} DID?
+                    {selectedDid?.length > 1 ? "these" : "this"} Number?
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
                     <button
