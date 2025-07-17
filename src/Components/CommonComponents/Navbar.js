@@ -458,7 +458,7 @@ function Navbar() {
                                     onClick={backToTop}
                                     className="nav-link"
                                   >
-                                    <div className="itemTitle">Get DID</div>
+                                    <div className="itemTitle">Get Number</div>
                                   </NavLink>
                                 </li>
                               )}

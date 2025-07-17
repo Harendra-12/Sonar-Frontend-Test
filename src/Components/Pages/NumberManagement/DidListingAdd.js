@@ -75,7 +75,7 @@ const DidListingAdd = () => {
         setLoading(false);
       }
     } else {
-      toast.warning("Please insert unique DID!")
+      toast.warning("Please insert unique Number!")
       setLoading(false)
     }
 
@@ -132,8 +132,8 @@ const DidListingAdd = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>DID Add</h4>
-                        <p>Add a new DID to your account.</p>
+                        <h4>Number Add</h4>
+                        <p>Add a new Number to your account.</p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -168,10 +168,10 @@ const DidListingAdd = () => {
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
                           <label className="text-dark">
-                            Add DID <span className="text-danger">*</span>
+                            Add Number <span className="text-danger">*</span>
                           </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Add new DID.
+                            Add new Number.
                           </label>
                         </div>
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -196,10 +196,10 @@ const DidListingAdd = () => {
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
                           <label className="text-dark">
-                            DID vendor <span className="text-danger">*</span>
+                            Number vendor <span className="text-danger">*</span>
                           </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Choose DID vendor.
+                            Choose Number vendor.
                           </label>
                         </div>
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -236,7 +236,7 @@ const DidListingAdd = () => {
                             Usage <span className="text-danger">*</span>
                           </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Choose Usage for this DID.
+                            Choose Usage for this Number.
                           </label>
                         </div>
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">

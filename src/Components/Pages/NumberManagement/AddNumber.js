@@ -53,13 +53,13 @@ const AddNumber = () => {
                 <section >
                     <div className="container-fluid">
                         <div className="row justify-content-center">
-                            <Header title="DID Management" />
+                            <Header title="Number Management" />
                         </div>
                         <div className='card mt-4 shadow-sm border-0'>
                             <div className="heading card-header d-flex justify-content-between align-items-center gap-2 bg-transparent border-light-subtle">
                                 <div className="content">
                                     <h4>Add a New Number</h4>
-                                    <p className='mb-0'>You can purchase a DID here</p>
+                                    <p className='mb-0'>You can purchase a Number here</p>
                                 </div>
                                 <div className="buttonGroup">
                                     <button

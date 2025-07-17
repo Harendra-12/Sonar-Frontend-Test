@@ -202,7 +202,7 @@ const CallHistory = () => {
     <>
       <main className="mainContent">
         <section id="phonePage">
-              <Header title="Call History" />
+          <Header title="Call History" />
           <div className="container-fluid">
             <div className="row">
               <div className="overviewTableWrapper">
@@ -562,7 +562,7 @@ const CallHistory = () => {
                 <div className="col-12">
                   <h4 className="text-center text-danger">Confirmation!</h4>
                   <p className="text-center">
-                    Are you sure! You want to delete this DID
+                    Are you sure! You want to delete this Number
                   </p>
 
                   <div className="d-flex justify-content-center gap-2 mt-4">

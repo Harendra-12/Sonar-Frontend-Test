@@ -2066,13 +2066,13 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     htmlFor="data"
                                     className="formItemDesc"
                                   >
-                                    Want to forword DID.
+                                    Want to forward Number.
                                   </label>
                                 </div>
                                 <div
                                   className={`col-${forwardStatus != "disabled"
-                                      ? "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12  pe-2 ms-auto"
-                                      : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                                    ? "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12  pe-2 ms-auto"
+                                    : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
                                     }`}
                                 >
                                   {forwardStatus != "disabled" && (

@@ -72,7 +72,7 @@ const CDRTracker = () => {
         <Header title="Buyers" />
         <div className="container-fluid">
           <div className="row">
-            
+
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
@@ -88,9 +88,8 @@ const CDRTracker = () => {
                             disabled={refreshState}
                           >
                             <i
-                              class={`fa-regular fa-arrows-rotate fs-5 ${
-                                refreshState ? "fa-spin" : ""
-                              }`}
+                              class={`fa-regular fa-arrows-rotate fs-5 ${refreshState ? "fa-spin" : ""
+                                }`}
                             />
                           </button>
                         </h4>
@@ -160,7 +159,7 @@ const CDRTracker = () => {
                             <th>Source</th>
                             <th>Source Number</th>
                             <th>Caller Id</th>
-                            <th>DID</th>
+                            <th>Number</th>
                             <th>Campaign Name</th>
                             <th>Buyer Name</th>
                             <th>Destination</th>

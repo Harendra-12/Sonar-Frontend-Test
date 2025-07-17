@@ -333,7 +333,7 @@ const DidConfig = () => {
                         <div className="content">
                           <h4>Destination Config</h4>
                           <p>
-                            Inbound destinations are the DID/DDI, DINS or Alias
+                            Inbound destinations are the Number/DDI, DINS or Alias
                             for inbound calls.
                           </p>
                         </div>
@@ -374,9 +374,9 @@ const DidConfig = () => {
                       <form className="row" onSubmit={handleSubmit(handleFormSubmit)}>
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
-                            <label htmlFor="">Selected DID</label>
+                            <label htmlFor="">Selected Number</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Selected DID.
+                              Selected Number.
                             </label>
                           </div>
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
@@ -495,13 +495,13 @@ const DidConfig = () => {
                           <div className="formLabel">
                             <label htmlFor="">Direct Forward</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Want to forword DID.
+                              Want to forword Number.
                             </label>
                           </div>
                           <div
                             className={`${forwardStatus != "disabled"
-                                ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
-                                : "6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
+                              ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
+                              : "6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
                               }`}
                           >
                             {forwardStatus != "disabled" && (

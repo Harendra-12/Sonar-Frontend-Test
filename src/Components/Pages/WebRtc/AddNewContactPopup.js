@@ -140,13 +140,13 @@ function AddNewContactPopup({
           </div>
           <div className="col-xl-12 mt-3">
             <div className="formLabel">
-              <label htmlFor="">DID / Extension</label>
+              <label htmlFor="">Number / Extension</label>
             </div>
             <div className="col-12">
               <input
                 type="text"
                 className="formItem"
-                placeholder="DID"
+                placeholder="Number"
                 {...register("did", {
                   ...requiredValidator,
                   ...numberValidator,

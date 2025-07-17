@@ -143,14 +143,14 @@ function DidListing({ page }) {
     if (page === "number")
       allDidUrl = `/did/all?search=${searchQuery}&page=${pageNumber}&row_per_page=${entriesPerPage}`;
     const apiData = await generalGetFunction(allDidUrl);
-     const apiData2 = await generalGetFunction(`/did/all?all-dids`);
-        if (apiData2?.status) {
-          dispatch({
-            type: "SET_DIDALL",
-            didAll: apiData2.data,
-          });
-          // setLoading(false);
-        } 
+    const apiData2 = await generalGetFunction(`/did/all?all-dids`);
+    if (apiData2?.status) {
+      dispatch({
+        type: "SET_DIDALL",
+        didAll: apiData2.data,
+      });
+      // setLoading(false);
+    }
     if (apiData?.status) {
       setLoading(false);
       setRefreshState(false);
@@ -343,7 +343,7 @@ function DidListing({ page }) {
                     <div className="heading">
                       <div className="content">
                         <h4>
-                          All DID
+                          All Number
                           <button
                             className="clearButton"
                             onClick={handleRefreshBtnClicked}
@@ -355,7 +355,7 @@ function DidListing({ page }) {
                             ></i>
                           </button>
                         </h4>
-                        <p>Add a new DID</p>
+                        <p>Add a new Number</p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -401,7 +401,7 @@ function DidListing({ page }) {
 
                   {addNew ? (
                     didAll?.filter(
-                      (item) => item.usages === "" || !item.usages || item.usages ===  null
+                      (item) => item.usages === "" || !item.usages || item.usages === null
                     ).length === 0 ? (
                       <div
                         className="popup loggedPopupSm"
@@ -448,7 +448,7 @@ function DidListing({ page }) {
                           <div className="row">
                             <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
                               <i className="fa-light fa-user-plus shadow-none" />
-                              <h5 className=" text-primary">Add new DID </h5>
+                              <h5 className=" text-primary">Add new Number </h5>
                             </div>
                             <div className="col-xl-12 ">
                               <div
@@ -460,14 +460,14 @@ function DidListing({ page }) {
                                     <tr>
                                       <th>S.No</th>
                                       <th>Number</th>
-                                      <th className="text-center">Add DID</th>
+                                      <th className="text-center">Add Number</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {didAll?.filter(
-                                        (item) =>
-                                          item.usages === "" || !item.usages
-                                      )
+                                      (item) =>
+                                        item.usages === "" || !item.usages
+                                    )
                                       .map((item, index) => {
                                         return (
                                           <tr>
@@ -590,7 +590,7 @@ function DidListing({ page }) {
                         <table>
                           <thead>
                             <tr>
-                              <th>DID</th>
+                              <th>Number</th>
                               {page !== "tracker" && page !== "dialer" ? <>
                                 <th>E911</th>
                                 <th>Cname</th>
@@ -629,7 +629,7 @@ function DidListing({ page }) {
                                     "edit"
                                   ) && (
                                       <th style={{ textAlign: "center" }}>
-                                        WhatsApp DID
+                                        WhatsApp Number
                                       </th>
                                     )}
                                   {checkViewSidebar(
@@ -640,7 +640,7 @@ function DidListing({ page }) {
                                     "edit"
                                   ) && (
                                       <th style={{ textAlign: "center" }}>
-                                        E-fax DID
+                                        E-fax Number
                                       </th>
                                     )}
                                   {checkViewSidebar(
@@ -651,7 +651,7 @@ function DidListing({ page }) {
                                     "edit"
                                   ) && (
                                       <th style={{ textAlign: "center" }}>
-                                        SMS DID
+                                        SMS Number
                                       </th>
                                     )}
                                 </>
@@ -661,7 +661,7 @@ function DidListing({ page }) {
                               {page === "pbx" ? (
                                 <>
                                   <th style={{ textAlign: "center" }}>
-                                    Default Caller DID
+                                    Default Caller Number
                                   </th>
                                 </>
                               ) : (
@@ -805,11 +805,11 @@ function DidListing({ page }) {
                                                 <Tippy
                                                   content={
                                                     item.default_whatsapp === 1
-                                                      ? "This DID is set as default for WhatsApp"
+                                                      ? "This Number is set as default for WhatsApp"
                                                       : item.is_secondary_whatsapp ===
                                                         1
-                                                        ? "This DID is set as secondary for WhatsApp"
-                                                        : "Set this DID default for WhatsApp"
+                                                        ? "This Number is set as secondary for WhatsApp"
+                                                        : "Set this Number default for WhatsApp"
                                                   }
                                                 >
                                                   <div className="dropdown w-100">
@@ -890,11 +890,11 @@ function DidListing({ page }) {
                                                 <Tippy
                                                   content={
                                                     item.default_eFax === 1
-                                                      ? "This DID is set as default for E-fax"
+                                                      ? "This Number is set as default for E-fax"
                                                       : item.is_secondary_eFax ===
                                                         1
-                                                        ? "This DID is set as secondary for E-fax"
-                                                        : "Set this DID default for E-fax"
+                                                        ? "This Number is set as secondary for E-fax"
+                                                        : "Set this Number default for E-fax"
                                                   }
                                                 >
                                                   <div className="dropdown w-100">
@@ -969,11 +969,11 @@ function DidListing({ page }) {
                                                 <Tippy
                                                   content={
                                                     item.default_sms === 1
-                                                      ? "This DID is set as default for SMS"
+                                                      ? "This Number is set as default for SMS"
                                                       : item.is_secondary_sms ===
                                                         1
-                                                        ? "This DID is set as secondary for SMS"
-                                                        : "Set this DID default for SMS"
+                                                        ? "This Number is set as secondary for SMS"
+                                                        : "Set this Number default for SMS"
                                                   }
                                                 >
                                                   <div className="dropdown w-100">
@@ -1047,8 +1047,8 @@ function DidListing({ page }) {
                                             <Tippy
                                               content={
                                                 item.default_outbound === 1
-                                                  ? "This DID is set as default"
-                                                  : "Set this DID default"
+                                                  ? "This Number is set as default"
+                                                  : "Set this Number default"
                                               }
                                             >
                                               <button
@@ -1164,7 +1164,7 @@ function DidListing({ page }) {
                                                       "edit"
                                                     ) ? (
                                                     <li className="dropdown-item">
-                                                      <Tippy content="Reset configuration of this DID">
+                                                      <Tippy content="Reset configuration of this Number">
                                                         <div
                                                           className="clearButton text-align-start"
                                                           onClick={() =>
@@ -1193,7 +1193,7 @@ function DidListing({ page }) {
                                                     "edit"
                                                   ) && (
                                                       <li className="dropdown-item">
-                                                        <Tippy content="Select the usage of this DID">
+                                                        <Tippy content="Select the usage of this Number">
                                                           <div
                                                             className="clearButton text-align-start"
                                                             onClick={() => {
@@ -1231,7 +1231,7 @@ function DidListing({ page }) {
                                               ) && (
                                                   <li className="dropdown-item">
                                                     <Tippy
-                                                      content={"Delete the DID"}
+                                                      content={"Delete the Number"}
                                                     >
                                                       <div
                                                         className="clearButton text-align-start"
@@ -1294,7 +1294,7 @@ function DidListing({ page }) {
                 <div className="col-12 ps-0 pe-0 text-center">
                   <h4 className="text-center text-orange">Confirmation!</h4>
                   <p className="mb-2">
-                    Please select the options you want to assign to this DID
+                    Please select the options you want to assign to this Number
                   </p>
                   <select
                     className="formItem"
@@ -1366,7 +1366,7 @@ function DidListing({ page }) {
                   <div className="col-12">
                     <h4 className="text-center text-danger">Confirmation!</h4>
                     <p className="text-center">
-                      Are you sure! You want to delete this DID
+                      Are you sure! You want to delete this Number
                     </p>
 
                     <div className="d-flex justify-content-center gap-2 mt-4">
