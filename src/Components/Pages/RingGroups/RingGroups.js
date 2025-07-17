@@ -163,6 +163,10 @@ const RingGroups = () => {
     delete payLoad.ring_group_destination;
     delete payLoad.ring_group_timeout_data;
     delete payLoad.ring_group_timeout_app;
+      if (payLoad.destination_type === "disabled") {
+      delete payLoad.timeout_destination
+    }
+    console.log(payLoad)
 
     setPopUp(false);
     const apiData = await generalPutFunction(`/ringgroup/${id}`, payLoad);
