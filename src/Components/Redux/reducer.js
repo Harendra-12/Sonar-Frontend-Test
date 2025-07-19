@@ -104,6 +104,7 @@ var socketSendPeerCallMessage = [];
 var redirectConference = false;
 var allNotificationState = [];
 var messageRecipient = []
+var typingDetails = false;
 
 const initialState = {
   account,
@@ -207,7 +208,8 @@ const initialState = {
   confNotif,
   redirectConference,
   allNotificationState,
-  messageRecipient
+  messageRecipient,
+  typingDetails
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -474,6 +476,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, recipient_to_remove_notification: action?.recipient };
     case ActionType?.SET_ALL_LEADS_LIST:
       return { ...state, allLeadList: action.payload };
+    case ActionType?.IS_TYPING_ACTION: 
+      return { ...state, typingDetails: action?.typingDetails}
     case "SET_ALL_LEADS_FILE_LIST":
       return { ...state, allLeadFileList: action.allLeadFileList };
     case "SET_LEADS_REFRESH":

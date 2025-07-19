@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ActionType } from "../Redux/reduxActionType";
 
 /**
  * Establishes a WebSocket connection to a specified server using account information
@@ -127,6 +128,12 @@ const GoMessageSocket = () => {
                         case "broadcastGroupMessage":
                             dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
                             break;
+                        case "typing_status":
+                            dispatch({
+                                type: ActionType?.IS_TYPING_ACTION,
+                                typingDetails: result
+                            });
+                            return
                         case "clientMsg":
                             dispatch({
                                 type: "SET_INCOMING_MESSAGE",

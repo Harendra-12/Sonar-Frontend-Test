@@ -83,6 +83,7 @@ function Messages({
   const sessions = useSelector((state) => state.sessions);
   // const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
+  const typingDetails = useSelector((state) => state.typingDetails)
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
@@ -114,6 +115,7 @@ function Messages({
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
+  const typingTimeoutRef = useRef(null);
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
@@ -161,11 +163,11 @@ function Messages({
   const [rawInternalCallHistory, setRawInternalCallHistory] = useState([]);
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
+  const [isTyping, setIsTyping] = useState(false)
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
   const scrollPositionRef = useRef({ scrollTop: 0, scrollHeight: 0 });
   const isUserAtBottomRef = useRef(true);
   const isNewMessageByUserRef = useRef(false);
-
   const prevRecipient = useRef(null);
   const messageRecipient = useSelector((state) => state.messageRecipient)
 
@@ -1099,6 +1101,15 @@ function Messages({
   }
 
   // =============== useEffect stuff start here 
+  useEffect(() => {
+    if (typingDetails?.is_typing) {
+      if (typingDetails?.user_id === recipient[1]) {
+        setIsTyping(true)
+      }
+    } else {
+      setIsTyping(false)
+    }
+  }, [typingDetails])
 
   useEffect(() => {
     getAllUser();
@@ -1957,6 +1968,15 @@ function Messages({
       user_id: account?.id,
       to_user_id: recipient?.[1],
       is_typing: true
+    });
+  }
+
+  const handleNotTypingEvent = () => {
+    socketSendMessage({
+      action: "typing_status",
+      user_id: account?.id,
+      to_user_id: recipient?.[1],
+      is_typing: false
     });
   }
 
@@ -3511,7 +3531,7 @@ function Messages({
                                                 style={{ display: "flex", alignItems: "center" }}
                                               >
                                                 {/* TODO : FIX PIN UI */}
-                                                {/* <div className="dropdown">
+                                                <div className="dropdown">
                                                   <button
                                                     className="clearButton2"
                                                     type="button"
@@ -3531,7 +3551,7 @@ function Messages({
                                                       </div>
                                                     </li>
                                                   </ul>
-                                                </div> */}
+                                                </div>
                                                 <div className="videoSize">
                                                   <DisplayFile
                                                     key={index}
@@ -3603,7 +3623,7 @@ function Messages({
                                                 <div className="videoSize">
                                                   <DisplayFile item={item.body} />
                                                 </div>
-                                                 {/* TODO : FIX PIN UI */}
+                                                {/* TODO : FIX PIN UI */}
                                                 {/* <div className="dropdown">
                                                   <button
                                                     className="clearButton2"
@@ -3772,7 +3792,7 @@ function Messages({
                                       rows={2}
                                       name=""
                                       className="formItem "
-                                      placeholder="Please enter your message"
+                                      placeholder={isTyping ? "typing..." : "Please enter your message"}
                                       value={messageInput[recipient[0]] || ""}
                                       onChange={(e) => {
                                         const value = e.target.value;
@@ -3790,6 +3810,14 @@ function Messages({
                                           return;
                                         }
                                         handleTypingEvent()
+                                        if (typingTimeoutRef.current) {
+                                          clearTimeout(typingTimeoutRef.current);
+                                        }
+
+                                        typingTimeoutRef.current = setTimeout(() => {
+                                          handleNotTypingEvent();
+                                        }, 5000);
+
                                         if (wordCount <= 250) {
                                           setMessageInput((prev) => ({
                                             ...prev,
