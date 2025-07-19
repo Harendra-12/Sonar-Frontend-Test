@@ -11,7 +11,7 @@ import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatT
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 import GoogleTranslate from "../../CommonComponents/GoogleTranslate";
 const Dashboard = () => {
-  
+
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -458,7 +458,7 @@ const Dashboard = () => {
 
   return (
     <main className="mainContent">
-      
+
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
@@ -836,7 +836,7 @@ const Dashboard = () => {
                                   </div>
                                   <div className="col-3">
                                     {/* <Tippy content="Click to view extensions"> */}
-                                      <i className="fa-duotone fa-phone-office" onClick={() => navigate("/extensions")}></i>
+                                    <i className="fa-duotone fa-phone-office" onClick={() => navigate("/extensions")}></i>
                                     {/* </Tippy> */}
                                   </div>
                                 </div>
@@ -1069,7 +1069,7 @@ const Dashboard = () => {
                               <div className="heading dashboard_headerPart">
                                 <div className="d-flex flex-wrap justify-content-between">
                                   <div className="col-9">
-                                    <h5>DID Information</h5>
+                                    <h5>Number Information</h5>
                                     <p>Click to view all available DIDs</p>
                                   </div>
                                   <div className="col-3">
@@ -1082,7 +1082,7 @@ const Dashboard = () => {
                                   <div className="col-12">
                                     <ul>
                                       <li className="d_extension_listing">
-                                        Total DID Purchased{" "}
+                                        Total Number Purchased{" "}
                                         <span className="float-end">
                                           {allDID?.length}
                                         </span>

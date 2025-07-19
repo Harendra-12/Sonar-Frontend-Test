@@ -241,7 +241,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                             <select className='formItem' value={customType} onChange={(e) => { setCustomType(e.target.value); setCustomId("") }}>
                                                                 <option value='CallCenterQueue'>Call Center</option>
                                                                 <option value="Ringgroup">Ring Group</option>
-                                                                <option value="DidDetail">DID</option>
+                                                                <option value="DidDetail">Number</option>
                                                             </select>
                                                         </div>
                                                     </div>

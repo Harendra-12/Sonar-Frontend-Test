@@ -489,7 +489,7 @@ function TrackerDashboard() {
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
-                                                                <th>DID</th>
+                                                                <th>Number</th>
                                                                 <th>Feature Tag</th>
                                                                 <th>Total Calls</th>
                                                                 <th>Ring Time</th>

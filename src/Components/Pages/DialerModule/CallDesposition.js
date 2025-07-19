@@ -101,14 +101,14 @@ function CallDesposition() {
                                                                 </div>
                                                                 <ul className="dropdown-menu actionBtnDropdowns">
                                                                     <li className='dropdown-item'>
-                                                                        <Tippy content="Reset configuration of this DID">
+                                                                        <Tippy content="Reset configuration of this Number">
                                                                             <div className="clearButton text-align-start">
                                                                                 <i className="fa-regular fa-pen me-2"></i>Update
                                                                             </div>
                                                                         </Tippy>
                                                                     </li>
                                                                     <li className='dropdown-item'>
-                                                                        <Tippy content="Reset configuration of this DID">
+                                                                        <Tippy content="Reset configuration of this Number">
                                                                             <div className="clearButton text-align-start">
                                                                                 <i className="fa-regular fa-trash me-2"></i>Delete
                                                                             </div>

@@ -7,7 +7,6 @@ function GoConferenceNotificationSocket() {
   const port = process.env.REACT_APP_GOLANG_CONFERENCE_NOTIFICATION_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const isLogOut = useSelector((state) => state.logout);
-console.log("Socket IP:", ip, "Port:", port);
   const socketRef = useRef(null);
   const connectingRef = useRef(false);
   const prevAccidRef = useRef(null);

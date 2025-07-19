@@ -41,6 +41,8 @@ const NewGetDid = () => {
   const [popUp, setPopUp] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [purchaseDidPopup, setPurchaseDidPopup] = useState(false);
+  const [activeVendor, setActiveVendor] = useState("");
+  const availableTopCountries = ["US", "GB", "CA", "CO"];
 
   const [selectedUsage, setSelectedUsage] = useState([
     {
@@ -94,6 +96,7 @@ const NewGetDid = () => {
         if (apiData?.status) {
           setCountryCode(apiData.data);
           setLoading(false);
+          setActiveVendor(apiData?.active_vendor)
         }
       } catch (err) {
         console.log(err);
@@ -138,7 +141,7 @@ const NewGetDid = () => {
       ...data,
       // searchType: data.searchType,
       quantity: data.quantity || 10, // Fallback for Quantity
-      npa: data.npa ? data.npa : data.searchType === "domestic" ? "567" : "",
+      // npa: data.npa ? data.npa : data.searchType === "domestic" ? "567" : "",
       companyId: account.account_id,
       usage: usagePayload,
     };
@@ -263,7 +266,7 @@ const NewGetDid = () => {
         <section>
           <div className="container-fluid">
             <div className="row">
-              <Header title="DID Management" />
+              <Header title="Number Management" />
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild position-relative onlyModulePopup">
                   <div className="d-flex flex-wrap">
@@ -271,7 +274,7 @@ const NewGetDid = () => {
                       <div className="heading">
                         <div className="content">
                           <h4>Buy A Number</h4>
-                          <p className="mb-0">You can purchase a DID here</p>
+                          <p className="mb-0">You can purchase a Number here</p>
                         </div>
                         <div className="buttonGroup">
                           <button
@@ -321,21 +324,28 @@ const NewGetDid = () => {
                                     // disabled
                                     >
                                       {countryCode.length > 0 ? (
-                                        countryCode.map((item, key) => {
-                                          return (
-                                            <option
-                                              key={key}
-                                              value={item?.country_code}
-                                            >
-                                              <div>
-                                                <label>
-                                                  {item?.country} -{" "}
-                                                  {item?.country_code}
-                                                </label>
-                                              </div>
-                                            </option>
-                                          );
-                                        })
+                                        countryCode
+                                          .filter((item) => {
+                                            if (watch().searchType === "tollfree") {
+                                              return availableTopCountries.includes(item?.country_code);
+                                            }
+                                            return true;
+                                          })
+                                          .map((item, key) => {
+                                            return (
+                                              <option
+                                                key={key}
+                                                value={item?.country_code}
+                                              >
+                                                <div>
+                                                  <label>
+                                                    {item?.country} -{" "}
+                                                    {item?.country_code}
+                                                  </label>
+                                                </div>
+                                              </option>
+                                            );
+                                          })
                                       ) : (
                                         <option>No Country Found!</option>
                                       )}
@@ -379,7 +389,7 @@ const NewGetDid = () => {
                                       htmlFor="data"
                                       className="formItemDesc text-start"
                                     >
-                                      Select the type of DID
+                                      Select the type of Number
                                     </label>
                                   </div>
                                 </div>
@@ -625,7 +635,7 @@ const NewGetDid = () => {
                                           htmlFor="data"
                                           className="formItemDesc text-start"
                                         >
-                                          Select the type of domestic DID
+                                          Select the type of domestic Number
                                         </label>
                                       </div>
                                     </div>
@@ -878,7 +888,7 @@ const NewGetDid = () => {
                                             {selectedUsage.map((item, key) => {
                                               if (item.label === "Voice") {
                                                 return (
-                                                  <Tippy content="Voice Call is activated for this DID">
+                                                  <Tippy content="Voice Call is activated for this Number">
                                                     <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-solid fa-phone"></i>
                                                     </button>
@@ -888,7 +898,7 @@ const NewGetDid = () => {
                                                 item.label === "Text"
                                               ) {
                                                 return (
-                                                  <Tippy content="SMS is activated for this DID">
+                                                  <Tippy content="SMS is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-comments"></i>
                                                     </button>
@@ -896,7 +906,7 @@ const NewGetDid = () => {
                                                 );
                                               } else if (item.label === "Fax") {
                                                 return (
-                                                  <Tippy content="Fax is activated for this DID">
+                                                  <Tippy content="Fax is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-solid fa-fax"></i>
                                                     </button>
@@ -906,7 +916,7 @@ const NewGetDid = () => {
                                                 item.label === "Emergency"
                                               ) {
                                                 return (
-                                                  <Tippy content="Emergency / e911 is activated for this DID">
+                                                  <Tippy content="Emergency / e911 is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-light-emergency-on"></i>
                                                     </button>
@@ -916,7 +926,7 @@ const NewGetDid = () => {
                                                 item.label === "AI"
                                               ) {
                                                 return (
-                                                  <Tippy content="Emergency / e911 is activated for this DID">
+                                                  <Tippy content="Emergency / e911 is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-microchip-ai"></i>
                                                     </button>
@@ -951,37 +961,48 @@ const NewGetDid = () => {
                         ) : (
                           <div className="p-4">
                             <h4 className="card_title">Top countries</h4>
-                            <div className="country_card_group mb-3">
-                              <div
-                                className="card country_box"
-                                onClick={() => setValue("country", "US")}
-                                style={{ width: "141px" }}
-                              >
-                                <div className="card-body">
-                                  <div className="avatar_img">
-                                    <img
-                                      src={`https://flagsapi.com/US/flat/64.png`}
-                                      alt="logout"
-                                      style={{ width: "auto" }}
-                                    />
-                                  </div>
-                                  <div className="card_details">
-                                    <p className="country_name">
-                                      United States
-                                    </p>
-                                    <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                      <p className="text-center mb-0">+1</p>
+                            <div className="country_card_group mb-3 d-flex flex-wrap">
+                              {countryCode &&
+                                countryCode.length > 0 &&
+                                countryCode
+                                  .filter((item) => availableTopCountries.includes(item.country_code))
+                                  .map((item, index) => (
+                                    <div
+                                      key={index}
+                                      className="card country_box"
+                                      style={{ width: '141px' }}
+                                      onClick={() =>
+                                        setValue("country", item.country_code)
+                                      }
+                                    >
+                                      <div className="card-body">
+                                        <div className="avatar_img">
+                                          <img
+                                            src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                            alt="logout"
+                                            style={{ width: "auto" }}
+                                          />
+                                        </div>
+                                        <div className="card_details">
+                                          <p className="country_name">
+                                            {item?.country}
+                                          </p>
+                                          <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                            <p className="text-center mb-0">
+                                              {item?.prefix_code}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </div>
+                                  ))}
                             </div>
                             <h4 className="card_title">All countries</h4>
                             <div className="country_card_group">
                               {countryCode &&
                                 countryCode.length > 0 &&
                                 countryCode
-                                  .filter((item) => item.country_code !== "US")
+                                  .filter((item) => !availableTopCountries.includes(item.country_code))
                                   .map((item, index) => (
                                     <div
                                       key={index}
@@ -1247,7 +1268,7 @@ const NewGetDid = () => {
                   <h4>Warning!</h4>
                   <p>
                     Are you sure you want to purchase{" "}
-                    {selectedDid?.length > 1 ? "these" : "this"} DID?
+                    {selectedDid?.length > 1 ? "these" : "this"} Number?
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
                     <button

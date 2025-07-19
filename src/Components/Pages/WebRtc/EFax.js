@@ -271,7 +271,7 @@ function EFax({ did }) {
                   </nav>
                   <div className="tab-content">
                     {clickStatus === "all" && (
-                      <div className="callList" style={{height: 'calc(100vh - 277px)'}}>
+                      <div className="callList" style={{ height: 'calc(100vh - 277px)' }}>
                         <div className="dateHeader">
                           <p className="fw-semibold">Today</p>
                         </div>
@@ -767,7 +767,7 @@ function EFax({ did }) {
                                               <th>Date</th>
                                               <th>Time</th>
                                               <th>eFax Type</th>
-                                              <th>DID / Extension</th>
+                                              <th>Number / Extension</th>
                                               <th>Attachment</th>
                                             </tr>
                                           </thead>
@@ -814,7 +814,7 @@ function EFax({ did }) {
                                               <th>Date</th>
                                               <th>Time</th>
                                               <th>eFax Type</th>
-                                              <th>DID / Extension</th>
+                                              <th>Number / Extension</th>
                                               <th>Attachment</th>
                                             </tr>
                                           </thead>
