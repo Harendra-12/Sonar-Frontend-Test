@@ -2,12 +2,15 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
+import Tippy from "@tippyjs/react";
+import EmojiPicker from "emoji-picker-react";
+import { CONNECT_STATUS, useSIPProvider } from "modify-react-sipjs";
 import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Messager, UserAgent } from "sip.js";
-import { useSIPProvider, CONNECT_STATUS } from "modify-react-sipjs";
-import AgentSearch from "./AgentSearch";
-import InitiateCall from "./LivekitConference/InitiateCall";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { api_url } from "../../../urls";
 import {
   awsGeneralPostFunction,
   featureUnderdevelopment,
@@ -20,36 +23,28 @@ import {
   isOnlyLink,
   logout,
 } from "../../GlobalFunction/globalFunction";
-import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Tippy from "@tippyjs/react";
-import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { useForm } from "react-hook-form";
-import EmojiPicker from "emoji-picker-react";
-import LogOutPopUp from "./LogOutPopUp";
-import FileUpload from "./FileUpload";
-import AudioPlayer from "./AudioWaveForm";
-import DisplayFile from "./DisplayFile";
-import {
-  numberValidator,
-  requiredValidator,
-} from "../../validations/validation";
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import {
-  getPanelElement,
-  getResizeHandleElement,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-} from "react-resizable-panels";
-import HeaderApp from "./HeaderApp";
-import MessageProfileDetails from "./components/MessageProfileDetails";
-import ChatsCalls from "./components/ChatsCalls";
-import axios from "axios";
-import { set } from "date-fns";
 import { ActionType } from "../../Redux/reduxActionType";
-import { api_url } from "../../../urls";
+import AgentSearch from "./AgentSearch";
+import DisplayFile from "./DisplayFile";
+import FileUpload from "./FileUpload";
+import HeaderApp from "./HeaderApp";
+import LogOutPopUp from "./LogOutPopUp";
+import ChatsCalls from "./components/ChatsCalls";
+import MessageProfileDetails from "./components/MessageProfileDetails";
+import {
+  checkMessageType,
+  getAllMessageApiFun,
+  getAllUser,
+  getContactAndAllTagData,
+  getGroups,
+  handleAssignTag,
+  handleDeleteTag,
+  handleNewTag,
+  handleTypingEvent,
+  handleUnassignTag,
+  handleUpdateTag
+} from "./messageBox/MessageFunctions";
 
 function Messages({
   setSelectedModule,
@@ -94,10 +89,7 @@ function Messages({
   const [selectedChat, setSelectedChat] = useState("singleChat");
   const [chatHistory, setChatHistory] = useState([]);
   const [loadMore, setLoadMore] = useState(1);
-  const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
-  const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
-  // const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
   const [originalOnlineUser, setOriginalOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
@@ -111,7 +103,6 @@ function Messages({
   const [messageRefresh, setMessageRefresh] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(1);
-  const [isAssignmentClicked, setIsAssignmentClicked] = useState(false);
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
@@ -149,10 +140,6 @@ function Messages({
   const location = useLocation();
   const pathSegments = location.pathname;
   const [selectFileExtension, setSelectFileExtension] = useState(null);
-  const thisAudioRef = useRef(null);
-  // const [currentPlaying, setCurrentPlaying] = useState("");
-  const [audioUrl, setAudioURL] = useState("");
-  const [sendSMSPopup, setSendSMSPopup] = useState(false);
   const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(true);
   const accountDetails = useSelector((state) => state.accountDetails);
   const [filteredTags, setFilteredTags] = useState();
@@ -278,77 +265,6 @@ function Messages({
     };
   }, [allMessage, recipient]);
 
-  const getContactAndAllTagData = async (shouldLoad) => {
-    if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/message/contacts`);
-    const tagData = await generalGetFunction("/tags/all");
-
-    if (apiData?.status && apiData.data.length > 0) {
-      const filteredData = apiData?.data?.sort(
-        (a, b) =>
-          new Date(b?.last_message_data?.created_at) -
-          new Date(a?.last_message_data?.created_at)
-      );
-      const updatedFilteredData = filteredData?.map((data) => ({
-        ...data,
-        last_message_data: {
-          ...data?.last_message_data,
-          message_text:
-            checkMessageType(data?.last_message_data?.message_text) ===
-              "text/plain"
-              ? data?.last_message_data?.message_text
-              : checkMessageType(data?.last_message_data?.message_text),
-        },
-      }));
-
-      setContact(updatedFilteredData);
-      setOriginalContact(updatedFilteredData);
-      // ENABLE THIS TO SELECT CHAT ON PAGE LOAD
-      // if (!extensionFromCdrMessage) {
-      //   const profile_img = allAgents?.find(
-      //     (data) => data?.id == apiData?.data[0]?.id
-      //   )?.profile_picture;
-      //   if (!isAssignmentClicked)
-      //     setRecipient([
-      //       apiData.data[0].extension,
-      //       apiData.data[0].id,
-      //       "singleChat",
-      //       apiData?.data[0]?.name,
-      //       apiData?.data[0]?.email,
-      //       profile_img,
-      //     ]);
-      //   setSelectedChat("singleChat");
-      // }
-      setLoading(false);
-      setMessageRefresh(false);
-    }
-    if (tagData?.status) {
-      setAllTags(tagData.data);
-      setLoading(false);
-      setMessageRefresh(false);
-    }
-    setLoading(false);
-    setMessageRefresh(false);
-  };
-
-  useEffect(() => {
-    setMessageRefresh(true);
-    const shouldLoad = true;
-    getContactAndAllTagData(shouldLoad);
-  }, [allAgents?.length == 0]);
-
-  // useEffect(() => {
-  //   setContactRefresh(contactRefresh + 1)
-  // }, [])
-
-  useEffect(() => {
-    if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
-      setIsSIPReady(true);
-    } else {
-      setIsSIPReady(false);
-    }
-  }, [sipProvider?.connectStatus]);
-
   // Resizeable Layout Functions
   const leftPanel = useRef(null);
   const rightPanel = useRef(null);
@@ -397,132 +313,23 @@ function Messages({
 
   // Getting messages based on pagination
   useEffect(() => {
-    async function getData(pageNumb) {
-      const apiData = await generalGetFunction(
-        recipient?.[2] === "singleChat"
-          ? `/message/all?receiver_id=${recipient?.[1]}&page=${pageNumb}`
-          : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
-      );
-
-      if (messageListRef.current) {
-        scrollPositionRef.current = {
-          scrollTop: messageListRef.current.scrollTop,
-          scrollHeight: messageListRef.current.scrollHeight,
-        };
-      }
-      apiData?.data?.data?.map((item) => {
-        const user_details = allAgents?.find(
-          (data) => data?.id == item?.user_id
-        );
-
-        setAllMessage((prevState) => ({
-          ...prevState,
-          [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
-            {
-              ...item,
-              from: item.user_id,
-              body: item?.message_text,
-              time: formatDateTime(item.created_at),
-              user_id: item.user_id,
-              user_name: user_details?.username,
-              profile_picture: user_details?.profile_picture,
-              message_type: item.message_type,
-            },
-            ...(prevState[
-              recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
-            ] || []),
-          ],
-        }));
-      });
-      if (apiData?.status) {
-        const newChatHistory = { ...chatHistory };
-        newChatHistory[recipient?.[0]] = {
-          total: apiData.data.total,
-          pageNumber: apiData.data.current_page,
-          last_page_number: apiData?.data?.last_page_url?.split("page=")?.pop()
-        };
-        setChatHistory(newChatHistory);
-      }
-    }
     if (recipient?.length > 0 && allAgents?.length > 0) {
       if (Object.keys(chatHistory).includes(String(recipient?.[0])) && messageListRef.current.scrollHeight > 1000) {
 
         if (chatHistory[recipient?.[0]]?.last_page_number >= chatHistory[recipient?.[0]].pageNumber) {
-          getData(chatHistory[recipient?.[0]].pageNumber + 1);
-          setIsFreeSwitchMessage(false);
+          getAllMessageApiFun(chatHistory[recipient?.[0]].pageNumber + 1, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory);
         }
       } else {
-        getData(1);
-        setIsFreeSwitchMessage(true);
+        getAllMessageApiFun(1, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory);
       }
     }
   }, [recipient, loadMore, allAgents]);
 
-  const getExtension = (input = "") => {
-    var parts = input?.split(".");
-    return parts[parts?.length - 1]?.toLowerCase();
-  };
 
 
 
-  // Logic to send message
-  const checkMessageType = (message) => {
-    const isHasExtension = getExtension(message);
-    if (isHasExtension == "jpg") {
-      return "image";
-    } else if (isHasExtension == "gif") {
-      return "image";
-    } else if (isHasExtension == "bmp") {
-      return "image";
-    } else if (isHasExtension == "png") {
-      return "image";
-    } else if (isHasExtension == "jpeg") {
-      return "image"
-    } else if (isHasExtension == "svg") {
-      return "image"
-    } else if (isHasExtension == "tiff") {
-      return "image"
-    } else if (isHasExtension == "webp") {
-      return "image"
-    } else if (isHasExtension == "mp3") {
-      return "audio"
-    } else if (isHasExtension == "mp4") {
-      return "video";
-    } else if (isHasExtension == "mov") {
-      return "video";
-    } else if (isHasExtension == "avi") {
-      return "video";
-    } else if (isHasExtension == "mkv") {
-      return "video";
-    } else if (isHasExtension == "WMV") {
-      return "video"
-    } else if (isHasExtension == "flv") {
-      return "video";
-    } else if (isHasExtension == "pdf") {
-      return "file";
-    } else if (isHasExtension == "txt") {
-      return "file";
-    } else if (isHasExtension == "rtf") {
-      return "file";
-    } else if (isHasExtension == "odt") {
-      return "file";
-    } else if (isHasExtension == "doc") {
-      return "file";
-    } else if (isHasExtension == "docx") {
-      return "file";
-    } else if (isHasExtension == "xls") {
-      return "file";
-    } else if (isHasExtension == "xlsx") {
-      return "file"
-    } else if (isHasExtension == "csv") {
-      return "file"
-    } else if (isHasExtension == "ppt") {
-      return "file"
-    } else if (isHasExtension == "pptx") {
-    } else {
-      return "text/plain";
-    }
-  };
+
+
   function sendSingleMessage(selectedUrl) {
     if (!selectedUrl && (!messageInput[recipient[0]]?.trim || messageInput[recipient[0]].trim() === "")) {
       return;
@@ -545,7 +352,6 @@ function Messages({
     });
 
     const time = formatDateTime(new Date());
-    setIsFreeSwitchMessage(true);
     const userDetails = allAgents?.find((data) => data?.id == account?.id);
     setAllMessage((prevState) => ({
       ...prevState,
@@ -588,7 +394,7 @@ function Messages({
     const extensionExists = contact.some(
       (contact) => contact.extension === recipient?.[0]
     );
-    const agentDetails = agents.find((agent) => agent.id === recipient?.[1]);
+    const agentDetails = allAgents.find((agent) => agent.id === recipient?.[1]);
 
     if (!extensionExists) {
       contact.unshift({
@@ -633,7 +439,6 @@ function Messages({
 
   //         messager.message();
   //         const time = formatDateTime(new Date());
-  //         setIsFreeSwitchMessage(true);
   //         setAllMessage((prevState) => ({
   //           ...prevState,
   //           [recipient?.[0]]: [
@@ -742,9 +547,8 @@ function Messages({
           }
         }
 
-        setIsFreeSwitchMessage(true);
         const extensionExists = contact.some((contact) => contact?.id === from);
-        const agentDetails = agents.find((agent) => agent?.id === from);
+        const agentDetails = allAgents?.find((agent) => agent?.id === from);
 
         const time = formatDateTime(new Date());
 
@@ -908,7 +712,6 @@ function Messages({
   //       const from =
   //         message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
   //       const body = message?.incomingMessageRequest?.message?.body;
-  //       setIsFreeSwitchMessage(true);
   //       const extensionExists = contact.some(
   //         (contact) => contact.extension === from
   //       );
@@ -1088,19 +891,24 @@ function Messages({
 
   // ================ scroll related stuff end here 
 
-  const getAllUser = async () => {
-    const apiData = await generalGetFunction("/user-all");
-    if (apiData?.status) {
-      // setUser(apiData.data.filter((item) => item.extension_id !== null));
-      setAllAgents(apiData.data);
-      // setGroupSelecedAgents((prevSelected) => {
-      //   return [...apiData.data.filter((item) => item.email === account.email)];
-      // }
-      // )
-    }
-  }
+
 
   // =============== useEffect stuff start here 
+  useEffect(() => {
+    setMessageRefresh(true);
+    const shouldLoad = true;
+    getContactAndAllTagData(shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags);
+    getAllUser(setAllAgents);
+  }, []);
+
+  useEffect(() => {
+    if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
+      setIsSIPReady(true);
+    } else {
+      setIsSIPReady(false);
+    }
+  }, [sipProvider?.connectStatus]);
+
   useEffect(() => {
     if (typingDetails?.is_typing) {
       if (typingDetails?.user_id === recipient[1]) {
@@ -1112,14 +920,10 @@ function Messages({
   }, [typingDetails])
 
   useEffect(() => {
-    getAllUser();
-  }, []);
-
-  useEffect(() => {
     if (loginUser?.length > 0) {
       const updatedOnlineUsers = loginUser
         .map((item) => {
-          const findUser = agents.find((agent) => agent.id === item.id);
+          const findUser = allAgents?.find((agent) => agent.id === item.id);
           return findUser;
         })
         .filter((user) => user !== undefined);
@@ -1133,196 +937,13 @@ function Messages({
     }
   }, [loginUser]);
 
-  // ======================= useEffect stuff End here 
-
-  // Handle calling
-  async function onSubmit(mode, destNumber) {
-    if (!isMicOn) {
-      toast.warn("Please turn on microphone");
-      return;
-    }
-    if (mode === "video") {
-      if (!isVideoOn) {
-        toast.warn("Please turn on camera");
-        return;
-      }
-    }
-
-    if (extension == "") {
-      toast.error("No extension assigned to your account");
-      return;
-    }
-    if (destNumber == extension) {
-      toast.error("You cannot call yourself");
-      return;
-    }
-
-    if (connectStatus !== "CONNECTED") {
-      toast.error("You are not connected with server");
-      return;
-    }
-
-    if (destNumber.length > 3) {
-      dispatch({
-        type: "SET_MINIMIZE",
-        minimize: false,
-      });
-      // e.preventDefault();
-      const apiData = await sessionManager?.call(
-        `sip:${destNumber}@${account.domain.domain_name}`,
-        {
-          earlyMedia: true,
-          inviteWithSdp: true,
-          sessionDescriptionHandlerOptions: {
-            constraints: {
-              audio: true,
-              video: mode === "video" ? true : false,
-            },
-          },
-        },
-        {
-          media: {
-            audio: true,
-            video:
-              mode === "audio"
-                ? true
-                : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
-                  },
-                  optional: [{ facingMode: "user" }],
-                },
-          },
-        }
-      );
-
-      const sdh = apiData.sessionDescriptionHandler;
-
-      // Check if remoteMediaStream is available
-      if (sdh && sdh._remoteMediaStream) {
-        const remoteStream = sdh._remoteMediaStream;
-
-        // Listen for tracks being added to the remote stream
-        remoteStream.onaddtrack = () => {
-          playRemoteStream(remoteStream);
-        };
-
-        // If tracks are already present, attach immediately
-        if (remoteStream.getTracks().length > 0) {
-          playRemoteStream(remoteStream);
-        }
-      }
-
-      // Function to play the remote stream
-      function playRemoteStream(stream) {
-        const audioElement = document.createElement("audio");
-        audioElement.srcObject = stream;
-        audioElement.autoplay = true;
-
-        audioElement.play().catch((e) => {
-          console.error("Error playing early media stream:", e);
-        });
-      }
-
-      setSelectedModule("onGoingCall");
-      dispatch({
-        type: "SET_SESSIONS",
-        sessions: [
-          ...globalSession,
-          {
-            id: apiData._id,
-            destination: destNumber,
-            state: "Established",
-            mode: mode,
-          },
-        ],
-      });
-      dispatch({
-        type: "SET_VIDEOCALL",
-        videoCall: mode === "video" ? true : false,
-      });
-      dispatch({
-        type: "SET_CALLPROGRESSID",
-        callProgressId: apiData._id,
-      });
-      dispatch({
-        type: "SET_CALLPROGRESSDESTINATION",
-        callProgressDestination: destNumber,
-      });
-      dispatch({
-        type: "SET_CALLPROGRESS",
-        callProgress: mode === "video" ? false : true,
-      });
-    } else {
-      toast.error("Please enter a valid number");
-    }
-  }
-
   // Filter out the user from selcted group
   useEffect(() => {
-    // ===========
-    const getGroups = async () => {
-      setLoading(true);
-      const apiData = await generalGetFunction(`/chatgroups/all`);
-      if (apiData?.status) {
-        const filteredData = apiData?.data?.sort((a, b) => {
-          const dateA = a?.last_message_data?.created_at
-            ? new Date(a.last_message_data.created_at)
-            : null;
-          const dateB = b?.last_message_data?.created_at
-            ? new Date(b.last_message_data.created_at)
-            : null;
-          if (!a.last_message_data || !dateA) return 1;
-          if (!b.last_message_data || !dateB) return -1;
-
-          return dateB - dateA;
-        });
-        const updatedFilteredData = filteredData?.map((data) => ({
-          ...data,
-          last_message_data: {
-            ...data?.last_message_data,
-            message_text:
-              checkMessageType(data?.last_message_data?.message_text) ===
-                "text/plain"
-                ? data?.last_message_data?.message_text
-                : checkMessageType(data?.last_message_data?.message_text),
-          },
-        }));
-        setGroups(updatedFilteredData);
-        setOriginalGroupsList(updatedFilteredData);
-        const isGroupSelected = apiData.data.find(
-          (group) => group.id == recipient?.[1]
-        );
-        if (isGroupSelected) {
-          const profile_img = allAgents?.find(
-            (data) => data?.id == isGroupSelected?.id
-          )?.profile_picture;
-          setRecipient([
-            isGroupSelected.group_name,
-            isGroupSelected.id,
-            "groupChat",
-            isGroupSelected?.group_name,
-            isGroupSelected?.email,
-            profile_img,
-          ]);
-          setSelectedChat("groupChat");
-          setGroupNameEdit(isGroupSelected.group_name);
-          setSelectedgroupUsers(isGroupSelected.message_groupusers);
-          isGroupSelected.message_groupusers.map((user) => {
-            if (user.user_id === account.id) {
-              setIsAdmin(user.is_admin);
-            }
-          });
-        }
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
-    };
-    getGroups();
+    getGroups(setLoading, setGroups, setOriginalGroupsList, recipient, setRecipient, allAgents, setSelectedChat, setGroupNameEdit, setSelectedgroupUsers, account, setIsAdmin);
   }, [groupRefresh]);
+
+  // ======================= useEffect stuff End here 
+
 
   // ============================= Tag Related Stuff ======= start here
   useEffect(() => {
@@ -1358,112 +979,6 @@ function Messages({
       setFilteredTags(filteredTag);
     }
   }, [allTags, contact, tagFilterInput, recipient]);
-
-  // Add new Tag
-  async function handleNewTag() {
-    if (newTag.length === 0) {
-      toast.error("Please enter a valid tag name");
-    } else {
-      setLoading(true);
-      const parsedData = {
-        name: newTag,
-      };
-
-      const apiData = await generalPostFunction(`/tags/store`, parsedData);
-      if (apiData.status) {
-        setLoading(false);
-        toast.success("Tag added successfully");
-        setAddNewTag(false);
-        setNewTag("");
-        setAllTags([...allTags, apiData.data]);
-      } else {
-        setLoading(false);
-      }
-    }
-  }
-
-  // Update tag
-  async function handleUpdateTag() {
-    if (upDateTag.length === 0) {
-      toast.error("Please enter a valid tag name");
-    } else {
-      setLoading(true);
-      const parsedData = {
-        name: upDateTag,
-      };
-      const apiData = await generalPutFunction(
-        `/tags/update/${selectedTag}`,
-        parsedData
-      );
-      if (apiData.status) {
-        setLoading(false);
-        toast.success("Tag updated successfully");
-        setUpDateTag("");
-        setSelectedTag("");
-        // Upadte the value of tag in existing data
-        const updatedTags = allTags.map((tag) => {
-          if (tag.id === selectedTag) {
-            return { ...tag, name: upDateTag };
-          }
-          return tag;
-        });
-        setAllTags(updatedTags);
-      } else {
-        setLoading(false);
-      }
-    }
-  }
-
-  // Handle assign task
-  async function handleAssignTask(tagId, userId) {
-    setLoading(true);
-    const parsedData = {
-      tag_id: tagId,
-      user_id: userId,
-    };
-    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      const shouldLoad = true;
-      getContactAndAllTagData(shouldLoad);
-      // setLoading(false);
-      toast.success("Tag assigned successfully");
-      // setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
-
-  // Handle unassign task
-  async function handleUnassignTask(tagId) {
-    setLoading(true);
-    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
-    if (apiData.status) {
-      setContactRefresh(contactRefresh + 1);
-      const shouldLoad = true;
-      getContactAndAllTagData(shouldLoad);
-      // setLoading(false);
-      toast.success("Tag unassigned successfully");
-      // setIsAssignmentClicked(true);
-    } else {
-      setLoading(false);
-    }
-  }
-
-  // Delete tag
-  async function handleDeleteTag(id) {
-    setLoading(true);
-    const apiData = await generalDeleteFunction(`/tags/destroy/${id}`);
-    if (apiData.status) {
-      setLoading(false);
-      toast.success("Tag deleted successfully");
-      setSelectedTag("");
-      const updatedTags = allTags.filter((tag) => tag.id !== id);
-      setAllTags(updatedTags);
-    } else {
-      setLoading(false);
-    }
-  }
   // ============================= Tag Related Stuff ======= end here
 
   const filteredUsers = allAgents.filter(
@@ -1679,7 +1194,6 @@ function Messages({
         );
         const from = groupMessage?.user_id;
         const body = groupMessage?.message_text;
-        setIsFreeSwitchMessage(true);
         const time = formatDateTime(new Date());
         setAllMessage((prevState) => ({
           ...prevState,
@@ -1870,11 +1384,11 @@ function Messages({
 
   useEffect(() => {
     getAllInternalCallsHistory();
-  }, [messageRefresh, calling]);
+  }, [calling]);
 
   const handleRefresh = () => {
     const shouldLoad = false;
-    getContactAndAllTagData(shouldLoad);
+    getContactAndAllTagData(shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags);
     setMessageRefresh(true);
   };
 
@@ -1962,23 +1476,6 @@ function Messages({
     }
   }, [messageRecipient]);
 
-  const handleTypingEvent = () => {
-    socketSendMessage({
-      action: "typing_status",
-      user_id: account?.id,
-      to_user_id: recipient?.[1],
-      is_typing: true
-    });
-  }
-
-  const handleNotTypingEvent = () => {
-    socketSendMessage({
-      action: "typing_status",
-      user_id: account?.id,
-      to_user_id: recipient?.[1],
-      is_typing: false
-    });
-  }
 
   return (
     <>
@@ -2027,7 +1524,7 @@ function Messages({
                     disabled={loading}
                     className="panelButton me-0"
                     onClick={() => {
-                      handleNewTag();
+                      handleNewTag(newTag, setAddNewTag, setNewTag, setAllTags, allTags, setLoading);
                       setAddNewTagPopUp(false);
                     }}
                   >
@@ -2104,9 +1601,10 @@ function Messages({
                 <div className="w-100 pb-3" style={{ padding: "0 10px" }}>
                   <AgentSearch
                     getDropdownValue={setRecipient}
-                    getAllAgents={setAgents}
+                    // getAllAgents={setAllAgents}
                     extensionFromCdrMessage={extensionFromCdrMessage}
                     setExtensionFromCdrMessage={setExtensionFromCdrMessage}
+                    allAgents={allAgents}
                   />
                 </div>
                 <div className="w-100">
@@ -2708,7 +2206,7 @@ function Messages({
                                   {selectedTag === item.id ? (
                                     <button
                                       className="clearButton2"
-                                      onClick={handleUpdateTag}
+                                      onClick={() => handleUpdateTag(upDateTag, setLoading, selectedTag, allTags, setAllTags, setUpDateTag, setSelectedTag)}
                                     >
                                       <Tippy content="Click to save your tag!">
                                         <i className="fa-regular fa-floppy-disk"></i>
@@ -2730,7 +2228,7 @@ function Messages({
                                   <Tippy content="Click to delete your tag!">
                                     <button
                                       className="clearButton2"
-                                      onClick={() => handleDeleteTag(item.id)}
+                                      onClick={() => handleDeleteTag(item.id, setLoading, setSelectedTag, allTags, setAllTags)}
                                     >
                                       <i className="fa-regular fa-trash text-danger"></i>
                                     </button>
@@ -2765,7 +2263,7 @@ function Messages({
                               <div className="col-auto d-flex ms-auto pe-0">
                                 <button
                                   className="clearButton2"
-                                  onClick={handleNewTag}
+                                  onClick={() => handleNewTag(newTag, setAddNewTag, setNewTag, setAllTags, allTags, setLoading)}
                                 >
                                   <i className="fa-regular fa-circle-check"></i>
                                 </button>
@@ -3051,14 +2549,22 @@ function Messages({
                                 } 
                                 )} */}
 
-                              {contact
-                                .find((contact) => contact.id == recipient?.[1])
+                              {contact?.find((contact) => contact.id == recipient?.[1])
                                 ?.tags?.slice(0, 8)
                                 .map((item, key) => (
                                   <span
                                     key={key}
                                     data-id={key}
-                                    onClick={() => handleUnassignTask(item?.id)}
+                                    onClick={() => handleUnassignTag(
+                                      item?.id,
+                                      setLoading,
+                                      setContactRefresh,
+                                      contactRefresh,
+                                      setContact,
+                                      setOriginalContact,
+                                      setMessageRefresh,
+                                      setAllTags
+                                    )}
                                     className="removableTag ellipsisText"
                                   >
                                     {item.tag?.[0]?.name}
@@ -3160,9 +2666,16 @@ function Messages({
                                             data-id={key}
                                             key={key}
                                             onClick={() =>
-                                              handleAssignTask(
+                                              handleAssignTag(
                                                 item?.id,
-                                                recipient?.[1]
+                                                recipient?.[1],
+                                                setContactRefresh,
+                                                contactRefresh,
+                                                setLoading,
+                                                setContact,
+                                                setOriginalContact,
+                                                setMessageRefresh,
+                                                setAllTags
                                               )
                                             }
                                           // className="removableTag"
@@ -3441,22 +2954,12 @@ function Messages({
                       <div className="messageContent position-relative">
                         {/* this is chat section (showing section of all input and output messages) */}
                         {allMessage[recipient[1]]?.length > 0 && (() => {
-                          const pinnedMessages = allMessage[recipient[1]].filter(msg => msg?.is_pinned == 1);
-
-                          if (pinnedMessages.length === 0) return null;
-
+                          const pinnedMessages = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
+                          if (!pinnedMessages) return null;
                           return (
                             <div className="dateHeader sticky">
                               <p>
-                                {pinnedMessages.map((data, index) => {
-                                  const isLast = index === pinnedMessages.length - 1;
-                                  return (
-                                    <span key={index}>
-                                      {data?.message_text}
-                                      {!isLast && ', '}
-                                    </span>
-                                  );
-                                })}
+                                {pinnedMessages?.message_text}
                               </p>
                             </div>
                           );
@@ -3624,7 +3127,7 @@ function Messages({
                                                   <DisplayFile item={item.body} />
                                                 </div>
                                                 {/* TODO : FIX PIN UI */}
-                                                {/* <div className="dropdown">
+                                                <div className="dropdown">
                                                   <button
                                                     className="clearButton2"
                                                     type="button"
@@ -3644,7 +3147,7 @@ function Messages({
                                                       </div>
                                                     </li>
                                                   </ul>
-                                                </div> */}
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -3800,7 +3303,6 @@ function Messages({
                                           .trim()
                                           .split(/\s+/)
                                           .filter(Boolean).length;
-                                        debugger
                                         if (value.trim() === "") {
                                           setMessageInput((prev) => {
                                             const updated = { ...prev };
@@ -3809,13 +3311,13 @@ function Messages({
                                           });
                                           return;
                                         }
-                                        handleTypingEvent()
+                                        handleTypingEvent(socketSendMessage, account, recipient, true)
                                         if (typingTimeoutRef.current) {
                                           clearTimeout(typingTimeoutRef.current);
                                         }
 
                                         typingTimeoutRef.current = setTimeout(() => {
-                                          handleNotTypingEvent();
+                                          handleTypingEvent(socketSendMessage, account, recipient, false)
                                         }, 5000);
 
                                         if (wordCount <= 250) {
