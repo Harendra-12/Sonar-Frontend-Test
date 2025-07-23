@@ -122,7 +122,6 @@ const GoMessageSocket = () => {
                         //     break;
 
                         case "logout_warning":
-                            console.log("Logout warning received, setting admin logout state.");
                             dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
                             break;
                         case "broadcastGroupMessage":
@@ -131,9 +130,15 @@ const GoMessageSocket = () => {
                         case "typing_status":
                             dispatch({
                                 type: ActionType?.IS_TYPING_ACTION,
-                                typingDetails: result
+                                typingDetails: {result: result, key: key}
                             });
-                            return
+                            break;
+                        case "group_typing_status":
+                            dispatch({
+                                type: ActionType?.IS_TYPING_ACTION,
+                                typingDetails: {result: result, key: key}
+                            });
+                            break;
                         case "clientMsg":
                             dispatch({
                                 type: "SET_INCOMING_MESSAGE",

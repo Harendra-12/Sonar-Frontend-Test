@@ -1,11 +1,14 @@
 import { toast } from "react-toastify";
 import { formatDateTime, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../../GlobalFunction/globalFunction";
+import { api_url } from "../../../../urls";
 
+
+// general stuff ====== start here
 
 export const getContactAndAllTagData = async (shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags) => {
     if (shouldLoad) setLoading(true);
-    const apiData = await generalGetFunction(`/message/contacts`);
-    const tagData = await generalGetFunction("/tags/all");
+    const apiData = await generalGetFunction(api_url?.MESSAGE_CONTACT_LIST_URL);
+    const tagData = await generalGetFunction(api_url?.ALL_TAG_URL);
 
     if (apiData?.status && apiData.data.length > 0) {
         const filteredData = apiData?.data?.sort(
@@ -55,11 +58,11 @@ export const getContactAndAllTagData = async (shouldLoad, setLoading, checkMessa
     setMessageRefresh(false);
 };
 
-export const getAllMessageApiFun = async (pageNumb, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory) => {
+export const getAllMessageApiFun = async (pageNumb, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory, setPageLoader) => {
     const apiData = await generalGetFunction(
         recipient?.[2] === "singleChat"
-            ? `/message/all?receiver_id=${recipient?.[1]}&page=${pageNumb}`
-            : `/group-message/all?group_id=${recipient?.[1]}&page=${pageNumb}`
+            ? api_url?.RECEIVE_ALL_MESSAGE_URL(recipient[1], pageNumb)
+            : api_url?.RECEIVE_ALL_GROUP_MESSAGE_URL(recipient[1], pageNumb)
     );
 
     if (messageListRef.current) {
@@ -68,6 +71,7 @@ export const getAllMessageApiFun = async (pageNumb, recipient, messageListRef, s
             scrollHeight: messageListRef.current.scrollHeight,
         };
     }
+    setPageLoader(false)
     apiData?.data?.data?.map((item) => {
         const user_details = allAgents?.find(
             (data) => data?.id == item?.user_id
@@ -168,7 +172,7 @@ export const checkMessageType = (message) => {
 };
 
 export const getAllUser = async (setAllAgents) => {
-    const apiData = await generalGetFunction("/user-all");
+    const apiData = await generalGetFunction(api_url?.ALL_USER_URL);
     if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
         setAllAgents(apiData.data);
@@ -318,7 +322,8 @@ export const getGroups = async (
     setIsAdmin
 ) => {
     setLoading(true);
-    const apiData = await generalGetFunction(`/chatgroups/all`);
+
+    const apiData = await generalGetFunction(api_url?.ALL_GROUP_CHAT_URL);
     if (apiData?.status) {
         const filteredData = apiData?.data?.sort((a, b) => {
             const dateA = a?.last_message_data?.created_at
@@ -375,6 +380,213 @@ export const getGroups = async (
     }
 };
 
+//  function to extract extension
+export const extractFileExtension = (selectedUrl) => {
+    if (!selectedUrl) return null;
+
+    // Step 1: Remove query parameters and get the base URL
+    const fileUrl = selectedUrl.split("?")[0];
+    const fileName = fileUrl.split("/").pop();
+
+    if (fileName) {
+        // Step 2: Try extracting extension from the filename
+        const fileParts = fileName.split(".");
+        if (fileParts.length > 1) {
+            return fileParts.pop().toLowerCase(); // Standard case: return the extension
+        }
+
+        // Step 3: Fallback - Check query parameters for extension hints
+        const queryParams = selectedUrl.split("?")[1];
+        if (queryParams) {
+            const params = new URLSearchParams(queryParams);
+            // Look for common extension indicators in query params (customize as needed)
+            for (const [, value] of params) {
+                const lowerValue = value.toLowerCase();
+                if (lowerValue.includes("png")) return "png";
+                if (lowerValue.includes("jpg") || lowerValue.includes("jpeg"))
+                    return "jpg";
+                if (lowerValue.includes("pdf")) return "pdf";
+                // Add more extensions as needed
+            }
+        }
+
+        // Step 4: Fallback - Decode URL-encoded filename and retry
+        const decodedFileName = decodeURIComponent(fileName);
+        const decodedParts = decodedFileName.split(".");
+        if (decodedParts.length > 1) {
+            return decodedParts.pop().toLowerCase();
+        }
+    }
+
+    return null; // No extension found
+};
+
+export const handleSearchChange = (event, setSearchQuery) => {
+    setSearchQuery(event.target.value);
+};
+
+export const handleMessageSearchChange = (
+    event,
+    setSearchValueForMessage,
+    originalContact,
+    setOnlineUser,
+    setGroups,
+    setInternalCallHistory,
+    activeTab,
+    setContact,
+    origInalinternalCallHistory,
+    originalOnlineUser,
+    originalGroupsList
+
+) => {
+    setSearchValueForMessage(event?.target?.value);
+    if (activeTab == "all") {
+        const filteredContact = originalContact?.filter((item) =>
+            item?.name?.toLowerCase().includes(event?.target?.value?.toLowerCase())
+        );
+        setContact(filteredContact);
+    }
+
+    if (activeTab == "online") {
+        const filteredOnlineUser = originalOnlineUser?.filter((item) =>
+            item?.name?.toLowerCase()?.includes(event?.target?.value)
+        );
+        setOnlineUser(filteredOnlineUser);
+    }
+
+    if (activeTab === "group") {
+        const filteredGroup = originalGroupsList?.filter((item) =>
+            item?.group_name
+                ?.toLowerCase()
+                ?.includes(event?.target?.value?.toLowerCase())
+        );
+        setGroups(filteredGroup);
+    }
+
+    if (activeTab === "call") {
+        const filteredCallHistory = origInalinternalCallHistory?.filter(
+            (item) =>
+                item?.receiver?.name?.toLowerCase()?.includes(event?.target?.value) ||
+                item?.sender?.name?.toLowerCase()?.includes(event?.target?.value)
+        );
+        setInternalCallHistory(filteredCallHistory);
+    }
+};
+
+export const handlePinMessage = async (
+    item,
+    setAllMessage,
+    allMessage,
+    recipient
+) => {
+    const result = await generalPostFunction(api_url?.PIN_MESSAGE(item?.id, item?.is_pinned == 1 ? true : ''));
+    if (result?.status) {
+        toast?.success(result?.message)
+        const updatedAllMessage = allMessage[recipient[1]]?.map(item =>
+            item.id === result?.data?.id ? { ...result?.data } : item
+        );
+        setAllMessage(updatedAllMessage)
+    }
+}
+
+export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading) => {
+    setLoading(true);
+    try {
+        const response = await generalGetFunction(
+            api_url?.CHAT_CALLS_URL(internalCallsPageNumber)
+        );
+        if (response.status) {
+            const sortedArr = response.data.data;
+
+            // setInternalCallHistory(sortedArr);
+
+            setOriginalInternalCallHistory((prev) => {
+                const existingIds = new Set(prev.map((item) => item.id));
+
+                const newItems = sortedArr.filter(
+                    (item) => !existingIds.has(item.id)
+                );
+
+                return [...prev, ...newItems];
+            });
+
+            setInternalCallHistory((prev) => {
+                const existingIds = new Set(prev.map((item) => item.id));
+
+                const newItems = sortedArr.filter(
+                    (item) => !existingIds.has(item.id)
+                );
+
+                return [...prev, ...newItems];
+            });
+
+            setRawInternalCallHistory(response.data);
+        }
+    } catch (err) {
+        console.log(err);
+    } finally {
+        setLoading(false);
+        setDoomScrollLoading(false);
+    }
+};
+
+// Handle logic to make any user admin or remove any user from admin
+export const manageAdmin = async (id, groupId, userId, isAdmin, setLoading, setGroupRefresh, groupRefresh) => {
+    setLoading(true);
+    const parsedData = {
+        group_id: groupId,
+        user_id: userId,
+        is_admin: isAdmin,
+    };
+    const apiData = await generalPutFunction(
+        api_url?.CHAT_GROUP_USER_UPDATE_URL(id),
+        parsedData
+    );
+    if (apiData.status) {
+        setLoading(false);
+        toast.success(apiData.message);
+        setGroupRefresh(groupRefresh + 1);
+    } else {
+        setLoading(false);
+        toast.error(apiData.message);
+    }
+}
+// general stuff ===== end here
+
+
+// typing stuff ==== start here 
+export const handleTypingEvent = (socketSendMessage, account, recipient, isTyping) => {
+    socketSendMessage({
+        action: recipient[2] === "singleChat" ? "typing_status" : "group_typing_status",
+        user_id: account?.id,
+        is_typing: isTyping,
+        ...(recipient[2] === "singleChat"
+            ? { to_user_id: recipient?.[1] }
+            : { group_id: recipient?.[1] })
+    });
+}
+// typing stuff ==== end here 
+
+// tag stuff ===== start here 
+
+export const handleCreateNewTag = async (setLoading, tagFilterInput, setAddNewTag, setNewTag, setAllTags, allTags) => {
+    setLoading(true);
+    const parsedData = {
+        name: tagFilterInput,
+    };
+    const apiData = await generalPostFunction(api_url?.STORE_TAG_URL, parsedData);
+    if (apiData.status) {
+        setLoading(false);
+        toast.success("Tag added successfully");
+        setAddNewTag(false);
+        setNewTag("");
+        setAllTags([...allTags, apiData.data]);
+    } else {
+        setLoading(false);
+        toast.error(apiData?.errors?.name[0]);
+    }
+};
+
 // Add new Tag
 export const handleNewTag = async (newTag, setAddNewTag, setNewTag, setAllTags, allTags, setLoading) => {
     if (newTag.length === 0) {
@@ -385,7 +597,7 @@ export const handleNewTag = async (newTag, setAddNewTag, setNewTag, setAllTags, 
             name: newTag,
         };
 
-        const apiData = await generalPostFunction(`/tags/store`, parsedData);
+        const apiData = await generalPostFunction(api_url?.STORE_TAG_URL, parsedData);
         if (apiData.status) {
             setLoading(false);
             toast.success("Tag added successfully");
@@ -398,19 +610,6 @@ export const handleNewTag = async (newTag, setAddNewTag, setNewTag, setAllTags, 
     }
 }
 
-// typing stuff ==== start here 
-export const handleTypingEvent = (socketSendMessage, account, recipient, isTyping) => {
-    socketSendMessage({
-        action: "typing_status",
-        user_id: account?.id,
-        to_user_id: recipient?.[1],
-        is_typing: false
-    });
-}
-
-// typing stuff ==== end here 
-
-// tag stuff ===== start here 
 // Update tag
 export const handleUpdateTag = async (upDateTag, setLoading, selectedTag, allTags, setAllTags, setUpDateTag, setSelectedTag) => {
     if (upDateTag.length === 0) {
@@ -421,7 +620,7 @@ export const handleUpdateTag = async (upDateTag, setLoading, selectedTag, allTag
             name: upDateTag,
         };
         const apiData = await generalPutFunction(
-            `/tags/update/${selectedTag}`,
+            api_url?.UPDATE_TAG_URL(selectedTag),
             parsedData
         );
         if (apiData.status) {
@@ -443,30 +642,28 @@ export const handleUpdateTag = async (upDateTag, setLoading, selectedTag, allTag
     }
 }
 
-// Handle assign task
+// Handle assign tags
 export const handleAssignTag = async (tagId, userId, setContactRefresh, contactRefresh, setLoading, setContact, setOriginalContact, setMessageRefresh, setAllTags) => {
     setLoading(true);
     const parsedData = {
         tag_id: tagId,
         user_id: userId,
     };
-    const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
+    const apiData = await generalPostFunction(api_url?.ASSIGN_TAGS_TO_USER_URL, parsedData);
     if (apiData.status) {
         setContactRefresh(contactRefresh + 1);
         const shouldLoad = true;
         getContactAndAllTagData(shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags);
-        // setLoading(false);
         toast.success("Tag assigned successfully");
-        // setIsAssignmentClicked(true);
     } else {
         setLoading(false);
     }
 }
 
 // Handle unassign task
-export const handleUnassignTag = async (tagId, setLoading, setContactRefresh, contactRefresh, setContact, setOriginalContact, setMessageRefresh, setAllTags ) => {
+export const handleUnassignTag = async (tagId, setLoading, setContactRefresh, contactRefresh, setContact, setOriginalContact, setMessageRefresh, setAllTags) => {
     setLoading(true);
-    const apiData = await generalDeleteFunction(`/tag-users/destroy/${tagId}`);
+    const apiData = await generalDeleteFunction(api_url?.REMOVE_TAGS_FROM_USER_URL(tagId));
     if (apiData.status) {
         setContactRefresh(contactRefresh + 1);
         const shouldLoad = true;
@@ -479,19 +676,258 @@ export const handleUnassignTag = async (tagId, setLoading, setContactRefresh, co
     }
 }
 
- // Delete tag
+// Delete tag
 export const handleDeleteTag = async (id, setLoading, setSelectedTag, allTags, setAllTags) => {
     setLoading(true);
-    const apiData = await generalDeleteFunction(`/tags/destroy/${id}`);
+    const apiData = await generalDeleteFunction(api_url?.DELETE_TAG_URL(id));
     if (apiData.status) {
-      setLoading(false);
-      toast.success("Tag deleted successfully");
-      setSelectedTag("");
-      const updatedTags = allTags.filter((tag) => tag.id !== id);
-      setAllTags(updatedTags);
+        setLoading(false);
+        toast.success("Tag deleted successfully");
+        setSelectedTag("");
+        const updatedTags = allTags.filter((tag) => tag.id !== id);
+        setAllTags(updatedTags);
     } else {
-      setLoading(false);
+        setLoading(false);
     }
-  }
+}
 
 // tag stuff ====== end here 
+
+// group stuff ====== start here
+
+export async function handleCreateGroup(
+    groupname,
+    setNewGroupLoader,
+    groupSelecedAgents,
+    account,
+    setGroupRefresh,
+    groupRefresh,
+    setAddMember,
+    setGroupChatPopUp,
+    setGroupSelecedAgents,
+    setLoading,
+    setGroupName
+) {
+    if (groupname === "") {
+        toast.error("Group name is required");
+        return;
+    }
+    setNewGroupLoader(true);
+    const parsedData = {
+        group_name: groupname,
+        user_id: [...groupSelecedAgents.map((agent) => agent.id), account.id],
+    };
+    const apiData = await generalPostFunction(api_url?.CREATE_GROUP_URL, parsedData);
+    if (apiData.status) {
+        setGroupRefresh(groupRefresh + 1);
+        toast.success("Group created successfully");
+        setAddMember(false);
+        setGroupChatPopUp(false);
+        setGroupSelecedAgents([]);
+        setGroupName("");
+        setNewGroupLoader(false);
+        setLoading(false);
+    } else {
+        setNewGroupLoader(false);
+        setLoading(false);
+    }
+}
+
+export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMessage, groups, setGroups, setOriginalGroupsList, setActiveTab, setUnreadMessage, recipient, ActionType, dispatch) => {
+    const isNewMessage = !allNotificationState?.some(data => data?.uuid === groupMessage?.uuid);
+    if (isNewMessage) {
+        if (groupMessage) {
+            const audio = new Audio(
+                require("../../../assets/music/message-notification.mp3")
+            );
+            const from = groupMessage?.user_id;
+            const body = groupMessage?.message_text;
+            const time = formatDateTime(new Date());
+            setAllMessage((prevState) => ({
+                ...prevState,
+                [groupMessage.group_name]: [
+                    ...(prevState[groupMessage.group_name] || []),
+                    {
+                        from,
+                        body,
+                        time,
+                        user_id: from,
+                        user_name: groupMessage?.user_name,
+                        profile_picture: groupMessage?.profile_picture,
+                        message_type: groupMessage.message_type,
+                    },
+                ],
+            }));
+            if (groupMessage?.group_name != undefined) {
+                const contactIndex = groups.findIndex(
+                    (contact) => contact?.group_name === groupMessage?.group_name
+                );
+                if (contactIndex !== -1) {
+                    const newGroups = [...groups];
+                    newGroups[contactIndex].last_message_data.message_text = body;
+                    newGroups[contactIndex].last_message_data.created_at = time;
+                    newGroups[contactIndex].last_message_data.user_id = from;
+                    newGroups?.splice(contactIndex, 1);
+                    newGroups.unshift(groups[contactIndex]);
+                    setGroups(newGroups);
+                    setOriginalGroupsList(newGroups);
+                }
+                setActiveTab("all");
+                setUnreadMessage((prevState) => ({
+                    ...prevState,
+                    [groupMessage?.group_name]:
+                        (prevState[groupMessage?.group_name] || 0) + 1,
+                }));
+                audio.play();
+            }
+        }
+
+        if (recipient?.length > 0) {
+            setUnreadMessage((prevState) => {
+                const {
+                    [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _,
+                    ...newState
+                } = prevState;
+                return newState;
+            });
+            dispatch({
+                type: ActionType?.REMOVE_NOTIFICATION_FOR_MESSAGE,
+                recipient: [...recipient],
+            });
+        }
+    } else {
+        const unreadMap = {};
+        allNotificationState?.forEach((data) => {
+            if (data?.group_name) {
+                unreadMap[data.group_name] = (unreadMap[data.group_name] || 0) + 1;
+            }
+        });
+        setUnreadMessage((prev) => ({
+            ...prev,
+            ...unreadMap,
+        }));
+    }
+}
+
+export const handleEditGroupName = async (groupNameEdit, setNewGroupLoader, recipient, setGroupRefresh, groupRefresh, setSaveEditToggleGroupNameChange) => {
+    if (groupNameEdit.trim() === "") {
+        toast.error("Group name cannot be empty");
+        return;
+    }
+    const parsedData = {
+        group_name: groupNameEdit,
+        // members: groupSelecedAgents.map((agent) => {
+        //   return { user_id: agent.id, status: agent.status };
+        // }),
+    };
+    setNewGroupLoader(true);
+    const apiData = await generalPutFunction(
+        api_url?.UPDATE_GROUP_URL(recipient?.[1]),
+        parsedData
+    );
+    if (apiData.status) {
+        setGroupRefresh(groupRefresh + 1);
+        toast.success("Group updated successfully");
+        setSaveEditToggleGroupNameChange(false);
+        setNewGroupLoader(false);
+    } else {
+        setNewGroupLoader(false);
+    }
+};
+
+export const handleAddNewMemberToGroup = async (recipient, groupSelecedAgents, setNewGroupLoader, groupRefresh, setGroupRefresh, setGroupChatPopUp, setAddMember, setGroupSelecedAgents) => {
+    // const payload = groupSelecedAgents.map((agent) => agent.id);
+    const payLoad = {
+        message_group_id: recipient?.[1],
+        user_id: groupSelecedAgents.map((agent) => agent.id),
+    };
+    setNewGroupLoader(true);
+    const apiData = await generalPostFunction(
+        api_url?.ADD_NEW_MEMBER_TO_GROUP_URL,
+        payLoad
+    );
+    if (apiData.status) {
+        setGroupRefresh(groupRefresh + 1);
+        setGroupChatPopUp(false);
+        setAddMember(false);
+        setGroupSelecedAgents([]);
+        setNewGroupLoader(false);
+    } else {
+        setNewGroupLoader(false);
+    }
+};
+
+export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers) => {
+    setNewGroupLoader(true);
+    const apiData = await generalDeleteFunction(api_url?.REMOVE_USER_FROM_GROUP_URL(id));
+    if (apiData.status) {
+        toast.success(apiData.message);
+        setSelectedgroupUsers(
+            selectedgroupUsers.filter((item) => item.id !== id)
+        );
+        setNewGroupLoader(false);
+    } else {
+        setNewGroupLoader(false);
+    }
+};
+
+export const handleCheckboxChange = (item, setGroupSelecedAgents) => {
+    setGroupSelecedAgents((prevSelected) => {
+        if (prevSelected?.some((agent) => agent?.name == item?.name)) {
+            // If the item is already in the array, remove it
+            return prevSelected.filter((agent) => agent.name != item?.name);
+        } else {
+            // Otherwise, add the item
+            return [...prevSelected, item];
+        }
+    });
+};
+
+export const handleGroupSearchChange = (event, setGroups, setSearchValueForGroup, originalGroupsList) => {
+    setSearchValueForGroup(event?.target?.value);
+    const filteredGroup = originalGroupsList?.filter((item) =>
+        item?.group_name
+            ?.toLowerCase()
+            ?.includes(event?.target?.value?.toLowerCase())
+    );
+    setGroups(filteredGroup);
+};
+
+export const handleSelectAll = (selectAll, setSelectAll, availableUsers, groupSelecedAgents, setGroupSelecedAgents) => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
+
+    if (newSelectAllState) {
+        // Add all visible users to bulkUploadSelectedAgents
+        availableUsers.forEach((item) => {
+            if (!groupSelecedAgents.some((agent) => agent.name == item.name)) {
+                handleCheckboxChange(item, setGroupSelecedAgents);
+            }
+        });
+    } else {
+        // Remove all visible users from bulkUploadSelectedAgents
+        availableUsers.forEach((item) => {
+            if (groupSelecedAgents.some((agent) => agent.name == item.name)) {
+                handleCheckboxChange(item, setGroupSelecedAgents);
+            }
+        });
+    }
+};
+
+// Handle delete group
+export const handleDeleteGroup = async (id, setGroupRefresh, setSelectedChat, setRecipient, setLoading, groupRefresh) => {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(api_url?.DELETE_GROUP_URL(id));
+    if (apiData.status) {
+        toast.success(apiData.message);
+        setGroupRefresh(groupRefresh + 1);
+        setSelectedChat("");
+        setRecipient([]);
+        setLoading(false);
+    } else {
+        setLoading(false);
+        toast.error(apiData.message);
+    }
+}
+
+// group stuff ===== end here
