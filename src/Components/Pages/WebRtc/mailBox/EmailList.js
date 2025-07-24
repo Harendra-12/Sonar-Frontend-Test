@@ -197,7 +197,7 @@ const EmailList = ({
             <table>
               <thead>
                 <tr>
-                  <th>
+                  <th style={{ width: "30px" }}>
                     <div className="" style={{ display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center" }}>
                       {/* <div> */}
                       <input
@@ -206,9 +206,9 @@ const EmailList = ({
                         onClick={() => handleAllCheck()}
                       />
                       {/* </div> */}
-                      <div className="ms-2">
+                      {/* <div className="ms-2">
                         Select
-                      </div>
+                      </div> */}
                     </div>
 
                   </th>
@@ -269,12 +269,12 @@ const EmailList = ({
                       }}
                     >
                       <p className="ellipsisText300 mb-0">
-                        <strong>
+                        <span>
                           {" "}
                           {item?.subject.length > 15
                             ? item?.subject?.slice(0, 15) + "..."
                             : item?.subject}{" "}
-                        </strong>
+                        </span>
                         <span className="text_muted">
                           {item?.snippet?.length > 50
                             ? item?.snippet.slice(0, 50) + "..."
