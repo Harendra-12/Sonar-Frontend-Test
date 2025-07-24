@@ -219,7 +219,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                               <thead>
                                 <tr>
                                   <th>Conference Name</th>
-                                  <th>Meeting link</th>
+                                  {/* <th>Meeting link</th> */}
                                   <th>Scheduled Time</th>
                                   <th>Action</th>
                                 </tr>
@@ -234,7 +234,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                       return (
                                         <tr key={item.id}>
                                           <td>{item.conf_name}</td>
-                                          <td>{item.conf_url}</td>
+                                          {/* <td>{item.conf_url}</td> */}
                                           <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>
                                           <td>
                                             {(isAllDay || isLessThan5Minutes) && isUser ? (
