@@ -268,7 +268,7 @@ const EmailList = ({
                         handleShowMail(item, false);
                       }}
                     >
-                      <p className="ellipsisText300 mb-0">
+                      <p className="ellipsisText300 mb-0 fw-semibold">
                         <span>
                           {" "}
                           {item?.subject.length > 15
