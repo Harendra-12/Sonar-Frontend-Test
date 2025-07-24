@@ -596,12 +596,14 @@ const MessageBody = ({
                         )}
                         <div className="messageContent position-relative">
                             {/* this is chat section (showing section of all input and output messages) */}
-                            {/* {pageLoader &&
+                            {
+                                pageLoader &&
                                 <div className="dateHeader sticky">
                                     <p>
                                         loader...
                                     </p>
-                                </div>} */}
+                                </div>
+                            }
                             {allMessage[recipient[1]]?.length > 0 && (() => {
                                 const pinnedMessages = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
                                 if (!pinnedMessages) return null;
