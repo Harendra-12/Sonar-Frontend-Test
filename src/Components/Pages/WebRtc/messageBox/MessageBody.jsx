@@ -598,25 +598,26 @@ const MessageBody = ({
                             {/* this is chat section (showing section of all input and output messages) */}
                             {
                                 pageLoader &&
-                                <div className="dateHeader sticky">
-                                    <p>
-                                        loader...
-                                    </p>
+                                <div className='loadingBody'>
+                                    <div class="spinner-border text-spinner-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
                                 </div>
                             }
                             {allMessage[recipient[1]]?.length > 0 && (() => {
                                 const pinnedMessages = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
                                 if (!pinnedMessages) return null;
                                 return (
-                                    <div className="dateHeader sticky">
-                                        <p>
+                                    <div className="pinedMessage">
+                                        <i class="fad fa-thumbtack"></i>
+                                        <p className='mb-0'>
                                             {pinnedMessages?.message_text}
                                         </p>
                                     </div>
                                 );
                             })()}
 
-                            <div className="messageList" ref={messageListRef}>
+                            <div className={`messageList  `} ref={messageListRef}>
                                 {recipient?.[0] ? (
                                     <>
                                         {allMessage?.[
@@ -682,10 +683,10 @@ const MessageBody = ({
                                                                         </h6>
                                                                         <div
                                                                             className="message-text-container"
-                                                                            style={{ display: "flex", alignItems: "center" }}
+                                                                            style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
                                                                         >
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            <div className="dropdown">
+                                                                            {/* <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -705,13 +706,23 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div>
+                                                                            </div> */}
+                                                                            {/* <div className='pinBox'>
+                                                                                <button className='roundPinButton'   onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
+                                                                                    <i class="fas fa-thumbtack"></i>
+                                                                                </button>
+                                                                            </div> */}
                                                                             <div className="videoSize">
                                                                                 <DisplayFile
                                                                                     key={index}
                                                                                     item={item.body}
                                                                                     index={index}
                                                                                 />
+                                                                                <div className='pinBox'>
+                                                                                    <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
+                                                                                        <i class="fas fa-thumbtack"></i>
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -776,9 +787,14 @@ const MessageBody = ({
                                                                         >
                                                                             <div className="videoSize">
                                                                                 <DisplayFile item={item.body} />
+                                                                                <div className='pinBox'>
+                                                                                    <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
+                                                                                        <i class="fas fa-thumbtack"></i>
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            <div className="dropdown">
+                                                                            {/* <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -798,7 +814,12 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div>
+                                                                            </div> */}
+                                                                            {/* <div className='pinBox'>
+                                                                                <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
+                                                                                    <i class="fas fa-thumbtack"></i>
+                                                                                </button>
+                                                                            </div> */}
                                                                         </div>
                                                                     </div>
                                                                 </div>

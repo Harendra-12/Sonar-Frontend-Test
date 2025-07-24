@@ -1168,9 +1168,11 @@
     display: flex;
     width: 180px;
 }
-.messageItem.sender .messageDetailss.displayFile{
-    margin-left: -135px;
+
+.messageItem.sender .messageDetailss.displayFile {
+    margin-left: 0px;
 }
+
 .webrtc_newMessageUi .leftside_listBar {
     height: calc(100vh - 82px);
     background: var(--me-body-bg2);
@@ -1180,6 +1182,19 @@
     height: calc(100vh - 342px);
     width: 100%;
     overflow-y: auto;
+    padding-top: 30px;
+}
+
+.loadingBody {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+    background-color: var(--me-body-bg2);
 }
 
 .webrtc_newMessageUi .messageItem.receiver .messageDetails {
@@ -1641,7 +1656,8 @@
     height: calc(100vh - 360px);
     overflow: auto;
 }
-.filePanelActive-video{
+
+.filePanelActive-video {
     display: flex;
     justify-content: center;
 }
@@ -1811,4 +1827,82 @@
         --angle: 420deg;
         opacity: 0;
     }
+}
+
+
+.text-spinner-secondary {
+    color: #b1bcd2;
+    margin: auto;
+}
+
+.pinedMessage {
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    background: #e2eaff;
+    position: absolute !important;
+    top: 0;
+    margin: 0;
+    left: 0;
+    right: 0;
+    color: #2c2d31;
+    z-index: 111;
+    font-size: 12px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    max-width: 1000px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.pinedMessage i {
+    transform: rotate(316deg);
+    color: #b228fd;
+}
+
+.message-text-container .videoSize {
+    position: relative;
+}
+
+.message-text-container .videoSize:hover .pinBox {
+    opacity: 1;
+}
+
+.pinBox {
+    background: #fff;
+    border-radius: 5px;
+    padding: 2px 5px;
+    box-shadow: rgb(0 53 155 / 30%) 0px 3px 10px;
+    position: absolute;
+    top: -14px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.messageItem.sender .message-text-container .videoSize .pinBox {
+    left: 7px;
+}
+
+.messageItem.receiver .message-text-container .videoSize .pinBox {
+    right: 7px;
+}
+
+.roundPinButton {
+    background-color: #c7e4fc;
+    color: #2793f4 !important;
+    width: 20px;
+    height: 20px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    font-size: 10px;
+}
+
+.roundPinButton i {
+    transform: rotate(316deg);
 }
