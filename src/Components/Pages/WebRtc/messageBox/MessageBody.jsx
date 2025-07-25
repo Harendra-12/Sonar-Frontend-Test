@@ -66,6 +66,7 @@ const MessageBody = ({
     handleEmojiClick,
     setEmojiOpen,
     setactivePage,
+    activePage,
     isTyping,
     messageInput,
     socketSendMessage,
@@ -103,9 +104,63 @@ const MessageBody = ({
     MessageProfileDetails,
     saveEditToggleGroupNameChange,
     socketSendPeerCallMessage,
-    pageLoader
+    pageLoader,
+    socketSendPeerGroupCallMessage,
+    setIsConferenceCall,
+    setConferenceInfo,
+    setConferenceToggle,
+    conferenceToggle
 }) => {
     const dispatch = useDispatch()
+    const handlePinClick = (messageId) => {
+        const selector = `.message-text-container.active-${messageId}`;
+        const element = document.querySelector(selector);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.classList.add('highlight-temp');
+            setTimeout(() => {
+                element.classList.remove('highlight-temp');
+            }, 3000);
+        }
+    }
+
+    const handleConferenceJoinForGroupMessage = async (item) => {
+
+        socketSendPeerGroupCallMessage({
+            "action": "initiate_peer_group_call",
+            "room_id": `${account.id}-${recipient?.[1]}`,
+            "call_type": "audio",
+            "message_group_id": recipient[1],
+            "group_name": recipient[0],
+            "user_id": account?.id,
+        })
+        setCalling(true)
+        setIsConferenceCall(true);
+        try {
+            dispatch({
+                type: "SET_ROOMID",
+                RoomID: `${account.id}-${recipient?.[1]}`
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setConferenceInfo({
+                room_id: `${account.id}-${recipient?.[1]}`,
+                extension_id: account?.extension_id,
+                name: account?.username,
+                setactivePage: setactivePage,
+                activePage: activePage,
+                setConferenceToggle: setConferenceToggle,
+                conferenceToggle: conferenceToggle,
+                conferenceId: "",
+                pin: "",
+                isVideoOn: isVideoOn,
+            })
+            setTimeout(() => {
+                setCalling(true);
+            }, 1000)
+        }
+    }
     return (
         <div
             className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
@@ -252,7 +307,7 @@ const MessageBody = ({
 
                                         {/* <span data-id="1">Work</span> */}
                                         {selectedChat === "groupChat" ? (
-                                            ""
+                                            ''
                                         ) : (
                                             <div className="dropdown ms-1">
                                                 <span
@@ -437,7 +492,15 @@ const MessageBody = ({
                           </select>
                         </div> */}
                                     {selectedChat === "groupChat" ? (
-                                        ""
+                                        <button
+                                            onClick={() => {
+                                                handleConferenceJoinForGroupMessage()
+                                            }}
+                                            className="clearButton2"
+                                            effect="ripple"
+                                        >
+                                            <i className="fa-regular fa-phone" />
+                                        </button>
                                     ) : (
                                         <button
                                             // onClick={() => onSubmit("audio", recipient?.[0])}
@@ -608,7 +671,10 @@ const MessageBody = ({
                                 const pinnedMessages = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
                                 if (!pinnedMessages) return null;
                                 return (
-                                    <div className="pinedMessage">
+                                    <div
+                                        className="pinedMessage"
+                                        onClick={() => handlePinClick(pinnedMessages?.id)}
+                                    >
                                         <i class="fad fa-thumbtack"></i>
                                         <p className='mb-0'>
                                             {pinnedMessages?.message_text}
@@ -679,14 +745,15 @@ const MessageBody = ({
                                                                                     .join(":")}
                                                                             </span>{" "}
                                                                             &nbsp;
-                                                                            {item.user_name}
+                                                                            {item?.user_name}
                                                                         </h6>
+
                                                                         <div
-                                                                            className="message-text-container"
+                                                                            className={`message-text-container active-${item?.id}`}
                                                                             style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
                                                                         >
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -702,11 +769,11 @@ const MessageBody = ({
                                                                                             href="#"
                                                                                             onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}
                                                                                         >
-                                                                                            Pin
+                                                                                            {item?.is_pinned == 1 ? "Unpin" : "Pin"}
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             {/* <div className='pinBox'>
                                                                                 <button className='roundPinButton'   onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
                                                                                     <i class="fas fa-thumbtack"></i>
@@ -794,7 +861,7 @@ const MessageBody = ({
                                                                                 </div>
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -814,7 +881,7 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             {/* <div className='pinBox'>
                                                                                 <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
                                                                                     <i class="fas fa-thumbtack"></i>

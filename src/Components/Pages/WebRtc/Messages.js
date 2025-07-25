@@ -50,12 +50,17 @@ function Messages({
   isMicOn,
   isVideoOn,
   setactivePage,
+  activePage={activePage},
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
   calling,
   setCalling,
   setToUser,
   setMeetingPage,
+  setIsConferenceCall,
+  setConferenceInfo,
+  setConferenceToggle,
+  conferenceToggle,
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -66,6 +71,7 @@ function Messages({
   const dispatch = useDispatch();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
   const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
+  const socketSendPeerGroupCallMessage = useSelector((state) => state.socketSendPeerGroupCallMessage);
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
@@ -106,7 +112,7 @@ function Messages({
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
   const typingTimeoutRef = useRef(null);
-const isTypingRef = useRef(false);
+  const isTypingRef = useRef(false);
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
@@ -158,7 +164,6 @@ const isTypingRef = useRef(false);
   const prevRecipient = useRef(null);
   const messageRecipient = useSelector((state) => state.messageRecipient)
   const [pageLoader, setPageLoader] = useState(false);
-
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -278,7 +283,7 @@ const isTypingRef = useRef(false);
     if (recipient?.length > 0 && allAgents?.length > 0) {
       if (Object.keys(chatHistory).includes(String(recipient?.[0])) && messageListRef.current.scrollHeight > 1000) {
 
-        if (chatHistory[recipient?.[0]]?.last_page_number >= chatHistory[recipient?.[0]].pageNumber) {
+        if (chatHistory[recipient?.[0]]?.last_page_number > chatHistory[recipient?.[0]].pageNumber) {
           getAllMessageApiFun(chatHistory[recipient?.[0]].pageNumber + 1, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory, setPageLoader);
           setPageLoader(true)
         }
@@ -1253,6 +1258,7 @@ const isTypingRef = useRef(false);
                 setChatHistory={setChatHistory}
                 setPageLoader={setPageLoader}
                 setIsTyping={setIsTyping}
+                socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
               />
               <MessageBody
                 recipient={recipient}
@@ -1300,6 +1306,7 @@ const isTypingRef = useRef(false);
                 handleEmojiClick={handleEmojiClick}
                 setEmojiOpen={setEmojiOpen}
                 setactivePage={setactivePage}
+                activePage={activePage}
                 isTyping={isTyping}
                 messageInput={messageInput}
                 socketSendMessage={socketSendMessage}
@@ -1338,6 +1345,12 @@ const isTypingRef = useRef(false);
                 saveEditToggleGroupNameChange={saveEditToggleGroupNameChange}
                 socketSendPeerCallMessage={socketSendPeerCallMessage}
                 pageLoader={pageLoader}
+                socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
+                setConferenceInfo={setConferenceInfo}
+                setIsConferenceCall={setIsConferenceCall}
+                setConferenceToggle={setConferenceToggle}
+                conferenceToggle={conferenceToggle}
+                
               />
 
             </div>
