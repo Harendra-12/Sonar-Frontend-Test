@@ -91,6 +91,7 @@ var adminLogout = false; // Flag to track admin logout
 var incomingMessage = null;
 var deletedNotificationId = null; // State to track deleted notification ID
 var incomingCall = [];
+var incomingGroupCall = [];
 var internalCallAction = null;
 var socketSendMessage = null;
 var campaignDetails = [];
@@ -104,6 +105,8 @@ var socketSendPeerCallMessage = [];
 var redirectConference = false;
 var allNotificationState = [];
 var messageRecipient = []
+var typingDetails = false;
+var socketSendPeerGroupCallMessage = [];
 
 const initialState = {
   account,
@@ -195,6 +198,7 @@ const initialState = {
   incomingMessage,
   deletedNotificationId,
   incomingCall,
+  incomingGroupCall,
   internalCallAction,
   socketSendMessage,
   socketSendPeerCallMessage,
@@ -207,7 +211,9 @@ const initialState = {
   confNotif,
   redirectConference,
   allNotificationState,
-  messageRecipient
+  messageRecipient,
+  typingDetails,
+  socketSendPeerGroupCallMessage
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -442,8 +448,8 @@ const counterReducer = (state = initialState, action) => {
     case "REMOVE_INCOMINGCALL":
       return {
         ...state,
-        incomingCall: state.incomingCall.filter(
-          (item) => item.room_id !== action.room_id
+        incomingCall: state?.incomingCall?.filter(
+          (item) => item?.room_id !== action?.room_id
         ),
       };
 
@@ -474,6 +480,20 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, recipient_to_remove_notification: action?.recipient };
     case ActionType?.SET_ALL_LEADS_LIST:
       return { ...state, allLeadList: action.payload };
+    case ActionType?.IS_TYPING_ACTION:
+      return { ...state, typingDetails: action?.typingDetails }
+    case ActionType?.SET_SOCKET_SEND_PEER_GROUP_CALL_MESSAGE:
+      return {
+        ...state,
+        socketSendPeerGroupCallMessage: action.socketSendPeerGroupCallMessage,
+      };
+    case ActionType?.SET_GROUP_INTERNALCALLACTION:
+      return { ...state, internalGroupCallAction: action.internalGroupCallAction };
+    case ActionType?.SET_INCOMING_GROUP_CALL:
+      return {
+        ...state,
+        incomingCall: [...state.incomingCall, action.incomingCall],
+      };
     case "SET_ALL_LEADS_FILE_LIST":
       return { ...state, allLeadFileList: action.allLeadFileList };
     case "SET_LEADS_REFRESH":

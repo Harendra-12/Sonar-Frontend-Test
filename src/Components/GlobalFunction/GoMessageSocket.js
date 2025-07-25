@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ActionType } from "../Redux/reduxActionType";
 
 /**
  * Establishes a WebSocket connection to a specified server using account information
@@ -121,11 +122,22 @@ const GoMessageSocket = () => {
                         //     break;
 
                         case "logout_warning":
-                            console.log("Logout warning received, setting admin logout state.");
                             dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
                             break;
                         case "broadcastGroupMessage":
                             dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
+                            break;
+                        case "typing_status":
+                            dispatch({
+                                type: ActionType?.IS_TYPING_ACTION,
+                                typingDetails: {result: result, key: key}
+                            });
+                            break;
+                        case "group_typing_status":
+                            dispatch({
+                                type: ActionType?.IS_TYPING_ACTION,
+                                typingDetails: {result: result, key: key}
+                            });
                             break;
                         case "clientMsg":
                             dispatch({
