@@ -468,15 +468,15 @@ const MessageContactList = ({
                                                     <div className="ms-3 flex-grow-1">
                                                         <p>
                                                             {item?.name}
-                                                            <span className=" text-end mb-0">
-                                                                <p className="timeAgo">
-                                                                    {item?.last_message_data
-                                                                        ? formatRelativeTime(
-                                                                            item?.last_message_data
-                                                                                ?.created_at
-                                                                        )
-                                                                        : ""}
-                                                                </p>
+                                                            <span className=" text-end mb-0 dateTextColor">
+                                                                {/* <span className="timeAgo "> */}
+                                                                {item?.last_message_data
+                                                                    ? formatRelativeTime(
+                                                                        item?.last_message_data
+                                                                            ?.created_at
+                                                                    )
+                                                                    : ""}
+                                                                {/* </span> */}
                                                             </span>
                                                         </p>
                                                         <h5>
@@ -601,15 +601,15 @@ const MessageContactList = ({
                                                     <div className="ms-3 flex-grow-1">
                                                         <p>
                                                             {item.group_name}
-                                                            <span className=" text-end mb-0">
-                                                                <p className="timeAgo">
-                                                                    {item?.last_message_data?.created_at
-                                                                        ? formatRelativeTime(
-                                                                            item?.last_message_data
-                                                                                ?.created_at
-                                                                        )
-                                                                        : ""}
-                                                                </p>
+                                                            <span className=" text-end mb-0 dateTextColor">
+                                                                {/* <span className="timeAgo"> */}
+                                                                {item?.last_message_data?.created_at
+                                                                    ? formatRelativeTime(
+                                                                        item?.last_message_data
+                                                                            ?.created_at
+                                                                    )
+                                                                    : ""}
+                                                                {/* </span> */}
                                                             </span>
                                                         </p>
                                                         {/* <h5>Alright</h5>
@@ -991,6 +991,7 @@ const MessageContactList = ({
                                                 <div className=" text-end">
                                                     <div className="col text-end d-flex justify-content-end align-items-end flex-column">
                                                         {/* <button className="btn_call"><i className="fa-regular fa-video"></i></button> */}
+
                                                         <p className="timeAgo">
                                                             {item?.last_message_data?.created_at
                                                                 ? formatRelativeTime(

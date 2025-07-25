@@ -1051,6 +1051,14 @@
     color: var(--me-text-color);
 }
 
+.mainContentApp .webrtc_newMessageUi .tab-content .contactListItem.selected p.timeAgo,
+.mainContentApp .webrtc_newMessageUi .tab-content .contactListItem.selected p .dateTextColor {
+    color: var(--me-text-color);
+}
+
+.mainContentApp .webrtc_newMessageUi .tab-content .contactListItem p .dateTextColor {
+    color: #8c9097;
+}
 
 .webrtc_newMessageUi #profileOnlineNav::after {
     border: 1px solid #008eff;
