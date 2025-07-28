@@ -162,6 +162,7 @@ const MessageBody = ({
             }, 1000)
         }
     }
+
     return (
         <div
             className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
@@ -679,7 +680,9 @@ const MessageBody = ({
                                     >
                                         <i class="fad fa-thumbtack"></i>
                                         <p className='mb-0'>
-                                            {pinnedMessages?.message_text}
+                                            {!pinnedMessages?.message_text?.includes('/')
+                                                ? pinnedMessages?.message_text
+                                                : pinnedMessages?.message_text?.split('/').pop()}
                                         </p>
                                     </div>
                                 );

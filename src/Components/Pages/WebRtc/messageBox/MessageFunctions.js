@@ -483,9 +483,15 @@ export const handlePinMessage = async (
     if (result?.status) {
         toast?.success(result?.message)
         const updatedAllMessage = allMessage[recipient[1]]?.map(item =>
-            item.id === result?.data?.id ? { ...result?.data } : item
+            item.id === result?.data?.id
+                ? { ...item, is_pinned: result?.data?.is_pinned }
+                : item
         );
-        setAllMessage(updatedAllMessage)
+        
+        setAllMessage((prev) => ({
+            ...prev,
+            [recipient[1]]: updatedAllMessage
+        }))
     }
 }
 

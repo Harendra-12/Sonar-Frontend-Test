@@ -49,7 +49,7 @@ function Messages({
   isMicOn,
   isVideoOn,
   setactivePage,
-  activePage={activePage},
+  activePage = { activePage },
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
   calling,
@@ -1394,7 +1394,7 @@ function Messages({
                         placeholder="Search"
                         name="name"
                         value={searchQuery}
-                        onChange={handleSearchChange}
+                        onChange={(e) => handleSearchChange(e, setSearchQuery)}
                       />
                     </div>
                   </div>
@@ -1454,7 +1454,7 @@ function Messages({
                                     <input
                                       type="checkbox"
                                       onChange={() =>
-                                        handleCheckboxChange(item)
+                                        handleCheckboxChange(item, setGroupSelecedAgents)
                                       } // Call handler on change
                                       checked={groupSelecedAgents.some(
                                         (agent) => agent.name == item.name
@@ -1483,7 +1483,18 @@ function Messages({
                       </button>
                       <button
                         className="panelButton me-0"
-                        onClick={() => handleCreateGroup()}
+                        onClick={() => handleCreateGroup(
+                          groupname,
+                          setNewGroupLoader,
+                          groupSelecedAgents,
+                          account,
+                          setGroupRefresh,
+                          groupRefresh,
+                          setAddMember,
+                          setGroupChatPopUp,
+                          setGroupSelecedAgents,
+                          setLoading,
+                          setGroupName)}
                       >
                         <span className="text">Create</span>
                         <span className="icon">
