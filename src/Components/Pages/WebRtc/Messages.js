@@ -1066,7 +1066,7 @@ function Messages({
 
   useEffect(() => {
     getAllInternalCallsHistory(setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading);
-  }, [calling]);
+  }, [calling,internalCallsPageNumber]);
 
   const handleRefresh = () => {
     const shouldLoad = false;
