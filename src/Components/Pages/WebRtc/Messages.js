@@ -21,7 +21,6 @@ import DisplayFile from "./DisplayFile";
 import FileUpload from "./FileUpload";
 import HeaderApp from "./HeaderApp";
 import LogOutPopUp from "./LogOutPopUp";
-import MessageProfileDetails from "./components/MessageProfileDetails";
 import MessageBody from "./messageBox/MessageBody";
 import MessageContactList from "./messageBox/MessageContactList";
 import {
@@ -1340,7 +1339,6 @@ function Messages({
                 setSelectedgroupUsers={setSelectedgroupUsers}
                 isActiveAgentsOpen={isActiveAgentsOpen}
                 setIsActiveAgentsOpen={setIsActiveAgentsOpen}
-                MessageProfileDetails={MessageProfileDetails}
                 saveEditToggleGroupNameChange={saveEditToggleGroupNameChange}
                 socketSendPeerCallMessage={socketSendPeerCallMessage}
                 pageLoader={pageLoader}

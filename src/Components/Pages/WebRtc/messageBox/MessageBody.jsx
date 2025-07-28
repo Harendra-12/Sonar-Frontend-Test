@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { featureUnderdevelopment } from '../../../GlobalFunction/globalFunction';
 import CircularLoader from '../../../Loader/CircularLoader';
+import MessageProfileDetails from "./../components/MessageProfileDetails";
 import {
     handleAddNewMemberToGroup,
     handleAssignTag,
@@ -101,7 +102,6 @@ const MessageBody = ({
     setSelectedgroupUsers,
     isActiveAgentsOpen,
     setIsActiveAgentsOpen,
-    MessageProfileDetails,
     saveEditToggleGroupNameChange,
     socketSendPeerCallMessage,
     pageLoader,
@@ -1720,6 +1720,14 @@ const MessageBody = ({
                                         setCalling={setCalling}
                                         socketSendMessage={socketSendPeerCallMessage}
                                         account={account}
+                                        socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
+                                        setIsConferenceCall={setIsConferenceCall}
+                                        setConferenceInfo={setConferenceInfo}
+                                        setactivePage={setactivePage}
+                                        activePage={activePage}
+                                        isVideoOn={isVideoOn}
+                                        setConferenceToggle={setConferenceToggle}
+                                        conferenceToggle={conferenceToggle}
                                     />
                                 ) : (
                                     ""

@@ -5,7 +5,24 @@ import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { useDispatch } from "react-redux";
 import DisplayFile from "../DisplayFile";
 
-const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPage, setToUser, setCalling, socketSendMessage, account }) => {
+const MessageProfileDetails = ({
+  recipient,
+  messages,
+  selectedChat,
+  setMeetingPage,
+  setToUser,
+  setCalling,
+  socketSendMessage,
+  account,
+  socketSendPeerGroupCallMessage,
+  setIsConferenceCall,
+  setConferenceInfo,
+  setactivePage,
+  activePage,
+  isVideoOn,
+  setConferenceToggle,
+  conferenceToggle,
+}) => {
   const dispatch = useDispatch()
   const [allFiles, setAllFiles] = useState([]);
 
@@ -182,6 +199,60 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
     return parts[parts?.length - 1]?.toLowerCase();
   };
 
+  const handleCallInitiatedFromProfile = () => {
+    if (recipient[2] === "singleChat") {
+      setMeetingPage("message");
+      setToUser(recipient?.[1]);
+      setCalling(true);
+      dispatch({
+        type: "SET_INTERNALCALLACTION",
+        internalCallAction: null,
+      });
+      socketSendMessage({
+        action: "peercallInitiate",
+        from: account.id,
+        to: recipient?.[1],
+        room_id: `${account.id}-${recipient?.[1]}`,
+        call_type: "audio",
+      });
+    } else {
+      socketSendPeerGroupCallMessage({
+        "action": "initiate_peer_group_call",
+        "room_id": `${account.id}-${recipient?.[1]}`,
+        "call_type": "audio",
+        "message_group_id": recipient[1],
+        "group_name": recipient[0],
+        "user_id": account?.id,
+      })
+      setCalling(true)
+      setIsConferenceCall(true);
+      try {
+        dispatch({
+          type: "SET_ROOMID",
+          RoomID: `${account.id}-${recipient?.[1]}`
+        })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        setConferenceInfo({
+          room_id: `${account.id}-${recipient?.[1]}`,
+          extension_id: account?.extension_id,
+          name: account?.username,
+          setactivePage: setactivePage,
+          activePage: activePage,
+          setConferenceToggle: setConferenceToggle,
+          conferenceToggle: conferenceToggle,
+          conferenceId: "",
+          pin: "",
+          isVideoOn: isVideoOn,
+        })
+        setTimeout(() => {
+          setCalling(true);
+        }, 1000)
+      }
+    }
+  }
+
   return (
     <div className="messageOverlay py-3 h-100" style={{ overflow: "hidden" }}>
       <div className="pt-4">
@@ -222,22 +293,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat, setMeetingPa
           {/* {!saveEditToggleGroupNameChange ? ( */}
           <button
             className="clearButton2 link f-s-14"
-            onClick={() => {
-              setMeetingPage("message");
-              setToUser(recipient?.[1]);
-              setCalling(true);
-              dispatch({
-                type: "SET_INTERNALCALLACTION",
-                internalCallAction: null,
-              });
-              socketSendMessage({
-                action: "peercallInitiate",
-                from: account.id,
-                to: recipient?.[1],
-                room_id: `${account.id}-${recipient?.[1]}`,
-                call_type: "audio",
-              });
-            }}
+            onClick={() => handleCallInitiatedFromProfile()}
           >
             <i className="fa-regular fa-phone"></i>
           </button>
