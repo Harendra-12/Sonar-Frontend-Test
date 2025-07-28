@@ -109,7 +109,8 @@ const MessageBody = ({
     setIsConferenceCall,
     setConferenceInfo,
     setConferenceToggle,
-    conferenceToggle
+    conferenceToggle,
+    setInternalCaller
 }) => {
     const dispatch = useDispatch()
     const handlePinClick = (messageId) => {
@@ -506,6 +507,7 @@ const MessageBody = ({
                                             // onClick={() => onSubmit("audio", recipient?.[0])}
                                             onClick={() => {
                                                 setMeetingPage("message");
+                                                setInternalCaller(account?.id)
                                                 setToUser(recipient?.[1]);
                                                 setCalling(true);
                                                 dispatch({

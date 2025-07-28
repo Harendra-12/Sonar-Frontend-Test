@@ -2,6 +2,7 @@ import Tippy from '@tippyjs/react';
 import { useDispatch } from 'react-redux';
 import { isOnlyLink } from '../../../GlobalFunction/globalFunction';
 import AgentSearch from '../AgentSearch';
+import ChatsCalls from "./../components/ChatsCalls";
 import { getAllMessageApiFun, handleDeleteTag, handleGroupSearchChange, handleMessageSearchChange, handleNewTag } from './MessageFunctions';
 
 const MessageContactList = ({
@@ -50,7 +51,6 @@ const MessageContactList = ({
     addNewTag,
     newTag,
     setNewTag,
-    ChatsCalls,
     loading,
     doomScrollLoading,
     setDoomScrollLoading,
