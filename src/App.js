@@ -239,7 +239,7 @@ function App() {
   const accountDetails = useSelector((state) => state?.accountDetails);
   const slugPermissions = useSelector((state) => state?.permissions);
   // const { sendMessage } = Socket();
-  Socket();
+  // Socket();
   const { sendMessage } = GoMessageSocket()
   GoConferenceNotificationSocket();
   GoSocket();
