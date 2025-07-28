@@ -225,7 +225,7 @@ const MessageProfileDetails = ({
         "user_id": account?.id,
       })
       setCalling(true)
-      setIsConferenceCall(true);
+      // setIsConferenceCall(false);
       try {
         dispatch({
           type: "SET_ROOMID",

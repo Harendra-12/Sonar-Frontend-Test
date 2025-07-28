@@ -136,7 +136,7 @@ const MessageBody = ({
             "user_id": account?.id,
         })
         setCalling(true)
-        setIsConferenceCall(true);
+        // setIsConferenceCall(true);
         try {
             dispatch({
                 type: "SET_ROOMID",

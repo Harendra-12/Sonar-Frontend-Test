@@ -30,7 +30,7 @@ function InternalIncomingCall({
       }, 1000);
       setConferenceId(item?.room_id)
       setCalling(true)
-      setIsConferenceCall(true);
+      // setIsConferenceCall(false);
       try {
         dispatch({
           type: "SET_ROOMID",
@@ -82,7 +82,7 @@ function InternalIncomingCall({
       });
     }
   }
-  
+
   function rejectCall(item) {
     if (item?.source === "incoming_peer_group_call") {
       socketSendPeerGroupCallMessage({
