@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { featureUnderdevelopment } from '../../../GlobalFunction/globalFunction';
 import CircularLoader from '../../../Loader/CircularLoader';
+import MessageProfileDetails from "./../components/MessageProfileDetails";
 import {
     handleAddNewMemberToGroup,
     handleAssignTag,
@@ -101,7 +102,6 @@ const MessageBody = ({
     setSelectedgroupUsers,
     isActiveAgentsOpen,
     setIsActiveAgentsOpen,
-    MessageProfileDetails,
     saveEditToggleGroupNameChange,
     socketSendPeerCallMessage,
     pageLoader,
@@ -162,6 +162,7 @@ const MessageBody = ({
             }, 1000)
         }
     }
+
     return (
         <div
             className="col-12 col-xl-9 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
@@ -679,7 +680,9 @@ const MessageBody = ({
                                     >
                                         <i class="fad fa-thumbtack"></i>
                                         <p className='mb-0'>
-                                            {pinnedMessages?.message_text}
+                                            {!pinnedMessages?.message_text?.includes('/')
+                                                ? pinnedMessages?.message_text
+                                                : pinnedMessages?.message_text?.split('/').pop()}
                                         </p>
                                     </div>
                                 );
@@ -1717,6 +1720,14 @@ const MessageBody = ({
                                         setCalling={setCalling}
                                         socketSendMessage={socketSendPeerCallMessage}
                                         account={account}
+                                        socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
+                                        setIsConferenceCall={setIsConferenceCall}
+                                        setConferenceInfo={setConferenceInfo}
+                                        setactivePage={setactivePage}
+                                        activePage={activePage}
+                                        isVideoOn={isVideoOn}
+                                        setConferenceToggle={setConferenceToggle}
+                                        conferenceToggle={conferenceToggle}
                                     />
                                 ) : (
                                     ""

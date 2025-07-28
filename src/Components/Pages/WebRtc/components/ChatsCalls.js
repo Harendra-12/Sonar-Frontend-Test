@@ -8,7 +8,7 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
     const handleScroll = () => {
         const div = callListRef.current;
         if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
-            if (rawData.current_page !== rawData?.last_page) {
+            if ((rawData.current_page !== rawData?.last_page) && !doomScrollLoading) {
                 setPageNumber(pageNumber + 1);
                 setDoomScrollLoading(true);
             }
