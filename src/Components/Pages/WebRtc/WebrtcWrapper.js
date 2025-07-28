@@ -634,7 +634,7 @@ const WebrtcWrapper = () => {
             setConferenceInfo={setConferenceInfo}
             setConferenceToggle={setConferenceToggle}
             conferenceToggle={conferenceToggle}
-            
+            setInternalCaller={setInternalCaller}
           />
         )}
         {activePage === "conference" && (

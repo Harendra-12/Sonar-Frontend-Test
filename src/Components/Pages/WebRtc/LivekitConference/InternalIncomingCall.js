@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { formatDateTime } from "../../../GlobalFunction/globalFunction";
 
 function InternalIncomingCall({
   setInternalCaller,
@@ -58,6 +59,7 @@ function InternalIncomingCall({
         "message_group_id": item?.message_group_id,
         "group_name": item?.group_name,
         "user_id": item?.receiver_id,
+        "date_and_time": formatDateTime(new Date())
       })
     } else {
       setInternalCaller(item?.sender_id);
@@ -80,7 +82,7 @@ function InternalIncomingCall({
       });
     }
   }
-
+  
   function rejectCall(item) {
     if (item?.source === "incoming_peer_group_call") {
       socketSendPeerGroupCallMessage({
@@ -88,7 +90,8 @@ function InternalIncomingCall({
         "group_name": item?.message_group_id,
         "rejected_by": account?.username,
         "room_id": item?.room_id,
-        "user_id": item?.receiver_id
+        "user_id": item?.receiver_id,
+        "date_and_time": formatDateTime(new Date())
       })
       dispatch({
         type: "REMOVE_INCOMINGCALL",

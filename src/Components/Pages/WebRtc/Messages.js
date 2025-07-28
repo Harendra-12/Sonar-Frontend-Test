@@ -21,7 +21,6 @@ import DisplayFile from "./DisplayFile";
 import FileUpload from "./FileUpload";
 import HeaderApp from "./HeaderApp";
 import LogOutPopUp from "./LogOutPopUp";
-import ChatsCalls from "./components/ChatsCalls";
 import MessageProfileDetails from "./components/MessageProfileDetails";
 import MessageBody from "./messageBox/MessageBody";
 import MessageContactList from "./messageBox/MessageContactList";
@@ -61,6 +60,7 @@ function Messages({
   setConferenceInfo,
   setConferenceToggle,
   conferenceToggle,
+  setInternalCaller,
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -1238,7 +1238,6 @@ function Messages({
                 addNewTag={addNewTag}
                 newTag={newTag}
                 setNewTag={setNewTag}
-                ChatsCalls={ChatsCalls}
                 loading={loading}
                 doomScrollLoading={doomScrollLoading}
                 setDoomScrollLoading={setDoomScrollLoading}
@@ -1350,7 +1349,7 @@ function Messages({
                 setIsConferenceCall={setIsConferenceCall}
                 setConferenceToggle={setConferenceToggle}
                 conferenceToggle={conferenceToggle}
-                
+                setInternalCaller={setInternalCaller}
               />
 
             </div>
