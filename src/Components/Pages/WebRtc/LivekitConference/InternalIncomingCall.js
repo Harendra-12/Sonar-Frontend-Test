@@ -68,7 +68,7 @@ function InternalIncomingCall({
       });
     }
   }
-  
+
   function rejectCall(item) {
     if (item?.source === "incoming_peer_group_call") {
       socketSendPeerGroupCallMessage({
