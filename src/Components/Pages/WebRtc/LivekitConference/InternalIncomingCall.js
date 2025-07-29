@@ -15,29 +15,33 @@ function InternalIncomingCall({
   isVideoOn,
   setConferenceId,
 }) {
-  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage)
+  const socketSendPeerCallMessage = useSelector(
+    (state) => state.socketSendPeerCallMessage
+  );
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
-  const socketSendPeerGroupCallMessage = useSelector((state) => state.socketSendPeerGroupCallMessage);
+  const socketSendPeerGroupCallMessage = useSelector(
+    (state) => state.socketSendPeerGroupCallMessage
+  );
   // console.log(incomingCall,internalCallAction)
 
   const dispatch = useDispatch();
   function answerCall(item) {
     if (item?.source === "incoming_peer_group_call") {
       setTimeout(() => {
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id })
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
       }, 1000);
-      setConferenceId(item?.room_id)
-      setCalling(true)
+      setConferenceId(item?.room_id);
+      setCalling(true);
       setIsConferenceCall(true);
       try {
         dispatch({
           type: "SET_ROOMID",
           RoomID: item?.room_id,
-        })
+        });
       } catch (err) {
-        console.log(err)
+        console.log(err);
       } finally {
         setConferenceInfo({
           room_id: item?.room_id,
@@ -50,27 +54,28 @@ function InternalIncomingCall({
           conferenceId: "",
           pin: "",
           isVideoOn: isVideoOn,
-        })
+        });
       }
       socketSendPeerGroupCallMessage({
-        "action": "receive_peer_group_call",
-        "room_id": item?.room_id,
-        "call_type": "audio",
-        "message_group_id": item?.message_group_id,
-        "group_name": item?.group_name,
-        "user_id": item?.receiver_id,
-        "date_and_time": formatDateTime(new Date())
-      })
+        action: "receive_peer_group_call",
+        room_id: item?.room_id,
+        call_type: "audio",
+        message_group_id: item?.message_group_id,
+        group_name: item?.group_name,
+        user_id: item?.receiver_id,
+        date_and_time: formatDateTime(new Date()),
+      });
     } else {
       setInternalCaller(item?.sender_id);
       setToUser(account.id);
       setCalling(true);
       setTimeout(() => {
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id })
-        dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
-
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+        dispatch({
+          type: "SET_INCOMINGCALL",
+          incomingCall: { ...item, recieved: true, isOtherMember: true },
+        });
       }, 1000);
-
 
       socketSendPeerCallMessage({
         action: "peercallUpdate",
@@ -82,17 +87,17 @@ function InternalIncomingCall({
       });
     }
   }
-  
+
   function rejectCall(item) {
     if (item?.source === "incoming_peer_group_call") {
       socketSendPeerGroupCallMessage({
-        "action": "reject_peer_group_call",
-        "group_name": item?.message_group_id,
-        "rejected_by": account?.username,
-        "room_id": item?.room_id,
-        "user_id": item?.receiver_id,
-        "date_and_time": formatDateTime(new Date())
-      })
+        action: "reject_peer_group_call",
+        group_name: item?.message_group_id,
+        rejected_by: account?.username,
+        room_id: item?.room_id,
+        user_id: item?.receiver_id,
+        date_and_time: formatDateTime(new Date()),
+      });
       dispatch({
         type: "REMOVE_INCOMINGCALL",
         room_id: item?.room_id,
@@ -117,16 +122,27 @@ function InternalIncomingCall({
 
   useEffect(() => {
     incomingCall?.map((item) => {
-      if (internalCallAction?.room_id === item?.room_id && internalCallAction?.Hangup_cause === "originator_cancel") {
-        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null })
+      if (
+        internalCallAction?.room_id === item?.room_id &&
+        internalCallAction?.Hangup_cause === "originator_cancel"
+      ) {
+        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
       }
-    })
-  }, [internalCallAction])
+      if (
+        internalCallAction?.room_id === item?.room_id &&
+        (internalCallAction?.Hangup_cause === "rejected" || internalCallAction?.status === "started")
+      ) {
+        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+      }
+    });
+    console.log(internalCallAction, "internalCallAction");
+  }, [internalCallAction]);
 
   useEffect(() => {
     console.log("incomingCall", incomingCall);
-  }, [])
+  }, []);
 
   return (
     <>
@@ -149,8 +165,7 @@ function InternalIncomingCall({
                           />
                         </div>
                       ) : (
-                        <div className="userHolder"
-                        >
+                        <div className="userHolder">
                           <i className="fa-light fa-user fs-5"></i>
                         </div>
                       )}
