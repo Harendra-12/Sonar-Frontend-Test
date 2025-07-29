@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.a7c83c3d.css",
-    "main.js": "/static/js/main.c1aa6213.js",
+    "main.js": "/static/js/main.77cd178b.js",
     "static/js/453.6a4f2cd4.chunk.js": "/static/js/453.6a4f2cd4.chunk.js",
     "static/media/cellphone-ringing-6475.mp3": "/static/media/cellphone-ringing-6475.464cc45992f202d5ea62.mp3",
     "static/media/instagram.webp": "/static/media/instagram.3090db40fa34a1e434a6.webp",
@@ -50,11 +50,11 @@
     "static/media/file.webp": "/static/media/file.a7990a1771475a401239.webp",
     "static/media/register.webp": "/static/media/register.c9c3dd0cf1a662c8c81b.webp",
     "main.a7c83c3d.css.map": "/static/css/main.a7c83c3d.css.map",
-    "main.c1aa6213.js.map": "/static/js/main.c1aa6213.js.map",
+    "main.77cd178b.js.map": "/static/js/main.77cd178b.js.map",
     "453.6a4f2cd4.chunk.js.map": "/static/js/453.6a4f2cd4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a7c83c3d.css",
-    "static/js/main.c1aa6213.js"
+    "static/js/main.77cd178b.js"
   ]
 }
