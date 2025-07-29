@@ -20,7 +20,8 @@ function InitiateCall({
   setSelectedChat,
   isConferenceCall,
   isConferenceAdmin,
-  conferenceInfo
+  conferenceInfo,
+  setIsGroupCallMessageOpened
 }) {
   const dispatch = useDispatch();
   const [token, setToken] = useState(null);
@@ -32,15 +33,18 @@ function InitiateCall({
   const [roomName, setRoomName] = useState("");
   const [isAdmin, setIsAdmin] = useState(true);
   const messageRecipient = useSelector((state) => state.messageRecipient)
-
+  const incomingGroupCall = useSelector((state) => state?.incomingGroupCall)
   // Check if its a Conference Call or Normal Call
-
   useEffect(() => {
     if (isConferenceCall) {
       setRoomName(roomId);
       setIsAdmin(isConferenceAdmin);
     } else {
-      setRoomName(`${from}-${to}`)
+      if (incomingGroupCall?.[0]?.source === "incoming_peer_group_call") {
+        setRoomName(incomingGroupCall?.[0]?.room_id)
+      } else {
+        setRoomName(`${from}-${to}`)
+      }
     }
   }, [isConferenceCall])
 
@@ -78,15 +82,25 @@ function InitiateCall({
       const chatButton = document.querySelector(".lk-button.lk-chat-toggle");
 
       if (event.target === chatButton || chatButton?.contains(event.target)) {
-        if (storeRecipient) {
+        if (messageRecipient[2] === "groupChat") {
           dispatch(({
             type: "SET_MESSAGERECIPIENT",
-            messageRecipient: storeRecipient,
+            messageRecipient: messageRecipient,
           }));
-          setSelectedChat("singleChat");
-
+          setSelectedChat("groupChat");
           setIsChatOpen(prev => !prev);
+          setIsGroupCallMessageOpened(true)
+        } else {
+          if (storeRecipient) {
+            dispatch(({
+              type: "SET_MESSAGERECIPIENT",
+              messageRecipient: storeRecipient,
+            }));
+            setSelectedChat("singleChat");
+            setIsChatOpen(prev => !prev);
+          }
         }
+
       }
     };
 
