@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useIsRecording, useRoomContext } from "@livekit/components-react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 // import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
 import {
@@ -11,6 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { api_url } from "../../../../urls";
+import Whiteboard from "./Whiteboard/Whiteboard";
+import { useLiveKitWhiteboardEvents } from "./Whiteboard/useLivekitWhiteboardEvents";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -71,6 +73,20 @@ function Members({
   const lastProcessedRaise = useRef(null);
 
   const [toggleMeetingInfo, setToggleMeetingInfo] = useState(false);
+
+  const [toggleWhiteBoard, setToggleWhiteBoard] = useState(false);
+  const [incomingSnapshot, setIncomingSnapshot] = useState(null)
+  const [whiteboardStarter, setWhiteboardStarter] = useState(null)
+  const whiteboardStarterRef = useRef(whiteboardStarter);
+  const [whiteboardMinimize, setWhiteboardMinimize] = useState(false);
+
+  useLiveKitWhiteboardEvents({
+    room,
+    roomName,
+    onRemoteOpen: (bool) => setToggleWhiteBoard(bool),
+    onSnapshotReceived: (snapshot) => setIncomingSnapshot(snapshot),
+    onStarterId: (id) => setWhiteboardStarter(id),
+  })
 
   // useEffect(() => {
   //   setCurentCallRoom(
@@ -426,6 +442,13 @@ function Members({
           disconnectButton.parentNode.insertBefore(recordButton, disconnectButton);
         }
 
+        const whiteBoardToggleButton = document.createElement("button");
+        whiteBoardToggleButton.className = "lk-button whiteboard-toggle-button";
+        whiteBoardToggleButton.innerHTML =
+          `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="16px" height="16px" viewBox="0 -64 640 640"><path d="M96 64h448v352h64V40c0-22.06-17.94-40-40-40H72C49.94 0 32 17.94 32 40v376h64V64zm528 384H480v-64H288v64H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h608c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"/><script xmlns=""/></svg>
+            <span>Whiteboard</span>`;
+        whiteBoardToggleButton.onclick = () => handleToggleWhiteboard();
+
         if (isConferenceCall) {
           // Append the buttons to the custom div
           customDiv.appendChild(allMembersButton);
@@ -439,6 +462,8 @@ function Members({
         if (isConferenceCall) {
           // Insert the hand raise button before the disconnect button
           disconnectButton.parentNode.insertBefore(handRaiseButton, disconnectButton);
+          // Insert the hand whiteboard button before the handRaiseButton button
+          disconnectButton.parentNode.insertBefore(whiteBoardToggleButton, handRaiseButton);
         }
       }
     }
@@ -676,6 +701,73 @@ function Members({
     return observer;
   }
 
+  // updates the whiteboard starter
+  useEffect(() => {
+    whiteboardStarterRef.current = whiteboardStarter;
+  }, [whiteboardStarter]);
+
+  const handleToggleWhiteboard = () => {
+    const currentStarter = whiteboardStarterRef.current;
+    const whiteBoardButton = document.querySelector(".whiteboard-toggle-button");
+
+    console.log(currentStarter);
+
+
+    if (!currentStarter || currentStarter === username) {
+      setToggleWhiteBoard((prev) => {
+        const newStatus = !prev;
+
+        // Broadcast whiteboard toggle event
+        room.localParticipant.publishData(
+          new TextEncoder().encode(
+            JSON.stringify({
+              type: 'whiteboard-toggle',
+              roomId: roomName,
+              userId: room.localParticipant.identity.split('-')[0],
+              status: newStatus
+            })
+          ),
+          { reliable: true }
+        );
+
+        // If whiteboard is being opened and no one had started it, set the starter
+        if (newStatus && !currentStarter) {
+          setWhiteboardStarter(username);
+        }
+
+        // If whiteboard is being closed by the starter, clear the starter
+        if (!newStatus && currentStarter === username) {
+          setWhiteboardStarter(null);
+        }
+
+        whiteBoardButton.setAttribute("data-lk-enabled", newStatus);
+
+        return newStatus;
+      });
+    } else {
+      toast.error("Whiteboard is already opened by " + currentStarter);
+    }
+  };
+
+  // Send whiteboard data to others
+  const sendWhiteBoardData = useCallback((snapshot) => {
+    if (room?.localParticipant) {
+      const payload = {
+        type: 'whiteboard',
+        roomId: roomName,
+        snapshot,
+        whiteboardStarter: whiteboardStarterRef.current
+      }
+      // room.localParticipant.publishData(JSON.stringify(payload), { reliable: true })
+      room.localParticipant.publishData(
+        new TextEncoder().encode(JSON.stringify(payload)), // encode explicitly
+        {
+          reliable: true,
+        }
+      )
+    }
+  }, [room])
+
 
   return (
     <>
@@ -838,6 +930,25 @@ function Members({
           </div>
         </div>
       )}
+      {toggleWhiteBoard && room ?
+        <div className={`whiteboardWrapper ${whiteboardMinimize ? 'minimized' : ''}`}>
+          <button className="clearButton2 xl bg-white"
+            onClick={() => setWhiteboardMinimize((prev) => !prev)}
+            style={{ position: 'absolute', top: '30px', right: '30px', zIndex: '9' }}
+          >
+            <i className={`fa-regular fa-${whiteboardMinimize ? 'expand-wide' : 'arrow-down-left-and-arrow-up-right-to-center'} text-dark`} />
+          </button>
+          <Whiteboard sendData={sendWhiteBoardData}
+            onSnapshotReceived={(callback) => {
+              if (incomingSnapshot) {
+                callback(incomingSnapshot)
+              }
+            }}
+            username={username}
+            whiteboardStarter={whiteboardStarter}
+          />
+        </div>
+        : ""}
     </>
   );
 }
