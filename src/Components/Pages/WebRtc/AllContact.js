@@ -29,7 +29,7 @@ function AllContact({
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
-  const { sessionManager,connectStatus } = useSIPProvider()
+  const { sessionManager, connectStatus } = useSIPProvider()
   const globalSession = useSelector((state) => state.sessions);
   // const [contact, setContact] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,7 +78,7 @@ function AllContact({
   };
 
   const handleEditContact = async (contactId) => {
-    // setAllContactLoading(true);
+    setAllContactLoading(true);
     // setSelectedEditContact(contact);
     const apiData = await generalGetFunction(`/contact/show/${contactId}`);
     if (apiData.status) {
@@ -115,133 +115,133 @@ function AllContact({
     }
   };
 
-   async function onSubmit(mode="audio",destNumber) {
-      if (!isMicOn) {
-        toast.warn("Please turn on microphone");
+  async function onSubmit(mode = "audio", destNumber) {
+    if (!isMicOn) {
+      toast.warn("Please turn on microphone");
+      return;
+    }
+    if (mode === "video") {
+      if (!isVideoOn) {
+        toast.warn("Please turn on camera");
         return;
-      }
-      if (mode === "video") {
-        if (!isVideoOn) {
-          toast.warn("Please turn on camera");
-          return;
-        }
-      }
-  
-      if (extension == "") {
-        toast.error("No extension assigned to your account");
-        return;
-      }
-      if (destNumber == extension) {
-        toast.error("You cannot call yourself");
-        return;
-      }
-  
-      if (connectStatus !== "CONNECTED") {
-        toast.error("You are not connected with server");
-        return;
-      }
-  
-      if (destNumber.length > 3) {
-        dispatch({
-          type: "SET_MINIMIZE",
-          minimize: false,
-        });
-        // hideDialpad(false);
-        // e.preventDefault();
-        const apiData = await sessionManager?.call(
-          `sip:${destNumber}@${account.domain.domain_name}`,
-          {
-            earlyMedia: true,
-            inviteWithSdp: true,
-            sessionDescriptionHandlerOptions: {
-              constraints: {
-                audio: true,
-                video: mode === "video" ? true : false,
-              },
-            },
-          },
-          {
-            media: {
-              audio: true,
-              video:
-                mode === "audio"
-                  ? true
-                  : {
-                    mandatory: {
-                      minWidth: 1280,
-                      minHeight: 720,
-                      minFrameRate: 30,
-                    },
-                    optional: [{ facingMode: "user" }],
-                  },
-            },
-          }
-        )
-  
-        const sdh = apiData.sessionDescriptionHandler;
-  
-        // Check if remoteMediaStream is available
-        if (sdh && sdh._remoteMediaStream) {
-          const remoteStream = sdh._remoteMediaStream;
-  
-          // Listen for tracks being added to the remote stream
-          remoteStream.onaddtrack = () => {
-            playRemoteStream(remoteStream);
-          };
-  
-          // If tracks are already present, attach immediately
-          if (remoteStream.getTracks().length > 0) {
-            playRemoteStream(remoteStream);
-          }
-        }
-  
-        // Function to play the remote stream
-        function playRemoteStream(stream) {
-          const audioElement = document.createElement("audio");
-          audioElement.srcObject = stream;
-          audioElement.autoplay = true;
-  
-          audioElement.play().catch((e) => {
-            console.error("Error playing early media stream:", e);
-          });
-        }
-  
-        setSelectedModule("onGoingCall");
-        dispatch({
-          type: "SET_SESSIONS",
-          sessions: [
-            ...globalSession,
-            {
-              id: apiData._id,
-              destination: destNumber,
-              state: "Established",
-              mode: mode,
-              isTransfer: isTransfer,
-              transferableSessionId: transferableSessionId,
-            },
-          ],
-        });
-        dispatch({
-          type: "SET_VIDEOCALL",
-          videoCall: mode === "video" ? true : false,
-        });
-        dispatch({
-          type: "SET_CALLPROGRESSID",
-          callProgressId: apiData._id,
-        });
-        dispatch({
-          type: "SET_CALLPROGRESSDESTINATION",
-          callProgressDestination: destNumber,
-        });
-        dispatch({
-          type: "SET_CALLPROGRESS",
-          callProgress: mode === "video" ? false : true,
-        });
-      } else {
-        console.log(destNumber)
-        toast.error("Please enter a valid number");
       }
     }
+
+    if (extension == "") {
+      toast.error("No extension assigned to your account");
+      return;
+    }
+    if (destNumber == extension) {
+      toast.error("You cannot call yourself");
+      return;
+    }
+
+    if (connectStatus !== "CONNECTED") {
+      toast.error("You are not connected with server");
+      return;
+    }
+
+    if (destNumber.length > 3) {
+      dispatch({
+        type: "SET_MINIMIZE",
+        minimize: false,
+      });
+      // hideDialpad(false);
+      // e.preventDefault();
+      const apiData = await sessionManager?.call(
+        `sip:${destNumber}@${account.domain.domain_name}`,
+        {
+          earlyMedia: true,
+          inviteWithSdp: true,
+          sessionDescriptionHandlerOptions: {
+            constraints: {
+              audio: true,
+              video: mode === "video" ? true : false,
+            },
+          },
+        },
+        {
+          media: {
+            audio: true,
+            video:
+              mode === "audio"
+                ? true
+                : {
+                  mandatory: {
+                    minWidth: 1280,
+                    minHeight: 720,
+                    minFrameRate: 30,
+                  },
+                  optional: [{ facingMode: "user" }],
+                },
+          },
+        }
+      )
+
+      const sdh = apiData.sessionDescriptionHandler;
+
+      // Check if remoteMediaStream is available
+      if (sdh && sdh._remoteMediaStream) {
+        const remoteStream = sdh._remoteMediaStream;
+
+        // Listen for tracks being added to the remote stream
+        remoteStream.onaddtrack = () => {
+          playRemoteStream(remoteStream);
+        };
+
+        // If tracks are already present, attach immediately
+        if (remoteStream.getTracks().length > 0) {
+          playRemoteStream(remoteStream);
+        }
+      }
+
+      // Function to play the remote stream
+      function playRemoteStream(stream) {
+        const audioElement = document.createElement("audio");
+        audioElement.srcObject = stream;
+        audioElement.autoplay = true;
+
+        audioElement.play().catch((e) => {
+          console.error("Error playing early media stream:", e);
+        });
+      }
+
+      setSelectedModule("onGoingCall");
+      dispatch({
+        type: "SET_SESSIONS",
+        sessions: [
+          ...globalSession,
+          {
+            id: apiData._id,
+            destination: destNumber,
+            state: "Established",
+            mode: mode,
+            isTransfer: isTransfer,
+            transferableSessionId: transferableSessionId,
+          },
+        ],
+      });
+      dispatch({
+        type: "SET_VIDEOCALL",
+        videoCall: mode === "video" ? true : false,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSID",
+        callProgressId: apiData._id,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESSDESTINATION",
+        callProgressDestination: destNumber,
+      });
+      dispatch({
+        type: "SET_CALLPROGRESS",
+        callProgress: mode === "video" ? false : true,
+      });
+    } else {
+      console.log(destNumber)
+      toast.error("Please enter a valid number");
+    }
+  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -311,51 +311,53 @@ function AllContact({
                         account?.sectionPermissions,
                         account?.permissions,
                         "read") ? <div>You dont have permission to view this section!</div> :
-                        allContactLoading ? (
-                          <div colSpan={99}>
-                            <ContentLoader />
-                          </div>
-                        ) : (
-                          Object.keys(groupedContacts)
-                            .sort()
-                            .map((initial) => (
-                              <div key={initial}>
-                                <div className="dateHeader">
-                                  <p>{initial}</p>
-                                </div>
-                                {groupedContacts[initial].map((contact) => (
-                                  <div className="callListItem wertc_iconBox border-bottom-0 border-end-0" key={contact.id}>
-                                    <div className="row justify-content-between">
-                                      <div className="col-xl-7 col-xxl-5 d-flex">
-                                        <div className="profileHolder">
-                                          <i className="fa-light fa-user fs-5" />
+                        // allContactLoading ? (
+                        //   <div colSpan={99}>
+                        //     <ContentLoader />
+                        //   </div>
+                        // ) : 
+                        (
+                          Object.keys(groupedContacts).length > 0 ?
+                            Object.keys(groupedContacts)
+                              .sort()
+                              .map((initial) => (
+                                <div key={initial}>
+                                  <div className="dateHeader">
+                                    <p>{initial}</p>
+                                  </div>
+                                  {groupedContacts[initial].map((contact) => (
+                                    <div className="callListItem wertc_iconBox border-bottom-0 border-end-0" key={contact.id}>
+                                      <div className="row justify-content-between">
+                                        <div className="col-xl-7 col-xxl-5 d-flex">
+                                          <div className="profileHolder">
+                                            <i className="fa-light fa-user fs-5" />
+                                          </div>
+                                          <div className="my-auto ms-2 ms-xl-3">
+                                            <h4>{contact.name}</h4>
+                                            <h5 className="mt-2">{contact.did}</h5>
+                                          </div>
                                         </div>
-                                        <div className="my-auto ms-2 ms-xl-3">
-                                          <h4>{contact.name}</h4>
-                                          <h5 className="mt-2">{contact.did}</h5>
-                                        </div>
-                                      </div>
-                                      {/* <div className="col-10 col-xl-4 col-xxl-5">
+                                        {/* <div className="col-10 col-xl-4 col-xxl-5">
                                         <div className="contactTags">
                                           <span data-id="2">Office</span>
                                         </div>
                                       </div> */}
-                                      {/* <div className="col-2 text-end d-flex justify-content-center align-items-center">
+                                        {/* <div className="col-2 text-end d-flex justify-content-center align-items-center">
                                         <i
                                           className="fa-sharp fa-thin fa-star"
                                           style={{ fontSize: 18 }}
                                         />
                                       </div> */}
-                                    </div>
-                                    <div className="contactPopup">
-                                      <button
-                                        onClick={() => {
-                                          onSubmit("audio",contact.did);
-                                        }}
-                                      >
-                                        <i className="fa-light fa-phone" />
-                                      </button>
-                                      {/* <button
+                                      </div>
+                                      <div className="contactPopup">
+                                        <button
+                                          onClick={() => {
+                                            onSubmit("audio", contact.did);
+                                          }}
+                                        >
+                                          <i className="fa-light fa-phone" />
+                                        </button>
+                                        {/* <button
                                         onClick={() => featureUnderdevelopment()}
                                       >
                                         <i className="fa-light fa-message" />
@@ -365,27 +367,49 @@ function AllContact({
                                       >
                                         <i className="fa-light fa-star" />
                                       </button> */}
-                                      <button
-                                        onClick={() => {
-                                          handleEditContact(contact.id);
-                                        }}
-                                      >
-                                        <i className="fa-light fa-pen-to-square" />
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          // deleteContactByIt(contact.id)
-                                          setPopUp(true);
-                                          setSelectedDeleteId(contact.id);
-                                        }}
-                                      >
-                                        <i className="fa-light fa-trash" />
-                                      </button>
+                                        <button
+                                          onClick={() => {
+                                            handleEditContact(contact.id);
+                                          }}
+                                        >
+                                          <i className="fa-light fa-pen-to-square" />
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            // deleteContactByIt(contact.id)
+                                            setPopUp(true);
+                                            setSelectedDeleteId(contact.id);
+                                          }}
+                                        >
+                                          <i className="fa-light fa-trash" />
+                                        </button>
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
+                              )) :
+                            <div className="startAJob">
+                              <div className="text-center mt-3">
+                                <img
+                                  src={require("../../assets/images/empty-box.png")}
+                                  alt="Empty"
+                                ></img>
+                                <div>
+                                  <h5>
+                                    No{" "}
+                                    <span>
+                                      <b>
+                                        Contacts
+                                      </b>
+                                    </span>{" "}
+                                    Saved
+                                  </h5>
+                                  <h5>
+                                    Please save a <b>contact</b> to see them here.
+                                  </h5>
+                                </div>
                               </div>
-                            ))
+                            </div>
                         )}
                     </div>
                   </div>
