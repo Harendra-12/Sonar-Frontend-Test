@@ -73,7 +73,6 @@ const GoPeerCallSocket = () => {
                 if (typeof parsedData === "string") {
                     const message = JSON.parse(parsedData);
                     const { key, result, current_time } = message;
-                    console.log(key, result, current_time);
 
                     switch (key) {
                         case "peercallInitiate":
@@ -81,6 +80,9 @@ const GoPeerCallSocket = () => {
                             break;
                         case "peercallUpdate":
                             dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
+                            if(result?.status == "started"){
+                                dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: result, });
+                            }
                             break;
                         default:
                             break;
