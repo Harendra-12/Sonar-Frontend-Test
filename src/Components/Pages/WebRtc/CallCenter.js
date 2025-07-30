@@ -128,7 +128,7 @@ const CallCenter = ({ initial }) => {
           <HeaderApp title={"Call Center"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
         </div>
         <div className="container-fluid">
-          <div className="row webrtc_newMessageUi">
+          <div className="row webrtc_newMessageUi pb-2">
             <>
               <div className="overviewTableWrapper p-0 ">
                 <div className="overviewTableChild border-0 shadow-none">

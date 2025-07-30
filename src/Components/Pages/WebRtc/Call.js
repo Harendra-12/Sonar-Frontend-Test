@@ -372,7 +372,7 @@ function Call({
         >
           <div className="row justify-content-between align-items-center">
             <div className="col-xl-12 d-flex align-items-center">
-              <div className="d-flex justify-content-start">
+              <div className="d-flex justify-content-start gap-2">
                 <div className="profileHolder"
                 // id={"profileOfflineNav"}
                 >
@@ -1041,7 +1041,7 @@ function Call({
                 </div>
               </div>
               <div
-                className="callDetails col-12 col-xl-7 col-lg-7 col-xxl-8 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
+                className="callDetails mt-0 col-12 col-xl-7 col-lg-7 col-xxl-8 callDetails newVoicemailBoxUi pe-0 eFaxCompose"
                 style={{ height: "calc(100vh - 100px)" }}
                 id="callDetails"
               >

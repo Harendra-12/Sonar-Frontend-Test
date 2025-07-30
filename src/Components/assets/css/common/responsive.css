@@ -302,19 +302,6 @@
         width: 100%;
     }
 
-    /* .itemWrapperb .label2 {
-        font-size: 11px;
-    } */
-
-    /* .tangoNavs .nav-tabs .nav-link,
-    .qLinkContent p,
-    .accordion .accordion-button,
-    .mainContentApp .tab-content .callListItem h4,
-    .myProfileWidget .profileName,
-    .mainContentApp .tab-content .contactListItem h4 {
-        font-size: 14px !important;
-    } */
-
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 5px;
         font-size: 0.7rem;
@@ -342,18 +329,9 @@
         padding: 5px 15px;
     }
 
-    /* #detailsHeader .profileName,
-    .clearColorButton {
-        font-size: 14px;
-    } */
-
     .overviewTableWrapper {
         padding: 15px;
     }
-
-    /* .overviewTableChild .formScroller {
-        max-height: calc(100vh - 150px);
-    } */
 
     .overviewTableWrapper .tableContainer {
         height: calc(100vh - 320px);
@@ -362,15 +340,6 @@
     .overviewTableWrapper .tableContainer.mail_table {
         height: calc(100vh - 320px) !important;
     }
-
-    /* .viewingAs span,
-    .messageOverlay .contactHeader h4 {
-        font-size: 16px !important;
-    } */
-
-    /* .loginWrapper2 {
-        height: auto;
-    } */
 
     .loginWave {
         bottom: -10px;
@@ -403,19 +372,6 @@
         height: 90px;
         padding: 5px;
     }
-
-    /* .formRow .formItemDesc {
-        font-size: 9px;
-    } */
-
-    /* .mainContent .circularProgressWrapper {
-        width: 200px;
-        height: 200px;
-    } */
-
-    /* .circular-progress {
-        --size: 200px;
-    } */
 
     .headingExtraInfo span.badge.rounded-pill {
         font-size: 0.625rem;
@@ -458,6 +414,10 @@
 
     .loginChat {
         margin-top: 20px;
+    }
+
+    .contactTags {
+        width: auto;
     }
 }
 
@@ -607,13 +567,17 @@
         margin-left: 0 !important;
     }
 
-    .newMessageBoxUi {
+    /* .newMessageBoxUi {
         padding-left: 0;
-        margin-top: 20px;
+        margin-top: 0;
         height: 100vh;
-        /* height: calc(100vh - 140px); */
-    }
+    position: absolute;
+    top: 0;
+    inset: 0;
+    z-index: 99;
+}
 
+*/
     #sidenNavApp {
         width: 100%;
         height: 54px;
@@ -670,11 +634,12 @@
     .newVoicemailBoxUi {
         margin-top: 20px;
         padding-left: 0;
-        height: 100vh !important;
+        height: 100% !important;
     }
 
     .messageOverlay {
-        height: auto !important;
+        height: 100% !important;
+        margin-block: 20px;
     }
 
     .filePanelActive {
@@ -777,6 +742,9 @@
         white-space: break-spaces !important;
     }
 
+    .webrtc_newMessageUi {
+        padding: 10px 10px 80px 10px;
+    }
 }
 
 @media (max-width: 767px) {
