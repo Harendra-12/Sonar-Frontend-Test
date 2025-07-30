@@ -803,7 +803,7 @@ function Members({
               />
             </div>
             <div class="accordion" id="accordionExample">
-              {handRaises?.length > 0 &&
+              {handRaises?.some(user => user.hand_raised) &&
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -813,6 +813,21 @@ function Members({
                   <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                       <ul className=" mb-0 mt-0">
+                        {handRaises?.find((user) => user.username == username)?.hand_raised &&
+                          <li className="pb-2 border-bottom">
+                            <div className="d-flex align-items-center">
+                              <div className="d-flex align-items-center">
+                                <div className="profileHolder">
+                                  <i className="fa-solid fa-user" />
+                                </div>
+                                <span className="ms-2 text-capitalize fw-semibold">{username} </span> <span className="ms-2"> (You)</span>
+                              </div>
+                            </div>
+                            <div className="d-flex">
+                              <button className="clearButton2"><i class="fa-solid fa-microphone-slash"></i></button>
+                            </div>
+                          </li>
+                        }
                         {filteredParticipants.filter((participant) => handRaises?.some((user) => user.username == participant.identity.split("-")[0])).map((participant, index) => {
                           const audioTrackPub = Array.from(participant.audioTrackPublications.values())[0];
                           const isMuted = audioTrackPub?.track?.isMuted;
