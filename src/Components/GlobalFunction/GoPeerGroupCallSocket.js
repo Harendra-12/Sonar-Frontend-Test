@@ -77,6 +77,7 @@ const GoPeerGroupCallSocket = () => {
                     switch (key) {
                         case "incoming_peer_group_call":
                             dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...result, source: "incoming_peer_group_call" } });
+                            dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: { ...result, source: "incoming_peer_group_call" }})
                             break;
                         case "initiate_peer_group_call":
                             dispatch({ type: ActionType?.SET_GROUP_INTERNALCALLACTION, internalGroupCallAction: result, });

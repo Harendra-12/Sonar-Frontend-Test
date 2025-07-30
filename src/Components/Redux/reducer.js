@@ -445,6 +445,11 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         incomingCall: [...state.incomingCall, action.incomingCall],
       };
+    case "SET_INCOMING_GROUP_CALL":
+      return {
+        ...state,
+        incomingGroupCall: [...state.incomingGroupCall, action.incomingGroupCall],
+      };
     case "REMOVE_INCOMINGCALL":
       return {
         ...state,
