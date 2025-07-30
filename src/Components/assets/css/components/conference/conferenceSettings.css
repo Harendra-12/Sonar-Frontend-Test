@@ -290,8 +290,53 @@ button.lk-button.lk-chat-form-button {
     color: #fff !important;
 }
 
+.lk-button[data-lk-source="screen_share"] [data-lk-enabled="true"] svg,
+.hand-raise-button[data-lk-enabled="true"] svg,
+.whiteboard-toggle-button[data-lk-enabled="true"] svg,
+.lk-settings-toggle[aria-pressed="true"] svg,
+.lk-chat-toggle[aria-pressed="true"] svg,
+.all-members-button[data-lk-enabled="true"] svg {
+    fill: #fff !important;
+}
+
 .lk-control-bar {
     background-color: #ffff !important;
     position: relative;
     z-index: 999;
+}
+
+.participantMemberList .accordion .accordion-button:not(.collapsed) {
+    color: var(--form-input-text);
+    background: #ffffff;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.participantMemberList .accordion-body {
+    padding: 1rem !important;
+}
+
+.memberSearch {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 5px 15px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.participantMemberList {
+    width: 260px;
+    padding: 15px;
+    background: rgba(20, 20, 20, 1);
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    height: 100vh;
+}
+
+.react-draggable {
+    max-height: calc(-63px + 100vh) !important;
 }
