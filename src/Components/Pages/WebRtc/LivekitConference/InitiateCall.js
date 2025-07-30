@@ -80,7 +80,6 @@ function InitiateCall({
   useEffect(() => {
     const handleClick = (event) => {
       const chatButton = document.querySelector(".lk-button.lk-chat-toggle");
-
       if (event.target === chatButton || chatButton?.contains(event.target)) {
         if (messageRecipient[2] === "groupChat") {
           dispatch(({
@@ -89,7 +88,7 @@ function InitiateCall({
           }));
           setSelectedChat("groupChat");
           setIsChatOpen(prev => !prev);
-          setIsGroupCallMessageOpened(true)
+          setIsGroupCallMessageOpened(prev => !prev)
         } else {
           if (storeRecipient) {
             dispatch(({

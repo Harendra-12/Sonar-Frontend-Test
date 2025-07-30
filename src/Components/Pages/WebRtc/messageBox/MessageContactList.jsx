@@ -194,8 +194,12 @@ const MessageContactList = ({
     }
 
     useEffect(() => {
-        if (isGroupCallMessageOpened && allMessage?.length < 1) {
-            handleGroupChatListClicked(messageRecipient)
+        if (isGroupCallMessageOpened && allMessage[recipient[0]] == undefined) {
+            const payload = {
+                group_name: messageRecipient[0],
+                id: messageRecipient[1]
+            }
+            handleGroupChatListClicked(payload)
         }
     }, [isGroupCallMessageOpened])
 

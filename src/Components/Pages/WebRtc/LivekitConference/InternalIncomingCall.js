@@ -51,7 +51,6 @@ function InternalIncomingCall({
         message_group_id: item?.message_group_id,
         group_name: item?.group_name,
         user_id: item?.receiver_id,
-        date_and_time: formatDateTime(new Date()),
       });
     } else {
       setInternalCaller(item?.sender_id);

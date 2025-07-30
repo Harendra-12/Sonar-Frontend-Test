@@ -159,7 +159,7 @@ function Members({
           "user_id": account?.id,
           "group_name": incomingGroupCall?.[0]?.group_name,
           "message_group_id": incomingGroupCall?.[0]?.message_group_id,
-          "date_and_time": formatDateTime(new Date())
+          // "date_and_time": formatDateTime(new Date())
         })
       } else {
         console.log(
