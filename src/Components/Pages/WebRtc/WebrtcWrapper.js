@@ -612,7 +612,10 @@ const WebrtcWrapper = () => {
         {activePage === "campaign-login" && <CampaignLogin />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
-          <AllVoicemails isCustomerAdmin={isCustomerAdmin} />
+          <AllVoicemails isCustomerAdmin={isCustomerAdmin} setSelectedModule={setSelectedModule}
+          isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
+          allContact={allContact} />
         )}
         {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
