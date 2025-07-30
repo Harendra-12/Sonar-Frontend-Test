@@ -144,7 +144,7 @@ const WebrtcWrapper = () => {
   const { sendGroupMessage } = GoPeerGroupCallSocket();
   useEffect(() => {
     dispatch({
-      type: ActionType?.SET_SOCKET_SEND_PEER_GROUP_CALL_MESSAGE ,
+      type: ActionType?.SET_SOCKET_SEND_PEER_GROUP_CALL_MESSAGE,
       socketSendPeerGroupCallMessage: sendGroupMessage
     })
   }, [GoPeerGroupCallSocket])
@@ -898,7 +898,7 @@ const WebrtcWrapper = () => {
           ""
         )}
 
-        
+
       </SIPProvider>
       {openCallCenterPopUp &&
         initailCallCenterPopup &&
@@ -961,7 +961,8 @@ const WebrtcWrapper = () => {
           minWidth={"290px"}
           minHeight={"280px"}
           maxWidth={`calc(100vw - ${isConferenceCall ? "210px" : "650px"})`}
-          maxHeight={"calc(100vh - 61px)"}
+          // maxHeight={"calc(100vh - 61px)"}
+          maxHeight={"calc(100vh - 120px)"}
           dragHandleClassName="inter-call-drag-handle" // Specify draggable area
           disableDragging={interCallMinimize}
           enableResizing={false}

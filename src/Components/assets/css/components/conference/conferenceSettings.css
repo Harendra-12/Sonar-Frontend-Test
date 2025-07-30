@@ -46,7 +46,7 @@
 .handRaiseIcon {
     position: relative;
 }
- 
+
 .handRaiseIcon::before {
     content: '\270B';
     position: absolute;
@@ -57,10 +57,11 @@
     border-radius: 5px;
     padding: 1px;
 }
- 
+
 .lk-room-container .participantMemberList ul li {
     border-bottom: 1px solid #857f7f38;
 }
+
 .lk-chat-toggle[data-lk-unread-msgs]:not([data-lk-unread-msgs="0"]):after {
     font-size: .6rem;
     color: #ffff;
@@ -79,7 +80,8 @@
     text-indent: -9999px;
 }
 
-.lk-button i, .lk-button i {
+.lk-button i,
+.lk-button i {
     text-indent: 0;
 }
 
@@ -144,13 +146,16 @@
     color: #5f6368;
     margin-top: 20px;
 }
+
 .lk-start-audio-button {
     display: none !important;
 }
-.lk-video-conference .lk-chat{
+
+.lk-video-conference .lk-chat {
     z-index: 999;
 }
-button.lk-button.lk-chat-form-button{
+
+button.lk-button.lk-chat-form-button {
     text-indent: 0;
 }
 
@@ -158,7 +163,7 @@ button.lk-button.lk-chat-form-button{
     text-indent: 0;
 }
 
-.settings-menu .lk-button-group>.lk-button:first-child{
+.settings-menu .lk-button-group>.lk-button:first-child {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
@@ -166,7 +171,12 @@ button.lk-button.lk-chat-form-button{
 
 /* ------------- attachements */
 
-.lk-message-attachements{
+.lk-message-attachements {
     margin: 0;
 }
 
+.lk-control-bar {
+    background-color: #ffff !important;
+    position: relative;
+    z-index: 999;
+}
