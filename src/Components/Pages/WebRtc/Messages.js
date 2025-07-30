@@ -60,7 +60,8 @@ function Messages({
   setConferenceToggle,
   conferenceToggle,
   setInternalCaller,
-  isGroupCallMessageOpened
+  isGroupCallMessageOpened,
+  isSingleCallMessageOpened
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -1259,6 +1260,7 @@ function Messages({
                 setIsTyping={setIsTyping}
                 socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
                 isGroupCallMessageOpened={isGroupCallMessageOpened}
+                isSingleCallMessageOpened={isSingleCallMessageOpened}
               />
               <MessageBody
                 recipient={recipient}
