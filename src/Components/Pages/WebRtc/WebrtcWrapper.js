@@ -41,6 +41,7 @@ import { ActionType } from "../../Redux/reduxActionType";
 import InitiateCall from "./LivekitConference/InitiateCall";
 import InternalIncomingCall from "./LivekitConference/InternalIncomingCall";
 import GoPeerCallSocket from "../../GlobalFunction/GoPeerCallSocket";
+import GoPeerGroupCallSocket from "../../GlobalFunction/GoPeerGroupCallSocket";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -120,6 +121,7 @@ const WebrtcWrapper = () => {
   const [conferenceInfo, setConferenceInfo] = useState([]);
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
+  const [isGroupCallMessageOpened, setIsGroupCallMessageOpened] = useState(false)
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
   const audioRef = useRef(null);
@@ -137,6 +139,15 @@ const WebrtcWrapper = () => {
       socketSendPeerCallMessage: sendMessage,
     });
   }, [GoPeerCallSocket]);
+
+  const { sendGroupMessage } = GoPeerGroupCallSocket();
+  useEffect(() => {
+    dispatch({
+      type: ActionType?.SET_SOCKET_SEND_PEER_GROUP_CALL_MESSAGE ,
+      socketSendPeerGroupCallMessage: sendGroupMessage
+    })
+  }, [GoPeerGroupCallSocket])
+
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -480,13 +491,13 @@ const WebrtcWrapper = () => {
       setInterCallPosition(
         isConferenceCall
           ? {
-              x: screenWidth <= 1366 ? 0 : 210,
-              y: screenWidth <= 1366 ? 0 : 61,
-            }
+            x: screenWidth <= 1366 ? 0 : 210,
+            y: screenWidth <= 1366 ? 0 : 61,
+          }
           : {
-              x: screenWidth <= 1366 ? 0 : 650,
-              y: screenWidth <= 1366 ? 0 : 61,
-            }
+            x: screenWidth <= 1366 ? 0 : 650,
+            y: screenWidth <= 1366 ? 0 : 61,
+          }
       );
     } else if (!interCallMinimize) {
       setInterCallSize({
@@ -608,6 +619,8 @@ const WebrtcWrapper = () => {
             setSelectedModule={setSelectedModule}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
+            setactivePage={setactivePage}
+            activePage={activePage}
             extensionFromCdrMessage={extensionFromCdrMessage}
             setExtensionFromCdrMessage={setExtensionFromCdrMessage}
             calling={calling}
@@ -618,6 +631,12 @@ const WebrtcWrapper = () => {
             setRecipient={setRecipient}
             selectedChat={selectedChat}
             setSelectedChat={setSelectedChat}
+            setIsConferenceCall={setIsConferenceCall}
+            setConferenceInfo={setConferenceInfo}
+            setConferenceToggle={setConferenceToggle}
+            conferenceToggle={conferenceToggle}
+            setInternalCaller={setInternalCaller}
+            isGroupCallMessageOpened={isGroupCallMessageOpened}
           />
         )}
         {activePage === "conference" && (
@@ -655,7 +674,22 @@ const WebrtcWrapper = () => {
           accountDetails={accountDetails}
           didAll={didAll}
         />
-
+        {conferenceToggle || memberId ? (
+          <ConferenceCall
+            conferenceId={conferenceId}
+            name={account?.username}
+            extension_id={`${account?.extension?.extension}@${account?.domain?.domain_name}`}
+            room_id={conferenceId}
+            setactivePage={setactivePage}
+            activePage={activePage}
+            setConferenceToggle={setConferenceToggle}
+            conferenceToggle={conferenceToggle}
+            pin={pin}
+            isVideoOn={isVideoOn}
+          />
+        ) : (
+          ""
+        )}
         {/* Draggable Component */}
         {sessions.length > 0 &&
           callProgressId &&
@@ -715,7 +749,7 @@ const WebrtcWrapper = () => {
                   allContact={allContact}
                   accountDetails={accountDetails}
                   didAll={didAll}
-                  // globalSession={sessions}
+                // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -841,7 +875,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
@@ -856,22 +890,7 @@ const WebrtcWrapper = () => {
           ""
         )}
 
-        {conferenceToggle || memberId ? (
-          <ConferenceCall
-            conferenceId={conferenceId}
-            name={account?.username}
-            extension_id={`${account?.extension?.extension}@${account?.domain?.domain_name}`}
-            room_id={conferenceId}
-            setactivePage={setactivePage}
-            activePage={activePage}
-            setConferenceToggle={setConferenceToggle}
-            conferenceToggle={conferenceToggle}
-            pin={pin}
-            isVideoOn={isVideoOn}
-          />
-        ) : (
-          ""
-        )}
+        
       </SIPProvider>
       {openCallCenterPopUp &&
         initailCallCenterPopup &&
@@ -965,6 +984,7 @@ const WebrtcWrapper = () => {
               isConferenceCall={isConferenceCall}
               isConferenceAdmin={isConferenceAdmin}
               conferenceInfo={conferenceInfo}
+              setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
             />
           </div>
         </Rnd>
@@ -976,6 +996,14 @@ const WebrtcWrapper = () => {
         setCalling={setCalling}
         setToUser={setToUser}
         setInternalCaller={setInternalCaller}
+        setConferenceToggle={setConferenceToggle}
+        setIsConferenceCall={setIsConferenceCall}
+        setConferenceInfo={setConferenceInfo}
+        setactivePage={setactivePage}
+        activePage={activePage}
+        conferenceToggle={conferenceToggle}
+        isVideoOn={isVideoOn}
+        setConferenceId={setConferenceId}
       />
     </>
   );

@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 // import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
 import {
+  formatDateTime,
   meetGeneralGetFunction,
   meetGeneralPostFunction,
 } from "../../../GlobalFunction/globalFunction";
@@ -43,6 +44,7 @@ function Members({
 }) {
   const room = useRoomContext();
   const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
+  const account = useSelector((state) => state.account);
   const isRecording = useIsRecording();
   const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
   const avatarTracks = {}; // Store references for avatars
@@ -52,6 +54,8 @@ function Members({
   const [participants, setParticipants] = useState([]);
   const [showParticipants, setParticipantList] = useState(false);
   const [processingRecRequest, setProcessingRecRequest] = useState(false);
+  const socketSendPeerGroupCallMessage = useSelector((state) => state.socketSendPeerGroupCallMessage);
+  const incomingGroupCall = useSelector((state) => state.incomingGroupCall);
   // const [currentCallRoom, setCurentCallRoom] = useState([]);
   // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
   const [searchTerm, setSearchTerm] = useState(""); // State to track the search input
@@ -147,46 +151,59 @@ function Members({
   // After disconnect this function will trigger to send socket data to other user about call state\
   useEffect(() => {
     const handleRoomDisconnect = () => {
-      console.log(
-        "currentCallRoom",
-        incomingCall.filter((item) => item?.room_id === roomName),
-        incomingCall
-      );
-      // Reset Hand Raise State
-      dispatch({ type: "RESET_HAND_RAISES" })
-
-      if (
-        incomingCall.filter((item) => item?.room_id === roomName)[0]
-          ?.isOtherMember
-      ) {
-        socketSendPeerCallMessage({
-          action: "peercallUpdate",
-          chat_call_id: incomingCall.filter(
-            (item) => item?.room_id === roomName
-          )?.[0]?.uuid,
-          Hangup_cause: "success",
-          room_id: roomName,
-          duration: 120,
-          status: "ended",
-        });
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
-        setCalling(false); // Update parent state if needed
+      if (incomingGroupCall?.[0]?.source === "incoming_peer_group_call") {
+        socketSendPeerGroupCallMessage({
+          "action": "end_peer_group_call",
+          "room_id": roomName,
+          "call_type": "audio",
+          "user_id": account?.id,
+          "group_name": incomingGroupCall?.[0]?.group_name,
+          "message_group_id": incomingGroupCall?.[0]?.message_group_id,
+          // "date_and_time": formatDateTime(new Date())
+        })
       } else {
-        socketSendPeerCallMessage({
-          action: "peercallUpdate",
-          chat_call_id: incomingCall.filter(
-            (item) => item?.room_id === roomName
-          )?.[0]?.uuid,
-          Hangup_cause: "originator_cancel",
-          room_id: roomName,
-          duration: 0,
-          status: "ended",
-        });
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
-        setCalling(false); // Update parent state if needed
+        console.log(
+          "currentCallRoom",
+          incomingCall.filter((item) => item?.room_id === roomName),
+          incomingCall
+        );
+        // Reset Hand Raise State
+        dispatch({ type: "RESET_HAND_RAISES" })
+
+        if (
+          incomingCall.filter((item) => item?.room_id === roomName)[0]
+            ?.isOtherMember
+        ) {
+          socketSendPeerCallMessage({
+            action: "peercallUpdate",
+            chat_call_id: incomingCall.filter(
+              (item) => item?.room_id === roomName
+            )?.[0]?.uuid,
+            Hangup_cause: "success",
+            room_id: roomName,
+            duration: 120,
+            status: "ended",
+          });
+          dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
+          dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+          setCalling(false); // Update parent state if needed
+        } else {
+          socketSendPeerCallMessage({
+            action: "peercallUpdate",
+            chat_call_id: incomingCall.filter(
+              (item) => item?.room_id === roomName
+            )?.[0]?.uuid,
+            Hangup_cause: "originator_cancel",
+            room_id: roomName,
+            duration: 0,
+            status: "ended",
+          });
+          dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
+          dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+          setCalling(false); // Update parent state if needed
+        }
       }
+
     };
 
     room.on("disconnected", handleRoomDisconnect);
