@@ -492,7 +492,7 @@ const DidConfig = () => {
                         </div>
 
                         <div className="formRow col-xl-3">
-                          <div className="formLabel">
+                          <div className="formLabel mw-sm-100">
                             <label htmlFor="">Direct Forward</label>
                             <label htmlFor="data" className="formItemDesc">
                               Want to forword Number.
@@ -500,8 +500,8 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`${forwardStatus != "disabled"
-                              ? "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
-                              : "6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
+                              ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ms-auto"
+                              : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
                               }`}
                           >
                             {forwardStatus != "disabled" && (
@@ -532,7 +532,7 @@ const DidConfig = () => {
                           </div>
                           {forwardStatus === "pstn" &&
                             forwardStatus != "disabled" && (
-                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2">
                                 <div className="formLabel">
                                   <label>PSTN</label>
                                 </div>
@@ -586,7 +586,7 @@ const DidConfig = () => {
 
                           {forwardStatus !== "pstn" &&
                             forwardStatus != "disabled" && (
-                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2">
                                 {watch().forward &&
                                   watch().forward?.length !== 0 && (
                                     <>
@@ -1017,9 +1017,9 @@ const DidConfig = () => {
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12">
                             <div className="row">
                               <div
-                                className={`col-${watch().missedcall_type == "disable"
-                                  ? "12"
-                                  : "6"
+                                className={`mb-2 ${watch().missedcall_type == "disable"
+                                  ? "col-12"
+                                  : "ol-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12"
                                   }`}
                               >
                                 <select
@@ -1034,7 +1034,7 @@ const DidConfig = () => {
                                 </select>
                               </div>
                               {watch().missedcall_type == "sms" && (
-                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12`}>
+                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 mb-2`}>
                                   <input
                                     type="number"
                                     className="formItem"
@@ -1045,7 +1045,7 @@ const DidConfig = () => {
                                 </div>
                               )}
                               {watch().missedcall_type == "email" && (
-                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12`}>
+                                <div className={`col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 mb-2`}>
                                   <input
                                     type="email"
                                     className="formItem"

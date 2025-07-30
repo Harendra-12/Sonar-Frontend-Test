@@ -323,10 +323,10 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                 </div>
 
                                                                 <div className="data-number3 datanumber5 h-auto mt-2 m-2" >
-                                                                    <div className="d-flex justify-content-center gap-1 py-2">
+                                                                    <div className="d-flex justify-content-center gap-1 py-2 flex-wrap">
                                                                         {
                                                                             item.active ?
-                                                                                <div className="col-3 numberActive_box">
+                                                                                <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-3 numberActive_box">
                                                                                     <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700 }}>
                                                                                         {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                                         {/* <i
@@ -341,7 +341,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                         }
                                                                         {
                                                                             item?.ringing ?
-                                                                                <div className="col-3 numberActive_box">
+                                                                                <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-3 numberActive_box">
 
                                                                                     <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
                                                                                         {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
@@ -357,7 +357,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                         }
                                                                         {
                                                                             item?.total ?
-                                                                                <div className="col-3 numberActive_box">
+                                                                                <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-3 numberActive_box">
 
                                                                                     <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
                                                                                         {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
@@ -372,7 +372,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
                                                                         }
                                                                         {
                                                                             item?.missed ?
-                                                                                <div className="col-3 numberActive_box">
+                                                                                <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-3 numberActive_box">
 
                                                                                     <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700, }}>
                                                                                         {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}

@@ -252,9 +252,10 @@
         width: 100%;
     }
 
+    /* 
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -8px;
-    }
+    } */
 }
 
 @media (max-device-width: 1366px) {
@@ -265,10 +266,8 @@
     /* h4 {
         font-size: 16px !important;
     } */
-
     .formLabel {
-        /* font-size: 12px; */
-        max-width: 200px;
+        width: 50%;
     }
 
     /* .itemWrapperb .heading {
@@ -473,6 +472,10 @@
 
     .table tbody tr td {
         width: 100%;
+    }
+
+    .callDashParkedCalls {
+        max-width: 50%;
     }
 }
 
@@ -736,7 +739,7 @@
     }
 
     .callDashParkedCalls button.callDashParkedCallsBtn {
-        left: -8px;
+        left: -4px;
     }
 
     .popup_box {
@@ -825,9 +828,10 @@
         width: 100%;
     }
 
+    /* 
     .callDashParkedCalls button.callDashParkedCallsBtn {
         left: -13px;
-    }
+    } */
 
     .gridCall .card-body {
         padding-right: 20px !important;
@@ -837,6 +841,11 @@
     .small-widget .bg-gradient {
         right: -14px !important;
     }
+
+    .callDashParkedCalls {
+        max-width: 60%;
+    }
+
 }
 
 @media (max-width: 575px) {
@@ -871,6 +880,15 @@
     .adjustHeight {
         height: calc(-419px + 100vh) !important;
     }
+
+
+    .callDashParkedCalls {
+        max-width: 80%;
+    }
+
+    .formLabel {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -890,6 +908,10 @@
 
     .small-widget .bg-gradient {
         right: -0 !important;
+    }
+
+    .searchBox input[type=search] {
+        min-width: auto;
     }
 }
 

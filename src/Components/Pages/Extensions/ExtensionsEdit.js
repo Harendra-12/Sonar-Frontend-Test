@@ -1383,7 +1383,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           >
                             <form className="row">
                               <div className="formRow col-xl-3 col-md-12 col-12">
-                                <div className="formLabel">
+                                <div className="formLabel mw-sm-100">
                                   <label className="text-dark">On Busy</label>
                                   <label
                                     htmlFor="data"
@@ -1396,8 +1396,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <div
                                   className={
                                     watch().onbusy == "disabled"
-                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
-                                      : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12 pe-2 ms-auto"
+                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"
+                                      : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 pe-2 ms-auto"
                                   }
                                 >
                                   {watch().onbusy != "disabled" && (
@@ -1439,7 +1439,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 ) : (
                                   <>
                                     {watch("onbusy") !== "pstn" && (
-                                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
                                         {watch().onbusy &&
                                           watch().onbusy?.length !== 0 && (
                                             <>
@@ -1468,7 +1468,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       </div>
                                     )}
                                     {watch("onbusy") === "pstn" && (
-                                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
                                         <div className="formLabel">
                                           <label className="formItemDesc">
                                             PSTN
@@ -1569,7 +1569,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                               <div className="formRow col-xl-3 col-md-12 col-12">
-                                <div className="formLabel">
+                                <div className="formLabel mw-sm-100">
                                   <label className="text-dark">
                                     Not Registered
                                   </label>
@@ -1584,7 +1584,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <div
                                   className={
                                     watch().notregistered == "disabled"
-                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                                      ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"
                                       : "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 pe-2 ms-auto"
                                   }
                                 >
@@ -2059,7 +2059,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                               </div>
 
                               <div className="formRow col-xl-3 col-md-12 col-12">
-                                <div className="formLabel">
+                                <div className="formLabel mw-sm-100">
                                   <label htmlFor="">Forward Extension</label>
                                   <label
                                     htmlFor="data"
@@ -2070,8 +2070,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                                 <div
                                   className={`col-${forwardStatus != "disabled"
-                                    ? "col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12  pe-2 ms-auto"
-                                    : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12"
+                                    ? "col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12  pe-2 ms-auto"
+                                    : "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"
                                     }`}
                                 >
                                   {forwardStatus != "disabled" && (
@@ -2103,7 +2103,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
 
                                 {watch("forward") !== "pstn" &&
                                   watch("forward") !== "disabled" && (
-                                    <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                                       <div className="formLabel">
                                         <label className="formItemDesc">
                                           Extension
@@ -2125,7 +2125,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     </div>
                                   )}
                                 {watch("forward") === "pstn" && (
-                                  <div className="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12">
+                                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         PSTN

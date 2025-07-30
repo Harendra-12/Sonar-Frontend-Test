@@ -1152,6 +1152,14 @@
     /* text-align: end; */
 }
 
+.newMessageBoxUi .messageItem.sender .messageDetails a {
+    color: #f0f8ff !important;
+}
+
+.newMessageBoxUi .messageItem.sender .messageDetails a:hover {
+    color: #c5effd !important;
+}
+
 .webrtc_newMessageUi .newMessageBoxUi #profileOfflineNav::before {
     display: none;
 }
@@ -1760,10 +1768,24 @@
 }
 
 .highlight-temp {
-    border: 2px solid yellow;
-    background-color: #ffd;
+    background-color: #e2eaff;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.highlight-temp_remove {
+    background-color: transparent;
     transition: background-color 0.3s ease;
 }
+
+/* .highlight-temp::before {
+    content: '';
+    background: #c4d4ff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+} */
 
 
 .displayFile {
@@ -1865,7 +1887,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 5px;
-    max-width: 1000px;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
