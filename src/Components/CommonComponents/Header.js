@@ -117,7 +117,7 @@ function Header(props) {
   }
 
   return (
-    <div id="detailsHeader" style={props.style}>
+    <div id="detailsHeader" style={props.style} className="flex-wrap">
       <div className="col-md-4 col-6  d-flex align-items-center">
         <div className="d-xl-none d-block me-2">
           <button

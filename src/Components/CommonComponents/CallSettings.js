@@ -271,9 +271,9 @@ const CallSettings = (props) => {
     <>
       <main className="mainContent">
         <section id="phonePage">
-            <Header title="Call Settings" />
+          <Header title="Call Settings" />
           {/* <div className="container-fluid px-0"> */}
-            {/* <div id="subPageHeader">
+          {/* <div id="subPageHeader">
               <div className="col-xl-9 my-auto">
                 <p className="p-0 m-0">
                   Direct incoming calls to extension: {locationData?.extension}
@@ -365,7 +365,7 @@ const CallSettings = (props) => {
                 >
                   <form className="row">
                     <div className="formRow col-xl-3 ">
-                      <div className="formLabel">
+                      <div className="formLabel mw-sm-100">
                         <label className="text-dark">On Busy</label>
                         <label htmlFor="data" className="formItemDesc">
                           If enabled, it overrides the value of voicemail
@@ -375,8 +375,8 @@ const CallSettings = (props) => {
                       <div
                         className={
                           callSetting.onBusyState == 0
-                            ? "col-6"
-                            : "col-2 pe-2 ms-auto"
+                            ? "col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                            : "col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-6 pe-2 ms-auto"
                         }
                       >
                         <div className="formLabel">
@@ -445,8 +445,8 @@ const CallSettings = (props) => {
                       <div
                         className={
                           callSetting.noAnswerStatus === "Forward"
-                            ? "col-2 pe-2"
-                            : "col-6"
+                            ? "col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-6 pe-2 pe-2"
+                            : "col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                         }
                       >
                         <div className="formLabel">

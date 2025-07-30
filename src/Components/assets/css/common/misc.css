@@ -2019,7 +2019,7 @@ tr.seen-message {
 tr.seen-message td,
 tr.seen-message td p {
     color: var(--mail-seen);
-    font-weight: 300 !important;
+    font-weight: 500 !important;
 }
 
 .composeBtn {
@@ -2703,7 +2703,7 @@ i.fa.fa-star {
 .balance-box {
     background: var(--balance-box-bg);
     text-align: center;
-    /* height: 100%; */
+    height: 100%;
 }
 
 .balance-box .itemWrapper {
@@ -2740,7 +2740,7 @@ i.fa.fa-star {
 
 .col-3.numberActive_box {
     flex: 0 0 auto;
-    width: 20%;
+    width: auto;
     border: 1px solid var(--border20);
     border-radius: 6px;
     display: flex;
@@ -2794,4 +2794,8 @@ i.fa.fa-star {
 .btn.btn-primary {
     background-color: var(--color2) !important;
     border-color: var(--color2) !important
+}
+
+.pin_bg {
+    background-color: #e91e633b !important;
 }

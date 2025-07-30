@@ -905,14 +905,14 @@ const WebrtcWrapper = () => {
         callCenterPopUp !== account?.extension?.extension && (
           <div className="popup">
             <div className="d-flex justify-content-center align-items-center h-100">
-              <div className="overviewTableWrapper col-xl-6">
+              <div className="overviewTableWrapper col-xl-6 col-12">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading">
                         <div className="content bg-transparent shadow-none p-0 d-flex justify-content-between align-items-center w-100">
                           <div>
-                            <h4>Please Login!</h4>
+                            <h4 className="text-start">Please Login!</h4>
                             <p>Please Login to your Designated Call Center</p>
                           </div>
                           <button

@@ -180,7 +180,7 @@ function Members({
           "ended_by": account?.name,
           "group_call_id": incomingGroupCall?.message_group_id,
           "group_call_uuid": incomingGroupCall?.uuid,
-          
+
 
         })
         dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {} })
@@ -405,14 +405,13 @@ function Members({
 
         allMembersButton.className = "lk-button all-members-button d-flex align-items-center";
         allMembersButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="9" r="3" stroke="#000" stroke-width="1.5" />
-            <circle cx="12" cy="12" r="10" stroke="#000" stroke-width="1.5" />
-            <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#000" stroke-width="1.5" stroke-linecap="round" />
-          </svg>
+         <i class="fa-regular fa-users"></i>
           All Members
         `;
-        allMembersButton.onclick = () => setParticipantList((prev) => !prev);
+        allMembersButton.onclick = () => setParticipantList((prev) => {
+          allMembersButton.setAttribute("data-lk-enabled", !prev);
+          return !prev
+        });
 
         // Create the "Hand Raise" button
         const handRaiseButton = document.createElement("button");
@@ -533,32 +532,18 @@ function Members({
     }
   }, [toggleRecording]);
 
-  // async function handleMute(participant, isMuted) {
-  //     await generalPostFunction(`/mute-participant`, {
-  //         room: roomName,
-  //         participantId: participant,
-  //         isMuted: isMuted,
-  //         token: token,
-  //     });
-  // }
-
-  async function handleRemove(participant) {
-    const payload = {
+  async function handleMute(participant) {
+    await meetGeneralPostFunction(`/mute-participant`, {
       room: roomName,
       participantId: participant,
-    }
-    // await generalPostFunction(`/remove-participant`, {
-    //   room: roomName,
-    //   participantId: participant,
-    // });
-    // const response = await axios.post(`https://meet.webvio.in/backend/remove-participant`, payload);
-    const response = await meetGeneralPostFunction(`/remove-participant`, payload)
-    if (response.data.success) {
-      toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
-    }
+    });
+  }
 
+  async function handleRemove(participant) {
+    await meetGeneralPostFunction(`/remove-participant`, {
+      room: roomName,
+      participantId: participant,
+    });
   }
 
   // Raise Hand Fucntion
@@ -790,110 +775,162 @@ function Members({
         </div>
       </div>}
       {showParticipants && (
-        <div className="participantMemberList p-0">
-          <div className="lk-chat-header">
-            <div
-              style={{
-                color: "#000",
-                fontSize: "14px",
-                fontWeight: "600",
-              }}
-            >
-              Meeting Participants
-            </div>
+        <div className="participantMemberList p-0 d-flex flex-column justify-content-start">
+          <div
+            className="lk-chat-header"
+            style={{ borderBottom: "1px solid var(--border-color)" }}
+          >
+            Meeting Participants
             <button
               className="clearButton2 xl ms-auto"
               onClick={() => setParticipantList(false)}
             >
               <i className={`fa-regular fa-xmark`}></i>
             </button>
+            {/* </div>
+          <div> */}
           </div>
-          <div></div>
-          <div className="col-12 mt-3 p-2">
-            <input
-              type="search"
-              name="Search"
-              id="headerSearch"
-              placeholder="Search"
-              value={searchTerm} // Bind the input value to the state
-              onChange={(e) => setSearchTerm(e.target.value)} // Update the state on input change
-              style={{
-                backgroundColor: "#f1f1f1",
-                color: "#000",
-                border: "none",
-                minHeight: "35px",
-              }}
-            />
-          </div>
+          <div className="px-3 overflow-auto" style={{ flex: 1 }}>
+            <div className="col-12 mt-3 p-0 mb-3">
+              <input
+                type="search"
+                name="Search"
+                id="headerSearch"
+                placeholder="Search"
+                value={searchTerm} // Bind the input value to the state
+                onChange={(e) => setSearchTerm(e.target.value)} // Update the state on input change
+                className="memberSearch"
+              />
+            </div>
+            <div class="accordion" id="accordionExample">
+              {handRaises?.length > 0 &&
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Raised Hands <span className="badge bg-primary ms-2 rounded-pill">{handRaises?.length || 0}</span>
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <ul className=" mb-0 mt-0">
+                        {filteredParticipants.filter((participant) => handRaises?.some((user) => user.username == participant.identity.split("-")[0])).map((participant, index) => {
+                          const audioTrackPub = Array.from(participant.audioTrackPublications.values())[0];
+                          const isMuted = audioTrackPub?.track?.isMuted;
 
-          <ul className="noScrollbar p-2">
-            {filteredParticipants.map((participant, index) => (
-              <li key={index}>
-                <div className={`d-flex align-items-center ${handRaises?.find((user) => user.username == participant.identity.split('-')[0])?.hand_raised ? 'handRaiseIcon' : ''} `}>
-                  <div className="profileHolder">
-                    <i className="fa-light fa-user"></i>
+                          return (
+                            <li key={index} className="pb-0 mb-0">
+                              <div className={`d-flex align-items-center`}>
+                                <div className="profileHolder">
+                                  <i class="fa-solid fa-user"></i>
+                                </div>
+                                <span className="ms-2 text-capitalize fw-semibold">
+                                  {participant.identity.split("-")[0]}
+                                </span>
+                              </div>
+                              <div className="d-flex">
+                                {isMuted ?
+                                  <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'} my-auto me-2`}></i> :
+                                  isAdmin ?
+                                    <button className="clearButton2 me-2" onClick={() => handleMute(participant.identity)}>
+                                      <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'}`}></i>
+                                    </button> :
+                                    <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'} my-auto me-2`}></i>
+                                }
+                                {isAdmin &&
+                                  <button
+                                    onClick={() => {
+                                      if (isAdmin) {
+                                        handleRemove(participant.identity);
+                                      }
+                                    }}
+                                    disabled={!isAdmin}
+                                    className="clearButton2"
+                                  >
+                                    <i className="fa-solid fa-user-minus text-danger"></i>
+                                  </button>
+                                }
+                              </div>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </div>
                   </div>
-                  <span className="ms-2">{participant.identity.split('-')[0]}</span>
                 </div>
-                <div className="d-flex">
-                  {/* <button
-                                        onClick={() => {
-                                            if (isAdmin) {
-                                                handleMute(
-                                                    participant.identity,
-                                                    participant.isMicrophoneEnabled
-                                                );
-                                            }
-                                        }}
-                                        disabled={!isAdmin}
-                                        className="clearButton2 me-2"
-                                        style={{
-                                            width: '30px',
-                                            height: '30px',
-                                            fontSize: '16px',
-                                        }}
-                                    >
-                                        <i
-                                            className={
-                                                participant.isMicrophoneEnabled
-                                                    ? 'fa-light fa-microphone'
-                                                    : 'fa-light fa-microphone-slash'
-                                            }
-                                        ></i>
-                                    </button> */}
-                  <button
-                    onClick={() => {
-                      if (isAdmin) {
-                        handleRemove(participant.identity);
-                      }
-                    }}
-                    disabled={!isAdmin}
-                    className="clearButton2 danger"
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      fontSize: "16px",
-                    }}
-                  >
-                    <i className="fa-light fa-user-minus"></i>
+              }
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Contributors <span className="badge bg-primary ms-2 rounded-pill">{(Number(filteredParticipants.length) + 1) || 0}</span>
                   </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                  <div class="accordion-body noScrollbar">
+                    <ul className=" mb-0 mt-0">
+                      <li className="pb-2 border-bottom">
+                        <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center">
+                            <div className="profileHolder">
+                              <i className="fa-solid fa-user" />
+                            </div>
+                            <span className="ms-2 text-capitalize fw-semibold">{username} </span> <span className="ms-2"> (You)</span>
+                          </div>
+                        </div>
+                        <div className="d-flex">
+                          <button className="clearButton2"><i class="fa-solid fa-microphone-slash"></i></button>
+                        </div>
+                      </li>
+                      {filteredParticipants.map((participant, index) => {
+                        const audioTrackPub = Array.from(participant.audioTrackPublications.values())[0];
+                        const isMuted = audioTrackPub?.track?.isMuted;
+
+                        return (
+                          <li key={index} className="pb-0">
+                            <div className={`d-flex align-items-center ${handRaises?.find(
+                              (user) =>
+                                user.username == participant.identity.split("-")[0]
+                            )?.hand_raised
+                              ? "handRaiseIcon"
+                              : ""
+                              } `}
+                            >
+                              <div className="profileHolder">
+                                <i class="fa-solid fa-user"></i>
+                              </div>
+                              <span className="ms-2 text-capitalize fw-semibold">
+                                {participant.identity.split("-")[0]}
+                              </span>
+                            </div>
+                            <div className="d-flex">
+                              {isMuted ?
+                                <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'} my-auto me-2`}></i> :
+                                isAdmin ?
+                                  <button className="clearButton2 me-2" onClick={() => handleMute(participant.identity)}>
+                                    <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'}`}></i>
+                                  </button> :
+                                  <i className={`fa-solid fa-microphone${!isMuted ? '' : '-slash'} my-auto me-2`}></i>
+                              }
+                              {isAdmin &&
+                                <button
+                                  onClick={() => {
+                                    if (isAdmin) {
+                                      handleRemove(participant.identity);
+                                    }
+                                  }}
+                                  disabled={!isAdmin}
+                                  className="clearButton2"
+                                >
+                                  <i className="fa-solid fa-user-minus text-danger"></i>
+                                </button>
+                              }
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
                 </div>
-              </li>
-            ))}
-          </ul>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              borderTop: "1px solid var(--border-color)",
-              padding: "10px 10px",
-            }}
-          >
-            <div className="d-flex align-items-center">
-              <div className="profileHolder">
-                <i className="fa-light fa-user" />
               </div>
-              <span className="ms-2">{username}</span>
             </div>
           </div>
         </div>

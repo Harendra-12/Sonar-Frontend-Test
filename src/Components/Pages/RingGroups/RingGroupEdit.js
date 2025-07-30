@@ -678,7 +678,7 @@ const RingGroupEdit = () => {
                           called with a ring strategy.
                         </p>
                       </div>
-                      <div className="buttonGroup">
+                      <div className="buttonGroup flex-wrap justify-content-sm-start">
                         <div className="d-flex align-items-center">
                           <div className="formLabel py-0 me-2">
                             <label htmlFor="selectFormRow">Enabled</label>
@@ -693,7 +693,7 @@ const RingGroupEdit = () => {
                               />
                               <span className="slider round" />
                             </label> */}
-                            <div className="cl-toggle-switch">
+                            <div className="cl-toggle-switch mb-1">
                               <label className="cl-switch">
                                 <input
                                   type="checkbox"
@@ -713,7 +713,7 @@ const RingGroupEdit = () => {
                           }}
                           type="button"
                           effect="ripple"
-                          className="panelButton gray"
+                          className="panelButton gray mb-2"
                         >
                           <span className="text">Back</span>
                           <span className="icon">
@@ -723,7 +723,7 @@ const RingGroupEdit = () => {
                         <button
                           type="button"
                           effect="ripple"
-                          className="panelButton"
+                          className="panelButton mb-2"
                           onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
@@ -1132,7 +1132,7 @@ const RingGroupEdit = () => {
                     </div>
                   </form>
                 </div>
-                <div className="col-12">
+                <div className="col-12 ">
                   <div className="heading bg-transparent border-bottom-0 flex-wrap">
                     <div className="content mb-3">
                       <h4>List of Agents</h4>
@@ -1215,7 +1215,7 @@ const RingGroupEdit = () => {
                           })
                           .map((item, index) => {
                             return (
-                              <div className="col-12 d-flex justify-content-start mb-2">
+                              <div className="col-12 d-flex justify-content-start mb-2 flex-wrap">
                                 <div
                                   className="formLabel pe-2 d-flex justify-content-between"
                                   style={
@@ -1238,7 +1238,7 @@ const RingGroupEdit = () => {
                                   </div>
                                   <label>{index + 1}.</label>
                                 </div>
-                                <div className="col-3 pe-2">
+                                <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-8 pe-2 mb-2">
                                   {index === 0 ? (
                                     <div className="formLabel">
                                       <label htmlFor="">
@@ -1257,7 +1257,7 @@ const RingGroupEdit = () => {
                                   </div>
                                 </div>
                                 {watch("strategy") === "sequence" ? (
-                                  <div className="col-2 pe-2">
+                                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-3 pe-2">
                                     {index === 0 ? (
                                       <div className="formLabel">
                                         <label htmlFor="">Priority</label>
@@ -1310,7 +1310,7 @@ const RingGroupEdit = () => {
                                     </select>
                                   </div>
                                 ) : (
-                                  <div className="col-2 pe-2">
+                                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-3 pe-2">
                                     {index === 0 ? (
                                       <div className="formLabel">
                                         <label htmlFor="">Delay</label>
@@ -1345,7 +1345,7 @@ const RingGroupEdit = () => {
                                     </select>
                                   </div>
                                 )}
-                                <div className="col-2 pe-2">
+                                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-3 pe-2">
                                   {index === 0 ? (
                                     <div className="formLabel">
                                       <label htmlFor="">Timeout</label>
@@ -1377,7 +1377,7 @@ const RingGroupEdit = () => {
                                     })()}
                                   </select>
                                 </div>
-                                <div className="col-2 pe-2">
+                                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-3 pe-2">
                                   {index === 0 ? (
                                     <div className="formLabel">
                                       <label htmlFor="">Status</label>

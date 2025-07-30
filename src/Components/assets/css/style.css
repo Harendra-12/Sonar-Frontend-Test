@@ -177,7 +177,7 @@
   --billing-icon2: #0c0c10;
   --table-border-color: #d3d9eb;
   --table-border-color: #d3d9eb;
-  --table-bg-active: #b2cddf75;
+  --table-bg-active: #4992ff38;
 
   /* ================= message box color  */
 
@@ -260,20 +260,20 @@
   --active-mail-list: #ECF0FE;
   --active-mail-list-text: #000C8F;
   --clr-permission-text: #333849;
-  --mail-seen: #434649;
+  --mail-seen: #556575ba;
   --switch-toggle: #89a2fa;
 
 
 
-  	--d: 2500ms;
-	--angle: 90deg;
-	--gradX: 100%;
-	--gradY: 50%;
-	--c1: rgba(168, 239, 255, 1);
-	--c2: rgba(168, 239, 255, 0.1);
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
+  --c1: rgba(168, 239, 255, 1);
+  --c2: rgba(168, 239, 255, 0.1);
 
 
-  
+
 }
 
 :root.dark {
