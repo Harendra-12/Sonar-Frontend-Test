@@ -14,6 +14,8 @@ function InternalIncomingCall({
   conferenceToggle,
   isVideoOn,
   setConferenceId,
+  setIsGroupCallMessageOpened,
+  setIsSingleCallMessageOpened,
 }) {
   const socketSendPeerCallMessage = useSelector(
     (state) => state.socketSendPeerCallMessage
@@ -28,34 +30,24 @@ function InternalIncomingCall({
 
   const dispatch = useDispatch();
   function answerCall(item) {
+    setIsGroupCallMessageOpened(false)
+    setIsSingleCallMessageOpened(false)
     if (item?.source === "incoming_peer_group_call") {
+      const callrecipient = [item?.group_name, parseInt(item?.message_group_id), "groupChat", item?.group_name, undefined, null]
+      dispatch(({
+        type: "SET_MESSAGERECIPIENT",
+        messageRecipient: callrecipient,
+      }));
+
       setTimeout(() => {
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id })
+        dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
       }, 1000);
-      setConferenceId(item?.room_id);
-      setCalling(true);
-      setIsConferenceCall(true);
-      try {
-        dispatch({
-          type: "SET_ROOMID",
-          RoomID: item?.room_id,
-        });
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setConferenceInfo({
-          room_id: item?.room_id,
-          extension_id: account?.extension_id,
-          name: account?.username,
-          setactivePage: setactivePage,
-          activePage: activePage,
-          setConferenceToggle: setConferenceToggle,
-          conferenceToggle: conferenceToggle,
-          conferenceId: "",
-          pin: "",
-          isVideoOn: isVideoOn,
-        });
-      }
+      setCalling(true)
+      dispatch({
+        type: "SET_ROOMID",
+        RoomID: item?.room_id,
+      })
       socketSendPeerGroupCallMessage({
         action: "receive_peer_group_call",
         room_id: item?.room_id,
@@ -63,20 +55,24 @@ function InternalIncomingCall({
         message_group_id: item?.message_group_id,
         group_name: item?.group_name,
         user_id: item?.receiver_id,
-        date_and_time: formatDateTime(new Date()),
       });
     } else {
       setInternalCaller(item?.sender_id);
       setToUser(account.id);
       setCalling(true);
+      const callrecipient = [item?.sender_id, item?.sender_id, "singleChat", item?.sender_name, undefined, null]
+      dispatch(({
+        type: "SET_MESSAGERECIPIENT",
+        messageRecipient: callrecipient,
+      }));
       setTimeout(() => {
+
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
         dispatch({
           type: "SET_INCOMINGCALL",
           incomingCall: { ...item, recieved: true, isOtherMember: true },
         });
       }, 1000);
-
       socketSendPeerCallMessage({
         action: "peercallUpdate",
         chat_call_id: item?.uuid,
@@ -148,7 +144,7 @@ function InternalIncomingCall({
     <>
       {incomingCall?.length > 0 &&
         incomingCall?.map((item, key) => {
-          if (item?.sender_id != account.id && !item?.recieved) {
+          if (item?.sender_id && item?.sender_id != account.id && !item?.recieved) {
             return (
               <div key={key} className="messageIncomingPopup">
                 <div className="incomingCallPopup ">

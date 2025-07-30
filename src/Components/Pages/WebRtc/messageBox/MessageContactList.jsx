@@ -1,9 +1,10 @@
 import Tippy from '@tippyjs/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isOnlyLink } from '../../../GlobalFunction/globalFunction';
 import AgentSearch from '../AgentSearch';
 import ChatsCalls from "./../components/ChatsCalls";
 import { getAllMessageApiFun, handleDeleteTag, handleGroupSearchChange, handleMessageSearchChange, handleNewTag } from './MessageFunctions';
+import { useEffect } from 'react';
 
 const MessageContactList = ({
     setRecipient,
@@ -30,6 +31,7 @@ const MessageContactList = ({
     ActionType,
     setManageGroupChat,
     setAllMessage,
+    allMessage,
     onlineUser,
     accountDetails,
     formatRelativeTime,
@@ -69,9 +71,12 @@ const MessageContactList = ({
     chatHistory,
     setChatHistory,
     setPageLoader,
-    setIsTyping
+    setIsTyping,
+    isGroupCallMessageOpened,
+    isSingleCallMessageOpened
 }) => {
     const dispatch = useDispatch()
+    const messageRecipient = useSelector((state) => state.messageRecipient)
 
     const handleContactListClicked = (item) => {
         const profile_picture = allAgents?.find(
@@ -128,6 +133,7 @@ const MessageContactList = ({
         setIsTyping(false)
 
     }
+
     const handleGroupChatListClicked = (item) => {
         getAllMessageApiFun(
             1,
@@ -187,6 +193,27 @@ const MessageContactList = ({
         setAllMessage([]);
         setIsTyping(false)
     }
+
+    useEffect(() => {
+        if (isGroupCallMessageOpened && allMessage[recipient[0]] == undefined) {
+            const payload = {
+                group_name: messageRecipient[0],
+                id: messageRecipient[1]
+            }
+            handleGroupChatListClicked(payload)
+        }
+    }, [isGroupCallMessageOpened])
+
+    useEffect(() => {
+        if (isSingleCallMessageOpened && recipient[0] == undefined) {
+            const payload = {
+                name: messageRecipient[3],
+                id: messageRecipient[1]
+            }
+            handleContactListClicked(payload)
+        }
+    }, [isSingleCallMessageOpened])
+
     return (
         <div
             className="col-12 col-xl-3 col-lg-4 col-xxl-3 py-3 px-0 rounded-3 leftside_listBar"

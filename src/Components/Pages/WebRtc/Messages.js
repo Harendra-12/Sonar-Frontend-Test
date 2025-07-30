@@ -60,6 +60,8 @@ function Messages({
   setConferenceToggle,
   conferenceToggle,
   setInternalCaller,
+  isGroupCallMessageOpened,
+  isSingleCallMessageOpened
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -1083,7 +1085,6 @@ function Messages({
     setInternalCallHistory(origInalinternalCallHistory);
   };
 
-
   // Adding this coz Recipient was changed from being passed as a prop from WebrtcWrapper to here, need this hack to make P2P Call chat work
   useEffect(() => {
     if (recipient && recipient !== prevRecipient.current) {
@@ -1216,6 +1217,7 @@ function Messages({
                 ActionType={ActionType}
                 setManageGroupChat={setManageGroupChat}
                 setAllMessage={setAllMessage}
+                allMessage={allMessage}
                 onlineUser={onlineUser}
                 accountDetails={accountDetails}
                 formatRelativeTime={formatRelativeTime}
@@ -1257,6 +1259,8 @@ function Messages({
                 setPageLoader={setPageLoader}
                 setIsTyping={setIsTyping}
                 socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
+                isGroupCallMessageOpened={isGroupCallMessageOpened}
+                isSingleCallMessageOpened={isSingleCallMessageOpened}
               />
               <MessageBody
                 recipient={recipient}
@@ -1412,8 +1416,8 @@ function Messages({
                               <th>
                                 <input
                                   type="checkbox"
-                                  onChange={handleSelectAll} // Call handler on change
-                                // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                  onChange={() => handleSelectAll(selectAll, setSelectAll, availableUsers, groupSelecedAgents, setGroupSelecedAgents)} // Call handler on change
+                                  checked={selectAll ? true : false} // Keep checkbox state in sync
                                 />
                               </th>
                             </tr>

@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useIsRecording, useRoomContext } from "@livekit/components-react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 // import { generalGetFunction, generalPostFunction } from './GlobalFunction/globalFunction';
 import { createLocalVideoTrack } from "livekit-client";
 import {
+  formatDateTime,
   meetGeneralGetFunction,
   meetGeneralPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { api_url } from "../../../../urls";
+import Whiteboard from "./Whiteboard/Whiteboard";
+import { useLiveKitWhiteboardEvents } from "./Whiteboard/useLivekitWhiteboardEvents";
 
 /**
  * Members component manages the participants and recordings of a room.
@@ -43,15 +46,19 @@ function Members({
 }) {
   const room = useRoomContext();
   const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
+  const account = useSelector((state) => state.account);
   const isRecording = useIsRecording();
   const isRecordingRef = useRef(isRecording); // Ref to track the latest value of isRecording
   const avatarTracks = {}; // Store references for avatars
   const internalCallAction = useSelector((state) => state.internalCallAction);
   const incomingCall = useSelector((state) => state.incomingCall);
+  const onGoingCallInfo = useSelector((state) => state?.onGoingCallInfo)
   const dispatch = useDispatch();
   const [participants, setParticipants] = useState([]);
   const [showParticipants, setParticipantList] = useState(false);
   const [processingRecRequest, setProcessingRecRequest] = useState(false);
+  const socketSendPeerGroupCallMessage = useSelector((state) => state.socketSendPeerGroupCallMessage);
+  const incomingGroupCall = useSelector((state) => state.incomingGroupCall);
   // const [currentCallRoom, setCurentCallRoom] = useState([]);
   // const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
   const [searchTerm, setSearchTerm] = useState(""); // State to track the search input
@@ -67,6 +74,20 @@ function Members({
   const lastProcessedRaise = useRef(null);
 
   const [toggleMeetingInfo, setToggleMeetingInfo] = useState(false);
+
+  const [toggleWhiteBoard, setToggleWhiteBoard] = useState(false);
+  const [incomingSnapshot, setIncomingSnapshot] = useState(null)
+  const [whiteboardStarter, setWhiteboardStarter] = useState(null)
+  const whiteboardStarterRef = useRef(whiteboardStarter);
+  const [whiteboardMinimize, setWhiteboardMinimize] = useState(false);
+
+  useLiveKitWhiteboardEvents({
+    room,
+    roomName,
+    onRemoteOpen: (bool) => setToggleWhiteBoard(bool),
+    onSnapshotReceived: (snapshot) => setIncomingSnapshot(snapshot),
+    onStarterId: (id) => setWhiteboardStarter(id),
+  })
 
   // useEffect(() => {
   //   setCurentCallRoom(
@@ -147,46 +168,63 @@ function Members({
   // After disconnect this function will trigger to send socket data to other user about call state\
   useEffect(() => {
     const handleRoomDisconnect = () => {
-      console.log(
-        "currentCallRoom",
-        incomingCall.filter((item) => item?.room_id === roomName),
-        incomingCall
-      );
-      // Reset Hand Raise State
-      dispatch({ type: "RESET_HAND_RAISES" })
+      if (incomingGroupCall?.source === "incoming_peer_group_call") {
+        socketSendPeerGroupCallMessage({
+          "action": "end_peer_group_call",
+          "room_id": roomName,
+          "call_type": "audio",
+          "user_id": account?.id,
+          "group_name": incomingGroupCall?.group_name,
+          "message_group_id": incomingGroupCall?.message_group_id,
+          "date_and_time": formatDateTime(new Date()),
+          "ended_by": account?.name,
+          "group_call_id": incomingGroupCall?.message_group_id,
+          "group_call_uuid": incomingGroupCall?.uuid,
+          
 
-      if (
-        incomingCall.filter((item) => item?.room_id === roomName)[0]
-          ?.isOtherMember
-      ) {
-        socketSendPeerCallMessage({
-          action: "peercallUpdate",
-          chat_call_id: incomingCall.filter(
-            (item) => item?.room_id === roomName
-          )?.[0]?.uuid,
-          Hangup_cause: "success",
-          room_id: roomName,
-          duration: 120,
-          status: "ended",
-        });
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
-        setCalling(false); // Update parent state if needed
+        })
+        dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {} })
       } else {
-        socketSendPeerCallMessage({
-          action: "peercallUpdate",
-          chat_call_id: incomingCall.filter(
-            (item) => item?.room_id === roomName
-          )?.[0]?.uuid,
-          Hangup_cause: "originator_cancel",
-          room_id: roomName,
-          duration: 0,
-          status: "ended",
-        });
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
-        dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
-        setCalling(false); // Update parent state if needed
+        console.log(
+          "currentCallRoom",
+          incomingCall.filter((item) => item?.room_id === roomName),
+          incomingCall
+        );
+        // Reset Hand Raise State
+        dispatch({ type: "RESET_HAND_RAISES" })
+
+        if (
+          incomingCall.filter((item) => item?.room_id === roomName)[0]
+            ?.isOtherMember
+        ) {
+          socketSendPeerCallMessage({
+            action: "peercallUpdate",
+            chat_call_id: incomingCall.filter(
+              (item) => item?.room_id === roomName
+            )?.[0]?.uuid,
+            Hangup_cause: "success",
+            room_id: roomName,
+            duration: 120,
+            status: "ended",
+          });
+          dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
+          dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+          setCalling(false); // Update parent state if needed
+        } else {
+          socketSendPeerCallMessage({
+            action: "peercallUpdate",
+            chat_call_id: onGoingCallInfo?.uuid,
+            Hangup_cause: "originator_cancel",
+            room_id: roomName,
+            duration: 0,
+            status: "ended",
+          });
+          dispatch({ type: "REMOVE_INCOMINGCALL", room_id: roomName });
+          dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+          setCalling(false); // Update parent state if needed
+        }
       }
+
     };
 
     room.on("disconnected", handleRoomDisconnect);
@@ -409,6 +447,13 @@ function Members({
           disconnectButton.parentNode.insertBefore(recordButton, disconnectButton);
         }
 
+        const whiteBoardToggleButton = document.createElement("button");
+        whiteBoardToggleButton.className = "lk-button whiteboard-toggle-button";
+        whiteBoardToggleButton.innerHTML =
+          `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="16px" height="16px" viewBox="0 -64 640 640"><path d="M96 64h448v352h64V40c0-22.06-17.94-40-40-40H72C49.94 0 32 17.94 32 40v376h64V64zm528 384H480v-64H288v64H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h608c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"/><script xmlns=""/></svg>
+            <span>Whiteboard</span>`;
+        whiteBoardToggleButton.onclick = () => handleToggleWhiteboard();
+
         if (isConferenceCall) {
           // Append the buttons to the custom div
           customDiv.appendChild(allMembersButton);
@@ -422,6 +467,8 @@ function Members({
         if (isConferenceCall) {
           // Insert the hand raise button before the disconnect button
           disconnectButton.parentNode.insertBefore(handRaiseButton, disconnectButton);
+          // Insert the hand whiteboard button before the handRaiseButton button
+          disconnectButton.parentNode.insertBefore(whiteBoardToggleButton, handRaiseButton);
         }
       }
     }
@@ -659,6 +706,73 @@ function Members({
     return observer;
   }
 
+  // updates the whiteboard starter
+  useEffect(() => {
+    whiteboardStarterRef.current = whiteboardStarter;
+  }, [whiteboardStarter]);
+
+  const handleToggleWhiteboard = () => {
+    const currentStarter = whiteboardStarterRef.current;
+    const whiteBoardButton = document.querySelector(".whiteboard-toggle-button");
+
+    console.log(currentStarter);
+
+
+    if (!currentStarter || currentStarter === username) {
+      setToggleWhiteBoard((prev) => {
+        const newStatus = !prev;
+
+        // Broadcast whiteboard toggle event
+        room.localParticipant.publishData(
+          new TextEncoder().encode(
+            JSON.stringify({
+              type: 'whiteboard-toggle',
+              roomId: roomName,
+              userId: room.localParticipant.identity.split('-')[0],
+              status: newStatus
+            })
+          ),
+          { reliable: true }
+        );
+
+        // If whiteboard is being opened and no one had started it, set the starter
+        if (newStatus && !currentStarter) {
+          setWhiteboardStarter(username);
+        }
+
+        // If whiteboard is being closed by the starter, clear the starter
+        if (!newStatus && currentStarter === username) {
+          setWhiteboardStarter(null);
+        }
+
+        whiteBoardButton.setAttribute("data-lk-enabled", newStatus);
+
+        return newStatus;
+      });
+    } else {
+      toast.error("Whiteboard is already opened by " + currentStarter);
+    }
+  };
+
+  // Send whiteboard data to others
+  const sendWhiteBoardData = useCallback((snapshot) => {
+    if (room?.localParticipant) {
+      const payload = {
+        type: 'whiteboard',
+        roomId: roomName,
+        snapshot,
+        whiteboardStarter: whiteboardStarterRef.current
+      }
+      // room.localParticipant.publishData(JSON.stringify(payload), { reliable: true })
+      room.localParticipant.publishData(
+        new TextEncoder().encode(JSON.stringify(payload)), // encode explicitly
+        {
+          reliable: true,
+        }
+      )
+    }
+  }, [room])
+
 
   return (
     <>
@@ -821,6 +935,25 @@ function Members({
           </div>
         </div>
       )}
+      {toggleWhiteBoard && room ?
+        <div className={`whiteboardWrapper ${whiteboardMinimize ? 'minimized' : ''}`}>
+          <button className="clearButton2 xl bg-white"
+            onClick={() => setWhiteboardMinimize((prev) => !prev)}
+            style={{ position: 'absolute', top: '30px', right: '30px', zIndex: '9' }}
+          >
+            <i className={`fa-regular fa-${whiteboardMinimize ? 'expand-wide' : 'arrow-down-left-and-arrow-up-right-to-center'} text-dark`} />
+          </button>
+          <Whiteboard sendData={sendWhiteBoardData}
+            onSnapshotReceived={(callback) => {
+              if (incomingSnapshot) {
+                callback(incomingSnapshot)
+              }
+            }}
+            username={username}
+            whiteboardStarter={whiteboardStarter}
+          />
+        </div>
+        : ""}
     </>
   );
 }

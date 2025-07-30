@@ -108,6 +108,14 @@ function Header(props) {
     });
   }
 
+  // Refresh Call Details
+  const refreshCustomDashboard = async () => {
+    dispatch({
+      type: "SET_CALLDETAILSREFRESH",
+      callDetailsRefresh: callDetailsRefresh + 1,
+    });
+  }
+
   return (
     <div id="detailsHeader" style={props.style} className="flex-wrap">
       <div className="col-md-4 col-6  d-flex align-items-center">
@@ -120,9 +128,14 @@ function Header(props) {
           </button>
         </div>
         <h4 className="my-auto">{props.title}</h4>
-        {location.pathname === "/phone-dashboard" &&
-          <button className="clearButton ms-2" onClick={refreshCallDetails}><i className={`fa-regular fa-arrows-rotate fs-5 ${callDetailsLoading && 'fa-spin'}`}></i></button>
+        {
+          props.headerRefresh &&
+          <button className="clearButton ms-2" onClick={props.refreshFunction}><i className={`fa-regular fa-arrows-rotate fs-5 ${props.refreshLoading && 'fa-spin'}`}></i></button>
         }
+
+        {/* {location.pathname === "/phone-dashboard" &&
+          <button className="clearButton ms-2" onClick={refreshCallDetails}><i className={`fa-regular fa-arrows-rotate fs-5 ${callDetailsLoading && 'fa-spin'}`}></i></button>
+        } */}
       </div>
       <div className="col-md-8 col-6 d-flex justify-content-end align-items-center">
         <div className="my-auto">

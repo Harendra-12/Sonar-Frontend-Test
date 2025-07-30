@@ -291,7 +291,9 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting, Setti
                 <li style={{ cursor: "pointer" }}>
                   <div
                     onClick={() => setactivePage("email")}
-                    className="navItem "
+                    className={
+                      activePage === "email" ? "navItem active" : "navItem"
+                    }
                   >
                     <div className="iconHolder">
                       <i className="fa-regular fa-envelope"></i>

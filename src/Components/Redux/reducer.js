@@ -91,7 +91,7 @@ var adminLogout = false; // Flag to track admin logout
 var incomingMessage = null;
 var deletedNotificationId = null; // State to track deleted notification ID
 var incomingCall = [];
-var incomingGroupCall = [];
+var incomingGroupCall = {};
 var internalCallAction = null;
 var socketSendMessage = null;
 var campaignDetails = [];
@@ -105,6 +105,7 @@ var socketSendPeerCallMessage = [];
 var redirectConference = false;
 var allNotificationState = [];
 var messageRecipient = []
+var onGoingCallInfo = []
 var typingDetails = false;
 var socketSendPeerGroupCallMessage = [];
 
@@ -212,6 +213,7 @@ const initialState = {
   redirectConference,
   allNotificationState,
   messageRecipient,
+  onGoingCallInfo,
   typingDetails,
   socketSendPeerGroupCallMessage
 };
@@ -445,6 +447,10 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         incomingCall: [...state.incomingCall, action.incomingCall],
       };
+    case "SET_INCOMING_GROUP_CALL":
+      return {
+        ...state, incomingGroupCall: action.incomingGroupCall,
+      };
     case "REMOVE_INCOMINGCALL":
       return {
         ...state,
@@ -528,6 +534,9 @@ const counterReducer = (state = initialState, action) => {
     }
     case "SET_MESSAGERECIPIENT": {
       return { ...state, messageRecipient: action.messageRecipient }
+    }
+    case "ON_GOING_CALL_INFO": {
+      return { ...state, onGoingCallInfo: action.onGoingCallInfo }
     }
     default:
       return state;

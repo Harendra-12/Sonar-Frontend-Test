@@ -289,3 +289,9 @@ button.lk-button.lk-chat-form-button {
     background-color: #f92762 !important;
     color: #fff !important;
 }
+
+.lk-control-bar {
+    background-color: #ffff !important;
+    position: relative;
+    z-index: 999;
+}

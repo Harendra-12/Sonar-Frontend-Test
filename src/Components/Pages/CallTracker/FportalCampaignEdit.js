@@ -504,6 +504,7 @@ function FportalCampaignEdit() {
       dids: selectedItems,
       active_hours: isActiveHour ? "1" : "0",
       sticky_agent_enable: data?.sticky_agent_enable == false ? 0 : 1,
+      record: data.record == "true" ? true : false,
       ...(isActiveHour && {
         schedulars: (schedulerInfo?.filter(data => data?.status === true) || []).length > 0
           ? schedulerInfo

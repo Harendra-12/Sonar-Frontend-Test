@@ -43,6 +43,7 @@ function CustomDashboardPage({ isParentWebRtc }) {
     }, {});
     const [usageLoading, setUsageLoading] = useState(false);
     const locationState = useLocation();
+    const [buttonLoading, setButtonLoading] = useState(false);
 
     // Location State when redirecting from Phone Dashboard
     useEffect(() => {
@@ -64,13 +65,18 @@ function CustomDashboardPage({ isParentWebRtc }) {
     // Getting all custome module for filter on initial phase 
     useEffect(() => {
         async function getCustomModule() {
-            setUsageLoading(true);
+            setButtonLoading(true);
+            if (customModule.length == 0) {
+                setUsageLoading(true);
+            }
             const apiData = await generalGetFunction("/usage/all")
             if (apiData.status) {
                 setCustomModule(apiData.data);
                 setUsageLoading(false); // Stop loader if status is true
+                setButtonLoading(false);
             } else {
                 setUsageLoading(false); // Stop loader if status is false
+                setButtonLoading(false);
             }
             const filterData = await generalGetFunction("/call-details")
 
@@ -286,13 +292,16 @@ function CustomDashboardPage({ isParentWebRtc }) {
 
     const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
 
+    const refreshCustomDashboard = () => {
+        setRefresh((prev) => prev + 1);
+    }
 
     return (
         <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        {!isParentWebRtc && <Header title="Custom Dashboard" />}
+                        {!isParentWebRtc && <Header title="Custom Dashboard" headerRefresh={true} refreshFunction={refreshCustomDashboard} refreshLoading={buttonLoading} />}
                         <div className="overviewTableWrapper p-3">
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
