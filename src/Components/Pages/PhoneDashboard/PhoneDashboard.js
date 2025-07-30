@@ -18,6 +18,7 @@ function PhoneDashboard() {
   const [userList, setUserList] = useState([]);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
+  const callDetailsLoading = useSelector((state) => state.callDetailsLoading);
   const activeCall = useSelector((state) => state.activeCall);
   const dispatch = useDispatch();
   const ringGroup = useSelector((state) => state.ringGroup);
@@ -350,10 +351,18 @@ function PhoneDashboard() {
     }
   }
 
+  // Refresh Call Details
+  const refreshCallDetails = async () => {
+    dispatch({
+      type: "SET_CALLDETAILSREFRESH",
+      callDetailsRefresh: callDetailsRefresh + 1,
+    });
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <Header title="Call Dashboard" />
+        <Header title="Call Dashboard" headerRefresh={true} refreshFunction={refreshCallDetails} refreshLoading={callDetailsLoading} />
         <div className="container-fluid pe-4">
           <div className="row">
             {/* <div id="detailsHeader" className="p-0">

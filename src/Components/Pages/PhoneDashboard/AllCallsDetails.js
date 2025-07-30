@@ -12,7 +12,7 @@ function AllCallsDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (callDetails) {
+    if (callDetails.length > 0 || Object.entries(callDetails).length > 0) {
       setExtensionDataLoading(false);
     }
   }, [callDetails]);
