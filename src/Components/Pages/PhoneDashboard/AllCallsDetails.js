@@ -7,14 +7,12 @@ import { act } from "react";
 function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
   const activeCall = useSelector((state) => state.activeCall);
-  console.log(activeCall);
-  console.log(callDetails);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (callDetails?.calls) {
+    if (callDetails) {
       setExtensionDataLoading(false);
     }
   }, [callDetails]);
