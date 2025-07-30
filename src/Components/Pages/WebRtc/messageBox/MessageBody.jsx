@@ -135,8 +135,9 @@ const MessageBody = ({
             "group_name": recipient[0],
             "user_id": account?.id,
         })
+        setToUser(recipient[1])
         setCalling(true)
-        setIsConferenceCall(true);
+        setIsConferenceCall(false);
         try {
             dispatch({
                 type: "SET_ROOMID",
@@ -1070,7 +1071,7 @@ const MessageBody = ({
                                                                 isTypingRef.current = false;
                                                             }, 5000);
 
-                                                            if (wordCount <= 250) {
+                                                            if (wordCount <= 7000) {
                                                                 setMessageInput((prev) => ({
                                                                     ...prev,
                                                                     [recipient[0]]: value,
