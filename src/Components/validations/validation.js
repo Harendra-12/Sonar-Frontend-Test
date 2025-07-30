@@ -50,10 +50,11 @@ export const nameValidator = {
     message: "Name must be no more than 50 characters long",
   },
   pattern: {
-    value: /^[A-Za-z\s\-]+$/, // Allows letters, spaces, and hyphens
-    message: "Name must only contain letters, spaces, and hyphens",
+    value: /^[A-Za-z0-9\s\-]+$/, // Allows letters, numbers, spaces, and hyphens
+    message: "Name must only contain letters, numbers, spaces, and hyphens",
   },
 };
+
 
 export const nameNumberValidator = {
   minLength: {

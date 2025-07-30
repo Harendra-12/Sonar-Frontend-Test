@@ -200,6 +200,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
               followMePrompt: apiData.data.followmes[0].prompt,
               followMeId: apiData.data.followmes[0].id,
             }));
+            setValue("destination_forward_to", apiData.data.followmes[0].destination);
           }
         } else {
           setLoading(false);
@@ -538,10 +539,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                           </span>
                         </button>
                         <button
-                          type="button"
-                          effect="ripple"
                           className="panelButton"
-                          onClick={() => handleFormSubmit()}
+                          onClick={handleFormSubmit}
                         >
                           <span className="text">Save</span>
                           <span className="icon">
@@ -557,7 +556,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                       padding: "25px 23px",
                     }}
                   >
-                    <form action="#" className="tangoNavs">
+                    <form className="tangoNavs" onSubmit={handleSubmit(handleFormSubmit)}>
                       <nav>
                         <div
                           className="nav nav-tabs"

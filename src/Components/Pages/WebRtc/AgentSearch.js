@@ -7,22 +7,12 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 const AgentSearch = ({
   getDropdownValue,
   value,
-  getAllAgents,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
+  allAgents
 }) => {
-  const [user, setUser] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction("/user-all");
-      if (apiData?.status) {
-        setUser(apiData.data);
-        getAllAgents(apiData.data);
-      }
-    }
-    getData();
-  }, []);
+
   useEffect(() => {
     // Set default value if provided
     if (value) {
@@ -35,8 +25,8 @@ const AgentSearch = ({
     {
       label: "User",
       options:
-        user &&
-        user?.map((item) => ({
+        allAgents &&
+        allAgents?.map((item) => ({
           value: [item.name, item.id],
           label: `${item.username} `,
         })),
@@ -136,7 +126,7 @@ const AgentSearch = ({
           placeholder="Select agent to start chat"
           id="selectFormRow"
           onChange={(selectedOption) => {
-            const userDetails = user?.find((data) => data?.id == selectedOption?.value[1])
+            const userDetails = allAgents?.find((data) => data?.id == selectedOption?.value[1])
             getDropdownValue([...selectedOption.value, "singleChat", userDetails?.username, userDetails?.email, userDetails?.profile_picture]);
             setSelectedOption(selectedOption.value[0]);
           }}

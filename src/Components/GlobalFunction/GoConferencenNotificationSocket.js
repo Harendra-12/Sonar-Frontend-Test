@@ -7,8 +7,10 @@ function GoConferenceNotificationSocket() {
   const port = process.env.REACT_APP_GOLANG_CONFERENCE_NOTIFICATION_SOCKET_PORT;
   const account = useSelector((state) => state.account);
   const isLogOut = useSelector((state) => state.logout);
+
   const socketRef = useRef(null);
   const connectingRef = useRef(false);
+  const connectedRef = useRef(false); // ✅ NEW
   const prevAccidRef = useRef(null);
   const reconnectAttemptsRef = useRef(0);
 
@@ -22,40 +24,43 @@ function GoConferenceNotificationSocket() {
 
   useEffect(() => {
     const connectWebSocket = () => {
-      // Abort if user is logged out or roomid is missing
-      if (isLogOut === 1 || !account.id) {
-        console.warn(
-          "WebSocket connection aborted: User is logged out or room id is missing."
-        );
+      const accId = account?.id;
+
+      // Abort if user is logged out or account.id is missing
+      if (isLogOut === 1 || !accId) {
+        console.warn("WebSocket connection aborted: User is logged out or account.id is missing.");
         return;
       }
 
-      // Don't reconnect if the socket is already open and roomid hasn’t changed
+      // Avoid duplicate connection
       if (
         socketRef.current &&
-        socketRef.current.readyState === WebSocket.OPEN &&
-        prevAccidRef.current === account.id
+        (socketRef.current.readyState === WebSocket.OPEN || socketRef.current.readyState === WebSocket.CONNECTING) &&
+        prevAccidRef.current === accId
       ) {
+        console.log("WebSocket already open or connecting. Skipping...");
         return;
       }
 
-      // Prevent multiple parallel connection attempts
       if (connectingRef.current) {
+        console.log("WebSocket is connecting. Skipping...");
         return;
       }
 
-      // Close existing socket if socket not open
       if (socketRef.current) {
         socketRef.current.close();
       }
 
       connectingRef.current = true;
-      const socket = new WebSocket(`wss://${ip}:${port}/ws?id=${account.id}`);
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+      const socket = new WebSocket(`${protocol}://${ip}:${port}/ws?id=${accId}`);
 
       socket.onopen = () => {
         reconnectAttemptsRef.current = 0;
         connectingRef.current = false;
-        prevAccidRef.current = account.id;
+        connectedRef.current = true; // ✅ NEW
+        prevAccidRef.current = accId;
+        console.log("WebSocket connected");
       };
 
       socket.onmessage = (event) => {
@@ -79,12 +84,15 @@ function GoConferenceNotificationSocket() {
       socket.onerror = (err) => {
         console.error("WebSocket error:", err);
         connectingRef.current = false;
+        connectedRef.current = false; // ✅ NEW
       };
 
       socket.onclose = () => {
         console.warn("WebSocket closed.");
         connectingRef.current = false;
-        if (reconnectAttemptsRef.current < 5 && !isLogOut) {
+        connectedRef.current = false; // ✅ NEW
+
+        if (reconnectAttemptsRef.current < 5 && isLogOut !== 1) {
           reconnectAttemptsRef.current++;
           setTimeout(connectWebSocket, 5000);
         }
@@ -93,16 +101,19 @@ function GoConferenceNotificationSocket() {
       socketRef.current = socket;
     };
 
-    if (account && account.account_id) {
+    if (account?.account_id && account?.id) {
       connectWebSocket();
     }
 
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
+        socketRef.current = null;
+        connectingRef.current = false;
+        connectedRef.current = false; // ✅ NEW
       }
     };
-  }, [account, ip, port]);
+  }, [account?.account_id, account?.id, ip, port, isLogOut]);
 
   return { sendConferenceMessage };
 }

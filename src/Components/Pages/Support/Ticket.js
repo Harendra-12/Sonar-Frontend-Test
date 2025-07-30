@@ -58,7 +58,7 @@ function Ticket() {
         if (apiCall.status) {
           setLoading(false);
           toast.success(apiCall.message);
-          getAllTickets();
+          refreshApiCall();
         }
       } catch (err) {
         console.log(err);
