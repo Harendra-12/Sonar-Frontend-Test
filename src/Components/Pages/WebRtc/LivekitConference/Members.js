@@ -52,6 +52,7 @@ function Members({
   const avatarTracks = {}; // Store references for avatars
   const internalCallAction = useSelector((state) => state.internalCallAction);
   const incomingCall = useSelector((state) => state.incomingCall);
+  const onGoingCallInfo = useSelector((state) => state?.onGoingCallInfo)
   const dispatch = useDispatch();
   const [participants, setParticipants] = useState([]);
   const [showParticipants, setParticipantList] = useState(false);
@@ -167,16 +168,22 @@ function Members({
   // After disconnect this function will trigger to send socket data to other user about call state\
   useEffect(() => {
     const handleRoomDisconnect = () => {
-      if (incomingGroupCall?.[0]?.source === "incoming_peer_group_call") {
+      if (incomingGroupCall?.source === "incoming_peer_group_call") {
         socketSendPeerGroupCallMessage({
           "action": "end_peer_group_call",
           "room_id": roomName,
           "call_type": "audio",
           "user_id": account?.id,
-          "group_name": incomingGroupCall?.[0]?.group_name,
-          "message_group_id": incomingGroupCall?.[0]?.message_group_id,
-          // "date_and_time": formatDateTime(new Date())
+          "group_name": incomingGroupCall?.group_name,
+          "message_group_id": incomingGroupCall?.message_group_id,
+          "date_and_time": formatDateTime(new Date()),
+          "ended_by": account?.name,
+          "group_call_id": incomingGroupCall?.message_group_id,
+          "group_call_uuid": incomingGroupCall?.uuid,
+          
+
         })
+        dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {} })
       } else {
         console.log(
           "currentCallRoom",
@@ -206,9 +213,7 @@ function Members({
         } else {
           socketSendPeerCallMessage({
             action: "peercallUpdate",
-            chat_call_id: incomingCall.filter(
-              (item) => item?.room_id === roomName
-            )?.[0]?.uuid,
+            chat_call_id: onGoingCallInfo?.uuid,
             Hangup_cause: "originator_cancel",
             room_id: roomName,
             duration: 0,

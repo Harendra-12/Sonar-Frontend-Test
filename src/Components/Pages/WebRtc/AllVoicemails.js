@@ -20,8 +20,9 @@ import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import HeaderApp from "./HeaderApp";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 import { Rnd } from "react-rnd";
+import Dialpad from "./Dialpad";
 
-function AllVoicemails({ isCustomerAdmin }) {
+function AllVoicemails({ isCustomerAdmin,allContact,isVideoOn, isMicOn, setSelectedModule }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
@@ -44,6 +45,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [transcribeLink, setTranscribeLink] = useState();
   const [size, setSize] = useState({ width: 'auto', height: 'auto' });
   const [position, setPosition] = useState({ x: 600, y: 500 });
+  const [dialpadShow, setDialpadShow] = useState(false);
 
   // useEffect(() => {
   //   const handlePlaying = async (audio) => {
@@ -371,6 +373,9 @@ function AllVoicemails({ isCustomerAdmin }) {
     getData(shouldLoad);
   };
 
+   function handleHideDialpad(value) {
+    setDialpadShow(value);
+  }
   return (
     <>
       {allLogOut && (
@@ -416,7 +421,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
-                    onClick={() => featureUnderdevelopment()}
+                    onClick={() => setDialpadShow(!dialpadShow)}
                   >
                     <i className="fa-light fa-mobile-retro" /> Dial Number
                   </button>
@@ -1113,26 +1118,17 @@ function AllVoicemails({ isCustomerAdmin }) {
           </Rnd>
         )}
       </main>
-      {/* {sessions.length > 0 && Object.keys(sessions).length > 0 ? (
-        <>
-          <section className="activeCallsSidePanel">
-            <div className="container">
-              <div className="row">
-                {sessions.length > 0 &&
-                  sessions.map((session, chennel) => (
-                    <ActiveCallSidePanel
-                      sessionId={session.id}
-                      destination={session.destination}
-                      chennel={chennel}
-                    />
-                  ))}
-              </div>
-            </div>
-          </section>
-        </>
+     {dialpadShow ? (
+        <Dialpad
+          hideDialpad={handleHideDialpad}
+          setSelectedModule={setSelectedModule}
+          isMicOn={isMicOn}
+          isVideoOn={isVideoOn}
+          allContact={allContact}
+        />
       ) : (
         ""
-      )} */}
+      )}
     </>
   );
 }
