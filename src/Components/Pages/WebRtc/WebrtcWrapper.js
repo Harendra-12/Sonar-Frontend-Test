@@ -122,6 +122,7 @@ const WebrtcWrapper = () => {
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
   const [isGroupCallMessageOpened, setIsGroupCallMessageOpened] = useState(false)
+  const [isSingleCallMessageOpened, setIsSingleCallMessageOpened] = useState(false)
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
   const audioRef = useRef(null);
@@ -643,6 +644,7 @@ const WebrtcWrapper = () => {
             conferenceToggle={conferenceToggle}
             setInternalCaller={setInternalCaller}
             isGroupCallMessageOpened={isGroupCallMessageOpened}
+            isSingleCallMessageOpened={isSingleCallMessageOpened}
           />
         )}
         {activePage === "conference" && (
@@ -991,6 +993,7 @@ const WebrtcWrapper = () => {
               isConferenceAdmin={isConferenceAdmin}
               conferenceInfo={conferenceInfo}
               setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
+              setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
             />
           </div>
         </Rnd>
@@ -1010,6 +1013,8 @@ const WebrtcWrapper = () => {
         conferenceToggle={conferenceToggle}
         isVideoOn={isVideoOn}
         setConferenceId={setConferenceId}
+        setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
+        setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
       />
     </>
   );

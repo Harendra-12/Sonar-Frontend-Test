@@ -72,7 +72,8 @@ const MessageContactList = ({
     setChatHistory,
     setPageLoader,
     setIsTyping,
-    isGroupCallMessageOpened
+    isGroupCallMessageOpened,
+    isSingleCallMessageOpened
 }) => {
     const dispatch = useDispatch()
     const messageRecipient = useSelector((state) => state.messageRecipient)
@@ -202,6 +203,16 @@ const MessageContactList = ({
             handleGroupChatListClicked(payload)
         }
     }, [isGroupCallMessageOpened])
+
+    useEffect(() => {
+        if (isSingleCallMessageOpened && recipient[0] == undefined) {
+            const payload = {
+                name: messageRecipient[3],
+                id: messageRecipient[1]
+            }
+            handleContactListClicked(payload)
+        }
+    }, [isSingleCallMessageOpened])
 
     return (
         <div

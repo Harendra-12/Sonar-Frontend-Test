@@ -21,7 +21,8 @@ function InitiateCall({
   isConferenceCall,
   isConferenceAdmin,
   conferenceInfo,
-  setIsGroupCallMessageOpened
+  setIsGroupCallMessageOpened,
+  setIsSingleCallMessageOpened
 }) {
   const dispatch = useDispatch();
   const [token, setToken] = useState(null);
@@ -40,8 +41,8 @@ function InitiateCall({
       setRoomName(roomId);
       setIsAdmin(isConferenceAdmin);
     } else {
-      if (incomingGroupCall?.[0]?.source === "incoming_peer_group_call") {
-        setRoomName(incomingGroupCall?.[0]?.room_id)
+      if (incomingGroupCall?.source === "incoming_peer_group_call") {
+        setRoomName(incomingGroupCall?.room_id)
       } else {
         setRoomName(`${from}-${to}`)
       }
@@ -90,13 +91,14 @@ function InitiateCall({
           setIsChatOpen(prev => !prev);
           setIsGroupCallMessageOpened(prev => !prev)
         } else {
-          if (storeRecipient) {
+          if (storeRecipient || messageRecipient) {
             dispatch(({
               type: "SET_MESSAGERECIPIENT",
-              messageRecipient: storeRecipient,
+              messageRecipient: storeRecipient || messageRecipient,
             }));
             setSelectedChat("singleChat");
             setIsChatOpen(prev => !prev);
+            setIsSingleCallMessageOpened(prev => !prev)
           }
         }
 
