@@ -20,12 +20,17 @@ function AllContact({
   setAllContact,
   allContactLoading,
   setAllContactLoading,
+  isMicOn,
+  isVideoOn,
+  isTransfer,
+  transferableSessionId,
+  setSelectedModule,
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
-  const { sessionManager } = useSIPProvider()
-
+  const { sessionManager,connectStatus } = useSIPProvider()
+  const globalSession = useSelector((state) => state.sessions);
   // const [contact, setContact] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState(null);
@@ -39,19 +44,7 @@ function AllContact({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const slugPermissions = useSelector((state) => state?.permissions);
-
-  // useEffect(() => {
-  //   const getContact = async () => {
-  //     const apiData = await generalGetFunction("/contact/all");
-  //     if (apiData?.status) {
-  //       setContact(apiData.data);
-  //       setLoading(false);
-  //     } else {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   getContact();
-  // }, [addContactRefresh]);
+  const [loadMore, setLoadMore] = useState(false);
 
   const groupContactsByInitial = (contacts) => {
     return contacts.reduce((acc, contact) => {
@@ -85,7 +78,7 @@ function AllContact({
   };
 
   const handleEditContact = async (contactId) => {
-    setAllContactLoading(true);
+    // setAllContactLoading(true);
     // setSelectedEditContact(contact);
     const apiData = await generalGetFunction(`/contact/show/${contactId}`);
     if (apiData.status) {
@@ -121,6 +114,134 @@ function AllContact({
       setLoading(false);
     }
   };
+
+   async function onSubmit(mode="audio",destNumber) {
+      if (!isMicOn) {
+        toast.warn("Please turn on microphone");
+        return;
+      }
+      if (mode === "video") {
+        if (!isVideoOn) {
+          toast.warn("Please turn on camera");
+          return;
+        }
+      }
+  
+      if (extension == "") {
+        toast.error("No extension assigned to your account");
+        return;
+      }
+      if (destNumber == extension) {
+        toast.error("You cannot call yourself");
+        return;
+      }
+  
+      if (connectStatus !== "CONNECTED") {
+        toast.error("You are not connected with server");
+        return;
+      }
+  
+      if (destNumber.length > 3) {
+        dispatch({
+          type: "SET_MINIMIZE",
+          minimize: false,
+        });
+        // hideDialpad(false);
+        // e.preventDefault();
+        const apiData = await sessionManager?.call(
+          `sip:${destNumber}@${account.domain.domain_name}`,
+          {
+            earlyMedia: true,
+            inviteWithSdp: true,
+            sessionDescriptionHandlerOptions: {
+              constraints: {
+                audio: true,
+                video: mode === "video" ? true : false,
+              },
+            },
+          },
+          {
+            media: {
+              audio: true,
+              video:
+                mode === "audio"
+                  ? true
+                  : {
+                    mandatory: {
+                      minWidth: 1280,
+                      minHeight: 720,
+                      minFrameRate: 30,
+                    },
+                    optional: [{ facingMode: "user" }],
+                  },
+            },
+          }
+        )
+  
+        const sdh = apiData.sessionDescriptionHandler;
+  
+        // Check if remoteMediaStream is available
+        if (sdh && sdh._remoteMediaStream) {
+          const remoteStream = sdh._remoteMediaStream;
+  
+          // Listen for tracks being added to the remote stream
+          remoteStream.onaddtrack = () => {
+            playRemoteStream(remoteStream);
+          };
+  
+          // If tracks are already present, attach immediately
+          if (remoteStream.getTracks().length > 0) {
+            playRemoteStream(remoteStream);
+          }
+        }
+  
+        // Function to play the remote stream
+        function playRemoteStream(stream) {
+          const audioElement = document.createElement("audio");
+          audioElement.srcObject = stream;
+          audioElement.autoplay = true;
+  
+          audioElement.play().catch((e) => {
+            console.error("Error playing early media stream:", e);
+          });
+        }
+  
+        setSelectedModule("onGoingCall");
+        dispatch({
+          type: "SET_SESSIONS",
+          sessions: [
+            ...globalSession,
+            {
+              id: apiData._id,
+              destination: destNumber,
+              state: "Established",
+              mode: mode,
+              isTransfer: isTransfer,
+              transferableSessionId: transferableSessionId,
+            },
+          ],
+        });
+        dispatch({
+          type: "SET_VIDEOCALL",
+          videoCall: mode === "video" ? true : false,
+        });
+        dispatch({
+          type: "SET_CALLPROGRESSID",
+          callProgressId: apiData._id,
+        });
+        dispatch({
+          type: "SET_CALLPROGRESSDESTINATION",
+          callProgressDestination: destNumber,
+        });
+        dispatch({
+          type: "SET_CALLPROGRESS",
+          callProgress: mode === "video" ? false : true,
+        });
+      } else {
+        console.log(destNumber)
+        toast.error("Please enter a valid number");
+      }
+    }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -179,34 +300,6 @@ function AllContact({
                 </div>
 
                 <div className="col-12">
-                  {/*<nav className="mt-3">
-                  <div
-                      className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    > */}
-                  {/* <button
-                        className="tabLink active"
-                        effect="ripple"
-                        data-category="all"
-                      >
-                        All
-                      </button>
-                      <button
-                        className="tabLink"
-                        effect="ripple"
-                        data-category="company"
-                      >
-                        Company
-                      </button>
-                      <button
-                        className="tabLink"
-                        effect="ripple"
-                        data-category="myContacts"
-                      >
-                        My Contacts
-                      </button> */}
-                  {/* </div>
-                  </nav> */}
                   <div className="tab-content">
                     <div
                       className="callList"
@@ -242,25 +335,27 @@ function AllContact({
                                           <h5 className="mt-2">{contact.did}</h5>
                                         </div>
                                       </div>
-                                      <div className="col-10 col-xl-4 col-xxl-5">
+                                      {/* <div className="col-10 col-xl-4 col-xxl-5">
                                         <div className="contactTags">
                                           <span data-id="2">Office</span>
                                         </div>
-                                      </div>
-                                      <div className="col-2 text-end d-flex justify-content-center align-items-center">
+                                      </div> */}
+                                      {/* <div className="col-2 text-end d-flex justify-content-center align-items-center">
                                         <i
                                           className="fa-sharp fa-thin fa-star"
                                           style={{ fontSize: 18 }}
                                         />
-                                      </div>
+                                      </div> */}
                                     </div>
                                     <div className="contactPopup">
                                       <button
-                                        onClick={() => featureUnderdevelopment()}
+                                        onClick={() => {
+                                          onSubmit("audio",contact.did);
+                                        }}
                                       >
                                         <i className="fa-light fa-phone" />
                                       </button>
-                                      <button
+                                      {/* <button
                                         onClick={() => featureUnderdevelopment()}
                                       >
                                         <i className="fa-light fa-message" />
@@ -269,7 +364,7 @@ function AllContact({
                                         onClick={() => featureUnderdevelopment()}
                                       >
                                         <i className="fa-light fa-star" />
-                                      </button>
+                                      </button> */}
                                       <button
                                         onClick={() => {
                                           handleEditContact(contact.id);
@@ -293,468 +388,9 @@ function AllContact({
                             ))
                         )}
                     </div>
-                    {/* <div className="callList">
-                      <div className="text-center callListItem">
-                        <h5 className="fw-semibold">A</h5>
-                      </div>
-
-                      <div className="contactListItem favourite selected">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 550
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-                    
-                      <div className="contactListItem">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>AUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 10
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-                   
-                      <div className="text-center callListItem">
-                        <h5 className="fw-semibold">C</h5>
-                      </div>
-                      
-                      <div className="contactListItem">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileOnline">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>CUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 650
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-               
-                      <div className="contactListItem">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileBusy">
-                              <img src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>CUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 150
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-             
-                      <div className="text-center callListItem">
-                        <h5 className="fw-semibold">D</h5>
-                      </div>
-                    
-                      <div className="contactListItem">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileOffline">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>DUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 50
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-                   
-              
-                      <div className="contactListItem  myContacts">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-7 col-xxl-6 d-flex">
-                            <div className="profileHolder" id="profileBusy">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div className="my-auto ms-2 ms-xl-3">
-                              <h4>DUSER XYZ</h4>
-                              <h5>
-                                69/A, XYZ Street, Saint Petersburg, Russia
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="col-10 col-xl-4 col-xxl-5">
-                            <h4>
-                              <span>Office</span>
-                            </h4>
-                            <h5>1 (999) 999-9999</h5>
-                            <h6
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <i className="fa-regular fa-xmark me-1" /> 20
-                            </h6>
-                          </div>
-                          <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                            <i
-                              className="fa-sharp fa-thin fa-star"
-                              style={{ fontSize: 18 }}
-                            />
-                          </div>
-                        </div>
-                        <div className="contactPopup">
-                          <button>
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-message" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-star" />
-                          </button>
-                          <button>
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-                 
-                    </div> */}
                   </div>
                 </div>
               </div>
-              {/* <div className="col-xl-6">
-                <section id="contactView">
-                  <div
-                    className="row justify-content-between"
-                    style={{ height: "100%" }}
-                  >
-                    <div className="col-12 mx-auto position-relative b text-center">
-                      <div className="profileInfoHolder">
-                        <div className="profileHolder">
-                          <i className="fa-light fa-user fs-3" />
-                        </div>
-                        <h4>1 (999) 999-9999</h4>
-                        <h5>USER XYZ</h5>
-                        <div className="d-flex justify-content-center align-items-center mt-3">
-                          <button className="appPanelButton" effect="ripple">
-                            <i className="fa-light fa-message-dots" />
-                          </button>
-                          <button className="appPanelButton" effect="ripple">
-                            <i className="fa-light fa-phone" />
-                          </button>
-                          <button className="appPanelButton" effect="ripple">
-                            <i className="fa-light fa-video" />
-                          </button>
-                          <button className="appPanelButton" effect="ripple">
-                            <i className="fa-light fa-trash" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-12 mx-auto mt-3">
-                      <div className="row contact-detail-list">
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-user" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6>Title:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>"Test1"</h5>
-                              </div>
-                              <div className="box">
-                                <h6>Name:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>Ramnaresh Chaurasiya</h5>
-                              </div>
-                              <div className="box">
-                                <h6>Type:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>User</h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-hashtag" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6>Label:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>Demo Text</h5>
-                              </div>
-                              <div className="box">
-                                <h6>Label:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>Demo Text</h5>
-                              </div>
-                              <div className="box">
-                                <h6>Label:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>Demo Text</h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-envelope" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6>Label:</h6>
-                              </div>
-                              <div className="box contact-email-box">
-                                riddhee.gupta@gmail.com
-                              </div>
-                              <div className="box">
-                                <h6>Desc:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>
-                                  Magna ea fugiat ullamco sunt aliquip consequat
-                                  commodo culpa eiusmod irure.
-                                </h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-location-dot" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6>Work:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>
-                                  Carretera A San Jacinto, Tarija, 664856,
-                                  Bolivia
-                                </h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-link" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6>Work:</h6>
-                              </div>
-                              <div className="box">
-                                <h5>https://xyz.com</h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-xl-4">
-                          <div className="d-flex contactItem">
-                            <div className="d-flex justify-content-between">
-                              <i className="fa-regular fa-notes" />
-                            </div>
-                            <div className="content ms-xxl-3 col-xl-12 col-xxl-10">
-                              <div className="box">
-                                <h6 />
-                              </div>
-                              <div className="box">
-                                <h5 />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div> */}
             </div>
           </div>
         </section>

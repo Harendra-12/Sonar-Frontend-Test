@@ -602,6 +602,9 @@ const WebrtcWrapper = () => {
             setAllContact={setAllContact}
             allContactLoading={allContactLoading}
             setAllContactLoading={setAllContactLoading}
+            isMicOn={isMicOn}
+            isVideoOn={isVideoOn}
+            setSelectedModule={setSelectedModule}
           />
         )}
 
