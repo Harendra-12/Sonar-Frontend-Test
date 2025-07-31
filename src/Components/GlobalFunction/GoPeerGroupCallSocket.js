@@ -80,8 +80,10 @@ const GoPeerGroupCallSocket = () => {
                             dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: { ...result, source: "incoming_peer_group_call" }})
                             break;
                         case "initiate_peer_group_call":
-                            dispatch({ type: ActionType?.SET_GROUP_INTERNALCALLACTION, internalGroupCallAction: result, });
+                            dispatch({ type: ActionType?.SET_GROUP_INTERNALCALLACTION, internalGroupCallAction: result });
                             break;
+                        case "end_peer_group_call":
+                            dispatch({ type: "REMOVE_INCOMINGCALL", room_id: result?.room_id })
 
                         default:
                             break;

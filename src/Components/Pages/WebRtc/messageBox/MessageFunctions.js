@@ -175,7 +175,7 @@ export const getAllUser = async (setAllAgents) => {
     const apiData = await generalGetFunction(api_url?.ALL_USER_URL);
     if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
-        setAllAgents(apiData.data);
+        setAllAgents(apiData?.data);
         // setGroupSelecedAgents((prevSelected) => {
         //   return [...apiData.data.filter((item) => item.email === account.email)];
         // }
@@ -477,23 +477,31 @@ export const handlePinMessage = async (
     item,
     setAllMessage,
     allMessage,
-    recipient
+    recipient, 
+    selectedChat
 ) => {
-    const result = await generalPostFunction(api_url?.PIN_MESSAGE(item?.id, item?.is_pinned == 1 ? true : ''));
+    const conversationKey = recipient[1];
+    const isCurrentlyPinned = item?.is_pinned === 1;
+    const result = await generalPostFunction(selectedChat === "singleChat" ? api_url?.PIN_MESSAGE(item?.id, isCurrentlyPinned ? true : '' ) : api_url?.PIN_GROUP_MESSAGE(item?.id, isCurrentlyPinned ? true : ''));
+
     if (result?.status) {
-        toast?.success(result?.message)
-        const updatedAllMessage = allMessage[recipient[1]]?.map(item =>
-            item.id === result?.data?.id
-                ? { ...item, is_pinned: result?.data?.is_pinned }
-                : item
-        );
-        
+        toast?.success(result?.message);
+
+        const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
+            if (msg.id === result?.data?.id) {
+                return { ...msg, is_pinned: result?.data?.is_pinned ? 1 : 0 };
+            } else {
+                return !isCurrentlyPinned ? { ...msg, is_pinned: 0 } : msg;
+            }
+        });
+
         setAllMessage((prev) => ({
             ...prev,
-            [recipient[1]]: updatedAllMessage
-        }))
+            [conversationKey]: updatedAllMessage
+        }));
     }
-}
+};
+
 
 export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading) => {
     setLoading(true);
@@ -879,15 +887,15 @@ export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelect
 
 export const handleCheckboxChange = (item, setGroupSelecedAgents) => {
     setGroupSelecedAgents((prevSelected) => {
-        if (prevSelected?.some((agent) => agent?.name == item?.name)) {
-            // If the item is already in the array, remove it
-            return prevSelected.filter((agent) => agent.name != item?.name);
+        const alreadySelected = prevSelected?.some((agent) => agent?.id === item?.id);
+        if (alreadySelected) {
+            return prevSelected.filter((agent) => agent?.id !== item?.id);
         } else {
-            // Otherwise, add the item
             return [...prevSelected, item];
         }
     });
 };
+
 
 export const handleGroupSearchChange = (event, setGroups, setSearchValueForGroup, originalGroupsList) => {
     setSearchValueForGroup(event?.target?.value);

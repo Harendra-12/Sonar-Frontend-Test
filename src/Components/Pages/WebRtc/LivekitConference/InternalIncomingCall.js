@@ -52,7 +52,7 @@ function InternalIncomingCall({
         action: "receive_peer_group_call",
         room_id: item?.room_id,
         call_type: "audio",
-        message_group_id: item?.message_group_id,
+        message_group_id: parseInt(item?.message_group_id),
         group_name: item?.group_name,
         user_id: item?.receiver_id,
       });
