@@ -58,6 +58,7 @@ export const useLiveKitWhiteboardEvents = ({
                 const whiteBoardButton = document.querySelector(".whiteboard-toggle-button");
                 whiteBoardButton.setAttribute("data-lk-enabled", false);
                 onStarterId(null);
+                toast.error(disconnected.split('-')[0] + 'has disconnected the whiteboard');
             }
         }
 
