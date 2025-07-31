@@ -84,6 +84,7 @@ function Members({
   useLiveKitWhiteboardEvents({
     room,
     roomName,
+    whiteboardStarter,
     onRemoteOpen: (bool) => setToggleWhiteBoard(bool),
     onSnapshotReceived: (snapshot) => setIncomingSnapshot(snapshot),
     onStarterId: (id) => setWhiteboardStarter(id),

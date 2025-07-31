@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 export const useLiveKitWhiteboardEvents = ({
     room,
     roomName,
+    whiteboardStarter,
     onRemoteOpen = (bool) => { },
     onSnapshotReceived = () => { },
     onStarterId = (id) => { },
@@ -50,7 +51,23 @@ export const useLiveKitWhiteboardEvents = ({
             }
         }
 
+        // Close whiteboard if Starter has disconnected
+        const toggleWhiteBoardforDisconnectedStarter = (disconnected) => {
+            if (disconnected.split('-')[0] === whiteboardStarter) {
+                onRemoteOpen(false);
+                const whiteBoardButton = document.querySelector(".whiteboard-toggle-button");
+                whiteBoardButton.setAttribute("data-lk-enabled", false);
+                onStarterId(null);
+            }
+        }
+
         room.on('dataReceived', handleData)
-        return () => room.off('dataReceived', handleData)
+        room.on("participantDisconnected", (disconnectedParticipant) => {
+            toggleWhiteBoardforDisconnectedStarter(disconnectedParticipant.identity);
+        });
+        return () => {
+            room.off('dataReceived', handleData)
+            room.off("participantDisconnected", toggleWhiteBoardforDisconnectedStarter);
+        }
     }, [room, roomName, onRemoteOpen, onSnapshotReceived])
 }
