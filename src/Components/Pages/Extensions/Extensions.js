@@ -295,7 +295,7 @@ const Extensions = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {checkViewSidebar(
+                        {/* {checkViewSidebar(
                           "Extension",
                           slugPermissions,
                           account?.sectionPermissions,
@@ -312,7 +312,7 @@ const Extensions = () => {
                                 <i className="fa-solid fa-cart-shopping"></i>
                               </span>
                             </Link>
-                          )}
+                          )} */}
                       </div>
                     </div>
                   </div>
