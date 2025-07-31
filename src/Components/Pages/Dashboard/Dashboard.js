@@ -942,7 +942,7 @@ const Dashboard = () => {
                                       {" "}Users Created
                                     </p>
                                   </div>
-                                  <div className="col-3">
+                                  <div onClick={() => navigate("/users")} className="col-3">
                                     <i className="fa-duotone fa-user"></i>
                                   </div>
                                 </div>
