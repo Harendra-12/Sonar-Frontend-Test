@@ -55,7 +55,7 @@ const BuyersEdit = () => {
             ? `+${phone_code}${alt_phone}`
             : undefined;
 
-          reset({ name, phone_number: fullPhoneNumber, phone_code, alt_phone: fullAltNumber, email, address, city, state, province, postal_code, country_code });
+          reset({ name, phone_number: fullPhoneNumber, phone_code, alt_phone: fullAltNumber, email, address, city, state, province, postal_code, country_code, record: apiData?.data?.record == 0 ? false : true });
 
           const updatedNumber = numbers?.map((item) => ({
             ...item,
