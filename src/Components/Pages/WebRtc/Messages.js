@@ -952,7 +952,7 @@ function Messages({
 
   // Filter out agents already added
   const availableUsers = filteredUsers.filter(
-    (user) => !agent.some((agent) => user.id == agent.name)
+    (user) => !allAgents.some((agent) => user.id == agent.name)
   );
 
   // Logic to send group messages
@@ -1036,7 +1036,8 @@ function Messages({
       setUnreadMessage,
       recipient,
       ActionType,
-      dispatch
+      dispatch,
+      allAgents
     )
   }, [groupMessage]);
 
@@ -1067,7 +1068,7 @@ function Messages({
 
   useEffect(() => {
     getAllInternalCallsHistory(setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading);
-  }, [calling,internalCallsPageNumber]);
+  }, [calling, internalCallsPageNumber]);
 
   const handleRefresh = () => {
     const shouldLoad = false;
@@ -1083,6 +1084,7 @@ function Messages({
     setContact(originalContact);
     setOnlineUser(originalOnlineUser);
     setInternalCallHistory(origInalinternalCallHistory);
+    setManageGroupChat(false)
   };
 
   // Adding this coz Recipient was changed from being passed as a prop from WebrtcWrapper to here, need this hack to make P2P Call chat work
@@ -1104,6 +1106,13 @@ function Messages({
     }
   }, [messageRecipient]);
 
+  const handleGroupChatPopupClose = () => {
+    setGroupChatPopUp(false);
+    setGroupName("");
+    setSearchQuery("");
+    setSelectAll(false);
+    setGroupSelecedAgents([])
+  }
 
   return (
     <>
@@ -1328,15 +1337,7 @@ function Messages({
                 setNewGroupLoader={setNewGroupLoader}
                 setAddMember={setAddMember}
                 addMember={addMember}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                selectAll={selectAll}
-                setSelectAll={setSelectAll}
-                availableUsers={availableUsers}
-                groupSelecedAgents={groupSelecedAgents}
-                setGroupSelecedAgents={setGroupSelecedAgents}
                 allAgents={allAgents}
-                agent={agent}
                 setGroupChatPopUp={setGroupChatPopUp}
                 isAdmin={isAdmin}
                 manageAdmin={manageAdmin}
@@ -1423,48 +1424,23 @@ function Messages({
                             </tr>
                           </thead>
                           <tbody>
-                            {allAgents
-                              .sort((a, b) => {
-                                const aMatches =
-                                  a.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (a?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                const bMatches =
-                                  b.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (b?.extension?.extension || "")
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase());
-                                // Items that match come first
-                                return bMatches - aMatches;
-                              })
-                              .filter(
-                                (user) =>
-                                  !agent.some(
-                                    (agent) => user.id == agent.name
-                                  ) && user.email !== account.email
-                              ) // Exclude agents already in `agent`
-                              .map((item, index) => (
-                                <tr key={index}>
-                                  <td>{index + 1}.</td>
-                                  <td>{item.name}</td>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      onChange={() =>
-                                        handleCheckboxChange(item, setGroupSelecedAgents)
-                                      } // Call handler on change
-                                      checked={groupSelecedAgents.some(
-                                        (agent) => agent.name == item.name
-                                      )} // Keep checkbox state in sync
-                                    />
-                                  </td>
-                                </tr>
-                              ))}
+                            {filteredUsers?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}.</td>
+                                <td>{item.name}</td>
+                                <td>
+                                  <input
+                                    type="checkbox"
+                                    onChange={() =>
+                                      handleCheckboxChange(item, setGroupSelecedAgents)
+                                    } // Call handler on change
+                                    checked={groupSelecedAgents.some(
+                                      (agent) => agent.name == item.name
+                                    )} // Keep checkbox state in sync
+                                  />
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -1475,7 +1451,7 @@ function Messages({
                       <button
                         className="panelButton gray ms-0"
                         onClick={() => {
-                          setGroupChatPopUp(false);
+                          handleGroupChatPopupClose()
                         }}
                       >
                         <span className="text">Close</span>
@@ -1485,18 +1461,23 @@ function Messages({
                       </button>
                       <button
                         className="panelButton me-0"
-                        onClick={() => handleCreateGroup(
-                          groupname,
-                          setNewGroupLoader,
-                          groupSelecedAgents,
-                          account,
-                          setGroupRefresh,
-                          groupRefresh,
-                          setAddMember,
-                          setGroupChatPopUp,
-                          setGroupSelecedAgents,
-                          setLoading,
-                          setGroupName)}
+                        onClick={() => {
+                          handleCreateGroup(
+                            groupname,
+                            setNewGroupLoader,
+                            groupSelecedAgents,
+                            account,
+                            setGroupRefresh,
+                            groupRefresh,
+                            setAddMember,
+                            setGroupChatPopUp,
+                            setGroupSelecedAgents,
+                            setLoading,
+                            setGroupName,
+                          )
+                          handleGroupChatPopupClose()
+                        }
+                        }
                       >
                         <span className="text">Create</span>
                         <span className="icon">

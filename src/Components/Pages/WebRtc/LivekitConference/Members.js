@@ -176,10 +176,10 @@ function Members({
           "call_type": "audio",
           "user_id": account?.id,
           "group_name": incomingGroupCall?.group_name,
-          "message_group_id": incomingGroupCall?.message_group_id,
+          "message_group_id": parseInt(incomingGroupCall?.message_group_id),
           "date_and_time": formatDateTime(new Date()),
           "ended_by": account?.name,
-          "group_call_id": incomingGroupCall?.message_group_id,
+          "group_call_id": parseInt(incomingGroupCall?.message_group_id),
           "group_call_uuid": incomingGroupCall?.uuid,
 
 

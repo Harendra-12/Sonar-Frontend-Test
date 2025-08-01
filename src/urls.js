@@ -30,6 +30,7 @@ export const api_url = {
 
     // webrtc-> message module api's
     PIN_MESSAGE: (message_id, isPin) => `/message/${message_id}/${isPin}`,
+    PIN_GROUP_MESSAGE: (message_id, isPin) => `/group-message/${message_id}/${isPin}`,
     ALL_GROUP_CHAT_URL: `/chatgroups/all`,
     MESSAGE_CONTACT_LIST_URL: `/message/contacts`,
     ALL_TAG_URL: `/tags/all`,

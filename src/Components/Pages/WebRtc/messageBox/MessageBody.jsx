@@ -1,5 +1,5 @@
 import Tippy from '@tippyjs/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { featureUnderdevelopment } from '../../../GlobalFunction/globalFunction';
@@ -87,15 +87,7 @@ const MessageBody = ({
     setNewGroupLoader,
     setAddMember,
     addMember,
-    searchQuery,
-    setSearchQuery,
-    selectAll,
-    setSelectAll,
-    availableUsers,
-    groupSelecedAgents,
-    setGroupSelecedAgents,
     allAgents,
-    agent,
     setGroupChatPopUp,
     isAdmin,
     manageAdmin,
@@ -113,6 +105,10 @@ const MessageBody = ({
     setInternalCaller
 }) => {
     const dispatch = useDispatch()
+    const [searchQuery, setSearchQuery] = useState("")
+    const [selectAll, setSelectAll] = useState(false)
+    const [filteredAgents, setFilteredAgents] = useState(allAgents)
+    const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
     const handlePinClick = (messageId) => {
         const selector = `.messageItem.active-${messageId}`;
         const element = document.querySelector(selector);
@@ -163,6 +159,29 @@ const MessageBody = ({
             }, 1000)
         }
     }
+
+    const handleSearchMember = (event) => {
+        const searchValue = event?.target?.value?.toLowerCase();
+        setSearchQuery(searchValue)
+        const filtered = allAgents?.filter((agent) => {
+            const name = agent?.name?.toLowerCase() || "";
+            return name.includes(searchValue);
+        });
+        setFilteredAgents(filtered);
+    };
+
+    const handleCloseMemberList = () => {
+        setAddMember(false);
+        setGroupChatPopUp(false);
+        setSearchQuery("")
+        setSelectAll(false)
+        setGroupSelecedAgents([])
+        setFilteredAgents(allAgents)
+    }
+
+    useEffect(() => {
+        setFilteredAgents(allAgents)
+    }, [allAgents])
 
     return (
         <div
@@ -672,22 +691,31 @@ const MessageBody = ({
                                 </div>
                             }
                             {allMessage[recipient[1]]?.length > 0 && (() => {
-                                const pinnedMessages = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
-                                if (!pinnedMessages) return null;
+                                const pinnedMessage = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
+                                if (!pinnedMessage) return null;
+
+                                let displayText = pinnedMessage?.message_text;
+                                if (displayText?.includes('/')) {
+                                    displayText = displayText?.split('/').pop();
+                                }
+
+                                if (displayText?.length > 100) {
+                                    displayText = displayText.slice(0, 100) + '...';
+                                }
+
                                 return (
                                     <div
                                         className="pinedMessage"
-                                        onClick={() => handlePinClick(pinnedMessages?.id)}
+                                        onClick={() => handlePinClick(pinnedMessage?.id)}
                                     >
-                                        <i class="fad fa-thumbtack"></i>
+                                        <i className="fad fa-thumbtack"></i>
                                         <p className='mb-0'>
-                                            {!pinnedMessages?.message_text?.includes('/')
-                                                ? pinnedMessages?.message_text
-                                                : pinnedMessages?.message_text?.split('/').pop()}
+                                            {displayText}
                                         </p>
                                     </div>
                                 );
                             })()}
+
 
                             <div className={`messageList  `} ref={messageListRef}>
                                 {recipient?.[0] ? (
@@ -758,7 +786,7 @@ const MessageBody = ({
                                                                             className={`message-text-container active-${item?.id}`}
                                                                             style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
                                                                         >
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -772,13 +800,13 @@ const MessageBody = ({
                                                                                         <div
                                                                                             className="dropdown-item"
                                                                                             href="#"
-                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}
+                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
                                                                                         >
                                                                                             {item?.is_pinned == 1 ? "Unpin" : "Pin"}
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             <div className='pinBox'>
                                                                                 <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
                                                                                     onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
@@ -855,7 +883,7 @@ const MessageBody = ({
                                                                             </span>
                                                                         </h6>
                                                                         <div
-                                                                            className="message-text-container"
+                                                                            className={`message-text-container active-${item?.id}`}
                                                                             style={{ display: "flex", alignItems: "center" }}
                                                                         >
                                                                             <div className="videoSize">
@@ -872,7 +900,7 @@ const MessageBody = ({
                                                                                 </div>
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -886,24 +914,19 @@ const MessageBody = ({
                                                                                         <div
                                                                                             className="dropdown-item"
                                                                                             href="#"
-                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}
+                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
                                                                                         >
-                                                                                            Pin
+                                                                                            {item?.is_pinned == 1 ? "Unpin" : "Pin"}
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             <div className='pinBox'>
                                                                                 <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
                                                                                     onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
                                                                                     <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                 </button>
                                                                             </div>
-                                                                            {/* <div className='pinBox'>
-                                                                                <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
-                                                                                    <i class="fas fa-thumbtack"></i>
-                                                                                </button>
-                                                                            </div> */}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1312,7 +1335,7 @@ const MessageBody = ({
                                     <div
                                         className="col-xl-12 d-flex"
                                         onClick={() => {
-                                            setAddMember(true);
+                                            setAddMember((prev) => !prev);
                                             // setGroupChatPopUp(true);
                                         }}
                                     >
@@ -1322,6 +1345,7 @@ const MessageBody = ({
                                         <div className="my-auto ms-2 ms-xl-3">
                                             <h4 style={{ color: "var(--ui-accent)" }}>
                                                 Add Member
+                                                {addMember ? <i className="fa-solid fa-chevron-up"></i> : <i className="fa-solid fa-chevron-down"></i>}
                                             </h4>
                                         </div>
                                     </div>
@@ -1373,7 +1397,7 @@ const MessageBody = ({
                                                     placeholder="Search"
                                                     name="name"
                                                     value={searchQuery}
-                                                    onChange={(event) => handleSearchChange(event, setSearchQuery)}
+                                                    onChange={(event) => handleSearchMember(event)}
                                                 />
                                                 {/* <button
                                   >
@@ -1399,76 +1423,39 @@ const MessageBody = ({
                                                                 <th style={{ width: "20px" }}>
                                                                     <input
                                                                         type="checkbox"
-                                                                        onChange={() => handleSelectAll(selectAll, setSelectAll, availableUsers, groupSelecedAgents, setGroupSelecedAgents)} // Call handler on change
+                                                                        onChange={() => handleSelectAll(selectAll, setSelectAll, filteredAgents, groupSelecedAgents, setGroupSelecedAgents)} // Call handler on change
                                                                     // checked={selectAll ? true : false} // Keep checkbox state in sync
                                                                     />
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {allAgents
-                                                                .sort((a, b) => {
-                                                                    const aMatches =
-                                                                        a.name
-                                                                            .toLowerCase()
-                                                                            .includes(
-                                                                                searchQuery.toLowerCase()
-                                                                            ) ||
-                                                                        (a?.extension?.extension || "")
-                                                                            .toLowerCase()
-                                                                            .includes(
-                                                                                searchQuery.toLowerCase()
-                                                                            );
-                                                                    const bMatches =
-                                                                        b.name
-                                                                            .toLowerCase()
-                                                                            .includes(
-                                                                                searchQuery.toLowerCase()
-                                                                            ) ||
-                                                                        (b?.extension?.extension || "")
-                                                                            .toLowerCase()
-                                                                            .includes(
-                                                                                searchQuery.toLowerCase()
-                                                                            );
-                                                                    // Items that match come first
-                                                                    return bMatches - aMatches;
-                                                                })
-                                                                .filter(
-                                                                    (user) =>
-                                                                        !agent.some(
-                                                                            (agent) => user.id == agent.name
-                                                                        ) &&
-                                                                        !selectedgroupUsers.some(
-                                                                            (users) =>
-                                                                                users.user_id == user.id
-                                                                        )
-                                                                ) // Exclude agents already in `agent`
-                                                                .map((item, index) => (
-                                                                    <tr key={item.id}>
-                                                                        <td style={{ width: "20px" }}>
-                                                                            {index + 1}.
-                                                                        </td>
-                                                                        <td
-                                                                            style={{
-                                                                                whiteSpace: "break-spaces",
-                                                                            }}
-                                                                        >
-                                                                            {item.name}
-                                                                        </td>
-                                                                        <td style={{ width: "20px" }}>
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                onChange={() =>
-                                                                                    handleCheckboxChange(item, setGroupSelecedAgents)
-                                                                                } // Call handler on change
-                                                                                checked={groupSelecedAgents.some(
-                                                                                    (agent) =>
-                                                                                        agent.name == item.name
-                                                                                )} // Keep checkbox state in sync
-                                                                            />
-                                                                        </td>
-                                                                    </tr>
-                                                                ))}
+                                                            {filteredAgents?.map((item, index) => (
+                                                                <tr key={item.id}>
+                                                                    <td style={{ width: "20px" }}>
+                                                                        {index + 1}.
+                                                                    </td>
+                                                                    <td
+                                                                        style={{
+                                                                            whiteSpace: "break-spaces",
+                                                                        }}
+                                                                    >
+                                                                        {item.name}
+                                                                    </td>
+                                                                    <td style={{ width: "20px" }}>
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            onChange={() =>
+                                                                                handleCheckboxChange(item, setGroupSelecedAgents)
+                                                                            } // Call handler on change
+                                                                            checked={groupSelecedAgents.some(
+                                                                                (agent) =>
+                                                                                    agent.name == item.name
+                                                                            )} // Keep checkbox state in sync
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -1480,8 +1467,7 @@ const MessageBody = ({
                                                 <button
                                                     className="panelButton gray ms-0"
                                                     onClick={() => {
-                                                        setAddMember(false);
-                                                        setGroupChatPopUp(false);
+                                                        handleCloseMemberList()
                                                     }}
                                                 >
                                                     <span className="text">Close</span>
@@ -1492,16 +1478,19 @@ const MessageBody = ({
                                                 <button
                                                     className="panelButton me-0"
                                                     // onClick={() => handleCreateGroup()}
-                                                    onClick={() => handleAddNewMemberToGroup(
-                                                        recipient,
-                                                        groupSelecedAgents,
-                                                        setNewGroupLoader,
-                                                        groupRefresh,
-                                                        setGroupRefresh,
-                                                        setGroupChatPopUp,
-                                                        setAddMember,
-                                                        setGroupSelecedAgents
-                                                    )}
+                                                    onClick={() => {
+                                                        handleAddNewMemberToGroup(
+                                                            recipient,
+                                                            groupSelecedAgents,
+                                                            setNewGroupLoader,
+                                                            groupRefresh,
+                                                            setGroupRefresh,
+                                                            setGroupChatPopUp,
+                                                            setAddMember,
+                                                            setGroupSelecedAgents
+                                                        )
+                                                        handleCloseMemberList()
+                                                    }}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
