@@ -1036,7 +1036,8 @@ function Messages({
       setUnreadMessage,
       recipient,
       ActionType,
-      dispatch
+      dispatch,
+      allAgents
     )
   }, [groupMessage]);
 

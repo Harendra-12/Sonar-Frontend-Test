@@ -477,12 +477,12 @@ export const handlePinMessage = async (
     item,
     setAllMessage,
     allMessage,
-    recipient, 
+    recipient,
     selectedChat
 ) => {
     const conversationKey = recipient[1];
     const isCurrentlyPinned = item?.is_pinned === 1;
-    const result = await generalPostFunction(selectedChat === "singleChat" ? api_url?.PIN_MESSAGE(item?.id, isCurrentlyPinned ? true : '' ) : api_url?.PIN_GROUP_MESSAGE(item?.id, isCurrentlyPinned ? true : ''));
+    const result = await generalPostFunction(selectedChat === "singleChat" ? api_url?.PIN_MESSAGE(item?.id, isCurrentlyPinned ? true : '') : api_url?.PIN_GROUP_MESSAGE(item?.id, isCurrentlyPinned ? true : ''));
 
     if (result?.status) {
         toast?.success(result?.message);
@@ -747,7 +747,7 @@ export async function handleCreateGroup(
     }
 }
 
-export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMessage, groups, setGroups, setOriginalGroupsList, setActiveTab, setUnreadMessage, recipient, ActionType, dispatch) => {
+export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMessage, groups, setGroups, setOriginalGroupsList, setActiveTab, setUnreadMessage, recipient, ActionType, dispatch, allAgents) => {
     const isNewMessage = !allNotificationState?.some(data => data?.uuid === groupMessage?.uuid);
     if (isNewMessage) {
         if (groupMessage) {
@@ -767,7 +767,7 @@ export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMe
                         time,
                         user_id: from,
                         user_name: groupMessage?.user_name,
-                        profile_picture: groupMessage?.profile_picture,
+                        profile_picture: groupMessage?.profile_picture == "null" ? allAgents?.find((data) => data?.id == groupMessage?.sender_id)?.profile_picture : groupMessage?.profile_picture,
                         message_type: groupMessage.message_type,
                     },
                 ],
