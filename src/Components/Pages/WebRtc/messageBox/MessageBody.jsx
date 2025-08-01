@@ -786,7 +786,7 @@ const MessageBody = ({
                                                                             className={`message-text-container active-${item?.id}`}
                                                                             style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
                                                                         >
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -806,7 +806,7 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             <div className='pinBox'>
                                                                                 <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
                                                                                     onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
@@ -900,7 +900,7 @@ const MessageBody = ({
                                                                                 </div>
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -920,7 +920,7 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                             <div className='pinBox'>
                                                                                 <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
                                                                                     onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
