@@ -500,8 +500,8 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`${forwardStatus != "disabled"
-                              ? "col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-12 ms-auto"
-                              : "col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2 ms-auto"
+                              ? "col-xxl-3 col-xl-3 col-md-3 pe-2 col-6 ms-auto"
+                              : "col-xxl-6 col-xl-6 col-md-6 col-12 ms-auto"
                               }`}
                           >
                             {forwardStatus != "disabled" && (
@@ -532,7 +532,7 @@ const DidConfig = () => {
                           </div>
                           {forwardStatus === "pstn" &&
                             forwardStatus != "disabled" && (
-                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 pe-2">
+                              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-6 ">
                                 <div className="formLabel">
                                   <label>PSTN</label>
                                 </div>
@@ -743,7 +743,7 @@ const DidConfig = () => {
                               <div
                                 className={`col-${watch().sticky_agent_enable == "true" ||
                                   watch().sticky_agent_enable == 1
-                                  ? "3"
+                                  ? "xxl-3 col-xl-6"
                                   : "12"
                                   }`}
                               >
@@ -766,7 +766,7 @@ const DidConfig = () => {
 
                               {(watch().sticky_agent_enable == true ||
                                 watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
+                                  <div className="col-xxl-3 col-xl-6 col-md-4">
                                     <div className="formLabel">
                                       <Tippy content="Check the duration of sticky agent">
                                         <label className="formItemDesc">
@@ -795,7 +795,7 @@ const DidConfig = () => {
                                 )}
                               {(watch().sticky_agent_enable == true ||
                                 watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
+                                  <div className="col-xxl-3 col-xl-6 col-md-4">
                                     <div className="formLabel">
                                       <label className="formItemDesc">
                                         Agent Type
@@ -818,7 +818,7 @@ const DidConfig = () => {
                                 )}
                               {(watch().sticky_agent_enable == true ||
                                 watch().sticky_agent_enable == "true") && (
-                                  <div className="col-3">
+                                  <div className="col-xxl-3 col-xl-6 col-md-4">
                                     <div className="formLabel">
                                       <Tippy content="Timout for the sticky agent and return to normal routing">
                                         <label className="formItemDesc">
