@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repository using SSH
         uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY_TESTING_SERVER }}
 
       - name: SSH Working
         run: |
