@@ -6,7 +6,7 @@ on:
       - Developement
 
 jobs:
-  build-and-deploy:
+  deploying-frontend-testing-server:
     runs-on: self-hosted
 
     steps:
