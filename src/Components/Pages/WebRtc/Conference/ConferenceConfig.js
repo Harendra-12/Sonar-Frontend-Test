@@ -228,16 +228,25 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                 <>
                                   {allConferences && allConferences?.data?.length > 0 ?
                                     allConferences?.data?.map((item) => {
+                                      function isCurrentTimeLessThanOrEqualTo(targetDateTimeStr) {
+                                        const targetDateTime = new Date(targetDateTimeStr.replace(" ", "T"));
+
+                                        const currentDateTime = new Date(formatDateTime(new Date()));
+
+                                        return currentDateTime <= targetDateTime;
+                                      }
+
                                       const isUser = account.usertype !== "Company" && account.usertype !== 'SupreAdmin';
                                       const isLessThan5Minutes = item?.conf_start_time ? checkTimeDifference(formatDateTime(item?.conf_start_time)) : false;
                                       const isAllDay = item?.conf_start_time == null ? true : false;
+                                      const isNotEnded = item?.conf_end_time ? isCurrentTimeLessThanOrEqualTo(formatDateTime(item?.conf_end_time)) : false
                                       return (
                                         <tr key={item.id}>
                                           <td>{item.conf_name}</td>
                                           {/* <td>{item.conf_url}</td> */}
                                           <td>{item?.conf_start_time ? formatDateTime(item?.conf_start_time) : "All Day"}</td>
                                           <td>
-                                            {(isAllDay || isLessThan5Minutes) && isUser ? (
+                                            {(isAllDay || isNotEnded) && isUser ? (
                                               <div className="dropdown">
                                                 <div className="tableButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                   <i className="fa-solid fa-send"></i>
@@ -295,7 +304,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                               <div className="tableButton" onClick={() => { handleConferenceJoin(item); setIsConferenceAdmin(true) }}>
                                                 <i className="fa-solid fa-send"></i>
                                               </div>
-                                            ) : ""}
+                                            ) : "Meeting has ended!"}
                                           </td>
                                         </tr>
                                       );
