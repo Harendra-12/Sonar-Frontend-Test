@@ -2132,7 +2132,7 @@ function Navbar() {
                             ) ? (
                               <li className="tabItem ">
                                 <NavLink to="/voice-music">
-                                  <div className="itemTitle">Voice Music</div>
+                                  <div className="itemTitle">Add Audio</div>
                                 </NavLink>
                               </li>
                             ) : (
