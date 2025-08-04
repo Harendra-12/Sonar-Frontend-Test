@@ -43,10 +43,10 @@ function MeetingAdd() {
   } = useForm();
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants?.length == 1 && participants[0].length == 0 && watch()?.conf_type !== "internal") {
-      toast.error("Please add participants");
-      return;
-    }
+    // if (participants?.length == 1 && participants[0].length == 0 && watch()?.conf_type !== "internal") {
+    //   toast.error("Please add participants");
+    //   return;
+    // }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")
@@ -62,7 +62,7 @@ function MeetingAdd() {
         // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
         emails: participants,
       };
-      if(watch()?.conf_type == "internal"){
+      if (watch()?.conf_type == "internal") {
         delete parsedData?.emails
       }
       const apiData = await generalPostFunction(
@@ -83,10 +83,9 @@ function MeetingAdd() {
     setLoading(true);
     try {
       const response = await generalGetFunction(
-        `/user/search?account=${account.account_id}${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       if (response.status) {
@@ -113,28 +112,28 @@ function MeetingAdd() {
     }
   }
 
-function handleSelectAll() {
-  const availableUsers = allInternalUsers.filter(
-    (user) => !addedUsers.includes(user)
-  );
-
-  const availableUserIds = availableUsers.map((user) => user.id);
-
-  if (isAllSelected) {
-    // Deselect all available users
-    const newSelected = selectedUser.filter(
-      (id) => !availableUserIds.includes(id)
+  function handleSelectAll() {
+    const availableUsers = allInternalUsers.filter(
+      (user) => !addedUsers.includes(user)
     );
-    setSelectedUser(newSelected);
-  } else {
-    // Select all available users
-    const newSelected = [
-      ...selectedUser,
-      ...availableUserIds.filter((id) => !selectedUser.includes(id)),
-    ];
-    setSelectedUser(newSelected);
+
+    const availableUserIds = availableUsers.map((user) => user.id);
+
+    if (isAllSelected) {
+      // Deselect all available users
+      const newSelected = selectedUser.filter(
+        (id) => !availableUserIds.includes(id)
+      );
+      setSelectedUser(newSelected);
+    } else {
+      // Select all available users
+      const newSelected = [
+        ...selectedUser,
+        ...availableUserIds.filter((id) => !selectedUser.includes(id)),
+      ];
+      setSelectedUser(newSelected);
+    }
   }
-}
 
 
   function handleAddUser() {
@@ -370,9 +369,8 @@ function handleSelectAll() {
                           {participants.map((participant, index) => (
                             <div
                               key={index}
-                              className={`d-flex justify-content-between align-items-center ${
-                                participants?.length > 1 && "mb-2"
-                              }`}
+                              className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
+                                }`}
                             >
                               <input
                                 type="email"
