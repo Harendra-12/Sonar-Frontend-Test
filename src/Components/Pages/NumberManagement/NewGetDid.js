@@ -926,7 +926,7 @@ const NewGetDid = () => {
                                                 item.label === "AI"
                                               ) {
                                                 return (
-                                                  <Tippy content="Emergency / e911 is activated for this Number">
+                                                  <Tippy content="AI Agent is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                       <i className="fa-regular fa-microchip-ai"></i>
                                                     </button>

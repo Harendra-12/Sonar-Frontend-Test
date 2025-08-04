@@ -70,10 +70,10 @@ function MeetingEdit() {
   }
 
   const handleMeetingForm = handleSubmit(async (data) => {
-    if (participants.length == 1 && participants[0].length == 0) {
-      toast.error("Please add participants");
-      return;
-    }
+    // if (participants.length == 1 && participants[0].length == 0) {
+    //   toast.error("Please add participants");
+    //   return;
+    // }
     if (
       watch().conf_type !== "internal" &&
       (members === null || members === "")
@@ -146,28 +146,28 @@ function MeetingEdit() {
     }
   }
 
-function handleSelectAll() {
-  const availableUsers = allInternalUsers.filter(
-    (user) => !addedUsers.includes(user)
-  );
-
-  const availableUserIds = availableUsers.map((user) => user.id);
-
-  if (isAllSelected) {
-    // Deselect all available users
-    const newSelected = selectedUser.filter(
-      (id) => !availableUserIds.includes(id)
+  function handleSelectAll() {
+    const availableUsers = allInternalUsers.filter(
+      (user) => !addedUsers.includes(user)
     );
-    setSelectedUser(newSelected);
-  } else {
-    // Select all available users
-    const newSelected = [
-      ...selectedUser,
-      ...availableUserIds.filter((id) => !selectedUser.includes(id)),
-    ];
-    setSelectedUser(newSelected);
+
+    const availableUserIds = availableUsers.map((user) => user.id);
+
+    if (isAllSelected) {
+      // Deselect all available users
+      const newSelected = selectedUser.filter(
+        (id) => !availableUserIds.includes(id)
+      );
+      setSelectedUser(newSelected);
+    } else {
+      // Select all available users
+      const newSelected = [
+        ...selectedUser,
+        ...availableUserIds.filter((id) => !selectedUser.includes(id)),
+      ];
+      setSelectedUser(newSelected);
+    }
   }
-}
 
   function handleAddUser() {
     if (selectedUser.length === 0) {
@@ -185,19 +185,19 @@ function handleSelectAll() {
     setAddedUsers(addedUsers.filter((user) => user.id !== userId));
   }
 
-   useEffect(() => {
-      const availableUsers = allInternalUsers.filter(
-        (user) => !addedUsers.includes(user)
-      );
-  
-      const availableUserIds = availableUsers.map((user) => user.id);
-  
-      const allSelected = availableUserIds.every((id) =>
-        selectedUser.includes(id)
-      );
-  
-      setIsAllSelected(allSelected);
-    }, [selectedUser, allInternalUsers, addedUsers]);
+  useEffect(() => {
+    const availableUsers = allInternalUsers.filter(
+      (user) => !addedUsers.includes(user)
+    );
+
+    const availableUserIds = availableUsers.map((user) => user.id);
+
+    const allSelected = availableUserIds.every((id) =>
+      selectedUser.includes(id)
+    );
+
+    setIsAllSelected(allSelected);
+  }, [selectedUser, allInternalUsers, addedUsers]);
   return (
     <main className="mainContent">
       <section>
@@ -381,63 +381,63 @@ function handleSelectAll() {
                         </label>
                       </div>
                     </div>
-                     {watch().conf_type !== "internal" && (
-                    <div className="formRow align-items-start">
-                      <div className="formLabel">
-                        <label htmlFor="">Add participants</label>
-                        <label htmlFor="data" className="formItemDesc">
-                          Enter the participants email who will be joining this
-                          meeting
-                        </label>
-                      </div>
-                      <div className="col-xl-6 col-12">
-                        {participants.map((participant, index) => (
-                          <div
-                            key={index}
-                            className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
-                              }`}
-                          >
-                            <input
-                              type="email"
-                              name={`participant-${index}`}
-                              className="formItem"
-                              onChange={(e) => {
-                                const newParticipants = [...participants];
-                                newParticipants[index] = e.target.value;
-                                setParticipants(newParticipants);
-                              }}
-                              value={participant}
-                            />
-                            <button
-                              onClick={() => {
-                                if (participants.includes("")) {
-                                  toast.error("Please fill all the fields");
-                                } else {
-                                  setParticipants([...participants, ""]);
-                                }
-                              }}
-                              type="button"
-                              className="tableButton ms-2"
+                    {watch().conf_type !== "internal" && (
+                      <div className="formRow align-items-start">
+                        <div className="formLabel">
+                          <label htmlFor="">Add participants</label>
+                          <label htmlFor="data" className="formItemDesc">
+                            Enter the participants email who will be joining this
+                            meeting
+                          </label>
+                        </div>
+                        <div className="col-xl-6 col-12">
+                          {participants.map((participant, index) => (
+                            <div
+                              key={index}
+                              className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
+                                }`}
                             >
-                              <i className="fa-solid fa-plus" />
-                            </button>
-                            {participants.length > 1 && (
+                              <input
+                                type="email"
+                                name={`participant-${index}`}
+                                className="formItem"
+                                onChange={(e) => {
+                                  const newParticipants = [...participants];
+                                  newParticipants[index] = e.target.value;
+                                  setParticipants(newParticipants);
+                                }}
+                                value={participant}
+                              />
                               <button
-                                onClick={() =>
-                                  setParticipants(
-                                    participants.filter((_, i) => i !== index)
-                                  )
-                                }
-                                className="tableButton delete ms-2"
+                                onClick={() => {
+                                  if (participants.includes("")) {
+                                    toast.error("Please fill all the fields");
+                                  } else {
+                                    setParticipants([...participants, ""]);
+                                  }
+                                }}
+                                type="button"
+                                className="tableButton ms-2"
                               >
-                                <i className="fa-solid fa-trash" />
+                                <i className="fa-solid fa-plus" />
                               </button>
-                            )}
-                          </div>
-                        ))}
+                              {participants.length > 1 && (
+                                <button
+                                  onClick={() =>
+                                    setParticipants(
+                                      participants.filter((_, i) => i !== index)
+                                    )
+                                  }
+                                  className="tableButton delete ms-2"
+                                >
+                                  <i className="fa-solid fa-trash" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                     )}
+                    )}
                   </form>
                 </div>
                 {watch().conf_type == "internal" && (

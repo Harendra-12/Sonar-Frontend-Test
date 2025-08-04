@@ -18,6 +18,8 @@ import {
     handleTypingEvent,
     handleUnassignTag
 } from './MessageFunctions';
+import GroupTyping from '../components/GroupTyping';
+import OneToOneTyping from '../components/OneToOneTyping';
 
 
 
@@ -958,6 +960,9 @@ const MessageBody = ({
                                         </div>
                                     </div>
                                 )}
+
+                                <GroupTyping />
+                                {/* <OneToOneTyping /> */}
                             </div>
                             {recipient?.[0] ? (
                                 <div className="messageInput textarea_inputTab">
