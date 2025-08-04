@@ -690,8 +690,8 @@ const MessageBody = ({
                                     </div>
                                 </div>
                             }
-                            {allMessage[recipient[1]]?.length > 0 && (() => {
-                                const pinnedMessage = allMessage[recipient[1]].find(msg => msg?.is_pinned == 1);
+                            {allMessage[recipient[0]]?.length > 0 && (() => {
+                                const pinnedMessage = allMessage[recipient[0]].find(msg => msg?.is_pinned == 1);
                                 if (!pinnedMessage) return null;
 
                                 let displayText = pinnedMessage?.message_text;
@@ -786,7 +786,7 @@ const MessageBody = ({
                                                                             className={`message-text-container active-${item?.id}`}
                                                                             style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
                                                                         >
-                                                                            <div className="dropdown">
+                                                                            {/* <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -806,13 +806,7 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div>
-                                                                            <div className='pinBox'>
-                                                                                <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
-                                                                                    onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
-                                                                                    <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
-                                                                                </button>
-                                                                            </div>
+                                                                            </div> */}
                                                                             <div className="videoSize">
                                                                                 <DisplayFile
                                                                                     key={index}
@@ -820,7 +814,7 @@ const MessageBody = ({
                                                                                     index={index}
                                                                                 />
                                                                                 <div className='pinBox'>
-                                                                                    <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
+                                                                                    <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
                                                                                         <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
                                                                                 </div>
@@ -888,19 +882,14 @@ const MessageBody = ({
                                                                         >
                                                                             <div className="videoSize">
                                                                                 <DisplayFile item={item.body} />
-                                                                                {/* <div className='pinBox'>
-                                                                                    <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
-                                                                                        <i class="fas fa-thumbtack"></i>
-                                                                                    </button>
-                                                                                </div> */}
                                                                                 <div className='pinBox'>
-                                                                                    <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
-                                                                                        <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
+                                                                                    <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
+                                                                                        <i class="fas fa-thumbtack"></i>
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            <div className="dropdown">
+                                                                            {/* <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -920,13 +909,7 @@ const MessageBody = ({
                                                                                         </div>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div>
-                                                                            <div className='pinBox'>
-                                                                                <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`}
-                                                                                    onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient)}>
-                                                                                    <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
-                                                                                </button>
-                                                                            </div>
+                                                                            </div> */}
                                                                         </div>
                                                                     </div>
                                                                 </div>
