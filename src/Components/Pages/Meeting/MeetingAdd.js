@@ -59,8 +59,8 @@ function MeetingAdd() {
         ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
           : ""),
-        // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
-        emails: participants,
+        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
+        // emails: participants,
       };
       if (watch()?.conf_type == "internal") {
         delete parsedData?.emails

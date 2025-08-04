@@ -88,12 +88,17 @@ function MeetingEdit() {
         delete initialData.conf_end_time;
       }
 
+      if (participants.length == 1 && participants[0].length == 0) {
+        delete initialData.emails
+      }
+
       const parsedData = {
         ...initialData,
         ...(watch().conf_type == "internal" && addedUsers.length > 0
           ? { users: addedUsers.map((user) => user.id) }
           : {}),
-        emails: participants
+        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
+        // emails: participants
       };
       const apiData = await generalPutFunction(
         `/conference/${id}`,
