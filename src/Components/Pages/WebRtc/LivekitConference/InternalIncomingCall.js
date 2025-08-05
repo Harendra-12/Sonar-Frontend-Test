@@ -154,24 +154,42 @@ function InternalIncomingCall({
     console.log(internalCallAction, "internalCallAction");
   }, [internalCallAction]);
 
-  useEffect(() => {
-    if (incomingCall?.length > 0) {
-      incomingCall.map((item) => {
-        if (document.hidden && Notification.permission === "granted") {
-          notificationRef.current = new Notification("Incoming Call", {
-            body: `Incoming Call from: ${item?.sender_name}`,
-            icon:
-              item?.sender_profile_picture ||
-              require("../../../assets/images/placeholder-image.webp"),
-          });
+ // create audio only once
+const audioRef = useRef(new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3")));
 
-          notificationRef.current.onclick = function () {
-            window.focus();
-          };
-        }
-      });
-    } 
-  }, [incomingCall]);
+useEffect(() => {
+  const audio = audioRef.current;
+  audio.loop = true;
+
+  if (incomingCall?.length > 0) {
+    // notification logic
+    incomingCall.forEach((item) => {
+      if (document.hidden && Notification.permission === "granted") {
+        notificationRef.current = new Notification("Incoming Call", {
+          body: `Incoming Call from: ${item?.sender_name}`,
+          icon:
+            item?.sender_profile_picture ||
+            require("../../../assets/images/placeholder-image.webp"),
+        });
+
+        notificationRef.current.onclick = () => window.focus();
+      }
+    });
+
+    // only play if not already playing
+    if (audio.paused) {
+      audio.play().catch((err) => console.error(err));
+    }
+  } else {
+    // stop & reset
+    if (!audio.paused) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
+}, [incomingCall]);
+
+
 
   return (
     <>
