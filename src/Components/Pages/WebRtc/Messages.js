@@ -165,6 +165,8 @@ function Messages({
   const prevRecipient = useRef(null);
   const messageRecipient = useSelector((state) => state.messageRecipient)
   const [pageLoader, setPageLoader] = useState(false);
+  const [typingDetailState, setTypingDetailState] = useState(null)
+  const [typingUserList, setTypingUserList] = useState([])
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -193,7 +195,6 @@ function Messages({
     handleSubmit,
     reset,
   } = useForm();
-
 
   useEffect(() => {
     if (selectedUrl) {
@@ -872,12 +873,25 @@ function Messages({
 
   useEffect(() => {
     if (typingDetails?.result?.is_typing) {
+      setTypingDetailState(typingDetails);
+      const allTypingUserList = allAgents?.find((agent) =>
+        agent?.id === typingDetails?.result?.user_id
+      );
+      setTypingUserList((prevList) => {
+        const alreadyExists = prevList.some(user => user?.id === allTypingUserList?.id);
+        if (!alreadyExists && allTypingUserList) {
+          return [...prevList, allTypingUserList];
+        }
+        return prevList;
+      });
       const test = typingDetails?.key === "typing_status" ? typingDetails?.result?.user_id === recipient[1] : typingDetails?.result?.group_id === recipient[1]
       if (test) {
         setIsTyping(true)
       }
     } else {
       setIsTyping(false)
+      setTypingDetailState(null)
+      setTypingUserList([])
     }
   }, [typingDetails?.result])
 
@@ -1270,6 +1284,7 @@ function Messages({
                 socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
                 isGroupCallMessageOpened={isGroupCallMessageOpened}
                 isSingleCallMessageOpened={isSingleCallMessageOpened}
+                typingDetailState={typingDetailState}
               />
               <MessageBody
                 recipient={recipient}
@@ -1353,6 +1368,7 @@ function Messages({
                 setConferenceToggle={setConferenceToggle}
                 conferenceToggle={conferenceToggle}
                 setInternalCaller={setInternalCaller}
+                typingUserList={typingUserList}
               />
 
             </div>

@@ -5,6 +5,8 @@ import AgentSearch from '../AgentSearch';
 import ChatsCalls from "./../components/ChatsCalls";
 import { getAllMessageApiFun, handleDeleteTag, handleGroupSearchChange, handleMessageSearchChange, handleNewTag } from './MessageFunctions';
 import { useEffect } from 'react';
+import OneToOneTyping from '../components/OneToOneTyping';
+import GroupTyping from '../components/GroupTyping';
 
 const MessageContactList = ({
     setRecipient,
@@ -73,7 +75,8 @@ const MessageContactList = ({
     setPageLoader,
     setIsTyping,
     isGroupCallMessageOpened,
-    isSingleCallMessageOpened
+    isSingleCallMessageOpened,
+    typingDetailState
 }) => {
     const dispatch = useDispatch()
     const messageRecipient = useSelector((state) => state.messageRecipient)
@@ -506,10 +509,19 @@ const MessageContactList = ({
                                                                 {/* </span> */}
                                                             </span>
                                                         </p>
-                                                        <h5>
-                                                            {/* here showing last send message below of contact name */}
-                                                            {isOnlyLink(item?.last_message_data?.message_text) ? "Link" : item?.last_message_data?.message_text}
-                                                        </h5>
+                                                        {(typingDetailState?.result?.user_id === item?.id &&
+                                                            recipient?.[0] != item?.id) ?
+                                                            typingDetailState?.key == "typing_status"
+                                                            &&
+                                                            <OneToOneTyping shouldProfileShow={false} />
+                                                            : (
+                                                                <h5>
+                                                                    {isOnlyLink(item?.last_message_data?.message_text)
+                                                                        ? "Link"
+                                                                        : item?.last_message_data?.message_text}
+                                                                </h5>
+                                                            )}
+
                                                         <div className="contactTags ">
                                                             {item.tags
                                                                 ?.slice(0, 2)
@@ -662,6 +674,10 @@ const MessageContactList = ({
                                                                         }
                                                                     </span>
                                                                 )}
+                                                            {(typingDetailState?.result?.group_id === item?.id &&
+                                                                recipient?.[1] != item?.id) &&
+                                                                <GroupTyping shouldProfileShow={false} />
+                                                            }
                                                             {item?.last_message_data
                                                                 ?.message_text && ":"}{" "}
                                                             {item?.last_message_data?.message_text}

@@ -480,7 +480,7 @@ export const handlePinMessage = async (
     recipient,
     selectedChat
 ) => {
-    const conversationKey = recipient[1];
+    const conversationKey = recipient[0];
     const isCurrentlyPinned = item?.is_pinned === 1;
     const result = await generalPostFunction(selectedChat === "singleChat" ? api_url?.PIN_MESSAGE(item?.id, isCurrentlyPinned ? true : '') : api_url?.PIN_GROUP_MESSAGE(item?.id, isCurrentlyPinned ? true : ''));
 
@@ -488,7 +488,7 @@ export const handlePinMessage = async (
         toast?.success(result?.message);
 
         const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
-            if (msg.id === result?.data?.id) {
+            if (msg.id === (selectedChat == "singleChat" ? result?.data?.id : result?.data?.group_message_id)) {
                 return { ...msg, is_pinned: result?.data?.is_pinned ? 1 : 0 };
             } else {
                 return !isCurrentlyPinned ? { ...msg, is_pinned: 0 } : msg;
@@ -767,7 +767,7 @@ export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMe
                         time,
                         user_id: from,
                         user_name: groupMessage?.user_name,
-                        profile_picture: groupMessage?.profile_picture == "null" ? allAgents?.find((data) => data?.id == groupMessage?.sender_id)?.profile_picture : groupMessage?.profile_picture,
+                        profile_picture: groupMessage?.profile_picture,
                         message_type: groupMessage.message_type,
                     },
                 ],

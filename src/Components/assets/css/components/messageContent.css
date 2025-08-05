@@ -1948,7 +1948,7 @@
 
 
 .group_typing {
-    position: absolute;
+    /* position: absolute; */
     bottom: 4px;
 }
 
