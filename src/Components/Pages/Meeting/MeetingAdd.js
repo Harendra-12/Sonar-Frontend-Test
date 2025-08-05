@@ -281,7 +281,7 @@ function MeetingAdd() {
                         <input
                           type="number"
                           name="extension"
-                          className={`formItem ${errors.conf_max_members ? 'error' : ''}`}
+                          className={`formItem ${errors?.conf_max_members ? 'error' : ''}`}
                           {...register("conf_max_members", {
                             ...requiredValidator,
                           })}
@@ -353,15 +353,17 @@ function MeetingAdd() {
                           Toggle to automatically generate meeting summaries, action points, and insights using AI during your conference
                         </label>
                       </div>
-                      <div class="cl-toggle-switch">
-                        <label class="cl-switch">
-                          <input
-                            type="checkbox"
-                            id="showAllCheck"
-                            {...register("ai_notetaker")}
-                          />
-                          <span></span>
-                        </label>
+                      <div className="col-xl-6 col-12">
+                        <div class="cl-toggle-switch">
+                          <label class="cl-switch">
+                            <input
+                              type="checkbox"
+                              id="showAllCheck"
+                              {...register("ai_notetaker")}
+                            />
+                            <span></span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                     {watch().conf_type !== "internal" && (
