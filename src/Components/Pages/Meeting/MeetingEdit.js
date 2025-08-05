@@ -14,10 +14,11 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { use } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
+import DatePicker from "react-datepicker";
 
 function MeetingEdit() {
   const location = useLocation();
@@ -37,7 +38,7 @@ function MeetingEdit() {
   const [searchQuery, setSearchQuery] = useState("");
   const [emailErrors, setEmailErrors] = useState([""]);
 
-  const { register, formState: { errors }, reset, handleSubmit, watch, setValue } = useForm();
+  const { control, register, formState: { errors }, reset, handleSubmit, watch, setValue } = useForm();
 
   useEffect(() => {
     if (!id) {
@@ -53,6 +54,14 @@ function MeetingEdit() {
       const response = await generalGetFunction(`/conference/${id}`);
       if (response.status) {
         const data = response.data;
+        // Convert conf_start_time and conf_end_time to Date objects
+        if (data.conf_start_time) {
+          data.conf_start_time = new Date(data.conf_start_time.replace(" ", "T"));
+        }
+        if (data.conf_end_time) {
+          data.conf_end_time = new Date(data.conf_end_time.replace(" ", "T"));
+        }
+
         if (data.conf_start_time || data.conf_end_time) {
           setValue("conf_scheduled", "1")
         }
@@ -351,30 +360,69 @@ function MeetingEdit() {
                               </option>
                             </select>
                           </div>
-                          {watch().conf_scheduled == "1" ? <>
-                            <div className="col-6 mt-2">
-                              <label htmlFor="data" className="formItemDesc">
-                                Start Date & Time
-                              </label>
-                              <input
-                                type="datetime-local"
-                                name="extension"
-                                className="formItem"
-                                {...register("conf_start_time")}
-                              />
-                            </div>
-                            <div className="col-6 mt-2">
-                              <label htmlFor="data" className="formItemDesc">
-                                End Date & Time
-                              </label>
-                              <input
-                                type="datetime-local"
-                                name="extension"
-                                className="formItem"
-                                {...register("conf_end_time")}
-                              />
-                            </div>
-                          </> : ""}
+                          {watch().conf_scheduled == "1" ? (
+                            <>
+                              <div className="col-6 mt-2">
+                                <label htmlFor="data" className="formItemDesc">
+                                  Start Date & Time
+                                </label>
+                                {/* <input
+                                  type="datetime-local"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("conf_start_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_start_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
+                                />
+                              </div>
+                              <div className="col-6 mt-2">
+                                <label htmlFor="data" className="formItemDesc">
+                                  End Date & Time
+                                </label>
+                                {/* <input
+                                  type="datetime-local"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("conf_end_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_end_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
+                                />
+
+                              </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>

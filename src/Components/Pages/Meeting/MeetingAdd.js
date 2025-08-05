@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
+  convertDateTimeLocalToIST,
   generalGetFunction,
   generalPostFunction,
   useDebounce,
@@ -13,7 +14,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { use } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
@@ -45,9 +46,9 @@ function MeetingAdd() {
   const [confEndDate, setConfEndDate] = useState("");
   const [emailErrors, setEmailErrors] = useState([""]);
 
-  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
-  const [value, onChange] = useState(new Date());
+
   const {
+    control,
     register,
     formState: { errors },
     reset,
@@ -72,8 +73,9 @@ function MeetingAdd() {
         ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
           : ""),
-        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
+        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants }),
         // emails: participants,
+        ...(data.conf_scheduled == 1 ? { conf_scheduled: 1, conf_start_time: convertDateTimeLocalToIST(data.conf_start_time), conf_end_time: convertDateTimeLocalToIST(data.conf_end_time) } : { conf_scheduled: 0 }),
       };
       if (watch()?.conf_type == "internal") {
         delete parsedData?.emails
@@ -333,34 +335,66 @@ function MeetingAdd() {
                                 <label htmlFor="data" className="formItemDesc">
                                   Start Date & Time
                                 </label>
-                                <input
+                                {/* <input
                                   type="datetime-local"
                                   name="extension"
                                   className="formItem"
                                   {...register("conf_start_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_start_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
                                 />
                               </div>
                               <div className="col-6 mt-2">
                                 <label htmlFor="data" className="formItemDesc">
                                   End Date & Time
                                 </label>
-                                <input
+                                {/* <input
                                   type="datetime-local"
                                   name="extension"
                                   className="formItem"
                                   {...register("conf_end_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_end_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
                                 />
-
 
                               </div>
                             </>
                           ) : (
                             ""
                           )}
-                          {/* <DateTimePicker setSelectedDateTime={setSelectedDateTime} selectedDateTime={selectedDateTime} /> */}
                           <div className="col-12">
                             <div className="w-100">
-                              <DatePicker
+                              {/* <DatePicker
                                 selected={selectedDateTime}
                                 onChange={(date) => setSelectedDateTime(date)}
                                 locale="pt-EN"
@@ -369,7 +403,7 @@ function MeetingAdd() {
                                 timeIntervals={15}
                                 dateFormat="Pp"
                                 className="formItem"
-                              />
+                              /> */}
                             </div>
                           </div>
                         </div>
