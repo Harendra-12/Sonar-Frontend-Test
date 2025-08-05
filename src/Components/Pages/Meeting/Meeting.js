@@ -20,6 +20,8 @@ import { useSelector } from "react-redux";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { api_url } from "../../../urls";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
+import Tippy from "@tippyjs/react";
 
 /**
  * This component renders the meeting rooms page
@@ -214,7 +216,7 @@ function Meeting() {
                       <div className="heading">
                         <div className="content">
                           <h4>
-                            Meeting Rooms
+                            Upcoming Meetings
                             <button
                               className="clearButton"
                               onClick={handleRefreshBtnClicked}
@@ -251,17 +253,19 @@ function Meeting() {
                             account?.permissions,
                             "add"
                           ) && (
-                            <button
-                              type="button"
-                              className="panelButton"
-                              onClick={() => navigate("/meeting-add")}
-                            >
-                              <span className="text">Create</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
+                              <Tippy content="Schedule a Meeting">
+                                <button
+                                  type="button"
+                                  className="panelButton"
+                                  onClick={() => navigate("/meeting-add")}
+                                >
+                                  <span className="text">Create</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-plus"></i>
+                                  </span>
+                                </button>
+                              </Tippy>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -294,22 +298,22 @@ function Meeting() {
                           account?.permissions,
                           "search"
                         ) && (
-                          <div className="searchBox position-relative">
-                            <label>Search:</label>
-                            <input
-                              type="text"
-                              name="Search"
-                              placeholder="Search"
-                              value={searchValue}
-                              className="formItem"
-                              onChange={(e) => {
-                                setSearchValue(e.target.value);
-                                setPageNumber(1);
-                                setItemsPerPage(10);
-                              }}
-                            />
-                          </div>
-                        )}
+                            <div className="searchBox position-relative">
+                              <label>Search:</label>
+                              <input
+                                type="text"
+                                name="Search"
+                                placeholder="Search"
+                                value={searchValue}
+                                className="formItem"
+                                onChange={(e) => {
+                                  setSearchValue(e.target.value);
+                                  setPageNumber(1);
+                                  setItemsPerPage(10);
+                                }}
+                              />
+                            </div>
+                          )}
                       </div>
                       <div className="tableContainer">
                         {loading ? (
@@ -359,7 +363,7 @@ function Meeting() {
                                 </tr>
                               ) : (
                                 <>
-                                  {conference &&
+                                  {conference && conference.data.length > 0 ?
                                     conference?.data?.map((item, key) => {
                                       return (
                                         <>
@@ -391,12 +395,11 @@ function Meeting() {
                                                     className="clearButton2 edit ms-3"
                                                   >
                                                     <i
-                                                      className={`fa-solid ${
-                                                        moderatorPinId ===
+                                                      className={`fa-solid ${moderatorPinId ===
                                                         item.id
-                                                          ? "fa-eye"
-                                                          : "fa-eye-slash"
-                                                      }`}
+                                                        ? "fa-eye"
+                                                        : "fa-eye-slash"
+                                                        }`}
                                                     ></i>
                                                   </button>
                                                 </div>
@@ -420,12 +423,11 @@ function Meeting() {
                                                     className="clearButton2 edit ms-3"
                                                   >
                                                     <i
-                                                      className={`fa-solid ${
-                                                        participantPinId ===
+                                                      className={`fa-solid ${participantPinId ===
                                                         item.id
-                                                          ? "fa-eye"
-                                                          : "fa-eye-slash"
-                                                      }`}
+                                                        ? "fa-eye"
+                                                        : "fa-eye-slash"
+                                                        }`}
                                                     ></i>
                                                   </button>
                                                 </div>
@@ -454,7 +456,7 @@ function Meeting() {
                                                   style={{
                                                     opacity:
                                                       item.conf_url ===
-                                                      copyElement
+                                                        copyElement
                                                         ? 1
                                                         : 0,
                                                   }}
@@ -484,12 +486,11 @@ function Meeting() {
                                                     !item?.recording_url &&
                                                     !item?.summary
                                                   }
-                                                  className={`tableButton edit ${
-                                                    !item?.recording_url &&
+                                                  className={`tableButton edit ${!item?.recording_url &&
                                                     !item?.summary
-                                                      ? "disabled"
-                                                      : ""
-                                                  }`}
+                                                    ? "disabled"
+                                                    : ""
+                                                    }`}
                                                   onClick={() => {
                                                     setSelectedMeeting(item);
                                                     setSelectedEmails([]);
@@ -508,19 +509,19 @@ function Meeting() {
                                               account?.permissions,
                                               "edit"
                                             ) && (
-                                              <td>
-                                                <div
-                                                  className="tableButton edit"
-                                                  onClick={() =>
-                                                    navigate(`/meeting-edit`, {
-                                                      state: item,
-                                                    })
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-pen"></i>
-                                                </div>
-                                              </td>
-                                            )}
+                                                <td>
+                                                  <div
+                                                    className="tableButton edit"
+                                                    onClick={() =>
+                                                      navigate(`/meeting-edit`, {
+                                                        state: item,
+                                                      })
+                                                    }
+                                                  >
+                                                    <i className="fa-solid fa-pen"></i>
+                                                  </div>
+                                                </td>
+                                              )}
                                             {checkViewSidebar(
                                               "Conference",
                                               slugPermissions,
@@ -528,22 +529,31 @@ function Meeting() {
                                               account?.permissions,
                                               "delete"
                                             ) && (
-                                              <td>
-                                                <div
-                                                  className="tableButton delete"
-                                                  onClick={() => {
-                                                    setDeleteId(item.id);
-                                                    setPopUp(true);
-                                                  }}
-                                                >
-                                                  <i className="fa-solid fa-trash"></i>
-                                                </div>
-                                              </td>
-                                            )}
+                                                <td>
+                                                  <div
+                                                    className="tableButton delete"
+                                                    onClick={() => {
+                                                      setDeleteId(item.id);
+                                                      setPopUp(true);
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-trash"></i>
+                                                  </div>
+                                                </td>
+                                              )}
                                           </tr>
                                         </>
                                       );
-                                    })}{" "}
+                                    }) :
+                                    <tr>
+                                      <td colSpan={99}>
+                                        <EmptyPrompt
+                                          name="Meeting"
+                                          link="meeting-add"
+                                        />
+                                      </td>
+                                    </tr>
+                                  }{" "}
                                 </>
                               )}
                             </tbody>
@@ -851,7 +861,7 @@ function Meeting() {
                           </thead>
                           <tbody>
                             {selectedMeeting &&
-                            selectedMeeting?.emails?.length === 0 ? (
+                              selectedMeeting?.emails?.length === 0 ? (
                               <tr>
                                 <td colSpan={3} className="text-center">
                                   No Emails Found

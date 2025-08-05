@@ -268,7 +268,7 @@ function MeetingEdit() {
                         <input
                           type="text"
                           name="extension"
-                          className="formItem"
+                          className={`formItem ${errors.conf_name.message && 'error'}`}
                           {...register("conf_name", { ...requiredValidator, })}
                         />
                         {errors.conf_name && (
@@ -309,7 +309,7 @@ function MeetingEdit() {
                         <input
                           type="number"
                           name="extension"
-                          className="formItem"
+                          className={`formItem ${errors.conf_max_members && 'error'}`}
                           {...register("conf_max_members", { ...requiredValidator, })}
                         />
                         {errors.conf_max_members && (
