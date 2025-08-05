@@ -15,6 +15,7 @@ import { use } from "react";
 import { useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Tippy from "@tippyjs/react";
 
 function MeetingAdd() {
   const account = useSelector((state) => state.account);
@@ -227,16 +228,16 @@ function MeetingAdd() {
                   <form className="col-12 mx-auto">
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Conference Name</label>
+                        <label className="mandatory">Conference Title</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Name of the conference
+                          Enter a unique and descriptive name for your conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
                           type="text"
                           name="extension"
-                          className={`formItem ${errors.conf_name.message && 'error'}`}
+                          className={`formItem ${errors?.conf_name?.message ? 'error' : ''}`}
                           {...register("conf_name", { ...requiredValidator })}
                         />
                         {errors.conf_name && (
@@ -246,10 +247,13 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Conference Type</label>
+                        <label htmlFor="">Visibility of the Conference
+                          <Tippy content='Choose whether the conference should be Public (anyone with the link can join), Private (can only be joined by PIN) or Internal (can be joined from AngelGo if the user is added to it)'>
+                            <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                          </Tippy>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
-                          Define type for the conference so that participants
-                          can join accordingly
+                          Choose how will your conference be visible and accessible to attendees
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
@@ -268,16 +272,16 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Number of members</label>
+                        <label htmlFor="" className="mandatory">Maximum Participants</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enter maximum number of members that can join
+                          Specify the total number of participants who can join this conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
-                          className={`formItem ${errors.conf_max_members && 'error'}`}
+                          className={`formItem ${errors.conf_max_members ? 'error' : ''}`}
                           {...register("conf_max_members", {
                             ...requiredValidator,
                           })}
@@ -291,9 +295,13 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Scheduled Time</label>
+                        <label htmlFor="">Schedule the Conference
+                          <Tippy content='You can also leave it as Disabled if you want the meeting to be accessible at any time'>
+                            <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                          </Tippy>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enter maximum number of members that can join
+                          Set a specific date and time for the conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
@@ -340,9 +348,9 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Ai Notes</label>
+                        <label htmlFor="">Enable AI Meeting Notes</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enable AI notes for this conference
+                          Toggle to automatically generate meeting summaries, action points, and insights using AI during your conference
                         </label>
                       </div>
                       <div class="cl-toggle-switch">
@@ -359,10 +367,13 @@ function MeetingAdd() {
                     {watch().conf_type !== "internal" && (
                       <div className="formRow align-items-start">
                         <div className="formLabel">
-                          <label htmlFor="">Add participants</label>
+                          <label>Invite Participants by Email
+                            <Tippy content='Input email addresses for people that you want to invite. Click the plus icon (+) after each email to add them to the invite list'>
+                              <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                            </Tippy>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Enter the participants email who will be joining
-                            this meeting
+                            Enter the email addresses of people you wish to invite
                           </label>
                         </div>
                         <div className="col-xl-6 col-12">
