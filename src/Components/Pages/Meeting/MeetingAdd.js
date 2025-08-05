@@ -18,6 +18,14 @@ import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
 
+// import DateTimePicker from "react-datetime-picker";
+// import 'react-calendar/dist/Calendar.css';
+// import 'react-clock/dist/Clock.css';
+// import 'react-datetime-picker/dist/DateTimePicker.css'; 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
 function MeetingAdd() {
   const account = useSelector((state) => state.account);
   const [conferenceName, setConferenceName] = useState("");
@@ -37,6 +45,8 @@ function MeetingAdd() {
   const [confEndDate, setConfEndDate] = useState("");
   const [emailErrors, setEmailErrors] = useState([""]);
 
+  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
+  const [value, onChange] = useState(new Date());
   const {
     register,
     formState: { errors },
@@ -340,11 +350,28 @@ function MeetingAdd() {
                                   className="formItem"
                                   {...register("conf_end_time")}
                                 />
+
+
                               </div>
                             </>
                           ) : (
                             ""
                           )}
+                          {/* <DateTimePicker setSelectedDateTime={setSelectedDateTime} selectedDateTime={selectedDateTime} /> */}
+                          <div className="col-12">
+                            <div className="w-100">
+                              <DatePicker
+                                selected={selectedDateTime}
+                                onChange={(date) => setSelectedDateTime(date)}
+                                locale="pt-EN"
+                                showTimeSelect
+                                timeFormat="p"
+                                timeIntervals={15}
+                                dateFormat="Pp"
+                                className="formItem"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
