@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
+  convertDateTimeLocalToIST,
   generalGetFunction,
   generalPostFunction,
   useDebounce,
+  validateEmail,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import Header from "../../CommonComponents/Header";
@@ -12,9 +14,18 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { use } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Tippy from "@tippyjs/react";
+
+// import DateTimePicker from "react-datetime-picker";
+// import 'react-calendar/dist/Calendar.css';
+// import 'react-clock/dist/Clock.css';
+// import 'react-datetime-picker/dist/DateTimePicker.css'; 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 function MeetingAdd() {
   const account = useSelector((state) => state.account);
@@ -33,8 +44,11 @@ function MeetingAdd() {
   const [isScheduled, setIsScheduled] = useState(false);
   const [confStartDate, setConfStartDate] = useState("");
   const [confEndDate, setConfEndDate] = useState("");
+  const [emailErrors, setEmailErrors] = useState([""]);
+
 
   const {
+    control,
     register,
     formState: { errors },
     reset,
@@ -59,8 +73,9 @@ function MeetingAdd() {
         ...(watch().conf_type === "internal"
           ? { users: addedUsers.map((user) => user.id) }
           : ""),
-        // ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
-        emails: participants,
+        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants }),
+        // emails: participants,
+        ...(data.conf_scheduled == 1 ? { conf_scheduled: 1, conf_start_time: convertDateTimeLocalToIST(data.conf_start_time), conf_end_time: convertDateTimeLocalToIST(data.conf_end_time) } : { conf_scheduled: 0 }),
       };
       if (watch()?.conf_type == "internal") {
         delete parsedData?.emails
@@ -227,16 +242,16 @@ function MeetingAdd() {
                   <form className="col-12 mx-auto">
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Conference Name</label>
+                        <label className="mandatory">Conference Title</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Name of the conference
+                          Enter a unique and descriptive name for your conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
                           type="text"
                           name="extension"
-                          className="formItem"
+                          className={`formItem ${errors?.conf_name?.message ? 'error' : ''}`}
                           {...register("conf_name", { ...requiredValidator })}
                         />
                         {errors.conf_name && (
@@ -246,10 +261,13 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Conference Type</label>
+                        <label htmlFor="">Visibility of the Conference
+                          <Tippy content='Choose whether the conference should be Public (anyone with the link can join), Private (can only be joined by PIN) or Internal (can be joined from AngelGo if the user is added to it)'>
+                            <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                          </Tippy>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
-                          Define type for the conference so that participants
-                          can join accordingly
+                          Choose how will your conference be visible and accessible to attendees
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
@@ -268,16 +286,16 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Number of members</label>
+                        <label htmlFor="" className="mandatory">Maximum Participants</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enter maximum number of members that can join
+                          Specify the total number of participants who can join this conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
                         <input
                           type="number"
                           name="extension"
-                          className="formItem"
+                          className={`formItem ${errors?.conf_max_members ? 'error' : ''}`}
                           {...register("conf_max_members", {
                             ...requiredValidator,
                           })}
@@ -291,9 +309,13 @@ function MeetingAdd() {
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Scheduled Time</label>
+                        <label htmlFor="">Schedule the Conference
+                          <Tippy content='You can also leave it as Disabled if you want the meeting to be accessible at any time'>
+                            <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                          </Tippy>
+                        </label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enter maximum number of members that can join
+                          Set a specific date and time for the conference
                         </label>
                       </div>
                       <div className="col-xl-6 col-12">
@@ -313,56 +335,110 @@ function MeetingAdd() {
                                 <label htmlFor="data" className="formItemDesc">
                                   Start Date & Time
                                 </label>
-                                <input
+                                {/* <input
                                   type="datetime-local"
                                   name="extension"
                                   className="formItem"
                                   {...register("conf_start_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_start_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
                                 />
                               </div>
                               <div className="col-6 mt-2">
                                 <label htmlFor="data" className="formItemDesc">
                                   End Date & Time
                                 </label>
-                                <input
+                                {/* <input
                                   type="datetime-local"
                                   name="extension"
                                   className="formItem"
                                   {...register("conf_end_time")}
+                                /> */}
+                                <Controller
+                                  name="conf_end_time"
+                                  control={control}
+                                  defaultValue={null}
+                                  render={({ field }) => (
+                                    <DatePicker
+                                      {...field}
+                                      selected={field.value}
+                                      onChange={(date) => field.onChange(date)}
+                                      showTimeSelect
+                                      timeFormat="p"
+                                      timeIntervals={15}
+                                      dateFormat="Pp"
+                                      className="formItem"
+                                    />
+                                  )}
                                 />
+
                               </div>
                             </>
                           ) : (
                             ""
                           )}
+                          <div className="col-12">
+                            <div className="w-100">
+                              {/* <DatePicker
+                                selected={selectedDateTime}
+                                onChange={(date) => setSelectedDateTime(date)}
+                                locale="pt-EN"
+                                showTimeSelect
+                                timeFormat="p"
+                                timeIntervals={15}
+                                dateFormat="Pp"
+                                className="formItem"
+                              /> */}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="formRow">
                       <div className="formLabel">
-                        <label htmlFor="">Ai Notes</label>
+                        <label htmlFor="">Enable AI Meeting Notes</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enable AI notes for this conference
+                          Toggle to automatically generate meeting summaries, action points, and insights using AI during your conference
                         </label>
                       </div>
-                      <div class="cl-toggle-switch">
-                        <label class="cl-switch">
-                          <input
-                            type="checkbox"
-                            id="showAllCheck"
-                            {...register("ai_notetaker")}
-                          />
-                          <span></span>
-                        </label>
+                      <div className="col-xl-6 col-12">
+                        <div class="cl-toggle-switch">
+                          <label class="cl-switch">
+                            <input
+                              type="checkbox"
+                              id="showAllCheck"
+                              {...register("ai_notetaker")}
+                            />
+                            <span></span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                     {watch().conf_type !== "internal" && (
                       <div className="formRow align-items-start">
                         <div className="formLabel">
-                          <label htmlFor="">Add participants</label>
+                          <label>Invite Participants by Email
+                            <Tippy content='Input email addresses for people that you want to invite. Click the plus icon (+) after each email to add them to the invite list'>
+                              <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                            </Tippy>
+                          </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Enter the participants email who will be joining
-                            this meeting
+                            Enter the email addresses of people you wish to invite
                           </label>
                         </div>
                         <div className="col-xl-6 col-12">
@@ -372,23 +448,41 @@ function MeetingAdd() {
                               className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
                                 }`}
                             >
-                              <input
-                                type="email"
-                                name={`participant-${index}`}
-                                className="formItem"
-                                onChange={(e) => {
-                                  const newParticipants = [...participants];
-                                  newParticipants[index] = e.target.value;
-                                  setParticipants(newParticipants);
-                                }}
-                                value={participant}
-                              />
+                              <div className="col">
+                                <input
+                                  type="email"
+                                  name={`participant-${index}`}
+                                  className={`formItem ${emailErrors[index] ? 'error' : ''}`}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const newParticipants = [...participants];
+                                    newParticipants[index] = value;
+                                    setParticipants(newParticipants);
+
+                                    const newErrors = [...emailErrors];
+                                    if (value.trim() === "") {
+                                      newErrors[index] = false;
+                                    } else {
+                                      newErrors[index] = validateEmail(value) ? false : "Invalid email";
+                                    }
+                                    setEmailErrors(newErrors);
+                                  }}
+                                  value={participant}
+                                />
+                                {emailErrors[index] && (
+                                  <div className="d-flex align-items-center">
+                                    <i className="text-danger fa-duotone fa-regular fa-circle-exclamation fs-12" style={{ flexShrink: 0 }} />
+                                    <span className="text-danger ms-1" style={{ fontSize: '12px' }}>{emailErrors[index]}</span>
+                                  </div>
+                                )}
+                              </div>
                               <button
                                 onClick={() => {
                                   if (participants.includes("")) {
                                     toast.error("Please fill all the fields");
                                   } else {
                                     setParticipants([...participants, ""]);
+                                    setEmailErrors([...emailErrors, ""]);
                                   }
                                 }}
                                 type="button"
@@ -398,11 +492,12 @@ function MeetingAdd() {
                               </button>
                               {participants.length > 1 && (
                                 <button
-                                  onClick={() =>
+                                  onClick={() => {
                                     setParticipants(
                                       participants.filter((_, i) => i !== index)
-                                    )
-                                  }
+                                    );
+                                    setEmailErrors(emailErrors.filter((_, i) => i !== index));
+                                  }}
                                   className="tableButton delete ms-2"
                                 >
                                   <i className="fa-solid fa-trash" />

@@ -23,11 +23,12 @@
   padding: 0;
   flex-shrink: 0;
 }
-.clearButton2.sm{
-    width: 30px;
+
+.clearButton2.sm {
+  width: 30px;
   height: 30px;
-   font-size: 0.875rem;
-   color: var(--immortalBlack);
+  font-size: 0.875rem;
+  color: var(--immortalBlack);
 }
 
 
@@ -1056,4 +1057,22 @@
 
 .css-1l2s6lu-ValueContainer {
   width: 120px;
+}
+
+.formInfoButton {
+  background: none;
+  border: 0;
+  /* background-color: var(--color1); */
+  color: var(--color-subText);
+  text-decoration: none;
+  font-size: 0.85rem;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* transition: 0.2s ease-in-out; */
+  padding: 0;
+  flex-shrink: 0;
 }

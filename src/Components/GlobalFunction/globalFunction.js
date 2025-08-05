@@ -229,7 +229,7 @@ export async function generalGetFunction(endpoint) {
           sessionExpiredToastShown = true;
           toast.error(
             err?.response?.data?.message ||
-              "Session expired. Please login again."
+            "Session expired. Please login again."
           );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
@@ -1017,6 +1017,11 @@ export function convertDateToIST(dateString) {
 }
 
 export const isOnlyLink = (message) => {
-    const urlRegex = /^(https?:\/\/)?([^\s.]+\.)?[^\s]+\.[^\s]{2,}.*$/i;
-    return urlRegex.test(message?.trim());
-  };
+  const urlRegex = /^(https?:\/\/)?([^\s.]+\.)?[^\s]+\.[^\s]{2,}.*$/i;
+  return urlRegex.test(message?.trim());
+};
+
+export const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+};
