@@ -5,6 +5,7 @@ import {
   generalPostFunction,
   generalPutFunction,
   useDebounce,
+  validateEmail,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import Header from "../../CommonComponents/Header";
@@ -34,6 +35,7 @@ function MeetingEdit() {
   const navigate = useNavigate();
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [emailErrors, setEmailErrors] = useState([""]);
 
   const { register, formState: { errors }, reset, handleSubmit, watch, setValue } = useForm();
 
@@ -415,23 +417,41 @@ function MeetingEdit() {
                               className={`d-flex justify-content-between align-items-center ${participants?.length > 1 && "mb-2"
                                 }`}
                             >
-                              <input
-                                type="email"
-                                name={`participant-${index}`}
-                                className="formItem"
-                                onChange={(e) => {
-                                  const newParticipants = [...participants];
-                                  newParticipants[index] = e.target.value;
-                                  setParticipants(newParticipants);
-                                }}
-                                value={participant}
-                              />
+                              <div className="col">
+                                <input
+                                  type="email"
+                                  name={`participant-${index}`}
+                                  className={`formItem ${emailErrors[index] ? 'error' : ''}`}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const newParticipants = [...participants];
+                                    newParticipants[index] = value;
+                                    setParticipants(newParticipants);
+
+                                    const newErrors = [...emailErrors];
+                                    if (value.trim() === "") {
+                                      newErrors[index] = false;
+                                    } else {
+                                      newErrors[index] = validateEmail(value) ? false : "Invalid email";
+                                    }
+                                    setEmailErrors(newErrors);
+                                  }}
+                                  value={participant}
+                                />
+                                {emailErrors[index] && (
+                                  <div className="d-flex align-items-center">
+                                    <i className="text-danger fa-duotone fa-regular fa-circle-exclamation fs-12" style={{ flexShrink: 0 }} />
+                                    <span className="text-danger ms-1" style={{ fontSize: '12px' }}>{emailErrors[index]}</span>
+                                  </div>
+                                )}
+                              </div>
                               <button
                                 onClick={() => {
                                   if (participants.includes("")) {
                                     toast.error("Please fill all the fields");
                                   } else {
                                     setParticipants([...participants, ""]);
+                                    setEmailErrors([...emailErrors, ""]);
                                   }
                                 }}
                                 type="button"
@@ -441,11 +461,12 @@ function MeetingEdit() {
                               </button>
                               {participants.length > 1 && (
                                 <button
-                                  onClick={() =>
+                                  onClick={() => {
                                     setParticipants(
                                       participants.filter((_, i) => i !== index)
-                                    )
-                                  }
+                                    );
+                                    setEmailErrors(emailErrors.filter((_, i) => i !== index));
+                                  }}
                                   className="tableButton delete ms-2"
                                 >
                                   <i className="fa-solid fa-trash" />

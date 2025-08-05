@@ -136,7 +136,7 @@ label.status.missing {
 }
 
 .formItem.error {
-    border: 1px solid red;
+    border: 1px solid red !important;
 }
 
 label.status.missing::before {
