@@ -216,7 +216,7 @@ function Meeting() {
                       <div className="heading">
                         <div className="content">
                           <h4>
-                            Upcoming Meetings
+                            Manage your Meeting Rooms
                             <button
                               className="clearButton"
                               onClick={handleRefreshBtnClicked}
@@ -231,6 +231,7 @@ function Meeting() {
                               ></i>
                             </button>
                           </h4>
+                          <p>Create, edit or access your saved rooms. Invite participants with one click</p>
                         </div>
                         <div className="buttonGroup">
                           <button
@@ -303,7 +304,7 @@ function Meeting() {
                               <input
                                 type="text"
                                 name="Search"
-                                placeholder="Search"
+                                placeholder="Search by room name or type"
                                 value={searchValue}
                                 className="formItem"
                                 onChange={(e) => {
@@ -326,26 +327,56 @@ function Meeting() {
                                 <th>Conference Name</th>
                                 <th>Type</th>
                                 <th>Max. Members</th>
-                                <th>Moderator Pin</th>
-                                <th>Joining Pin</th>
+                                <th>Moderator Pin
+                                  <Tippy content='Join using the Moderator PIN to have moderator access in the meeting'>
+                                    <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                                  </Tippy>
+                                </th>
+                                <th>Joining Pin
+                                  <Tippy content='Participants are required to join via PIN if the meeting is private'>
+                                    <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                                  </Tippy>
+                                </th>
                                 <th>Meeting link</th>
-                                <th>Recordings</th>
-                                <th>Email</th>
+                                <th>Recordings
+                                  <Tippy content='View meeting recordings for the meeting!'>
+                                    <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                                  </Tippy>
+                                </th>
+                                <th>Email
+                                  <Tippy content='Send meeting recordings or summary via Email'>
+                                    <button className="ms-2 formInfoButton"><i className="fa-regular fa-circle-info" /></button>
+                                  </Tippy>
+                                </th>
+                                {/* {checkViewSidebar(
+                                  "Conference",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "edit"
+                                ) && <th>Edit</th>} */}
+                                {/* {checkViewSidebar(
+                                  "Conference",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "delete"
+                                ) && <th>Delete</th>} */}
                                 {checkViewSidebar(
                                   "Conference",
                                   slugPermissions,
                                   account?.sectionPermissions,
                                   account?.permissions,
                                   "edit"
-                                ) && <th>Edit</th>}
-                                {checkViewSidebar(
+                                ) || checkViewSidebar(
                                   "Conference",
                                   slugPermissions,
                                   account?.sectionPermissions,
                                   account?.permissions,
                                   "delete"
-                                ) && <th>Delete</th>}
-                                {/* <th>Action</th> */}
+                                ) ?
+                                  <th>Actions</th>
+                                  : ""}
                               </tr>
                             </thead>
                             <tbody>
@@ -480,29 +511,34 @@ function Meeting() {
                                               </div>
                                             </td>
                                             <td>
-                                              {item?.emails?.length > 0 && (
-                                                <button
-                                                  disabled={
-                                                    !item?.recording_url &&
-                                                    !item?.summary
-                                                  }
-                                                  className={`tableButton edit ${!item?.recording_url &&
-                                                    !item?.summary
-                                                    ? "disabled"
-                                                    : ""
-                                                    }`}
-                                                  onClick={() => {
-                                                    setSelectedMeeting(item);
-                                                    setSelectedEmails([]);
-                                                    setSearchQuery("");
-                                                    setSendEmailPopup(true);
-                                                  }}
-                                                >
-                                                  <i className="fa-solid fa-envelope"></i>
-                                                </button>
-                                              )}
+                                              {item?.emails?.length > 0 ? (
+                                                <Tippy content={!item?.recording_url &&
+                                                  !item?.summary ? "No Recordings or Summary Available!" : "asd"}>
+                                                  <button
+                                                    // disabled={
+                                                    //   !item?.recording_url &&
+                                                    //   !item?.summary
+                                                    // }
+                                                    className={`tableButton edit ${!item?.recording_url &&
+                                                      !item?.summary
+                                                      ? "disabled"
+                                                      : ""
+                                                      }`}
+                                                    onClick={() => {
+                                                      const disabled = !item?.recording_url && !item?.summary
+                                                      if (disabled) return
+                                                      setSelectedMeeting(item);
+                                                      setSelectedEmails([]);
+                                                      setSearchQuery("");
+                                                      setSendEmailPopup(true);
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-envelope"></i>
+                                                  </button>
+                                                </Tippy>
+                                              ) : 'N/A'}
                                             </td>
-                                            {checkViewSidebar(
+                                            {/* {checkViewSidebar(
                                               "Conference",
                                               slugPermissions,
                                               account?.sectionPermissions,
@@ -521,8 +557,8 @@ function Meeting() {
                                                     <i className="fa-solid fa-pen"></i>
                                                   </div>
                                                 </td>
-                                              )}
-                                            {checkViewSidebar(
+                                              )} */}
+                                            {/* {checkViewSidebar(
                                               "Conference",
                                               slugPermissions,
                                               account?.sectionPermissions,
@@ -540,7 +576,75 @@ function Meeting() {
                                                     <i className="fa-solid fa-trash"></i>
                                                   </div>
                                                 </td>
-                                              )}
+                                              )} */}
+                                            <td>
+                                              <div className="dropdown">
+                                                <button
+                                                  className={`tableButton`}
+                                                  href="#"
+                                                  role="button"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false"
+                                                >
+                                                  <i className="fa-solid fa-ellipsis-vertical" />
+                                                </button>
+                                                <ul className="dropdown-menu actionBtnDropdowns">
+                                                  {checkViewSidebar(
+                                                    "Conference",
+                                                    slugPermissions,
+                                                    account?.sectionPermissions,
+                                                    account?.permissions,
+                                                    "edit"
+                                                  ) && (
+                                                      <li className="dropdown-item">
+                                                        <Tippy
+                                                          content={"Edit this Room"}
+                                                        >
+                                                          <div
+                                                            className="clearButton text-align-start"
+                                                            onClick={() =>
+                                                              navigate(`/meeting-edit`, {
+                                                                state: item,
+                                                              })
+                                                            }
+                                                          >
+                                                            <i
+                                                              className={`fa-regular fa-pen me-2`}
+                                                            ></i>{" "}
+                                                            Edit
+                                                          </div>
+                                                        </Tippy>
+                                                      </li>
+                                                    )}
+                                                  {checkViewSidebar(
+                                                    "Conference",
+                                                    slugPermissions,
+                                                    account?.sectionPermissions,
+                                                    account?.permissions,
+                                                    "delete"
+                                                  ) && (
+                                                      <li className="dropdown-item">
+                                                        <Tippy
+                                                          content={"Delete this Room"}
+                                                        >
+                                                          <div
+                                                            className="clearButton text-align-start"
+                                                            onClick={() => {
+                                                              setDeleteId(item.id);
+                                                              setPopUp(true);
+                                                            }}
+                                                          >
+                                                            <i
+                                                              className={`fa-regular fa-trash me-2`}
+                                                            ></i>{" "}
+                                                            Delete
+                                                          </div>
+                                                        </Tippy>
+                                                      </li>
+                                                    )}
+                                                </ul>
+                                              </div>
+                                            </td>
                                           </tr>
                                         </>
                                       );
