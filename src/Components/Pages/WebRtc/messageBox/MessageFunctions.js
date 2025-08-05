@@ -767,7 +767,7 @@ export const receiveGroupMessage = (allNotificationState, groupMessage, setAllMe
                         time,
                         user_id: from,
                         user_name: groupMessage?.user_name,
-                        profile_picture: groupMessage?.profile_picture == "null" ? allAgents?.find((data) => data?.id == groupMessage?.sender_id)?.profile_picture : groupMessage?.profile_picture,
+                        profile_picture: groupMessage?.profile_picture,
                         message_type: groupMessage.message_type,
                     },
                 ],

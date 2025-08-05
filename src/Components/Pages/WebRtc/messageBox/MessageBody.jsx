@@ -104,8 +104,10 @@ const MessageBody = ({
     setConferenceInfo,
     setConferenceToggle,
     conferenceToggle,
-    setInternalCaller
+    setInternalCaller,
+    typingUserList
 }) => {
+
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState("")
     const [selectAll, setSelectAll] = useState(false)
@@ -943,12 +945,16 @@ const MessageBody = ({
                                         </div>
                                     </div>
                                 )}
-
-                                <GroupTyping />
-                                {/* <OneToOneTyping /> */}
+                                {
+                                    isTyping && (selectedChat == "singleChat"
+                                        ? <OneToOneTyping shouldProfileShow={false} />
+                                        : <GroupTyping shouldProfileShow={true} typingUserList={typingUserList} />)
+                                }
                             </div>
+
                             {recipient?.[0] ? (
                                 <div className="messageInput textarea_inputTab">
+
                                     {emojiOpen && (
                                         <div
                                             style={{
@@ -1062,7 +1068,7 @@ const MessageBody = ({
                                                         rows={2}
                                                         name=""
                                                         className="formItem "
-                                                        placeholder={isTyping ? "typing..." : "Please enter your message"}
+                                                        placeholder={"Please enter your message"}
                                                         value={messageInput[recipient[0]] || ""}
                                                         onChange={(e) => {
                                                             const value = e.target.value;

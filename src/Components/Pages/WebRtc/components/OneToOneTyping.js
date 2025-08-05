@@ -1,28 +1,22 @@
-import React from 'react'
-
-const OneToOneTyping = () => {
+const OneToOneTyping = ({ shouldProfileShow }) => {
   return (
-    <>
-      <div className="d-flex group_typing align-items-center px-3">
-        <div class=" d-flex">
-          <div className="profileHolder">
-            <i className="fas fa-user"></i>
+    <div className="d-flex group_typing align-items-center px-3">
+      {
+        shouldProfileShow ? (
+          <div className="d-flex">
+            <div className="profileHolder">
+              <i className="fas fa-user"></i>
+            </div>
           </div>
+        ) : null
+      }
 
-        </div>
-        {/* <div className="ms-2 ">
-          <p className='mb-0 f-s-14 ellipsisText300'>
-            <span>Webvio Technologies,</span>
-          </p>
-        </div> */}
-        <div class="d-flex gap-1 align-items-center ms-2">
-          <div class="dot dot-1"></div>
-          <div class="dot dot-2"></div>
-          <div class="dot dot-3"></div>
-        </div>
-
-      </div >
-    </>
+      <div className="d-flex gap-1 ms-2">
+        <div className="dot dot-1"></div>
+        <div className="dot dot-2"></div>
+        <div className="dot dot-3"></div>
+      </div>
+    </div>
   )
 }
 
