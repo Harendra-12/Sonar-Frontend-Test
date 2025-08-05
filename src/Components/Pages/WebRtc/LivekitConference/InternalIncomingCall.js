@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDateTime } from "../../../GlobalFunction/globalFunction";
 
@@ -20,6 +20,7 @@ function InternalIncomingCall({
   const socketSendPeerCallMessage = useSelector(
     (state) => state.socketSendPeerCallMessage
   );
+  const notificationRef = useRef(null);
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
   const internalCallAction = useSelector((state) => state.internalCallAction);
@@ -30,24 +31,34 @@ function InternalIncomingCall({
 
   const dispatch = useDispatch();
   function answerCall(item) {
-    setIsGroupCallMessageOpened(false)
-    setIsSingleCallMessageOpened(false)
+    setIsGroupCallMessageOpened(false);
+    setIsSingleCallMessageOpened(false);
     if (item?.source === "incoming_peer_group_call") {
-      const callrecipient = [item?.group_name, parseInt(item?.message_group_id), "groupChat", item?.group_name, undefined, null]
-      dispatch(({
+      const callrecipient = [
+        item?.group_name,
+        parseInt(item?.message_group_id),
+        "groupChat",
+        item?.group_name,
+        undefined,
+        null,
+      ];
+      dispatch({
         type: "SET_MESSAGERECIPIENT",
         messageRecipient: callrecipient,
-      }));
+      });
 
       setTimeout(() => {
-        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id })
-        dispatch({ type: "SET_INCOMINGCALL", incomingCall: { ...item, recieved: true, isOtherMember: true } })
+        dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+        dispatch({
+          type: "SET_INCOMINGCALL",
+          incomingCall: { ...item, recieved: true, isOtherMember: true },
+        });
       }, 1000);
-      setCalling(true)
+      setCalling(true);
       dispatch({
         type: "SET_ROOMID",
         RoomID: item?.room_id,
-      })
+      });
       socketSendPeerGroupCallMessage({
         action: "receive_peer_group_call",
         room_id: item?.room_id,
@@ -60,13 +71,19 @@ function InternalIncomingCall({
       setInternalCaller(item?.sender_id);
       setToUser(account.id);
       setCalling(true);
-      const callrecipient = [item?.sender_id, item?.sender_id, "singleChat", item?.sender_name, undefined, null]
-      dispatch(({
+      const callrecipient = [
+        item?.sender_id,
+        item?.sender_id,
+        "singleChat",
+        item?.sender_name,
+        undefined,
+        null,
+      ];
+      dispatch({
         type: "SET_MESSAGERECIPIENT",
         messageRecipient: callrecipient,
-      }));
+      });
       setTimeout(() => {
-
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
         dispatch({
           type: "SET_INCOMINGCALL",
@@ -127,7 +144,8 @@ function InternalIncomingCall({
       }
       if (
         internalCallAction?.room_id === item?.room_id &&
-        (internalCallAction?.Hangup_cause === "rejected" || internalCallAction?.status === "started")
+        (internalCallAction?.Hangup_cause === "rejected" ||
+          internalCallAction?.status === "started")
       ) {
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
@@ -137,14 +155,33 @@ function InternalIncomingCall({
   }, [internalCallAction]);
 
   useEffect(() => {
-    console.log("incomingCall", incomingCall);
-  }, []);
+    if (incomingCall?.length > 0) {
+      incomingCall.map((item) => {
+        if (document.hidden && Notification.permission === "granted") {
+          notificationRef.current = new Notification("Incoming Call", {
+            body: `Incoming Call from: ${item?.sender_name}`,
+            icon:
+              item?.sender_profile_picture ||
+              require("../../../assets/images/placeholder-image.webp"),
+          });
+
+          notificationRef.current.onclick = function () {
+            window.focus();
+          };
+        }
+      });
+    } 
+  }, [incomingCall]);
 
   return (
     <>
       {incomingCall?.length > 0 &&
         incomingCall?.map((item, key) => {
-          if (item?.sender_id && item?.sender_id != account.id && !item?.recieved) {
+          if (
+            item?.sender_id &&
+            item?.sender_id != account.id &&
+            !item?.recieved
+          ) {
             return (
               <div key={key} className="messageIncomingPopup">
                 <div className="incomingCallPopup ">
