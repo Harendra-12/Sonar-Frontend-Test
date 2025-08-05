@@ -136,7 +136,7 @@ label.status.missing {
 }
 
 .formItem.error {
-    border: 1px solid red;
+    border: 1px solid red !important;
 }
 
 label.status.missing::before {
@@ -823,4 +823,20 @@ input[type="time"]:invalid {
 .checkbox-placeholder.selectedNone {
     background-color: transparent;
     border: 1px solid var(--border-color);
+}
+
+.formLabel label.mandatory {
+    position: relative;
+}
+
+.formLabel label.mandatory::after {
+    content: '\f621';
+    font-family: 'Font Awesome 6 Pro';
+    color: red;
+    font-size: 10px;
+    font-weight: 900;
+
+    position: absolute;
+    top: -5px;
+    right: -15px;
 }

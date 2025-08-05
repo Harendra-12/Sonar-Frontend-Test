@@ -234,6 +234,24 @@ table td.incoming::after {
     display: flex;
     align-items: center;
     overflow: hidden;
+    min-width: 300px;
+    position: relative;
+}
+
+.searchBox::after {
+    content: '';
+    background-image: url('../../images/search_b.png');
+    background-size: 100% 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 70px;
+    width: 20px;
+    height: 20px;
+}
+
+.searchBox input.formItem {
+    padding-left: 35px;
 }
 
 .searchBox input[type=search] {
