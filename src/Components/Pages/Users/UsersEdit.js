@@ -67,6 +67,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     locationState?.usertype == "Company"
   );
   const [profileImage, setProfileImage] = useState(null);
+  const [passwordMask, setPasswordMask] = useState(false)
   const {
     register,
     watch,
@@ -931,13 +932,16 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               </label>
                             </div>
                             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                              <input
-                                type="text"
-                                className="formItem"
-                                name=""
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                              />
+                              <div style={{ display: "flex", alignItems: "center" }}>
+                                <input
+                                  type={passwordMask ? "text" : "password"}
+                                  className="formItem"
+                                  name=""
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <i className={`fa-solid fa-eye${passwordMask ? "" : "-slash"} position-static`} onClick={() => setPasswordMask(prev => !prev)} />
+                              </div>
                             </div>
                           </div>
                         </form>

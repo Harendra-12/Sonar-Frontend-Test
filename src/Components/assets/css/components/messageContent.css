@@ -2212,7 +2212,7 @@ abbr[title] {
     position: relative;
 }
 
-.input {
+.input-wrapper .input {
     border-style: none;
     height: 35px;
     width: 35px;
@@ -2232,13 +2232,13 @@ abbr[title] {
     font-size: 17px;
 } */
 
-.input::placeholder {
+.input-wrapper .input::placeholder {
     color: transparent;
     font-weight: 500;
     font-size: 14;
 }
 
-.icon {
+.input-wrapper .icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2255,8 +2255,8 @@ abbr[title] {
     transition: .2s linear;
 }
 
-.icon:focus~.input,
-.input:focus {
+.input-wrapper .icon:focus~.input,
+.input-wrapper .input:focus {
     box-shadow: none;
     width: 220px;
     border-radius: 0px;
@@ -2267,8 +2267,8 @@ abbr[title] {
     font-size: 14px;
 }
 
-.icon:focus~.input,
-.input:focus {
+.input-wrapper .icon:focus~.input,
+.input-wrapper .input:focus {
     box-shadow: none;
     width: 220px;
     border-radius: 0px;
@@ -2280,7 +2280,7 @@ abbr[title] {
     color: #1a1a1a;
 }
 
-.icon:focus~.input::placeholder,
-.input:focus::placeholder {
+.input-wrapper .icon:focus~.input::placeholder,
+.input-wrapper .input:focus::placeholder {
     color: #8f8f8f;
 }
