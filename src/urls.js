@@ -48,5 +48,6 @@ export const api_url = {
     UPDATE_GROUP_URL: (id) => `/chatgroups/update/${id}`,
     ADD_NEW_MEMBER_TO_GROUP_URL: `/chat-group-users/store`,
     REMOVE_USER_FROM_GROUP_URL: (id) => `/chat-group-users/destroy/${id}`,
-    DELETE_GROUP_URL: (id) => `/chatgroups/destroy/${id}`
+    DELETE_GROUP_URL: (id) => `/chatgroups/destroy/${id}`,
+    CHAT_CALLS_HISTORY_WITH_GROUP_AND_SINGLE_URL: (page_num) => `/groupcall/call-history?page=${page_num}`,
 }

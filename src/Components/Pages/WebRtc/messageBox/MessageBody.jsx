@@ -912,7 +912,7 @@ const MessageBody = ({
                                                                                 <DisplayFile item={item.body} />
                                                                                 <div className='pinBox'>
                                                                                     <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
-                                                                                        <i class="fas fa-thumbtack"></i>
+                                                                                        <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
                                                                                 </div>
                                                                             </div>

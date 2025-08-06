@@ -1,6 +1,6 @@
 const OneToOneTyping = ({ shouldProfileShow }) => {
   return (
-    <div className="d-flex group_typing align-items-center px-3">
+    <div className="d-flex typingLoader_wrap align-items-center px-3">
       {
         shouldProfileShow ? (
           <div className="d-flex">
