@@ -20,6 +20,7 @@ import {
 } from './MessageFunctions';
 import GroupTyping from '../components/GroupTyping';
 import OneToOneTyping from '../components/OneToOneTyping';
+import TypingLoader from '../components/TypingLoader';
 
 
 
@@ -517,6 +518,22 @@ const MessageBody = ({
                             </option>
                           </select>
                         </div> */}
+                                    {/* <div class="clearButton_search">
+                                        <input checked="" class="checkbox" type="checkbox" />
+                                        <div class="mainbox">
+                                            <div class="iconContainer">
+                                                <i class="fa-regular fa-magnifying-glass"></i>
+                                            </div>
+                                            <input class="search_input" placeholder="search" type="text" />
+                                        </div>
+                                    </div> */}
+
+                                    <div class="input-wrapper">
+                                        <button className="icon">
+                                            <i className="fa-regular fa-magnifying-glass"></i>
+                                        </button>
+                                        <input placeholder="search.." className="input clearButton2" name="text" type="text" />
+                                    </div>
                                     {selectedChat === "groupChat" ? (
                                         <button
                                             onClick={() => {
@@ -679,6 +696,13 @@ const MessageBody = ({
                                             </li>
                                         </ul>
                                     </div>
+                                    {/* <button
+                                        className="clearButton2"
+                                        effect="ripple"
+                                    >
+                                        <i class="fa-regular fa-magnifying-glass"></i>
+                                    </button> */}
+
                                 </div>
                             </div>
                         ) : (
@@ -1062,75 +1086,82 @@ const MessageBody = ({
                                     📎 {selectedFile.name}
                                   </div>
                                 )} */}
-                                                <div className="w-100">
-                                                    <textarea
-                                                        type="text"
-                                                        rows={2}
-                                                        name=""
-                                                        className="formItem "
-                                                        placeholder={"Please enter your message"}
-                                                        value={messageInput[recipient[0]] || ""}
-                                                        onChange={(e) => {
-                                                            const value = e.target.value;
-                                                            const wordCount = value
-                                                                .trim()
-                                                                .split(/\s+/)
-                                                                .filter(Boolean).length;
-                                                            if (value.trim() === "") {
-                                                                setMessageInput((prev) => {
-                                                                    const updated = { ...prev };
-                                                                    delete updated[recipient[0]];
-                                                                    return updated;
-                                                                });
-                                                                return;
-                                                            }
-                                                            if (!isTypingRef.current) {
-                                                                handleTypingEvent(socketSendMessage, account, recipient, true);
-                                                                isTypingRef.current = true;
-                                                            }
+                                                <div className={`w-100 ${messageInput[recipient[0]] === 'Generating Ai response...' ? 'aiGenResponse' : ''}`}>
+                                                    <div className="animated-border-box-glow">
+                                                        <div className="textarea-border-wrapper position-relative">
+                                                            <textarea
+                                                                type="text"
+                                                                rows={2}
+                                                                name=""
+                                                                className="formItem animated-textarea"
+                                                                placeholder={"Please enter your message"}
+                                                                value={messageInput[recipient[0]] || ""}
+                                                                onChange={(e) => {
+                                                                    const value = e.target.value;
+                                                                    const wordCount = value
+                                                                        .trim()
+                                                                        .split(/\s+/)
+                                                                        .filter(Boolean).length;
+                                                                    if (value.trim() === "") {
+                                                                        setMessageInput((prev) => {
+                                                                            const updated = { ...prev };
+                                                                            delete updated[recipient[0]];
+                                                                            return updated;
+                                                                        });
+                                                                        return;
+                                                                    }
+                                                                    if (!isTypingRef.current) {
+                                                                        handleTypingEvent(socketSendMessage, account, recipient, true);
+                                                                        isTypingRef.current = true;
+                                                                    }
 
-                                                            // Reset typing timeout
-                                                            if (typingTimeoutRef.current) {
-                                                                clearTimeout(typingTimeoutRef.current);
-                                                            }
+                                                                    // Reset typing timeout
+                                                                    if (typingTimeoutRef.current) {
+                                                                        clearTimeout(typingTimeoutRef.current);
+                                                                    }
 
-                                                            typingTimeoutRef.current = setTimeout(() => {
-                                                                handleTypingEvent(socketSendMessage, account, recipient, false);
-                                                                isTypingRef.current = false;
-                                                            }, 5000);
+                                                                    typingTimeoutRef.current = setTimeout(() => {
+                                                                        handleTypingEvent(socketSendMessage, account, recipient, false);
+                                                                        isTypingRef.current = false;
+                                                                    }, 5000);
 
-                                                            if (wordCount <= 7000) {
-                                                                setMessageInput((prev) => ({
-                                                                    ...prev,
-                                                                    [recipient[0]]: value,
-                                                                }));
-                                                            } else {
-                                                                toast.warn("Text is too long!");
-                                                            }
-                                                            // setUnreadMessage((prevState) => {
-                                                            //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
-                                                            //     prevState;
-                                                            //   return newState;
-                                                            // });
-                                                        }}
-                                                        // onClick={() => {
-                                                        //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
-                                                        //   setUnreadMessage((prevState) => {
-                                                        //     const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
-                                                        //       prevState;
-                                                        //     return newState;
-                                                        //   });
-                                                        // }}
-                                                        onKeyDown={(e) => {
-                                                            if (e.key === "Enter") {
-                                                                if (recipient?.[2] === "groupChat") {
-                                                                    sendGroupMessage();
-                                                                } else {
-                                                                    sendSingleMessage();
-                                                                }
-                                                            }
-                                                        }}
-                                                    />
+                                                                    if (wordCount <= 7000) {
+                                                                        setMessageInput((prev) => ({
+                                                                            ...prev,
+                                                                            [recipient[0]]: value,
+                                                                        }));
+                                                                    } else {
+                                                                        toast.warn("Text is too long!");
+                                                                    }
+                                                                    // setUnreadMessage((prevState) => {
+                                                                    //   const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+                                                                    //     prevState;
+                                                                    //   return newState;
+                                                                    // });
+                                                                }}
+                                                                // onClick={() => {
+                                                                //   console.log('bbbbbbbbbbb hello abc', unreadMessage)
+                                                                //   setUnreadMessage((prevState) => {
+                                                                //     const { [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: _, ...newState } =
+                                                                //       prevState;
+                                                                //     return newState;
+                                                                //   });
+                                                                // }}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === "Enter") {
+                                                                        if (recipient?.[2] === "groupChat") {
+                                                                            sendGroupMessage();
+                                                                        } else {
+                                                                            sendSingleMessage();
+                                                                        }
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <div className='typingLoader'>
+                                                                <TypingLoader />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div
