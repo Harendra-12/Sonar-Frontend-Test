@@ -109,8 +109,9 @@ function MeetingEdit() {
         ...(watch().conf_type == "internal" && addedUsers.length > 0
           ? { users: addedUsers.map((user) => user.id) }
           : {}),
-        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants })
+        ...(participants.length == 1 && participants[0].length == 0 ? "" : { emails: participants }),
         // emails: participants
+        ...(initialData.conf_scheduled == 1 ? { conf_scheduled: 1, conf_start_time: convertDateTimeLocalToIST(initialData.conf_start_time), conf_end_time: convertDateTimeLocalToIST(initialData.conf_end_time) } : { conf_scheduled: 0 }),
       };
       const apiData = await generalPutFunction(
         `/conference/${id}`,
