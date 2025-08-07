@@ -77,11 +77,12 @@ const GoPeerCallSocket = () => {
                     switch (key) {
                         case "peercallInitiate":
                             dispatch({ type: "SET_INCOMINGCALL", incomingCall: result });
+                            dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: result });
                             break;
                         case "peercallUpdate":
                             dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: result, });
                             if(result?.status == "started"){
-                                dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: result, });
+                                dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: result });
                             }
                             break;
                         default:
