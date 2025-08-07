@@ -970,11 +970,10 @@ const MessageBody = ({
                                     </div>
                                 )}
                                 {
-                                    !isTyping && (selectedChat == "singleChat"
+                                    isTyping && (selectedChat == "singleChat"
                                         ? <OneToOneTyping shouldProfileShow={false} />
                                         : <GroupTyping shouldProfileShow={true} typingUserList={typingUserList} />)
                                 }
-                                <GroupTyping shouldProfileShow={true} typingUserList={typingUserList} />
                             </div>
 
                             {recipient?.[0] ? (
