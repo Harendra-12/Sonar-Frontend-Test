@@ -1,9 +1,10 @@
+import TypingLoader from "./TypingLoader"
 
 
 const GroupTyping = ({ shouldProfileShow, typingUserList }) => {
   return (
     <>
-      <div className="d-flex group_typing align-items-center px-3">
+      <div className="d-flex group_typing align-items-center px-3 py-1">
         {shouldProfileShow && (
           <div className="d-flex align-items-center">
             {/* Profile icons */}
@@ -46,11 +47,12 @@ const GroupTyping = ({ shouldProfileShow, typingUserList }) => {
         )}
 
 
-        <div class="d-flex gap-1 align-items-center ms-2">
+        {/* <div class="d-flex gap-1 align-items-center ms-2">
           <div class="dot dot-1"></div>
           <div class="dot dot-2"></div>
           <div class="dot dot-3"></div>
-        </div>
+        </div> */}
+        <TypingLoader />
 
       </div >
     </>

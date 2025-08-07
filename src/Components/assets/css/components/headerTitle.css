@@ -213,12 +213,16 @@
   font-size: 10px;
 }
 
+.profile_image {
+  overflow: unset !important;
+}
+
 .profilePhotoEditIcon {
   position: absolute;
   bottom: 0;
   right: 0;
   color: white;
-  /* background-color: #3F51B5; */
+  background-color: #3F51B5;
   height: 23px;
   width: 23px;
   display: flex;
