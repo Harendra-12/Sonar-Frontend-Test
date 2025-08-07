@@ -7,6 +7,7 @@ import { getAllMessageApiFun, handleDeleteTag, handleGroupSearchChange, handleMe
 import { useEffect } from 'react';
 import OneToOneTyping from '../components/OneToOneTyping';
 import GroupTyping from '../components/GroupTyping';
+import TypingLoader from '../components/TypingLoader';
 
 const MessageContactList = ({
     setRecipient,
@@ -513,7 +514,10 @@ const MessageContactList = ({
                                                             recipient?.[0] != item?.id) ?
                                                             typingDetailState?.key == "typing_status"
                                                             &&
-                                                            <OneToOneTyping shouldProfileShow={false} />
+                                                            <div className="my-2">
+                                                                <TypingLoader/>
+                                                            </div>
+
                                                             : (
                                                                 <h5>
                                                                     {isOnlyLink(item?.last_message_data?.message_text)
