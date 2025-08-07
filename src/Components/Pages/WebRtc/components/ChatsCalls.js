@@ -21,7 +21,7 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
             <div className="chatCalls_wrap callList" ref={callListRef} onScroll={handleScroll} style={{ height: "calc(100vh - 266px)" }}>
                 {callHistory && callHistory.length > 0 ?
                     callHistory.map((item, index) => {
-                        const alternateUser = (item.room_id.split("-")[0] == account.id) ? item.receiver : item.sender;
+                        const alternateUser = (item.room_id.split("-")[0] == account.id) ? item.receiver_id : item.sender_id;
                         return (
                             <>
                                 <div className="contactListItem align-items-center" key={index}>
@@ -31,18 +31,18 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                                 className="profileHolder"
                                                 id={
                                                     onlineUser.find(
-                                                        (user) => user?.id === alternateUser?.id
+                                                        (user) => user?.id === alternateUser
                                                     )
                                                         ? "profileOnlineNav"
                                                         : "profileOfflineNav"
                                                 }
                                             >
-                                                {item?.receiver?.profile_picture || item?.sender?.profile_picture ? (
+                                                {item?.type == "chat" ? item?.receiver_profile_pic || item?.sender_profile_pic ? (
                                                     <img
                                                         src={
                                                             item?.sender_id == account?.id
-                                                                ? item?.receiver?.profile_picture || require("../../../assets/images/placeholder-image.webp")
-                                                                : item?.sender?.profile_picture || require("../../../assets/images/placeholder-image.webp")
+                                                                ? item?.receiver_profile_pic || require("../../../assets/images/placeholder-image.webp")
+                                                                : item?.sender_profile_pic || require("../../../assets/images/placeholder-image.webp")
                                                         }
                                                         alt="profile"
                                                         onError={(e) =>
@@ -50,25 +50,27 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                                     />
                                                 ) : (
                                                     <i className="fa-light fa-user fs-5"></i>
-                                                )}
+                                                ) :
+                                                    <i className="fa-light fa-users fs-5"></i>
+                                                }
                                             </div>
                                             <div className="my-auto ms-2 ms-xl-3 callDetailsWidth">
-                                                <p className='justify-content-start ellipsisText'>{item?.sender_id == account?.id ? item?.receiver?.name : item?.sender?.name}
+                                                <p className='justify-content-start ellipsisText'>{item?.type == "chat" ? item?.sender_id == account?.id ? item?.receiver_name : item?.sender_name : item?.name}
                                                     <span className={`missedCallArrow text-${item?.hangup_cause === "originator_cancel" ? 'danger' : 'success'} ms-2`}>
                                                         <i className={`fa-regular fa-arrow-${item?.receiver_id == account?.id ? "down-left" : "up-right"}`}></i>
                                                     </span>
                                                 </p>
-                                                <h5>{item?.created?.split(" ")[0]}, {formatTimeWithAMPM(item?.created?.split(" ")[1])}</h5>
+                                                <h5>{item?.created_at?.split(" ")[0]}, {formatTimeWithAMPM(item?.created_at?.split(" ")[1])}</h5>
                                             </div>
                                             <div className="col text-end d-flex justify-content-end align-items-center" onClick={() => {
                                                 setMeetingPage("message");
-                                                setToUser(item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id);
+                                                setToUser(item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id);
                                                 setCalling(true);
                                                 socketSendMessage({
                                                     action: "peercallInitiate",
                                                     from: account.id,
-                                                    to: item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id,
-                                                    room_id: `${account.id}-${item?.sender_id == account?.id ? item?.receiver?.id : item?.sender?.id}`,
+                                                    to: item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id,
+                                                    room_id: `${account.id}-${item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id}`,
                                                     call_type: `audio`,
                                                 });
 

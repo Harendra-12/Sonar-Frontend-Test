@@ -1,6 +1,8 @@
+import TypingLoader from "./TypingLoader"
+
 const OneToOneTyping = ({ shouldProfileShow }) => {
   return (
-    <div className="d-flex group_typing align-items-center px-3">
+    <div className="d-flex typingLoader_wrap align-items-center px-3">
       {
         shouldProfileShow ? (
           <div className="d-flex">
@@ -11,11 +13,7 @@ const OneToOneTyping = ({ shouldProfileShow }) => {
         ) : null
       }
 
-      <div className="d-flex gap-1 ms-2">
-        <div className="dot dot-1"></div>
-        <div className="dot dot-2"></div>
-        <div className="dot dot-3"></div>
-      </div>
+      <TypingLoader />
     </div>
   )
 }

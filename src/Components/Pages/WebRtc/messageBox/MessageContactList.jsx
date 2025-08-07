@@ -7,6 +7,7 @@ import { getAllMessageApiFun, handleDeleteTag, handleGroupSearchChange, handleMe
 import { useEffect } from 'react';
 import OneToOneTyping from '../components/OneToOneTyping';
 import GroupTyping from '../components/GroupTyping';
+import TypingLoader from '../components/TypingLoader';
 
 const MessageContactList = ({
     setRecipient,
@@ -513,7 +514,10 @@ const MessageContactList = ({
                                                             recipient?.[0] != item?.id) ?
                                                             typingDetailState?.key == "typing_status"
                                                             &&
-                                                            <OneToOneTyping shouldProfileShow={false} />
+                                                            <div className="my-2">
+                                                                <TypingLoader />
+                                                            </div>
+
                                                             : (
                                                                 <h5>
                                                                     {isOnlyLink(item?.last_message_data?.message_text)
@@ -656,31 +660,40 @@ const MessageContactList = ({
                                               <span data-id="3">Priority</span>
                                             </div> */}
                                                         {/* here we are showing recent group message */}
-                                                        <h5 className="f-s-14 text-gray">
+                                                        <h5 className="f-s-14 text-gray d-flex align-items-center">
                                                             {/* here showing last send message below of contact name for group*/}
-                                                            {allAgents?.find(
-                                                                (data) =>
-                                                                    data?.id ==
-                                                                    item?.last_message_data?.user_id
-                                                            )?.username && (
+                                                            {
+                                                                typingDetailState?.result?.group_id === item?.id ? (
                                                                     <span className="text-info fw-normal f-s-14">
                                                                         {
-                                                                            allAgents?.find(
-                                                                                (data) =>
-                                                                                    data?.id ==
-                                                                                    item?.last_message_data
-                                                                                        ?.user_id
-                                                                            )?.username
+                                                                            allAgents?.find(agent => agent?.id === typingDetailState?.result?.user_id)?.username
                                                                         }
                                                                     </span>
-                                                                )}
-                                                            {(typingDetailState?.result?.group_id === item?.id &&
-                                                                recipient?.[1] != item?.id) &&
-                                                                <GroupTyping shouldProfileShow={false} />
+                                                                ) : (
+                                                                    allAgents?.find(agent => agent?.id === item?.last_message_data?.user_id)?.username && (
+                                                                        <span className="text-info fw-normal f-s-14">
+                                                                            {
+                                                                                allAgents?.find(agent => agent?.id === item?.last_message_data?.user_id)?.username
+                                                                            }
+                                                                        </span>
+                                                                    )
+                                                                )
                                                             }
-                                                            {item?.last_message_data
-                                                                ?.message_text && ":"}{" "}
-                                                            {item?.last_message_data?.message_text}
+
+                                                            <span className='d-flex align-items-center'>
+                                                                {typingDetailState?.result?.group_id === item?.id ? (
+                                                                    typingDetailState?.result?.group_id === item?.id &&
+                                                                        recipient?.[1] !== item?.id ? (
+                                                                        <> : <TypingLoader /></>
+                                                                    ) : null
+                                                                ) : (
+                                                                    item?.last_message_data?.message_text && (
+                                                                        <>
+                                                                            : {item.last_message_data.message_text}
+                                                                        </>
+                                                                    )
+                                                                )}
+                                                            </span>
                                                         </h5>
                                                     </div>
                                                 </div>{" "}
@@ -914,7 +927,6 @@ const MessageContactList = ({
                             setCalling={setCalling}
                             socketSendMessage={socketSendPeerCallMessage}
                             account={account}
-                            formatRelativeTime={formatRelativeTime}
                             onlineUser={onlineUser}
                             callHistory={internalCallHistory}
                             pageNumber={internalCallsPageNumber}
