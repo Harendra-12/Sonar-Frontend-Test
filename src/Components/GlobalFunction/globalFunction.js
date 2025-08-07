@@ -756,7 +756,6 @@ export function formatRelativeTime(dateString) {
     const now = new Date();
     const date = new Date(dateString);
 
-    // Calculate the diff in milliseconds (no need to convert to local strings for diff)
     const diffMs = now.getTime() - date.getTime();
     const diffSeconds = Math.floor(diffMs / 1000);
 
@@ -766,16 +765,29 @@ export function formatRelativeTime(dateString) {
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
 
-    // For "Yesterday" or date format, convert date to target timezone for display
+    // Format the time part (hour and minute with AM/PM)
+    const formattedTime = new Date(
+      date.toLocaleString("en-US", { timeZone })
+    ).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone,
+    });
+
     if (diffDays >= 1) {
-      if (diffDays === 1) return "Yesterday";
-      return new Date(
+      if (diffDays === 1) {
+        return `Yesterday at ${formattedTime}`;
+      }
+      const formattedDate = new Date(
         date.toLocaleString("en-US", { timeZone })
       ).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: diffDays >= 365 ? "numeric" : undefined,
+        timeZone,
       });
+      return `${formattedDate} at ${formattedTime}`;
     } else if (diffHours >= 1) {
       return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
     } else if (diffMinutes >= 1) {
