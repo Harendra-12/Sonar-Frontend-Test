@@ -1721,7 +1721,7 @@ function CallCenterQueueEdit() {
                                     </style>
                                   )}
                                   <div
-                                    className="formLabel pe-2 m-0 d-flex justify-content-between"
+                                    className="formLabel pe-2 mb-2 m-0 d-flex justify-content-between"
                                     style={{ width: "40px" }}
                                     id={index === 0 && "canDo"}
                                   >
@@ -1745,7 +1745,7 @@ function CallCenterQueueEdit() {
                                       }`}
                                   >
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6" : " col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6"
+                                      className={`${advance.includes(item.id) ? "col-xxl-5 col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6 mb-2" : " col-xxl-5 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 mb-2"
                                         } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
@@ -1777,7 +1777,7 @@ function CallCenterQueueEdit() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6" : "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6"
+                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2"
                                         } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
@@ -1799,7 +1799,7 @@ function CallCenterQueueEdit() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-1 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6" : "col-xxl-1 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6"
+                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2"
                                         } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
@@ -1832,7 +1832,7 @@ function CallCenterQueueEdit() {
                                       </select>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6" : "col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6"
+                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2"
                                         } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
@@ -1866,7 +1866,7 @@ function CallCenterQueueEdit() {
                                     </div>
                                     {advance.includes(item.id) && (
                                       <>
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           {index === 0 && (
                                             <div className="formLabel">
                                               <label htmlFor="">
@@ -1892,7 +1892,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           {index === 0 && (
                                             <div className="formLabel">
                                               <label htmlFor="">
@@ -1918,7 +1918,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           {index === 0 && (
                                             <div className="formLabel">
                                               <label htmlFor="">
@@ -1944,7 +1944,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <label htmlFor="">
@@ -1972,7 +1972,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <label htmlFor="">
@@ -2001,7 +2001,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <label htmlFor="">
@@ -2029,7 +2029,7 @@ function CallCenterQueueEdit() {
                                           </div>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <label htmlFor="">
@@ -2054,7 +2054,7 @@ function CallCenterQueueEdit() {
                                           </select>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <Tippy content="Truncate agents on load">
@@ -2083,7 +2083,7 @@ function CallCenterQueueEdit() {
                                           </select>
                                         </div>
 
-                                        <div className="col-2 ps-0 pe-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-8 ps-0 pe-2 mb-2">
                                           <div className="formLabel">
                                             {index === 0 ? (
                                               <Tippy content="Truncate tiers on load">
