@@ -73,41 +73,35 @@ export const getAllMessageApiFun = async (pageNumb, recipient, messageListRef, s
     }
     setPageLoader(false)
     apiData?.data?.data?.map((item) => {
-        const user_details = allAgents?.find(
-            (data) => data?.id == item?.user_id
-        );
 
         const key = recipient?.[2] === "singleChat" ? recipient?.[1] : recipient?.[0];
 
-        // Format all the incoming messages
-        const formattedMessages = apiData?.data?.data.map((item) => ({
-            ...item,
-            from: item.user_id,
-            body: item?.message_text,
-            time: formatDateTime(item.created_at),
-            user_id: item.user_id,
-            user_name: user_details?.username,
-            profile_picture: user_details?.profile_picture,
-            message_type: item.message_type,
-        }));
+        const formattedMessages = apiData?.data?.data.map((item) => {
+            const user_details = allAgents?.find(agent => agent?.id == item?.user_id);
+            return {
+                ...item,
+                from: item.user_id,
+                body: item?.message_text,
+                time: formatDateTime(item.created_at),
+                user_id: item.user_id,
+                user_name: user_details?.username,
+                profile_picture: user_details?.profile_picture,
+                message_type: item.message_type,
+            };
+        });
 
-        // Sort messages from oldest to newest (so they show correctly in chat)
         const sortedMessages = formattedMessages.sort(
             (a, b) => new Date(a.created_at) - new Date(b.created_at)
         );
 
         setAllMessage((prevState) => {
             if (pageNumb === 1) {
-                // First page — replace messages
                 return {
                     ...prevState,
                     [key]: sortedMessages,
                 };
             } else {
-                // Later pages — prepend older messages to existing ones
                 const existing = prevState[key] || [];
-
-                // Avoid duplicates (optional safety check by message ID)
                 const existingIds = new Set(existing.map((msg) => msg.id));
                 const uniqueNewMessages = sortedMessages.filter((msg) => !existingIds.has(msg.id));
 
@@ -119,31 +113,25 @@ export const getAllMessageApiFun = async (pageNumb, recipient, messageListRef, s
         });
 
 
-        // const key = recipient?.[2] === "singleChat" ? recipient?.[1] : recipient?.[0];
-        // const formattedMessages = apiData?.data?.data?.map((item) => ({
-        //     ...item,
-        //     from: item.user_id,
-        //     body: item?.message_text,
-        //     time: formatDateTime(item.created_at),
-        //     user_id: item.user_id,
-        //     user_name: user_details?.username,
-        //     profile_picture: user_details?.profile_picture,
-        //     message_type: item.message_type,
-        // }));
 
-        // setAllMessage((prevState) => {
-        //     if (pageNumb === 1) {
-        //         return {
-        //             ...prevState,
-        //             [key]: formattedMessages,
-        //         };
-        //     } else {
-        //         return {
-        //             ...prevState,
-        //             [key]: [...formattedMessages, ...(prevState[key] || [])],
-        //         };
-        //     }
-        // });
+        // setAllMessage((prevState) => ({
+        //     ...prevState,
+        //     [recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]]: [
+        //         {
+        //             ...item,
+        //             from: item.user_id,
+        //             body: item?.message_text,
+        //             time: formatDateTime(item.created_at),
+        //             user_id: item.user_id,
+        //             user_name: user_details?.username,
+        //             profile_picture: user_details?.profile_picture,
+        //             message_type: item.message_type,
+        //         },
+        //         ...(prevState[
+        //             recipient?.[2] == "singleChat" ? recipient?.[1] : recipient?.[0]
+        //         ] || []),
+        //     ],
+        // }));
 
     });
     if (apiData?.status) {
