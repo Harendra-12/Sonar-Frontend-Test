@@ -1091,6 +1091,7 @@
     padding: 0px 7px;
     font-size: 0.625rem !important;
     margin: 0px 2px 0 0 !important;
+    white-space: nowrap;
 }
 
 .webrtc_newMessageUi .contactTags span.more {
