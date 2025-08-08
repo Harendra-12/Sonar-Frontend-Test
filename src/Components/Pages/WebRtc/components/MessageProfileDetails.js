@@ -22,6 +22,7 @@ const MessageProfileDetails = ({
   isVideoOn,
   setConferenceToggle,
   conferenceToggle,
+  setInternalCaller
 }) => {
   const dispatch = useDispatch()
   const [allFiles, setAllFiles] = useState([]);
@@ -224,6 +225,7 @@ const MessageProfileDetails = ({
         "group_name": recipient[0],
         "user_id": account?.id,
       })
+      setInternalCaller(account?.id)
       setToUser(recipient[1])
       setCalling(true)
       setIsConferenceCall(false);

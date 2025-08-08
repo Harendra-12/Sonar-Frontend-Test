@@ -61,7 +61,9 @@ function Messages({
   conferenceToggle,
   setInternalCaller,
   isGroupCallMessageOpened,
-  isSingleCallMessageOpened
+  isSingleCallMessageOpened,
+  selectedChat,
+  setSelectedChat,
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -92,7 +94,6 @@ function Messages({
   const [contact, setContact] = useState([]);
   const [originalContact, setOriginalContact] = useState([]);
   const [recipient, setRecipient] = useState([]);
-  const [selectedChat, setSelectedChat] = useState("singleChat");
   const [chatHistory, setChatHistory] = useState([]);
   const [loadMore, setLoadMore] = useState(1);
   const [activeTab, setActiveTab] = useState("all");

@@ -136,6 +136,7 @@ const MessageBody = ({
             "group_name": recipient[0],
             "user_id": account?.id,
         })
+        setInternalCaller(account?.id)
         setToUser(recipient[1])
         setCalling(true)
         setIsConferenceCall(false);
@@ -147,18 +148,18 @@ const MessageBody = ({
         } catch (err) {
             console.log(err)
         } finally {
-            setConferenceInfo({
-                room_id: `${account.id}-${recipient?.[1]}`,
-                extension_id: account?.extension_id,
-                name: account?.username,
-                setactivePage: setactivePage,
-                activePage: activePage,
-                setConferenceToggle: setConferenceToggle,
-                conferenceToggle: conferenceToggle,
-                conferenceId: "",
-                pin: "",
-                isVideoOn: isVideoOn,
-            })
+            // setConferenceInfo({
+            //     room_id: `${account.id}-${recipient?.[1]}`,
+            //     extension_id: account?.extension_id,
+            //     name: account?.username,
+            //     setactivePage: setactivePage,
+            //     activePage: activePage,
+            //     setConferenceToggle: setConferenceToggle,
+            //     conferenceToggle: conferenceToggle,
+            //     conferenceId: "",
+            //     pin: "",
+            //     isVideoOn: isVideoOn,
+            // })
             setTimeout(() => {
                 setCalling(true);
             }, 1000)
@@ -1754,6 +1755,7 @@ const MessageBody = ({
                                         isVideoOn={isVideoOn}
                                         setConferenceToggle={setConferenceToggle}
                                         conferenceToggle={conferenceToggle}
+                                        setInternalCaller={setInternalCaller}
                                     />
                                 ) : (
                                     ""

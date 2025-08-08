@@ -22,7 +22,8 @@ function InitiateCall({
   isConferenceAdmin,
   conferenceInfo,
   setIsGroupCallMessageOpened,
-  setIsSingleCallMessageOpened
+  setIsSingleCallMessageOpened,
+  setInternalCaller
 }) {
   const dispatch = useDispatch();
   const [token, setToken] = useState(null);
@@ -157,6 +158,7 @@ function InitiateCall({
           setIsMinimize={setInterCallMinimize}
           isConferenceCall={isConferenceCall}
           conferenceInfo={conferenceInfo}
+          setInternalCaller={setInternalCaller}
         />
       ) : (
         ""

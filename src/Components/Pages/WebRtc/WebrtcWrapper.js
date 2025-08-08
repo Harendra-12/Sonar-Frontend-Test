@@ -614,9 +614,9 @@ const WebrtcWrapper = () => {
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} setSelectedModule={setSelectedModule}
-          isMicOn={isMicOn}
-          isVideoOn={isVideoOn}
-          allContact={allContact} />
+            isMicOn={isMicOn}
+            isVideoOn={isVideoOn}
+            allContact={allContact} />
         )}
         {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
@@ -995,6 +995,7 @@ const WebrtcWrapper = () => {
               conferenceInfo={conferenceInfo}
               setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
               setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
+              setInternalCaller={setInternalCaller}
             />
           </div>
         </Rnd>
@@ -1016,6 +1017,8 @@ const WebrtcWrapper = () => {
         setConferenceId={setConferenceId}
         setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
         setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
+        selectedChat={selectedChat}
+        setSelectedChat={setSelectedChat}
       />
     </>
   );

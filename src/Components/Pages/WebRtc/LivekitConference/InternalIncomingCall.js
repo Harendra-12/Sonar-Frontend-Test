@@ -16,6 +16,8 @@ function InternalIncomingCall({
   setConferenceId,
   setIsGroupCallMessageOpened,
   setIsSingleCallMessageOpened,
+  selectedChat,
+  setSelectedChat,
 }) {
   const socketSendPeerCallMessage = useSelector(
     (state) => state.socketSendPeerCallMessage
@@ -67,6 +69,7 @@ function InternalIncomingCall({
         group_name: item?.group_name,
         user_id: item?.receiver_id,
       });
+      setSelectedChat("groupChat")
     } else {
       setInternalCaller(item?.sender_id);
       setToUser(account.id);
@@ -98,6 +101,7 @@ function InternalIncomingCall({
         duration: "",
         status: "started",
       });
+      setSelectedChat("singleChat")
     }
   }
 
@@ -131,6 +135,7 @@ function InternalIncomingCall({
         status: "ended",
       });
     }
+    setCalling(false)
   }
 
   useEffect(() => {
@@ -154,40 +159,40 @@ function InternalIncomingCall({
     console.log(internalCallAction, "internalCallAction");
   }, [internalCallAction]);
 
- // create audio only once
-const audioRef = useRef(new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3")));
+  // create audio only once
+  const audioRef = useRef(new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3")));
 
-useEffect(() => {
-  const audio = audioRef.current;
-  audio.loop = true;
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.loop = true;
 
-  if (incomingCall?.length > 0) {
-    // notification logic
-    incomingCall.forEach((item) => {
-      if (document.hidden && Notification.permission === "granted") {
-        notificationRef.current = new Notification("Incoming Call", {
-          body: `Incoming Call from: ${item?.sender_name}`,
-          icon:
-            item?.sender_profile_picture ||
-            require("../../../assets/images/placeholder-image.webp"),
-        });
+    if (incomingCall?.length > 0) {
+      // notification logic
+      incomingCall.forEach((item) => {
+        if (document.hidden && Notification.permission === "granted") {
+          notificationRef.current = new Notification("Incoming Call", {
+            body: `Incoming Call from: ${item?.sender_name}`,
+            icon:
+              item?.sender_profile_picture ||
+              require("../../../assets/images/placeholder-image.webp"),
+          });
 
-        notificationRef.current.onclick = () => window.focus();
+          notificationRef.current.onclick = () => window.focus();
+        }
+      });
+
+      // only play if not already playing
+      if (audio.paused) {
+        audio.play().catch((err) => console.error(err));
       }
-    });
-
-    // only play if not already playing
-    if (audio.paused) {
-      audio.play().catch((err) => console.error(err));
+    } else {
+      // stop & reset
+      if (!audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     }
-  } else {
-    // stop & reset
-    if (!audio.paused) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  }
-}, [incomingCall]);
+  }, [incomingCall]);
 
 
 

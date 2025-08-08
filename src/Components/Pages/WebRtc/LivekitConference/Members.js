@@ -42,7 +42,8 @@ function Members({
   setCalling,
   isConferenceCall,
   socketMessage,
-  conferenceInfo
+  conferenceInfo,
+  setInternalCaller
 }) {
   const room = useRoomContext();
   const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
@@ -181,11 +182,11 @@ function Members({
           "ended_by": account?.name,
           "group_call_id": parseInt(incomingGroupCall?.message_group_id),
           "group_call_uuid": incomingGroupCall?.uuid,
-
-
         })
         dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {} })
+        setCalling(false)
       } else {
+        setInternalCaller(account?.id)
         console.log(
           "currentCallRoom",
           incomingCall.filter((item) => item?.room_id === roomName),
