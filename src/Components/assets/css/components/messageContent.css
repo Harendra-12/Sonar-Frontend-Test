@@ -78,7 +78,7 @@
     border-bottom: 1px solid var(--me-border1);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
 }
 
@@ -2209,7 +2209,8 @@ abbr[title] {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    position: relative;
+    position: absolute;
+    right: 78px;
 }
 
 .input-wrapper .input {
