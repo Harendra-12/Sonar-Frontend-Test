@@ -73,7 +73,7 @@ const RingGroup = () => {
       }
       return setActiveCallData(activeCallFilterData);
     }
-  }, [ringGroup, activeCall]);
+  }, [ringGroup]);
 
   // Agent Edit
   const handleAgentClick = async (item) => {

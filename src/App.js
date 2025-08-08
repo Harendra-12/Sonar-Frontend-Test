@@ -209,6 +209,7 @@ import ClickToCallReport from "./Components/Pages/Reports/ClickToCallReport";
 import GoConferenceNotificationSocket from "./Components/GlobalFunction/GoConferencenNotificationSocket";
 import RecordingPage from "./Components/RecordingPage";
 import ErrorBoundary from "./ErrorBoundaryWithoutNavigate";
+import DashboardData from "./Components/GlobalFunction/DashboardData";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -244,6 +245,7 @@ function App() {
   GoConferenceNotificationSocket();
   GoSocket();
   GoSocketActiveCall();
+  DashboardData();
   useEffect(() => {
     dispatch({ type: "SET_SOCKETSENDMESSAGE", socketSendMessage: sendMessage });
   }, [GoMessageSocket]);

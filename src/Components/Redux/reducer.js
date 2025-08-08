@@ -108,6 +108,7 @@ var messageRecipient = []
 var onGoingCallInfo = []
 var typingDetails = false;
 var socketSendPeerGroupCallMessage = [];
+var realTimePbxDashboardData = [];
 
 const initialState = {
   account,
@@ -215,7 +216,8 @@ const initialState = {
   messageRecipient,
   onGoingCallInfo,
   typingDetails,
-  socketSendPeerGroupCallMessage
+  socketSendPeerGroupCallMessage,
+  realTimePbxDashboardData,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -537,6 +539,9 @@ const counterReducer = (state = initialState, action) => {
     }
     case "ON_GOING_CALL_INFO": {
       return { ...state, onGoingCallInfo: action.onGoingCallInfo }
+    }
+    case "SET_ONLINEDASHBOARD_DATA": {
+      return { ...state, realTimePbxDashboardData: action.realTimePbxDashboardData }
     }
     default:
       return state;

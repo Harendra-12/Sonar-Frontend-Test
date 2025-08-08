@@ -6,6 +6,7 @@ import { act } from "react";
 
 function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
+    const realTimePbxDashboardData = useSelector((state)=>state.realTimePbxDashboardData)
   const activeCall = useSelector((state) => state.activeCall);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -69,7 +70,7 @@ function AllCallsDetails() {
                           <div className="ms-1">
                             <span className="badge badge-soft-primary rounded-pill"
                             // style={{ backgroundColor: 'var(--ui-accent)' }}
-                            >Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
+                            >Total:&nbsp;{realTimePbxDashboardData?.totalCalls || ''}</span>
                           </div>
                         </div>
                       </div>
@@ -111,7 +112,7 @@ function AllCallsDetails() {
                                   <p>Missed Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.missed !== undefined ? (callDetails?.missed) : <i
+                                      realTimePbxDashboardData?.missed !== undefined ? (realTimePbxDashboardData?.missed) : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -134,7 +135,7 @@ function AllCallsDetails() {
                                   <p>Total Calls Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.success !== undefined ? (callDetails?.success) : <i
+                                      realTimePbxDashboardData?.success !== undefined ? (realTimePbxDashboardData?.success) : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto"}
                                       ></i>
                                     }
@@ -157,7 +158,7 @@ function AllCallsDetails() {
                                 <div className="text-center">
                                   <p>Total Calls</p>
                                   <h3 className="mb-0 fw-bolder">
-                                    {callDetails?.totalCalls !== undefined ? (callDetails?.totalCalls) :
+                                    {realTimePbxDashboardData?.totalCalls !== undefined ? (realTimePbxDashboardData?.totalCalls) :
                                       <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto"} ></i>}
                                   </h3>
                                 </div>
@@ -193,7 +194,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.missed !== undefined ? (callDetails?.missed) : <i
+                                    realTimePbxDashboardData?.missed !== undefined ? (realTimePbxDashboardData?.missed) : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -214,7 +215,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.success !== undefined ? (callDetails?.success) : <i
+                                    realTimePbxDashboardData?.success !== undefined ? (realTimePbxDashboardData?.success) : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -234,7 +235,7 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.totalCalls !== undefined ? (callDetails?.totalCalls) :
+                                  {realTimePbxDashboardData?.totalCalls !== undefined ? (realTimePbxDashboardData?.totalCalls) :
                                     <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                                 </h3>
                                 <p>Total Calls</p>
@@ -283,7 +284,7 @@ function AllCallsDetails() {
                           </div>
                           <div className="ms-1">
                             <span className="badge badge-soft-secondary rounded-pill"
-                            >Total:&nbsp;{callDetails?.inbound?.total || 'N/A'}</span>
+                            >Total:&nbsp;{realTimePbxDashboardData?.inbound?.total || ""}</span>
                           </div>
                         </div>
                       </div>
@@ -330,7 +331,7 @@ function AllCallsDetails() {
                                   <p>Missed Inbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
+                                      realTimePbxDashboardData?.inbound?.missed !== undefined ? realTimePbxDashboardData?.inbound?.missed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -354,7 +355,7 @@ function AllCallsDetails() {
                                   <p> Inbound Calls Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.inbound?.completed !== undefined ? callDetails?.inbound?.completed : <i
+                                      realTimePbxDashboardData?.inbound?.completed !== undefined ? realTimePbxDashboardData?.inbound?.completed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start "}
                                       ></i>
                                     }
@@ -377,7 +378,7 @@ function AllCallsDetails() {
                                 <div className="text-center">
                                   <p>Total Inbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
-                                    {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
+                                    {realTimePbxDashboardData?.inbound?.total !== undefined ? realTimePbxDashboardData?.inbound?.total : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                     ></i>}
                                   </h3>
@@ -418,7 +419,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
+                                    realTimePbxDashboardData?.inbound?.missed !== undefined ? realTimePbxDashboardData?.inbound?.missed : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -439,7 +440,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.inbound?.completed !== undefined ? callDetails?.inbound?.completed : <i
+                                    realTimePbxDashboardData?.inbound?.completed !== undefined ? realTimePbxDashboardData?.inbound?.completed : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -459,7 +460,7 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
+                                  {realTimePbxDashboardData?.inbound?.total !== undefined ? realTimePbxDashboardData?.inbound?.total : <i
                                     className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
@@ -511,7 +512,7 @@ function AllCallsDetails() {
                           <div className="ms-1">
                             <span className="badge badge-soft-success rounded-pill"
                             // style={{ backgroundColor: 'var(--color3)' }}
-                            >Total:&nbsp;{callDetails?.outbound?.total || 'N/A'}</span>
+                            >Total:&nbsp;{realTimePbxDashboardData?.outbound?.total || ""}</span>
                           </div>
                         </div>
                       </div>
@@ -556,7 +557,7 @@ function AllCallsDetails() {
                                   <p>Missed Outbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
+                                      realTimePbxDashboardData?.outbound?.missed !== undefined ? realTimePbxDashboardData?.outbound?.missed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -580,7 +581,7 @@ function AllCallsDetails() {
                                   <p>Outbound Calls Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.outbound?.completed !== undefined ? callDetails?.outbound?.completed : <i
+                                      realTimePbxDashboardData?.outbound?.completed !== undefined ? realTimePbxDashboardData?.outbound?.completed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -603,7 +604,7 @@ function AllCallsDetails() {
                                 <div className="text-center">
                                   <p>Total Outbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
-                                    {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                                    {realTimePbxDashboardData?.outbound?.total !== undefined ? realTimePbxDashboardData?.outbound?.total : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                     ></i>}
                                   </h3>
@@ -651,7 +652,7 @@ function AllCallsDetails() {
                           <div className="ms-1">
                             <span className="badge badge-soft-danger rounded-pill"
                             // style={{ backgroundColor: 'var(--funky-boy4)' }}
-                            >Total:&nbsp;{callDetails?.internal?.total || 'N/A'}</span>
+                            >Total:&nbsp;{realTimePbxDashboardData?.internal?.total || ""}</span>
                           </div>
                         </div>
                       </div>
@@ -697,7 +698,7 @@ function AllCallsDetails() {
                                   <p>Missed Internal Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i
+                                      realTimePbxDashboardData?.internal?.missed !== undefined ? realTimePbxDashboardData?.internal?.missed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -721,7 +722,7 @@ function AllCallsDetails() {
                                   <p>Internal Calls Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
-                                      callDetails?.internal?.completed !== undefined ? callDetails?.internal?.completed : <i
+                                      realTimePbxDashboardData?.internal?.completed !== undefined ? realTimePbxDashboardData?.internal?.completed : <i
                                         className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
                                       ></i>
                                     }
@@ -743,7 +744,7 @@ function AllCallsDetails() {
                                 <div className="text-center">
                                   <p>Total Internal Calls</p>
                                   <h3 className="mb-0 fw-bolder">
-                                    {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
+                                    {realTimePbxDashboardData?.internal?.total !== undefined ? realTimePbxDashboardData?.internal?.total : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>}
                                   </h3>
@@ -784,7 +785,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i
+                                    realTimePbxDashboardData?.internal?.missed !== undefined ? realTimePbxDashboardData?.internal?.missed : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -805,7 +806,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.internal?.completed !== undefined ? callDetails?.internal?.completed : <i
+                                    realTimePbxDashboardData?.internal?.completed !== undefined ? realTimePbxDashboardData?.internal?.completed : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -825,7 +826,7 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
+                                  {realTimePbxDashboardData?.internal?.total !== undefined ? realTimePbxDashboardData?.internal?.total : <i
                                     className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
