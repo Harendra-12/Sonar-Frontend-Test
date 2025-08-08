@@ -518,17 +518,17 @@ const MessageBody = ({
                             </option>
                           </select>
                         </div> */}
-                                    {/* <div class="clearButton_search">
-                                        <input checked="" class="checkbox" type="checkbox" />
-                                        <div class="mainbox">
-                                            <div class="iconContainer">
-                                                <i class="fa-regular fa-magnifying-glass"></i>
+                                    {/* <div className="clearButton_search">
+                                        <input checked="" className="checkbox" type="checkbox" />
+                                        <div className="mainbox">
+                                            <div className="iconContainer">
+                                                <i className="fa-regular fa-magnifying-glass"></i>
                                             </div>
-                                            <input class="search_input" placeholder="search" type="text" />
+                                            <input className="search_input" placeholder="search" type="text" />
                                         </div>
                                     </div> */}
 
-                                    <div class="input-wrapper">
+                                    <div className="input-wrapper">
                                         <button className="icon">
                                             <i className="fa-regular fa-magnifying-glass"></i>
                                         </button>
@@ -700,7 +700,7 @@ const MessageBody = ({
                                         className="clearButton2"
                                         effect="ripple"
                                     >
-                                        <i class="fa-regular fa-magnifying-glass"></i>
+                                        <i className="fa-regular fa-magnifying-glass"></i>
                                     </button> */}
 
                                 </div>
@@ -713,8 +713,8 @@ const MessageBody = ({
                             {
                                 pageLoader &&
                                 <div className='loadingBody'>
-                                    <div class="spinner-border text-spinner-secondary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                    <div className="spinner-border text-spinner-secondary" role="status">
+                                        <span className="visually-hidden">Loading...</span>
                                     </div>
                                 </div>
                             }
@@ -843,7 +843,7 @@ const MessageBody = ({
                                                                                 />
                                                                                 <div className='pinBox'>
                                                                                     <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
-                                                                                        <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
+                                                                                        <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
@@ -912,7 +912,7 @@ const MessageBody = ({
                                                                                 <DisplayFile item={item.body} />
                                                                                 <div className='pinBox'>
                                                                                     <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
-                                                                                        <i class={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
+                                                                                        <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
