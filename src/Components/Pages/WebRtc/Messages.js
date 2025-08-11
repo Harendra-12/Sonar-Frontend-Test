@@ -1529,7 +1529,7 @@ function Messages({
                           disabled={loading}
                           className="panelButton m-0"
                           onClick={() => {
-                            handleremoveUserFromGroup(groupLeaveId, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers);
+                            handleremoveUserFromGroup(recipient[1], setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers, account);
                             setGroupLeavePopUp(false);
                             setRecipient([]);
                             setGroupRefresh(groupRefresh + 1);

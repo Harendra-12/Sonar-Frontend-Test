@@ -650,6 +650,7 @@ const MessageBody = ({
                                                                 )[0].id
                                                             );
                                                             setGroupLeavePopUp(true);
+
                                                         }}
                                                     >
                                                         Leave this group
@@ -657,10 +658,7 @@ const MessageBody = ({
                                                 </li>
                                             )}
 
-                                            {selectedChat === "groupChat" &&
-                                                groups?.find(
-                                                    (group) => group.group_name == recipient?.[0]
-                                                )?.created_by == account?.id ? (
+                                            {selectedChat === "groupChat" && isAdmin && (
                                                 <li>
                                                     <div
                                                         className="dropdown-item text-danger"
@@ -673,16 +671,12 @@ const MessageBody = ({
                                                                 setRecipient,
                                                                 setLoading,
                                                                 groupRefresh
-                                                            )
-                                                        }
+                                                            )}
                                                     >
                                                         Delete this group
                                                     </div>
                                                 </li>
-                                            ) : (
-                                                ""
                                             )}
-
                                             <li>
                                                 <div
                                                     className="dropdown-item text-danger"
@@ -1591,35 +1585,16 @@ const MessageBody = ({
                                                                             <i className="fa-solid fa-ellipsis-vertical" />
                                                                         </button>
                                                                         <ul className="dropdown-menu light">
-                                                                            {item.is_admin ? (
+                                                                            
+                                                                            {!item?.is_admin &&
                                                                                 <li>
                                                                                     <div
                                                                                         className="dropdown-item"
                                                                                         onClick={() =>
                                                                                             manageAdmin(
-                                                                                                item.agentId,
-                                                                                                item.group_id,
-                                                                                                item.userId,
-                                                                                                !item.is_admin,
-                                                                                                setLoading,
-                                                                                                setGroupRefresh,
-                                                                                                groupRefresh
-                                                                                            )
-                                                                                        }
-                                                                                    >
-                                                                                        Dismiss Group Admin
-                                                                                    </div>
-                                                                                </li>
-                                                                            ) : (
-                                                                                <li>
-                                                                                    <div
-                                                                                        className="dropdown-item"
-                                                                                        onClick={() =>
-                                                                                            manageAdmin(
-                                                                                                item.agentId,
-                                                                                                item.group_id,
-                                                                                                item.userId,
-                                                                                                !item.is_admin,
+                                                                                                recipient[1],
+                                                                                                item?.userId,
+                                                                                                !item?.is_admin,
                                                                                                 setLoading,
                                                                                                 setGroupRefresh,
                                                                                                 groupRefresh
@@ -1629,7 +1604,8 @@ const MessageBody = ({
                                                                                         Make Group Admin
                                                                                     </div>
                                                                                 </li>
-                                                                            )}
+                                                                            }
+
                                                                             <li>
                                                                                 <div
                                                                                     className="dropdown-item text-danger"

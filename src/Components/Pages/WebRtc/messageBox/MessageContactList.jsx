@@ -191,7 +191,7 @@ const MessageContactList = ({
         });
         item?.message_groupusers?.map((user) => {
             if (user?.user_id === account?.id) {
-                setIsAdmin(user?.is_admin);
+                setIsAdmin(user?.is_admin == 1 ? true : false);
             }
         });
         setAllMessage([]);
@@ -1004,7 +1004,7 @@ const MessageContactList = ({
                                             });
                                             item?.message_groupusers?.map((user) => {
                                                 if (user.user_id === account?.id) {
-                                                    setIsAdmin(user.is_admin);
+                                                    setIsAdmin(user.is_admin == 1 ? true : false);
                                                 }
                                             });
                                         }}

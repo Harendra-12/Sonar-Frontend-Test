@@ -407,8 +407,8 @@ export const getGroups = async (
             setGroupNameEdit(isGroupSelected.group_name);
             setSelectedgroupUsers(isGroupSelected.message_groupusers);
             isGroupSelected.message_groupusers.map((user) => {
-                if (user.user_id === account.id) {
-                    setIsAdmin(user.is_admin);
+                if (user?.user_id === account?.id) {
+                    setIsAdmin(user.is_admin == 1 ? true : false);
                 }
             });
         }
@@ -583,15 +583,15 @@ export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNu
 };
 
 // Handle logic to make any user admin or remove any user from admin
-export const manageAdmin = async (id, groupId, userId, isAdmin, setLoading, setGroupRefresh, groupRefresh) => {
+export const manageAdmin = async (groupId, userId, isAdmin, setLoading, setGroupRefresh, groupRefresh) => {
     setLoading(true);
     const parsedData = {
         group_id: groupId,
         user_id: userId,
-        is_admin: isAdmin,
+        is_admin: isAdmin ? 1 : 0,
     };
     const apiData = await generalPutFunction(
-        api_url?.CHAT_GROUP_USER_UPDATE_URL(id),
+        api_url?.SET_ADMIN_URL(groupId),
         parsedData
     );
     if (apiData.status) {
@@ -909,13 +909,14 @@ export const handleAddNewMemberToGroup = async (recipient, groupSelecedAgents, s
     }
 };
 
-export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers) => {
+export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers, account) => {
     setNewGroupLoader(true);
-    const apiData = await generalDeleteFunction(api_url?.REMOVE_USER_FROM_GROUP_URL(id));
-    if (apiData.status) {
-        toast.success(apiData.message);
+    const apiData = await generalGetFunction(api_url?.REMOVE_USER_FROM_GROUP_URL(id, account?.id));
+    debugger
+    if (apiData?.status) {
+        toast.success(apiData?.message);
         setSelectedgroupUsers(
-            selectedgroupUsers.filter((item) => item.id !== id)
+            selectedgroupUsers?.filter((item) => item.id !== id)
         );
         setNewGroupLoader(false);
     } else {
