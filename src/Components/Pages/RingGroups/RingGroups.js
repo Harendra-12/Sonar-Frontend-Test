@@ -163,7 +163,7 @@ const RingGroups = () => {
     delete payLoad.ring_group_destination;
     delete payLoad.ring_group_timeout_data;
     delete payLoad.ring_group_timeout_app;
-      if (payLoad.destination_type === "disabled") {
+    if (payLoad.destination_type === "disabled") {
       delete payLoad.timeout_destination
     }
     console.log(payLoad)
@@ -201,10 +201,9 @@ const RingGroups = () => {
     setPageLoading(true);
     if (item) {
       const apiData = await generalGetFunction(
-        `/agents?search=${item.username}${
-          account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+        `/agents?search=${item.username}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
         }`
       );
       if (apiData?.status) {
@@ -277,19 +276,19 @@ const RingGroups = () => {
                             account?.permissions,
                             "add"
                           ) && (
-                            <Link
-                              // to="/ring-groups-add"
-                              // onClick={backToTop}
-                              onClick={handleRingGroupAddValidation}
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </Link>
-                          )}
+                              <Link
+                                // to="/ring-groups-add"
+                                // onClick={backToTop}
+                                onClick={handleRingGroupAddValidation}
+                                effect="ripple"
+                                className="panelButton"
+                              >
+                                <span className="text">Add</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-plus"></i>
+                                </span>
+                              </Link>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -321,21 +320,21 @@ const RingGroups = () => {
                           account?.permissions,
                           "search"
                         ) && (
-                          <div className="searchBox position-relative">
-                            <label>Search:</label>
-                            <input
-                              type="search"
-                              name="Search"
-                              value={searchValue}
-                              className="formItem"
-                              onChange={(e) => {
-                                setSearchValue(e.target.value);
-                                setPageNumber(1);
-                                setItemsPerPage(10);
-                              }}
-                            />
-                          </div>
-                        )}
+                            <div className="searchBox position-relative">
+                              <label>Search:</label>
+                              <input
+                                type="search"
+                                name="Search"
+                                value={searchValue}
+                                className="formItem"
+                                onChange={(e) => {
+                                  setSearchValue(e.target.value);
+                                  setPageNumber(1);
+                                  setItemsPerPage(10);
+                                }}
+                              />
+                            </div>
+                          )}
                       </div>
                       <div className="tableContainer mb-0">
                         {loading ? (
@@ -375,13 +374,13 @@ const RingGroups = () => {
                             </thead>
                             <tbody>
                               {noPermissionToRead ||
-                              !checkViewSidebar(
-                                "Ringgroup",
-                                slugPermissions,
-                                account?.sectionPermissions,
-                                account?.permissions,
-                                "read"
-                              ) ? (
+                                !checkViewSidebar(
+                                  "Ringgroup",
+                                  slugPermissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions,
+                                  "read"
+                                ) ? (
                                 <tr>
                                   <td colSpan={99}>
                                     You dont have any permission
@@ -494,13 +493,13 @@ const RingGroups = () => {
                                                     })}
                                                   {item.ring_group_destination
                                                     .length > 4 && (
-                                                    <span>
-                                                      +
-                                                      {item
-                                                        .ring_group_destination
-                                                        .length - 4}
-                                                    </span>
-                                                  )}
+                                                      <span>
+                                                        +
+                                                        {item
+                                                          .ring_group_destination
+                                                          .length - 4}
+                                                      </span>
+                                                    )}
                                                 </div>
                                               </div>
                                             </Tippy>
@@ -514,9 +513,9 @@ const RingGroups = () => {
                                             account?.permissions,
                                             "edit"
                                           ) && (
-                                            <td>
-                                              <div className="my-auto position-relative mx-1">
-                                                {/* <label className="switch">
+                                              <td>
+                                                <div className="my-auto position-relative mx-1">
+                                                  {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={
@@ -531,28 +530,28 @@ const RingGroups = () => {
                                                   />
                                                   <span className="slider round" />
                                                 </label> */}
-                                                <div className="cl-toggle-switch">
-                                                  <label className="cl-switch">
-                                                    <input
-                                                      type="checkbox"
-                                                      checked={
-                                                        item.status == "active"
-                                                      }
-                                                      onClick={(e) => {
-                                                        setSelectedRingGroup(
-                                                          item
-                                                        );
-                                                        setPopUp(true);
-                                                      }}
-                                                      // {...register("status")}
-                                                      id="showAllCheck"
-                                                    />
-                                                    <span></span>
-                                                  </label>
+                                                  <div className="cl-toggle-switch">
+                                                    <label className="cl-switch">
+                                                      <input
+                                                        type="checkbox"
+                                                        checked={
+                                                          item.status == "active"
+                                                        }
+                                                        onClick={(e) => {
+                                                          setSelectedRingGroup(
+                                                            item
+                                                          );
+                                                          setPopUp(true);
+                                                        }}
+                                                        // {...register("status")}
+                                                        id="showAllCheck"
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            </td>
-                                          )}
+                                              </td>
+                                            )}
                                           <td
                                             className="align-middle"
                                             id="detailBox"
@@ -569,19 +568,19 @@ const RingGroups = () => {
                                             account?.permissions,
                                             "edit"
                                           ) && (
-                                            <td>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() =>
-                                                  navigate(
-                                                    `/ring-groups-edit?id=${item.id}`
-                                                  )
-                                                }
-                                              >
-                                                <i className="fa-solid fa-pencil" />
-                                              </button>
-                                            </td>
-                                          )}
+                                              <td>
+                                                <button
+                                                  className="tableButton edit mx-auto"
+                                                  onClick={() =>
+                                                    navigate(
+                                                      `/ring-groups-edit?id=${item.id}`
+                                                    )
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-pencil" />
+                                                </button>
+                                              </td>
+                                            )}
                                           {checkViewSidebar(
                                             "Ringgroup",
                                             slugPermissions,
@@ -589,26 +588,25 @@ const RingGroups = () => {
                                             account?.permissions,
                                             "delete"
                                           ) && (
-                                            <td>
-                                              <button
-                                                className="tableButton delete mx-auto"
-                                                onClick={() => {
-                                                  setPopUp(true);
-                                                  setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i className="fa-solid fa-trash" />
-                                                {/* <i className="fa-duotone fa-solid fa-trash"></i> */}
-                                                {/* <i className="fa-duotone fa-solid fa-user-minus"></i> */}
-                                              </button>
-                                            </td>
-                                          )}
-                                          <div className="utilPopup"></div>
+                                              <td>
+                                                <button
+                                                  className="tableButton delete mx-auto"
+                                                  onClick={() => {
+                                                    setPopUp(true);
+                                                    setDeleteId(item.id);
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-trash" />
+                                                  {/* <i className="fa-duotone fa-solid fa-trash"></i> */}
+                                                  {/* <i className="fa-duotone fa-solid fa-user-minus"></i> */}
+                                                </button>
+                                              </td>
+                                            )}
                                         </tr>
                                       );
                                     })}
                                   {ringGroup &&
-                                  ringGroup?.data?.length === 0 ? (
+                                    ringGroup?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Ring Group"
