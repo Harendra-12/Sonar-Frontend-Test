@@ -7,11 +7,16 @@ import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
-import { checkViewSidebar, convertDateToCurrentTimeZone, formatDateTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import {
+  checkViewSidebar,
+  convertDateToCurrentTimeZone,
+  formatDateTime,
+  formatTimeWithAMPM,
+  generalGetFunction,
+} from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 import GoogleTranslate from "../../CommonComponents/GoogleTranslate";
 const Dashboard = () => {
-
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -45,17 +50,21 @@ const Dashboard = () => {
 
   const getAllUser = async () => {
     const userApi = await generalGetFunction(
-      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+      `/user/search?account=${account.account_id}${
+        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
+      }`
     );
     if (userApi?.status) {
       setAllUserList(userApi.data);
     }
-  }
+  };
 
   // Getting all DID from did listing
   useEffect(() => {
     if (didAll.length > 0) {
-      setAllDID(didAll)
+      setAllDID(didAll);
     } else {
       async function getData() {
         const apiData = await generalGetFunction(`/did/all?all-dids`);
@@ -77,8 +86,7 @@ const Dashboard = () => {
     }
 
     getAllUser();
-
-  }, [])
+  }, []);
 
   // Setting clock for the selected timnezone
   // useEffect(() => {
@@ -109,7 +117,9 @@ const Dashboard = () => {
         timeZoneRefresh: timeZoneRefresh + 1,
       });
     }
-    setUserTimeZone(timeZone.filter((item) => item.id === account?.timezone_id)[0]?.name);
+    setUserTimeZone(
+      timeZone.filter((item) => item.id === account?.timezone_id)[0]?.name
+    );
   }, [timeZone]);
 
   useEffect(() => {
@@ -365,14 +375,14 @@ const Dashboard = () => {
     numberOfCall: [],
     callCostPerHour: [],
     totalSpent: [],
-  })
+  });
   const [graphFilter, setGraphFilter] = useState({
     totalCallMin: {
       interval: "1",
       startTime: "24",
     },
     numberOfCall: {
-      date: "7_days"
+      date: "7_days",
     },
     callCostPerHour: {
       interval: "1",
@@ -384,7 +394,7 @@ const Dashboard = () => {
   const [graphLoading, setGraphLoading] = useState({
     totalCallMin: 1,
     numberOfCall: 1,
-    callCostPerHour: 1
+    callCostPerHour: 1,
   });
 
   // Call Cost Graph Data
@@ -415,8 +425,8 @@ const Dashboard = () => {
 
     const startDateTimeObj = {
       date: startDate.toISOString().split("T")[0],
-      time: startDate.toTimeString().slice(0, 8)
-    }
+      time: startDate.toTimeString().slice(0, 8),
+    };
 
     const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
     const endDateTime = `${endDate} ${currentTime}`;
@@ -424,27 +434,29 @@ const Dashboard = () => {
     try {
       setGraphLoading((prevGraphLoading) => ({
         ...prevGraphLoading,
-        callCostPerHour: 1
+        callCostPerHour: 1,
       }));
-      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
+      const apiCall = await generalGetFunction(
+        `/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`
+      );
       if (apiCall.status) {
         setGraphData((prevGraphData) => ({
           ...prevGraphData,
-          callCostPerHour: apiCall.filtered
+          callCostPerHour: apiCall.filtered,
         }));
         setGraphLoading((prevGraphLoading) => ({
           ...prevGraphLoading,
-          callCostPerHour: 0
+          callCostPerHour: 0,
         }));
       }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchTotalCallCostGraphData();
-  }, [graphFilter.callCostPerHour])
+  }, [graphFilter.callCostPerHour]);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -454,11 +466,18 @@ const Dashboard = () => {
         })
       );
     }
-  }, [logonUser])
+  }, [logonUser]);
+
+  const dateObj = new Date(time);
+  const hours = dateObj.getHours() % 12 || 12;
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+  const ampm = dateObj.getHours() >= 12 ? "PM" : "AM";
+  const timezoneName = timeZone?.find(
+    (item) => item.id === account?.timezone_id
+  )?.name;
 
   return (
     <main className="mainContent">
-
       <section id="phonePage">
         <div className="container-fluid">
           <div className="row ">
@@ -512,16 +531,26 @@ const Dashboard = () => {
                               <h5>Timezone</h5>
                               <p>
                                 {" "}
-                                {new Intl.DateTimeFormat('default', { timeZone: userTimeZone || 'UTC', day: '2-digit' }).format(new Date())}{" "}
+                                {new Intl.DateTimeFormat("default", {
+                                  timeZone: userTimeZone || "UTC",
+                                  day: "2-digit",
+                                }).format(new Date())}{" "}
                                 {new Date().toLocaleString("default", {
                                   month: "long",
-                                  timeZone: userTimeZone || 'UTC'
+                                  timeZone: userTimeZone || "UTC",
                                 })}
-                                , {new Intl.DateTimeFormat('default', { year: 'numeric', timeZone: userTimeZone || 'UTC' }).format(new Date())}
+                                ,{" "}
+                                {new Intl.DateTimeFormat("default", {
+                                  year: "numeric",
+                                  timeZone: userTimeZone || "UTC",
+                                }).format(new Date())}
                               </p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-earth-americas" onClick={() => navigate("/users-profile")}></i>
+                              <i
+                                className="fa-duotone fa-earth-americas"
+                                onClick={() => navigate("/users-profile")}
+                              ></i>
                             </div>
                           </div>
                         </div>
@@ -530,22 +559,19 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col">
                               <div className="d-flex justify-content-between align-items-center">
-                                <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
+                                <h5 style={{ textTransform: "capitalize" }}>
+                                  {accountDetails?.country}
+                                </h5>
                                 <p>Language: {account?.language}</p>
                               </div>
                               <div className="digital__clock">
-                                <p>
-                                  TimeZone:{" "}
-                                  {
-                                    timeZone.filter(
-                                      (item) => item.id === account?.timezone_id
-                                    )[0]?.name
-                                  }
-                                </p>
+                                <p>TimeZone: {timezoneName}</p>
                                 <div className="d-flex justify-content-center align-items-center">
-                                  <p className="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
-                                  <p className="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}&nbsp;</p>
-                                  <p className="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
+                                  <p className="d_time">
+                                    {String(hours).padStart(2, "0")}:
+                                  </p>
+                                  <p className="d_time">{minutes}&nbsp;</p>
+                                  <p className="d_time">{ampm}</p>
                                 </div>
                               </div>
                             </div>
@@ -603,7 +629,13 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div> */}
-                    {checkViewSidebar("Package", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                    {checkViewSidebar(
+                      "Package",
+                      slugPermissions,
+                      account?.sectionPermissions,
+                      account?.permissions,
+                      "read"
+                    ) && (
                       <div className="col-xl-4 mb-3 mb-xl-0">
                         <div className="itemWrapper c dashboard_cardWrap d_card3">
                           <div className="heading">
@@ -613,7 +645,10 @@ const Dashboard = () => {
                                 <p>Click to view details</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-duotone fa-file" onClick={() => navigate("/package-details")}></i>
+                                <i
+                                  className="fa-duotone fa-file"
+                                  onClick={() => navigate("/package-details")}
+                                ></i>
                               </div>
                             </div>
                           </div>
@@ -622,7 +657,8 @@ const Dashboard = () => {
                               <div className="col-9">
                                 <h5>{accountDetails?.package?.name}</h5>
                                 <p>
-                                  {accountDetails?.package?.regular_price} / Year
+                                  {accountDetails?.package?.regular_price} /
+                                  Year
                                 </p>
                                 <p>
                                   {accountDetails?.extensions?.length}{" "}
@@ -645,7 +681,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    }
+                    )}
                     <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper d d_card4 dashboard_cardWrap ">
                         <div className="heading">
@@ -655,7 +691,10 @@ const Dashboard = () => {
                               <p>You are registered to this domain</p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-globe" style={{ cursor: 'default' }}></i>
+                              <i
+                                className="fa-duotone fa-globe"
+                                style={{ cursor: "default" }}
+                              ></i>
                             </div>
                           </div>
                         </div>
@@ -821,7 +860,13 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )} */}
-                        {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                        {checkViewSidebar(
+                          "Extension",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart h-auto">
@@ -830,32 +875,89 @@ const Dashboard = () => {
                                     <h5>Extensions</h5>
                                     <p>
                                       Total:{" "}
-                                      {extension?.filter((item) => item.user !== null)?.length}{" "}
+                                      {
+                                        extension?.filter(
+                                          (item) => item.user !== null
+                                        )?.length
+                                      }{" "}
                                       Registered
                                     </p>
                                   </div>
                                   <div className="col-3">
                                     {/* <Tippy content="Click to view extensions"> */}
-                                    <i className="fa-duotone fa-phone-office" onClick={() => navigate("/extensions")}></i>
+                                    <i
+                                      className="fa-duotone fa-phone-office"
+                                      onClick={() => navigate("/extensions")}
+                                    ></i>
                                     {/* </Tippy> */}
                                   </div>
                                 </div>
                               </div>
                               <div className="dashboardUtilityCardWrapper">
                                 {accountDetails && accountDetails.extensions ? (
-                                  <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
-                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user !== null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                      <circle className="bg"
-                                        cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" strokeWidth="20"
+                                  <div
+                                    className="circularProgressWrapper mx-0"
+                                    style={{ width: "80px", height: "80px" }}
+                                  >
+                                    <svg
+                                      width="80"
+                                      height="80"
+                                      viewBox="0 0 250 250"
+                                      className="circular-progress"
+                                      style={{
+                                        "--progress": `${Math.round(
+                                          (accountDetails?.extensions?.filter(
+                                            (item) => item.user !== null
+                                          )?.length /
+                                            accountDetails?.extensions
+                                              ?.length) *
+                                            100
+                                        )}`,
+                                      }}
+                                    >
+                                      <circle
+                                        className="bg"
+                                        cx="125"
+                                        cy="125"
+                                        r="115"
+                                        fill="none"
+                                        stroke="#ff8c4230"
+                                        strokeWidth="20"
                                       ></circle>
-                                      <circle className="fg"
-                                        cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" strokeWidth="20"
+                                      <circle
+                                        className="fg"
+                                        cx="125"
+                                        cy="125"
+                                        r="115"
+                                        fill="none"
+                                        stroke="#ff8c42"
+                                        strokeWidth="20"
                                         strokeDasharray="361.25 361.25"
                                       ></circle>
                                     </svg>
-                                    <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#ff8c42', width: '100%' }}>{extension?.filter((item) => item.user !== null)?.length}</label> <span style={{ fontSize: '0.7rem' }}>/{accountDetails?.extensions?.length}</span>
+                                    <div className="circularProgressContent">
+                                      <div
+                                        className="data-number fw-bold d-block"
+                                        style={{
+                                          fontSize: "1rem",
+                                          lineHeight: "1rem",
+                                        }}
+                                      >
+                                        <label
+                                          style={{
+                                            color: "#ff8c42",
+                                            width: "100%",
+                                          }}
+                                        >
+                                          {
+                                            extension?.filter(
+                                              (item) => item.user !== null
+                                            )?.length
+                                          }
+                                        </label>{" "}
+                                        <span style={{ fontSize: "0.7rem" }}>
+                                          /{accountDetails?.extensions?.length}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
@@ -869,13 +971,42 @@ const Dashboard = () => {
                                 <div className="col">
                                   <ul>
                                     <li>
-                                      <label>Registered:</label> <span style={{ color: 'rgb(255, 140, 66)' }}>{extension?.filter((item) => item.user !== null)?.length}</span>
+                                      <label>Registered:</label>{" "}
+                                      <span
+                                        style={{ color: "rgb(255, 140, 66)" }}
+                                      >
+                                        {
+                                          extension?.filter(
+                                            (item) => item.user !== null
+                                          )?.length
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      <label>Available:</label> <span>{extension?.filter((item) => item.user == null)?.length}</span>
+                                      <label>Available:</label>{" "}
+                                      <span>
+                                        {
+                                          extension?.filter(
+                                            (item) => item.user == null
+                                          )?.length
+                                        }
+                                      </span>
                                     </li>
                                     <li>
-                                      <label>Usage:</label> <span>{Math.round((Number(extension?.filter((item) => item.user !== null)?.length) / Number(accountDetails?.extensions?.length) || 0) * 100)}%</span>
+                                      <label>Usage:</label>{" "}
+                                      <span>
+                                        {Math.round(
+                                          (Number(
+                                            extension?.filter(
+                                              (item) => item.user !== null
+                                            )?.length
+                                          ) /
+                                            Number(
+                                              accountDetails?.extensions?.length
+                                            ) || 0) * 100
+                                        )}
+                                        %
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>
@@ -884,7 +1015,15 @@ const Dashboard = () => {
                                 <div className="data-number2">
                                   <div className="col-12">
                                     <div className="heading mb-2 h-auto">
-                                      <div className="d-flex justify-content-between"><span>Recent Extensions</span> <Link to='/extensions' className="text-decoration-none">View All</Link></div>
+                                      <div className="d-flex justify-content-between">
+                                        <span>Recent Extensions</span>{" "}
+                                        <Link
+                                          to="/extensions"
+                                          className="text-decoration-none"
+                                        >
+                                          View All
+                                        </Link>
+                                      </div>
                                     </div>
                                     <ul
                                       style={{
@@ -895,7 +1034,8 @@ const Dashboard = () => {
                                     >
                                       {accountDetails?.extensions?.map(
                                         (item, index) => (
-                                          <li className="d_extension_listing"
+                                          <li
+                                            className="d_extension_listing"
                                             key={index}
                                             onClick={() =>
                                               navigate(
@@ -920,7 +1060,10 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="deviceProvision position-relative" style={{ height: '250px' }}>
+                                <div
+                                  className="deviceProvision position-relative"
+                                  style={{ height: "250px" }}
+                                >
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                     <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
@@ -928,8 +1071,14 @@ const Dashboard = () => {
                               )}
                             </div>
                           </div>
-                        }
-                        {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                        )}
+                        {checkViewSidebar(
+                          "User",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart h-auto">
@@ -937,51 +1086,109 @@ const Dashboard = () => {
                                   <div className="col-9">
                                     <h5>Users</h5>
                                     <p>
-                                      Total:{" "}
-                                      {allUserList?.length}
-                                      {" "}Users Created
+                                      Total: {allUserList?.length} Users Created
                                     </p>
                                   </div>
-                                  <div onClick={() => navigate("/users")} className="col-3">
+                                  <div
+                                    onClick={() => navigate("/users")}
+                                    className="col-3"
+                                  >
                                     <i className="fa-duotone fa-user"></i>
                                   </div>
                                 </div>
                               </div>
                               <div className="dashboardUtilityCardWrapper">
-                                {accountDetails && accountDetails?.users ?
-                                  <div className='circularProgressWrapper mx-0' style={{ width: "80px", height: "80px" }}>
-                                    <svg width="80" height="80" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineUser.length / allUserList?.length) * 100)}` }}>
-                                      <circle className="bg"
-                                        cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" strokeWidth="20"
+                                {accountDetails && accountDetails?.users ? (
+                                  <div
+                                    className="circularProgressWrapper mx-0"
+                                    style={{ width: "80px", height: "80px" }}
+                                  >
+                                    <svg
+                                      width="80"
+                                      height="80"
+                                      viewBox="0 0 250 250"
+                                      className="circular-progress"
+                                      style={{
+                                        "--progress": `${Math.round(
+                                          (onlineUser.length /
+                                            allUserList?.length) *
+                                            100
+                                        )}`,
+                                      }}
+                                    >
+                                      <circle
+                                        className="bg"
+                                        cx="125"
+                                        cy="125"
+                                        r="115"
+                                        fill="none"
+                                        stroke="#62a8ac30"
+                                        strokeWidth="20"
                                       ></circle>
-                                      <circle className="fg"
-                                        cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" strokeWidth="20"
+                                      <circle
+                                        className="fg"
+                                        cx="125"
+                                        cy="125"
+                                        r="115"
+                                        fill="none"
+                                        stroke="#62a8ac"
+                                        strokeWidth="20"
                                         strokeDasharray="361.25 361.25"
                                       ></circle>
                                     </svg>
-                                    <div className='circularProgressContent'>
-                                      <div className="data-number fw-bold d-block" style={{ fontSize: '1rem', lineHeight: '1rem' }}>
-                                        <label style={{ color: '#62a8ac', width: '100%' }}>{onlineUser.length}</label> <span style={{ fontSize: '0.7rem' }}>/{allUserList?.length}</span>
+                                    <div className="circularProgressContent">
+                                      <div
+                                        className="data-number fw-bold d-block"
+                                        style={{
+                                          fontSize: "1rem",
+                                          lineHeight: "1rem",
+                                        }}
+                                      >
+                                        <label
+                                          style={{
+                                            color: "#62a8ac",
+                                            width: "100%",
+                                          }}
+                                        >
+                                          {onlineUser.length}
+                                        </label>{" "}
+                                        <span style={{ fontSize: "0.7rem" }}>
+                                          /{allUserList?.length}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
-                                  : (
-                                    <div className="deviceProvision position-relative h-100">
-                                      <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
-                                        <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
-                                      </div>
+                                ) : (
+                                  <div className="deviceProvision position-relative h-100">
+                                    <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                      <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                     </div>
-                                  )}
+                                  </div>
+                                )}
                                 <div className="col">
                                   <ul>
                                     <li>
-                                      <label>Created:</label> <span style={{ color: 'rgb(98, 168, 172)' }}>{allUserList?.length}</span>
+                                      <label>Created:</label>{" "}
+                                      <span
+                                        style={{ color: "rgb(98, 168, 172)" }}
+                                      >
+                                        {allUserList?.length}
+                                      </span>
                                     </li>
                                     <li>
-                                      <label>Online:</label> <span>{onlineUser.length}</span>
+                                      <label>Online:</label>{" "}
+                                      <span>{onlineUser.length}</span>
                                     </li>
                                     <li>
-                                      <label>Activity:</label> <span>{Math.round((Number(onlineUser.length) / Number(allUserList?.length) || 0) * 100)}%</span>
+                                      <label>Activity:</label>{" "}
+                                      <span>
+                                        {Math.round(
+                                          (Number(onlineUser.length) /
+                                            Number(allUserList?.length) || 0) *
+                                            100
+                                        )}
+                                        %
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>
@@ -990,7 +1197,15 @@ const Dashboard = () => {
                                 <div className="data-number2">
                                   <div className="col-12">
                                     <div className="heading mb-2 h-auto">
-                                      <div className="d-flex justify-content-between"><span>Recent Users</span> <Link to='/users' className="text-decoration-none">View All</Link></div>
+                                      <div className="d-flex justify-content-between">
+                                        <span>Recent Users</span>{" "}
+                                        <Link
+                                          to="/users"
+                                          className="text-decoration-none"
+                                        >
+                                          View All
+                                        </Link>
+                                      </div>
                                     </div>
                                     <ul
                                       style={{
@@ -999,31 +1214,34 @@ const Dashboard = () => {
                                         paddingRight: 10,
                                       }}
                                     >
-                                      {allUserList.map(
-                                        (item, index) => (
-                                          <li className="d_extension_listing" key={index} onClick={() =>
+                                      {allUserList.map((item, index) => (
+                                        <li
+                                          className="d_extension_listing"
+                                          key={index}
+                                          onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
                                             })
-                                          }>
-                                            {item?.name}
-                                            <span
-                                              className={
-                                                onlineUser.includes(
-                                                  item?.id
-                                                )
-                                                  ? "float-end extensionStatus online"
-                                                  : "float-end extensionStatus"
-                                              }
-                                            ></span>
-                                          </li>
-                                        )
-                                      )}
+                                          }
+                                        >
+                                          {item?.name}
+                                          <span
+                                            className={
+                                              onlineUser.includes(item?.id)
+                                                ? "float-end extensionStatus online"
+                                                : "float-end extensionStatus"
+                                            }
+                                          ></span>
+                                        </li>
+                                      ))}
                                     </ul>
                                   </div>
                                 </div>
                               ) : (
-                                <div className="deviceProvision position-relative" style={{ height: '250px' }}>
+                                <div
+                                  className="deviceProvision position-relative"
+                                  style={{ height: "250px" }}
+                                >
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                     <i className="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
@@ -1031,7 +1249,7 @@ const Dashboard = () => {
                               )}
                             </div>
                           </div>
-                        }
+                        )}
                         {/* {checkViewSidebar("Extension", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="wrapper h-100" style={{ placeContent: 'center' }}>
@@ -1063,7 +1281,13 @@ const Dashboard = () => {
                             </div>
                           </div>
                         } */}
-                        {checkViewSidebar("DidDetail", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                        {checkViewSidebar(
+                          "DidDetail",
+                          slugPermissions,
+                          account?.sectionPermissions,
+                          account?.permissions,
+                          "read"
+                        ) && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading dashboard_headerPart">
@@ -1073,7 +1297,10 @@ const Dashboard = () => {
                                     <p>Click to view all available DIDs</p>
                                   </div>
                                   <div className="col-3">
-                                    <i className="fa-solid fa-file-invoice" onClick={() => navigate("/did-listing")}></i>
+                                    <i
+                                      className="fa-solid fa-file-invoice"
+                                      onClick={() => navigate("/did-listing")}
+                                    ></i>
                                   </div>
                                 </div>
                               </div>
@@ -1090,31 +1317,55 @@ const Dashboard = () => {
                                       <li className="d_extension_listing">
                                         Default Outbound Number{" "}
                                         <span className="float-end">
-                                          {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
+                                          {
+                                            allDID?.filter(
+                                              (item) =>
+                                                item.default_outbound == 1
+                                            )[0]?.did
+                                          }
                                         </span>
                                       </li>
                                       <li className="d_extension_listing">
                                         Default Fax Number{" "}
                                         <span className="float-end">
-                                          {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
+                                          {
+                                            allDID?.filter(
+                                              (item) => item.default_eFax == 1
+                                            )[0]?.did
+                                          }
                                         </span>
                                       </li>
                                       <li className="d_extension_listing">
                                         Default SMS{" "}
                                         <span className="float-end">
-                                          {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
+                                          {
+                                            allDID?.filter(
+                                              (item) => item.default_sms == 1
+                                            )[0]?.did
+                                          }
                                         </span>
                                       </li>
                                       <li className="d_extension_listing">
                                         Default WhatsApp{" "}
                                         <span className="float-end">
-                                          {allDID?.filter((item) => item.default_whatsapp == 1)[0]?.did}
+                                          {
+                                            allDID?.filter(
+                                              (item) =>
+                                                item.default_whatsapp == 1
+                                            )[0]?.did
+                                          }
                                         </span>
                                       </li>
                                       <li className="d_extension_listing">
                                         Total Numbers For AI{" "}
                                         <span className="float-end">
-                                          {allDID?.filter((item) => item.vendor?.vendor_name == "Twillio")?.length}
+                                          {
+                                            allDID?.filter(
+                                              (item) =>
+                                                item.vendor?.vendor_name ==
+                                                "Twillio"
+                                            )?.length
+                                          }
                                         </span>
                                       </li>
                                     </ul>
@@ -1123,7 +1374,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                   </div>

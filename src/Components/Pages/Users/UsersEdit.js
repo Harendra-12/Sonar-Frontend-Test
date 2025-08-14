@@ -499,7 +499,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                   >
                     <div className="row gx-5">
                       <div className="col-xxl-6 col-xl-12 mb-3">
-                        <form action="#" className="row px-2">
+                        <form action="#" className="row px-2" autoComplete="off">
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="">

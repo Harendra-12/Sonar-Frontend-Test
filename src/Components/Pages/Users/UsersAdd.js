@@ -478,7 +478,7 @@ const UsersAdd = () => {
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <input
                               type="text"
-                              name="extension"
+                              name="random"
                               autoComplete="off"
                               className="formItem"
                               {...register("username", {
@@ -505,7 +505,7 @@ const UsersAdd = () => {
                             <input
                               type="password"
                               name="extension"
-                              autoComplete="off"
+                              autoComplete="new-password"
                               className="formItem"
                               {...register("password", {
                                 ...requiredValidator,
