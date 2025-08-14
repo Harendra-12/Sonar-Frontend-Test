@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function PackageAndSubscriptionDetails() {
     const accountDetails = useSelector((state) => state.accountDetails);
+      const accountBalance = useSelector((state) => state.accountBalance);
     const account = useSelector((state) => state.account);
     const slugPermissions = useSelector((state) => state?.permissions);
     const navigate = useNavigate();
@@ -314,7 +315,7 @@ function PackageAndSubscriptionDetails() {
                                     <div className="data-number2">
                                         <div className="d-flex flex-wrap justify-content-between">
                                             <div className="col-9">
-                                                <h5>${accountDetails?.balance?.amount || 0}</h5>
+                                                <h5>${accountBalance || 0}</h5>
                                                 {accountDetails?.balance?.updated_at ? (
                                                     <p>
                                                         Last recharged:{" "}
