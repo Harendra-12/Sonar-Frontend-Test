@@ -594,7 +594,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                               <input
                                 type="text"
-                                name="extension"
+                                name="random"
                                 className="formItem"
                                 {...register("alias", {
                                   ...noSpecialCharactersValidator,
@@ -936,7 +936,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 <input
                                   type={passwordMask ? "text" : "password"}
                                   className="formItem"
-                                  name=""
+                                  name="new-password"
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
