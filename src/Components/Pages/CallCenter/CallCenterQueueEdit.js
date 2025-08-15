@@ -687,6 +687,8 @@ function CallCenterQueueEdit() {
     });
   };
 
+
+  
   const handleApplyEditSettings = (data) => {
     const updatedAgents = selectedAgentToEdit.map((item) => {
       return {
