@@ -97,7 +97,6 @@ const RingGroupEdit = () => {
   const [searchEditAllUser, setSearchEditAllUser] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
 
-
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage);
@@ -134,7 +133,11 @@ const RingGroupEdit = () => {
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
         const apidataUser = await generalGetFunction(
-          `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
+          }`
         );
         if (apidataUser?.status) {
           setAllUserArr(apidataUser.data);
@@ -247,7 +250,7 @@ const RingGroupEdit = () => {
 
   // Function to handle click outside to close popup
   useEffect(() => {
-    const handleClickOutside = (event) => { };
+    const handleClickOutside = (event) => {};
 
     document.addEventListener("click", handleClickOutside);
 
@@ -448,7 +451,7 @@ const RingGroupEdit = () => {
       }
     }
     if (data.destination_type === "disabled") {
-      delete data.timeout_destination
+      delete data.timeout_destination;
     }
 
     const payLoad = {
@@ -647,10 +650,10 @@ const RingGroupEdit = () => {
     setValue("forward_to", value[0]);
   };
   const actionListValueForTimeout = (value) => {
-    setValue("timeout_destination", value[0])
-  }
+    setValue("timeout_destination", value[0]);
+  };
   const forwardStatus = watch("forward", "disabled");
-  const destination_type = watch("destination_type", "disabled")
+  const destination_type = watch("destination_type", "disabled");
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -848,10 +851,13 @@ const RingGroupEdit = () => {
                           <>
                             <div className="col-xxl-6 col-xl-12 col-12 pe-2">
                               {destination_type?.toLowerCase() === "pstn" &&
-                                destination_type?.toLowerCase() != "disabled" && (
+                                destination_type?.toLowerCase() !=
+                                  "disabled" && (
                                   <div className="col-12">
                                     <div className="formLabel">
-                                      <label className="formItemDesc">PSTN</label>
+                                      <label className="formItemDesc">
+                                        PSTN
+                                      </label>
                                     </div>
                                     <input
                                       type="number"
@@ -872,65 +878,74 @@ const RingGroupEdit = () => {
                                       })}
                                     />
                                     {errors.timeout_destination && (
-                                      <ErrorMessage text={errors.timeout_destination.message} />
+                                      <ErrorMessage
+                                        text={
+                                          errors.timeout_destination.message
+                                        }
+                                      />
                                     )}
                                   </div>
                                 )}
 
                               {destination_type?.toLowerCase() !== "pstn" &&
-                                destination_type?.toLowerCase() != "disabled" && (
+                                destination_type?.toLowerCase() !=
+                                  "disabled" && (
                                   <div className="col-12">
                                     {watch().destination_type &&
-                                      watch().destination_type?.length !== 0 && (
+                                      watch().destination_type?.length !==
+                                        0 && (
                                         <>
                                           <div className="formLabel">
-                                            <label className="formItemDesc">Extension</label>
+                                            <label className="formItemDesc">
+                                              Extension
+                                            </label>
                                           </div>
                                           <ActionList
                                             category={watch().destination_type}
                                             title={null}
                                             label={null}
-                                            getDropdownValue={actionListValueForTimeout}
+                                            getDropdownValue={
+                                              actionListValueForTimeout
+                                            }
                                             value={watch().timeout_destination}
-                                          // {...register("timeout_destination")}
+                                            // {...register("timeout_destination")}
                                           />
                                         </>
                                       )}
                                   </div>
                                 )}
                             </div>
-                            {
-                              watch("destination_type") !== "disabled" && (
-                                <div className="col-xxl-6 col-xl-12 col-12 pe-2">
-                                  <div className="formLabel">
-                                    <label className="formItemDesc">
-                                      Call Timeout
-                                    </label>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    className="formItem"
-                                    {...register("call_timeout", {
-                                      ...noSpecialCharactersValidator,
-                                      ...(watch("call_timeout") !== "" &&
-                                        minValidator(
-                                          destination.reduce(
-                                            (max, obj) =>
-                                              Math.max(max, obj.delay),
-                                            0
-                                          )
-                                        )),
-                                    })}
-                                    onKeyDown={restrictToNumbers}
-                                  />
-                                  {errors.call_timeout && (
-                                    <ErrorMessage
-                                      text={errors.call_timeout.message}
-                                    />
-                                  )}
+                            {watch("destination_type") !== "disabled" && (
+                              <div className="col-xxl-6 col-xl-12 col-12 pe-2">
+                                <div className="formLabel">
+                                  <label className="formItemDesc">
+                                    Call Timeout
+                                  </label>
                                 </div>
-                              )}
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  {...register("call_timeout", {
+                                    ...noSpecialCharactersValidator,
+                                    ...(watch("call_timeout") !== "" &&
+                                      minValidator(
+                                        destination.reduce(
+                                          (max, obj) =>
+                                            Math.max(max, obj.delay),
+                                          0
+                                        )
+                                      )),
+                                  })}
+                                  onKeyDown={restrictToNumbers}
+                                />
+                                {errors.call_timeout && (
+                                  <ErrorMessage
+                                    text={errors.call_timeout.message}
+                                  />
+                                )}
+                              </div>
+                            )}
                           </>
                           {errors?.destination_type && (
                             <ErrorMessage
@@ -1049,8 +1064,9 @@ const RingGroupEdit = () => {
                         </label>
                       </div>
                       <div
-                        className={`col-${forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
-                          }`}
+                        className={`col-${
+                          forwardStatus != "disabled" ? "3 pe-2 ms-auto" : "6"
+                        }`}
                       >
                         {forwardStatus != "disabled" && (
                           <div className="formLabel">
@@ -1159,36 +1175,52 @@ const RingGroupEdit = () => {
                           </span>
                         </button>
                       )}
-                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ? selectedAgentToEdit.length > 0 &&
+                      {checkViewSidebar(
+                        "User",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read"
+                      ) ? (
+                        selectedAgentToEdit.length > 0 &&
                         selectedAgentToEdit.length != destination.length ? (
-                        <button
-                          type="button"
-                          className="panelButton ms-2 mb-3"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span className="text">Edit</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
+                          <button
+                            type="button"
+                            className="panelButton ms-2 mb-3"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="panelButton edit ms-2 mb-3"
+                            onClick={() => {
+                              setSelectedAgentToEdit(destination);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span className="text">Edit All</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
+                            </span>
+                          </button>
+                        )
                       ) : (
-                        <button
-                          type="button"
-                          className="panelButton edit ms-2 mb-3"
-                          onClick={() => {
-                            setSelectedAgentToEdit(destination);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span className="text">Edit All</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      ) : ""}
-                      {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") &&
+                        ""
+                      )}
+                      {checkViewSidebar(
+                        "User",
+                        slugPermissions,
+                        account?.sectionPermissions,
+                        account?.permissions,
+                        "read"
+                      ) && (
                         <button
                           onClick={() => setBulkAddPopUp(true)}
                           className="panelButton mb-3"
@@ -1198,10 +1230,17 @@ const RingGroupEdit = () => {
                             <i className="fa-solid fa-plus"></i>
                           </span>
                         </button>
-                      }
+                      )}
                     </div>
                   </div>
-                  {checkViewSidebar("User", slugPermissions, account?.sectionPermissions, account?.permissions, "read") ?
+
+                  {checkViewSidebar(
+                    "User",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "read"
+                  ) ? (
                     <form className="row" style={{ padding: "0px 23px 20px" }}>
                       <div className="formRow col-xl-12">
                         {destination
@@ -1239,6 +1278,8 @@ const RingGroupEdit = () => {
                                   <label>{index + 1}.</label>
                                 </div>
                                 <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-8 pe-2 mb-2">
+                               
+
                                   {index === 0 ? (
                                     <div className="formLabel">
                                       <label htmlFor="">
@@ -1250,10 +1291,19 @@ const RingGroupEdit = () => {
                                     ""
                                   )}
                                   <div className="position-relative">
-                                    {user && user.filter((user) => user.extension.extension == destination[index].destination)
-                                      .map((filteredUser) => (
-                                        <div className="formItem">{filteredUser.username} - {filteredUser.extension.extension}</div>
-                                      ))}
+                                    {user &&
+                                      user
+                                        .filter(
+                                          (user) =>
+                                            user.extension.extension ==
+                                            destination[index].destination
+                                        )
+                                        .map((filteredUser) => (
+                                          <div className="formItem">
+                                            {filteredUser.username} -{" "}
+                                            {filteredUser.extension.extension}
+                                          </div>
+                                        ))}
                                   </div>
                                 </div>
                                 {watch("strategy") === "sequence" ? (
@@ -1296,7 +1346,9 @@ const RingGroupEdit = () => {
                                         ) {
                                           // Only add numbers that aren't used (except the current item's priority)
                                           if (
-                                            !usedPriorities.includes(i.toString())
+                                            !usedPriorities.includes(
+                                              i.toString()
+                                            )
                                           ) {
                                             numbers.push(
                                               <option key={i} value={i}>
@@ -1368,7 +1420,9 @@ const RingGroupEdit = () => {
                                       const numbers = [];
                                       for (let i = 0; i <= 100; i++) {
                                         if (i % 5 === 0) {
-                                          numbers.push(<span key={i}>{i}</span>);
+                                          numbers.push(
+                                            <span key={i}>{i}</span>
+                                          );
                                         }
                                       }
                                       return numbers.map((item) => {
@@ -1405,8 +1459,9 @@ const RingGroupEdit = () => {
                                   ""
                                 ) : (
                                   <div
-                                    className={`col-auto h-100 m${index === 0 ? "t" : "y"
-                                      }-auto`}
+                                    className={`col-auto h-100 m${
+                                      index === 0 ? "t" : "y"
+                                    }-auto`}
                                   >
                                     <button
                                       type="button"
@@ -1428,8 +1483,11 @@ const RingGroupEdit = () => {
                         </label>
                       </div>
                     </form>
-                    : <p style={{ padding: "0px 23px 20px" }}>You do not have permission to read!</p>
-                  }
+                  ) : (
+                    <p style={{ padding: "0px 23px 20px" }}>
+                      You do not have permission to read!
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -1588,7 +1646,8 @@ const RingGroupEdit = () => {
               </div>
               <div>
                 <div className="d-flex justify-content-between mb-2 align-items-center">
-                  <h5 className="me-2"
+                  <h5
+                    className="me-2"
                     style={{
                       color: "var(--color-subtext)",
                       fontSize: 14,
