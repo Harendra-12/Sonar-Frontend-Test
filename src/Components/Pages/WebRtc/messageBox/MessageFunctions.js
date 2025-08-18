@@ -540,6 +540,60 @@ export const handlePinMessage = async (
     }
 };
 
+export const handleUpdateMessage = async (
+    item,
+    setAllMessage,
+    allMessage,
+    recipient,
+    selectedChat,
+    editedValue
+) => {
+    const conversationKey = recipient[0];
+    const result = await generalPutFunction(selectedChat === "singleChat" ? api_url?.SINGLE_MESSAGE_UPDATE_URL(item?.id) : api_url?.GROUP_MESSAGE_UPDATE_URL(item?.id), { message_type: item?.message_type, message_text: editedValue });
+    if (result?.status) {
+        toast?.success(result?.message);
+        const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
+            if (msg.id === result?.data?.id) {
+                return { ...msg, message_text: result?.data?.message_text, body: result?.data?.message_text, updated_at: result?.data?.updated_at };
+            } else {
+                return { ...msg }
+            }
+        });
+
+        setAllMessage((prev) => ({
+            ...prev,
+            [conversationKey]: updatedAllMessage
+        }));
+    }
+}
+
+export const handleDeleteMessage = async (
+    item,
+    setAllMessage,
+    allMessage,
+    recipient,
+    selectedChat
+) => {
+    const conversationKey = recipient[0];
+    const result = await generalDeleteFunction(selectedChat === "singleChat" ? api_url?.SINGLE_MESSAGE_DELETE_URL(item?.id) : api_url?.GROUP_MESSAGE_DELETE_URL(item?.id));
+
+    if (result?.status) {
+        toast?.success(result?.message);
+        const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
+            if (msg.id === item?.id) {
+                return { ...msg, deleted_at: formatDateTime(new Date()), is_pinned: item?.is_pinned == 1 && 0 };
+            } else {
+                return { ...msg }
+            }
+        });
+
+        setAllMessage((prev) => ({
+            ...prev,
+            [conversationKey]: updatedAllMessage
+        }));
+    }
+}
+
 
 export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading) => {
     setLoading(true);

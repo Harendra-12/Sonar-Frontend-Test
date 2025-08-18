@@ -10,13 +10,15 @@ import {
     handleAssignTag,
     handleCheckboxChange,
     handleDeleteGroup,
+    handleDeleteMessage,
     handleEditGroupName,
     handlePinMessage,
     handleremoveUserFromGroup,
     handleSearchChange,
     handleSelectAll,
     handleTypingEvent,
-    handleUnassignTag
+    handleUnassignTag,
+    handleUpdateMessage
 } from './MessageFunctions';
 import GroupTyping from '../components/GroupTyping';
 import OneToOneTyping from '../components/OneToOneTyping';
@@ -108,12 +110,14 @@ const MessageBody = ({
     setInternalCaller,
     typingUserList
 }) => {
-
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState("")
     const [selectAll, setSelectAll] = useState(false)
     const [filteredAgents, setFilteredAgents] = useState(allAgents)
     const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
+    const [isUpdatedClicked, setIsUpdatedClicked] = useState(null);
+    const [editedValue, setEditedValue] = useState(null);
+
     const handlePinClick = (messageId) => {
         const selector = `.messageItem.active-${messageId}`;
         const element = document.querySelector(selector);
@@ -792,58 +796,109 @@ const MessageBody = ({
                                                         <div className={`messageItem sender active-${item?.id}`}>
                                                             <div className="second">
                                                                 <div className="d-flex gap-3 ">
-                                                                    <div className=" ms-3 ">
-                                                                        <h6>
-                                                                            <span>
-                                                                                {item.time
-                                                                                    ?.split(" ")[1]
-                                                                                    ?.split(":")
-                                                                                    .slice(0, 2)
-                                                                                    .join(":")}
-                                                                            </span>{" "}
-                                                                            &nbsp;
-                                                                            {item?.user_name}
-                                                                        </h6>
+                                                                    {
+                                                                        item?.deleted_at == null ?
+                                                                            <>
+                                                                                {
+                                                                                    isUpdatedClicked?.id != item?.id ?
+                                                                                        <div className=" ms-3 ">
+                                                                                            <h6>
+                                                                                                <span>
+                                                                                                    {item.time
+                                                                                                        ?.split(" ")[1]
+                                                                                                        ?.split(":")
+                                                                                                        .slice(0, 2)
+                                                                                                        .join(":")}
+                                                                                                </span>{" "}
+                                                                                                &nbsp;
+                                                                                                {item?.user_name}
+                                                                                            </h6>
 
-                                                                        <div
-                                                                            className={`message-text-container active-${item?.id}`}
-                                                                            style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
-                                                                        >
-                                                                            {/* <div className="dropdown">
-                                                                                <button
-                                                                                    className="clearButton2"
-                                                                                    type="button"
-                                                                                    data-bs-toggle="dropdown"
-                                                                                    aria-expanded="false"
-                                                                                >
-                                                                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                                                                </button>
-                                                                                <ul className="dropdown-menu">
-                                                                                    <li>
-                                                                                        <div
-                                                                                            className="dropdown-item"
-                                                                                            href="#"
-                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
-                                                                                        >
-                                                                                            {item?.is_pinned == 1 ? "Unpin" : "Pin"}
+                                                                                            <div
+                                                                                                className={`message-text-container active-${item?.id}`}
+                                                                                                style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
+                                                                                            >
+                                                                                                <div className="dropdown">
+                                                                                                    <button
+                                                                                                        className="clearButton2"
+                                                                                                        type="button"
+                                                                                                        data-bs-toggle="dropdown"
+                                                                                                        aria-expanded="false"
+                                                                                                    >
+                                                                                                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                                                                    </button>
+                                                                                                    <ul className="dropdown-menu">
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                                            >
+                                                                                                                {item?.is_pinned == 1 ? "Unpin" : "Pin"}
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => {
+                                                                                                                    setIsUpdatedClicked({ id: item?.id, message_text: item?.message_text })
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                Update
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => handleDeleteMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                                            >
+                                                                                                                Delete
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                                <div className="videoSize">
+                                                                                                    <DisplayFile
+                                                                                                        key={index}
+                                                                                                        item={item.body}
+                                                                                                        index={index}
+                                                                                                    />
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div> */}
-                                                                            <div className="videoSize">
-                                                                                <DisplayFile
-                                                                                    key={index}
-                                                                                    item={item.body}
-                                                                                    index={index}
-                                                                                />
-                                                                                <div className='pinBox'>
-                                                                                    <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
-                                                                                        <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
-                                                                                    </button>
-                                                                                </div>
+                                                                                        :
+                                                                                        <div className="message-edit-box">
+                                                                                            <input
+                                                                                                className="message-input"
+                                                                                                defaultValue={item?.message_text}
+                                                                                                value={editedValue}
+                                                                                                onChange={(event) => setEditedValue(event?.target?.value)}
+                                                                                            />
+                                                                                            <div className="button-group">
+                                                                                                <button className="ok-button" onClick={() => {
+                                                                                                    handleUpdateMessage(item, setAllMessage, allMessage, recipient, selectedChat, editedValue)
+                                                                                                    setEditedValue(null)
+                                                                                                    setIsUpdatedClicked(null)
+                                                                                                }
+                                                                                                }>OK</button>
+                                                                                                <button
+                                                                                                    className="cancel-button"
+                                                                                                    onClick={() => {
+                                                                                                        setEditedValue(null)
+                                                                                                        setIsUpdatedClicked(null)
+                                                                                                    }}>Cancel</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                }
+                                                                            </>
+                                                                            :
+                                                                            <div className=" ms-3 ">
+                                                                                Message deleted
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    }
+
                                                                     {item?.profile_picture ? (
                                                                         <div className="profileHolder">
                                                                             <img
@@ -905,14 +960,14 @@ const MessageBody = ({
                                                                         >
                                                                             <div className="videoSize">
                                                                                 <DisplayFile item={item.body} />
-                                                                                <div className='pinBox'>
+                                                                                {/* <div className='pinBox'>
                                                                                     <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
                                                                                         <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
-                                                                                </div>
+                                                                                </div> */}
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -931,8 +986,21 @@ const MessageBody = ({
                                                                                             {item?.is_pinned == 1 ? "Unpin" : "Pin"}
                                                                                         </div>
                                                                                     </li>
+                                                                                    {
+                                                                                        selectedChat == "groupChat" &&
+                                                                                        <li>
+                                                                                            <div
+                                                                                                className="dropdown-item"
+                                                                                                href="#"
+                                                                                                onClick={() => handleDeleteMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                            >
+                                                                                                Delete
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    }
+
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1585,7 +1653,7 @@ const MessageBody = ({
                                                                             <i className="fa-solid fa-ellipsis-vertical" />
                                                                         </button>
                                                                         <ul className="dropdown-menu light">
-                                                                            
+
                                                                             {!item?.is_admin &&
                                                                                 <li>
                                                                                     <div
