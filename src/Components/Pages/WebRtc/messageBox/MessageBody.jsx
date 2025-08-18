@@ -506,7 +506,7 @@ const MessageBody = ({
                                     </div>
                                     {/* <span className="status online">Online</span> */}
                                 </div>
-                                <div className="d-flex my-auto">
+                                <div className="d-flex position-relative">
                                     {/* <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">

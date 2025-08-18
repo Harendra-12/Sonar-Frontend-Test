@@ -521,6 +521,7 @@ function CallCenterQueueEdit() {
     }
   }
 
+  
   // Function to delete selected destination
   async function deleteSelectedDestination() {
     if (selectedAgentToEdit.length > 1) {

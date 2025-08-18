@@ -14,13 +14,12 @@ import AllActiveAgentStatus from "./AllActiveAgentStatus";
 
 function PhoneDashboard() {
   const navigate = useNavigate();
-  // const [extensionList, setExtensionList] = useState(0);
+    const dispatch = useDispatch();
   const [userList, setUserList] = useState([]);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const callDetailsLoading = useSelector((state) => state.callDetailsLoading);
   const activeCall = useSelector((state) => state.activeCall);
-  const dispatch = useDispatch();
   const ringGroup = useSelector((state) => state.ringGroup);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const [ringGroupData, setRingGroupData] = useState([]);
@@ -359,6 +358,7 @@ function PhoneDashboard() {
     });
   }
 
+  // console.log("realTimePbxDashboardData",realTimePbxDashboardData);
   return (
     <main className="mainContent">
       <section id="phonePage">

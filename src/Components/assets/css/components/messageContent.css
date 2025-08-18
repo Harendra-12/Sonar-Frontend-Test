@@ -78,7 +78,7 @@
     border-bottom: 1px solid var(--me-border1);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
 }
 
@@ -1091,6 +1091,7 @@
     padding: 0px 7px;
     font-size: 0.625rem !important;
     margin: 0px 2px 0 0 !important;
+    white-space: nowrap;
 }
 
 .webrtc_newMessageUi .contactTags span.more {
@@ -1670,7 +1671,7 @@
 }
 
 .filePanelActive {
-    height: calc(100vh - 360px);
+    height: calc(100vh - 405px);
     overflow: auto;
 }
 
@@ -1820,7 +1821,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    width: 200px;
+    max-width: 180px;
+    width: 100%;
     height: 100%;
     border: 0.20rem solid transparent;
     /* Start transparent */
@@ -2209,7 +2211,8 @@ abbr[title] {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    position: relative;
+    position: absolute;
+    right: 78px;
 }
 
 .input-wrapper .input {
