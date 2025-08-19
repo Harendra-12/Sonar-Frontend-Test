@@ -108,15 +108,18 @@ const MessageBody = ({
     setConferenceToggle,
     conferenceToggle,
     setInternalCaller,
-    typingUserList
+    typingUserList,
+    setIsUpdatedClicked,
+    isUpdatedClicked,
+    setEditedValue,
+    editedValue,
 }) => {
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState("")
     const [selectAll, setSelectAll] = useState(false)
     const [filteredAgents, setFilteredAgents] = useState(allAgents)
     const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
-    const [isUpdatedClicked, setIsUpdatedClicked] = useState(null);
-    const [editedValue, setEditedValue] = useState(null);
+
 
     const handlePinClick = (messageId) => {
         const selector = `.messageItem.active-${messageId}`;
@@ -800,9 +803,13 @@ const MessageBody = ({
                                                                         item?.deleted_at == null ?
                                                                             <>
                                                                                 {
-                                                                                    isUpdatedClicked?.id != item?.id ?
+                                                                                    !item?.hasOwnProperty('id') || isUpdatedClicked?.id != item?.id ?
                                                                                         <div className=" ms-3 ">
                                                                                             <h6>
+                                                                                                {
+                                                                                                    item?.edit_status === 1 &&
+                                                                                                    <>Updated</>
+                                                                                                }
                                                                                                 <span>
                                                                                                     {item.time
                                                                                                         ?.split(" ")[1]
@@ -811,7 +818,7 @@ const MessageBody = ({
                                                                                                         .join(":")}
                                                                                                 </span>{" "}
                                                                                                 &nbsp;
-                                                                                                {item?.user_name}
+                                                                                                {item?.user_name} 
                                                                                             </h6>
 
                                                                                             <div
@@ -842,7 +849,7 @@ const MessageBody = ({
                                                                                                                 className="dropdown-item"
                                                                                                                 href="#"
                                                                                                                 onClick={() => {
-                                                                                                                    setIsUpdatedClicked({ id: item?.id, message_text: item?.message_text })
+                                                                                                                    setIsUpdatedClicked(item)
                                                                                                                 }}
                                                                                                             >
                                                                                                                 Update
@@ -870,25 +877,110 @@ const MessageBody = ({
                                                                                         </div>
                                                                                         :
                                                                                         <div className="message-edit-box">
-                                                                                            <input
-                                                                                                className="message-input"
-                                                                                                defaultValue={item?.message_text}
-                                                                                                value={editedValue}
-                                                                                                onChange={(event) => setEditedValue(event?.target?.value)}
-                                                                                            />
-                                                                                            <div className="button-group">
-                                                                                                <button className="ok-button" onClick={() => {
-                                                                                                    handleUpdateMessage(item, setAllMessage, allMessage, recipient, selectedChat, editedValue)
-                                                                                                    setEditedValue(null)
-                                                                                                    setIsUpdatedClicked(null)
+                                                                                            <div className="textarea-wrapper position-relative">
+
+                                                                                                {
+                                                                                                    item?.message_type === "text/plain" ?
+                                                                                                        <div className="textarea-border-wrapper position-relative w-100">
+                                                                                                            <textarea
+                                                                                                                rows={2}
+                                                                                                                className="formItem animated-textarea pe-5"
+                                                                                                                value={editedValue ?? item?.message_text ?? ""}
+                                                                                                                onChange={(e) => {
+                                                                                                                    const value = e.target.value;
+                                                                                                                    const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+
+                                                                                                                    if (value.trim() === "") {
+                                                                                                                        setMessageInput((prev) => {
+                                                                                                                            const updated = { ...prev };
+                                                                                                                            delete updated[recipient[0]];
+                                                                                                                            return updated;
+                                                                                                                        });
+                                                                                                                        return;
+                                                                                                                    }
+
+                                                                                                                    if (!isTypingRef.current) {
+                                                                                                                        handleTypingEvent(socketSendMessage, account, recipient, true);
+                                                                                                                        isTypingRef.current = true;
+                                                                                                                    }
+
+                                                                                                                    if (typingTimeoutRef.current) {
+                                                                                                                        clearTimeout(typingTimeoutRef.current);
+                                                                                                                    }
+
+                                                                                                                    typingTimeoutRef.current = setTimeout(() => {
+                                                                                                                        handleTypingEvent(socketSendMessage, account, recipient, false);
+                                                                                                                        isTypingRef.current = false;
+                                                                                                                    }, 5000);
+
+                                                                                                                    if (wordCount <= 7000) {
+                                                                                                                        setEditedValue(value);
+                                                                                                                    } else {
+                                                                                                                        toast.warn("Text is too long!");
+                                                                                                                    }
+                                                                                                                }}
+                                                                                                                onKeyDown={(e) => {
+                                                                                                                    if (e.key === "Enter") {
+                                                                                                                        if (recipient?.[2] === "groupChat") {
+                                                                                                                            sendGroupMessage();
+                                                                                                                        } else {
+                                                                                                                            sendSingleMessage();
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }}
+                                                                                                            />
+                                                                                                            <div className="typingLoader position-absolute end-0 bottom-0 mb-1 me-2">
+                                                                                                                <TypingLoader />
+                                                                                                            </div>
+
+                                                                                                            <div className="textarea-buttons position-absolute end-0 top-50 translate-middle-y d-flex gap-1 me-2">
+
+                                                                                                                <button
+                                                                                                                    className="clearButton2 emoji"
+                                                                                                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                                                                                                >
+                                                                                                                    <i className="fa-regular fa-face-smile"></i>
+                                                                                                                </button>
+
+                                                                                                                <button
+                                                                                                                    className="ok-button"
+                                                                                                                    onClick={() => {
+                                                                                                                        handleUpdateMessage(
+                                                                                                                            item,
+                                                                                                                            setAllMessage,
+                                                                                                                            allMessage,
+                                                                                                                            recipient,
+                                                                                                                            selectedChat,
+                                                                                                                            editedValue
+                                                                                                                        );
+                                                                                                                        setEditedValue(null);
+                                                                                                                        setIsUpdatedClicked(null);
+                                                                                                                        setEmojiOpen(false);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <i className="fa-solid fa-paper-plane-top" />
+                                                                                                                </button>
+                                                                                                                <button
+                                                                                                                    className="cancel-button"
+                                                                                                                    onClick={() => {
+                                                                                                                        setEditedValue(null);
+                                                                                                                        setIsUpdatedClicked(null);
+                                                                                                                        setEmojiOpen(false);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <i className="fa-solid fa-xmark"></i>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        :
+                                                                                                        <div className="videoSize">
+                                                                                                            <DisplayFile
+                                                                                                                key={index}
+                                                                                                                item={item.body}
+                                                                                                                index={index}
+                                                                                                            />
+                                                                                                        </div>
                                                                                                 }
-                                                                                                }>OK</button>
-                                                                                                <button
-                                                                                                    className="cancel-button"
-                                                                                                    onClick={() => {
-                                                                                                        setEditedValue(null)
-                                                                                                        setIsUpdatedClicked(null)
-                                                                                                    }}>Cancel</button>
                                                                                             </div>
                                                                                         </div>
                                                                                 }
@@ -1811,7 +1903,7 @@ const MessageBody = ({
                 {/* </Panel>
                   </PanelGroup> */}
             </div>
-        </div>
+        </div >
     )
 }
 

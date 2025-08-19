@@ -168,6 +168,8 @@ function Messages({
   const [pageLoader, setPageLoader] = useState(false);
   const [typingDetailState, setTypingDetailState] = useState(null)
   const [typingUserList, setTypingUserList] = useState([])
+  const [isUpdatedClicked, setIsUpdatedClicked] = useState(null);
+  const [editedValue, setEditedValue] = useState(null);
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -185,11 +187,16 @@ function Messages({
     }
   };
   const handleEmojiClick = (emojiData) => {
-    setMessageInput((prev) => ({
-      ...prev,
-      [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji,
-    }));
+    if (isUpdatedClicked == null) {
+      setMessageInput((prev) => ({
+        ...prev,
+        [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji,
+      }));
+    } else {
+      setEditedValue((prev) => (prev ?? isUpdatedClicked?.message_text ?? "") + emojiData?.emoji);
+    }
   };
+
   const {
     formState: { errors },
     register,
@@ -203,6 +210,16 @@ function Messages({
       setSelectFileExtension(extension);
     }
   }, [selectedUrl]);
+
+  useEffect(() => {
+    if (isUpdatedClicked?.message_type === "image") {
+      setFileUpload(true);
+      setFileType("image");
+    } else if (isUpdatedClicked?.message_type === "file" || isUpdatedClicked?.message_type === "video") {
+      setFileUpload(true);
+      setFileType("all");
+    }
+  }, [isUpdatedClicked]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -1370,6 +1387,10 @@ function Messages({
                 conferenceToggle={conferenceToggle}
                 setInternalCaller={setInternalCaller}
                 typingUserList={typingUserList}
+                setIsUpdatedClicked={setIsUpdatedClicked}
+                isUpdatedClicked={isUpdatedClicked}
+                setEditedValue={setEditedValue}
+                editedValue={editedValue}
               />
 
             </div>
@@ -1671,6 +1692,9 @@ function Messages({
             allMessage={allMessage}
             extension={extension}
             formatDateTime={formatDateTime}
+            setIsUpdatedClicked={setIsUpdatedClicked}
+            isUpdatedClicked={isUpdatedClicked}
+            setEditedValue={setEditedValue}
           />
         )}
       </main>
