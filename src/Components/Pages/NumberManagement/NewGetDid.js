@@ -71,7 +71,7 @@ const NewGetDid = () => {
       label: "AI",
       value: "ai",
     },
-     {
+    {
       label: "MMS",
       value: "MMS",
     },
@@ -100,7 +100,7 @@ const NewGetDid = () => {
         if (apiData?.status) {
           setCountryCode(apiData.data);
           setLoading(false);
-          setActiveVendor(apiData?.active_vendor)
+          setActiveVendor(apiData?.active_vendor);
         }
       } catch (err) {
         console.log(err);
@@ -172,13 +172,12 @@ const NewGetDid = () => {
 
         return Array.from(uniqueMap.values());
       });
-
     } else {
       setDid([]);
       // toast.error(apiData.message)
     }
   };
-  
+
   // LOGIC TO HANDLE CHECKBOXES
   const handleChangeUsage = (e) => {
     const nonRemovable = { label: "Voice", value: "voice" };
@@ -328,7 +327,9 @@ const NewGetDid = () => {
                                 onSubmit={handleSubmit(onSubmit)}
                                 className={`mb-0 row`}
                               >
-                                <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-12`}>
+                                <div
+                                  className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-12`}
+                                >
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
@@ -345,13 +346,17 @@ const NewGetDid = () => {
                                       className="formItem"
                                       value={watch().country}
                                       {...register("country")}
-                                    // disabled
+                                      // disabled
                                     >
                                       {countryCode.length > 0 ? (
                                         countryCode
                                           .filter((item) => {
-                                            if (watch().searchType === "tollfree") {
-                                              return availableTopCountries.includes(item?.country_code);
+                                            if (
+                                              watch().searchType === "tollfree"
+                                            ) {
+                                              return availableTopCountries.includes(
+                                                item?.country_code
+                                              );
                                             }
                                             return true;
                                           })
@@ -392,8 +397,9 @@ const NewGetDid = () => {
                                   <div className="col-12">
                                     <select
                                       name="searchType"
-                                      className={`formItem ${errors.searchType ? "error" : ""
-                                        }`}
+                                      className={`formItem ${
+                                        errors.searchType ? "error" : ""
+                                      }`}
                                       {...register("searchType", {
                                         ...requiredValidator,
                                       })}
@@ -435,8 +441,9 @@ const NewGetDid = () => {
                                     <input
                                       type="number"
                                       name="quantity"
-                                      className={`formItem ${errors.quantity ? "error" : ""
-                                        }`}
+                                      className={`formItem ${
+                                        errors.quantity ? "error" : ""
+                                      }`}
                                       {...register("quantity", {
                                         // ...requiredValidator,
                                         ...lengthValidator(1, 10),
@@ -460,7 +467,10 @@ const NewGetDid = () => {
                                     <label htmlFor="">Usage</label>
                                   </div>
                                   <div className="col-12">
-                                    <div className="d-flex flex-wrap" style={{ columnGap: '15px' }}>
+                                    <div
+                                      className="d-flex flex-wrap"
+                                      style={{ columnGap: "15px" }}
+                                    >
                                       <div className="checkbox-wrapper-4">
                                         <input
                                           className="inp-cbx"
@@ -498,7 +508,9 @@ const NewGetDid = () => {
                                           name="Text"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
-                                          checked={selectedUsage?.some((data) => data?.value === "text")}
+                                          checked={selectedUsage?.some(
+                                            (data) => data?.value === "text"
+                                          )}
                                         />
                                         <label className="cbx" htmlFor="Text">
                                           <span>
@@ -527,7 +539,9 @@ const NewGetDid = () => {
                                           name="Fax"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
-                                          checked={selectedUsage?.some((data) => data?.value === "fax")}
+                                          checked={selectedUsage?.some(
+                                            (data) => data?.value === "fax"
+                                          )}
                                         />
                                         <label className="cbx" htmlFor="Fax">
                                           <span>
@@ -556,12 +570,11 @@ const NewGetDid = () => {
                                           name="AI"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
-                                          checked={selectedUsage?.some((data) => data?.value === "ai")}
+                                          checked={selectedUsage?.some(
+                                            (data) => data?.value === "ai"
+                                          )}
                                         />
-                                        <label
-                                          className="cbx"
-                                          htmlFor="AI"
-                                        >
+                                        <label className="cbx" htmlFor="AI">
                                           <span>
                                             <svg
                                               width="12px"
@@ -588,12 +601,11 @@ const NewGetDid = () => {
                                           name="MMS"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
-                                          checked={selectedUsage?.some((data) => data?.value === "mms")}
+                                          checked={selectedUsage?.some(
+                                            (data) => data?.value === "mms"
+                                          )}
                                         />
-                                        <label
-                                          className="cbx"
-                                          htmlFor="MMS"
-                                        >
+                                        <label className="cbx" htmlFor="MMS">
                                           <span>
                                             <svg
                                               width="12px"
@@ -620,7 +632,10 @@ const NewGetDid = () => {
                                           name="Emergency"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
-                                          checked={selectedUsage?.some((data) => data?.value === "emergency")}
+                                          checked={selectedUsage?.some(
+                                            (data) =>
+                                              data?.value === "emergency"
+                                          )}
                                         />
                                         <label
                                           className="cbx"
@@ -645,7 +660,6 @@ const NewGetDid = () => {
                                           </symbol>
                                         </svg>
                                       </div>
-
                                     </div>
                                     <label
                                       htmlFor="data"
@@ -668,8 +682,9 @@ const NewGetDid = () => {
                                       <div className="col-12">
                                         <select
                                           name="searchBy"
-                                          className={`formItem ${errors.searchBy ? "error" : ""
-                                            }`}
+                                          className={`formItem ${
+                                            errors.searchBy ? "error" : ""
+                                          }`}
                                           {...register("searchBy", {
                                             ...requiredValidator,
                                           })}
@@ -707,49 +722,50 @@ const NewGetDid = () => {
                                   watch().searchBy === "npanxx" ||
                                   watch().searchType === "tollfree" ||
                                   !watch().searchBy) && (
-                                    <>
-                                      <div
-                                        className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}
-                                      >
-                                        <div className="col-12">
-                                          <div
-                                            className="formLabel"
-                                            style={{ maxWidth: "100%" }}
-                                          >
-                                            <label htmlFor="npa">
-                                              First 3 Digits
-                                            </label>
-                                          </div>
-                                        </div>
-                                        <div className="col-12">
-                                          <input
-                                            type="number"
-                                            name="npa"
-                                            className={`formItem ${errors.npa ? "error" : ""
-                                              }`}
-                                            {...register("npa", {
-                                              ...(watch("searchBy") === "npanxx"
-                                                ? requiredValidator
-                                                : {}),
-                                              ...lengthValidator(3, 3),
-                                              ...noSpecialCharactersValidator,
-                                            })}
-                                          />
-                                          <label
-                                            htmlFor="data"
-                                            className="formItemDesc text-start"
-                                          >
-                                            {/* Input the first 3 digits (NPA - Area Code) of the DID */}
+                                  <>
+                                    <div
+                                      className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}
+                                    >
+                                      <div className="col-12">
+                                        <div
+                                          className="formLabel"
+                                          style={{ maxWidth: "100%" }}
+                                        >
+                                          <label htmlFor="npa">
+                                            First 3 Digits
                                           </label>
-                                          {errors.npa && (
-                                            <ErrorMessage
-                                              text={errors.npa.message}
-                                            />
-                                          )}
                                         </div>
                                       </div>
-                                    </>
-                                  )}
+                                      <div className="col-12">
+                                        <input
+                                          type="number"
+                                          name="npa"
+                                          className={`formItem ${
+                                            errors.npa ? "error" : ""
+                                          }`}
+                                          {...register("npa", {
+                                            ...(watch("searchBy") === "npanxx"
+                                              ? requiredValidator
+                                              : {}),
+                                            ...lengthValidator(3, 3),
+                                            ...noSpecialCharactersValidator,
+                                          })}
+                                        />
+                                        <label
+                                          htmlFor="data"
+                                          className="formItemDesc text-start"
+                                        >
+                                          {/* Input the first 3 digits (NPA - Area Code) of the DID */}
+                                        </label>
+                                        {errors.npa && (
+                                          <ErrorMessage
+                                            text={errors.npa.message}
+                                          />
+                                        )}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
 
                                 {watch().searchBy === "npanxx" &&
                                   watch().searchType === "domestic" && (
@@ -771,8 +787,9 @@ const NewGetDid = () => {
                                           <input
                                             type="number"
                                             name="nxx"
-                                            className={`formItem ${errors.nxx ? "error" : ""
-                                              }`}
+                                            className={`formItem ${
+                                              errors.nxx ? "error" : ""
+                                            }`}
                                             {...register("nxx", {
                                               ...requiredValidator,
                                               ...lengthValidator(3, 3),
@@ -818,8 +835,9 @@ const NewGetDid = () => {
                                           <input
                                             type="string"
                                             name="rateCenter"
-                                            className={`formItem ${errors.rateCenter ? "error" : ""
-                                              }`}
+                                            className={`formItem ${
+                                              errors.rateCenter ? "error" : ""
+                                            }`}
                                             {...register("rateCenter", {
                                               // ...requiredValidator
                                             })}
@@ -850,8 +868,9 @@ const NewGetDid = () => {
                                           <input
                                             type="state"
                                             name="state"
-                                            className={`formItem ${errors.state ? "error" : ""
-                                              }`}
+                                            className={`formItem ${
+                                              errors.state ? "error" : ""
+                                            }`}
                                             {...register("state", {
                                               ...requiredValidator,
                                             })}
@@ -875,8 +894,9 @@ const NewGetDid = () => {
                                         <div className="col-12">
                                           <select
                                             name="contiguous"
-                                            className={`formItem ${errors.contiguous ? "error" : ""
-                                              }`}
+                                            className={`formItem ${
+                                              errors.contiguous ? "error" : ""
+                                            }`}
                                             {...register("contiguous", {
                                               ...requiredValidator,
                                             })}
@@ -918,10 +938,11 @@ const NewGetDid = () => {
                                 {did && did.length > 0 ? (
                                   did.map((item, index) => (
                                     <div
-                                      className={`card country_box ${selectedDid.includes(item)
-                                        ? "active"
-                                        : ""
-                                        }`}
+                                      className={`card country_box ${
+                                        selectedDid.includes(item)
+                                          ? "active"
+                                          : ""
+                                      }`}
                                       key={index}
                                       onClick={() =>
                                         selectedDid.includes(item)
@@ -932,8 +953,9 @@ const NewGetDid = () => {
                                       <div className="card-body flex-row gap-3 justify-content-start w-100">
                                         <div className="avatar_img mb-0">
                                           <img
-                                            src={`https://flagsapi.com/${watch().country
-                                              }/flat/64.png`}
+                                            src={`https://flagsapi.com/${
+                                              watch().country
+                                            }/flat/64.png`}
                                             alt="logout"
                                             style={{ width: "auto" }}
                                           />
@@ -972,9 +994,7 @@ const NewGetDid = () => {
                                                     </button>
                                                   </Tippy>
                                                 );
-                                              }else if (
-                                                item.label === "MMS"
-                                              ) {
+                                              } else if (item.label === "MMS") {
                                                 return (
                                                   <Tippy content="MMS is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
@@ -982,8 +1002,7 @@ const NewGetDid = () => {
                                                     </button>
                                                   </Tippy>
                                                 );
-                                              } 
-                                              else if (
+                                              } else if (
                                                 item.label === "Emergency"
                                               ) {
                                                 return (
@@ -993,9 +1012,7 @@ const NewGetDid = () => {
                                                     </button>
                                                   </Tippy>
                                                 );
-                                              } else if (
-                                                item.label === "AI"
-                                              ) {
+                                              } else if (item.label === "AI") {
                                                 return (
                                                   <Tippy content="AI Agent is activated for this Number">
                                                     <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
@@ -1007,10 +1024,8 @@ const NewGetDid = () => {
                                             })}
                                           </div>
                                         </div>
-                                        {item?.address_requirements != "none" &&
-                                        <div>
-                                          Address required  
-                                        </div>}
+                                        {item?.address_requirements !=
+                                          "none" && <div>Address required</div>}
                                       </div>
                                     </div>
                                   ))
@@ -1040,51 +1055,56 @@ const NewGetDid = () => {
                               {countryCode &&
                                 countryCode.length > 0 &&
                                 countryCode
-                                  .filter((item) => availableTopCountries.includes(item.country_code))
+                                  .filter((item) =>
+                                    availableTopCountries.includes(
+                                      item.country_code
+                                    )
+                                  )
                                   .map((item, index) => (
                                     <div
                                       key={index}
                                       className="card country_box"
-                                      style={{ width: '141px' }}
+                                      style={{ width: "141px" }}
                                       onClick={() =>
                                         setValue("country", item.country_code)
                                       }
                                     >
-                                      <div className="card-body">
-                                        <div>
-                                          {
-                                            item?.subresource_uris?.local &&
-                                            "local"
-                                          }
-                                          {
-                                            item?.subresource_uris?.mobile &&
-                                            "mobile"
-                                          }
-                                          {
-                                            item?.subresource_uris?.toll_free &&
-                                            "toll_free"
-                                          }
-                                        </div>
-                                        <div>
-                                          <div className="avatar_img">
-                                            <img
-                                              src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
-                                              alt="logout"
-                                              style={{ width: "auto" }}
-                                            />
-                                          </div>
-                                          <div className="card_details">
-                                            <p className="country_name">
-                                              {item?.country}
-                                            </p>
-                                            <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                              <p className="text-center mb-0">
-                                                {item?.prefix_code}
+                                      <div className="card-body p-2">
+                                        <div className=" d-flex align-items-center justify-content-between">
+                                          <div className="align-items-initial justify-content-center avtars">
+                                            <div className="avatar_img">
+                                              <img
+                                                src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                                alt="logout"
+                                                style={{ width: "auto" }}
+                                              />
+                                            </div>
+                                            <div className="card_details">
+                                              <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                <p className="text-center mb-0">
+                                                  {item?.prefix_code}
+                                                </p>
+                                              </div>
+                                              <p className="country_name">
+                                                {item?.country}
                                               </p>
                                             </div>
                                           </div>
+                                          <div>
+                                            <p>
+                                              {item?.subresource_uris?.local &&
+                                                "local"}
+                                            </p>
+                                            <p>
+                                              {item?.subresource_uris?.mobile &&
+                                                "mobile"}
+                                            </p>
+                                            <p>
+                                              {item?.subresource_uris
+                                                ?.toll_free && "toll_free"}
+                                            </p>
+                                          </div>
                                         </div>
-
                                       </div>
                                     </div>
                                   ))}
@@ -1094,7 +1114,12 @@ const NewGetDid = () => {
                               {countryCode &&
                                 countryCode.length > 0 &&
                                 countryCode
-                                  .filter((item) => !availableTopCountries.includes(item.country_code))
+                                  .filter(
+                                    (item) =>
+                                      !availableTopCountries.includes(
+                                        item.country_code
+                                      )
+                                  )
                                   .map((item, index) => (
                                     <div
                                       key={index}
@@ -1104,37 +1129,41 @@ const NewGetDid = () => {
                                       }
                                     >
                                       <div className="card-body">
-                                        <div>
-                                          {
-                                            item?.subresource_uris?.local &&
-                                            "local"
-                                          }
-                                          {
-                                            item?.subresource_uris?.mobile &&
-                                            "mobile"
-                                          }
-                                          {
-                                            item?.subresource_uris?.toll_free &&
-                                            "toll_free"
-                                          }
-                                        </div>
-                                        <div>
-                                          <div className="avatar_img">
-                                            <img
-                                              src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
-                                              alt="logout"
-                                              style={{ width: "auto" }}
-                                            />
-                                          </div>
-                                          <div className="card_details">
-                                            <p className="country_name">
-                                              {item?.country}
-                                            </p>
-                                            <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                              <p className="text-center mb-0">
-                                                {item?.prefix_code}
-                                              </p>
+                                        <div className="d-flex align-items-center  justify-content-between">
+                                          <div className="align-items-initial justify-content-center avtars">
+                                            <div>
+                                              <div className="avatar_img">
+                                                <img
+                                                  src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                                  alt="logout"
+                                                  style={{ width: "auto" }}
+                                                />
+                                              </div>
+                                              <div className="card_details">
+                                                <p className="country_name">
+                                                  {item?.country}
+                                                </p>
+                                                <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                  <p className="text-center mb-0">
+                                                    {item?.prefix_code}
+                                                  </p>
+                                                </div>
+                                              </div>
                                             </div>
+                                          </div>
+                                          <div>
+                                            <p>
+                                              {item?.subresource_uris?.local &&
+                                                "local"}
+                                            </p>
+                                            <p>
+                                              {item?.subresource_uris?.mobile &&
+                                                "mobile"}
+                                            </p>
+                                            <p>
+                                              {item?.subresource_uris
+                                                ?.toll_free && "toll_free"}
+                                            </p>
                                           </div>
                                         </div>
                                       </div>
