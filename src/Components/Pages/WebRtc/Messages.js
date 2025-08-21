@@ -64,6 +64,8 @@ function Messages({
   isSingleCallMessageOpened,
   selectedChat,
   setSelectedChat,
+  callStatus,
+  setCallStatus,
   // recipient,
   // setRecipient,
   // selectedChat,
@@ -1391,6 +1393,7 @@ function Messages({
                 isUpdatedClicked={isUpdatedClicked}
                 setEditedValue={setEditedValue}
                 editedValue={editedValue}
+                setCallStatus={setCallStatus}
               />
 
             </div>

@@ -6,6 +6,7 @@ function InternalIncomingCall({
   setInternalCaller,
   setToUser,
   setCalling,
+  calling,
   setConferenceToggle,
   setIsConferenceCall,
   setConferenceInfo,
@@ -18,6 +19,8 @@ function InternalIncomingCall({
   setIsSingleCallMessageOpened,
   selectedChat,
   setSelectedChat,
+  callStatus,
+  setCallStatus,
 }) {
   const socketSendPeerCallMessage = useSelector(
     (state) => state.socketSendPeerCallMessage
@@ -25,14 +28,39 @@ function InternalIncomingCall({
   const notificationRef = useRef(null);
   const account = useSelector((state) => state.account);
   const incomingCall = useSelector((state) => state.incomingCall);
+  const onGoingCallInfo = useSelector((state) => state.onGoingCallInfo);
   const internalCallAction = useSelector((state) => state.internalCallAction);
   const socketSendPeerGroupCallMessage = useSelector(
     (state) => state.socketSendPeerGroupCallMessage
   );
-  // console.log(incomingCall,internalCallAction)
-
   const dispatch = useDispatch();
+  // console.log(incomingCall,internalCallAction)
+  
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3"));
+  }, []);
+
+  const playRing = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.loop = true; // optional
+      audio.play().catch((err) => console.error("Play failed", err));
+    }
+  }
+
+  const stopRing = () => {
+    const audio = audioRef.current;
+    if (audio && !audio.paused) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
+
+
   function answerCall(item) {
+    setCallStatus("call-started")
     setIsGroupCallMessageOpened(false);
     setIsSingleCallMessageOpened(false);
     if (item?.source === "incoming_peer_group_call") {
@@ -69,6 +97,7 @@ function InternalIncomingCall({
         group_name: item?.group_name,
         user_id: item?.receiver_id,
       });
+      setCallStatus("call-started")
       setSelectedChat("groupChat")
     } else {
       setInternalCaller(item?.sender_id);
@@ -93,6 +122,7 @@ function InternalIncomingCall({
           incomingCall: { ...item, recieved: true, isOtherMember: true },
         });
       }, 1000);
+      setCallStatus("call-started")
       socketSendPeerCallMessage({
         action: "peercallUpdate",
         chat_call_id: item?.uuid,
@@ -126,6 +156,7 @@ function InternalIncomingCall({
         room_id: item?.room_id,
       });
       dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
+      setCallStatus("call-ended")
       socketSendPeerCallMessage({
         action: "peercallUpdate",
         chat_call_id: item?.uuid,
@@ -136,7 +167,24 @@ function InternalIncomingCall({
       });
     }
     setCalling(false)
+    setCallStatus("call-rejected")
   }
+
+  useEffect(() => {
+    if (callStatus !== "") {
+      if ((callStatus == "call-initiated" || callStatus == "call-incoming" || onGoingCallInfo?.group_call_received !== "group-call-received") && (onGoingCallInfo?.status != "started" || onGoingCallInfo?.group_call_received !== "group-call-received")) {
+        playRing()
+      }
+      if (callStatus == "call-started" || callStatus == "call-ended" || callStatus === "call-rejected" || onGoingCallInfo?.status == "started" || onGoingCallInfo?.group_call_received === "group-call-received" || onGoingCallInfo?.group_call_received === "group-call-ended") {
+        if (callStatus !== "call-initiated")
+          stopRing()
+        // dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: {} });
+      }
+    } else {
+      stopRing()
+    }
+
+  }, [callStatus, onGoingCallInfo])
 
   useEffect(() => {
     incomingCall?.map((item) => {
@@ -146,6 +194,7 @@ function InternalIncomingCall({
       ) {
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+        stopRing()
       }
       if (
         internalCallAction?.room_id === item?.room_id &&
@@ -154,17 +203,18 @@ function InternalIncomingCall({
       ) {
         dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
         dispatch({ type: "REMOVE_INCOMINGCALL", room_id: item?.room_id });
+        stopRing()
       }
     });
     console.log(internalCallAction, "internalCallAction");
   }, [internalCallAction]);
 
   // create audio only once
-  const audioRef = useRef(new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3")));
+  // const audioRef = useRef(new Audio(require("../../../assets/music/cellphone-ringing-6475.mp3")));
 
   useEffect(() => {
-    const audio = audioRef.current;
-    audio.loop = true;
+    // const audio = audioRef.current;
+    // audio.loop = true;
 
     if (incomingCall?.length > 0) {
       // notification logic
@@ -180,17 +230,17 @@ function InternalIncomingCall({
           notificationRef.current.onclick = () => window.focus();
         }
       });
-
+      setCallStatus("call-incoming")
       // only play if not already playing
-      if (audio.paused) {
-        audio.play().catch((err) => console.error(err));
-      }
+      // if (audio.paused) {
+      //   audio.play().catch((err) => console.error(err));
+      // }
     } else {
       // stop & reset
-      if (!audio.paused) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
+      // if (!audio.paused) {
+      //   audio.pause();
+      //   audio.currentTime = 0;
+      // }
     }
   }, [incomingCall]);
 

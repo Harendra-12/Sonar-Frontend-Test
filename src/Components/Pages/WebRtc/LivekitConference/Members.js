@@ -43,7 +43,9 @@ function Members({
   isConferenceCall,
   socketMessage,
   conferenceInfo,
-  setInternalCaller
+  setInternalCaller,
+  callStatus,
+  setCallStatus,
 }) {
   const room = useRoomContext();
   const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
@@ -183,8 +185,10 @@ function Members({
           "group_call_id": parseInt(incomingGroupCall?.message_group_id),
           "group_call_uuid": incomingGroupCall?.uuid,
         })
-        dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {} })
+        dispatch({ type: "SET_INCOMING_GROUP_CALL", incomingGroupCall: {ended_from_caller_side: "ended"} })
         setCalling(false)
+        setCallStatus("call-ended")
+        dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: {} });
       } else {
         setInternalCaller(account?.id)
         console.log(
@@ -199,6 +203,7 @@ function Members({
           incomingCall.filter((item) => item?.room_id === roomName)[0]
             ?.isOtherMember
         ) {
+          setCallStatus("call-ended")
           socketSendPeerCallMessage({
             action: "peercallUpdate",
             chat_call_id: incomingCall.filter(
@@ -213,6 +218,7 @@ function Members({
           dispatch({ type: "SET_INTERNALCALLACTION", internalCallAction: null });
           setCalling(false); // Update parent state if needed
         } else {
+          setCallStatus("call-ended")
           socketSendPeerCallMessage({
             action: "peercallUpdate",
             chat_call_id: onGoingCallInfo?.uuid,

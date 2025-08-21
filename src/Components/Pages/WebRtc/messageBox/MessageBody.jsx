@@ -113,6 +113,7 @@ const MessageBody = ({
     isUpdatedClicked,
     setEditedValue,
     editedValue,
+    setCallStatus,
 }) => {
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState("")
@@ -143,6 +144,7 @@ const MessageBody = ({
             "group_name": recipient[0],
             "user_id": account?.id,
         })
+        setCallStatus("call-initiated")
         setInternalCaller(account?.id)
         setToUser(recipient[1])
         setCalling(true)
@@ -564,6 +566,7 @@ const MessageBody = ({
                                                     type: "SET_INTERNALCALLACTION",
                                                     internalCallAction: null,
                                                 });
+                                                setCallStatus("call-initiated")
                                                 socketSendPeerCallMessage({
                                                     action: "peercallInitiate",
                                                     from: account.id,
@@ -585,6 +588,7 @@ const MessageBody = ({
                                                 setMeetingPage("message");
                                                 setToUser(recipient?.[1]);
                                                 setCalling(true);
+                                                setCallStatus("call-initiated")
                                                 dispatch({
                                                     type: "SET_INTERNALCALLACTION",
                                                     internalCallAction: null,
@@ -818,7 +822,7 @@ const MessageBody = ({
                                                                                                         .join(":")}
                                                                                                 </span>{" "}
                                                                                                 &nbsp;
-                                                                                                {item?.user_name} 
+                                                                                                {item?.user_name}
                                                                                             </h6>
 
                                                                                             <div
@@ -1892,6 +1896,7 @@ const MessageBody = ({
                                         setConferenceToggle={setConferenceToggle}
                                         conferenceToggle={conferenceToggle}
                                         setInternalCaller={setInternalCaller}
+                                        setCallStatus={setCallStatus}
                                     />
                                 ) : (
                                     ""

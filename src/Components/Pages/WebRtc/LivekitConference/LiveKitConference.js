@@ -7,7 +7,7 @@ import { RecordingIndicator } from "./RecordingIndicator";
 import GoConferenceSocket from "../../../GlobalFunction/GoConferenceSocket";
 
 
-const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize, isConferenceCall, conferenceInfo, setInternalCaller }) => {
+const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setCalling, isMinimize, setIsMinimize, isConferenceCall, conferenceInfo, setInternalCaller, callStatus, setCallStatus }) => {
     const [manualRecording, setManualRecording] = useState(false); // State to track manual recording
     const [isCurrentUserStartRecording, setIsCurrentUserStartRecording] = useState(false); // State to track if the current user started recording
     const handleClickMinimize = () => {
@@ -58,6 +58,8 @@ const LiveKitConference = ({ token, serverUrl, roomName, username, isAdmin, setC
                         socketMessage={sendConferenceMessage}
                         conferenceInfo={conferenceInfo}
                         setInternalCaller={setInternalCaller}
+                        callStatus={callStatus}
+                        setCallStatus={setCallStatus}
                     />
                     <RecordingIndicator
                         manualRecording={manualRecording}
