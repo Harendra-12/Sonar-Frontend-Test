@@ -2,7 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { fileUploadFunction } from '../../GlobalFunction/globalFunction';
 import { useSelector } from 'react-redux';
-function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, selectedFile, sendSingleMessage, sendGroupMessage, recipient, setAllMessage, allMessage, formatDateTime, extension }) {
+import { handleUpdateMessage } from './messageBox/MessageFunctions';
+function FileUpload({
+    type,
+    setFileUpload,
+    setSelectedUrl,
+    setSelectedFile,
+    selectedFile,
+    sendSingleMessage,
+    sendGroupMessage,
+    recipient,
+    setAllMessage,
+    allMessage,
+    formatDateTime,
+    extension,
+    setIsUpdatedClicked,
+    isUpdatedClicked,
+    setEditedValue
+}) {
 
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -42,11 +59,40 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
     };
 
     useEffect(() => {
+        const loadPreviewFromURL = async () => {
+            if (isUpdatedClicked?.message_type === "text/plain") {
+                setPreview(null);
+                setSelectedFile(null);
+                return;
+            }
+
+            try {
+                // const response = await fetch(isUpdatedClicked?.message_text);
+                const blob = await isUpdatedClicked?.message_text?.blob();
+                const objectUrl = URL.createObjectURL(blob);
+
+                setPreview(objectUrl);
+                setSelectedFile(null);
+                setLoading(false);
+
+                return () => URL.revokeObjectURL(objectUrl);
+            } catch (error) {
+                console.error("Failed to load file preview:", error);
+                setPreview(null);
+            }
+        };
+
+        if (isUpdatedClicked?.message_text) {
+            loadPreviewFromURL();
+        }
+    }, [isUpdatedClicked]);
+
+
+    useEffect(() => {
         if (!selectedFile) {
             setPreview(null);
             return;
         }
-
         const objectUrl = URL.createObjectURL(selectedFile);
         setPreview(objectUrl);
         setLoading(false); // Stop loading once preview is ready
@@ -71,13 +117,15 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                 ],
             }));
         } else {
-            setAllMessage((prevState) => ({
-                ...prevState,
-                [recipient[0]]: [
-                    ...(prevState[recipient[0]] || []),
-                    { from: extension, body: "loading", time },
-                ],
-            }));
+            if (isUpdatedClicked == null) {
+                setAllMessage((prevState) => ({
+                    ...prevState,
+                    [recipient[0]]: [
+                        ...(prevState[recipient[0]] || []),
+                        { from: extension, body: "loading", time },
+                    ],
+                }));
+            }
         }
         try {
             setFileUpload(false)
@@ -89,12 +137,26 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
             if (res?.status) {
                 toast.success("File uploaded successfully");
                 // console.log({recipient})
-                setAllMessage(msg)
-                if (recipient[2] === "groupChat") {
-                    sendGroupMessage(res?.file_url);
+                if (isUpdatedClicked == null) {
+                    setAllMessage(msg)
+                    if (recipient[2] === "groupChat") {
+                        sendGroupMessage(res?.file_url);
+                    } else {
+                        sendSingleMessage(res?.file_url);
+                    }
                 } else {
-                    sendSingleMessage(res?.file_url);
+                    setEditedValue(res?.file_url)
+                    handleUpdateMessage(
+                        isUpdatedClicked,
+                        setAllMessage,
+                        allMessage,
+                        recipient,
+                        recipient[2],
+                        res?.file_url
+                    );
                 }
+
+
                 setSelectedUrl(res?.file_url);
                 setSelectedFile(null)
             } else {
@@ -110,7 +172,21 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
         } finally {
             setFileUpload(false)
         }
+        if (isUpdatedClicked) {
+            setIsUpdatedClicked(null)
+            setEditedValue(null)
+        }
     }
+
+    const handleCancelClick = () => {
+        setSelectedFile(null);
+        setFileUpload(false)
+        if (isUpdatedClicked) {
+            setIsUpdatedClicked(null)
+            setEditedValue(null)
+        }
+    }
+
     return (
         <div className="popup music">
             <div className="container h-100">
@@ -138,7 +214,7 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                                             <iframe title='pdf' src={preview} className="pdf-preview"></iframe>
                                         )}
                                         {console.log('selected file', selectedFile)}
-                                        {   (selectedFile.type == "text/plain" ||
+                                        {(selectedFile.type == "text/plain" ||
                                             selectedFile?.type == "application/msword" ||
                                             selectedFile?.type == "application/rtf" ||
                                             selectedFile?.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
@@ -208,7 +284,7 @@ function FileUpload({ type, setFileUpload, setSelectedUrl, setSelectedFile, sele
                                     <span className='text'>Confirm</span>
                                     <span className='icon'><i className="fa-solid fa-check" /></span>
                                 </button>
-                                <button className="panelButton gray" onClick={() => { setSelectedFile(null); setFileUpload(false) }}>
+                                <button className="panelButton gray" onClick={handleCancelClick}>
                                     <span className='text'>Cancel</span>
                                     <span className='icon'><i className="fa-solid fa-xmark" /></span>
                                 </button>

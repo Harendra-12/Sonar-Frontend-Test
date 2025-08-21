@@ -50,4 +50,8 @@ export const api_url = {
     REMOVE_USER_FROM_GROUP_URL: (group_id, id) => `chatgroups/leave/${group_id}?user_id=${id}`,
     DELETE_GROUP_URL: (id) => `/chatgroups/destroy/${id}`,
     CHAT_CALLS_HISTORY_WITH_GROUP_AND_SINGLE_URL: (page_num) => `/groupcall/call-history?page=${page_num}`,
+    GROUP_MESSAGE_DELETE_URL: (id) =>  `/group-message/${id}`,
+    SINGLE_MESSAGE_DELETE_URL: (id) => `/message/destroy/${id}`,
+    SINGLE_MESSAGE_UPDATE_URL: (id) => `/message/update/${id}`,
+    GROUP_MESSAGE_UPDATE_URL: (id) =>  `/group-message/${id}`,
 }

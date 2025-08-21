@@ -22,7 +22,8 @@ const MessageProfileDetails = ({
   isVideoOn,
   setConferenceToggle,
   conferenceToggle,
-  setInternalCaller
+  setInternalCaller,
+  setCallStatus,
 }) => {
   const dispatch = useDispatch()
   const [allFiles, setAllFiles] = useState([]);
@@ -205,6 +206,7 @@ const MessageProfileDetails = ({
       setMeetingPage("message");
       setToUser(recipient?.[1]);
       setCalling(true);
+      setCallStatus("call-initiated")
       dispatch({
         type: "SET_INTERNALCALLACTION",
         internalCallAction: null,
@@ -225,6 +227,7 @@ const MessageProfileDetails = ({
         "group_name": recipient[0],
         "user_id": account?.id,
       })
+      setCallStatus("call-initiated")
       setInternalCaller(account?.id)
       setToUser(recipient[1])
       setCalling(true)

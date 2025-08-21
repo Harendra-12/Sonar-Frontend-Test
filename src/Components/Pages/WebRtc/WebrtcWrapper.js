@@ -122,7 +122,8 @@ const WebrtcWrapper = () => {
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
   const [isGroupCallMessageOpened, setIsGroupCallMessageOpened] = useState(false)
-  const [isSingleCallMessageOpened, setIsSingleCallMessageOpened] = useState(false)
+  const [isSingleCallMessageOpened, setIsSingleCallMessageOpened] = useState(false);
+  const [callStatus, setCallStatus] = useState("")
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
   const audioRef = useRef(null);
@@ -645,6 +646,8 @@ const WebrtcWrapper = () => {
             setInternalCaller={setInternalCaller}
             isGroupCallMessageOpened={isGroupCallMessageOpened}
             isSingleCallMessageOpened={isSingleCallMessageOpened}
+            callStatus={callStatus}
+            setCallStatus={setCallStatus}
           />
         )}
         {activePage === "conference" && (
@@ -996,6 +999,8 @@ const WebrtcWrapper = () => {
               setIsGroupCallMessageOpened={setIsGroupCallMessageOpened}
               setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
               setInternalCaller={setInternalCaller}
+              callStatus={callStatus}
+              setCallStatus={setCallStatus}
             />
           </div>
         </Rnd>
@@ -1005,6 +1010,7 @@ const WebrtcWrapper = () => {
 
       <InternalIncomingCall
         setCalling={setCalling}
+        calling={calling}
         setToUser={setToUser}
         setInternalCaller={setInternalCaller}
         setConferenceToggle={setConferenceToggle}
@@ -1019,6 +1025,8 @@ const WebrtcWrapper = () => {
         setIsSingleCallMessageOpened={setIsSingleCallMessageOpened}
         selectedChat={selectedChat}
         setSelectedChat={setSelectedChat}
+        callStatus={callStatus}
+        setCallStatus={setCallStatus}
       />
     </>
   );

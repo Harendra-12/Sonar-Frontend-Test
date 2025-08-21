@@ -71,6 +71,10 @@ const NewGetDid = () => {
       label: "AI",
       value: "ai",
     },
+     {
+      label: "MMS",
+      value: "MMS",
+    },
   ];
 
   const {
@@ -149,12 +153,32 @@ const NewGetDid = () => {
     setLoading(false);
     if (apiData?.status) {
       setDid(apiData.data);
+      const capabilities = apiData?.data?.[0]?.capabilities;
+      const newUsages = [];
+      if (capabilities?.SMS) {
+        newUsages.push({ label: "Text", value: "text" });
+      }
+
+      if (capabilities?.MMS) {
+        newUsages.push({ label: "MMS", value: "mms" });
+      }
+
+      setSelectedUsage((prev) => {
+        const combined = [...prev, ...newUsages];
+        const uniqueMap = new Map();
+        combined.forEach((item) => {
+          uniqueMap.set(item.value, item);
+        });
+
+        return Array.from(uniqueMap.values());
+      });
+
     } else {
       setDid([]);
       // toast.error(apiData.message)
     }
   };
-
+  
   // LOGIC TO HANDLE CHECKBOXES
   const handleChangeUsage = (e) => {
     const nonRemovable = { label: "Voice", value: "voice" };
@@ -474,6 +498,7 @@ const NewGetDid = () => {
                                           name="Text"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
+                                          checked={selectedUsage?.some((data) => data?.value === "text")}
                                         />
                                         <label className="cbx" htmlFor="Text">
                                           <span>
@@ -502,6 +527,7 @@ const NewGetDid = () => {
                                           name="Fax"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
+                                          checked={selectedUsage?.some((data) => data?.value === "fax")}
                                         />
                                         <label className="cbx" htmlFor="Fax">
                                           <span>
@@ -530,6 +556,7 @@ const NewGetDid = () => {
                                           name="AI"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
+                                          checked={selectedUsage?.some((data) => data?.value === "ai")}
                                         />
                                         <label
                                           className="cbx"
@@ -557,10 +584,43 @@ const NewGetDid = () => {
                                       <div className="checkbox-wrapper-4">
                                         <input
                                           className="inp-cbx"
+                                          id="MMS"
+                                          name="MMS"
+                                          type="checkbox"
+                                          onChange={handleChangeUsage}
+                                          checked={selectedUsage?.some((data) => data?.value === "mms")}
+                                        />
+                                        <label
+                                          className="cbx"
+                                          htmlFor="MMS"
+                                        >
+                                          <span>
+                                            <svg
+                                              width="12px"
+                                              height="10px"
+                                            ></svg>
+                                          </span>
+                                          <span className="checkBoxLabel">
+                                            MMS
+                                          </span>
+                                        </label>
+                                        <svg className="inline-svg">
+                                          <symbol
+                                            id="check-4"
+                                            viewBox="0 0 12 10"
+                                          >
+                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                          </symbol>
+                                        </svg>
+                                      </div>
+                                      <div className="checkbox-wrapper-4">
+                                        <input
+                                          className="inp-cbx"
                                           id="Emergency"
                                           name="Emergency"
                                           type="checkbox"
                                           onChange={handleChangeUsage}
+                                          checked={selectedUsage?.some((data) => data?.value === "emergency")}
                                         />
                                         <label
                                           className="cbx"
@@ -912,7 +972,18 @@ const NewGetDid = () => {
                                                     </button>
                                                   </Tippy>
                                                 );
-                                              } else if (
+                                              }else if (
+                                                item.label === "MMS"
+                                              ) {
+                                                return (
+                                                  <Tippy content="MMS is activated for this Number">
+                                                    <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                      <i class="fa-solid fa-comment-sms"></i>
+                                                    </button>
+                                                  </Tippy>
+                                                );
+                                              } 
+                                              else if (
                                                 item.label === "Emergency"
                                               ) {
                                                 return (
@@ -936,6 +1007,10 @@ const NewGetDid = () => {
                                             })}
                                           </div>
                                         </div>
+                                        {item?.address_requirements != "none" &&
+                                        <div>
+                                          Address required  
+                                        </div>}
                                       </div>
                                     </div>
                                   ))
@@ -976,23 +1051,40 @@ const NewGetDid = () => {
                                       }
                                     >
                                       <div className="card-body">
-                                        <div className="avatar_img">
-                                          <img
-                                            src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
-                                            alt="logout"
-                                            style={{ width: "auto" }}
-                                          />
+                                        <div>
+                                          {
+                                            item?.subresource_uris?.local &&
+                                            "local"
+                                          }
+                                          {
+                                            item?.subresource_uris?.mobile &&
+                                            "mobile"
+                                          }
+                                          {
+                                            item?.subresource_uris?.toll_free &&
+                                            "toll_free"
+                                          }
                                         </div>
-                                        <div className="card_details">
-                                          <p className="country_name">
-                                            {item?.country}
-                                          </p>
-                                          <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                            <p className="text-center mb-0">
-                                              {item?.prefix_code}
+                                        <div>
+                                          <div className="avatar_img">
+                                            <img
+                                              src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                              alt="logout"
+                                              style={{ width: "auto" }}
+                                            />
+                                          </div>
+                                          <div className="card_details">
+                                            <p className="country_name">
+                                              {item?.country}
                                             </p>
+                                            <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                              <p className="text-center mb-0">
+                                                {item?.prefix_code}
+                                              </p>
+                                            </div>
                                           </div>
                                         </div>
+
                                       </div>
                                     </div>
                                   ))}
@@ -1012,21 +1104,37 @@ const NewGetDid = () => {
                                       }
                                     >
                                       <div className="card-body">
-                                        <div className="avatar_img">
-                                          <img
-                                            src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
-                                            alt="logout"
-                                            style={{ width: "auto" }}
-                                          />
+                                        <div>
+                                          {
+                                            item?.subresource_uris?.local &&
+                                            "local"
+                                          }
+                                          {
+                                            item?.subresource_uris?.mobile &&
+                                            "mobile"
+                                          }
+                                          {
+                                            item?.subresource_uris?.toll_free &&
+                                            "toll_free"
+                                          }
                                         </div>
-                                        <div className="card_details">
-                                          <p className="country_name">
-                                            {item?.country}
-                                          </p>
-                                          <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                            <p className="text-center mb-0">
-                                              {item?.prefix_code}
+                                        <div>
+                                          <div className="avatar_img">
+                                            <img
+                                              src={`https://flagsapi.com/${item?.country_code}/flat/64.png`}
+                                              alt="logout"
+                                              style={{ width: "auto" }}
+                                            />
+                                          </div>
+                                          <div className="card_details">
+                                            <p className="country_name">
+                                              {item?.country}
                                             </p>
+                                            <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                              <p className="text-center mb-0">
+                                                {item?.prefix_code}
+                                              </p>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>

@@ -18,6 +18,7 @@ const GoPeerGroupCallSocket = () => {
     const port = process.env.REACT_APP_GOLANG_GROUP_PEERCALL_SOCKET_PORT;
     const account = useSelector((state) => state.account);
     const isLogOut = useSelector((state) => state.logout);
+    const onGoingCallInfo = useSelector((state) => state?.onGoingCallInfo)
     const socketRef = useRef(null);
     const connectingRef = useRef(false);
     const reconnectAttemptsRef = useRef(0);
@@ -84,8 +85,11 @@ const GoPeerGroupCallSocket = () => {
                             break;
                         case "end_peer_group_call":
                             dispatch({ type: "REMOVE_INCOMINGCALL", room_id: result?.room_id })
+                            if(onGoingCallInfo?.ended_from_caller_side !== "ended")
+                            dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: { group_call_received: "group-call-ended" } });
                             break
                         case "receive_peer_group_call":
+                            dispatch({ type: "ON_GOING_CALL_INFO", onGoingCallInfo: { ...result, group_call_received: "group-call-received" } });
                             if (account?.id === result?.user_id) {
                                 dispatch({ type: "REMOVE_INCOMINGCALL", room_id: result?.room_id })
                             }

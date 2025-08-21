@@ -217,7 +217,17 @@ function AgentDispositionManage() {
                                                                         </label>
                                                                     </div>
                                                                     <div className="col-xl-6 col-12">
-                                                                        <input className="formItem" value={newDesposition} onChange={(e) => { setNewDisposition(e.target.value) }} />
+                                                                        <input
+                                                                            className="formItem"
+                                                                            value={newDesposition}
+                                                                            onChange={(e) => {
+                                                                                const input = e.target.value;
+                                                                                // Allow only alphabets (both lowercase and uppercase)
+                                                                                if (/^[a-zA-Z]*$/.test(input)) {
+                                                                                    setNewDisposition(input);
+                                                                                }
+                                                                            }}
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                                 <div className="formRow col-xl-12">
