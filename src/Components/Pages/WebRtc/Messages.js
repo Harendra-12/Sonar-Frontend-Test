@@ -120,6 +120,7 @@ function Messages({
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [groupsList, setGroupList] = useState([])
   const [originalGroupsList, setOriginalGroupsList] = useState([]);
   const [groupRefresh, setGroupRefresh] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -935,7 +936,7 @@ function Messages({
 
   // Filter out the user from selcted group
   useEffect(() => {
-    getGroups(setLoading, setGroups, setOriginalGroupsList, recipient, setRecipient, allAgents, setSelectedChat, setGroupNameEdit, setSelectedgroupUsers, account, setIsAdmin);
+    getGroups(setLoading, setGroups, setGroupList, setOriginalGroupsList, recipient, setRecipient, allAgents, setSelectedChat, setGroupNameEdit, setSelectedgroupUsers, account, setIsAdmin);
   }, [groupRefresh]);
 
   // ======================= useEffect stuff End here 
@@ -1305,6 +1306,7 @@ function Messages({
                 isGroupCallMessageOpened={isGroupCallMessageOpened}
                 isSingleCallMessageOpened={isSingleCallMessageOpened}
                 typingDetailState={typingDetailState}
+                groupsList={groupsList}
               />
               <MessageBody
                 recipient={recipient}

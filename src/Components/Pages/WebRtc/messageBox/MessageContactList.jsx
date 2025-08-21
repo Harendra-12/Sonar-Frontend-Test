@@ -77,7 +77,8 @@ const MessageContactList = ({
     setIsTyping,
     isGroupCallMessageOpened,
     isSingleCallMessageOpened,
-    typingDetailState
+    typingDetailState,
+    groupsList
 }) => {
     const dispatch = useDispatch()
     const messageRecipient = useSelector((state) => state.messageRecipient)
@@ -956,7 +957,7 @@ const MessageContactList = ({
                                     </Tippy>
                                 )}
                             </div>
-                            {groups?.map((item, index) => {
+                            {groupsList?.map((item, index) => {
                                 return (
                                     <div
                                         className={

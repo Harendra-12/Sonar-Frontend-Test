@@ -349,6 +349,7 @@ export const getAllUser = async (setAllAgents) => {
 export const getGroups = async (
     setLoading,
     setGroups,
+    setGroupList,
     setOriginalGroupsList,
     recipient,
     setRecipient,
@@ -387,6 +388,17 @@ export const getGroups = async (
             },
         }));
         setGroups(updatedFilteredData);
+        setGroupList(apiData?.data?.reverse()?.map((data) => ({
+            ...data,
+            last_message_data: {
+                ...data?.last_message_data,
+                message_text:
+                    checkMessageType(data?.last_message_data?.message_text) ===
+                        "text/plain"
+                        ? data?.last_message_data?.message_text
+                        : checkMessageType(data?.last_message_data?.message_text),
+            },
+        })))
         setOriginalGroupsList(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
             (group) => group.id == recipient?.[1]
