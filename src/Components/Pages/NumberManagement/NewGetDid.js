@@ -950,7 +950,7 @@ const NewGetDid = () => {
                                           : addSelect(item)
                                       }
                                     >
-                                      <div className="card-body flex-row gap-3 justify-content-start w-100">
+                                      <div className="card-body p-2 m-2 flex-row gap-1 justify-content-start w-100">
                                         <div className="avatar_img mb-0">
                                           <img
                                             src={`https://flagsapi.com/${
