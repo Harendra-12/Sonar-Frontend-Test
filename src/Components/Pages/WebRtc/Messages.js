@@ -1467,7 +1467,7 @@ function Messages({
                             </tr>
                           </thead>
                           <tbody>
-                            {filteredUsers?.map((item, index) => (
+                            {filteredUsers?.filter((data) => data?.id != account?.id)?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1}.</td>
                                 <td>{item.name}</td>
