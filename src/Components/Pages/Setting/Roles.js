@@ -37,7 +37,7 @@ function Roles() {
   const [deleteIndex, setDeleteIndex] = useState();
   const [loading, setLoading] = useState(true);
   const [selectedRoleId, setSelectedRoleId] = useState();
-  const [selectedIsDefault, setSelectedIsDefault] = useState(null);
+  const [selectedIsDefault, setSelectedIsDefault] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
@@ -785,7 +785,7 @@ function Roles() {
                               {selectedRole}
                             </span>
                           </div>
-                          {selectedIsDefault === 1 ? (
+                          {selectedIsDefault ? (
                             <></>
                           ) : checkViewSidebar(
                             "Role",

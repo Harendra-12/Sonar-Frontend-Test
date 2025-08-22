@@ -530,7 +530,7 @@ export function checkViewSidebar(
   // Return true immediately if user is a company
   if (
     JSON.parse(account)?.usertype == "Company" ||
-    JSON.parse(account)?.user_role?.roles?.name === "Super Admin"
+    JSON.parse(account)?.user_role?.roles?.name === "Admin"
   )
     return true;
 
