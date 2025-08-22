@@ -466,8 +466,23 @@ function App() {
               element={
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 6
-                ) && (
+                ) && (checkViewSidebar(
+                  "AccessControl",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "browse"
+                  )) ? (
                   <AccessControl />
+                ) : (
+                  <Navigate to="/dashboard" replace />
                 )
               }
             />
@@ -502,8 +517,23 @@ function App() {
               element={
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 6
-                ) && (
+                ) && (checkViewSidebar(
+                  "AccessControl",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
+                    slugPermissions,
+                    account?.sectionPermissions,
+                    account?.permissions,
+                    "edit"
+                  )) ? (
                   <AccessControlEdit />
+                ) : (
+                  <Navigate to="/dashboard" replace />
                 )
               }
             />

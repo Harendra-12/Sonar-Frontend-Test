@@ -1024,8 +1024,8 @@ const NewGetDid = () => {
                                             })}
                                           </div>
                                         </div>
-                                        {item?.address_requirements !=
-                                          "none" && <div>Address required</div>}
+                                        {/* {item?.address_requirements !=
+                                          "none" && <div>Address required</div>} */}
                                       </div>
                                     </div>
                                   ))
@@ -1090,7 +1090,7 @@ const NewGetDid = () => {
                                               </p>
                                             </div>
                                           </div>
-                                          <div>
+                                          {/* <div>
                                             <p>
                                               {item?.subresource_uris?.local &&
                                                 "local"}
@@ -1103,7 +1103,7 @@ const NewGetDid = () => {
                                               {item?.subresource_uris
                                                 ?.toll_free && "toll_free"}
                                             </p>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1151,7 +1151,7 @@ const NewGetDid = () => {
                                               </div>
                                             </div>
                                           </div>
-                                          <div>
+                                          {/* <div>
                                             <p>
                                               {item?.subresource_uris?.local &&
                                                 "local"}
@@ -1164,7 +1164,7 @@ const NewGetDid = () => {
                                               {item?.subresource_uris
                                                 ?.toll_free && "toll_free"}
                                             </p>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
                                     </div>
