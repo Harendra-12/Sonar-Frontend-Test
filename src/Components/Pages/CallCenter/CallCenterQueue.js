@@ -19,6 +19,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+
 function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -142,7 +143,7 @@ function CallCenterQueue() {
     setLoading(true);
     const payload = {
       ...selectedCallCenter,
-      status: selectedCallCenter.status == 0 ? true : false,
+      status: selectedCallCenter.status == true ? true : false,
       ...{
         agents: selectedCallCenter?.agents
           .map((item) => {
@@ -204,7 +205,7 @@ function CallCenterQueue() {
         if (item.id === id) {
           return {
             ...item,
-            status: item.status == 0 ? 1 : 0,
+            status: item.status == false ? true : false,
           };
         } else {
           return item;
@@ -256,7 +257,7 @@ function CallCenterQueue() {
 
       <main className="mainContent">
         <section id="phonePage">
-              <Header title="Call Center Queue" />
+          <Header title="Call Center Queue" />
           <div className="container-fluid">
             <div className="row">
               <div className="overviewTableWrapper">
@@ -547,7 +548,9 @@ function CallCenterQueue() {
                                                   <label className="cl-switch">
                                                     <input
                                                       type="checkbox"
-                                                      checked={item.status == 1}
+                                                      checked={
+                                                        item.status == true
+                                                      }
                                                       onClick={(e) => {
                                                         setSelectedCallCenter(
                                                           item
@@ -673,7 +676,9 @@ function CallCenterQueue() {
                         : "Are you sure you want to delete this queue?"}
                       {selectedCallCenter?.id &&
                         `Are you sure you want to ${
-                          selectedCallCenter?.status == 1 ? "disable" : "enable"
+                          selectedCallCenter?.status == true
+                            ? "disable"
+                            : "enable"
                         } the queue ${selectedCallCenter?.queue_name}?`}
                     </p>
                     <div className="mt-2 d-flex justify-content-center gap-2 mt-3">

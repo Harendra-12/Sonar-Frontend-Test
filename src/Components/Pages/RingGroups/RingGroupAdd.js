@@ -313,7 +313,7 @@ const RingGroupAdd = () => {
       ...data,
       ...{
         account_id: account.account_id,
-        recording_enabled: data.recording_enabled === "true" ? 1 : 0,
+        recording_enabled: data.recording_enabled === "true" ? true : false,
         followme: data.followme == "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
         destination: destination
