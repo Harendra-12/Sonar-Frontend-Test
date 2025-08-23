@@ -4,7 +4,7 @@ import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 import { followCursor } from 'tippy.js';
 import { useNavigate } from 'react-router-dom'
-import { checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
+import { checkViewSidebar, featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
@@ -547,7 +547,7 @@ function Campaigns() {
                                                     <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
                                                     <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Start</div></li>
                                                     {checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "edit") && <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>}
-                                                    <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div className="clearButton text-align-start"><i className="fa-regular fa-clock me-2"></i> Schedule</div></li>
+                                                    <li className='dropdown-item' onClick={() => featureUnderdevelopment()}><div className="clearButton text-align-start"><i className="fa-regular fa-clock me-2"></i> Schedule</div></li>
                                                     {checkViewSidebar("Campaign", slugPermissions, account?.sectionPermissions, account?.permissions, "delete") && <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>}
                                                   </ul>
                                                 </div>
